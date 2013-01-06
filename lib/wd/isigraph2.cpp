@@ -19,7 +19,7 @@ Isigraph2::Isigraph2(Child *c)
   painter=0;
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
+//  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
   updateGeometry();
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event

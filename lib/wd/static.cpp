@@ -22,7 +22,6 @@ Static::Static(string s, string p, Form *f) : Child(s,p,f)
 void Static::set(string p)
 {
   ((QLabel *)widget)->setText(s2q(p));
-qDebug() << s2q(p);
 }
 
 // ---------------------------------------------------------------------
