@@ -73,6 +73,7 @@ void Config::init(QString path)
 
   DefCmt="NB.";
   DefExt=".ijs";
+  DefIndent="   ";
   DefTypes << "Scripts ijs"
            << "Text txt"
            << "SourceText ijs,ijt,jproj,txt"

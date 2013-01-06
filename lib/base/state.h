@@ -41,6 +41,7 @@ public:
   bool ConfirmSave;
   QString DefCmt;
   QString DefExt;
+  QString DefIndent;
   QStringList DefTypes;
   QString FilePatterns;
   QStringList DMFavorites;

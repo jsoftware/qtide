@@ -23,7 +23,7 @@ bool ss_match(QString p, QString q);
 // ---------------------------------------------------------------------
 QString getsha1(QString s)
 {
-  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Md5).toHex();
+  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Sha1).toHex();
 }
 
 // ---------------------------------------------------------------------

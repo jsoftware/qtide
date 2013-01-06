@@ -74,7 +74,7 @@ string Cmd::getline()
   return str.substr(bgn,pos-bgn-1);
 }
 // ---------------------------------------------------------------------
-// to next ; or LF, else return rest of string
+// to next ; else return rest of string
 string Cmd::getparms()
 {
   char c;
@@ -82,7 +82,7 @@ string Cmd::getparms()
   if (pos==len)
     return "";
 
-  if (str[pos]==';' || str[pos]=='\n') {
+  if (str[pos]==';') {
     pos++;
     return "";
   }
@@ -98,7 +98,7 @@ string Cmd::getparms()
   bgn=pos;
   while (pos<len) {
     c=str[pos];
-    if (c==';' || c=='\n') break;
+    if (c==';') break;
     pos++;
     if (c=='"' || c==DEL) {
       skippast(c);

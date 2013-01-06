@@ -108,7 +108,7 @@ QString dlog_scroll(int m)
     s = InputLog.at (len - 1);
   else
     s = InputLog.at(InputLogPos);
-  return "   " + s;
+  return config.DefIndent + s;
 }
 
 // ---------------------------------------------------------------------
