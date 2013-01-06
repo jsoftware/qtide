@@ -3,7 +3,7 @@
 #include "isigraph2.h"
 #include "form.h"
 
-extern "C" int glclear2(void*);
+extern "C" int glclear2(void *);
 extern Isigraph *isigraph;
 
 // ---------------------------------------------------------------------
@@ -14,6 +14,7 @@ Isigraph2::Isigraph2(Child *c)
   nopaint=false;
   jpaint=false;
   epaint=false;
+  initialdisplay=true;
   pixmap=0;
   painter=0;
   setAttribute(Qt::WA_DeleteOnClose);
@@ -35,60 +36,60 @@ void Isigraph2::paintEvent(QPaintEvent *event)
   qDebug() << "isigraph2 paintEvent start";
   epaint=true;
   if (!nopaint) {
-    qDebug() << "isigraph2 paintEvent call J start";
+//    qDebug() << "isigraph2 paintEvent call J start";
     jpaint=true;
     pchild->event="paint";
     pchild->pform->signalevent(pchild);
     jpaint=false;
-    qDebug() << "isigraph2 paintEvent call J end";
+//    qDebug() << "isigraph2 paintEvent call J end";
   }
   painter->end();
 
-  /*
-    delete painter;
-    QPainter pt(this);
-    pt.drawPixmap(QPoint(0,0),*pixmap);
-    pt.end();
-  */
-  qDebug() << "isigraph2 paintEvent copy pixmal";
+//  qDebug() << "isigraph2 paintEvent copy pixmal";
   painter->begin(this);
   painter->drawPixmap(QPoint(0,0),*pixmap);
   painter->end();
 
   painter->begin(pixmap);
-//  painter = new QPainter (pixmap);
   epaint=false;
   qDebug() << "isigraph2 paintEvent exit";
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::resizeEvent ( QResizeEvent * event )
+void Isigraph2::resizeEvent ( QResizeEvent *event )
 {
-  qDebug() << "isigraph2 resizeEvent";
-  if ((0==event->size().width()) || (0==event->size().height())) return;
-//  if ((event->size()) == (event->oldSize())) return;
+  qDebug() << "isigraph2 resizeEvent isVisible " + QString::number(isVisible());
+  if ((event->size()) == (event->oldSize())) return;
   qDebug() << "isigraph2 resizeEvent new size " + QString::number(event->size().width()) + " " + QString::number(event->size().height());
   if (painter) {
     if (painter->isActive()) painter->end();
     delete painter;
   }
+  painter=0;
   if (pixmap) {
     delete pixmap;
   }
+  pixmap=0;
+  if ((0==event->size().width()) || (0==event->size().height())) return;
   pixmap = new QPixmap (event->size().width(), event->size().height() );
   pixmap->fill();
   painter = new QPainter (pixmap);
   painter->setRenderHint(QPainter::Antialiasing, true);
   active=true;
   glclear2 (pchild);
-
+  if (initialdisplay) {
+    qDebug() << "isigraph2 resizeEvent initial display";
+    initialdisplay=false;
+    setGeometry(0,0,event->size().width(),event->size().height());
+  }
+  qDebug() << "isigraph2 resizeEvent exit";
 }
 
 // ---------------------------------------------------------------------
 void Isigraph2::buttonEvent (QEvent::Type type, QMouseEvent *event)
 {
   if (!active) return;
-  isigraph=(Isigraph*)pchild;
+  isigraph=(Isigraph *)pchild;
 
   string lmr = "";
   switch (event->button()) {
@@ -139,7 +140,7 @@ void Isigraph2::buttonEvent (QEvent::Type type, QMouseEvent *event)
 // ---------------------------------------------------------------------
 void Isigraph2::wheelEvent (QWheelEvent *event)
 {
-  isigraph=(Isigraph*)pchild;
+  isigraph=(Isigraph *)pchild;
 
   char deltasign = ' ';
   int delta = event->delta() / 8;  // degree
@@ -233,7 +234,7 @@ Isigraph2::~Isigraph2()
 {
   qDebug() << "isigraph2 deleted";
 
-  if (pchild==(Child*)isigraph) {
+  if (pchild==(Child *)isigraph) {
     isigraph=0;
     qDebug() << "isigraph=0";
   }

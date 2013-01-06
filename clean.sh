@@ -9,6 +9,10 @@ rm -rf $S/lib/bin/*
 rm -rf $S/lib/build/*
 rm -f lib/Makefile
 rm -f lib/qrc_lib.cpp
+rm -rf main/release/*
+rm -rf main/debug/*
+rm -rf lib/release/*
+rm -rf lib/debug/*
 
 rm -f main/Makefile
 rm -f main/main.o

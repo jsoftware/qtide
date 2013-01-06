@@ -486,7 +486,7 @@ string p2s(const void *p)
 bool queryNY(QString t,QString s)
 {
   int r=QMessageBox::question(QApplication::focusWidget(),t,s,
-        QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
+        /**/                  QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
   return r==QMessageBox::Yes;
 }
 
@@ -494,7 +494,7 @@ bool queryNY(QString t,QString s)
 bool queryOK(QString t,QString s)
 {
   int r=QMessageBox::question(QApplication::focusWidget(),t,s,
-        QMessageBox::Cancel|QMessageBox::Ok,QMessageBox::Ok);
+        /**/                  QMessageBox::Cancel|QMessageBox::Ok,QMessageBox::Ok);
   return r==QMessageBox::Ok;
 }
 
@@ -502,7 +502,7 @@ bool queryOK(QString t,QString s)
 bool queryRETRY(QString t,QString s)
 {
   int r=QMessageBox::question(QApplication::focusWidget(),t,s,
-        QMessageBox::Cancel|QMessageBox::Retry,QMessageBox::Retry);
+        /**/                  QMessageBox::Cancel|QMessageBox::Retry,QMessageBox::Retry);
   return r==QMessageBox::Retry;
 }
 

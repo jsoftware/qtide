@@ -16,11 +16,11 @@ extern "C" {
   int wd(char *s,char *&r,int &len,char *loc);
 // TODO
   int wdisparent(char *s);
-  void* wdgetparentid(void *s);
-  void* wdreadimg(char *s, int *wh);
+  void *wdgetparentid(void *s);
+  void *wdreadimg(char *s, int *wh);
 }
 
-extern int jedo(char*);
+extern int jedo(char *);
 
 void wd1();
 void wdbin();
@@ -93,19 +93,19 @@ int wdisparent(char *s)
 }
 
 // ---------------------------------------------------------------------
-void* wdgetparentid(void *s)
+void *wdgetparentid(void *s)
 {
   Form *f;
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
-    if (f->ischild((Child*) s))
-      return (void*)(f->id).c_str();
+    if (f->ischild((Child *) s))
+      return (void *)(f->id).c_str();
   }
   return 0;
 }
 
 // ---------------------------------------------------------------------
-void* wdreadimg(char *s, int *wh)
+void *wdreadimg(char *s, int *wh)
 {
   if (!tmpimage.isNull()) tmpimage=QImage();
   if (!s || !wh || !strlen(s)) return 0;
@@ -128,7 +128,7 @@ int wd(char *s,char *&res,int &len,char *loc)
   cmd.init(s);
   wd1();
   len=result.size();
-  res=(char*)result.c_str();
+  res=(char *)result.c_str();
   return rc;
 }
 

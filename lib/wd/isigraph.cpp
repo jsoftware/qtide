@@ -10,7 +10,7 @@ Isigraph::Isigraph(string s, string p, Form *f) : Child(s,p,f)
 {
   type = "isigraph";
   Isigraph2 *w= new Isigraph2(this);
-  widget=(QWidget*) w;
+  widget=(QWidget *) w;
   QString qs=s2q(s);
   w->setObjectName(qs);
   isigraph = this;
@@ -19,8 +19,9 @@ Isigraph::Isigraph(string s, string p, Form *f) : Child(s,p,f)
 // ---------------------------------------------------------------------
 void Isigraph::setform()
 {
-  if (event=="paint" || event=="print") return;
-  form=pform;
+  if (!widget) return;
+  if (!(event=="paint" || event=="print")) form=pform;
+  isigraph=this;
 }
 
 // ---------------------------------------------------------------------

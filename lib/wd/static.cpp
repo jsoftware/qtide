@@ -11,9 +11,10 @@ Static::Static(string s, string p, Form *f) : Child(s,p,f)
 {
   type="static";
   QLabel *w=new QLabel;
-  widget=(QWidget*) w;
+  widget=(QWidget *) w;
   QString qs=s2q(s);
   w->setObjectName(qs);
+  w->setWordWrap(true);
   w->setText(qs);
 }
 
@@ -21,6 +22,7 @@ Static::Static(string s, string p, Form *f) : Child(s,p,f)
 void Static::set(string p)
 {
   ((QLabel *)widget)->setText(s2q(p));
+qDebug() << s2q(p);
 }
 
 // ---------------------------------------------------------------------

@@ -93,7 +93,7 @@ void Child::setminwh(int w, int h)
 {
   if (widget && w && h) {
     widget->resize(w,h);
-//    widget->setMinimumSize(w,h);
+    widget->setMinimumSize(w,h);
     widget->updateGeometry();
   }
 }

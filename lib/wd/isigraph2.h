@@ -44,6 +44,7 @@ public:
   bool nopaint;
   bool jpaint;
   bool epaint;
+  bool initialdisplay;
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;

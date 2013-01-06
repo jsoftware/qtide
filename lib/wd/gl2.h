@@ -26,9 +26,9 @@ extern "C" {
   int glpixels (const int *, int);
   int glpixelsx (const int *p);
   int glpolygon (const int *p, int len);
-  int glqextent (char* s,int *wh);
-  int glqextentw (char* s,int *w);
-  int glqhandles (void**p);
+  int glqextent (char *s,int *wh);
+  int glqextentw (char *s,int *w);
+  int glqhandles (void **p);
   int glqpixels (const int *p,int *pix);
   int glqtextmetrics (int *tm);
   int glqwh (int *wh);
