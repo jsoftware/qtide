@@ -96,12 +96,20 @@ void Config::init(QString path)
   Rxnnz = "\\b";
 
   Ascii="+"==dors("{.9!:6$0");
-  XDiff=dors("XDiff_j_");
+
+  NoProfile="0"!=dors("\":~. 4!:0 ;:'SystemFolders_j_ UserFolders_j_'");
+  if (NoProfile) {
+    noprofile();
+    return;
+  }
 
   folder_init();
   config_init();
   launch_init();
   winpos_init();
+
+  if ("0"==dors("\":4!:0 <'XDiff_j_'"))
+    XDiff=dors("XDiff_j_");
 
   QSettings s(ConfigPath.filePath("qtide.cfg"),QSettings::IniFormat);
   QString t;
@@ -122,6 +130,17 @@ void Config::init(QString path)
 
   FifExt = s.value("FindinFiles/Extensions","").toStringList();
   Terminal = s.value("Run/Terminal","").toString();
+}
+
+// ---------------------------------------------------------------------
+void Config::noprofile()
+{
+  ConfirmClose = false;
+  ConfirmSave = false;
+  Font.setFamily("monospace");
+  Font.setPointSize(12);
+  q2p("0 0 500 500",TermPos);
+  term->menuBar->hide();
 }
 
 // ---------------------------------------------------------------------

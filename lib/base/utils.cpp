@@ -378,6 +378,10 @@ QString toprojectname(QString f)
 // ---------------------------------------------------------------------
 void xdiff(QString s,QString t)
 {
+  if (config.XDiff.size()==0) {
+    info ("External Diff","First define XDiff in the config");
+    return;
+  }
   QStringList a;
   a << s << t;
   QProcess p;

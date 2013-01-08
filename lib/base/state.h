@@ -23,6 +23,7 @@ public:
   void folder_init();
   void launch_init();
   void init(QString);
+  void noprofile();
 
   void toggleascii();
   void togglelinenos();
@@ -64,6 +65,7 @@ public:
   bool LineNos;
   bool LineWrap;
   int MaxRecent;
+  bool NoProfile;
   QString Pass;
   int Port;
   QString ProjExt;
@@ -85,7 +87,6 @@ public:
   QStringList UserFolderValues;
   QMap<QString,QList<int> >WinPos;
   QString XDiff;
-
 };
 
 extern Config config;
