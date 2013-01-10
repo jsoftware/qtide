@@ -42,11 +42,11 @@ QString dialogfileopen(QWidget *w,QString t)
   if (t=="open")
     d=getfilepath();
   else if (t=="temp")
-    d=config.TempPath.path();
+    d=config.TempPath.absolutePath();
   else if (t=="user")
-    d=config.UserPath.path();
+    d=config.UserPath.absolutePath();
   else if (config.AppName=="jqt")
-    d=config.SystemPath.path();
+    d=config.SystemPath.absolutePath();
   else
     d=cpath("~qhome");
   return QFileDialog::getOpenFileName(w,t,d,config.FilePatterns);
@@ -81,7 +81,7 @@ QString dialogsaveas(QWidget *w,QString t,QString p)
 QString getfilepath()
 {
   if (project.Id.isEmpty())
-    return config.TempPath.path();
+    return config.TempPath.absolutePath();
   else
     return project.Path;
 };
@@ -90,7 +90,7 @@ QString getfilepath()
 QString getprojectpath()
 {
   if (project.Id.isEmpty())
-    return config.UserPath.path();
+    return config.UserPath.absolutePath();
   else
     return project.Path;
 };

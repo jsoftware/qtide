@@ -41,7 +41,7 @@ Nside::Nside()
 
   Path=project.Path;
   if (Path.isEmpty())
-    Path=config.TempPath.path();
+    Path=config.TempPath.absolutePath();
 
   QWidget *f = createfiles();
   addTab(f,"files");

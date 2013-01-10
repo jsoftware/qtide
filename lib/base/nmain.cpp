@@ -51,4 +51,3 @@ QAction *Nmain::makeact(QString id, QString icon, QString text)
   r->setObjectName(id);
   return r;
 }
-

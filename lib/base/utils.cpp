@@ -166,7 +166,7 @@ QString newtempscript()
 {
   int i,m,len,t;
   QString f;
-  QStringList s=cflist(config.TempPath.path(),"*" + config.DefExt);
+  QStringList s=cflist(config.TempPath.absolutePath(),"*" + config.DefExt);
 
   QList<int> n;
   len = config.DefExt.size();
@@ -257,7 +257,7 @@ void projectterminal()
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
-      d=config.TempPath.path();
+      d=config.TempPath.absolutePath();
     else
       d=cfpath(note->editFile());
   } else

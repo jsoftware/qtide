@@ -130,7 +130,7 @@ QString ss_date()
 // ---------------------------------------------------------------------
 bool ss_erase(QString p,QString s)
 {
-  if (!matchhead(p,config.SnapPath.path())) return false;
+  if (!matchhead(p,config.SnapPath.absolutePath())) return false;
   cderase(p + s);
   return true;
 }
