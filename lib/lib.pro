@@ -1,12 +1,19 @@
 
-TEMPLATE = lib
-TARGET = ../bin/jqt
+android:{
+          CONFIG += mobility
+          MOBILITY +=
+          TEMPLATE = lib
+          TARGET = ../bin/jqt
+          DEFINES += "ANDROID" }
+else {    TEMPLATE = lib
+          TARGET = ../bin/jqt }
 
 OBJECTS_DIR = build
 MOC_DIR = build
 
 win32:CONFIG += dll console
 unix:CONFIG+= release
+android:CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -52,6 +59,7 @@ RESOURCES += lib.qrc
 
 win32:LIBS += -shared
 unix:LIBS += -ldl
+android:LIBS += -ldl
 
 win32:QMAKE_LFLAGS += -static-libgcc
 
