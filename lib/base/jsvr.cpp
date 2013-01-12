@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QByteArray>
 #include <QDebug>
+#include <QFile>
 
 #include <csignal>
 #include <assert.h>
@@ -11,6 +12,10 @@
 
 #include "jsvr.h"
 #include "util.h"
+
+#ifdef ANDROID
+#include <sys/stat.h>
+#endif
 
 using namespace std;
 
@@ -84,24 +89,27 @@ void addargv(int argc, char* argv[], C* d)
 // ---------------------------------------------------------------------
 int jedo(char* sentence)
 {
+  if (!jt) return 0;
   return jdo(jt,sentence);
 }
 
 // ---------------------------------------------------------------------
 void jefree()
 {
-  jfree(jt);
+  if (jt) jfree(jt);
 }
 
 // ---------------------------------------------------------------------
 char* jegetlocale()
 {
+  if (!jt) return "base";
   return jgetlocale(jt);
 }
 
 // ---------------------------------------------------------------------
 A jega(I t, I n, I r, I*s)
 {
+  if (!jt) return 0;
   return jga(jt,t,n,r,s);
 }
 
@@ -231,6 +239,36 @@ int jefirst(int type,char* arg)
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
 
+#if ANDROID
+  struct stat st;
+  if(!getenv("HOME")) {
+    if(!stat("/sdcard",&st)) {
+      setenv("HOME","/sdcard",1);
+    } else {
+      setenv("HOME",path,1);
+    }
+  }
+  if(!getenv("TMP")) {
+    char tmp[PLEN];
+    strcpy(tmp, path);
+    strcat(tmp, filesepx);
+    strcat(tmp, "..");
+    strcat(tmp, filesepx);
+    strcat(tmp, "files");
+    strcat(tmp, filesepx);
+    strcat(tmp, "tmp");
+    if(stat(tmp,&st)) mkdir(tmp, S_IRWXU | S_IRWXG | S_IRWXO);
+    setenv("TMP",tmp,1);
+  }
+
+// assume cwd is .../files
+    QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
+    QFile("assets:/tar0.ijs").copy("tar0.ijs");
+    jedo("script=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
+    jedo("(i.0 0)[tar_jtar0_^:(-.*#1!:0'bin') 'x';'jqtdata.tgz';'.'[script 'tar0.ijs'");
+    jedo("(i.0 0)[4!:55 <'script'[18!:55 <'jtar0'");
+#endif
+
   *input=0;
   if(0==type) {
     strcat(input,"(3 : '0!:0 y')<BINPATH,'");
@@ -244,7 +282,12 @@ int jefirst(int type,char* arg)
     strcat(input,"i.0 0");
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
+#ifdef ANDROID
+// TODO assume path ended in /lib
+  strcat(input,"[BINPATH_z_=:(_3}.'");
+#else
   strcat(input,"[BINPATH_z_=:'");
+#endif
   p=path;
   q=input+strlen(input);
   while(*p) {
@@ -252,7 +295,12 @@ int jefirst(int type,char* arg)
     *q++=*p++;
   }
   *q=0;
+#ifdef ANDROID
+  strcat(input,"'),'files/bin'");
+  strcat(input,"[UNAME_z_=:'Android'");
+#else
   strcat(input,"'");
+#endif
   strcat(input,"[IFQT_z_=:1");
   string s="[libjqt_z_=: '"+q2s(LibName)+"'";
   strcat(input,s.c_str());
@@ -283,6 +331,7 @@ A dora(QString s)
 QString dors(QString s)
 {
   QString t;
+  if (!jt) return "";
   A r=dora(s);
   AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
   assert(p->t==2);
@@ -318,7 +367,7 @@ void sets(QString name, QString s)
   C* buf=(C*)calloc(hlen+tlen,sizeof(char));
   memcpy(buf,hdr,hlen);
   strncpy(buf+hlen,sb,slen);
-  jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
+  if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
   free(buf);
 }
 
