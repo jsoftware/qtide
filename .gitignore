@@ -27,3 +27,4 @@ qrc_*
 *.so
 *.so.*
 *.pro.user
+*.tgz
