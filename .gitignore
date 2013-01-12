@@ -11,6 +11,11 @@ makebill.sh
 makewincdb.bat
 run.sh
 
+android/bin/
+android/gen/
+android/libs/
+local.properties
+
 moc_*
 qrc_*
 *.dll
