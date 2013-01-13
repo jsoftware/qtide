@@ -42,6 +42,9 @@ Term::Term()
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
   QMetaObject::connectSlotsByName(this);
+#ifdef ANDROID
+  activate();
+#endif
 }
 
 // ---------------------------------------------------------------------

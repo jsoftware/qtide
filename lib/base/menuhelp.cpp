@@ -206,7 +206,15 @@ void Term::on_helpvocabAct_triggered()
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
-  QDesktopServices::openUrl(QUrl(t,QUrl::StrictMode));
+#ifdef ANDROID
+  if (QFile(t).exists())
+    android_exec_host((char *)"android.intent.action.VIEW",t.prepend("file://").toUtf8().data(),(char *)0);
+  else android_exec_host((char *)"android.intent.action.VIEW",s.prepend("http://www.jsoftware.com/help/").append(".htm").toUtf8().data(),(char *)0);
+#else
+  if (QFile(t).exists())
+    QDesktopServices::openUrl(QUrl(t,QUrl::StrictMode));
+  else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::StrictMode));
+#endif
 }
 
 // ---------------------------------------------------------------------

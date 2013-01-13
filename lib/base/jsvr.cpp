@@ -102,7 +102,7 @@ void jefree()
 // ---------------------------------------------------------------------
 char* jegetlocale()
 {
-  if (!jt) return "base";
+  if (!jt) return (char *)"base";
   return jgetlocale(jt);
 }
 
@@ -262,11 +262,20 @@ int jefirst(int type,char* arg)
   }
 
 // assume cwd is .../files
+  if (!QFile("bin/installer.txt").exists()) {
+    QFile("jqtdata.tgz").remove();
+    QFile("tar0.ijs").remove();
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
     QFile("assets:/tar0.ijs").copy("tar0.ijs");
-    jedo("script=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
-    jedo("(i.0 0)[tar_jtar0_^:(-.*#1!:0'bin') 'x';'jqtdata.tgz';'.'[script 'tar0.ijs'");
-    jedo("(i.0 0)[4!:55 <'script'[18!:55 <'jtar0'");
+    QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);
+    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6666);
+    jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
+    jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
+// neither worked, will be done on load ide/qt
+//    QFile::setPermissions("tools/zip/7za",(QFile::Permission)0x7777);
+//    QFile::setPermissions("tools/ftp/wget",(QFile::Permission)0x7777);
+//    jedo((char *)"(i.0 0)['rwxrwxrwx'1!:7 ::0:<'tools/zip/7za'['rwxrwxrwx'1!:7 ::0:<'tools/ftp/wget'");
+  }
 #endif
 
   *input=0;
