@@ -12,13 +12,11 @@ OBJECTS_DIR = build
 MOC_DIR = build
 
 win32:CONFIG += dll console
-unix:CONFIG+= release
-android:CONFIG+= release
+CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += "JQT"
-DEFINES += "J64"
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
 # Input

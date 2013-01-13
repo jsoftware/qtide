@@ -13,7 +13,7 @@ INCLUDEPATH += .
 # Input
 SOURCES += main.cpp
 win32:config += console
-unix:CONFIG+= release
-android:CONFIG+= release
+CONFIG+= release
 
 win32:QMAKE_LFLAGS += -static-libgcc
+win32:RC_FILE = jqt.rc
