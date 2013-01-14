@@ -211,8 +211,23 @@ void Menu::createeditMenu(QString s)
   }
   editMenu->addSeparator();
   editMenu->addAction(editfontAct);
+// TODO wrokaround necessitas bug
+#ifdef ANDROID
+  editMenu->addAction(cfgbaseAct);
+  editMenu->addAction(cfgdirmAct);
+  editMenu->addAction(cfgfoldersAct);
+  editMenu->addAction(cfglaunchpadAct);
+  if (config.AppName=="jqt") {
+    editMenu->addAction(cfgqtideAct);
+    editMenu->addSeparator();
+    editMenu->addAction(cfgstartupAct);
+  }
+  editMenu->addSeparator();
+  editMenu->addAction(cfgopenallAct);
+#else
   cfgMenu = editMenu->addMenu("Configure");
   createcfgMenu();
+#endif
 }
 
 // ---------------------------------------------------------------------

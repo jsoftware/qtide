@@ -262,7 +262,23 @@ int jefirst(int type,char* arg)
   }
 
 // assume cwd is .../files
-  if (!QFile("bin/installer.txt").exists()) {
+  int v1=0, v2=0;
+  QFile *f1 = new QFile("assets:/assets_version.txt");
+  QFile *f2 = new QFile("assets_version.txt");
+  if (f1->exists()) {
+    QString s= cfread(f1);
+    if (!(s.isNull() || s.isEmpty())) v1=(int)strtol(s.toUtf8().data(),NULL,0);
+  }
+  if (f2->exists()) {
+    QString s= cfread(f2);
+    if (!(s.isNull() || s.isEmpty())) v2=(int)strtol(s.toUtf8().data(),NULL,0);
+  }
+  delete f1;
+  delete f2;
+  if (v1>v2) {
+    QFile("assets_version.txt").remove();
+    QFile("assets:/assets_version.txt").copy("assets_version.txt");
+    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6666);
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
@@ -275,6 +291,8 @@ int jefirst(int type,char* arg)
 //    QFile::setPermissions("tools/zip/7za",(QFile::Permission)0x7777);
 //    QFile::setPermissions("tools/ftp/wget",(QFile::Permission)0x7777);
 //    jedo((char *)"(i.0 0)['rwxrwxrwx'1!:7 ::0:<'tools/zip/7za'['rwxrwxrwx'1!:7 ::0:<'tools/ftp/wget'");
+    QFile("jqtdata.tgz").remove();
+    QFile("tar0.ijs").remove();
   }
 #endif
 
