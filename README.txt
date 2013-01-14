@@ -58,3 +58,5 @@ $ ant release
 this will build the qtide-release-unsigned.apk in the android/bin folder.
 
 Optional: sign the apk with your own secret key.
+
+The libj.so and libjpcre.so are not inside this repository, but they, together jqdata.tgz, can be obtained by un-zip an pre-built apk as if it is a zip file.
