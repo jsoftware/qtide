@@ -165,6 +165,9 @@ void jepath(char* arg)
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
+#elif defined(ANDROID)
+  Q_UNUSED(arg);
+  strcpy(path,QCoreApplication::applicationDirPath().toUtf8().data());
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -240,6 +243,7 @@ int jefirst(int type,char* arg)
   char* input=(char *)malloc(2000+strlen(arg));
 
 #if ANDROID
+  char *homepath;
   struct stat st;
   if(!getenv("HOME")) {
     if(!stat("/sdcard",&st)) {
@@ -248,13 +252,10 @@ int jefirst(int type,char* arg)
       setenv("HOME",path,1);
     }
   }
+  homepath=getenv("HOME");
   if(!getenv("TMP")) {
     char tmp[PLEN];
-    strcpy(tmp, path);
-    strcat(tmp, filesepx);
-    strcat(tmp, "..");
-    strcat(tmp, filesepx);
-    strcat(tmp, "files");
+    strcpy(tmp, homepath);
     strcat(tmp, filesepx);
     strcat(tmp, "tmp");
     if(stat(tmp,&st)) mkdir(tmp, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -276,9 +277,6 @@ int jefirst(int type,char* arg)
   delete f1;
   delete f2;
   if (v1>v2) {
-    QFile("assets_version.txt").remove();
-    QFile("assets:/assets_version.txt").copy("assets_version.txt");
-    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6666);
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
@@ -293,6 +291,9 @@ int jefirst(int type,char* arg)
 //    jedo((char *)"(i.0 0)['rwxrwxrwx'1!:7 ::0:<'tools/zip/7za'['rwxrwxrwx'1!:7 ::0:<'tools/ftp/wget'");
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
+    QFile("assets_version.txt").remove();
+    QFile("assets:/assets_version.txt").copy("assets_version.txt");
+    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6666);
   }
 #endif
 
@@ -309,12 +310,12 @@ int jefirst(int type,char* arg)
     strcat(input,"i.0 0");
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
-#ifdef ANDROID
-// TODO assume path ended in /lib
-  strcat(input,"[BINPATH_z_=:(_3}.'");
-#else
   strcat(input,"[BINPATH_z_=:'");
-#endif
+#if ANDROID
+  strcat(input,homepath);
+  strcat(input,"/bin'");
+  strcat(input,"[UNAME_z_=:'Android'");
+#else
   p=path;
   q=input+strlen(input);
   while(*p) {
@@ -322,10 +323,6 @@ int jefirst(int type,char* arg)
     *q++=*p++;
   }
   *q=0;
-#ifdef ANDROID
-  strcat(input,"'),'files/bin'");
-  strcat(input,"[UNAME_z_=:'Android'");
-#else
   strcat(input,"'");
 #endif
   strcat(input,"[IFQT_z_=:1");
