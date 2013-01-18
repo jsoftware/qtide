@@ -1,9 +1,9 @@
 
-#include <QImage>
 #include <QLayout>
 #include <QTimer>
 
 #include "wd.h"
+#include "bitmap.h"
 #include "child.h"
 #include "cmd.h"
 #include "font.h"
@@ -17,7 +17,6 @@ extern "C" {
 // TODO
   int wdisparent(char *s);
   void *wdgetparentid(void *s);
-  void *wdreadimg(char *s, int *wh);
 }
 
 extern int jedo(char *);
@@ -73,7 +72,6 @@ string tlocale="";
 // TODO  for debug
 string cmdstr;
 string ccmd;
-static QImage tmpimage;
 
 // TODO
 // ---------------------------------------------------------------------
@@ -102,21 +100,6 @@ void *wdgetparentid(void *s)
       return (void *)(f->id).c_str();
   }
   return 0;
-}
-
-// ---------------------------------------------------------------------
-void *wdreadimg(char *s, int *wh)
-{
-  if (!tmpimage.isNull()) tmpimage=QImage();
-  if (!s || !wh || !strlen(s)) return 0;
-  if (!strlen(s)) return 0;
-  QImage image=QImage(s);
-  if (!image.isNull()) {
-    wh[0]=image.width();
-    wh[1]=image.height();
-    tmpimage = image.convertToFormat(QImage::Format_RGB32);
-    return (void *) tmpimage.bits();
-  } else return 0;
 }
 
 // ---------------------------------------------------------------------
@@ -287,8 +270,10 @@ void wdpactive()
 {
   if (noform()) return;
   cmd.getparms();
+#ifndef ANDROID
   form->activateWindow();
   form->raise();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -320,12 +305,14 @@ void wdpmovex()
   if (n.size()!=4)
     error("pmovex requires 4 numbers: " + p);
   else {
+#ifndef ANDROID
     if (!((n.at(0)==QString("-1"))
           ||(n.at(0)==QString("_1"))
           ||(n.at(1)==QString("-1"))
           ||(n.at(1)==QString("_1"))))
       form->move(n.at(0).toInt(),n.at(1).toInt());
     form->resize(n.at(2).toInt(),n.at(3).toInt());
+#endif
   }
 }
 
@@ -373,7 +360,9 @@ void wdptop()
   if (noform()) return;
   cmd.getparms();
 // TODO
+#ifndef ANDROID
   form->raise();
+#endif
 }
 
 // ---------------------------------------------------------------------

@@ -88,7 +88,7 @@ bool Form::addchild(string n,string c,string p)
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,this);
   else if (c=="groupbox")
-    child=(Child *) new Static(n,p,this);
+    child=(Child *) new Static(n,"groupbox " + p,this);
   else if (c=="listbox")
     child=(Child *) new ListBox(n,p,this);
   else if (c=="isigraph")
@@ -98,7 +98,7 @@ bool Form::addchild(string n,string c,string p)
   else if (c=="static")
     child=(Child *) new Static(n,p,this);
   else if (c=="staticbox")
-    child=(Child *) new Static(n,p,this);
+    child=(Child *) new Static(n,"staticbox " + p,this);
   else if (c=="table")
     child=(Child *) new Table(n,p,this);
   else

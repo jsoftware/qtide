@@ -92,6 +92,9 @@ void Child::setxywh(string p,int unit)
 void Child::setminwh(int w, int h)
 {
   if (widget && w && h) {
+#ifdef ANDROID
+    if (! ((type=="isigraph")||(type=="listbox")||(type=="editm"))) return;
+#endif
     widget->resize(w,h);
     widget->setMinimumSize(w,h);
     widget->updateGeometry();

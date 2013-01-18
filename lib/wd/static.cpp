@@ -15,7 +15,8 @@ Static::Static(string s, string p, Form *f) : Child(s,p,f)
   QString qs=s2q(s);
   w->setObjectName(qs);
   w->setWordWrap(true);
-  w->setText(qs);
+  if (p.substr(0,9)!="staticbox")
+    w->setText(qs);
 }
 
 // ---------------------------------------------------------------------
