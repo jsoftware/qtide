@@ -15,6 +15,10 @@
 #include "svr.h"
 #include "term.h"
 
+#ifdef ANDROID
+extern "C" void javaOnLoad(void *,void *,void *);
+#endif
+
 using namespace std;
 
 Config config;
@@ -214,8 +218,15 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
+#ifdef ANDROID
+int state_run(int argc, char *argv[],QApplication *app,QString lib,void *vm,void *qtapp,void *qtact)
+#else
 int state_run(int argc, char *argv[],QApplication *app,QString lib)
+#endif
 {
+#ifdef ANDROID
+  javaOnLoad(vm,qtapp,qtact);
+#endif
   LibName=lib;
   state_init_resource();
   setlocale(1,"C");

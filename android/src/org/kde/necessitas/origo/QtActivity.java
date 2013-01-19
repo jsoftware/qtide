@@ -544,6 +544,7 @@ public class QtActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        QtApplication.m_activity = this;  // add by bill lam
         if (QtApplication.m_delegateObject != null && QtApplication.onCreate != null)
         {
             QtApplication.invokeDelegateMethod(QtApplication.onCreate, savedInstanceState);

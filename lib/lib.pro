@@ -35,6 +35,8 @@ HEADERS += \
  wd/listbox.h wd/radiobutton.h wd/static.h wd/table.h \
  wd/menus.h wd/wd.h
 
+android:HEADERS += base/qtjni.h
+
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
  base/dirm.cpp base/dirmx.cpp base/dlog.cpp \
@@ -52,6 +54,8 @@ SOURCES += \
  wd/isigraph.cpp wd/isigraph2.cpp \
  wd/listbox.cpp wd/radiobutton.cpp wd/static.cpp wd/table.cpp \
  wd/menus.cpp wd/wd.cpp
+
+android:SOURCES +=  base/qtjni.cpp
 
 RESOURCES += lib.qrc
 
