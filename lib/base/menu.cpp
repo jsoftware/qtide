@@ -91,6 +91,7 @@ void Menu::createActions()
   runalllines1Act = makeact("runalllines1Act","Run All Lines","F10");
   runalllines2Act = makeact("runalllines2Act","Clear Terminal, Run All Lines","Ctrl+Shift+F10");
   runclipAct = makeact("runclipAct","&Clipboard","F8");
+  runjhsAct = makeact("runjhsAct","Launch JHS","");
   runlineAct = makeact("runlineAct","Line","Ctrl+Return");
   runlineadvanceAct = makeact("runlineadvanceAct","Line and &Advance","Ctrl+R");
   runlineadvanceshowAct = makeact("runlineadvanceshowAct","Line Advance &Show","Ctrl+Shift+R");
@@ -369,6 +370,10 @@ void Menu::createrunMenu(QString s)
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
+  if (s != "note") {
+    runMenu->addSeparator();
+    runMenu->addAction(runjhsAct);
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -1223,6 +1228,17 @@ void Term::on_projectopenAct_triggered()
 void Term::on_runclipAct_triggered()
 {
   tedit->docmds(QApplication::clipboard()->text().trimmed());
+}
+
+// ---------------------------------------------------------------------
+void Term::on_runjhsAct_triggered()
+{
+  tedit->docmds("init_jhs_''[load '~addons/ide/jhs/core.ijs'");
+#ifdef ANDROID
+  android_exec_host((char *)"android.intent.action.VIEW",(char *)"http://localhost:65001/jijxh",(char *)0);
+#else
+  QDesktopServices::openUrl(QUrl("http://localhost:65001/jijx",QUrl::StrictMode));
+#endif
 }
 
 // ---------------------------------------------------------------------
