@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.kde.necessitas.origo;
+package com.jsoftware.android.qtide;
 
 import java.io.File;
 import java.lang.reflect.Method;

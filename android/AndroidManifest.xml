@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
-    package="org.kde.necessitas.j.qtide" 
+    package="com.jsoftware.android.qtide" 
     android:versionCode="1"
     android:versionName="1.0.0">
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7" />
     <application
-        android:name="org.kde.necessitas.origo.QtApplication"
+        android:name="com.jsoftware.android.qtide.QtApplication"
         android:icon="@drawable/jgreen"
         android:label="@string/app_name"
         android:enabled="true"
@@ -13,7 +13,7 @@
         android:persistent="true">
 
         <activity
-            android:name="org.kde.necessitas.origo.QtActivity"
+            android:name="com.jsoftware.android.qtide.QtActivity"
             android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden"
             android:label="@string/app_name">
             <intent-filter>

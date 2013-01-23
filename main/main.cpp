@@ -54,10 +54,10 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
 
   qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
   qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
-  qtapp=jnienv->FindClass("org/kde/necessitas/origo/QtApplication");
-  qtact=jnienv->FindClass("org/kde/necessitas/origo/QtActivity");
-  qDebug() << "org/kde/necessitas/origo/QtApplication jclass " << QString::number((long)qtapp);
-  qDebug() << "org/kde/necessitas/origo/QtActivity jclass " << QString::number((long)qtact);
+  qtapp=jnienv->FindClass("com/jsoftware/android/qtide/QtApplication");
+  qtact=jnienv->FindClass("com/jsoftware/android/qtide/QtActivity");
+  qDebug() << "com/jsoftware/android/qtide/QtApplication jclass " << QString::number((long)qtapp);
+  qDebug() << "com/jsoftware/android/qtide/QtActivity jclass " << QString::number((long)qtact);
 
   return JNI_VERSION_1_6;
 }

@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.kde.necessitas.origo;
+package com.jsoftware.android.qtide;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -36,7 +36,7 @@ import android.app.Application;
 
 public class QtApplication extends Application
 {
-    public static org.kde.necessitas.origo.QtActivity m_activity = null;   // added by bill lam
+    public static com.jsoftware.android.qtide.QtActivity m_activity = null;   // added by bill lam
 
     public final static String QtTAG="Qt";
     public static Object m_delegateObject = null;
