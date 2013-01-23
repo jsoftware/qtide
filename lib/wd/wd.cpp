@@ -193,7 +193,7 @@ void wdcn()
   if (noform()) return;
   cc=form->child;
   if (nochild()) return;
-  string p=cmd.remquotes(cmd.getparms());
+  string p=remquotes(cmd.getparms());
   cc->setp("caption",p);
 }
 
@@ -217,7 +217,7 @@ void wdmenu(string s)
     p=cmd.getparms();
     rc=form->menubar->menu(c,p);
   } else if (s=="menupop") {
-    p=cmd.remquotes(cmd.getparms());
+    p=remquotes(cmd.getparms());
     rc=form->menubar->menupop(p);
   } else if (s=="menupopz") {
     p=cmd.getparms();
@@ -320,7 +320,7 @@ void wdpmovex()
 void wdpn()
 {
   if (noform()) return;
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   form->setpn(p);
 }
 
@@ -575,5 +575,15 @@ bool noform()
   if (form) return false;
   error("no parent selected");
   return true;
+}
+
+// ---------------------------------------------------------------------
+string remquotes(string s)
+{
+  int len=s.size();
+  if (len==0) return s;
+  if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
+    s=s.substr(1,len-2);
+  return s;
 }
 

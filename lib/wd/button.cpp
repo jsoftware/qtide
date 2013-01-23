@@ -23,6 +23,6 @@ Button::Button(string s, string p, Form *f) : Child(s,p,f)
 void Button::setp(string p,string v)
 {
   if (p=="caption")
-    ((QPushButton *)widget)->setText(s2q(v));
+    ((QPushButton *)widget)->setText(s2q(remquotes(v)));
   else Child::setp(p,v);
 }

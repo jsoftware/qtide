@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QMenu>
+#include <QUrl>
 
 #include "base.h"
 #include "menu.h"

@@ -6,5 +6,7 @@ using namespace std;
 
 #include "../base/base.h"
 
+string remquotes(string s);
+
 #endif
 

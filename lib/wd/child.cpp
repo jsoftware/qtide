@@ -43,7 +43,7 @@ void Child::setp(string p, string v)
 {
   if (!widget) return;
   if (p=="locale")
-    locale=v;
+    locale=remquotes(v);
   else if (p=="focus")
     widget->setFocus();
   else if (p=="font")
@@ -51,11 +51,11 @@ void Child::setp(string p, string v)
   else if (p=="invalid")
     widget->update();
   else if (p=="show")
-    widget->setVisible(!(v=="0" || v==""));
+    widget->setVisible(!(remquotes(v)=="0" || remquotes(v)==""));
   else if (p=="xywh")
-    setxywh(p,2);
+    setxywh(v,2);
   else if (p=="xywhx")
-    setxywh(p,1);
+    setxywh(v,1);
 
 }
 

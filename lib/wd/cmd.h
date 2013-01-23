@@ -12,7 +12,6 @@ public:
   string getparms();
   void init(char *);
   bool more();
-  string remquotes(string s);
 
 // TODO
   string getcmdstr();
