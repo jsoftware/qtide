@@ -44,16 +44,20 @@ int main(int argc, char *argv[])
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
 {
   JNIEnv *jnienv;
-  jnivm = vm;
   if (vm->GetEnv(reinterpret_cast<void**>(&jnienv), JNI_VERSION_1_6) != JNI_OK) {
     qCritical() << "JNI_OnLoad GetEnv Failed";
     return -1;
   }
-
+  jnivm = vm;
+  jclass ap,ac;
   qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
   qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
-  qtapp=jnienv->FindClass("com/jsoftware/android/qtide/QtApplication");
-  qtact=jnienv->FindClass("com/jsoftware/android/qtide/QtActivity");
+  ap=jnienv->FindClass("com/jsoftware/android/qtide/QtApplication");
+  ac=jnienv->FindClass("com/jsoftware/android/qtide/QtActivity");
+  qtapp=(jclass)jnienv->NewGlobalRef(ap);
+  qtact=(jclass)jnienv->NewGlobalRef(ac);
+  jnienv->DeleteLocalRef(ap);
+  jnienv->DeleteLocalRef(ac);
   qDebug() << "com/jsoftware/android/qtide/QtApplication jclass " << QString::number((long)qtapp);
   qDebug() << "com/jsoftware/android/qtide/QtActivity jclass " << QString::number((long)qtact);
 
