@@ -22,7 +22,7 @@
             </intent-filter>
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
-            <meta-data android:name="android.app.lib_name" android:value="qtide"/>
+            <meta-data android:name="android.app.lib_name" android:value="jqt"/>
             <!--  Messages maps -->
             <meta-data android:name="android.app.ministro_not_found_msg" android:value="@string/ministro_not_found_msg"/>
             <meta-data android:name="android.app.ministro_needed_msg" android:value="@string/ministro_needed_msg"/>

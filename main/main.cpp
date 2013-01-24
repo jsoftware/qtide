@@ -1,18 +1,18 @@
 #include <QApplication>
-#include <QLibrary>
-
 #include <QDebug>
 
 using namespace std;
 
 #ifdef ANDROID
 #include <jni.h>
-typedef int (*Run)(int,char **,QApplication *,QString,void *,void *,void *);
+extern int state_run (int,char **,QApplication *,QString,void *,void *,void *);
 
 static JavaVM *jnivm=0;
 static jclass qtapp=0;
 static jclass qtact=0;
 #else
+#include <QLibrary>
+
 typedef int (*Run)(int,char **,QApplication *,QString);
 #endif
 
@@ -20,26 +20,24 @@ int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
+#ifdef ANDROID
+  return state_run(argc, argv, &app, QCoreApplication::applicationFilePath(), (void *)jnivm, (void *)qtapp, (void *)qtact);
+#else
 #ifdef _WIN32
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
 #else
   QString s=QCoreApplication::applicationDirPath() + "/libjqt";
 #endif
-
   QLibrary *lib=new QLibrary(s);
   Run state_run=(Run) lib->resolve("state_run");
   if (state_run)
-#ifdef ANDROID
-    return state_run(argc, argv, &app, lib->fileName(), (void *)jnivm, (void *)qtapp, (void *)qtact);
-#else
     return state_run(argc, argv, &app, lib->fileName());
-#endif
-
 
   qDebug() << lib->fileName();
   qDebug() << "could not resolve: state_run";
 
   return -1;
+#endif
 }
 
 #ifdef ANDROID

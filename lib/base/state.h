@@ -104,12 +104,12 @@ QString var_load(QString s, bool d);
 void var_run(QString s);
 void var_runs(QString s);
 
-extern "C" {
 #ifdef ANDROID
-  int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
+int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
 #else
+extern "C" {
   int state_run(int argc, char *argv[],QApplication *app,QString lib);
-#endif
 }
+#endif
 
 #endif

@@ -55,7 +55,7 @@ SOURCES += \
  wd/listbox.cpp wd/radiobutton.cpp wd/static.cpp wd/table.cpp \
  wd/menus.cpp wd/wd.cpp
 
-android:SOURCES +=  base/qtjni.cpp
+android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 
