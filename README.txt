@@ -33,8 +33,6 @@ This jqt Android port is experimental only.
 
 Here it is assumed building for armv5, it will be similar for armv7.
 
-The jqtide application is a shared object, libqtide.so.  There is no jqt executable.
-
 The folder android contains the android java project files.
 
 Download and install the latest sdk from http://necessitas.kde.org
