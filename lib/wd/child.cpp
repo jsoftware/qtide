@@ -93,7 +93,7 @@ void Child::setminwh(int w, int h)
 {
   if (widget && w && h) {
 #ifdef ANDROID
-    if (! ((type=="isigraph")||(type=="listbox")||(type=="editm"))) return;
+    if (! ((type=="isigraph")||(type=="listbox")||(type=="editm")||(type=="webview"))) return;
 #endif
     widget->resize(w,h);
     widget->setMinimumSize(w,h);

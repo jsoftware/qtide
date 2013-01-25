@@ -21,6 +21,7 @@
 #include "radiobutton.h"
 #include "static.h"
 #include "table.h"
+#include "webview.h"
 #include "menus.h"
 
 extern int jedo(char*);
@@ -101,6 +102,8 @@ bool Form::addchild(string n,string c,string p)
     child=(Child *) new Static(n,"staticbox " + p,this);
   else if (c=="table")
     child=(Child *) new Table(n,p,this);
+  else if (c=="webview")
+    child=(Child *) new Webview(n,p,this);
   else
 // TODO
   {
