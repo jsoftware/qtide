@@ -1,3 +1,5 @@
+#include <QPainter>
+#include <QtGui/qmatrix4x4.h>
 
 #include "isigraph.h"
 #include "isigraph2.h"
@@ -29,11 +31,11 @@ Isigraph2::Isigraph2(Child *c)
 void Isigraph2::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event);
-  qDebug() << "isigraph2 paintEvent";
+//  qDebug() << "isigraph2 paintEvent";
   if (!painter) return;
   if (!painter->isActive()) return;
 
-  qDebug() << "isigraph2 paintEvent start";
+//  qDebug() << "isigraph2 paintEvent start";
   epaint=true;
   if (!nopaint) {
 //    qDebug() << "isigraph2 paintEvent call J start";
@@ -52,15 +54,15 @@ void Isigraph2::paintEvent(QPaintEvent *event)
 
   painter->begin(pixmap);
   epaint=false;
-  qDebug() << "isigraph2 paintEvent exit";
+//  qDebug() << "isigraph2 paintEvent exit";
 }
 
 // ---------------------------------------------------------------------
 void Isigraph2::resizeEvent ( QResizeEvent *event )
 {
-  qDebug() << "isigraph2 resizeEvent isVisible " + QString::number(isVisible());
+//  qDebug() << "isigraph2 resizeEvent isVisible " + QString::number(isVisible());
   if ((event->size()) == (event->oldSize())) return;
-  qDebug() << "isigraph2 resizeEvent new size " + QString::number(event->size().width()) + " " + QString::number(event->size().height());
+//  qDebug() << "isigraph2 resizeEvent new size " + QString::number(event->size().width()) + " " + QString::number(event->size().height());
   if (painter) {
     if (painter->isActive()) painter->end();
     delete painter;
@@ -78,11 +80,11 @@ void Isigraph2::resizeEvent ( QResizeEvent *event )
   active=true;
   glclear2 (pchild);
   if (initialdisplay) {
-    qDebug() << "isigraph2 resizeEvent initial display";
+//    qDebug() << "isigraph2 resizeEvent initial display";
     initialdisplay=false;
     setGeometry(0,0,event->size().width(),event->size().height());
   }
-  qDebug() << "isigraph2 resizeEvent exit";
+//  qDebug() << "isigraph2 resizeEvent exit";
 }
 
 // ---------------------------------------------------------------------
@@ -220,7 +222,10 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
   char sysmodifiers[20];
   sprintf (sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
   char sysdata[20];
-  sprintf (sysdata , "%d", event->key());
+  QString keyt = event->text();
+  if (keyt.size())
+    sprintf (sysdata , "%s", keyt.toUtf8().constData());
+  else sprintf (sysdata , "%s", QString(QChar(event->key())).toUtf8().constData());
 
   pchild->event=string("char");
   pchild->sysmodifiers=string(sysmodifiers);
@@ -232,10 +237,10 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
 // ---------------------------------------------------------------------
 Isigraph2::~Isigraph2()
 {
-  qDebug() << "isigraph2 deleted";
+//  qDebug() << "isigraph2 deleted";
 
   if (pchild==(Child *)isigraph) {
     isigraph=0;
-    qDebug() << "isigraph=0";
+//    qDebug() << "isigraph=0";
   }
 }

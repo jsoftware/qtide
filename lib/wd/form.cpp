@@ -18,6 +18,8 @@
 #include "isigraph.h"
 #include "isigraph2.h"
 #include "listbox.h"
+#include "opengl.h"
+#include "opengl2.h"
 #include "radiobutton.h"
 #include "static.h"
 #include "table.h"
@@ -88,6 +90,8 @@ bool Form::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,"edit " + p,this);
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,this);
+  else if (c=="opengl")
+    child=(Child *) new Opengl(n,p,this);
   else if (c=="groupbox")
     child=(Child *) new Static(n,"groupbox " + p,this);
   else if (c=="listbox")
@@ -274,7 +278,8 @@ void Form::showit()
 void Form::signalevent(Child *c)
 {
   string loc = locale;
-  if (closed || !shown) return;
+  if (closed) return;
+//  if (closed || !shown) return;
   evtform=this;
   evtchild=c;
   if (c) {
@@ -282,7 +287,7 @@ void Form::signalevent(Child *c)
     sysmodifiers=c->sysmodifiers;
     sysdata=c->sysdata;
     loc = (""!=c->locale)?c->locale:locale;
-//  qDebug() << "signalevent child " + s2q(c->id) + " " + s2q(c->event);
+//    qDebug() << "signalevent child " + s2q(c->id) + " " + s2q(c->event);
   } else {
   }
   string s="(i.0 0)\"_ wdhandler_" + loc + "_$0";

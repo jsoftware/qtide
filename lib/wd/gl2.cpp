@@ -143,9 +143,9 @@ int glqtextmetrics(int *tm)
 // ---------------------------------------------------------------------
 int glqwh(int *wh)
 {
-  if (!isigraph) return 1;
-  *wh = ((Isigraph2 *)isigraph->widget)->width();
-  *(wh+1) = ((Isigraph2 *)isigraph->widget)->height();
+  if (!(wh && isigraph && isigraph->widget)) return 1;
+  wh[0] = ((Isigraph2 *)isigraph->widget)->width();
+  wh[1] = ((Isigraph2 *)isigraph->widget)->height();
   return 0;
 }
 

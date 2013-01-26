@@ -13,6 +13,7 @@ MOC_DIR = build
 
 win32:CONFIG += dll console
 QT += webkit
+QT += opengl
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
@@ -32,7 +33,7 @@ HEADERS += \
  high/high.h high/highj.h \
  wd/bitmap.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h wd/checkbox.h \
  wd/combobox.h wd/dummy.h wd/edit.h wd/editm.h wd/font.h wd/form.h wd/gl2.h \
- wd/isigraph.h wd/isigraph2.h \
+ wd/isigraph.h wd/isigraph2.h wd/opengl.h wd/opengl2.h \
  wd/listbox.h wd/radiobutton.h wd/static.h wd/table.h wd/webview.h \
  wd/menus.h wd/wd.h
 
@@ -52,7 +53,7 @@ SOURCES += \
  high/highj.cpp \
  wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp wd/checkbox.cpp \
  wd/combobox.cpp wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/font.cpp wd/form.cpp wd/gl2.cpp \
- wd/isigraph.cpp wd/isigraph2.cpp \
+ wd/isigraph.cpp wd/isigraph2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/listbox.cpp wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/webview.cpp \
  wd/menus.cpp wd/wd.cpp
 
@@ -63,6 +64,7 @@ RESOURCES += lib.qrc
 win32:LIBS += -shared
 unix:LIBS += -ldl
 android:LIBS += -ldl
+android:LIBS += -lGLESv2
 
 win32:QMAKE_LFLAGS += -static-libgcc
 
