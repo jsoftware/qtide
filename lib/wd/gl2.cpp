@@ -3,6 +3,9 @@
 #include <string.h>
 #include <math.h>
 
+#define _USE_MATH_DEFINES // for C++ DM 130130
+#include <cmath> // for M_PI  DM 130130
+
 #ifndef Max
 #define Max(a, b) ((a) < (b) ? (b) : (a))
 #endif
@@ -38,8 +41,9 @@ qtarcisi (const int *y, const int *y2, int *ang)
   int xc = *y + 0.5 * *(y + 2);
   int yc = *(y + 1) + 0.5 * *(y + 3);
 // 0 is 3-o'clock, and counter-clockwise is positive, so that no need to adjust angle
-  int alpha = atan2 (*(y2 + 1) - yc, *(y2) - xc) * 16 * 180 / M_PI;          // ant2 (ya - yc),(xa - xc)
-  int beta = atan2 (*(y2 + 3) - yc, *(y2 + 2) - xc) * 16 * 180 / M_PI;       // ant2 (yz - yc),(xz - xc)
+// cast to float to disambiguate DM 130130
+  int alpha = atan2 ((float)*(y2 + 1) - yc, (float)*(y2) - xc) * 16 * 180 / M_PI;          // ant2 (ya - yc),(xa - xc)
+  int beta = atan2 ((float)*(y2 + 3) - yc, (float)*(y2 + 2) - xc) * 16 * 180 / M_PI;       // ant2 (yz - yc),(xz - xc)
 // y downward is positive
   alpha= -alpha;
   beta= -beta;
@@ -412,7 +416,7 @@ int gllines (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[c];
+  QPoint pt[1000]; // change c->1000.  Needs constant exp.  Will need more. DM 130130
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolyline (pt,c);
   return 0;
@@ -505,7 +509,7 @@ int glpolygon (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[c];
+  QPoint pt[1000]; // change c->1000.  Needs constant exp.  Will need more. DM 130130
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolygon (pt,c);
   return 0;

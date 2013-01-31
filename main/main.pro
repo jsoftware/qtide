@@ -6,7 +6,7 @@ android:{
           TARGET = ../bin/qtide
           DEFINES += "ANDROID" }
 else {    TEMPLATE = app
-          TARGET = ../bin/jqt }
+          TARGET = ../bin/jqtx }
 DEPENDPATH += .
 INCLUDEPATH += .
 

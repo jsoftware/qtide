@@ -108,7 +108,7 @@ void var_runs(QString s);
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
 #else
 extern "C" {
-  int state_run(int argc, char *argv[],QApplication *app,QString lib);
+__declspec( dllexport )  int state_run(int argc, char *argv[],QApplication *app,QString lib);
 }
 #endif
 

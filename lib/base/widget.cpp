@@ -12,7 +12,7 @@ QPushButton *makebutton(QString id)
 }
 
 // ---------------------------------------------------------------------
-QCheckBox *makecheckbox(QString text, const QString id="")
+QCheckBox *makecheckbox(QString text, QString id="") // Remove const DM 130130
 {
   QCheckBox *p;
   p=new QCheckBox(text);
