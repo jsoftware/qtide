@@ -27,4 +27,6 @@ qrc_*
 *.so
 *.so.*
 *.pro.user
+*.sublime-project
+*.sublime-workspace
 *.tgz

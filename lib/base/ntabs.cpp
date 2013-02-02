@@ -337,7 +337,6 @@ void Ntabs::tabsettext(QString s)
   if (n<0) return;
   Nedit *e=(Nedit *)widget(n);
   e->setPlainText(s);
-  setmodified(n,s==e->text);
-  e->text=s;
+  setmodified(n,s!=e->text);
   pnote->siderefresh();
 }

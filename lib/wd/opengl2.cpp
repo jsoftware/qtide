@@ -93,10 +93,10 @@ void Opengl2::paintGL()
 
   epaint=true;
   if (!nopaint) {
-  jpaint=true;
-  pchild->event="paint";
-  pchild->pform->signalevent(pchild);
-  jpaint=false;
+    jpaint=true;
+    pchild->event="paint";
+    pchild->pform->signalevent(pchild);
+    jpaint=false;
   }
 
   painter.endNativePainting();
@@ -339,8 +339,8 @@ int gl_sel2(char *g)
 int gl_qwh(int *wh)
 {
   if (!(wh && opengl && opengl->widget)) return 1;
-    wh[0] = ((Opengl2 *)opengl->widget)->width();
-    wh[1] = ((Opengl2 *)opengl->widget)->height();
+  wh[0] = ((Opengl2 *)opengl->widget)->width();
+  wh[1] = ((Opengl2 *)opengl->widget)->height();
   return 0;
 }
 

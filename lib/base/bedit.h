@@ -24,9 +24,11 @@ public:
   QString readselected();
   QString readselect_line(int *pos, int *len);
   QString readselect_text(int *pos, int *len);
+  int readcurpos();
   int readtop();
   void selectline(int p);
   void setselect(int p, int len);
+  void setcurpos(int pos);
   void settop(int p);
 
   bool visible;

@@ -13,11 +13,13 @@ class Jcon : public QObject
 public:
   Jcon() {};
   void cmd(QString s);
+  QString cmdr(QString s);
   QString dora(QString s);
   int exec();
   void immex(QString s);
   int init(int argc, char* argv[]);
   void quit();
+  void set(QString s,QString t);
 
   QStringList Sentence;
 

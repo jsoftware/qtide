@@ -180,6 +180,33 @@ void Note::on_runallAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::prettyprint()
+{
+  int n,pos,top;
+  QString r;
+  savecurrent();
+  Nedit *e=editPage();
+  jcon->cmd("require PPScript_jp_");
+  jcon->set("arg_jpp_",editText());
+  r=jcon->cmdr("pplintqt_jpp_ arg_jpp_");
+  if (r.isEmpty()) return;
+  if (r.at(0)=='0') {
+    pos=e->readcurpos();
+    top=e->readtop();
+    r.remove(0,1);
+    settext(r);
+    e->settop(top);
+    e->setcurpos(pos);
+   }
+  else {
+    r.remove(0,1);
+    n=r.indexOf(' ');
+    selectline(r.mid(0,n).toInt());
+    info ("Format Script",r.mid(n+1));
+  }
+}
+
+// ---------------------------------------------------------------------
 void Note::projectenable()
 {
   bool b=project.Id.size()>0;
@@ -222,6 +249,12 @@ void Note::scriptenable()
   foreach(QAction *s, menuBar->ScriptEnable)
   s->setEnabled(b);
 
+}
+
+// ---------------------------------------------------------------------
+void Note::selectline(int linenum)
+{
+  editPage()->selectline(linenum);
 }
 
 // ---------------------------------------------------------------------
