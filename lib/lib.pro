@@ -61,10 +61,10 @@ android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 
-win32:LIBS += /DLL
+win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 android:LIBS += -ldl
 android:LIBS += -lGLESv2
 
-win32:QMAKE_LFLAGS += 
+win32-msvc*:QMAKE_LFLAGS += 
 
