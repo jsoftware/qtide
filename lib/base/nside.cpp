@@ -206,6 +206,8 @@ int Nside::defs_doselect(QString name,int pos,QString txt)
 // ---------------------------------------------------------------------
 void Nside::defs_refresh()
 {
+
+  if (note->editPage()) {
   QString s=note->editPage()->toPlainText();
   dext=cfext(note->editPage()->fname);
   QStringList n=globalassigns(s,dext);
@@ -215,6 +217,7 @@ void Nside::defs_refresh()
   dsl=n;
   drow=-1;
   dpos=0;
+  }
 }
 
 // ---------------------------------------------------------------------
