@@ -113,6 +113,9 @@ void Opengl2::resizeGL ( int width, int height )
 //  qDebug() << "opengl2 resizeGL";
 //  qDebug() << "opengl2 resizeGL new size " + QString::number(width) + " " + QString::number(height);
 
+  Q_UNUSED(width);
+  Q_UNUSED(height);
+
   pchild->event="resize";
   pchild->pform->signalevent(pchild);
 

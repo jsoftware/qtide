@@ -428,7 +428,9 @@ void wdset()
 {
   string n=cmd.getid();
   string p=cmd.getparms();
-  switch (setchild(n)) {
+  int type=setchild(n);
+  cc->signal=false;
+  switch (type) {
   case 1 :
     cc->set(p);
     break;
@@ -436,6 +438,7 @@ void wdset()
     cc->setp(n,p);
     break;
   }
+  cc->signal=true;
 }
 
 // ---------------------------------------------------------------------
@@ -462,8 +465,11 @@ void wdsetp()
   string v=cmd.getparms();
   if (p=="stretch")
     form->setstretch(cc,v);
-  else
+  else {
+    cc->signal=false;
     cc->setp(p,v);
+    cc->signal=true;
+  }
 }
 
 // ---------------------------------------------------------------------

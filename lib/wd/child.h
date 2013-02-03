@@ -35,6 +35,7 @@ public:
   string parms;
   string type;
   string locale;  // for isigraph
+  bool signal;
   string sysdata;
   string sysmodifiers;
   Form *pform;

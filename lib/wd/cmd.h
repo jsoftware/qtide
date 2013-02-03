@@ -13,7 +13,6 @@ public:
   void init(char *);
   bool more();
 
-// TODO
   string getcmdstr();
   string remws(string s);
 

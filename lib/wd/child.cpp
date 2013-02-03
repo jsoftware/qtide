@@ -12,6 +12,7 @@ Child::Child(string s, string p, Form *f)
   parms=p;
   pform=f;
   locale="";
+  signal=true;
 }
 
 // ---------------------------------------------------------------------

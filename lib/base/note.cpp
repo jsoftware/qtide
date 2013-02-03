@@ -197,8 +197,7 @@ void Note::prettyprint()
     settext(r);
     e->settop(top);
     e->setcurpos(pos);
-   }
-  else {
+  } else {
     r.remove(0,1);
     n=r.indexOf(' ');
     selectline(r.mid(0,n).toInt());
