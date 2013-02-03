@@ -412,9 +412,10 @@ int gllines (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[c];
+  QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolyline (pt,c);
+  delete [] pt;
   return 0;
 }
 
@@ -505,9 +506,10 @@ int glpolygon (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[c];
+  QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolygon (pt,c);
+  delete [] pt;
   return 0;
 }
 
