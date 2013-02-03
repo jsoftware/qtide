@@ -38,8 +38,8 @@ qtarcisi (const int *y, const int *y2, int *ang)
   int xc = *y + 0.5 * *(y + 2);
   int yc = *(y + 1) + 0.5 * *(y + 3);
 // 0 is 3-o'clock, and counter-clockwise is positive, so that no need to adjust angle
-  int alpha = atan2 (*(y2 + 1) - yc, *(y2) - xc) * 16 * 180 / M_PI;          // ant2 (ya - yc),(xa - xc)
-  int beta = atan2 (*(y2 + 3) - yc, *(y2 + 2) - xc) * 16 * 180 / M_PI;       // ant2 (yz - yc),(xz - xc)
+  int alpha = atan2 ((float)*(y2 + 1) - yc, (float)*(y2) - xc) * 16 * 180 / M_PI;          // ant2 (ya - yc),(xa - xc)
+  int beta = atan2 ((float)*(y2 + 3) - yc, (float)*(y2 + 2) - xc) * 16 * 180 / M_PI;       // ant2 (yz - yc),(xz - xc)
 // y downward is positive
   alpha= -alpha;
   beta= -beta;
