@@ -145,7 +145,7 @@ int glqtextmetrics(int *tm)
 }
 
 // ---------------------------------------------------------------------
-int glqwh(int *wh)
+int Dllexport glqwh(int *wh)
 {
   if (!(wh && isigraph && isigraph->widget)) return 1;
   wh[0] = ((Isigraph2 *)isigraph->widget)->width();
@@ -416,9 +416,10 @@ int gllines (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[1000]; // change c->1000.  Needs constant exp.  Will need more. DM 130130
+  QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolyline (pt,c);
+  delete [] pt;
   return 0;
 }
 
@@ -509,9 +510,10 @@ int glpolygon (const int *p, int len)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
-  QPoint pt[1000]; // change c->1000.  Needs constant exp.  Will need more. DM 130130
+  QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
   ((Isigraph2 *)isigraph->widget)->painter->drawPolygon (pt,c);
+  delete [] pt;
   return 0;
 }
 
@@ -526,7 +528,7 @@ int glrect (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glrgb (const int *p)
+int Dllexport glrgb (const int *p)
 {
   if (!isigraph) return 1;
   ((Isigraph2 *)isigraph->widget)->color = QColor (*(p), *(p + 1), *(p + 2));

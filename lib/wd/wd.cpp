@@ -13,7 +13,8 @@
 #include "../base/term.h"
 
 extern "C" {
-  int wd(char *s,char *&r,int &len,char *loc);
+  Dllexport int wd(char *s,char *&r,int &len,char *loc);
+
 // TODO
   int wdisparent(char *s);
   void *wdgetparentid(void *s);
@@ -103,7 +104,7 @@ void *wdgetparentid(void *s)
 }
 
 // ---------------------------------------------------------------------
-int wd(char *s,char *&res,int &len,char *loc)
+Dllexport int wd(char *s,char *&res,int &len,char *loc)
 {
   rc=0;
   result.clear();

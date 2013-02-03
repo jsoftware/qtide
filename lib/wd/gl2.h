@@ -2,47 +2,47 @@
 #define GL2_H
 
 extern "C" {
-  int glarc (const int *p);
-  int glbrush ();
-  int glbrushnull ();
-  int glcapture (int a);
-  int glcaret (const int *p);
-  int glclear ();
-  int glclip (const int *);
-  int glclipreset ();
-  int glcmds (const int *, const int);
-  int glcursor (int a);
-  int glellipse (const int *p);
-  int glfont (char *face);
-  int glfont2 (const int *p, int len);
-  int glfontangle (int a);
-  int gllines (const int *p, int len);
-  int glnodblbuf (int a);
-  int glpaint ();
-  int glpaintx ();
-  int glpen (const int *p);
-  int glpie (const int *p);
-  int glpixel (const int *p);
-  int glpixels (const int *, int);
-  int glpixelsx (const int *p);
-  int glpolygon (const int *p, int len);
-  int glqextent (char *s,int *wh);
-  int glqextentw (char *s,int *w);
-  int glqhandles (void **p);
-  int glqpixels (const int *p,int *pix);
-  int glqtextmetrics (int *tm);
-  int glqwh (int *wh);
-  int glrect (const int *p);
-  int glrgb (const int *p);
-  int glsel (void *g);
-  int glsel2 (char *id);
-  int gltext (char *ys);
-  int gltextcolor ();
-  int gltextxy (const int *p);
-  int glwindoworg (const int *p);
+  int Dllexport glarc (const int *p);
+  int Dllexport glbrush ();
+  int Dllexport glbrushnull ();
+  int Dllexport glcapture (int a);
+  int Dllexport glcaret (const int *p);
+  int Dllexport glclear ();
+  int Dllexport glclip (const int *);
+  int Dllexport glclipreset ();
+  int Dllexport glcmds (const int *, const int);
+  int Dllexport glcursor (int a);
+  int Dllexport glellipse (const int *p);
+  int Dllexport glfont (char *face);
+  int Dllexport glfont2 (const int *p, int len);
+  int Dllexport glfontangle (int a);
+  int Dllexport gllines (const int *p, int len);
+  int Dllexport glnodblbuf (int a);
+  int Dllexport glpaint ();
+  int Dllexport glpaintx ();
+  int Dllexport glpen (const int *p);
+  int Dllexport glpie (const int *p);
+  int Dllexport glpixel (const int *p);
+  int Dllexport glpixels (const int *, int);
+  int Dllexport glpixelsx (const int *p);
+  int Dllexport glpolygon (const int *p, int len);
+  int Dllexport glqextent (char *s,int *wh);
+  int Dllexport glqextentw (char *s,int *w);
+  int Dllexport glqhandles (void **p);
+  int Dllexport glqpixels (const int *p,int *pix);
+  int Dllexport glqtextmetrics (int *tm);
+  int Dllexport glqwh (int *wh);
+  int Dllexport glrect (const int *p);
+  int Dllexport glrgb (const int *p);
+  int Dllexport glsel (void *g);
+  int Dllexport glsel2 (char *id);
+  int Dllexport gltext (char *ys);
+  int Dllexport gltextcolor ();
+  int Dllexport gltextxy (const int *p);
+  int Dllexport glwindoworg (const int *p);
 
-  int glclear2 (void *);
-  int glsetlocale (char *loc);
+  int Dllexport glclear2 (void *);
+  int Dllexport glsetlocale (char *loc);
 }
 
 #endif
