@@ -60,7 +60,6 @@ string RadioButton::state()
 // ---------------------------------------------------------------------
 void RadioButton::toggled(bool checked)
 {
-  if (signal==false) return;
   if (grouped && checked==false) return;
   event="button";
   pform->signalevent(this);

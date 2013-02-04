@@ -109,7 +109,9 @@ int wd(char *s,char *&res,int &len,char *loc)
   result.clear();
   tlocale=loc;
   cmd.init(s);
+  noevents(1);
   wd1();
+  noevents(0);
   len=result.size();
   res=(char *)result.c_str();
   return rc;
@@ -429,7 +431,6 @@ void wdset()
   string n=cmd.getid();
   string p=cmd.getparms();
   int type=setchild(n);
-  cc->signal=false;
   switch (type) {
   case 1 :
     cc->set(p);
@@ -438,7 +439,6 @@ void wdset()
     cc->setp(n,p);
     break;
   }
-  cc->signal=true;
 }
 
 // ---------------------------------------------------------------------
@@ -466,9 +466,7 @@ void wdsetp()
   if (p=="stretch")
     form->setstretch(cc,v);
   else {
-    cc->signal=false;
     cc->setp(p,v);
-    cc->signal=true;
   }
 }
 
