@@ -26,7 +26,7 @@
 using namespace std;
 
 extern "C" {
-  void dirmatch(char *s,char *t);
+  Dllexport void dirmatch(char *s,char *t);
 }
 
 // ---------------------------------------------------------------------

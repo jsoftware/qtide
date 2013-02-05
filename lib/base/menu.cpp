@@ -820,7 +820,7 @@ void Note::on_runtestAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_scriptformatAct_triggered()
 {
-  notyet("script format");
+  note->prettyprint();
 }
 
 // ---------------------------------------------------------------------
@@ -1376,4 +1376,3 @@ void Term::on_viewsidebarAct_triggered()
 {
   notyet("viewsidebarAct");
 }
-

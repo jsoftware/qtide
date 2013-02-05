@@ -54,7 +54,7 @@ qtarcisi (const int *y, const int *y2, int *ang)
 }
 
 // ---------------------------------------------------------------------
-int glpaint()
+Dllexport int glpaint()
 {
   qDebug() << "glpaint";
   if (!isigraph) return 1;
@@ -70,7 +70,7 @@ int glpaint()
 }
 
 // ---------------------------------------------------------------------
-int glpaintx()
+Dllexport int glpaintx()
 {
   qDebug() << "glpaintx";
   if (!isigraph) return 1;
@@ -81,7 +81,7 @@ int glpaintx()
 }
 
 // ---------------------------------------------------------------------
-int glqhandles(void **p)
+Dllexport int glqhandles(void **p)
 {
   if (!isigraph) return 1;
   *p = (void *)isigraph;
@@ -101,7 +101,7 @@ int glqextent(char *s,int *wh)
 }
 
 // ---------------------------------------------------------------------
-int glqextentw(char *s,int *w)
+Dllexport int glqextentw(char *s,int *w)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -115,7 +115,7 @@ int glqextentw(char *s,int *w)
 }
 
 // ---------------------------------------------------------------------
-int glqpixels(const int *p, int *pix)
+Dllexport int glqpixels(const int *p, int *pix)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -145,7 +145,7 @@ int glqtextmetrics(int *tm)
 }
 
 // ---------------------------------------------------------------------
-int Dllexport glqwh(int *wh)
+Dllexport int glqwh(int *wh)
 {
   if (!(wh && isigraph && isigraph->widget)) return 1;
   wh[0] = ((Isigraph2 *)isigraph->widget)->width();
@@ -154,7 +154,7 @@ int Dllexport glqwh(int *wh)
 }
 
 // ---------------------------------------------------------------------
-int glsel(void *g)
+Dllexport int glsel(void *g)
 {
   if (!g) return 1;
   Form *f;
@@ -173,7 +173,7 @@ int glsel(void *g)
 }
 
 // ---------------------------------------------------------------------
-int glsel2(char *g)
+Dllexport int glsel2(char *g)
 {
   Child *cc;
   if (!g) return 1;
@@ -207,7 +207,7 @@ int glsel2(char *g)
 }
 
 // ---------------------------------------------------------------------
-int glarc (const int *p)
+Dllexport int glarc (const int *p)
 {
   int dy[2];
   if (!isigraph) return 1;
@@ -219,7 +219,7 @@ int glarc (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glbrush ()
+Dllexport int glbrush ()
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -232,7 +232,7 @@ int glbrush ()
 }
 
 // ---------------------------------------------------------------------
-int glbrushnull ()
+Dllexport int glbrushnull ()
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -243,14 +243,14 @@ int glbrushnull ()
 }
 
 // ---------------------------------------------------------------------
-int glcapture (int a)
+Dllexport int glcapture (int a)
 {
   Q_UNUSED(a);
   return 0;
 }
 
 // ---------------------------------------------------------------------
-int glcaret (const int *p)
+Dllexport int glcaret (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -268,7 +268,7 @@ int glcaret (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glclear2 (void *p)
+Dllexport int glclear2 (void *p)
 {
   Isigraph *isigraph = (Isigraph *) p;
   if (!isigraph) return 1;
@@ -305,14 +305,14 @@ int glclear2 (void *p)
 }
 
 // ---------------------------------------------------------------------
-int glclear ()
+Dllexport int glclear ()
 {
   if (!isigraph) return 1;
   return glclear2 (isigraph);
 }
 
 // ---------------------------------------------------------------------
-int glclip (const int *p)
+Dllexport int glclip (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -324,7 +324,7 @@ int glclip (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glclipreset ()
+Dllexport int glclipreset ()
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -337,14 +337,14 @@ int glclipreset ()
 }
 
 // ---------------------------------------------------------------------
-int glcursor (int a)
+Dllexport int glcursor (int a)
 {
   Q_UNUSED(a);
   return 0;
 }
 
 // ---------------------------------------------------------------------
-int glellipse (const int *p)
+Dllexport int glellipse (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -374,7 +374,7 @@ static int glfont0 (Isigraph *isigraph, char *s)
 }
 
 // ---------------------------------------------------------------------
-int glfont (char *s)
+Dllexport int glfont (char *s)
 {
   return glfont0 (isigraph, s);
 }
@@ -399,7 +399,7 @@ int glfont2 (const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int glfontangle (int a)
+Dllexport int glfontangle (int a)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -409,7 +409,7 @@ int glfontangle (int a)
 }
 
 // ---------------------------------------------------------------------
-int gllines (const int *p, int len)
+Dllexport int gllines (const int *p, int len)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -424,7 +424,7 @@ int gllines (const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int glnodblbuf (int a)
+Dllexport int glnodblbuf (int a)
 {
 // TODO
   Q_UNUSED(a);
@@ -432,7 +432,7 @@ int glnodblbuf (int a)
 }
 
 // ---------------------------------------------------------------------
-int glpen (const int *p)
+Dllexport int glpen (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -444,7 +444,7 @@ int glpen (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glpie (const int *p)
+Dllexport int glpie (const int *p)
 {
   int dy[2];
   if (!isigraph) return 1;
@@ -456,7 +456,7 @@ int glpie (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glpixel (const int *p)
+Dllexport int glpixel (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -479,7 +479,7 @@ static int glpixels2(int x,int y,int w,int h,const uchar *p)
 }
 
 // ---------------------------------------------------------------------
-int glpixels(const int *p, int len)
+Dllexport int glpixels(const int *p, int len)
 {
   Q_UNUSED(len);
   if (!isigraph) return 1;
@@ -489,7 +489,7 @@ int glpixels(const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int glpixelsx (const int *p)
+Dllexport int glpixelsx (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -503,7 +503,7 @@ int glpixelsx (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glpolygon (const int *p, int len)
+Dllexport int glpolygon (const int *p, int len)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -518,7 +518,7 @@ int glpolygon (const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int glrect (const int *p)
+Dllexport int glrect (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -528,7 +528,7 @@ int glrect (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int Dllexport glrgb (const int *p)
+Dllexport int Dllexport glrgb (const int *p)
 {
   if (!isigraph) return 1;
   ((Isigraph2 *)isigraph->widget)->color = QColor (*(p), *(p + 1), *(p + 2));
@@ -545,7 +545,7 @@ static int gltext_i (const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int gltext (char *ys)
+Dllexport int gltext (char *ys)
 {
   Q_UNUSED(ys);
   if (!isigraph) return 1;
@@ -566,7 +566,7 @@ int gltext (char *ys)
 }
 
 // ---------------------------------------------------------------------
-int gltextcolor ()
+Dllexport int gltextcolor ()
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -578,7 +578,7 @@ int gltextcolor ()
 }
 
 // ---------------------------------------------------------------------
-int gltextxy (const int *p)
+Dllexport int gltextxy (const int *p)
 {
   if (!isigraph) return 1;
   ((Isigraph2 *)isigraph->widget)->textx = *(p);
@@ -587,7 +587,7 @@ int gltextxy (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glwindoworg (const int *p)
+Dllexport int glwindoworg (const int *p)
 {
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
@@ -599,7 +599,7 @@ int glwindoworg (const int *p)
 }
 
 // ---------------------------------------------------------------------
-int
+Dllexport int
 glcmds (const int *ptr, int ncnt)
 {
   int cnt;
@@ -733,7 +733,7 @@ glcmds (const int *ptr, int ncnt)
 }
 
 // ---------------------------------------------------------------------
-int glsetlocale (char *c)
+Dllexport int glsetlocale (char *c)
 {
   if (!isigraph) return 1;
   isigraph->locale = string(c);

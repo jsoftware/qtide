@@ -50,6 +50,12 @@ void Jcon::cmd(QString s)
 }
 
 // ---------------------------------------------------------------------
+QString Jcon::cmdr(QString s)
+{
+  return dors(s);
+}
+
+// ---------------------------------------------------------------------
 int Jcon::exec()
 {
   QString s;
@@ -122,6 +128,12 @@ void Jcon::input()
 }
 
 // ---------------------------------------------------------------------
+void Jcon::set(QString s, QString t)
+{
+  sets(s,t);
+}
+
+// ---------------------------------------------------------------------
 void Jcon::quit()
 {
   quitx=true;
@@ -148,6 +160,8 @@ char* _stdcall Jinputcb(char* p)
 
  QString s;
 
+  qDebug() << "Jinputcb";
+  qDebug() << "]" << p << "[";
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;

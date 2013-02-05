@@ -10,25 +10,25 @@
 extern Opengl *opengl;
 
 extern "C" {
-  int gl_sel(void *g);
-  int gl_sel2(char *g);
-  int gl_qwh(int *wh);
-  int gl_paint();
-  int gl_paintx();
-  int gl_qhandles(void **p);
-  int gl_setlocale (char *c);
-  void *glsl(char *vsrc, char *fsrc);
-  int glsl_bind(void *p);
-  void glsl_release(void *p);
-  void glsl_setUniformValue_f(void *p, int matrixUniform, GLfloat data);
-  void glsl_setUniformValue_f22(void *p, int matrixUniform, GLfloat *data);
-  void glsl_setUniformValue_f33(void *p, int matrixUniform, GLfloat *data);
-  void glsl_setUniformValue_f44(void *p, int matrixUniform, GLfloat *data);
-  void glsl_enableAttributeArray(void *p, int attr);
-  void glsl_disableAttributeArray(void *p, int attr);
-  void glsl_setAttributeArray(void *p, int attr, GLfloat *data, int tuple, int strike);
-  int glsl_attributeLocation(void *p, char *name);
-  int glsl_uniformLocation(void *p, char *name);
+  Dllexport int gl_sel(void *g);
+  Dllexport int gl_sel2(char *g);
+  Dllexport int gl_qwh(int *wh);
+  Dllexport int gl_paint();
+  Dllexport int gl_paintx();
+  Dllexport int gl_qhandles(void **p);
+  Dllexport int gl_setlocale (char *c);
+  Dllexport void *glsl(char *vsrc, char *fsrc);
+  Dllexport int glsl_bind(void *p);
+  Dllexport void glsl_release(void *p);
+  Dllexport void glsl_setUniformValue_f(void *p, int matrixUniform, GLfloat data);
+  Dllexport void glsl_setUniformValue_f22(void *p, int matrixUniform, GLfloat *data);
+  Dllexport void glsl_setUniformValue_f33(void *p, int matrixUniform, GLfloat *data);
+  Dllexport void glsl_setUniformValue_f44(void *p, int matrixUniform, GLfloat *data);
+  Dllexport void glsl_enableAttributeArray(void *p, int attr);
+  Dllexport void glsl_disableAttributeArray(void *p, int attr);
+  Dllexport void glsl_setAttributeArray(void *p, int attr, GLfloat *data, int tuple, int strike);
+  Dllexport int glsl_attributeLocation(void *p, char *name);
+  Dllexport int glsl_uniformLocation(void *p, char *name);
 }
 
 // ---------------------------------------------------------------------
@@ -46,8 +46,8 @@ Opengl2::Opengl2(Child *c)
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 
-  setAttribute(Qt::WA_PaintOnScreen);
-  setAttribute(Qt::WA_NoSystemBackground);
+//  setAttribute(Qt::WA_PaintOnScreen);
+//  setAttribute(Qt::WA_NoSystemBackground);
   setAutoBufferSwap (false);
 
   timer = new QTimer();
@@ -112,6 +112,9 @@ void Opengl2::resizeGL ( int width, int height )
 {
 //  qDebug() << "opengl2 resizeGL";
 //  qDebug() << "opengl2 resizeGL new size " + QString::number(width) + " " + QString::number(height);
+
+  Q_UNUSED(width);
+  Q_UNUSED(height);
 
   pchild->event="resize";
   pchild->pform->signalevent(pchild);

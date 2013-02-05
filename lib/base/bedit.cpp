@@ -83,9 +83,9 @@ void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 }
 
 // ---------------------------------------------------------------------
-int Bedit::readtop()
+int Bedit::readcurpos()
 {
-  return qMax(0,firstVisibleBlock().blockNumber());
+  return textCursor().position();
 }
 
 // ---------------------------------------------------------------------
@@ -130,6 +130,12 @@ QString Bedit::readselect_text(int *pos, int *len)
 }
 
 // ---------------------------------------------------------------------
+int Bedit::readtop()
+{
+  return qMax(0,firstVisibleBlock().blockNumber());
+}
+
+// ---------------------------------------------------------------------
 void Bedit::resizeEvent(QResizeEvent *e)
 {
   QPlainTextEdit::resizeEvent(e);
@@ -149,6 +155,14 @@ void Bedit::selectline(int p)
     c.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,d);
   c.movePosition(QTextCursor::StartOfBlock,QTextCursor::MoveAnchor);
   c.movePosition(QTextCursor::EndOfBlock,QTextCursor::KeepAnchor);
+  setTextCursor(c);
+}
+
+// ---------------------------------------------------------------------
+void Bedit::setcurpos(int pos)
+{
+  QTextCursor c=textCursor();
+  c.setPosition(pos);
   setTextCursor(c);
 }
 

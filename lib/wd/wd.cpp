@@ -16,8 +16,8 @@ extern "C" {
   Dllexport int wd(char *s,char *&r,int &len,char *loc);
 
 // TODO
-  int wdisparent(char *s);
-  void *wdgetparentid(void *s);
+  Dllexport int wdisparent(char *s);
+  Dllexport void *wdgetparentid(void *s);
 }
 
 extern int jedo(char *);
@@ -110,7 +110,9 @@ Dllexport int wd(char *s,char *&res,int &len,char *loc)
   result.clear();
   tlocale=loc;
   cmd.init(s);
+  noevents(1);
   wd1();
+  noevents(0);
   len=result.size();
   res=(char *)result.c_str();
   return rc;
@@ -429,7 +431,8 @@ void wdset()
 {
   string n=cmd.getid();
   string p=cmd.getparms();
-  switch (setchild(n)) {
+  int type=setchild(n);
+  switch (type) {
   case 1 :
     cc->set(p);
     break;
@@ -463,8 +466,9 @@ void wdsetp()
   string v=cmd.getparms();
   if (p=="stretch")
     form->setstretch(cc,v);
-  else
+  else {
     cc->setp(p,v);
+  }
 }
 
 // ---------------------------------------------------------------------

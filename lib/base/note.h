@@ -30,6 +30,7 @@ public:
   void gitenable(bool b);
   void loadscript(QString s,bool show);
   void newtemp();
+  void prettyprint();
   void projectenable();
   void projectopen(bool);
   void projectsave();
@@ -183,6 +184,7 @@ private:
 
   void runline(bool advance, bool show);
   void runlines(bool all);
+  void selectline(int linenum);
   void select_line(QString s);
   QStringList select_line1(QStringList mid,QString s,int *pos, int *len);
   void select_text(QString s);

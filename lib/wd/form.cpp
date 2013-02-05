@@ -277,9 +277,8 @@ void Form::showit()
 // ---------------------------------------------------------------------
 void Form::signalevent(Child *c)
 {
+  if (NoEvents || closed) return;
   string loc = locale;
-  if (closed) return;
-//  if (closed || !shown) return;
   evtform=this;
   evtchild=c;
   if (c) {

@@ -12,6 +12,7 @@ OBJECTS_DIR = build
 MOC_DIR = build
 
 win32:CONFIG += dll console
+win32:DEFINES += _CRT_SECURE_NO_WARNINGS
 QT += webkit
 QT += opengl
 CONFIG+= release
