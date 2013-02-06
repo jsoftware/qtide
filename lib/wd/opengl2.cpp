@@ -17,18 +17,6 @@ extern "C" {
   int gl_paintx();
   int gl_qhandles(void **p);
   int gl_setlocale (char *c);
-  void *glsl(char *vsrc, char *fsrc);
-  int glsl_bind(void *p);
-  void glsl_release(void *p);
-  void glsl_setUniformValue_f(void *p, int matrixUniform, GLfloat data);
-  void glsl_setUniformValue_f22(void *p, int matrixUniform, GLfloat *data);
-  void glsl_setUniformValue_f33(void *p, int matrixUniform, GLfloat *data);
-  void glsl_setUniformValue_f44(void *p, int matrixUniform, GLfloat *data);
-  void glsl_enableAttributeArray(void *p, int attr);
-  void glsl_disableAttributeArray(void *p, int attr);
-  void glsl_setAttributeArray(void *p, int attr, GLfloat *data, int tuple, int strike);
-  int glsl_attributeLocation(void *p, char *name);
-  int glsl_uniformLocation(void *p, char *name);
 }
 
 // ---------------------------------------------------------------------
@@ -274,8 +262,6 @@ Opengl2::~Opengl2()
 //  qDebug() << "opengl2 deleted";
 
   delete timer;
-  for (int i=0; i<programs.size(); i++)
-    delete programs.at(i);
   if (pchild==(Child *)opengl) {
     opengl=0;
 //    qDebug() << "opengl=0";
@@ -390,99 +376,3 @@ int gl_setlocale (char *c)
   return 0;
 }
 
-// ---------------------------------------------------------------------
-void *glsl(char *vsrc, char *fsrc)
-{
-  QGLShaderProgram *program = new QGLShaderProgram;
-  if (vsrc && strlen(vsrc)) {
-    QGLShader *vshader = new QGLShader(QGLShader::Vertex, ((Opengl2 *)opengl->widget));
-    vshader->compileSourceCode(vsrc);
-    program->addShader(vshader);
-  }
-  if (fsrc && strlen(fsrc)) {
-    QGLShader *fshader = new QGLShader(QGLShader::Fragment, ((Opengl2 *)opengl->widget));
-    fshader->compileSourceCode(fsrc);
-    program->addShader(fshader);
-  }
-  program->link();
-  ((Opengl2 *)opengl->widget)->programs.append(program);
-  return (void *)program;
-}
-
-// ---------------------------------------------------------------------
-int glsl_bind(void *p)
-{
-  return ((QGLShaderProgram *)p)->bind();
-}
-
-// ---------------------------------------------------------------------
-void glsl_release(void *p)
-{
-  ((QGLShaderProgram *)p)->release();
-}
-
-// ---------------------------------------------------------------------
-void glsl_setUniformValue_f(void *p, int matrixUniform, GLfloat data)
-{
-  ((QGLShaderProgram *)p)->setUniformValue(matrixUniform, data);
-}
-
-// ---------------------------------------------------------------------
-void glsl_setUniformValue_f22(void *p, int matrixUniform, GLfloat *data)
-{
-  GLfloat t[2][2];
-  for (int i=0; i<2; i++)
-    for (int j=0; j<2; j++)
-      t[i][j] = data[2*j+i];
-  ((QGLShaderProgram *)p)->setUniformValue(matrixUniform, t);
-}
-
-// ---------------------------------------------------------------------
-void glsl_setUniformValue_f33(void *p, int matrixUniform, GLfloat *data)
-{
-  GLfloat t[3][3];
-  for (int i=0; i<3; i++)
-    for (int j=0; j<3; j++)
-      t[i][j] = data[3*j+i];
-  ((QGLShaderProgram *)p)->setUniformValue(matrixUniform, t);
-}
-
-// ---------------------------------------------------------------------
-void glsl_setUniformValue_f44(void *p, int matrixUniform, GLfloat *data)
-{
-  GLfloat t[4][4];
-  for (int i=0; i<4; i++)
-    for (int j=0; j<4; j++)
-      t[i][j] = data[4*j+i];
-  ((QGLShaderProgram *)p)->setUniformValue(matrixUniform, t);
-}
-
-// ---------------------------------------------------------------------
-void glsl_enableAttributeArray(void *p, int attr)
-{
-  ((QGLShaderProgram *)p)->enableAttributeArray(attr);
-}
-
-// ---------------------------------------------------------------------
-void glsl_disableAttributeArray(void *p, int attr)
-{
-  ((QGLShaderProgram *)p)->disableAttributeArray(attr);
-}
-
-// ---------------------------------------------------------------------
-void glsl_setAttributeArray(void *p, int attr, GLfloat *data, int tuple, int strike)
-{
-  ((QGLShaderProgram *)p)->setAttributeArray(attr, data, tuple, strike);
-}
-
-// ---------------------------------------------------------------------
-int glsl_attributeLocation(void *p, char *name)
-{
-  return ((QGLShaderProgram *)p)->attributeLocation(name);
-}
-
-// ---------------------------------------------------------------------
-int glsl_uniformLocation(void *p, char *name)
-{
-  return ((QGLShaderProgram *)p)->uniformLocation(name);
-}

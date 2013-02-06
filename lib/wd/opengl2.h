@@ -2,10 +2,6 @@
 #define OPENGL2_H
 
 #include <QGLWidget>
-#include <QtGui/qvector3d.h>
-#include <QtGui/qmatrix4x4.h>
-#include <QtOpenGL/qglshaderprogram.h>
-#include <QVector>
 #include <QEvent>
 #include <QTimer>
 
@@ -29,7 +25,6 @@ public:
   bool epaint;
   bool jpaint;
   bool nopaint;
-  QList<QGLShaderProgram *>programs;
 
 public slots:
 
