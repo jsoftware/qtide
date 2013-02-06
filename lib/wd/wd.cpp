@@ -109,9 +109,9 @@ int wd(char *s,char *&res,int &len,char *loc)
   result.clear();
   tlocale=loc;
   cmd.init(s);
-  noevents(1);
+//  noevents(1);
   wd1();
-  noevents(0);
+//  noevents(0);
   len=result.size();
   res=(char *)result.c_str();
   return rc;
@@ -148,11 +148,15 @@ void wd1()
       wdrem();
     else if (c=="reset")
       wdreset();
-    else if (c=="set")
+    else if (c=="set") {
+      noevents(1);
       wdset();
-    else if (c=="setp")
+      noevents(0);
+    } else if (c=="setp") {
+      noevents(1);
       wdsetp();
-    else if (c=="setenable")
+      noevents(0);
+    } else if (c=="setenable")
       wdsetenable();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
