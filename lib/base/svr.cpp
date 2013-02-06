@@ -27,6 +27,7 @@
 using namespace std;
 
 C* _stdcall Jinput(C*);
+C* _stdcall Jinputcb(C*);
 void _stdcall Joutput(J jt, int type, C* s);
 
 static bool active=true;
@@ -78,7 +79,7 @@ int Jcon::exec()
 int Jcon::init(int argc, char* argv[])
 {
 
-  void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,0,(void*)SMCON};
+  void* callbacks[] = {(void*)Joutput,0,(void*)Jinputcb,0,(void*)SMCON};
   int type;
 
   evloop=new QEventLoop();
@@ -142,6 +143,20 @@ void Jcon::set(QString s, QString t)
 // ---------------------------------------------------------------------
 //J calls for input (debug suspension and 1!:1[1) and we call for input
 char* _stdcall Jinput(char* p)
+{
+  tedit->prompt=c2q(p);
+  tedit->setprompt();
+  inputready=false;
+  inputs=0;
+  logged=true;
+  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+
+  return (char*) 0;
+}
+
+// ---------------------------------------------------------------------
+//J calls for input (debug suspension and 1!:1[1) and we call for input
+char* _stdcall Jinputcb(char* p)
 {
   tedit->prompt=c2q(p);
   tedit->setprompt();
