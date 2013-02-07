@@ -2,14 +2,14 @@
 #include <QImage>
 #include <QBuffer>
 
-#include "..\base\base.h"
+#include "../base/base.h"
 #include "bitmap.h"
 
 static QImage tmpimage;
 static QByteArray tmpba;
 
 // ---------------------------------------------------------------------
-Dllexport void *wdreadimg(char *s, int *wh)
+void *wdreadimg(char *s, int *wh)
 {
   if (!tmpimage.isNull()) tmpimage=QImage();
   if (!s || !wh || !strlen(s)) return 0;
@@ -24,7 +24,7 @@ Dllexport void *wdreadimg(char *s, int *wh)
 }
 
 // ---------------------------------------------------------------------
-Dllexport void *wdgetimg(uchar *data, int len, int *wh)
+void *wdgetimg(uchar *data, int len, int *wh)
 {
   if (!tmpimage.isNull()) tmpimage=QImage();
   if (!data || !wh || (len<=0)) return 0;
@@ -53,7 +53,7 @@ XPM    X11 Pixmap                             Read/write
 */
 
 // ---------------------------------------------------------------------
-Dllexport int wdwriteimg(uchar *p, int *wh, char *f, char *format, int quality)
+int wdwriteimg(uchar *p, int *wh, char *f, char *format, int quality)
 {
   if (!p||!wh||!f) return 0;
   if (wh[0]==0||wh[1]==0) return 0;
@@ -64,7 +64,7 @@ Dllexport int wdwriteimg(uchar *p, int *wh, char *f, char *format, int quality)
 }
 
 // ---------------------------------------------------------------------
-Dllexport void *wdputimg(uchar *p, int *wh, int *len, char *format, int quality)
+void *wdputimg(uchar *p, int *wh, int *len, char *format, int quality)
 {
   if (!tmpba.isNull()) tmpba=QByteArray();
   if (!p || !wh || !len) return 0;

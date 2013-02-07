@@ -221,7 +221,7 @@ void state_reinit() {}
 #ifdef ANDROID
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *vm,void *qtapp,void *qtact)
 #else
-Dllexport int state_run(int argc, char *argv[],QApplication *app,QString lib)
+int state_run(int argc, char *argv[],QApplication *app,QString lib)
 #endif
 {
 #ifdef ANDROID

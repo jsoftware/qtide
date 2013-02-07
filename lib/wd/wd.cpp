@@ -104,7 +104,7 @@ void *wdgetparentid(void *s)
 }
 
 // ---------------------------------------------------------------------
-Dllexport int wd(char *s,char *&res,int &len,char *loc)
+int wd(char *s,char *&res,int &len,char *loc)
 {
   rc=0;
   result.clear();

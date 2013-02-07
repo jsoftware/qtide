@@ -2,13 +2,13 @@
 #include <QApplication>
 #include <QClipboard>
 
-#include "..\base\base.h"
+#include "../base/base.h"
 #include "clipboard.h"
 
 static QByteArray tmpba;
 
 // ---------------------------------------------------------------------
-Dllexport int wdclipwrite(char *s)
+int wdclipwrite(char *s)
 {
   QClipboard *clipboard = QApplication::clipboard();
   if (!s || !strlen(s)) clipboard->clear();
@@ -17,7 +17,7 @@ Dllexport int wdclipwrite(char *s)
 }
 
 // ---------------------------------------------------------------------
-Dllexport void *wdclipread(int *len)
+void *wdclipread(int *len)
 {
   if (!len) {
     tmpba.clear();
