@@ -208,15 +208,15 @@ void Nside::defs_refresh()
 {
 
   if (note->editPage()) {
-  QString s=note->editPage()->toPlainText();
-  dext=cfext(note->editPage()->fname);
-  QStringList n=globalassigns(s,dext);
-  if (n==dsl) return;
-  dlw->clear();
-  dlw->addItems(n);
-  dsl=n;
-  drow=-1;
-  dpos=0;
+    QString s=note->editPage()->toPlainText();
+    dext=cfext(note->editPage()->fname);
+    QStringList n=globalassigns(s,dext);
+    if (n==dsl) return;
+    dlw->clear();
+    dlw->addItems(n);
+    dsl=n;
+    drow=-1;
+    dpos=0;
   }
 }
 

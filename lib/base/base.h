@@ -8,7 +8,7 @@
 #ifdef _MSC_VER
 #define Dllexport   __declspec( dllexport )
 #else
-#define Dllexport   
+#define Dllexport
 #endif
 
 #endif
