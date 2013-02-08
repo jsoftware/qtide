@@ -5,9 +5,6 @@
 #include <QEvent>
 #include <QPainter>
 
-// #include <GLES2/gl2.h>
-// #include <GLES2/gl2ext.h>
-
 #include "font.h"
 #include "child.h"
 
@@ -33,7 +30,6 @@ public:
   QColor textcolor;
 
   QPainter *painter;
-  QPainterPath path;
 
   QPixmap *pixmap;
 

@@ -293,7 +293,8 @@ int gl_clear2 (void *p)
 
   ((Opengl2 *)opengl->widget)->painter->setPen(QPen (QColor (255, 255, 255),1));
   ((Opengl2 *)opengl->widget)->painter->setBrush(QBrush (QColor (255, 255, 255)));
-  ((Opengl2 *)opengl->widget)->painter->drawRect (0, 0, ((Opengl2 *)opengl->widget)->width(), ((Opengl2 *)opengl->widget)->height());
+// prevent erase opengl
+//  ((Opengl2 *)opengl->widget)->painter->drawRect (0, 0, ((Opengl2 *)opengl->widget)->width(), ((Opengl2 *)opengl->widget)->height());
 
   ((Opengl2 *)opengl->widget)->pen = QPen (((Opengl2 *)opengl->widget)->color, 1); // TODO in user space
   ((Opengl2 *)opengl->widget)->textpen = QPen (((Opengl2 *)opengl->widget)->pen);
@@ -556,7 +557,7 @@ int gl_text (char *ys)
   if (!((Opengl2 *)opengl->widget)->painter) return 1;
   if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
   ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->textpen);
-  if (0 == ((Opengl2 *)opengl->widget)->font->angle)
+  if ((!((Opengl2 *)opengl->widget)->font) || (0 == ((Opengl2 *)opengl->widget)->font->angle))
     ((Opengl2 *)opengl->widget)->painter->drawText ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty, QString::fromUtf8 (ys));
   else {
     ((Opengl2 *)opengl->widget)->painter->save ();
