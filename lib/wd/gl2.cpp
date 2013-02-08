@@ -3,6 +3,11 @@
 #include <string.h>
 #include <math.h>
 
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES // for C++ DM 130130
+#include <cmath> // for M_PI  DM 130130
+#endif
+
 #ifndef Max
 #define Max(a, b) ((a) < (b) ? (b) : (a))
 #endif

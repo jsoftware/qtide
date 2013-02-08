@@ -7,7 +7,10 @@
 #include <QTimer>
 
 #include <csignal>
+#ifdef _WIN32
+#else
 #include <unistd.h>
+#endif
 
 #include "base.h"
 #include "base.h"
