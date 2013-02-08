@@ -20,7 +20,7 @@ Opengl::Opengl(string s, string p, Form *f) : Child(s,p,f)
 void Opengl::setform()
 {
   if (!widget) return;
-  if (!(event=="paint" || event=="resize" || event=="initialize" || event=="print")) form=pform;
+  if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) form=pform;
   opengl=this;
 }
 

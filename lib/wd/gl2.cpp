@@ -157,15 +157,17 @@ int glsel(void *g)
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
+      if ((((Child *)g)->type == "isigraph") && ((Child *)g)->widget) {
 //      qDebug() << "glsel ok "+ s2q(f->child->id);
-      isigraph = (Isigraph *) g;
-      f->child = (Child *) g;
-      form = f;
-      return 0;
+        isigraph = (Isigraph *) g;
+        f->child = (Child *) g;
+        form = f;
+        return 0;
+      }
     }
   }
   qDebug() << "glsel failed " + QString::number((SI)g);
-  return 0;
+  return 1;
 }
 
 // ---------------------------------------------------------------------
@@ -185,21 +187,23 @@ int glsel2(char *g)
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (f->ischild(n)) {
+      if ((n->type == "isigraph") && n->widget) {
 //      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-      isigraph = (Isigraph *) n;
-      f->child = (Child *) n;
-      form=f;
-      return 0;
-    } else if ((cc=f->id2child(g))) {
+        isigraph = (Isigraph *) n;
+        f->child = (Child *) n;
+        form=f;
+        return 0;
+      } else if ((cc=f->id2child(g))) {
 //      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-      isigraph = (Isigraph *) cc;
-      f->child = (Child *) cc;
-      form=f;
-      return 0;
+        isigraph = (Isigraph *) cc;
+        f->child = (Child *) cc;
+        form=f;
+        return 0;
+      }
     }
   }
   qDebug() << "glsel2 failed "+ s2q(string(g));
-  return 0;
+  return 1;
 }
 
 // ---------------------------------------------------------------------

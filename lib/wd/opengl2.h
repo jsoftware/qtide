@@ -3,11 +3,12 @@
 
 #include <QGLWidget>
 #include <QEvent>
-#include <QTimer>
+#include <QPainter>
 
 // #include <GLES2/gl2.h>
 // #include <GLES2/gl2ext.h>
 
+#include "font.h"
 #include "child.h"
 
 class Form;
@@ -22,9 +23,29 @@ public:
   ~Opengl2();
   void paintgl ();
 
-  bool epaint;
-  bool jpaint;
+  QBrush brush;
+  Font *font;
+  QPen pen;
+  QPen textpen;
+  QColor color;
+  QColor pencolor;
+  QColor brushcolor;
+  QColor textcolor;
+
+  QPainter *painter;
+  QPainterPath path;
+
+  QPixmap *pixmap;
+
+  bool antialiased;
+  bool transformed;
+  bool active;
   bool nopaint;
+  bool jpaint;
+  bool epaint;
+
+  int brushnull;
+  int clipped, textx, texty, orgx, orgy;
 
 public slots:
 
@@ -43,15 +64,12 @@ protected:
   void mouseWheelEvent(QWheelEvent *event);
 
 private slots:
-  void timeout();
 
 private:
   void buttonEvent (QEvent::Type type, QMouseEvent *event);
   void wheelEvent (QWheelEvent *event);
   Child *pchild;
   bool initialized;
-
-  QTimer *timer;
 
 };
 

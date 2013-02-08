@@ -9,24 +9,17 @@
 
 extern Opengl *opengl;
 
-extern "C" {
-  Dllexport int gl_sel(void *g);
-  Dllexport int gl_sel2(char *g);
-  Dllexport int gl_qwh(int *wh);
-  Dllexport int gl_paint();
-  Dllexport int gl_paintx();
-  Dllexport int gl_qhandles(void **p);
-  Dllexport int gl_setlocale (char *c);
-}
-
 // ---------------------------------------------------------------------
 Opengl2::Opengl2(Child *c)
 {
   pchild = c;
+  active=false;
   nopaint=false;
   jpaint=false;
   epaint=false;
   initialized = false;
+  pixmap=0;
+  painter=0;
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 //  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -34,18 +27,9 @@ Opengl2::Opengl2(Child *c)
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 
-//  setAttribute(Qt::WA_PaintOnScreen);
-//  setAttribute(Qt::WA_NoSystemBackground);
+  setAttribute(Qt::WA_PaintOnScreen);
+  setAttribute(Qt::WA_NoSystemBackground);
   setAutoBufferSwap (false);
-
-  timer = new QTimer();
-  connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-}
-
-// ---------------------------------------------------------------------
-void Opengl2::timeout()
-{
-
 }
 
 // ---------------------------------------------------------------------
@@ -88,6 +72,18 @@ void Opengl2::paintGL()
   }
 
   painter.endNativePainting();
+
+  if (!nopaint) {
+    this->active=true;
+    this->painter=&painter;
+    jpaint=true;
+    pchild->event="paintz";
+    pchild->pform->signalevent(pchild);
+    jpaint=false;
+    this->painter=0;
+    this->active=false;
+  }
+
   painter.end();
   swapBuffers();
   epaint=false;
@@ -261,118 +257,9 @@ Opengl2::~Opengl2()
 {
 //  qDebug() << "opengl2 deleted";
 
-  delete timer;
   if (pchild==(Child *)opengl) {
     opengl=0;
 //    qDebug() << "opengl=0";
   }
-}
-
-// ---------------------------------------------------------------------
-int gl_sel(void *g)
-{
-  if (!g) return 1;
-  Form *f;
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild((Child *)g)) {
-//      qDebug() << "gl_sel ok "+ s2q(f->child->id);
-      opengl = (Opengl *) g;
-      ((Opengl2 *)opengl->widget)->makeCurrent();
-      f->child = (Child *) g;
-      form = f;
-      return 0;
-    }
-  }
-  qDebug() << "gl_sel failed " + QString::number((SI)g);
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_sel2(char *g)
-{
-  Child *cc;
-  if (!g) return 1;
-  string p=string(g);
-  if (p.size()==0) {
-//    qDebug() << "gl_sel2 empty ok";
-    return 0;
-  }
-  Form *f;
-  string q=p;
-  if (q[0]=='_') q[0]='-';
-  Child *n=(Child *) strtol(q.c_str(),NULL,0);
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild(n)) {
-//      qDebug() << "gl_sel2 ok "+ s2q(f->child->id);
-      opengl = (Opengl *) n;
-      ((Opengl2 *)opengl->widget)->makeCurrent();
-      f->child = (Child *) n;
-      form=f;
-      return 0;
-    } else if ((cc=f->id2child(g))) {
-//      qDebug() << "gl_sel2 ok "+ s2q(f->child->id);
-      opengl = (Opengl *) cc;
-      ((Opengl2 *)opengl->widget)->makeCurrent();
-      f->child = (Child *) cc;
-      form=f;
-      return 0;
-    }
-  }
-  qDebug() << "gl_sel2 failed "+ s2q(string(g));
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_qwh(int *wh)
-{
-  if (!(wh && opengl && opengl->widget)) return 1;
-  wh[0] = ((Opengl2 *)opengl->widget)->width();
-  wh[1] = ((Opengl2 *)opengl->widget)->height();
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_paint()
-{
-  return 0;
-//  qDebug() << "gl_paint";
-  if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)) return 1;
-  if (((Opengl2 *)opengl->widget)->epaint) return 1;
-//  qDebug() << "gl_paint begin";
-  ((Opengl2 *)opengl->widget)->nopaint=true;
-  ((Opengl2 *)opengl->widget)->paintgl();
-  ((Opengl2 *)opengl->widget)->nopaint=false;
-//  qDebug() << "gl_paint end";
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_paintx()
-{
-//  qDebug() << "gl_paintx";
-  if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)) return 1;
-  if (((Opengl2 *)opengl->widget)->jpaint) return 1;
-  ((Opengl2 *)opengl->widget)->updateGL();
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_qhandles(void **p)
-{
-  if (!opengl) return 1;
-  *p = (void *)opengl;
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_setlocale (char *c)
-{
-  if (!opengl) return 1;
-  opengl->locale = string(c);
-  return 0;
 }
 

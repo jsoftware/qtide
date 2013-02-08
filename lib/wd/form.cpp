@@ -66,6 +66,12 @@ Form::~Form()
         delete ((Isigraph2*)n->widget)->painter;
         ((Isigraph2*)n->widget)->painter=0;
       }
+    } else if ("opengl"==(n=children.at(i))->type) {
+      if (((Opengl2*)n->widget)->painter) {
+        ((Opengl2*)n->widget)->painter->end();
+        delete ((Opengl2*)n->widget)->painter;
+        ((Opengl2*)n->widget)->painter=0;
+      }
     }
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
