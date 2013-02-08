@@ -5,7 +5,7 @@
 #include "isigraph2.h"
 #include "form.h"
 
-extern "C" int glclear2(void *);
+extern "C" Dllexport int glclear2(void *);
 extern Isigraph *isigraph;
 
 // ---------------------------------------------------------------------

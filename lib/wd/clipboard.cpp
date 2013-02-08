@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QClipboard>
 
+#include "../base/base.h"
 #include "clipboard.h"
 
 static QByteArray tmpba;

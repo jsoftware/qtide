@@ -2,8 +2,8 @@
 #define CLIPBOARD_H
 
 extern "C" {
-  int wdclipwrite(char * s);
-  void *wdclipread(int *len);
+  Dllexport int wdclipwrite(char * s);
+  Dllexport void *wdclipread(int *len);
 }
 
 #endif

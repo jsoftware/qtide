@@ -2,6 +2,7 @@
 #include <QImage>
 #include <QBuffer>
 
+#include "../base/base.h"
 #include "bitmap.h"
 
 static QImage tmpimage;

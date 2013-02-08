@@ -13,10 +13,11 @@
 #include "../base/term.h"
 
 extern "C" {
-  int wd(char *s,char *&r,int &len,char *loc);
+  Dllexport int wd(char *s,char *&r,int &len,char *loc);
+
 // TODO
-  int wdisparent(char *s);
-  void *wdgetparentid(void *s);
+  Dllexport int wdisparent(char *s);
+  Dllexport void *wdgetparentid(void *s);
 }
 
 extern int jedo(char *);

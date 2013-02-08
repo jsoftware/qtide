@@ -6,6 +6,8 @@
 #include <QFont>
 #include <QMap>
 
+#include "base.h"
+
 class Config : public QObject
 {
 
@@ -108,7 +110,7 @@ void var_runs(QString s);
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
 #else
 extern "C" {
-  int state_run(int argc, char *argv[],QApplication *app,QString lib);
+Dllexport int state_run(int argc, char *argv[],QApplication *app,QString lib);
 }
 #endif
 

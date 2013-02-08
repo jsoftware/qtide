@@ -10,13 +10,13 @@
 extern Opengl *opengl;
 
 extern "C" {
-  int gl_sel(void *g);
-  int gl_sel2(char *g);
-  int gl_qwh(int *wh);
-  int gl_paint();
-  int gl_paintx();
-  int gl_qhandles(void **p);
-  int gl_setlocale (char *c);
+  Dllexport int gl_sel(void *g);
+  Dllexport int gl_sel2(char *g);
+  Dllexport int gl_qwh(int *wh);
+  Dllexport int gl_paint();
+  Dllexport int gl_paintx();
+  Dllexport int gl_qhandles(void **p);
+  Dllexport int gl_setlocale (char *c);
 }
 
 // ---------------------------------------------------------------------
