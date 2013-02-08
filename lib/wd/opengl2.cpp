@@ -6,6 +6,7 @@
 #include "opengl.h"
 #include "opengl2.h"
 #include "form.h"
+#include "pane.h"
 
 extern Opengl *opengl;
 

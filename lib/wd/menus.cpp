@@ -6,9 +6,10 @@
 #include "menus.h"
 #include "cmd.h"
 #include "form.h"
+#include "pane.h"
 
 // ---------------------------------------------------------------------
-Menus::Menus(string s, string p, Form *f) : Child(s,p,f)
+Menus::Menus(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="menu";
   curMenu=0;

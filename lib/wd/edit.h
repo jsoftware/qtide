@@ -4,6 +4,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Edit : public Child
@@ -11,7 +12,7 @@ class Edit : public Child
   Q_OBJECT
 
 public:
-  Edit(string s, string p, Form *f);
+  Edit(string n, string s, Form *f, Pane *p);
   void set(string p);
   string state();
 

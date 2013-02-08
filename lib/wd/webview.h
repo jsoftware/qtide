@@ -5,6 +5,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Webview : public Child
@@ -12,7 +13,7 @@ class Webview : public Child
   Q_OBJECT
 
 public:
-  Webview(string s, string p, Form *f);
+  Webview(string n, string s, Form *f, Pane *p);
   void set(string p);
   void setp(string p,string v);
 

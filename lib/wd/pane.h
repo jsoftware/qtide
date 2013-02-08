@@ -1,35 +1,32 @@
-#ifndef FORM_H
-#define FORM_H
+#ifndef PANE_H
+#define PANE_H
 
 #include <QWidget>
 #include <QCloseEvent>
 
-class QMenuBar;
-class QSignalMapper;
 class QBoxLayout;
+class QButtonGroup;
+class QSignalMapper;
+class QSplitter;
 
 class Child;
-class Menus;
-class Pane;
+class Form;
 
 #include "wd.h"
 #include "form.h"
-#include "pane.h"
 #include "font.h"
 #include "child.h"
 
-class Form : public QWidget
+class Pane : public QWidget
 {
   Q_OBJECT
 
 public:
-  Form(string id, string p, string locale, QWidget *parent = 0);
-  ~Form();
-  void addchild(Child *);
-  Pane *addpane(int n);
-  void addmenu();
-  void closepane();
-
+  Pane(int n,Form *f);
+  bool addchild(string n,string c,string p);
+  void addlayout(QBoxLayout *b, int n);
+  void bin(string c);
+  void fini();
   string hschild();
   string hsform();
   bool nochild();
@@ -38,12 +35,11 @@ public:
   void setpn(string p);
   void showit();
   void signalevent(Child *c);
+  bool split(string c, string s);
+  void splitend();
   string state(int evt);
 
-  bool closed;
-  bool shown;
-
-  string id;
+  Form *pform;
   string event;
   string lasttype;
   string locale;
@@ -52,33 +48,21 @@ public:
   int sizew;
   int sizeh;
 
-  Font *fontdef;
+  QButtonGroup *buttongroup;
   Child *child;
   Child *evtchild;
-  QList<Child *>children;
-  Menus *menubar;
-  Pane *pane;
-  QList<Pane *>panes;
   QSignalMapper *signalMapper;
   QBoxLayout *layout;
+  QList<QBoxLayout *>layouts;
+  QList<int>layoutx;
+  QSplitter *qsplit;
+  QList<int> qsplitp;
 
 public slots:
   void buttonClicked(QWidget *);
   Child *id2child(string n);
   bool ischild(Child* n);
 
-protected:
-  void closeEvent(QCloseEvent *);
-  void keyPressEvent(QKeyEvent *e);
-
-private:
-  bool closeok;
-  bool escclose;
-
 };
-
-extern Form *form;
-extern Form *evtform;
-extern QList<Form *>Forms;
 
 #endif

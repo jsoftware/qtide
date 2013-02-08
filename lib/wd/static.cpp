@@ -4,19 +4,20 @@
 #include "wd.h"
 #include "static.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-Static::Static(string s, string p, Form *f) : Child(s,p,f)
+Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="static";
   QLabel *w=new QLabel;
   widget=(QWidget *) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   w->setWordWrap(true);
-  if (p.substr(0,9)!="staticbox")
-    w->setText(qs);
+  if (s.substr(0,9)!="staticbox")
+    w->setText(qn);
 }
 
 // ---------------------------------------------------------------------

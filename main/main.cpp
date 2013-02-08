@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     return state_run(argc, argv, &app, lib->fileName());
 
   qDebug() << lib->fileName();
-  qDebug() << "could not resolve: state_run";
+  qDebug() << "could not resolve: state_run:\n\n" + lib->errorString();
 
   return -1;
 #endif

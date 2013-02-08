@@ -4,13 +4,15 @@
 #include "child.h"
 
 class QMenu;
+class Form;
+class Pane;
 
 class Menus : public Child
 {
   Q_OBJECT
 
 public:
-  Menus(string s, string p, Form *f);
+  Menus(string n, string s, Form *f, Pane *p);
   QAction *makeact(string id, string parms);
 
   int menu(string c, string p);

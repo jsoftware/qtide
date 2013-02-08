@@ -1,4 +1,4 @@
-bin/jqt
+bin/jqt*
 bin/lib*
 lib/build
 jwd/libjwd*

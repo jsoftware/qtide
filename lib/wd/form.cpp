@@ -8,23 +8,11 @@
 #include "font.h"
 #include "cmd.h"
 #include "form.h"
+#include "pane.h"
 #include "child.h"
-#include "button.h"
-#include "checkbox.h"
-#include "combobox.h"
-#include "dummy.h"
-#include "edit.h"
-#include "editm.h"
-#include "isigraph.h"
 #include "isigraph2.h"
-#include "listbox.h"
-#include "opengl.h"
-#include "opengl2.h"
-#include "radiobutton.h"
-#include "static.h"
-#include "table.h"
-#include "webview.h"
 #include "menus.h"
+#include "opengl2.h"
 
 extern int jedo(char*);
 
@@ -33,23 +21,23 @@ Form::Form(string s, string p, string loc, QWidget *parent)
 {
   Q_UNUSED(parent);
   id=s;
-  buttongroup=0;
   child=0;
   evtchild=0;
-  layout=0;
   locale=loc;
   fontdef=0;
   menubar=0;
   closed=false;
   shown=false;
   sizew=sizeh=0;
-
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   closeok=m.contains("closeok");
   escclose=m.contains("escclose");
   setpn(s);
-
+  layout=new QVBoxLayout;
+  layout->setContentsMargins(0,0,0,0);
+  layout->setSpacing(0);
+  addpane(0);
   signalMapper=new QSignalMapper(this);
   connect(signalMapper,SIGNAL(mapped(QWidget *)),
           this,SLOT(buttonClicked(QWidget *)));
@@ -79,114 +67,32 @@ Form::~Form()
 }
 
 // ---------------------------------------------------------------------
-// return if child valid
-bool Form::addchild(string n,string c,string p)
+void Form::addchild(Child *c)
 {
-  if (!layout)
-    bin("v");
-  if (c=="button")
-    child=(Child *) new Button(n,p,this);
-  else if (c=="checkbox")
-    child=(Child *) new CheckBox(n,p,this);
-  else if (c=="edit")
-    child=(Child *) new Edit(n,p,this);
-  else if (c=="editm")
-    child=(Child *) new Editm(n,p,this);
-  else if (c=="combobox")
-    child=(Child *) new ComboBox(n,"edit " + p,this);
-  else if (c=="combolist")
-    child=(Child *) new ComboBox(n,p,this);
-  else if (c=="opengl")
-    child=(Child *) new Opengl(n,p,this);
-  else if (c=="groupbox")
-    child=(Child *) new Static(n,"groupbox " + p,this);
-  else if (c=="listbox")
-    child=(Child *) new ListBox(n,p,this);
-  else if (c=="isigraph")
-    child=(Child *) new Isigraph(n,p,this);
-  else if (c=="radiobutton")
-    child=(Child *) new RadioButton(n,p,this);
-  else if (c=="static")
-    child=(Child *) new Static(n,p,this);
-  else if (c=="staticbox")
-    child=(Child *) new Static(n,"staticbox " + p,this);
-  else if (c=="table")
-    child=(Child *) new Table(n,p,this);
-  else if (c=="webview")
-    child=(Child *) new Webview(n,p,this);
-  else
-// TODO
-  {
-    qDebug () << s2q("child not supported " + c);
-    sizew=sizeh=0;
-    return true;
-  }
-//    return false;
-  if (fontdef) child->setfont(fontdef->font);
-  if (child->widget) {
-    layout->addWidget(child->widget);
-    child->setminwh(sizew,sizeh);
-    lasttype=child->type;
-  }
-  sizew=sizeh=0;
-  children.append(child);
-  return true;
-}
-
-// ---------------------------------------------------------------------
-void Form::addlayout(QBoxLayout *b, int n)
-{
-  layout=b;
-  layouts.append(b);
-  layoutx.append(n);
+  child=c;
+  children.append(c);
 }
 
 // ---------------------------------------------------------------------
 void Form::addmenu()
 {
-  if (!layout)
-    bin("v");
-  menubar= new Menus("menu","",this);
-  child=(Child *) menubar;
-  form->layout->insertWidget(0,child->widget);
-  children.append(child);
+  menubar= new Menus("menu","",this,0);
+  addchild((Child *) menubar);
+  layout->insertWidget(0,child->widget);
 }
 
 // ---------------------------------------------------------------------
-void Form::bin(string s)
+Pane *Form::addpane(int n)
 {
-  QChar c;
-  int i,n;
-  QBoxLayout *b;
-  QString m;
-  QStringList p=bsplit(s);
-
-  for (i=0; i<p.size(); i++) {
-    m=p.at(i);
-    c=m[0];
-    n=m.mid(1).toInt();
-    if (c=='h')
-      addlayout(new QHBoxLayout,n);
-    else if (c=='v')
-      addlayout(new QVBoxLayout,n);
-    else if (c=='s')
-      layout->addStretch(n);
-    else if (c=='z' && layouts.size()>1) {
-      b=layout;
-      n=layoutx.last();
-      layouts.removeLast();
-      layoutx.removeLast();
-      layout=layouts.last();
-      layout->addLayout(b,n);
-    }
-  }
+  pane=new Pane(n,this);
+  panes.append(pane);
+  return pane;
 }
 
 // ---------------------------------------------------------------------
 void Form::buttonClicked(QWidget *w)
 {
-  Child *child;
-  child=(Child *) w;
+  Child *child=(Child *) w;
   child->event="button";
   signalevent(child);
 }
@@ -194,20 +100,27 @@ void Form::buttonClicked(QWidget *w)
 // ---------------------------------------------------------------------
 void Form::closeEvent(QCloseEvent *e)
 {
-  qDebug() << "form closeEvent " + s2q(id);
   if (closeok || closed) {
-    qDebug() << "form close by closeok or wd'pclose' " + s2q(id);
     e->accept();
     return;
   }
   e->ignore();
-  qDebug() << "call wd form_close " + s2q(id);
   event="close";
   form=this;
   signalevent(0);
   if (closed) {
     e->accept();
   } else e->ignore();
+}
+
+// ---------------------------------------------------------------------
+// close if not the main pane
+void Form::closepane()
+{
+  if (panes.size()<=1) return;
+  panes.removeLast();
+  pane=panes.last();
+  //layout=pane->layout;
 }
 
 // ---------------------------------------------------------------------
@@ -234,10 +147,11 @@ Child *Form::id2child(string n)
 // ---------------------------------------------------------------------
 bool Form::ischild(Child *n)
 {
-  for (int i=0; i<children.size(); i++)
-    if (n==children.at(i))
-      return true;
-  return false;
+  return children.contains(n);
+  //for (int i=0; i<children.size(); i++)
+  //if (n==children.at(i))
+  //return true;
+  //return false;
 }
 
 
@@ -248,12 +162,6 @@ void Form::keyPressEvent(QKeyEvent *e)
     e->ignore();
     delete this;
   }
-}
-
-// ---------------------------------------------------------------------
-void Form::setstretch(Child *cc, string factor)
-{
-  layout->setStretchFactor(cc->widget,atoi(factor.c_str()));
 }
 
 // ---------------------------------------------------------------------
@@ -273,8 +181,9 @@ void Form::setpn(string p)
 // ---------------------------------------------------------------------
 void Form::showit()
 {
-  while (layouts.size()>1)
-    bin("z");
+  for (int i=panes.size()-1; i>=0; i--)
+    panes.last()->fini();
+  layout->addWidget(pane);
   setLayout(layout);
   show();
   shown=true;
@@ -292,7 +201,6 @@ void Form::signalevent(Child *c)
     sysmodifiers=c->sysmodifiers;
     sysdata=c->sysdata;
     loc = (""!=c->locale)?c->locale:locale;
-//    qDebug() << "signalevent child " + s2q(c->id) + " " + s2q(c->event);
   } else {
   }
   string s="(i.0 0)\"_ wdhandler_" + loc + "_$0";

@@ -9,4 +9,3 @@ using namespace std;
 string remquotes(string s);
 
 #endif
-

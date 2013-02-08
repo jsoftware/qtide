@@ -4,6 +4,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Opengl : public Child
@@ -11,7 +12,7 @@ class Opengl : public Child
   Q_OBJECT
 
 public:
-  Opengl(string s, string p, Form *f);
+  Opengl(string n, string s, Form *f, Pane *p);
   void setp(string p,string v);
   void setform();
 

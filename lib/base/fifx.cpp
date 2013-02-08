@@ -158,7 +158,7 @@ QList<int> Fif::lineends(const QString txt)
 {
   int n,p=0;
   QList<int>r;
-  while(0<(n=txt.indexOf('\n',p))) {
+  while(0<=(n=txt.indexOf('\n',p))) {
     r.append(n);
     p=n+1;
   }

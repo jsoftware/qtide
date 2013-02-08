@@ -4,6 +4,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Table : public Child
@@ -11,7 +12,7 @@ class Table : public Child
   Q_OBJECT
 
 public:
-  Table(string s, string p, Form *f);
+  Table(string n, string s, Form *f, Pane *p);
   void set(string p);
   void setcolnames(string v);
   void setp(string p, string v);

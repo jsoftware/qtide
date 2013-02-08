@@ -4,18 +4,19 @@
 #include "wd.h"
 #include "combobox.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-ComboBox::ComboBox(string s, string p, Form *f) : Child(s,p,f)
+ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
   QComboBox *w=new QComboBox;
   widget=(QWidget*) w;
-  if (p.substr(0,4)=="edit")
+  if (s.substr(0,4)=="edit")
     w->setEditable(true);
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   connect(w,SIGNAL(activated(int)),
           this,SLOT(activated()));
 }
@@ -67,4 +68,3 @@ void ComboBox::setminwh(int w, int h)
     widget->updateGeometry();
   }
 }
-

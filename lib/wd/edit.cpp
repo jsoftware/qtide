@@ -4,16 +4,17 @@
 #include "wd.h"
 #include "edit.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-Edit::Edit(string s, string p, Form *f) : Child(s,p,f)
+Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edit";
   QLineEdit *w=new QLineEdit;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   connect(w,SIGNAL(returnPressed()),
           this,SLOT(returnPressed()));
 }

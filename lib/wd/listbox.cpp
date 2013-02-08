@@ -4,16 +4,18 @@
 #include "wd.h"
 #include "listbox.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-ListBox::ListBox(string s, string p, Form *f) : Child(s,p,f)
+ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
+  qDebug() << "make ListBox";
   type="listbox";
   QListWidget *w=new QListWidget;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   connect(w,SIGNAL(currentRowChanged(int)),
           this,SLOT(currentRowChanged()));
   connect(w,SIGNAL(itemActivated(QListWidgetItem*)),

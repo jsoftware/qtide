@@ -9,6 +9,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Opengl2 : public QGLWidget

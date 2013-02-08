@@ -4,6 +4,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class ListBox : public Child
@@ -11,7 +12,7 @@ class ListBox : public Child
   Q_OBJECT
 
 public:
-  ListBox(string s, string p, Form *f);
+  ListBox(string n, string s, Form *f, Pane *p);
   void set(string p);
   string state();
 

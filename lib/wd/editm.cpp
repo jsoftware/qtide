@@ -5,9 +5,10 @@
 #include "wd.h"
 #include "editm.h"
 #include "form.h"
+#include "pane.h"
 
 // ---------------------------------------------------------------------
-Editm::Editm(string s, string p, Form *f) : Child(s,p,f)
+Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="editm";
   QPlainTextEdit *w=new QPlainTextEdit;

@@ -7,15 +7,15 @@
 
 #include "wd.h"
 
-class QVBoxLayout;
 class Form;
+class Pane;
 
 class Child : public QObject
 {
   Q_OBJECT
 
 public:
-  Child(string n, string p, Form *f);
+  Child(string n, string s, Form *f, Pane *p);
 
   virtual string getsysmodifiers();
   virtual string getsysdata();
@@ -38,10 +38,9 @@ public:
   string sysdata;
   string sysmodifiers;
   Form *pform;
+  Pane *ppane;
   QWidget *widget;
 
 };
 
 #endif
-
-

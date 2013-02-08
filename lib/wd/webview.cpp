@@ -4,16 +4,17 @@
 #include "wd.h"
 #include "webview.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-Webview::Webview(string s, string p, Form *f) : Child(s,p,f)
+Webview::Webview(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="webview";
   QWebView *w=new QWebView;
   widget=(QWidget *) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
 }
 

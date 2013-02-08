@@ -4,6 +4,7 @@
 #include "child.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Dummy : public Child
@@ -11,7 +12,7 @@ class Dummy : public Child
   Q_OBJECT
 
 public:
-  Dummy(string s, string p, Form *f);
+  Dummy(string n, string s, Form *f, Pane *p);
 
 private slots:
 

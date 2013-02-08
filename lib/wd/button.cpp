@@ -5,16 +5,17 @@
 #include "wd.h"
 #include "button.h"
 #include "form.h"
+#include "pane.h"
 
 // ---------------------------------------------------------------------
-Button::Button(string s, string p, Form *f) : Child(s,p,f)
+Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="button";
   QPushButton *w=new QPushButton;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
-  w->setText(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
+  w->setText(qn);
   connect(w,SIGNAL(clicked()),f->signalMapper,SLOT(map()));
   f->signalMapper->setMapping(w,(QWidget*)this);
 }

@@ -5,30 +5,31 @@
 #include "wd.h"
 #include "checkbox.h"
 #include "form.h"
+#include "pane.h"
 #include "radiobutton.h"
 
 // ---------------------------------------------------------------------
-RadioButton::RadioButton(string s, string p, Form *f) : Child(s,p,f)
+RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="radiobutton";
   QRadioButton *w=new QRadioButton;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
-  w->setText(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
+  w->setText(qn);
 
-  if (p=="group" && form->lasttype=="radiobutton") {
-    if (!form->buttongroup) {
-      Child *c=form->children.last();
-      form->buttongroup=new QButtonGroup;
-      form->buttongroup->addButton((QRadioButton *)c->widget);
+  if (s=="group" && ppane->lasttype=="radiobutton") {
+    if (!ppane->buttongroup) {
+      Child *c=pform->children.last();
+      ppane->buttongroup=new QButtonGroup;
+      ppane->buttongroup->addButton((QRadioButton *)c->widget);
       c->grouped=true;
     }
-    form->buttongroup->addButton(w);
+    ppane->buttongroup->addButton(w);
     grouped=true;
   } else {
     grouped=false;
-    form->buttongroup=(QButtonGroup *) 0;
+    ppane->buttongroup=(QButtonGroup *) 0;
   }
 
   connect(w,SIGNAL(toggled(bool)),

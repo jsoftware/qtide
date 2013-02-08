@@ -5,12 +5,15 @@
 
 #include "child.h"
 
+class Form;
+class Pane;
+
 class Isigraph : public Child
 {
   Q_OBJECT
 
 public:
-  Isigraph(string n, string p, Form *f);
+  Isigraph(string n, string s, Form *f, Pane *p);
   void setp(string p, string v);
   void setform();
 

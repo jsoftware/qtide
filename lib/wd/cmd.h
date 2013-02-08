@@ -7,6 +7,7 @@
 class Cmd
 {
 public:
+  void end();
   string getid();
   string getline();
   string getparms();

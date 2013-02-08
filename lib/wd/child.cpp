@@ -2,15 +2,17 @@
 #include "wd.h"
 #include "child.h"
 #include "form.h"
+#include "pane.h"
 #include "font.h"
 
 // ---------------------------------------------------------------------
-Child::Child(string s, string p, Form *f)
+Child::Child(string n, string s, Form *f, Pane *p)
 {
   grouped=false;
-  id=s;
-  parms=p;
+  id=n;
+  parms=s;
   pform=f;
+  ppane=p;
   locale="";
 }
 

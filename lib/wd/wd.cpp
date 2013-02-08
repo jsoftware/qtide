@@ -8,6 +8,7 @@
 #include "cmd.h"
 #include "font.h"
 #include "form.h"
+#include "pane.h"
 #include "isigraph.h"
 #include "menus.h"
 #include "../base/term.h"
@@ -26,6 +27,7 @@ void wd1();
 void wdbin();
 void wdcc();
 void wdcn();
+void wdend();
 void wdfontdef();
 void wdmenu(string);
 void wdnotyet();
@@ -47,6 +49,7 @@ void wdset();
 void wdsetenable();
 void wdsetp();
 void wdsetx(string);
+void wdsplit(string c);
 void wdstate(int);
 void wdtimer();
 void wdxywh(int);
@@ -137,6 +140,8 @@ void wd1()
       wdcc();
     else if (c=="cn")
       wdcn();
+    else if (c=="end")
+      wdend();
     else if (c=="fontdef")
       wdfontdef();
     else if (c.substr(0,4)=="menu")
@@ -161,6 +166,8 @@ void wd1()
       wdsetenable();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
+    else if (c.substr(0,5)=="split")
+      wdsplit(c);
     else if (c=="timer")
       wdtimer();
     else if (c=="xywh")
@@ -179,7 +186,7 @@ void wd1()
 void wdbin()
 {
   if (noform()) return;
-  form->bin(cmd.getparms());
+  form->pane->bin(cmd.getparms());
 }
 
 // ---------------------------------------------------------------------
@@ -190,7 +197,7 @@ void wdcc()
   n=cmd.getid();
   c=cmd.getid();
   p=cmd.getparms();
-  if (form->addchild(n,c,p)) return;
+  if (form->pane->addchild(n,c,p)) return;
   error ("child not supported: " + c);
 }
 
@@ -202,6 +209,12 @@ void wdcn()
   if (nochild()) return;
   string p=remquotes(cmd.getparms());
   cc->setp("caption",p);
+}
+
+// ---------------------------------------------------------------------
+void wdend()
+{
+  cmd.end();
 }
 
 // ---------------------------------------------------------------------
@@ -290,6 +303,7 @@ void wdpc()
   c=cmd.getid();
   p=cmd.getparms();
   form=new Form(c,p,tlocale);
+  evtform=form;
   Forms.append(form);
 }
 
@@ -469,7 +483,7 @@ void wdsetp()
   string p=cmd.getid();
   string v=cmd.getparms();
   if (p=="stretch")
-    form->setstretch(cc,v);
+    form->pane->setstretch(cc,v);
   else {
     cc->setp(p,v);
   }
@@ -487,6 +501,15 @@ void wdsetx(string c)
   if (nochildset(n)) return;
   string p=cmd.getparms();
   cc->setp(c.substr(3),p);
+}
+
+// ---------------------------------------------------------------------
+void wdsplit(string c)
+{
+  if (noform()) return;
+  string p=cmd.getparms();
+  if (!form->pane->split(c,p))
+    error("unrecognized command: " + c + " " + p);
 }
 
 // ---------------------------------------------------------------------
@@ -562,23 +585,6 @@ bool nochildset(string id)
 }
 
 // ---------------------------------------------------------------------
-// returns: 0=id not found
-//          1=child id (cc=child)
-//          2=menu id  (cc=menubar)
-int setchild(string id)
-{
-  if (noform()) return 0;
-  cc=form->id2child(id);
-  if (cc) return 1;
-  cc=form->setmenuid(id);
-  if (cc) return 2;
-// TODO
-  qDebug() << "no child selected " + s2q(cmdstr);
-//  nochild();
-  return 0;
-}
-
-// ---------------------------------------------------------------------
 bool noform()
 {
   if (form) return false;
@@ -596,3 +602,19 @@ string remquotes(string s)
   return s;
 }
 
+// ---------------------------------------------------------------------
+// returns: 0=id not found
+//          1=child id (cc=child)
+//          2=menu id  (cc=menubar)
+int setchild(string id)
+{
+  if (noform()) return 0;
+  cc=form->id2child(id);
+  if (cc) return 1;
+  cc=form->setmenuid(id);
+  if (cc) return 2;
+// TODO
+  qDebug() << "no child selected " + s2q(cmdstr);
+//  nochild();
+  return 0;
+}

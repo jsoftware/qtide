@@ -7,16 +7,17 @@
 #include "wd.h"
 #include "table.h"
 #include "form.h"
+#include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-Table::Table(string s, string p, Form *f) : Child(s,p,f)
+Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="listbox";
   QTableWidget *w=new QTableWidget;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
 
 // nonce for pacman, should be set properties:
   w->resizeColumnsToContents();
@@ -33,7 +34,6 @@ Table::Table(string s, string p, Form *f) : Child(s,p,f)
 
   QFontMetrics fm(w->font());
   w->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
-
 }
 
 // ---------------------------------------------------------------------

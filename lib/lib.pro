@@ -33,12 +33,11 @@ HEADERS += \
  base/view.h base/widget.h \
  high/high.h high/highj.h \
  wd/bitmap.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h wd/checkbox.h \
- wd/combobox.h wd/dummy.h wd/edit.h wd/editm.h wd/font.h wd/form.h wd/gl2.h wd/ogl2.h \
- wd/isigraph.h wd/isigraph2.h wd/opengl.h wd/opengl2.h \
- wd/listbox.h wd/radiobutton.h wd/static.h wd/table.h wd/webview.h \
- wd/menus.h wd/wd.h
-
-android:HEADERS += base/qtjni.h
+ wd/combobox.h wd/dummy.h wd/edit.h wd/editm.h wd/font.h wd/form.h \
+ wd/gl2.h wd/isigraph.h wd/isigraph2.h wd/listbox.h wd/menus.h \
+ wd/ogl2.h wd/opengl.h wd/opengl2.h wd/pane.h \
+ wd/radiobutton.h wd/static.h wd/table.h wd/wd.h wd/webview.h
+ android:HEADERS += base/qtjni.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -52,11 +51,14 @@ SOURCES += \
  base/util.cpp base/utils.cpp \
  base/view.cpp base/widget.cpp \
  high/highj.cpp \
- wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp wd/checkbox.cpp \
- wd/combobox.cpp wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/font.cpp wd/form.cpp wd/gl2.cpp wd/ogl2.cpp \
- wd/isigraph.cpp wd/isigraph2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/listbox.cpp wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/webview.cpp \
- wd/menus.cpp wd/wd.cpp
+ wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
+ wd/checkbox.cpp \
+ wd/combobox.cpp wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/font.cpp \
+ wd/form.cpp wd/gl2.cpp wd/ogl2.cpp \
+ wd/isigraph.cpp wd/isigraph2.cpp wd/listbox.cpp wd/menus.cpp \
+ wd/opengl.cpp wd/opengl2.cpp wd/pane.cpp \
+ wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/webview.cpp \
+ wd/wd.cpp
 
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
@@ -67,5 +69,5 @@ unix:LIBS += -ldl
 android:LIBS += -ldl
 android:LIBS += -lGLESv2
 
-win32-msvc*:QMAKE_LFLAGS += 
+win32-msvc*:QMAKE_LFLAGS +=
 

@@ -4,16 +4,17 @@
 #include "wd.h"
 #include "checkbox.h"
 #include "form.h"
+#include "pane.h"
 
 // ---------------------------------------------------------------------
-CheckBox::CheckBox(string s, string p, Form *f) : Child(s,p,f)
+CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="checkbox";
   QCheckBox *w=new QCheckBox;
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
-  w->setText(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
+  w->setText(qn);
   connect(w,SIGNAL(stateChanged(int)),
           this,SLOT(stateChanged()));
 }

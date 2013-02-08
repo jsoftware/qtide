@@ -4,6 +4,7 @@
 #include "isigraph.h"
 #include "isigraph2.h"
 #include "form.h"
+#include "pane.h"
 
 extern "C" Dllexport int glclear2(void *);
 extern Isigraph *isigraph;

@@ -3,9 +3,9 @@
 
 #include <QPushButton>
 #include "child.h"
-#include "form.h"
 
 class Form;
+class Pane;
 
 // ---------------------------------------------------------------------
 class Button : public Child
@@ -13,7 +13,7 @@ class Button : public Child
   Q_OBJECT
 
 public:
-  Button(string s, string p, Form *f);
+  Button(string n, string s, Form *f, Pane *p);
   void setp(string p,string v);
 };
 

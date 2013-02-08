@@ -2,17 +2,18 @@
 #include "isigraph.h"
 #include "isigraph2.h"
 #include "form.h"
+#include "pane.h"
 
 Isigraph *isigraph=0;
 
 // ---------------------------------------------------------------------
-Isigraph::Isigraph(string s, string p, Form *f) : Child(s,p,f)
+Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "isigraph";
   Isigraph2 *w= new Isigraph2(this);
   widget=(QWidget *) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   isigraph = this;
 }
 

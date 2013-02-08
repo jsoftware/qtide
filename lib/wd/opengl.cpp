@@ -2,17 +2,18 @@
 #include "opengl.h"
 #include "opengl2.h"
 #include "form.h"
+#include "pane.h"
 
 Opengl *opengl=0;
 
 // ---------------------------------------------------------------------
-Opengl::Opengl(string s, string p, Form *f) : Child(s,p,f)
+Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "opengl";
   Opengl2 *w= new Opengl2(this);
   widget=(QWidget *) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  w->setObjectName(qn);
   opengl = this;
 }
 
