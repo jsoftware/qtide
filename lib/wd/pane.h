@@ -58,11 +58,6 @@ public:
   QSplitter *qsplit;
   QList<int> qsplitp;
 
-public slots:
-  void buttonClicked(QWidget *);
-  Child *id2child(string n);
-  bool ischild(Child* n);
-
 };
 
 #endif
