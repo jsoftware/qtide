@@ -25,12 +25,20 @@ Config config;
 QString LibName;
 
 // ---------------------------------------------------------------------
-// copy over configs from addons if necessary
+// copy over configs if necessary
 void Config::config_init()
 {
   QStringList c;
-  c << "dirmatch.cfg" << "launch.cfg" << "pacman.cfg" << "qtide.cfg";
-  QString s=cpath("~addons/ide/qt/config/");
+  QString s;
+  c << "dirmatch.cfg" << "launch.cfg" << "qtide.cfg";
+  s=cpath("~addons/ide/qt/config/");
+  foreach (QString f,c)
+  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
+    cfwrite(ConfigPath.filePath(f),cfread(s+f));
+
+  c.empty();
+  c << "base.cfg" << "folders.cfg";
+  s=cpath("~system/config/");
   foreach (QString f,c)
   if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
     cfwrite(ConfigPath.filePath(f),cfread(s+f));
