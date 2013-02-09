@@ -35,4 +35,3 @@ void Webview::setp(string p,string v)
     ((QWebView *)widget)->show();
   } else Child::setp(p,v);
 }
-

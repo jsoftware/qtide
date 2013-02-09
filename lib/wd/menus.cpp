@@ -105,4 +105,3 @@ void Menus::setp(string p, string v)
   a->setCheckable(true);
   a->setChecked(0==v.compare("1"));
 }
-

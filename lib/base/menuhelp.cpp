@@ -186,6 +186,8 @@ void Term::on_helplabsAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helpreleaseAct_triggered()
 {
+  notyet("Release Highlights");
+  return;
   htmlhelp("user/relhigh.htm");
 
 }
@@ -193,6 +195,8 @@ void Term::on_helpreleaseAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helprelnotesAct_triggered()
 {
+  notyet("Release Notes");
+  return;
   htmlhelp("release/contents");
 }
 

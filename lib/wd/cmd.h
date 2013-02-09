@@ -36,5 +36,3 @@ QStringList bsplit(string s);
 QStringList qsplit(string s);
 
 #endif
-
-

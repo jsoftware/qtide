@@ -40,4 +40,3 @@ void Static::setminwh(int w, int h)
   Q_UNUSED(w);
   Q_UNUSED(h);
 }
-

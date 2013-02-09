@@ -763,4 +763,3 @@ int gl_updategl(void *g)
   qDebug() << "gl_updategl failed " + QString::number((SI)g);
   return 1;
 }
-
