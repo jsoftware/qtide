@@ -445,6 +445,7 @@ void Dirm::on_open_clicked()
     dminfo("No file selected");
     return;
   }
+  term->vieweditor();
   note->fileopen(s);
 }
 
