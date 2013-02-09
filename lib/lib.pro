@@ -12,7 +12,7 @@ OBJECTS_DIR = build
 MOC_DIR = build
 
 win32:CONFIG += dll console
-win32:DEFINES += _CRT_SECURE_NO_WARNINGS
+win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 QT += webkit
 QT += opengl
 CONFIG+= release
@@ -64,10 +64,12 @@ android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 
+win32:LIBS += -shared
 win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 android:LIBS += -ldl
 android:LIBS += -lGLESv2
 
+win32:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
 
