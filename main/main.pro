@@ -6,7 +6,8 @@ android:{
           TARGET = ../bin/qtide
           DEFINES += "ANDROID" }
 else {    TEMPLATE = app
-          TARGET = ../bin/jqtx }
+          TARGET = ../bin/jqt }
+win32-msvc*:TARGET = ../bin/jqtx
 DEPENDPATH += .
 INCLUDEPATH += .
 
