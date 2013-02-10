@@ -49,8 +49,6 @@ public:
   string locale;
   string sysdata;
   string sysmodifiers;
-  int sizew;
-  int sizeh;
 
   Font *fontdef;
   Child *child;

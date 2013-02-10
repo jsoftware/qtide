@@ -540,8 +540,8 @@ void wdxywh(int mul)
   if (n.size()!=4)
     error("xywh requires 2 numbers: " + p);
   else {
-    form->sizew=mul*n.at(2).toInt();
-    form->sizeh=mul*n.at(3).toInt();
+    form->pane->sizew=mul*n.at(2).toInt();
+    form->pane->sizeh=mul*n.at(3).toInt();
   }
 }
 
@@ -554,8 +554,8 @@ void wdwh()
   if (n.size()!=2)
     error("wh requires 2 numbers: " + p);
   else {
-    form->sizew=n.at(0).toInt();
-    form->sizeh=n.at(1).toInt();
+    form->pane->sizew=n.at(0).toInt();
+    form->pane->sizeh=n.at(1).toInt();
   }
 }
 

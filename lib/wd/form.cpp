@@ -28,7 +28,6 @@ Form::Form(string s, string p, string loc, QWidget *parent)
   menubar=0;
   closed=false;
   shown=false;
-  sizew=sizeh=0;
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   closeok=m.contains("closeok");
