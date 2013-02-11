@@ -1,3 +1,5 @@
+# to exclude QtWebKit, comment out the line QT += webkit
+# and remove files webview.h and webview.cpp in HEADERS and SOURCES
 
 android:{
           CONFIG += mobility
@@ -57,8 +59,8 @@ SOURCES += \
  wd/form.cpp wd/gl2.cpp wd/ogl2.cpp \
  wd/isigraph.cpp wd/isigraph2.cpp wd/listbox.cpp wd/menus.cpp \
  wd/opengl.cpp wd/opengl2.cpp wd/pane.cpp \
- wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/webview.cpp \
- wd/wd.cpp
+ wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/wd.cpp \
+ wd/webview.cpp
 
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
