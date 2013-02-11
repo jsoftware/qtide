@@ -375,6 +375,8 @@ static int gl_font0 (Opengl *opengl, char *s)
   if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
   ((Opengl2 *)opengl->widget)->font = new Font (string(s));
   ((Opengl2 *)opengl->widget)->painter->setFont ((((Opengl2 *)opengl->widget)->font)->font);
+  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
+  ((Opengl2 *)opengl->widget)->fontheight = fm.height();
   return 0;
 }
 
@@ -400,6 +402,8 @@ int gl_font2 (const int *p, int len)
   char *face = int2utf8 (p + 3, len - 3);
   ((Opengl2 *)opengl->widget)->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
   ((Opengl2 *)opengl->widget)->painter->setFont ((((Opengl2 *)opengl->widget)->font)->font);
+  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
+  ((Opengl2 *)opengl->widget)->fontheight = fm.height();
   return 0;
 }
 
@@ -558,12 +562,12 @@ int gl_text (char *ys)
   if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
   ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->textpen);
   if ((!((Opengl2 *)opengl->widget)->font) || (0 == ((Opengl2 *)opengl->widget)->font->angle))
-    ((Opengl2 *)opengl->widget)->painter->drawText ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty, QString::fromUtf8 (ys));
+    ((Opengl2 *)opengl->widget)->painter->drawText ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty + ((Opengl2 *)opengl->widget)->fontheight, QString::fromUtf8 (ys));
   else {
     ((Opengl2 *)opengl->widget)->painter->save ();
     ((Opengl2 *)opengl->widget)->painter->translate ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty );
     ((Opengl2 *)opengl->widget)->painter->rotate ( - ((Opengl2 *)opengl->widget)->font->angle/10 );
-    ((Opengl2 *)opengl->widget)->painter->drawText ( 0, 0, QString::fromUtf8 (ys));
+    ((Opengl2 *)opengl->widget)->painter->drawText ( 0, ((Opengl2 *)opengl->widget)->fontheight, QString::fromUtf8 (ys));
     ((Opengl2 *)opengl->widget)->painter->restore ();
   }
   ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->pen);

@@ -375,6 +375,8 @@ static int glfont0 (Isigraph *isigraph, char *s)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   ((Isigraph2 *)isigraph->widget)->font = new Font (string(s));
   ((Isigraph2 *)isigraph->widget)->painter->setFont ((((Isigraph2 *)isigraph->widget)->font)->font);
+  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
+  ((Isigraph2 *)isigraph->widget)->fontheight = fm.height();
   return 0;
 }
 
@@ -400,6 +402,8 @@ int glfont2 (const int *p, int len)
   char *face = int2utf8 (p + 3, len - 3);
   ((Isigraph2 *)isigraph->widget)->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
   ((Isigraph2 *)isigraph->widget)->painter->setFont ((((Isigraph2 *)isigraph->widget)->font)->font);
+  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
+  ((Isigraph2 *)isigraph->widget)->fontheight = fm.height();
   return 0;
 }
 
@@ -558,12 +562,12 @@ int gltext (char *ys)
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
   ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->textpen);
   if (0 == ((Isigraph2 *)isigraph->widget)->font->angle)
-    ((Isigraph2 *)isigraph->widget)->painter->drawText ( ((Isigraph2 *)isigraph->widget)->textx, ((Isigraph2 *)isigraph->widget)->texty, QString::fromUtf8 (ys));
+    ((Isigraph2 *)isigraph->widget)->painter->drawText ( ((Isigraph2 *)isigraph->widget)->textx, ((Isigraph2 *)isigraph->widget)->texty + ((Isigraph2 *)isigraph->widget)->fontheight, QString::fromUtf8 (ys));
   else {
     ((Isigraph2 *)isigraph->widget)->painter->save ();
     ((Isigraph2 *)isigraph->widget)->painter->translate ( ((Isigraph2 *)isigraph->widget)->textx, ((Isigraph2 *)isigraph->widget)->texty );
     ((Isigraph2 *)isigraph->widget)->painter->rotate ( - ((Isigraph2 *)isigraph->widget)->font->angle/10 );
-    ((Isigraph2 *)isigraph->widget)->painter->drawText ( 0, 0, QString::fromUtf8 (ys));
+    ((Isigraph2 *)isigraph->widget)->painter->drawText ( 0, ((Isigraph2 *)isigraph->widget)->fontheight, QString::fromUtf8 (ys));
     ((Isigraph2 *)isigraph->widget)->painter->restore ();
   }
   ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->pen);

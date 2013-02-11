@@ -21,6 +21,7 @@ Opengl2::Opengl2(Child *c)
   initialized = false;
   pixmap=0;
   painter=0;
+  fontheight=0;
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 //  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);

@@ -34,6 +34,8 @@ public:
 
   QPixmap *pixmap;
 
+  int fontheight;
+
   bool antialiased;
   bool transformed;
   bool active;
