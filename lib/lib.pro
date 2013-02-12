@@ -1,4 +1,5 @@
 # to exclude QtWebKit, comment out the line QT += webkit
+# and the line DEFINES += "QT_WEBKIT"
 # and remove files webview.h and webview.cpp in HEADERS and SOURCES
 
 android:{
@@ -22,6 +23,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += "JQT"
+DEFINES += "QT_WEBKIT"
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
 # Input
