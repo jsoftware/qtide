@@ -1,3 +1,4 @@
+#include <QTimer>
 #include <QPainter>
 #include <QtGui/qmatrix4x4.h>
 
@@ -27,6 +28,8 @@ Isigraph2::Isigraph2(Child *c)
   updateGeometry();
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
+// work around initial display problem
+  QTimer::singleShot(0, this, SLOT(update()));
 }
 
 // ---------------------------------------------------------------------
