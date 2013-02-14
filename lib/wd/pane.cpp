@@ -19,7 +19,9 @@
 #include "editm.h"
 #include "isigraph.h"
 #include "listbox.h"
+#ifdef QT_OPENGL
 #include "opengl.h"
+#endif
 #include "radiobutton.h"
 #include "static.h"
 #include "table.h"
@@ -62,8 +64,10 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,"edit " + p,pform,this);
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,pform,this);
+#ifdef QT_OPENGL
   else if (c=="opengl")
     child=(Child *) new Opengl(n,p,pform,this);
+#endif
   else if (c=="groupbox")
     child=(Child *) new Static(n,"groupbox " + p,pform,this);
   else if (c=="listbox")

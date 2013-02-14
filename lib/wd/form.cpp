@@ -12,7 +12,9 @@
 #include "child.h"
 #include "isigraph2.h"
 #include "menus.h"
+#ifdef QT_OPENGL
 #include "opengl2.h"
+#endif
 
 extern int jedo(char*);
 
@@ -53,12 +55,14 @@ Form::~Form()
         delete ((Isigraph2*)n->widget)->painter;
         ((Isigraph2*)n->widget)->painter=0;
       }
+#ifdef QT_OPENGL
     } else if ("opengl"==(n=children.at(i))->type) {
       if (((Opengl2*)n->widget)->painter) {
         ((Opengl2*)n->widget)->painter->end();
         delete ((Opengl2*)n->widget)->painter;
         ((Opengl2*)n->widget)->painter=0;
       }
+#endif
     }
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;

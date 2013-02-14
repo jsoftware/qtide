@@ -5,6 +5,5 @@
         <item>QtCore</item>
         <item>QtGui</item>
         <item>QtWebKit</item>
-        <item>QtOpenGL</item>
     </array>
 </resources>

@@ -18,12 +18,15 @@ win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 QT += webkit
 QT += opengl
+android:QT -= opengl
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += "JQT"
 DEFINES += "QT_WEBKIT"
+DEFINES += "QT_OPENGL"
+android:DEFINES -= "QT_OPENGL"
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
 # Input
@@ -41,7 +44,9 @@ HEADERS += \
  wd/gl2.h wd/isigraph.h wd/isigraph2.h wd/listbox.h wd/menus.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h wd/pane.h \
  wd/radiobutton.h wd/static.h wd/table.h wd/wd.h wd/webview.h
- android:HEADERS += base/qtjni.h
+
+android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+android:HEADERS += base/qtjni.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -64,6 +69,7 @@ SOURCES += \
  wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/wd.cpp \
  wd/webview.cpp
 
+android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
@@ -72,7 +78,6 @@ win32:LIBS += -shared
 win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 android:LIBS += -ldl
-android:LIBS += -lGLESv2
 
 win32:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
