@@ -194,7 +194,7 @@ int glsel2(char *g)
     f=form;
     if ((cc=f->id2child(g))) {
       if ((cc->type == "isigraph") && (cc->widget)) {
-      isigraph = (Isigraph *) cc;
+        isigraph = (Isigraph *) cc;
         f->child = cc;
         form=f;
         return 0;
@@ -205,7 +205,7 @@ int glsel2(char *g)
     f=Forms.at(i);
     if ((cc=f->id2child(g))) {
       if ((cc->type == "isigraph") && (cc->widget)) {
-      isigraph = (Isigraph *) cc;
+        isigraph = (Isigraph *) cc;
         f->child = cc;
         form=f;
         return 0;

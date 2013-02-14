@@ -29,7 +29,7 @@ QString LibName;
 void Config::config_init()
 {
   QStringList c;
-  QString s;
+  QString s,t;
   c << "dirmatch.cfg" << "launch.cfg" << "qtide.cfg";
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
@@ -40,8 +40,17 @@ void Config::config_init()
   c << "base.cfg" << "folders.cfg";
   s=cpath("~system/config/");
   foreach (QString f,c)
-  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
-    cfwrite(ConfigPath.filePath(f),cfread(s+f));
+  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
+    t=cfread(s+f);
+#ifdef __MACH__
+    t=t.replace("FontFamily=monospaced","FontFamily=Menlo");
+    t=t.replace("FontSize=10","FontSize=14");
+#endif
+#ifdef _WIN32
+    t=t.replace("FontFamily=monospaced","FontFamily=Lucida Console");
+#endif
+    cfwrite(ConfigPath.filePath(f),t);
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -252,6 +261,12 @@ void var_cmd(QString s)
 }
 
 // ---------------------------------------------------------------------
+QString var_cmdr(QString s)
+{
+  return jcon->cmdr(s);
+}
+
+// ---------------------------------------------------------------------
 QString var_load(QString s, bool d)
 {
   QString r = d ? "loadd" : "load";
@@ -269,4 +284,10 @@ void var_runs(QString s)
 {
   sets("inputx_jrx_",s);
   jcon->immex("0!:101 inputx_jrx_");
+}
+
+// ---------------------------------------------------------------------
+void var_set(QString s, QString t)
+{
+  jcon->set(s,t);
 }

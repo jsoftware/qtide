@@ -193,7 +193,7 @@ int gl_sel2(char *g)
     f=form;
     if ((cc=f->id2child(g))) {
       if ((cc->type == "opengl") && (cc->widget)) {
-      opengl = (Opengl *) cc;
+        opengl = (Opengl *) cc;
         f->child = cc;
         form=f;
         return 0;
@@ -204,7 +204,7 @@ int gl_sel2(char *g)
     f=Forms.at(i);
     if ((cc=f->id2child(g))) {
       if ((cc->type == "opengl") && (cc->widget)) {
-      opengl = (Opengl *) cc;
+        opengl = (Opengl *) cc;
         f->child = cc;
         form=f;
         return 0;

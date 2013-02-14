@@ -12,4 +12,3 @@ cd ..
 
 cd main
 qmake && make
-

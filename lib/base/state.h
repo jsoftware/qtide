@@ -102,9 +102,11 @@ void state_quit();
 void state_reinit();
 
 void var_cmd(QString s);
+QString var_cmdr(QString s);
 QString var_load(QString s, bool d);
 void var_run(QString s);
 void var_runs(QString s);
+void var_set(QString s, QString t);
 
 #ifdef ANDROID
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);

@@ -186,9 +186,9 @@ void Note::prettyprint()
   QString r;
   savecurrent();
   Nedit *e=editPage();
-  jcon->cmd("require PPScript_jp_");
-  jcon->set("arg_jpp_",editText());
-  r=jcon->cmdr("pplintqt_jpp_ arg_jpp_");
+  var_cmd("require PPScript_jp_");
+  var_set("arg_jpp_",editText());
+  r=var_cmdr("pplintqt_jpp_ arg_jpp_");
   if (r.isEmpty()) return;
   if (r.at(0)=='0') {
     pos=e->readcurpos();

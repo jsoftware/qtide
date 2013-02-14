@@ -8,7 +8,7 @@ Makefile
 style.sh
 makecdb.sh
 makebill.sh
-makewincdb.bat
+makewincdb.sh
 run.sh
 
 android/bin/
