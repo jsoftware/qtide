@@ -162,7 +162,6 @@ int gl_sel(void *g)
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
       if ((((Child *)g)->type == "opengl") && ((Child *)g)->widget) {
-//      qDebug() << "glsel ok "+ s2q(f->child->id);
         opengl = (Opengl *) g;
         f->child = (Child *) g;
         form = f;
@@ -170,7 +169,7 @@ int gl_sel(void *g)
       }
     }
   }
-  qDebug() << "glsel failed " + QString::number((SI)g);
+  qDebug() << "gl_sel failed " + QString::number((SI)g);
   return 1;
 }
 
@@ -181,32 +180,38 @@ int gl_sel2(char *g)
   if (!g) return 1;
   string p=string(g);
   if (p.size()==0) {
-//    qDebug() << "glsel2 empty ok";
     return 0;
   }
+  if ((p[0]=='_')||(p[0]=='-')||(p[0]=='0')||(p[0]=='1')||(p[0]=='2')||(p[0]=='3')||(p[0]=='4')||(p[0]=='5')||(p[0]=='6')||(p[0]=='7')||(p[0]=='8')||(p[0]=='9')) {
+    string q=p;
+    if (p[0]=='_') q[0]='-';
+    return gl_sel((void *) strtol(q.c_str(),NULL,0));
+  }
   Form *f;
-  string q=p;
-  if (q[0]=='_') q[0]='-';
-  Child *n=(Child *) strtol(q.c_str(),NULL,0);
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild(n)) {
-      if ((n->type == "opengl") && n->widget) {
-//      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-        opengl = (Opengl *) n;
-        f->child = (Child *) n;
-        form=f;
-        return 0;
-      } else if ((cc=f->id2child(g))) {
-//      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-        opengl = (Opengl *) cc;
-        f->child = (Child *) cc;
+// search current form first
+  if (form) {
+    f=form;
+    if ((cc=f->id2child(g))) {
+      if ((cc->type == "opengl") && (cc->widget)) {
+      opengl = (Opengl *) cc;
+        f->child = cc;
         form=f;
         return 0;
       }
     }
   }
-  qDebug() << "glsel2 failed "+ s2q(string(g));
+  for (int i=0; i<Forms.size(); i++) {
+    f=Forms.at(i);
+    if ((cc=f->id2child(g))) {
+      if ((cc->type == "opengl") && (cc->widget)) {
+      opengl = (Opengl *) cc;
+        f->child = cc;
+        form=f;
+        return 0;
+      }
+    }
+  }
+  qDebug() << "gl_sel2 failed "+ s2q(string(g));
   return 1;
 }
 

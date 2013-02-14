@@ -57,23 +57,23 @@ qtarcisi (const int *y, const int *y2, int *ang)
 // ---------------------------------------------------------------------
 int glpaint()
 {
-  qDebug() << "glpaint";
+//  qDebug() << "glpaint";
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
   if (((Isigraph2 *)isigraph->widget)->epaint) return 1;
-  qDebug() << "glpaint begin";
+//  qDebug() << "glpaint begin";
   ((Isigraph2 *)isigraph->widget)->nopaint=true;
   ((Isigraph2 *)isigraph->widget)->repaint(0,0,-1,-1);
   ((Isigraph2 *)isigraph->widget)->nopaint=false;
-  qDebug() << "glpaint end";
+//  qDebug() << "glpaint end";
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glpaintx()
 {
-  qDebug() << "glpaintx";
+//  qDebug() << "glpaintx";
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)) return 1;
   if (((Isigraph2 *)isigraph->widget)->jpaint) return 1;
@@ -163,7 +163,6 @@ int glsel(void *g)
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
       if ((((Child *)g)->type == "isigraph") && ((Child *)g)->widget) {
-//      qDebug() << "glsel ok "+ s2q(f->child->id);
         isigraph = (Isigraph *) g;
         f->child = (Child *) g;
         form = f;
@@ -182,26 +181,32 @@ int glsel2(char *g)
   if (!g) return 1;
   string p=string(g);
   if (p.size()==0) {
-//    qDebug() << "glsel2 empty ok";
     return 0;
   }
+  if ((p[0]=='_')||(p[0]=='-')||(p[0]=='0')||(p[0]=='1')||(p[0]=='2')||(p[0]=='3')||(p[0]=='4')||(p[0]=='5')||(p[0]=='6')||(p[0]=='7')||(p[0]=='8')||(p[0]=='9')) {
+    string q=p;
+    if (p[0]=='_') q[0]='-';
+    return glsel((void *) strtol(q.c_str(),NULL,0));
+  }
   Form *f;
-  string q=p;
-  if (q[0]=='_') q[0]='-';
-  Child *n=(Child *) strtol(q.c_str(),NULL,0);
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild(n)) {
-      if ((n->type == "isigraph") && n->widget) {
-//      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-        isigraph = (Isigraph *) n;
-        f->child = (Child *) n;
+// search current form first
+  if (form) {
+    f=form;
+    if ((cc=f->id2child(g))) {
+      if ((cc->type == "isigraph") && (cc->widget)) {
+      isigraph = (Isigraph *) cc;
+        f->child = cc;
         form=f;
         return 0;
-      } else if ((cc=f->id2child(g))) {
-//      qDebug() << "glsel2 ok "+ s2q(f->child->id);
-        isigraph = (Isigraph *) cc;
-        f->child = (Child *) cc;
+      }
+    }
+  }
+  for (int i=0; i<Forms.size(); i++) {
+    f=Forms.at(i);
+    if ((cc=f->id2child(g))) {
+      if ((cc->type == "isigraph") && (cc->widget)) {
+      isigraph = (Isigraph *) cc;
+        f->child = cc;
         form=f;
         return 0;
       }
