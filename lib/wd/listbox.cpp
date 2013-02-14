@@ -42,6 +42,11 @@ void ListBox::set(string p)
   QListWidget *w=(QListWidget*) widget;
   w->clear();
   w->addItems(qsplit(p));
+#ifdef ANDROID
+// android bug, text invisible
+  for (int i=0; w->count()>i; i++)
+    (w->item(i))->setForeground(Qt::black);
+#endif
 }
 
 // ---------------------------------------------------------------------
