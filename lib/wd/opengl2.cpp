@@ -11,7 +11,7 @@
 extern Opengl *opengl;
 
 // ---------------------------------------------------------------------
-Opengl2::Opengl2(Child *c)
+Opengl2::Opengl2(Child *c, const QGLFormat& format) : QGLWidget( format )
 {
   pchild = c;
   active=false;

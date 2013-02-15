@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------
 ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  qDebug() << "make ListBox";
+//  qDebug() << "make ListBox";
   type="listbox";
   QListWidget *w=new QListWidget;
   widget=(QWidget*) w;

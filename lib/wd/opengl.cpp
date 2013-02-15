@@ -10,7 +10,16 @@ Opengl *opengl=0;
 Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "opengl";
-  Opengl2 *w= new Opengl2(this);
+
+  QGLFormat qglFormat;
+  qglFormat.setProfile(QGLFormat::CoreProfile);
+  qglFormat.setSampleBuffers(true);
+
+  QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+  if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
+  else qglFormat.setProfile(QGLFormat::CoreProfile);
+
+  Opengl2 *w= new Opengl2(this, qglFormat);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
