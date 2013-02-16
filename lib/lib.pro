@@ -2,6 +2,8 @@
 # and the line DEFINES += "QT_WEBKIT"
 # and remove files webview.h and webview.cpp in HEADERS and SOURCES
 
+VERSION = 1.0.1
+
 android:{
           CONFIG += mobility
           MOBILITY +=
@@ -23,6 +25,7 @@ CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
 DEFINES += "QT_WEBKIT"
 DEFINES += "QT_OPENGL"

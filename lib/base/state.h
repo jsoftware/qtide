@@ -76,6 +76,7 @@ public:
   QString Rxnnz;
   QString RunQ;
   QString ScriptFilter;
+  bool SingleWin;
   QDir SnapPath;
   int Snapshots;
   QString Snapshotx;
@@ -97,6 +98,8 @@ void state_appname();
 QStringList state_about();
 int state_fini(QApplication *);
 bool state_init(int argc, char *argv[]);
+void state_init_args(int *,char *argv[]);
+
 void state_init_resource();
 void state_quit();
 void state_reinit();

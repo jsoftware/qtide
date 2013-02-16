@@ -26,6 +26,44 @@ QTime LastLaunchTime;
 QTimer *timer=0;
 
 // ---------------------------------------------------------------------
+OneWin::OneWin()
+{
+  note = new Note();
+  split=new QSplitter(Qt::Vertical);
+  split->addWidget(makeframe((QWidget *)note));
+  split->addWidget(makeframe((QWidget *)term));
+  QList<int> n;
+  n << 0 << 1;
+  //split->setSizes(n);
+  QVBoxLayout *layout=new QVBoxLayout();
+  layout->setContentsMargins(0,0,0,0);
+  layout->addWidget(split);
+  setLayout(layout);
+  term->setFocus();
+  show();
+}
+
+// ---------------------------------------------------------------------
+void OneWin::closeEvent(QCloseEvent *event)
+{
+  Q_UNUSED(event);
+  term->filequit();
+}
+
+// ---------------------------------------------------------------------
+QFrame *OneWin::makeframe(QWidget *w)
+{
+  QFrame *f=new QFrame();
+  //f->setFrameStyle(QFrame::Panel | QFrame::Raised);
+  f->setFrameStyle(QFrame::StyledPanel);
+  QVBoxLayout *b=new QVBoxLayout();
+  b->setContentsMargins(0,0,0,0);
+  b->addWidget(w);
+  f->setLayout(b);
+  return f;
+}
+
+// ---------------------------------------------------------------------
 Term::Term()
 {
   QVBoxLayout *layout=new QVBoxLayout;
@@ -88,8 +126,10 @@ void Term::fini()
   tedit->setPalette(p);
   QString s=config.SystemPath.filePath("bin/icons/jgreen.png");
   setWindowIcon(QIcon(s));
-  show();
-
+  if (config.SingleWin)
+    new OneWin();
+  else
+    show();
 }
 
 // ---------------------------------------------------------------------

@@ -208,15 +208,32 @@ int state_fini(QApplication *app)
   return jcon->exec();
 }
 
+
 // ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
+  state_init_args(&argc,argv);
   svr_init(argc,argv);
   config.init(cfpath(argv[0]));
   dlog_init();
   recent.init();
   project.init();
   return true;
+}
+
+// ---------------------------------------------------------------------
+void state_init_args(int *argc, char *argv[])
+{
+  config.SingleWin=false;
+  int n=*argc;
+  for(int i=1; i<n; i++)
+    if (!strcmp(argv[i],"-singlewin")) {
+      config.SingleWin=true;
+      *argc=n-1;
+      for(int j=i+1; j<n; j++)
+        argv[j-1]=argv[j];
+      return;
+    }
 }
 
 // ---------------------------------------------------------------------

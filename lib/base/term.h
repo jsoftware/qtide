@@ -6,12 +6,28 @@
 
 class QAction;
 class QListWidgetItem;
+class QSplitter;
 class QTimer;
 class QToolBar;
 class Menu;
 class Tedit;
 class Note;
 
+// ---------------------------------------------------------------------
+class OneWin : public QWidget
+{
+  Q_OBJECT
+
+public:
+  OneWin();
+  QFrame *makeframe(QWidget *w);
+  QSplitter *split;
+
+private:
+  void closeEvent(QCloseEvent *event);
+};
+
+// ---------------------------------------------------------------------
 class Term : public QWidget
 {
   Q_OBJECT
@@ -28,7 +44,6 @@ public:
   void vieweditor();
 
   Menu *menuBar;
-  //QString prompt;
 
 public slots:
 

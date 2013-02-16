@@ -53,6 +53,7 @@ void wdsplit(string c);
 void wdstate(int);
 void wdtimer();
 void wdxywh(int);
+void wdversion();
 void wdwh();
 
 void error(string s);
@@ -172,6 +173,8 @@ void wd1()
       wdtimer();
     else if (c=="xywh")
       wdxywh(2);
+    else if (c=="version")
+      wdversion();
     else if (c=="wh")
       wdwh();
     else if (((c.substr(0,4)=="tbar") || (c.substr(0,4)=="sbar") || c=="msgs") || 0) {
@@ -543,6 +546,13 @@ void wdxywh(int mul)
     form->pane->sizew=mul*n.at(2).toInt();
     form->pane->sizeh=mul*n.at(3).toInt();
   }
+}
+
+// ---------------------------------------------------------------------
+void wdversion()
+{
+  result=APP_VERSION;
+  rc=-1;
 }
 
 // ---------------------------------------------------------------------
