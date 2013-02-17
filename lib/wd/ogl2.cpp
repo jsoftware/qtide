@@ -85,6 +85,12 @@ int gl_qhandles(void **p)
 {
   if (!opengl) return 1;
   *p = (void *)opengl;
+#ifdef _WIN32
+  if ((Opengl2 *)opengl->widget) *(p+1) = (void *)((Opengl2 *)opengl->widget)->getDC();
+  else *(p+1) = (void *)0;
+#else
+  *(p+1) = (void *)0;
+#endif
   return 0;
 }
 

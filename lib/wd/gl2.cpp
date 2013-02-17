@@ -86,6 +86,12 @@ int glqhandles(void **p)
 {
   if (!isigraph) return 1;
   *p = (void *)isigraph;
+#ifdef _WIN32
+  if ((Isigraph2 *)isigraph->widget) *(p+1) = (void *)((Isigraph2 *)isigraph->widget)->getDC();
+  else *(p+1) = (void *)0;
+#else
+  *(p+1) = (void *)0;
+#endif
   return 0;
 }
 
