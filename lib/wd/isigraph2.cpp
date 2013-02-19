@@ -29,7 +29,18 @@ Isigraph2::Isigraph2(Child *c)
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 // work around initial display problem
-  QTimer::singleShot(0, this, SLOT(update()));
+//  QTimer::singleShot(0, this, SLOT(update()));
+  QTimer::singleShot(0, this, SLOT(resetSize()));
+}
+
+// ---------------------------------------------------------------------
+void Isigraph2::resetSize()
+{
+  int h,w;
+  w=size().width();
+  h=size().height();
+  resize(w+1,h+1);
+  resize(w,h);
 }
 
 // ---------------------------------------------------------------------

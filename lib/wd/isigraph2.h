@@ -63,6 +63,9 @@ protected:
   void keyPressEvent(QKeyEvent *event);
   void mouseWheelEvent(QWheelEvent *event);
 
+private slots:
+  void resetSize();
+
 private:
   void buttonEvent (QEvent::Type type, QMouseEvent *event);
   void wheelEvent (QWheelEvent *event);
