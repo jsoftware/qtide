@@ -11,6 +11,7 @@ class QBoxLayout;
 class Child;
 class Menus;
 class Pane;
+class Tabs;
 
 #include "wd.h"
 #include "form.h"
@@ -39,6 +40,7 @@ public:
   void showit();
   void signalevent(Child *c);
   string state(int evt);
+  void status(string);
 
   bool closed;
   bool shown;
@@ -57,6 +59,8 @@ public:
   Menus *menubar;
   Pane *pane;
   QList<Pane *>panes;
+  Tabs *tab;
+  QList<Tabs *>tabs;
   QSignalMapper *signalMapper;
   QBoxLayout *layout;
 

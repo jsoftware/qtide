@@ -9,6 +9,7 @@
 #include "cmd.h"
 #include "form.h"
 #include "pane.h"
+#include "tabs.h"
 #include "child.h"
 #include "isigraph2.h"
 #include "menus.h"
@@ -28,6 +29,7 @@ Form::Form(string s, string p, string loc, QWidget *parent)
   locale=loc;
   fontdef=0;
   menubar=0;
+  tab=0;
   closed=false;
   shown=false;
   setAttribute(Qt::WA_DeleteOnClose);
@@ -127,7 +129,6 @@ void Form::closepane()
   if (panes.size()<=1) return;
   panes.removeLast();
   pane=panes.last();
-  //layout=pane->layout;
 }
 
 // ---------------------------------------------------------------------
@@ -188,6 +189,8 @@ void Form::setpn(string p)
 // ---------------------------------------------------------------------
 void Form::showit()
 {
+  for (int i=tabs.size()-1; i>=0; i--)
+    tabs.last()->tabend();
   for (int i=panes.size()-1; i>=0; i--)
     panes.last()->fini();
   layout->addWidget(pane);
@@ -248,4 +251,13 @@ string Form::state(int evt)
     s+=children.at(i)->state();
 
   return r+s;
+}
+
+// ---------------------------------------------------------------------
+// for debugging
+void Form::status(string s)
+{
+  qDebug() << "form status: " << s2q(s);
+  qDebug() << "current pane, panes: " << pane << panes;
+  qDebug() << "current tab, tabs: " << tab << tabs;
 }

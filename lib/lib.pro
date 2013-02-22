@@ -46,7 +46,8 @@ HEADERS += \
  wd/combobox.h wd/dummy.h wd/edit.h wd/editm.h wd/font.h wd/form.h \
  wd/gl2.h wd/isigraph.h wd/isigraph2.h wd/listbox.h wd/menus.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h wd/pane.h \
- wd/radiobutton.h wd/static.h wd/table.h wd/wd.h wd/webview.h
+ wd/radiobutton.h wd/static.h wd/table.h wd/tabs.h \
+ wd/wd.h wd/webview.h
 
 android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 android:HEADERS += base/qtjni.h
@@ -69,8 +70,8 @@ SOURCES += \
  wd/form.cpp wd/gl2.cpp wd/ogl2.cpp \
  wd/isigraph.cpp wd/isigraph2.cpp wd/listbox.cpp wd/menus.cpp \
  wd/opengl.cpp wd/opengl2.cpp wd/pane.cpp \
- wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/wd.cpp \
- wd/webview.cpp
+ wd/radiobutton.cpp wd/static.cpp wd/table.cpp wd/tabs.cpp \
+ wd/wd.cpp wd/webview.cpp
 
 android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp

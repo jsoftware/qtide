@@ -11,6 +11,7 @@
 #include "pane.h"
 #include "isigraph.h"
 #include "menus.h"
+#include "tabs.h"
 #include "../base/term.h"
 
 extern "C" {
@@ -51,6 +52,7 @@ void wdsetp();
 void wdsetx(string);
 void wdsplit(string c);
 void wdstate(int);
+void wdtab(string);
 void wdtimer();
 void wdxywh(int);
 void wdversion();
@@ -60,6 +62,7 @@ void error(string s);
 bool nochild();
 bool nochildset(string id);
 bool noform();
+bool notab();
 int setchild(string id);
 
 Cmd cmd;
@@ -169,6 +172,8 @@ void wd1()
       wdsetx(c);
     else if (c.substr(0,5)=="split")
       wdsplit(c);
+    else if (c.substr(0,3)=="tab")
+      wdtab(c);
     else if (c=="timer")
       wdtimer();
     else if (c=="xywh")
@@ -524,6 +529,19 @@ void wdstate(int event)
 }
 
 // ---------------------------------------------------------------------
+void wdtab(string c)
+{
+  if (notab()) return;
+  string p=cmd.getparms();
+  if (c=="tabend")
+    form->tab->tabend();
+  else if (c=="tabnew")
+    form->tab->tabnew(p);
+  else
+    error("unrecognized command: " + c + " " + p);
+}
+
+// ---------------------------------------------------------------------
 void wdtimer()
 {
   string p=cmd.getparms();
@@ -599,6 +617,15 @@ bool noform()
 {
   if (form) return false;
   error("no parent selected");
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool notab()
+{
+  if (noform()) return true;
+  if (form->tab) return false;
+  error("no tab definition");
   return true;
 }
 
