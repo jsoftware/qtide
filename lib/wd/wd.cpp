@@ -535,9 +535,11 @@ void wdtab(string c)
   string p=cmd.getparms();
   if (c=="tabend")
     form->tab->tabend();
-  else if (c=="tabnew")
+  else if (c=="tabnew") {
+    noevents(1);
     form->tab->tabnew(p);
-  else
+    noevents(0);
+  } else
     error("unrecognized command: " + c + " " + p);
 }
 
