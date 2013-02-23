@@ -1,5 +1,6 @@
 
 #include <QTabWidget>
+#include <QTimer>
 
 #include "wd.h"
 #include "tabs.h"
@@ -25,6 +26,8 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setMovable(true);
   w->setTabsClosable(true);
   w->setUsesScrollButtons(true);
+// force repaint on display
+  QTimer::singleShot(0, this, SLOT(update()));
 }
 
 // ---------------------------------------------------------------------
