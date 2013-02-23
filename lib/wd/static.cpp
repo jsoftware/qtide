@@ -11,7 +11,7 @@
 Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="static";
-  QLabel *w=new QLabel;
+  QLabel *w=new QLabel(p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

@@ -10,7 +10,7 @@ Isigraph *isigraph=0;
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "isigraph";
-  Isigraph2 *w= new Isigraph2(this);
+  Isigraph2 *w= new Isigraph2(this, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

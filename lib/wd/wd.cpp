@@ -320,7 +320,8 @@ void wdpc()
   string c,p;
   c=cmd.getid();
   p=cmd.getparms();
-  form=new Form(c,p,tlocale);
+// QWidget must be parentless to be top-level window
+  form=new Form(c,p,tlocale,0);
   evtform=form;
   Forms.append(form);
 }

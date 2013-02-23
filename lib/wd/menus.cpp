@@ -14,7 +14,7 @@ Menus::Menus(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="menu";
   curMenu=0;
   id="";
-  widget=(QWidget*) new QMenuBar;
+  widget=(QWidget*) new QMenuBar(f);
   widget->setSizePolicy (QSizePolicy::Ignored, QSizePolicy::Maximum);
 }
 

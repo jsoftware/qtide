@@ -11,7 +11,7 @@ extern "C" Dllexport int glclear2(void *);
 extern Isigraph *isigraph;
 
 // ---------------------------------------------------------------------
-Isigraph2::Isigraph2(Child *c)
+Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
 {
   pchild = c;
   active=false;

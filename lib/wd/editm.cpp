@@ -11,7 +11,7 @@
 Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="editm";
-  QPlainTextEdit *w=new QPlainTextEdit;
+  QPlainTextEdit *w=new QPlainTextEdit(p);
   widget=(QWidget*) w;
   QString qs=s2q(s);
   w->setObjectName(qs);

@@ -12,7 +12,7 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
 //  qDebug() << "make ListBox";
   type="listbox";
-  QListWidget *w=new QListWidget;
+  QListWidget *w=new QListWidget(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

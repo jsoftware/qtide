@@ -13,7 +13,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="ToolBar";
 
-  QToolBar *w=new QToolBar;
+  QToolBar *w=new QToolBar(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

@@ -10,7 +10,7 @@
 CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="checkbox";
-  QCheckBox *w=new QCheckBox;
+  QCheckBox *w=new QCheckBox(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

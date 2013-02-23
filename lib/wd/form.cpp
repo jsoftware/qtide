@@ -19,7 +19,7 @@
 extern int jedo(char*);
 
 // ---------------------------------------------------------------------
-Form::Form(string s, string p, string loc, QWidget *parent)
+Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 {
   Q_UNUSED(parent);
   id=s;
@@ -36,7 +36,7 @@ Form::Form(string s, string p, string loc, QWidget *parent)
   closeok=m.contains("closeok");
   escclose=m.contains("escclose");
   setpn(s);
-  layout=new QVBoxLayout;
+  layout=new QVBoxLayout(this);
   layout->setContentsMargins(0,0,0,0);
   layout->setSpacing(0);
   addpane(0);

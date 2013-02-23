@@ -21,7 +21,7 @@ class Isigraph2 : public QWidget
   Q_OBJECT
 
 public:
-  Isigraph2(Child *c);
+  Isigraph2(Child *c, QWidget *parent);
   ~Isigraph2();
 
   QBrush brush;

@@ -12,7 +12,7 @@
 RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="radiobutton";
-  QRadioButton *w=new QRadioButton;
+  QRadioButton *w=new QRadioButton(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

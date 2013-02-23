@@ -19,7 +19,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
 
-  Opengl2 *w= new Opengl2(this, qglFormat);
+  Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

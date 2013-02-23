@@ -14,7 +14,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="tabs";
   index=0;
 
-  QTabWidget *w=new QTabWidget;
+  QTabWidget *w=new QTabWidget(p);
   widget=(QWidget*) w;
 
   form->tabs.append(this);

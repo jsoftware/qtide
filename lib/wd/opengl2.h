@@ -17,7 +17,7 @@ class Opengl2 : public QGLWidget
   Q_OBJECT
 
 public:
-  Opengl2(Child *c, const QGLFormat& format);
+  Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
   ~Opengl2();
   void paintgl ();
 

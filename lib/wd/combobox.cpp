@@ -11,7 +11,7 @@
 ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
-  QComboBox *w=new QComboBox;
+  QComboBox *w=new QComboBox(p);
   widget=(QWidget*) w;
   if (s.substr(0,4)=="edit")
     w->setEditable(true);

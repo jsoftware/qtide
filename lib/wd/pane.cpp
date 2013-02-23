@@ -34,7 +34,7 @@
 extern int jedo(char*);
 
 // ---------------------------------------------------------------------
-Pane::Pane(int n,Form *f)
+Pane::Pane(int n,Form *f) : QWidget(f)
 {
   pform=f;
   buttongroup=0;
