@@ -44,13 +44,24 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   connect(w,SIGNAL(currentChanged(int)),
           this,SLOT(currentChanged(int)));
 
+  connect(w,SIGNAL(tabCloseRequested(int)),
+          this,SLOT(tabCloseRequested(int)));
+
 }
 
 // ---------------------------------------------------------------------
-void Tabs::currentChanged(int index)
+void Tabs::currentChanged(int ndx)
 {
-  Q_UNUSED(index);
+  Q_UNUSED(ndx);
   event="select";
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+void Tabs::tabCloseRequested(int ndx)
+{
+  index=ndx;
+  event="tabclose";
   pform->signalevent(this);
 }
 
@@ -61,10 +72,11 @@ void Tabs::setp(string p,string v)
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
   int ndx=opt.at(0).toInt();
-
-  if (p=="active") {
+  if (p=="active")
     w->setCurrentIndex(ndx);
-  } else if (p=="label") {
+  else if (p=="tabclose")
+    w->removeTab(ndx);
+  else if (p=="label") {
     if (opt.size()<2) return;
     w->setTabText(ndx,opt.at(1));
   } else Child::setp(p,v);
@@ -74,15 +86,17 @@ void Tabs::setp(string p,string v)
 string Tabs::state()
 {
   QTabWidget *w=(QTabWidget*) widget;
-  int n=w->currentIndex();
-  string r;
-  if (n<0) {
-    r+=spair(id,"");
-    r+=spair(id+"_select","");
-  } else {
-    r+=spair(id,q2s(w->tabText(n)));
-    r+=spair(id+"_select",i2s(n));
-  }
+  int n;
+  if (this==pform->evtchild && event=="tabclose")
+    n=index;
+  else
+    n=w->currentIndex();
+  string r,s,t;
+  for (int i=0; i<w->count(); i++)
+    s+=q2s(w->tabText(i)) + '\377';
+  if (n>=0) t=i2s(n);
+  r+=spair(id,s);
+  r+=spair(id+"_select",t);
   return r;
 }
 
