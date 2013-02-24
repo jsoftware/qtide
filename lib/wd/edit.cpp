@@ -14,7 +14,22 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QLineEdit *w=new QLineEdit(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+
+  if (opt.contains("password"))
+    w->setEchoMode(QLineEdit::Password);
+
+  if (opt.contains("readonly"))
+    w->setReadOnly(true);
+
+  if (opt.contains("left"))
+    w->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  else if (opt.contains("right"))
+    w->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  else if (opt.contains("center"))
+    w->setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+
   connect(w,SIGNAL(returnPressed()),
           this,SLOT(returnPressed()));
 }
@@ -30,6 +45,17 @@ void Edit::returnPressed()
 void Edit::set(string p)
 {
   ((QLineEdit *)widget)->setText(s2q(p));
+}
+
+// ---------------------------------------------------------------------
+void Edit::setp(string p,string v)
+{
+  QLineEdit *w = (QLineEdit *)widget;
+  QStringList opt=qsplit(v);
+  if (opt.isEmpty()) return;
+  if (p=="limit")
+    w->setMaxLength(opt.at(0).toInt());
+  else Child::setp(p,v);
 }
 
 // ---------------------------------------------------------------------
