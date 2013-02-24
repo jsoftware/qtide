@@ -30,6 +30,7 @@ void wdcc();
 void wdcn();
 void wdend();
 void wdfontdef();
+void wdmb();
 void wdmenu(string);
 void wdnotyet();
 void wdpactive();
@@ -148,6 +149,8 @@ void wd1()
       wdend();
     else if (c=="fontdef")
       wdfontdef();
+    else if (c.substr(0,2)=="mb")
+      wdmb();
     else if (c.substr(0,4)=="menu")
       wdmenu(c);
     else if (c[0]=='p')
@@ -231,6 +234,13 @@ void wdfontdef()
   if (noform()) return;
   string p=cmd.getparms();
   form->fontdef = new Font(p);
+}
+
+// ---------------------------------------------------------------------
+void wdmb()
+{
+  result=q2s(mb(cmd.getparms()));
+  rc=-1;
 }
 
 // ---------------------------------------------------------------------

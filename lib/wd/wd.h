@@ -7,5 +7,6 @@ using namespace std;
 #include "../base/base.h"
 
 string remquotes(string s);
+QString mb(string p);
 
 #endif

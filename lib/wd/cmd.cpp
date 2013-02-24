@@ -130,6 +130,10 @@ QStringList Cmd::qsplits()
     skips(WS);
     bgn=pos;
     c=str[pos++];
+    if (c=='*') {
+      r.append(s2q(str.substr(pos)));
+      break;
+    }
     if (c=='"' || c==DEL) {
       skippast(c);
       r.append(s2q(str.substr(bgn+1,pos-bgn-2)));
@@ -187,6 +191,7 @@ QStringList bsplit(string s)
 
 // ---------------------------------------------------------------------
 // split on blank (except in quotes) and LF
+// *indicates rest is a single string
 QStringList qsplit(string s)
 {
   Cmd c;
