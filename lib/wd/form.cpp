@@ -1,6 +1,5 @@
 
 #include <QBoxLayout>
-#include <QButtonGroup>
 #include <QMenuBar>
 #include <QSignalMapper>
 

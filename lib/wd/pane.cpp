@@ -26,6 +26,7 @@
 #include "static.h"
 #include "table.h"
 #include "tabs.h"
+#include "toolbar.h"
 #ifdef QT_WEBKIT
 #include "webview.h"
 #endif
@@ -85,6 +86,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Table(n,p,pform,this);
   else if (c=="tab")
     child=(Child *) new Tabs(n,p,pform,this);
+  else if (c=="toolbar")
+    child=(Child *) new ToolBar(n,p,pform,this);
 #ifdef QT_WEBKIT
   else if (c=="webview")
     child=(Child *) new Webview(n,p,pform,this);

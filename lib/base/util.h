@@ -55,6 +55,7 @@ void notyet(QString);
 QString p2q(int *);
 std::string p2s(const void *p);
 void q2p(QString,int *);
+bool qshasonly(const QString s, const QString t);
 std::string q2s(QString);
 bool queryNY(QString t,QString s);
 bool queryOK(QString t,QString s);

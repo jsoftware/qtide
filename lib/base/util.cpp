@@ -520,6 +520,15 @@ QList<int> qs2intlist(QString c)
 }
 
 // ---------------------------------------------------------------------
+// if s has only characters in t
+bool qshasonly(const QString s, const QString t)
+{
+  for (int i=0; i<s.size(); i++)
+    if (!t.contains(s.at(i))) return false;
+  return true;
+}
+
+// ---------------------------------------------------------------------
 QString qstaketo(QString s,QString c)
 {
   int n=s.indexOf(c);
