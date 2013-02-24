@@ -28,6 +28,7 @@
 #include "cmd.h"
 
 QString mbcolor();
+QString mbdir();
 QString mbfont();
 QString mbinfo(QString);
 QString mbmsg();
@@ -52,6 +53,8 @@ QString mb(string p)
   arg.removeFirst();
   if (type=="color")
     return mbcolor();
+  if (type=="dir")
+    return mbdir();
   if (type=="font")
     return mbfont();
   if (type=="open")
@@ -110,6 +113,18 @@ QString mbcolor()
 }
 
 // ---------------------------------------------------------------------
+QString mbdir()
+{
+  QString title,dir;
+  if (arg.size()!=2)
+    return mbinfo("dir needs title, directory");
+  title=arg.at(0);
+  dir=arg.at(1);
+  return QFileDialog::getExistingDirectory(
+           QApplication::focusWidget(),title,dir);
+}
+
+// ---------------------------------------------------------------------
 QString mbfont()
 {
   bool ok;
@@ -125,6 +140,10 @@ QString mbfont()
       def.setBold(true);
     if (s=="italic")
       def.setItalic(true);
+    if (s=="strikeout")
+      def.setStrikeOut(true);
+    if (s=="underline")
+      def.setUnderline(true);
   }
   font=QFontDialog::getFont(&ok,def,QApplication::focusWidget());
   if (!ok) return "";
@@ -132,6 +151,8 @@ QString mbfont()
   r="\"" + font.family() + "\" " + QString::number(font.pointSize());
   if (font.bold()) r+=" bold";
   if (font.italic()) r+=" italic";
+  if (font.strikeOut()) r+=" strikeout";
+  if (font.underline()) r+=" underline";
   return r;
 }
 
