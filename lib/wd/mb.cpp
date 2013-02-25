@@ -11,13 +11,13 @@
 // if one button, there is no result,
 // otherwise the result is the button name (ok, cancel, ...)
 //
-// buttons (with numeric values) are from the set:
-//  0 mb_ok
-//  1 mb_cancel
-//  2 mb_yes
-//  3 mb_no
-//  4 mb_save
-//  5 mb_discard
+// buttons are from the set:
+//  mb_ok
+//  mb_cancel
+//  mb_yes
+//  mb_no
+//  mb_save
+//  mb_discard
 
 #include <QApplication>
 #include <QFileDialog>
