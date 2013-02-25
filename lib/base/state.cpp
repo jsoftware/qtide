@@ -16,6 +16,7 @@
 #include "term.h"
 
 #ifdef ANDROID
+#include <QAndroidStyle>
 extern "C" void javaOnLoad(void *,void *,void *);
 #endif
 
@@ -264,6 +265,9 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
 {
 #ifdef ANDROID
   javaOnLoad(vm,qtapp,qtact);
+  QAndroidStyle *androidStyle = new QAndroidStyle();
+  QApplication::setPalette(androidStyle->standardPalette());
+  QApplication::setStyle(androidStyle);
 #endif
   LibName=lib;
   state_init_resource();

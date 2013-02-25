@@ -43,10 +43,6 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   signalMapper=new QSignalMapper(this);
   connect(signalMapper,SIGNAL(mapped(QWidget *)),
           this,SLOT(buttonClicked(QWidget *)));
-#ifdef ANDROID
-// android bug, text invisible
-  setStyleSheet("QListView{color: black; selection-color: blue;}");
-#endif
 }
 
 // ---------------------------------------------------------------------
