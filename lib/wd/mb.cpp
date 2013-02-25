@@ -117,7 +117,7 @@ QString mbdir()
 {
   QString title,dir;
   if (arg.size()!=2)
-    return mbinfo("dir needs title, directory");
+    return mbinfo("dir needs title and directory");
   title=arg.at(0);
   dir=arg.at(1);
   return QFileDialog::getExistingDirectory(
