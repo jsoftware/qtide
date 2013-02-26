@@ -20,6 +20,7 @@
 //  mb_discard
 
 #include <QApplication>
+#include <QColorDialog>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QMessageBox>
@@ -108,8 +109,19 @@ QString mbmsg()
 // ---------------------------------------------------------------------
 QString mbcolor()
 {
-  notyet("mbcolor");
-  return "";
+  QColor c;
+  int r,g,b;
+
+  if (arg.size()==3) {
+    r=arg.at(0).toInt();
+    g=arg.at(1).toInt();
+    b=arg.at(2).toInt();
+    c=QColor(r,g,b);
+  } else
+    c=Qt::white;
+  c=QColorDialog::getColor(c,QApplication::focusWidget());
+  if (!c.isValid()) return "";
+  return s2q(i2s(c.red()) + " " + i2s(c.green()) + " " + i2s(c.blue()));
 }
 
 // ---------------------------------------------------------------------
