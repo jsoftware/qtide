@@ -34,13 +34,6 @@ void Config::config_init()
   c << "dirmatch.cfg" << "launch.cfg" << "qtide.cfg";
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
-  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
-    cfwrite(ConfigPath.filePath(f),cfread(s+f));
-
-  c.empty();
-  c << "base.cfg" << "folders.cfg";
-  s=cpath("~system/config/");
-  foreach (QString f,c)
   if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
     t=cfread(s+f);
 #ifdef __MACH__
@@ -52,6 +45,13 @@ void Config::config_init()
 #endif
     cfwrite(ConfigPath.filePath(f),t);
   }
+
+  c.empty();
+  c << "base.cfg" << "folders.cfg";
+  s=cpath("~system/config/");
+  foreach (QString f,c)
+  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
+    cfwrite(ConfigPath.filePath(f),cfread(s+f));
 }
 
 // ---------------------------------------------------------------------
