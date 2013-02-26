@@ -48,7 +48,7 @@ QString getname(int);
 QString mb(string p)
 {
   arg=qsplit(p);
-  if (arg.size()<2) return "";
+  if (arg.size()<1) return mbinfo("missing mb type");
 
   type=arg.first();
   arg.removeFirst();
@@ -142,6 +142,8 @@ QString mbfont()
   bool ok;
   QFont font, def;
   QString s;
+  def.setStrikeOut(false);
+  def.setUnderline(false);
   if (arg.size())
     def.setFamily(arg.at(0));
   if (arg.size()>1)
