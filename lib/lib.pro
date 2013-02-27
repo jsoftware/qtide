@@ -30,6 +30,7 @@ DEFINES += "JQT"
 DEFINES += "QT_WEBKIT"
 DEFINES += "QT_OPENGL"
 android:DEFINES -= "QT_OPENGL"
+greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
 # Input

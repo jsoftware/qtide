@@ -11,13 +11,13 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "opengl";
 
-  QGLFormat qglFormat;
-  qglFormat.setProfile(QGLFormat::CoreProfile);
-  qglFormat.setSampleBuffers(true);
-
   QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+  QGLFormat qglFormat;
+  qglFormat.setSampleBuffers(true);
+#ifdef QT47
   if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
+#endif
 
   Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;
