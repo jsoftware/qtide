@@ -24,6 +24,7 @@
 #endif
 #include "radiobutton.h"
 #include "static.h"
+#include "statusbar.h"
 #include "table.h"
 #include "tabs.h"
 #include "toolbar.h"
@@ -82,6 +83,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Static(n,p,pform,this);
   else if (c=="staticbox")
     child=(Child *) new Static(n,"staticbox " + p,pform,this);
+  else if (c=="statusbar")
+    child=(Child *) new StatusBar(n,p,pform,this);
   else if (c=="table")
     child=(Child *) new Table(n,p,pform,this);
   else if (c=="tab")
