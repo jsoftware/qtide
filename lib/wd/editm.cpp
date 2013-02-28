@@ -6,6 +6,7 @@
 #include "editm.h"
 #include "form.h"
 #include "pane.h"
+#include "cmd.h"
 
 // ---------------------------------------------------------------------
 Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
@@ -13,14 +14,28 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="editm";
   QPlainTextEdit *w=new QPlainTextEdit(p);
   widget=(QWidget*) w;
-  QString qs=s2q(s);
-  w->setObjectName(qs);
+  QString qn=s2q(n);
+  QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  if (opt.contains("readonly"))
+    w->setReadOnly(true);
 }
 
 // ---------------------------------------------------------------------
 void Editm::set(string p)
 {
   ((QPlainTextEdit*) widget)->setPlainText(s2q(p));
+}
+
+// ---------------------------------------------------------------------
+void Editm::setp(string p,string v)
+{
+  QPlainTextEdit *w=(QPlainTextEdit*) widget;
+  QStringList opt=qsplit(v);
+  if (opt.isEmpty()) return;
+  if (p=="limit")
+    w->setMaximumBlockCount(opt.at(0).toInt());
+  else Child::setp(p,v);
 }
 
 // ---------------------------------------------------------------------
