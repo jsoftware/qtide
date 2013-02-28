@@ -54,6 +54,8 @@ void Child::setp(string p, string v)
     widget->update();
   else if (p=="show")
     widget->setVisible(!(remquotes(v)=="0" || remquotes(v)==""));
+  else if (p=="stylesheet")
+    setstylesheet(v);
   else if (p=="xywh")
     setxywh(v,2);
   else if (p=="xywhx")
@@ -74,9 +76,9 @@ void Child::setform()
 }
 
 // ---------------------------------------------------------------------
-string Child::state()
+void Child::setstylesheet(string p)
 {
-  return"";
+  widget->setStyleSheet(s2q(p));
 }
 
 // ---------------------------------------------------------------------
@@ -103,3 +105,8 @@ void Child::setminwh(int w, int h)
   }
 }
 
+// ---------------------------------------------------------------------
+string Child::state()
+{
+  return"";
+}

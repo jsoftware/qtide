@@ -24,6 +24,7 @@ public:
   virtual void setfont(QFont);
   virtual void setp(string p,string v);
   virtual void setform();
+  virtual void setstylesheet(string p);
   virtual string state();
 
   virtual void setxywh(string,int);

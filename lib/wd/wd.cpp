@@ -41,6 +41,7 @@ void wdpmovex();
 void wdpn();
 void wdpsel();
 void wdpshow();
+void wdpstylesheet();
 void wdptop();
 void wdq();
 void wdqd();
@@ -292,6 +293,8 @@ void wdp(string c)
     wdpsel();
   else if (c=="pshow")
     wdpshow();
+  else if (c=="pstylesheet")
+    wdpstylesheet();
   else if (c=="pactive")
     wdpactive();
   else if (c=="ptop")
@@ -392,6 +395,14 @@ void wdpshow()
   if (noform()) return;
   cmd.getparms();
   form->showit();
+}
+
+// ---------------------------------------------------------------------
+void wdpstylesheet()
+{
+  if (noform()) return;
+  string p=cmd.getparms();
+  form->setStyleSheet(s2q(p));
 }
 
 // ---------------------------------------------------------------------
