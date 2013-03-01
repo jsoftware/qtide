@@ -33,9 +33,19 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   shown=false;
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
-  closeok=m.contains("closeok");
   escclose=m.contains("escclose");
+  closeok=escclose||m.contains("closeok");
   setpn(s);
+
+  Qt::WindowFlags flags=0;
+  if (m.contains("dialog")) flags=Qt::Dialog;
+  if (m.contains("popup")) flags=Qt::Popup;
+  if (m.contains("minbutton")) flags|=Qt::WindowMinimizeButtonHint;
+  if (m.contains("maxbutton")) flags|=Qt::WindowMaximizeButtonHint;
+  if (m.contains("closebutton")) flags|=Qt::WindowCloseButtonHint;
+  if (m.contains("ptop")) flags=Qt::WindowStaysOnTopHint;
+  setWindowFlags(flags);
+
   layout=new QVBoxLayout(this);
   layout->setContentsMargins(0,0,0,0);
   layout->setSpacing(0);

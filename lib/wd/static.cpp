@@ -1,4 +1,5 @@
 
+#include <QBoxLayout>
 #include <QLabel>
 
 #include "wd.h"
@@ -19,7 +20,6 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setWordWrap(true);
   if (s.substr(0,9)!="staticbox")
     w->setText(qn);
-
   if (opt.contains("left"))
     w->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   else if (opt.contains("right"))
@@ -31,14 +31,15 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // ---------------------------------------------------------------------
 void Static::set(string p)
 {
-  ((QLabel *)widget)->setText(s2q(p));
+  QLabel *w=(QLabel *)widget;
+  w->setText(s2q(p));
 }
 
 // ---------------------------------------------------------------------
 void Static::setp(string p,string v)
 {
   if (p=="caption")
-    ((QLabel *)widget)->setText(s2q(v));
+    set(v);
   else Child::setp(p,v);
 }
 

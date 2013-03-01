@@ -138,6 +138,8 @@ void Pane::bin(string s)
       addlayout(new QHBoxLayout,n);
     else if (c=='v')
       addlayout(new QVBoxLayout,n);
+    else if (c=='p')
+      layout->addSpacing(n);
     else if (c=='s')
       layout->addStretch(n);
     else if (c=='z' && layouts.size()>1) {
