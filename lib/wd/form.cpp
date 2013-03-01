@@ -172,6 +172,13 @@ bool Form::ischild(Child *n)
 // ---------------------------------------------------------------------
 void Form::keyPressEvent(QKeyEvent *e)
 {
+#ifdef ANDROID
+  if (e->key()==Qt::Key_MediaPrevious) {
+    activateWindow();
+    raise();
+    close();
+  }
+#endif
   if (escclose && e->key()==Qt::Key_Escape) {
     e->ignore();
     delete this;
@@ -202,6 +209,11 @@ void Form::showit()
   layout->addWidget(pane);
   setLayout(layout);
   show();
+#ifdef ANDROID
+  activateWindow();
+  raise();
+#endif
+
   shown=true;
 }
 
