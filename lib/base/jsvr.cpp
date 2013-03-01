@@ -242,7 +242,7 @@ int jefirst(int type,char* arg)
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
 
-#if ANDROID
+#ifdef ANDROID
   char *homepath;
   struct stat st;
   if(!getenv("HOME")) {
@@ -268,11 +268,11 @@ int jefirst(int type,char* arg)
   QFile *f2 = new QFile("assets_version.txt");
   if (f1->exists()) {
     QString s= cfread(f1);
-    if (!(s.isNull() || s.isEmpty())) v1=(int)strtol(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v1=strtoi(s.toUtf8().data(),NULL,0);
   }
   if (f2->exists()) {
     QString s= cfread(f2);
-    if (!(s.isNull() || s.isEmpty())) v2=(int)strtol(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v2=strtoi(s.toUtf8().data(),NULL,0);
   }
   delete f1;
   delete f2;
@@ -311,7 +311,7 @@ int jefirst(int type,char* arg)
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
-#if ANDROID
+#ifdef ANDROID
   strcat(input,homepath);
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");

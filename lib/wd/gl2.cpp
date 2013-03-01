@@ -190,9 +190,7 @@ int glsel2(char *g)
     return 0;
   }
   if ((p[0]=='_')||(p[0]=='-')||(p[0]=='0')||(p[0]=='1')||(p[0]=='2')||(p[0]=='3')||(p[0]=='4')||(p[0]=='5')||(p[0]=='6')||(p[0]=='7')||(p[0]=='8')||(p[0]=='9')) {
-    string q=p;
-    if (p[0]=='_') q[0]='-';
-    return glsel((void *) strtol(q.c_str(),NULL,0));
+    return glsel((void *) c_strtol(p));
   }
   Form *f;
 // search current form first

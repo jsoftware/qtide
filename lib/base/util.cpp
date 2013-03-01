@@ -689,3 +689,25 @@ void android_exec_host(char *intent,char *cmd,char *mimetype)
   else QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d " + QString::fromUtf8(cmd) + " -t " + QString::fromUtf8(mimetype) );
 }
 #endif
+
+// ---------------------------------------------------------------------
+int c_strtoi(string s)
+{
+  if (!s.size()) return 0;
+  string p=s;
+  if (p[0]=='_') p[0]='-';
+  return (int)strtol(p.c_str(),NULL,0);
+}
+
+// ---------------------------------------------------------------------
+SI c_strtol(string s)
+{
+  if (!s.size()) return 0;
+  string p=s;
+  if (p[0]=='_') p[0]='-';
+#if defined(_WIN64)
+  return _strtoi64(p.c_str(),NULL,0);
+#else
+  return strtol(p.c_str(),NULL,0);
+#endif
+}

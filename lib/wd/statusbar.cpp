@@ -31,7 +31,7 @@ void StatusBar::setp(string p,string v)
   if (n>0)
     s=arg.at(0);
   if (n>1)
-    m=arg.at(1).toInt();
+    m=c_strtoi(q2s(arg.at(1)));
 
   if (p=="show" && n)
     w->showMessage(s,m);

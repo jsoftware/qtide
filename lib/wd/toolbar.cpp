@@ -28,7 +28,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
         return;
       }
       qDebug() << "setting icon size" << sizes;
-      w->setIconSize(QSize(sizes.at(0).toInt(),sizes.at(1).toInt()));
+      w->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
     }
   }
 

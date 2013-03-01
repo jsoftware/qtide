@@ -90,4 +90,7 @@ typedef long long SI;
 typedef long SI;
 #endif
 
+int c_strtoi(std::string s);
+SI c_strtol(std::string s);
+
 #endif

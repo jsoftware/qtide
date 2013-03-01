@@ -2,6 +2,7 @@
 #include <QString>
 #include <QDebug>
 
+#include "wd.h"
 #include "font.h"
 
 // ---------------------------------------------------------------------
@@ -23,7 +24,7 @@ Font::Font(string s)
         else if (ss1[j]=="italic") italic = 1;
         else if (ss1[j]=="underline") underline = 1;
         else if (ss1[j]=="strikeout") strikeout = 1;
-        else if (ss1[j].mid(0,5)=="angle") angle = ss1[j].mid(5).toInt();
+        else if (ss1[j].mid(0,5)=="angle") angle = c_strtoi(q2s(ss1[j].mid(5)));
         else size = ss1[j].toFloat();
       }
     }
@@ -37,7 +38,7 @@ Font::Font(string s)
           else if (ss[j]=="italic") italic = 1;
           else if (ss[j]=="underline") underline = 1;
           else if (ss[j]=="strikeout") strikeout = 1;
-          else if (ss[j].mid(0,5)=="angle") angle = ss[j].mid(5).toInt();
+          else if (ss[j].mid(0,5)=="angle") angle = c_strtoi(q2s(ss[j].mid(5)));
           else size = ss[j].toFloat();
         }
       }

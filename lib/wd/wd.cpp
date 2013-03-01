@@ -88,10 +88,8 @@ string ccmd;
 int wdisparent(char *s)
 {
   string p= string(s);
-  string q= p;
   Form *f;
-  if (q[0]=='_') q[0]='-';
-  void *n=(void *) strtol(q.c_str(),NULL,0);
+  void *n=(void *) c_strtol(p);
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (n==f || p==f->id)
@@ -349,12 +347,9 @@ void wdpmovex()
     error("pmovex requires 4 numbers: " + p);
   else {
 #ifndef ANDROID
-    if (!((n.at(0)==QString("-1"))
-          ||(n.at(0)==QString("_1"))
-          ||(n.at(1)==QString("-1"))
-          ||(n.at(1)==QString("_1"))))
-      form->move(n.at(0).toInt(),n.at(1).toInt());
-    form->resize(n.at(2).toInt(),n.at(3).toInt());
+    if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
+      form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
+    form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
 #endif
   }
 }
@@ -376,9 +371,7 @@ void wdpsel()
     return;
   }
   Form *f;
-  string q=p;
-  if (q[0]=='_') q[0]='-';
-  void *n=(void *) strtol(q.c_str(),NULL,0);
+  void *n=(void *) c_strtol(p);
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (n==f || p==f->id) {
@@ -585,8 +578,8 @@ void wdxywh(int mul)
   if (n.size()!=4)
     error("xywh requires 2 numbers: " + p);
   else {
-    form->pane->sizew=mul*n.at(2).toInt();
-    form->pane->sizeh=mul*n.at(3).toInt();
+    form->pane->sizew=mul*c_strtoi(q2s(n.at(2)));
+    form->pane->sizeh=mul*c_strtoi(q2s(n.at(3)));
   }
 }
 
@@ -606,8 +599,8 @@ void wdwh()
   if (n.size()!=2)
     error("wh requires 2 numbers: " + p);
   else {
-    form->pane->sizew=n.at(0).toInt();
-    form->pane->sizeh=n.at(1).toInt();
+    form->pane->sizew=c_strtoi(q2s(n.at(0)));
+    form->pane->sizeh=c_strtoi(q2s(n.at(1)));
   }
 }
 

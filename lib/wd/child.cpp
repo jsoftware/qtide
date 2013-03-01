@@ -88,7 +88,7 @@ void Child::setxywh(string p,int unit)
   if (n.size()!=4) {
     qDebug() << "setxywh requires 4 numbers: " + s2q(p);
   } else {
-    widget->resize(n.at(2).toInt()*unit,n.at(3).toInt()*unit);
+    widget->resize(c_strtoi(q2s(n.at(2)))*unit,c_strtoi(q2s(n.at(3)))*unit);
   }
 }
 

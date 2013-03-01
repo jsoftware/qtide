@@ -34,7 +34,7 @@ void Editm::setp(string p,string v)
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
   if (p=="limit")
-    w->setMaximumBlockCount(opt.at(0).toInt());
+    w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
   else Child::setp(p,v);
 }
 

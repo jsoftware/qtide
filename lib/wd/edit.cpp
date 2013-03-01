@@ -54,7 +54,7 @@ void Edit::setp(string p,string v)
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
   if (p=="limit")
-    w->setMaxLength(opt.at(0).toInt());
+    w->setMaxLength(c_strtoi(q2s(opt.at(0))));
   else Child::setp(p,v);
 }
 

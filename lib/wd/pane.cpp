@@ -133,7 +133,7 @@ void Pane::bin(string s)
   for (i=0; i<p.size(); i++) {
     m=p.at(i);
     c=m[0];
-    n=m.mid(1).toInt();
+    n=c_strtoi(q2s(m.mid(1)));
     if (c=='h')
       addlayout(new QHBoxLayout,n);
     else if (c=='v')

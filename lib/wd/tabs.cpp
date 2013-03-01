@@ -71,7 +71,7 @@ void Tabs::setp(string p,string v)
   QTabWidget *w = (QTabWidget *)widget;
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
-  int ndx=opt.at(0).toInt();
+  int ndx=c_strtoi(q2s(opt.at(0)));
   if (p=="active")
     w->setCurrentIndex(ndx);
   else if (p=="tabclose")

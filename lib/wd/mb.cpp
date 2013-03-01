@@ -113,9 +113,9 @@ QString mbcolor()
   int r,g,b;
 
   if (arg.size()==3) {
-    r=arg.at(0).toInt();
-    g=arg.at(1).toInt();
-    b=arg.at(2).toInt();
+    r=c_strtoi(q2s(arg.at(0)));
+    g=c_strtoi(q2s(arg.at(1)));
+    b=c_strtoi(q2s(arg.at(2)));
     c=QColor(r,g,b);
   } else
     c=Qt::white;
@@ -147,7 +147,7 @@ QString mbfont()
   if (arg.size())
     def.setFamily(arg.at(0));
   if (arg.size()>1)
-    def.setPointSize(arg.at(1).toInt());
+    def.setPointSize(arg.at(1).toFloat());
   for (int i=2; i<arg.size(); i++) {
     s=arg.at(i);
     if (s=="bold")
