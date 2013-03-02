@@ -55,20 +55,21 @@ QString dialogfileopen(QWidget *w,QString t)
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {
-  QPrinter printer;
+  QPrinter printer(QPrinter::HighResolution);
   QPrintDialog *dlg = new QPrintDialog(&printer, w);
   dlg->setOptions(
 #ifdef QT48
     QAbstractPrintDialog::PrintCurrentPage|
 #endif
-    QAbstractPrintDialog::PrintToFile|
     QAbstractPrintDialog::PrintSelection|
     QAbstractPrintDialog::PrintPageRange|
     QAbstractPrintDialog::PrintShowPageSize|
     QAbstractPrintDialog::PrintCollateCopies);
+  dlg->setWindowTitle("Print Document");
   if (dlg->exec() != QDialog::Accepted)
     return;
   d->print(&printer);
+  delete dlg;
 }
 
 // ---------------------------------------------------------------------

@@ -61,6 +61,7 @@ bool queryNY(QString t,QString s);
 bool queryOK(QString t,QString s);
 bool queryRETRY(QString t,QString s);
 QString remsep(QString);
+QString remtilde(QString);
 QString s2q(std::string);
 std::string spair(std::string s,std::string t);
 QString termLF(QString s);

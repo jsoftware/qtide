@@ -7,6 +7,7 @@
 class QFileDialog;
 class QFileSystemModel;
 class QFileIconProvider;
+class QLineEdit;
 class QListView;
 class QListWidget;
 class QListWidgetItem;
@@ -36,6 +37,7 @@ private slots:
   void currentChanged(int index);
   void defs_activated(QListWidgetItem*);
   void file_activated(const QModelIndex &);
+  void path_returnPressed();
   void source_activated(QListWidgetItem*);
   void on_defsTB_actionTriggered();
   void on_fileTB_actionTriggered(QAction *action);
@@ -70,7 +72,7 @@ private:
   QString dext;
   QFileSystemModel *fm;
   QListView *flv;
-
+  QLineEdit *path;
   QListWidget *slw;
   QStringList ssl;
 };

@@ -378,7 +378,13 @@ void Fiw::search_replace(int d)
       TextPos=hit+pad;
       count++;
     }
+
+    int pos=Win->readcurpos();
+    int top=Win->readtop();
     Win->setPlainText(Text);
+    Win->settop(top);
+    Win->setcurpos(pos);
+
     s=QString::number(count) + " replacement";
     if(count>1) s+='s';
     s+=" made";

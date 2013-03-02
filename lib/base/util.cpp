@@ -638,6 +638,14 @@ QString remsep(QString s)
 }
 
 // ---------------------------------------------------------------------
+QString remtilde(QString s)
+{
+  if (s.startsWith("~"))
+    s=s.mid(1);
+  return s;
+}
+
+// ---------------------------------------------------------------------
 QString s2q(string s)
 {
   QString r=QString::fromUtf8(s.c_str());

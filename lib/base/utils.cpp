@@ -337,15 +337,6 @@ QString tofoldername(QString f)
       p=t;
   }
 
-//// prefer .folder if one level down?
-  //h=f.mid(cfpath(p).size());
-  //if (p.size()>0
-  //&& cfpath(p).size() > s.size()
-  //&& (!h.mid(1).contains('/'))) {
-  //i=config.AllFolderValues.indexOf(p);
-  //return "~." + config.AllFolderKeys.at(i) + h;
-  //}
-
   if (s.size()) {
     i=config.AllFolderValues.indexOf(s);
     return '~' + config.AllFolderKeys.at(i) + f.mid(s.size());

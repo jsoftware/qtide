@@ -96,7 +96,7 @@ QWidget *Nside::createfiles()
   layout->setContentsMargins(layout->contentsMargins());
   layout->setSpacing(0);
   QToolBar *t= Nside::createfileTB();
-  QLineEdit *e = new QLineEdit();
+  path = new QLineEdit();
   flv= new QListView();
 
   fm = new QFileSystemModel;
@@ -109,10 +109,12 @@ QWidget *Nside::createfiles()
   flv->setModel(fm);
   file_refresh();
 
+  connect(path,SIGNAL(returnPressed()),
+          this,SLOT(path_returnPressed()));
   connect(flv,SIGNAL(activated(const QModelIndex &)),
           this,SLOT(file_activated(const QModelIndex &)));
   layout->addWidget(t,0,0);
-  layout->addWidget(e,0,0);
+  layout->addWidget(path,0,0);
   layout->addWidget(flv,1,0);
   r->setLayout(layout);
   return r;
@@ -242,6 +244,16 @@ void Nside::file_refresh()
 {
   fm->setRootPath(Path);
   flv->setRootIndex(fm->index(Path));
+  path->setText(remtilde(tofoldername(Path)));
+}
+
+
+// ---------------------------------------------------------------------
+void Nside::path_returnPressed()
+{
+  QString p=path->text();
+  Path=cpath(p);
+  file_refresh();
 }
 
 // ---------------------------------------------------------------------
