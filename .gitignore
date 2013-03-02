@@ -1,6 +1,7 @@
 bin/jqt*
 bin/lib*
 lib/build
+lib/jqt_resource.rc
 jwd/libjwd*
 config/
 
