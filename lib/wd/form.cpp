@@ -26,7 +26,6 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   child=0;
   evtchild=0;
   locale=loc;
-  fontdef=0;
   menubar=0;
   tab=0;
   closed=false;

@@ -71,6 +71,7 @@ Cmd cmd;
 Child *cc=0;
 Form *form=0;
 Form *evtform=0;
+Font *fontdef=0;
 
 QList<Form *>Forms;
 
@@ -230,9 +231,8 @@ void wdend()
 // ---------------------------------------------------------------------
 void wdfontdef()
 {
-  if (noform()) return;
   string p=cmd.getparms();
-  form->fontdef = new Font(p);
+  fontdef = new Font(p);
 }
 
 // ---------------------------------------------------------------------
@@ -465,6 +465,7 @@ void wdreset()
   }
   form=0;
   evtform=0;
+  fontdef=0;
 }
 
 // ---------------------------------------------------------------------

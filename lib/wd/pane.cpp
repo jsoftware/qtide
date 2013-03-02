@@ -33,6 +33,7 @@
 #endif
 
 extern int jedo(char*);
+extern Font *fontdef;
 
 // ---------------------------------------------------------------------
 Pane::Pane(int n,Form *f) : QWidget(f)
@@ -102,7 +103,7 @@ bool Pane::addchild(string n,string c,string p)
     sizew=sizeh=0;
     return true;
   }
-  if (pform->fontdef) child->setfont(pform->fontdef->font);
+  if (fontdef) child->setfont(fontdef->font);
   if (child->widget) {
     layout->addWidget(child->widget);
     child->setminwh(sizew,sizeh);

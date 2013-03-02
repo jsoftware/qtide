@@ -52,7 +52,6 @@ public:
   string sysdata;
   string sysmodifiers;
 
-  Font *fontdef;
   Child *child;
   Child *evtchild;
   QList<Child *>children;
