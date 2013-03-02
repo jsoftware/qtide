@@ -359,7 +359,9 @@ string i2s(int i)
 {
   stringstream s;
   s << i;
-  return s.str();
+  string s1=s.str();
+  if (s1[0]=='-') s1[0]='_';
+  return s1;
 }
 
 // ---------------------------------------------------------------------
@@ -481,7 +483,7 @@ string p2s(const void *p)
   stringstream s;
   s << (SI) p;
   string s1=s.str();
-  if (s1[0]=='_') s1[0]='-';
+  if (s1[0]=='-') s1[0]='_';
   return s1;
 }
 

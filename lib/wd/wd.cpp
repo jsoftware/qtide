@@ -349,7 +349,8 @@ void wdpmovex()
 #ifndef ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
       form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
-    form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
+    if (c_strtoi(q2s(n.at(2)))!=-1 && c_strtoi(q2s(n.at(3)))!=-1)
+      form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
 #endif
   }
 }
@@ -435,14 +436,37 @@ void wdqueries(string s)
   if (s=="qm"||s=="qscreen"||s=="qcolor") {
     error("command not found");
     return;
+  } else if (s=="qpx") {
+    if (!Forms.size()) result="";
+    else {
+      string q;
+      for (int i=0; i<Forms.size(); i++)
+        q = q + p2s((void *)Forms.at(i)) + "\t"  + Forms.at(i)->id + "\t"  + Forms.at(i)->locale + "\t\012";
+      result=q;
+    }
+    return;
   }
+// queries that form is needed
   if (noform()) return;
   if (s=="qhwndp")
     result=form->hsform();
+  else if (s=="qformx")
+    result=form->qformx();
   else if (s=="qhwndc") {
     Child *cc;
     if ((cc=form->id2child(p))) result=p2s(cc);
-    else error("command failed: " + s);
+    else
+      error("command failed: " + s);
+  } else if (s=="qchildxywhx") {
+    Child *cc;
+    if ((cc=form->id2child(p))) {
+      if (!cc->widget) error("command failed: " + s);
+      else {
+        QPoint pos=cc->widget->mapTo(form,cc->widget->pos());
+        QSize size=cc->widget->size();
+        result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
+      }
+    } else error("command failed: " + s);
   } else
     error("command not found");
 }

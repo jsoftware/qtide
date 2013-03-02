@@ -161,6 +161,7 @@ J jeload(void* callbacks)
 void jepath(char* arg)
 {
 #ifdef _WIN32
+  Q_UNUSED(arg);
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;

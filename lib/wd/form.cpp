@@ -149,6 +149,12 @@ string Form::hsform()
 }
 
 // ---------------------------------------------------------------------
+string Form::qformx()
+{
+  return i2s(pos().x())+" "+i2s(pos().y())+" "+i2s(size().width())+" "+i2s(size().height());
+}
+
+// ---------------------------------------------------------------------
 Child *Form::id2child(string n)
 {
   for (int i=0; i<children.size(); i++)
