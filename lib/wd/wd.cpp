@@ -326,7 +326,8 @@ void wdpc()
   c=cmd.getid();
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
-  form=new Form(c,p,tlocale,0);
+  QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
+  form=new Form(c,p,tlocale,m.contains("owner")?form:0);
   evtform=form;
   Forms.append(form);
 }
