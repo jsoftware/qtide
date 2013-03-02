@@ -1,4 +1,6 @@
 
+#include <QDesktopWidget>
+#include <QApplication>
 #include <QLayout>
 #include <QTimer>
 
@@ -13,6 +15,8 @@
 #include "menus.h"
 #include "tabs.h"
 #include "../base/term.h"
+
+#include "math.h"
 
 extern "C" {
   Dllexport int wd(char *s,char *&r,int &len,char *loc);
@@ -433,8 +437,18 @@ void wdqueries(string s)
     return;
   }
 // queries that form not needed
-  if (s=="qm"||s=="qscreen"||s=="qcolor") {
+  if (s=="qm"||s=="qcolor") {
     error("command not found");
+    return;
+  } else if (s=="qscreen") {
+    int dpix=QApplication::desktop()->logicalDpiX();
+    int dpiy=QApplication::desktop()->logicalDpiY();
+    int w=QApplication::desktop()->width();
+    int h=QApplication::desktop()->height();
+    int mmx=25.4*w/dpix;
+    int mmy=25.4*h/dpiy;
+    int dia=sqrt(dpix*dpix+dpiy*dpiy);
+    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(QApplication::desktop()->depth()) + " 1 " + i2s(QApplication::desktop()->colorCount()) + " " + i2s(dpix) + " " + i2s(dpix) + " " + i2s(dia);
     return;
   } else if (s=="qpx") {
     if (!Forms.size()) result="";
