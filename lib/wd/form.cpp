@@ -38,7 +38,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   setpn(s);
 
   Qt::WindowFlags flags=0;
-  if (m.contains("dialog")) flags=Qt::Dialog;
+  if (m.contains("dialog")) flags=Qt::Dialog|Qt::WindowTitleHint|Qt::WindowStaysOnTopHint|Qt::CustomizeWindowHint;
   if (m.contains("popup")) flags=Qt::Popup;
   if (m.contains("minbutton")) flags|=Qt::WindowMinimizeButtonHint;
   if (m.contains("maxbutton")) flags|=Qt::WindowMaximizeButtonHint;
@@ -49,6 +49,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   layout=new QVBoxLayout(this);
   layout->setContentsMargins(0,0,0,0);
   layout->setSpacing(0);
+  if (m.contains("nosize")) layout->setSizeConstraint( QLayout::SetFixedSize );
   addpane(0);
   signalMapper=new QSignalMapper(this);
   connect(signalMapper,SIGNAL(mapped(QWidget *)),
