@@ -483,7 +483,7 @@ void wdqueries(string s)
     else {
       string q;
       for (int i=0; i<Forms.size(); i++)
-        q = q + p2s((void *)Forms.at(i)) + "\t"  + Forms.at(i)->id + "\t"  + Forms.at(i)->locale + "\t\012";
+        q = q + Forms.at(i)->id + "\t"  + p2s((void *)Forms.at(i)) + "\t"  + Forms.at(i)->locale + "\t\012";
       result=q;
     }
     return;
