@@ -36,6 +36,8 @@ QString mbmsg();
 QString mbopen();
 QString mbsave();
 
+QString fixsep(QString s);
+
 QString type;
 QStringList arg;
 
@@ -179,7 +181,7 @@ QString mbopen()
   title=arg.at(0);
   dir=arg.at(1);
   if (arg.size()==3)
-    filter=arg.at(2);
+    filter=fixsep(arg.at(2));
   return QFileDialog::getOpenFileName(
            QApplication::focusWidget(),title,dir,filter);
 }
@@ -193,7 +195,7 @@ QString mbsave()
   title=arg.at(0);
   dir=arg.at(1);
   if (arg.size()==3)
-    filter=arg.at(2);
+    filter=fixsep(arg.at(2));
   return QFileDialog::getSaveFileName(
            QApplication::focusWidget(),title,dir,filter);
 }
@@ -265,4 +267,10 @@ QString mbinfo(QString s)
 {
   info("Message Box",s);
   return "";
+}
+
+// ---------------------------------------------------------------------
+QString fixsep(QString s)
+{
+  return s.replace("|",";;");
 }

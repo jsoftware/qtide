@@ -1,6 +1,5 @@
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>

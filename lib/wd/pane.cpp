@@ -1,6 +1,7 @@
 
 #include <QBoxLayout>
 #include <QButtonGroup>
+#include <QGroupBox>
 #include <QSignalMapper>
 #include <QSplitter>
 
@@ -22,7 +23,9 @@
 #ifdef QT_OPENGL
 #include "opengl.h"
 #endif
+#include "progressbar.h"
 #include "radiobutton.h"
+#include "slider.h"
 #include "static.h"
 #include "statusbar.h"
 #include "table.h"
@@ -41,6 +44,7 @@ Pane::Pane(int n,Form *f) : QWidget(f)
   pform=f;
   buttongroup=0;
   child=0;
+  groupboxw=0;
   layout=0;
   sizew=sizeh=0;
   if (n==1) {
@@ -68,18 +72,20 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,"edit " + p,pform,this);
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,pform,this);
+  else if (c=="isigraph")
+    child=(Child *) new Isigraph(n,p,pform,this);
+  else if (c=="listbox")
+    child=(Child *) new ListBox(n,p,pform,this);
 #ifdef QT_OPENGL
   else if (c=="opengl")
     child=(Child *) new Opengl(n,p,pform,this);
 #endif
-  else if (c=="groupbox")
-    child=(Child *) new Static(n,"groupbox " + p,pform,this);
-  else if (c=="listbox")
-    child=(Child *) new ListBox(n,p,pform,this);
-  else if (c=="isigraph")
-    child=(Child *) new Isigraph(n,p,pform,this);
+  else if (c=="progressbar")
+    child=(Child *) new ProgressBar(n,p,pform,this);
   else if (c=="radiobutton")
     child=(Child *) new RadioButton(n,p,pform,this);
+  else if (c=="slider")
+    child=(Child *) new Slider(n,p,pform,this);
   else if (c=="static")
     child=(Child *) new Static(n,p,pform,this);
   else if (c=="staticbox")
@@ -166,6 +172,56 @@ void Pane::fini()
 }
 
 // ---------------------------------------------------------------------
+bool Pane::groupbox(string c, string s)
+{
+  QString cmd=s2q(c);
+  QString id;
+
+  if (cmd=="groupbox") {
+    if (!layout)
+      bin("v");
+    QStringList opt=qsplit(s);
+    if (opt.size())
+      id=opt.at(0);
+    groupboxw=new QGroupBox(id);
+    layout->addWidget(groupboxw);
+    QVBoxLayout *vb=new QVBoxLayout;
+    vb->addWidget(pform->addpane(0));
+    groupboxw->setLayout(vb);
+    return true;
+  }
+
+  if (cmd=="groupboxend") {
+    int n=pform->panes.size();
+    if (n>1) {
+      Pane *p=pform->panes.at(n-2);
+      if (p->groupboxw) {
+        fini();
+        p->groupboxw=0;
+        return true;
+      }
+      info ("Form definition","No groupbox to end");
+      return false;
+    }
+  }
+  return false;
+}
+
+// ---------------------------------------------------------------------
+bool Pane::line(string c, string s)
+{
+  Q_UNUSED(s);
+  QString cmd=s2q(c);
+  if (!(cmd=="line" || cmd=="lineh" || cmd=="linev"))
+    return false;
+  QFrame *f=new QFrame();
+  f->setFrameShape((cmd=="linev") ? QFrame::VLine : QFrame::HLine);
+  f->setFrameShadow(QFrame::Sunken);
+  layout->addWidget(f);
+  return true;
+}
+
+// ---------------------------------------------------------------------
 void Pane::setstretch(Child *cc, string factor)
 {
   layout->setStretchFactor(cc->widget,atoi(factor.c_str()));
@@ -177,9 +233,9 @@ bool Pane::split(string c, string s)
   if (c=="splith" || c=="splitv") {
     if (!layout)
       bin("v");
-    qsplit=new QSplitter((c=="splith")?Qt::Horizontal : Qt::Vertical);
-    qsplit->addWidget(pform->addpane(1));
-    qsplitp=qs2intlist(s2q(s));
+    qsplitter=new QSplitter((c=="splith")?Qt::Horizontal : Qt::Vertical);
+    qsplitter->addWidget(pform->addpane(1));
+    qsplitterp=qs2intlist(s2q(s));
     return true;
   }
 
@@ -191,18 +247,18 @@ bool Pane::split(string c, string s)
   if (c=="splitend")
     sp->splitend();
   else
-    sp->qsplit->addWidget(pform->addpane(1));
+    sp->qsplitter->addWidget(pform->addpane(1));
   return true;
 }
 
 // ---------------------------------------------------------------------
 void Pane::splitend()
 {
-  if (qsplitp.size()==4)
-    qsplit->setSizes(qsplitp.mid(2));
-  if (qsplitp.size()>=2) {
-    qsplit->setStretchFactor(0,qsplitp[0]);
-    qsplit->setStretchFactor(1,qsplitp[1]);
+  if (qsplitterp.size()==4)
+    qsplitter->setSizes(qsplitterp.mid(2));
+  if (qsplitterp.size()>=2) {
+    qsplitter->setStretchFactor(0,qsplitterp[0]);
+    qsplitter->setStretchFactor(1,qsplitterp[1]);
   }
-  layout->addWidget(qsplit);
+  layout->addWidget(qsplitter);
 }

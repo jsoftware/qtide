@@ -6,11 +6,13 @@
 
 class QBoxLayout;
 class QButtonGroup;
+class QGroupBox;
 class QSignalMapper;
 class QSplitter;
 
 class Child;
 class Form;
+class GroupBox;
 
 #include "wd.h"
 #include "form.h"
@@ -27,6 +29,8 @@ public:
   void addlayout(QBoxLayout *b, int n);
   void bin(string c);
   void fini();
+  bool groupbox(string c, string s);
+  bool line(string c, string s);
   string hschild();
   string hsform();
   bool nochild();
@@ -51,12 +55,13 @@ public:
   QButtonGroup *buttongroup;
   Child *child;
   Child *evtchild;
+  QGroupBox *groupboxw;
   QSignalMapper *signalMapper;
   QBoxLayout *layout;
   QList<QBoxLayout *>layouts;
   QList<int>layoutx;
-  QSplitter *qsplit;
-  QList<int> qsplitp;
+  QSplitter *qsplitter;
+  QList<int> qsplitterp;
 
 };
 

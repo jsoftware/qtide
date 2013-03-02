@@ -34,6 +34,8 @@ void wdcc();
 void wdcn();
 void wdend();
 void wdfontdef();
+void wdgroupbox(string c);
+void wdline(string);
 void wdmb();
 void wdmenu(string);
 void wdnotyet();
@@ -153,6 +155,10 @@ void wd1()
       wdend();
     else if (c=="fontdef")
       wdfontdef();
+    else if (c.substr(0,8)=="groupbox")
+      wdgroupbox(c);
+    else if (c.substr(0,4)=="line")
+      wdline(c);
     else if (c.substr(0,2)=="mb")
       wdmb();
     else if (c.substr(0,4)=="menu")
@@ -237,6 +243,24 @@ void wdfontdef()
 {
   string p=cmd.getparms();
   fontdef = new Font(p);
+}
+
+// ---------------------------------------------------------------------
+void wdgroupbox(string c)
+{
+  if (noform()) return;
+  string p=cmd.getparms();
+  if (!form->pane->groupbox(c,p))
+    error("unrecognized command: " + c + " " + p);
+}
+
+// ---------------------------------------------------------------------
+void wdline(string c)
+{
+  if (noform()) return;
+  string p=cmd.getparms();
+  if (!form->pane->line(c,p))
+    error("unrecognized command: " + c + " " + p);
 }
 
 // ---------------------------------------------------------------------
