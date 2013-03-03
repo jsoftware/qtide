@@ -17,7 +17,6 @@
 #include "font.h"
 #include "glz.h"
 #include "prtobj.h"
-#include "../base/state.h"
 
 QPrinter *pprinter=new QPrinter(QPrinter::HighResolution);
 Prtobj *prtobj=new Prtobj();
@@ -171,8 +170,11 @@ int glzclear2 (void *p)
   prtobj->brushnull = 1;
 
 // messed up here, but ProFont should be part of config...
-  string s=q2s(config.ProFont.family());
-  glzfont0(prtobj,(char *)s.c_str());
+#ifdef _WIN32
+  glzfont0(prtobj,(char *)"\"MS Sans Serif\" 10");
+#else
+  glzfont0(prtobj,(char *)"SansSerif 10");
+#endif
   prtobj->pen = QPen (prtobj->color, 1); // TODO in user space
   prtobj->textpen = QPen (prtobj->pen);
   prtobj->brushcolor = QColor (255, 255, 255);

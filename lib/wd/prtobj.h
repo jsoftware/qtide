@@ -6,9 +6,8 @@
 #include "font.h"
 
 // ---------------------------------------------------------------------
-class Prtobj : public QObject
+class Prtobj
 {
-  Q_OBJECT
 
 public:
   Prtobj();
@@ -33,14 +32,6 @@ public:
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
-
-public slots:
-
-protected:
-
-private slots:
-
-private:
 
 };
 
