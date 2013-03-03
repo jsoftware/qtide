@@ -18,6 +18,7 @@
 #include "dummy.h"
 #include "edit.h"
 #include "editm.h"
+#include "image.h"
 #include "isigraph.h"
 #include "listbox.h"
 #ifdef QT_OPENGL
@@ -72,6 +73,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,"edit " + p,pform,this);
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,pform,this);
+  else if (c=="image")
+    child=(Child *) new Image(n,p,pform,this);
   else if (c=="isigraph")
     child=(Child *) new Isigraph(n,p,pform,this);
   else if (c=="listbox")
