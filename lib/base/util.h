@@ -36,6 +36,7 @@ QString c2q(char *);
 std::string c2s(char *);
 bool createdir(QDir d);
 QString detab(QString s);
+QString dlb(QString s);
 QString dtb(QString s);
 QString dtLF(QString s);
 QStringList folder_tree(QString b,QString f,bool subdir);

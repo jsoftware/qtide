@@ -288,6 +288,17 @@ QString detab(QString s)
 }
 
 // ---------------------------------------------------------------------
+QString dlb(QString s)
+{
+  for (int n=0; n<s.size(); n++) {
+    if (!s.at(n).isSpace()) {
+      return s.mid(n);
+    }
+  }
+  return "";
+}
+
+// ---------------------------------------------------------------------
 QString dtb(QString s)
 {
   for (int n = s.size()-1; n>=0; n--) {

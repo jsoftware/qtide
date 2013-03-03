@@ -24,14 +24,17 @@
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QMessageBox>
+#include <QTextDocument>
 
 #include "wd.h"
 #include "cmd.h"
+#include "../base/dialog.h"
 
 QString mbcolor();
 QString mbdir();
 QString mbfont();
 QString mbinfo(QString);
+QString mbprint(bool);
 QString mbmsg();
 QString mbopen();
 QString mbsave();
@@ -62,6 +65,10 @@ QString mb(string p)
     return mbfont();
   if (type=="open")
     return mbopen();
+  if (type=="print") {
+    QString s=dlb(s2q(p.substr(5)));
+    return mbprint('*'==s.at(0));
+  }
   if (type=="save")
     return mbsave();
   if (type=="info"||type=="query"||type=="warn"||type=="critical")
@@ -185,6 +192,24 @@ QString mbopen()
   return QFileDialog::getOpenFileName(
            QApplication::focusWidget(),title,dir,filter);
 }
+
+// ---------------------------------------------------------------------
+QString mbprint(bool iftext)
+{
+  QString s=arg.at(0);
+  if (!iftext) {
+    if (!cfexist(s)) {
+      mbinfo("File not found: " + s);
+      return "";
+    }
+    s=cfread(s);
+  }
+
+  QTextDocument *d=new QTextDocument(s);
+  dialogprint(QApplication::focusWidget(),d);
+  return "";
+}
+
 
 // ---------------------------------------------------------------------
 QString mbsave()
