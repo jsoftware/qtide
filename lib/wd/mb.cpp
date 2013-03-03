@@ -30,11 +30,20 @@
 #include "cmd.h"
 #include "../base/dialog.h"
 
+#ifndef ANDROID
+#include <QPrinter>
+#include <QPrintDialog>
+extern QPrinter *pprinter;
+#endif
+
 QString mbcolor();
 QString mbdir();
 QString mbfont();
 QString mbinfo(QString);
+#ifndef ANDROID
 QString mbprint(bool);
+QString mbprinter();
+#endif
 QString mbmsg();
 QString mbopen();
 QString mbsave();
@@ -65,10 +74,14 @@ QString mb(string p)
     return mbfont();
   if (type=="open")
     return mbopen();
+#ifndef ANDROID
   if (type=="print") {
     QString s=dlb(s2q(p.substr(5)));
     return mbprint('*'==s.at(0));
   }
+  if (type=="printer")
+    return mbprinter();
+#endif
   if (type=="save")
     return mbsave();
   if (type=="info"||type=="query"||type=="warn"||type=="critical")
@@ -193,6 +206,7 @@ QString mbopen()
            QApplication::focusWidget(),title,dir,filter);
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
@@ -210,6 +224,24 @@ QString mbprint(bool iftext)
   return "";
 }
 
+// ---------------------------------------------------------------------
+QString mbprinter()
+{
+  QString r="";
+  QPrintDialog *dlg = new QPrintDialog(pprinter);
+  dlg->setOptions(
+#ifdef QT48
+    QAbstractPrintDialog::PrintCurrentPage|
+#endif
+    QAbstractPrintDialog::PrintSelection|
+    QAbstractPrintDialog::PrintPageRange|
+    QAbstractPrintDialog::PrintShowPageSize|
+    QAbstractPrintDialog::PrintCollateCopies);
+  if (dlg->exec() == QDialog::Accepted) r=pprinter->printerName();
+  delete dlg;
+  return r;
+}
+#endif
 
 // ---------------------------------------------------------------------
 QString mbsave()
