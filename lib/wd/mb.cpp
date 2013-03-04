@@ -225,9 +225,9 @@ QString mbprint(bool iftext)
   dialogprint(QApplication::focusWidget(),d);
   return "";
 }
-#endif
 
 // ---------------------------------------------------------------------
+// print with no dialog
 QString mbprintx(bool iftext)
 {
   QString s=arg.at(0);
@@ -243,6 +243,7 @@ QString mbprintx(bool iftext)
   d->print(&printer);
   return "";
 }
+#endif
 
 // ---------------------------------------------------------------------
 QString mbsave()
