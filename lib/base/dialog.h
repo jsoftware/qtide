@@ -8,3 +8,5 @@ void dialogprint(QWidget *w,QTextDocument *d);
 QString dialogsaveas(QWidget *w,QString t,QString p);
 QString getfilepath();
 QString getprojectpath();
+
+extern QPrinter *Printer;

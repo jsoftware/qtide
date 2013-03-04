@@ -213,16 +213,22 @@ QString mbopen()
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
-  QString s=arg.at(0);
-  if (!iftext) {
-    if (!cfexist(s)) {
-      mbinfo("File not found: " + s);
-      return "";
+  QTextDocument *d=0;
+
+  if (arg.size()) {
+    QString s=arg.at(0);
+    if (!iftext) {
+      if (!cfexist(s)) {
+        mbinfo("File not found: " + s);
+        return "";
+      }
+      s=cfread(s);
     }
-    s=cfread(s);
+    d=new QTextDocument(s);
   }
-  QTextDocument *d=new QTextDocument(s);
+
   dialogprint(QApplication::focusWidget(),d);
+  delete d;
   return "";
 }
 
@@ -230,6 +236,9 @@ QString mbprint(bool iftext)
 // print with no dialog
 QString mbprintx(bool iftext)
 {
+  if (arg.size()==0)
+    return mbinfo("No text given for printx");
+
   QString s=arg.at(0);
   if (!iftext) {
     if (!cfexist(s)) {
@@ -239,8 +248,11 @@ QString mbprintx(bool iftext)
     s=cfread(s);
   }
   QTextDocument *d=new QTextDocument(s);
-  QPrinter printer(QPrinter::HighResolution);
-  d->print(&printer);
+  if (Printer==0)
+    Printer=new QPrinter(QPrinter::HighResolution);
+  if (!Printer->isValid())
+    return mbinfo("Invalid printer: " + Printer->printerName());
+  d->print(Printer);
   return "";
 }
 #endif

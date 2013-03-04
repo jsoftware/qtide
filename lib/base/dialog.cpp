@@ -13,6 +13,8 @@
 #include "state.h"
 #include "tedit.h"
 
+QPrinter *Printer=0;
+
 // ---------------------------------------------------------------------
 QString dialogdirectory(QWidget *w,QString t,QString p)
 {
@@ -55,8 +57,10 @@ QString dialogfileopen(QWidget *w,QString t)
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {
-  QPrinter printer(QPrinter::HighResolution);
-  QPrintDialog *dlg = new QPrintDialog(&printer, w);
+  if (Printer==0)
+    Printer=new QPrinter(QPrinter::HighResolution);
+
+  QPrintDialog *dlg = new QPrintDialog(Printer, w);
   dlg->setOptions(
 #ifdef QT48
     QAbstractPrintDialog::PrintCurrentPage|
@@ -68,7 +72,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
   dlg->setWindowTitle("Print Document");
   if (dlg->exec() != QDialog::Accepted)
     return;
-  d->print(&printer);
+  if (d) d->print(Printer);
   delete dlg;
 }
 
