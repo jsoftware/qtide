@@ -42,6 +42,7 @@ QString mbfont();
 QString mbinfo(QString);
 #ifndef ANDROID
 QString mbprint(bool);
+QString mbprintx(bool);
 QString mbprinter();
 #endif
 QString mbmsg();
@@ -79,8 +80,10 @@ QString mb(string p)
     QString s=dlb(s2q(p.substr(5)));
     return mbprint('*'==s.at(0));
   }
-  if (type=="printer")
-    return mbprinter();
+  if (type=="printx") {
+    QString s=dlb(s2q(p.substr(6)));
+    return mbprintx('*'==s.at(0));
+  }
 #endif
   if (type=="save")
     return mbsave();
@@ -218,30 +221,28 @@ QString mbprint(bool iftext)
     }
     s=cfread(s);
   }
-
   QTextDocument *d=new QTextDocument(s);
   dialogprint(QApplication::focusWidget(),d);
   return "";
 }
+#endif
 
 // ---------------------------------------------------------------------
-QString mbprinter()
+QString mbprintx(bool iftext)
 {
-  QString r="";
-  QPrintDialog *dlg = new QPrintDialog(pprinter);
-  dlg->setOptions(
-#ifdef QT48
-    QAbstractPrintDialog::PrintCurrentPage|
-#endif
-    QAbstractPrintDialog::PrintSelection|
-    QAbstractPrintDialog::PrintPageRange|
-    QAbstractPrintDialog::PrintShowPageSize|
-    QAbstractPrintDialog::PrintCollateCopies);
-  if (dlg->exec() == QDialog::Accepted) r=pprinter->printerName();
-  delete dlg;
-  return r;
+  QString s=arg.at(0);
+  if (!iftext) {
+    if (!cfexist(s)) {
+      mbinfo("File not found: " + s);
+      return "";
+    }
+    s=cfread(s);
+  }
+  QTextDocument *d=new QTextDocument(s);
+  QPrinter printer(QPrinter::HighResolution);
+  d->print(&printer);
+  return "";
 }
-#endif
 
 // ---------------------------------------------------------------------
 QString mbsave()
