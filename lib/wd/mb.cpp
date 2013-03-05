@@ -26,15 +26,15 @@
 #include <QMessageBox>
 #include <QTextDocument>
 
-#include "wd.h"
-#include "cmd.h"
-#include "../base/dialog.h"
-
 #ifndef ANDROID
 #include <QPrinter>
 #include <QPrintDialog>
-extern QPrinter *pprinter;
+extern QPrinter *Printer;
 #endif
+
+#include "wd.h"
+#include "cmd.h"
+#include "../base/dialog.h"
 
 QString mbcolor();
 QString mbdir();
@@ -43,7 +43,6 @@ QString mbinfo(QString);
 #ifndef ANDROID
 QString mbprint(bool);
 QString mbprintx(bool);
-QString mbprinter();
 #endif
 QString mbmsg();
 QString mbopen();
@@ -213,9 +212,9 @@ QString mbopen()
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
-  QTextDocument *d=0;
-
+  QString r="";
   if (arg.size()) {
+    QTextDocument *d=0;
     QString s=arg.at(0);
     if (!iftext) {
       if (!cfexist(s)) {
@@ -225,11 +224,27 @@ QString mbprint(bool iftext)
       s=cfread(s);
     }
     d=new QTextDocument(s);
-  }
 
-  dialogprint(QApplication::focusWidget(),d);
-  delete d;
-  return "";
+    dialogprint(QApplication::focusWidget(),d);
+    delete d;
+  } else {
+    QPrintDialog *dlg = new QPrintDialog(Printer);
+    if (dlg->exec() == QDialog::Accepted) {
+      switch (Printer->outputFormat()) {
+      case QPrinter::PdfFormat :
+        r="_pdf:" + Printer->outputFileName();
+        break;
+      case QPrinter::PostScriptFormat :
+        r="_postscript:" + Printer->outputFileName();
+        break;
+      default :
+        r=Printer->printerName();
+        break;
+      }
+    }
+    delete dlg;
+  }
+  return r;
 }
 
 // ---------------------------------------------------------------------

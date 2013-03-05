@@ -2,8 +2,10 @@
 #include <QFileDialog>
 #include <QFont>
 #include <QFontDialog>
+#ifndef ANDROID
 #include <QPrinter>
 #include <QPrintDialog>
+#endif
 #include <QTextDocument>
 
 #include "base.h"
@@ -13,7 +15,9 @@
 #include "state.h"
 #include "tedit.h"
 
-QPrinter *Printer=0;
+#ifndef ANDROID
+QPrinter *Printer=new QPrinter(QPrinter::HighResolution);
+#endif
 
 // ---------------------------------------------------------------------
 QString dialogdirectory(QWidget *w,QString t,QString p)
@@ -54,6 +58,7 @@ QString dialogfileopen(QWidget *w,QString t)
   return QFileDialog::getOpenFileName(w,t,d,config.FilePatterns);
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {
@@ -75,6 +80,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
   if (d) d->print(Printer);
   delete dlg;
 }
+#endif
 
 // ---------------------------------------------------------------------
 QString dialogsaveas(QWidget *w,QString t,QString p)

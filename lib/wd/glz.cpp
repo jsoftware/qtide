@@ -18,7 +18,7 @@
 #include "glz.h"
 #include "prtobj.h"
 
-QPrinter *pprinter=new QPrinter(QPrinter::HighResolution);
+extern QPrinter *Printer;
 Prtobj *prtobj=new Prtobj();
 
 static int glzfont0 (Prtobj *prtobj, char *s);
@@ -57,7 +57,7 @@ qtarcisi (const int *y, const int *y2, int *ang)
 // ---------------------------------------------------------------------
 int glzqextent(char *s,int *wh)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   QFontMetrics fm = QFontMetrics ( (prtobj->font)->font );
@@ -69,7 +69,7 @@ int glzqextent(char *s,int *wh)
 // ---------------------------------------------------------------------
 int glzqextentw(char *s,int *w)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   QStringList n=(QString::fromUtf8 (s)).split("\n",QString::SkipEmptyParts);
@@ -84,7 +84,7 @@ int glzqextentw(char *s,int *w)
 // Height, Ascent, Descent, InternalLeading, ExternalLeading, AverageCharWidth, MaxCharWidth
 int glzqtextmetrics(int *tm)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   QFontMetrics fm = QFontMetrics ( (prtobj->font)->font );
@@ -112,8 +112,8 @@ QPrinter::DevicePixel  6
 // ---------------------------------------------------------------------
 int glzqwh(float *wh, int unit)
 {
-  if (!(wh && pprinter)) return 1;
-  QSizeF size = pprinter->paperSize((QPrinter::Unit)unit);
+  if (!(wh && Printer)) return 1;
+  QSizeF size = Printer->paperSize((QPrinter::Unit)unit);
   wh[0] = (float) size.width();
   wh[1] = (float) size.height();
   return 0;
@@ -123,7 +123,7 @@ int glzqwh(float *wh, int unit)
 int glzarc (const int *p)
 {
   int dy[2];
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   qtarcisi (p,  p + 4, dy);
@@ -134,7 +134,7 @@ int glzarc (const int *p)
 // ---------------------------------------------------------------------
 int glzbrush ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->brushcolor = QColor (prtobj->color);
@@ -147,7 +147,7 @@ int glzbrush ()
 // ---------------------------------------------------------------------
 int glzbrushnull ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->brushnull = 1;
@@ -159,7 +159,7 @@ int glzbrushnull ()
 int glzclear2 (void *p)
 {
   Prtobj *prtobj = (Prtobj *) p;
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if (!prtobj) return 1;
   prtobj->color = QColor (0, 0, 0);
   prtobj->orgx = 0;
@@ -194,14 +194,14 @@ int glzclear2 (void *p)
 // ---------------------------------------------------------------------
 int glzclear ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   return glzclear2 (prtobj);
 }
 
 // ---------------------------------------------------------------------
 int glzclip (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->clipped = 1;
@@ -213,7 +213,7 @@ int glzclip (const int *p)
 // ---------------------------------------------------------------------
 int glzclipreset ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   if (prtobj->clipped) {
@@ -226,7 +226,7 @@ int glzclipreset ()
 // ---------------------------------------------------------------------
 int glzellipse (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
@@ -245,7 +245,7 @@ static int glzfont_i (const int *p, int len)
 // ---------------------------------------------------------------------
 static int glzfont0 (Prtobj *prtobj, char *s)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->font = new Font (string(s));
@@ -265,7 +265,7 @@ int glzfont (char *s)
 int glzfont2 (const int *p, int len)
 {
   int size10, degree10, bold, italic, strikeout, underline;
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   size10 = *(p);
@@ -285,7 +285,7 @@ int glzfont2 (const int *p, int len)
 // ---------------------------------------------------------------------
 int glzfontangle (int a)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->font->angle = a;
@@ -295,7 +295,7 @@ int glzfontangle (int a)
 // ---------------------------------------------------------------------
 int glzlines (const int *p, int len)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   int c = len / 2;
@@ -318,7 +318,7 @@ int glznodblbuf (int a)
 // ---------------------------------------------------------------------
 int glzpen (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->pencolor = QColor (prtobj->color);
@@ -331,7 +331,7 @@ int glzpen (const int *p)
 int glzpie (const int *p)
 {
   int dy[2];
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   qtarcisi (p, p + 4, dy);
@@ -342,7 +342,7 @@ int glzpie (const int *p)
 // ---------------------------------------------------------------------
 int glzpixel (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->painter->drawPoint (*(p), *(p + 1));
@@ -366,7 +366,7 @@ static int glzpixels2(int x,int y,int w,int h,const uchar *p)
 int glzpixels(const int *p, int len)
 {
   Q_UNUSED(len);
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
 
   return glzpixels2 (*(p), *(p + 1), *(p + 2), *(p + 3), (uchar *)(p + 4));
 }
@@ -374,7 +374,7 @@ int glzpixels(const int *p, int len)
 // ---------------------------------------------------------------------
 int glzpixelsx (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
 #if defined(_WIN64)||defined(__LP64__)
@@ -388,7 +388,7 @@ int glzpixelsx (const int *p)
 // ---------------------------------------------------------------------
 int glzpolygon (const int *p, int len)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   int c = len / 2;
@@ -403,7 +403,7 @@ int glzpolygon (const int *p, int len)
 // ---------------------------------------------------------------------
 int glzrect (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
@@ -413,7 +413,7 @@ int glzrect (const int *p)
 // ---------------------------------------------------------------------
 int glzrgb (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   prtobj->color = QColor (*(p), *(p + 1), *(p + 2));
   return 0;
 }
@@ -431,7 +431,7 @@ static int glztext_i (const int *p, int len)
 int glztext (char *ys)
 {
   Q_UNUSED(ys);
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->painter->setPen(prtobj->textpen);
@@ -451,7 +451,7 @@ int glztext (char *ys)
 // ---------------------------------------------------------------------
 int glztextcolor ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->textcolor = QColor (prtobj->color);
@@ -463,7 +463,7 @@ int glztextcolor ()
 // ---------------------------------------------------------------------
 int glztextxy (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   prtobj->textx = *(p);
   prtobj->texty = *(p + 1);
   return 0;
@@ -472,7 +472,7 @@ int glztextxy (const int *p)
 // ---------------------------------------------------------------------
 int glzwindoworg (const int *p)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
   prtobj->painter->translate (*(p), *(p + 1));
@@ -488,7 +488,7 @@ int glzcmds (const int *ptr, int ncnt)
   int p = 0;
   int errcnt = 0;
 
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
 
@@ -604,8 +604,8 @@ int glzcmds (const int *ptr, int ncnt)
 // ---------------------------------------------------------------------
 int glzqresolution ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->resolution();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->resolution();
 }
 
 /*
@@ -621,120 +621,120 @@ enum PaperSource { Auto, Cassette, Envelope, EnvelopeManual, ..., SmallFormat }
 // ---------------------------------------------------------------------
 int glzqcolormode ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->colorMode();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->colorMode();
 }
 
 // ---------------------------------------------------------------------
 int glzqduplexmode ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->duplex();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->duplex();
 }
 
 // ---------------------------------------------------------------------
 int glzqorientation ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->orientation();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->orientation();
 }
 
 // ---------------------------------------------------------------------
 int glzqoutputFormat ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->outputFormat();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->outputFormat();
 }
 
 // ---------------------------------------------------------------------
 int glzqpageorder ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->pageOrder();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->pageOrder();
 }
 
 // ---------------------------------------------------------------------
 int glzqpapersize ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->paperSize();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->paperSize();
 }
 
 // ---------------------------------------------------------------------
 int glzqpapersource ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  return pprinter->paperSource();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  return Printer->paperSource();
 }
 
 // ---------------------------------------------------------------------
 int glzresolution (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 0;
-  pprinter->setResolution(n);
-  return pprinter->resolution();
+  if ((!Printer) || !Printer->isValid()) return 0;
+  Printer->setResolution(n);
+  return Printer->resolution();
 }
 
 // ---------------------------------------------------------------------
 int glzcolormode (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setColorMode((QPrinter::ColorMode)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setColorMode((QPrinter::ColorMode)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzduplexmode (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setDuplex((QPrinter::DuplexMode)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setDuplex((QPrinter::DuplexMode)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzorientation (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setOrientation((QPrinter::Orientation)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setOrientation((QPrinter::Orientation)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzoutputFormat (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setOutputFormat((QPrinter::OutputFormat)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setOutputFormat((QPrinter::OutputFormat)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzpageorder (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setPageOrder((QPrinter::PageOrder)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setPageOrder((QPrinter::PageOrder)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzpapersize (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setPaperSize((QPrinter::PaperSize)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setPaperSize((QPrinter::PaperSize)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzpapersource (int n)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->setPaperSource((QPrinter::PaperSource)n);
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->setPaperSource((QPrinter::PaperSource)n);
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzscale (float *xy)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (xy) prtobj->painter->scale(xy[0],xy[1]);
   return 0;
@@ -743,55 +743,61 @@ int glzscale (float *xy)
 // ---------------------------------------------------------------------
 int glzabortdoc ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  pprinter->abort();
+  if ((!Printer) || !Printer->isValid()) return 1;
+  Printer->abort();
   if ((!prtobj) || !prtobj->painter) return 0;
   prtobj->painter->end();
   delete prtobj->painter;
   prtobj->painter=0;
-  pprinter->setDocName("");
-  pprinter->setOutputFileName("");
+  Printer->setDocName("");
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glzenddoc ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   prtobj->painter->end();
   delete prtobj->painter;
   prtobj->painter=0;
-  pprinter->setDocName("");
-  pprinter->setOutputFileName("");
+  Printer->setDocName("");
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int glznewpage ()
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
+  if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
-  pprinter->newPage();
-  return 0;
+  return !Printer->newPage();
 }
 
 // ---------------------------------------------------------------------
 int glzprinter (char *printername)
 {
   if (!printername) return 1;
-  pprinter->setPrinterName(s2q(printername));
-  return 0;
+  if (printername[0]!='_') {
+    Printer->setPrinterName(s2q(printername));
+    Printer->setOutputFormat(QPrinter::NativeFormat);
+  } else {
+    QString p=s2q(printername);
+    if (p==s2q("_pdf")) Printer->setOutputFormat(QPrinter::PdfFormat);
+    else if (p==s2q("_postscript")) Printer->setOutputFormat(QPrinter::PostScriptFormat);
+    else return 1;
+  }
+  return !Printer->isValid();
 }
 
 // ---------------------------------------------------------------------
 int glzstartdoc (char *jobname, char *filename)
 {
-  if ((!pprinter) || !pprinter->isValid()) return 1;
-  if (jobname) pprinter->setDocName(s2q(jobname));
-  if (filename) pprinter->setOutputFileName(s2q(filename));
+  if ((!Printer) || !Printer->isValid()) return 1;
+  if (jobname) Printer->setDocName(s2q(jobname));
+  if (filename) Printer->setOutputFileName(s2q(filename));
   if (prtobj->painter) delete prtobj->painter;
-  prtobj->painter=new QPainter(pprinter);
+  prtobj->painter=new QPainter(Printer);
+  if (!prtobj->painter) return 1;
   glzclear2 (prtobj);
   return 0;
 }

@@ -72,7 +72,9 @@ void Menu::createActions()
   fileopentempAct = makeact("fileopentempAct","Open temp","Ctrl+O");
   fileopenuserAct = makeact("fileopenuserAct","Open user","");
   fileopensystemAct = makeact("fileopensystemAct","Open system","");
+#ifndef ANDROID
   fileprintAct = makeact("fileprintAct","Print","");
+#endif
   filequitAct = makeact("filequitAct","&Quit","Ctrl+Q");
   filerecentAct = makeact("filerecentAct","Recent","Ctrl+G");
   filereloadAct = makeact("filereloadAct","Reload q server","");
@@ -151,7 +153,11 @@ void Menu::createActions()
 
   ScriptEnable << clipcopyAct << clipcutAct << clippasteAct
                << editfiwAct << filecloseAct << filecloseallAct << filecloseotherAct
-               << filedeleteAct << fileprintAct << filesaveAct << filesaveallAct
+               << filedeleteAct
+#ifndef ANDROID
+               << fileprintAct
+#endif
+               << filesaveAct << filesaveallAct
                << filesaveasAct << runalllinesAct << runalllines1Act
                << runalllines2Act << runlineAct << runlineadvanceAct
                << runlineadvanceshowAct << runlineshowAct << runscriptAct
@@ -250,7 +256,9 @@ void Menu::createfileMenu(QString s)
     fileMenu->addAction(filesaveasAct);
     fileMenu->addAction(filesaveallAct);
     fileMenu->addSeparator();
+#ifndef ANDROID
     fileMenu->addAction(fileprintAct);
+#endif
     fileMenu->addSeparator();
     fileMenu->addAction(filecloseAct);
     fileMenu->addAction(filecloseotherAct);
@@ -270,7 +278,9 @@ void Menu::createfileMenu(QString s)
       fileMenu->addAction(filereloadAct);
     }
     fileMenu->addSeparator();
+#ifndef ANDROID
     fileMenu->addAction(fileprintAct);
+#endif
   }
 
   fileMenu->addSeparator();
@@ -628,12 +638,14 @@ void Note::on_fileopentempAct_triggered()
   openfile(this,"temp");
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 void Note::on_fileprintAct_triggered()
 {
   if(editIndex()>=0)
     dialogprint(note,editPage()->document());
 }
+#endif
 
 // ---------------------------------------------------------------------
 void Note::on_filequitAct_triggered()
@@ -1182,11 +1194,13 @@ void Term::on_fileopensystemAct_triggered()
   openfile(this,"system");
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 void Term::on_fileprintAct_triggered()
 {
   dialogprint(term,tedit->document());
 }
+#endif
 
 // ---------------------------------------------------------------------
 void Term::on_filequitAct_triggered()
