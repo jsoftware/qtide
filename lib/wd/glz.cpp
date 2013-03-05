@@ -783,7 +783,7 @@ int glzprinter (char *printername)
   } else {
     QString p=s2q(printername);
     if (p==s2q("_pdf")) Printer->setOutputFormat(QPrinter::PdfFormat);
-    else if (p==s2q("_postscript")) Printer->setOutputFormat(QPrinter::PostScriptFormat);
+    else if (p==s2q("_ps")) Printer->setOutputFormat(QPrinter::PostScriptFormat);
     else return 1;
   }
   return !Printer->isValid();

@@ -228,6 +228,8 @@ QString mbprint(bool iftext)
     dialogprint(QApplication::focusWidget(),d);
     delete d;
   } else {
+    if (Printer==0)
+      Printer=new QPrinter(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(Printer);
     if (dlg->exec() == QDialog::Accepted) {
       switch (Printer->outputFormat()) {
@@ -235,7 +237,7 @@ QString mbprint(bool iftext)
         r="_pdf:" + Printer->outputFileName();
         break;
       case QPrinter::PostScriptFormat :
-        r="_postscript:" + Printer->outputFileName();
+        r="_ps:" + Printer->outputFileName();
         break;
       default :
         r=Printer->printerName();
