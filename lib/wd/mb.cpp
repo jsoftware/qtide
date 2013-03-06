@@ -225,12 +225,18 @@ QString mbprint(bool iftext)
     }
     d=new QTextDocument(s);
 
+#ifdef __MACH__
+    QApplication::processEvents(QEventLoop::AllEvents);
+#endif
     dialogprint(QApplication::focusWidget(),d);
     delete d;
   } else {
     if (Printer==0)
       Printer=new QPrinter(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(Printer);
+#ifdef __MACH__
+    QApplication::processEvents(QEventLoop::AllEvents);
+#endif
     if (dlg->exec() == QDialog::Accepted) {
       switch (Printer->outputFormat()) {
       case QPrinter::PdfFormat :
