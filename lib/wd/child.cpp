@@ -29,19 +29,7 @@ string Child::getsysmodifiers()
 }
 
 // ---------------------------------------------------------------------
-void Child::set(string p)
-{
-  Q_UNUSED(p);
-}
-
-// ---------------------------------------------------------------------
-void Child::setenable(string p)
-{
-  Q_UNUSED(p);
-}
-
-// ---------------------------------------------------------------------
-void Child::setp(string p, string v)
+void Child::set(string p, string v)
 {
   if (!widget) return;
   if (p=="locale")
@@ -60,7 +48,14 @@ void Child::setp(string p, string v)
     setxywh(v,2);
   else if (p=="xywhx")
     setxywh(v,1);
+  else
+    info("set","set command not recognized: " + s2q(p));
+}
 
+// ---------------------------------------------------------------------
+void Child::setenable(string p)
+{
+  Q_UNUSED(p);
 }
 
 // ---------------------------------------------------------------------

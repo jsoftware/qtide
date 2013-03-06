@@ -36,14 +36,7 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void ProgressBar::set(string p)
-{
-  QProgressBar *w=(QProgressBar*) widget;
-  w->setValue(s2q(p).toInt());
-}
-
-// ---------------------------------------------------------------------
-void ProgressBar::setp(string p,string v)
+void ProgressBar::set(string p,string v)
 {
   QProgressBar *w=(QProgressBar*) widget;
   QString cmd=s2q(p);
@@ -53,6 +46,8 @@ void ProgressBar::setp(string p,string v)
     w->setMinimum(arg.at(0).toInt());
   else if (cmd=="max")
     w->setMaximum(arg.at(0).toInt());
-  else Child::setp(p,v);
+  else if (cmd=="pos" || cmd=="value")
+    w->setValue(s2q(v).toInt());
+  else Child::set(p,v);
 }
 

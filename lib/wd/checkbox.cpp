@@ -20,18 +20,14 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void CheckBox::set(string p)
+void CheckBox::set(string p,string v)
 {
   QCheckBox *w=(QCheckBox*) widget;
-  w->setChecked(p=="1");
-}
-
-// ---------------------------------------------------------------------
-void CheckBox::setp(string p,string v)
-{
   if (p=="caption")
-    ((QCheckBox *)widget)->setText(s2q(v));
-  else Child::setp(p,v);
+    w->setText(s2q(v));
+  else if (p=="value")
+    w->setChecked(v=="1");
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

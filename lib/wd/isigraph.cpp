@@ -26,7 +26,7 @@ void Isigraph::setform()
 }
 
 // ---------------------------------------------------------------------
-void Isigraph::setp(string p,string v)
+void Isigraph::set(string p,string v)
 {
-  Child::setp(p,v);
+  Child::set(p,v);
 }

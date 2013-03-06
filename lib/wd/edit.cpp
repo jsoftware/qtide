@@ -42,20 +42,16 @@ void Edit::returnPressed()
 }
 
 // ---------------------------------------------------------------------
-void Edit::set(string p)
-{
-  ((QLineEdit *)widget)->setText(s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void Edit::setp(string p,string v)
+void Edit::set(string p,string v)
 {
   QLineEdit *w = (QLineEdit *)widget;
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
   if (p=="limit")
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
-  else Child::setp(p,v);
+  else if (p=="text")
+    w->setText(s2q(v));
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

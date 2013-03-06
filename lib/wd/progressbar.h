@@ -14,8 +14,7 @@ class ProgressBar : public Child
 
 public:
   ProgressBar(string n, string s, Form *f, Pane *p);
-  void set(string p);
-  void setp(string p,string v);
+  void set(string p,string v);
 
 private slots:
 

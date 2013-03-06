@@ -45,7 +45,6 @@ void ToolBar::actionTriggered(QAction *a)
 }
 
 // ---------------------------------------------------------------------
-//QAction *ToolBar::makeact(QStringList opt)
 void ToolBar::makeact(QStringList opt)
 {
   if (opt.size()<3) {
@@ -65,7 +64,7 @@ void ToolBar::makeact(QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-void ToolBar::setp(string p,string v)
+void ToolBar::set(string p,string v)
 {
 
   QToolBar *w=(QToolBar *)widget;
@@ -75,6 +74,6 @@ void ToolBar::setp(string p,string v)
   else if (p=="addsep")
     w->addSeparator();
   else
-    Child::setp(p,v);
+    Child::set(p,v);
 }
 

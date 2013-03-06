@@ -37,11 +37,17 @@ void ListBox::itemActivated()
 }
 
 // ---------------------------------------------------------------------
-void ListBox::set(string p)
+void ListBox::set(string p, string v)
 {
   QListWidget *w=(QListWidget*) widget;
-  w->clear();
-  w->addItems(qsplit(p));
+  if (p=="items") {
+    w->clear();
+    w->addItems(qsplit(v));
+  } else if (p=="select") {
+    w->setCurrentRow(s2q(v).toInt());
+
+  } else
+    Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

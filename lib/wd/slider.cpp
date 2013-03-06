@@ -67,14 +67,7 @@ void Slider::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-void Slider::set(string p)
-{
-  QSlider *w=(QSlider*) widget;
-  w->setSliderPosition(s2q(p).toInt());
-}
-
-// ---------------------------------------------------------------------
-void Slider::setp(string p,string v)
+void Slider::set(string p,string v)
 {
   QSlider *w=(QSlider*) widget;
   QString cmd=s2q(p);
@@ -84,7 +77,9 @@ void Slider::setp(string p,string v)
     w->setMinimum(arg.at(0).toInt());
   else if (cmd=="max")
     w->setMaximum(arg.at(0).toInt());
-  else Child::setp(p,v);
+  else if (cmd=="pos"|| cmd=="value")
+    w->setSliderPosition(s2q(v).toInt());
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

@@ -29,19 +29,15 @@ void ComboBox::activated()
 }
 
 // ---------------------------------------------------------------------
-void ComboBox::set(string p)
+void ComboBox::set(string p,string v)
 {
   QComboBox *w=(QComboBox*) widget;
-  w->clear();
-  w->addItems(qsplit(p));
-}
-
-// ---------------------------------------------------------------------
-void ComboBox::setp(string p,string v)
-{
-  if (p=="select")
+  if (p=="items") {
+    w->clear();
+    w->addItems(qsplit(v));
+  } else if (p=="select")
     ((QComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
-  else Child::setp(p,v);
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

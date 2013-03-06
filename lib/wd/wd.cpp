@@ -62,7 +62,6 @@ void wdrem();
 void wdreset();
 void wdset();
 void wdsetenable();
-void wdsetp();
 void wdsetx(string);
 void wdsplit(string c);
 void wdstate(int);
@@ -179,13 +178,10 @@ void wd1()
       wdrem();
     else if (c=="reset")
       wdreset();
-    else if (c=="set") {
+    // nonce leave in setp
+    else if (c=="set" || c=="setp") {
       noevents(1);
       wdset();
-      noevents(0);
-    } else if (c=="setp") {
-      noevents(1);
-      wdsetp();
       noevents(0);
     } else if (c=="setenable")
       wdsetenable();
@@ -237,7 +233,7 @@ void wdcn()
   cc=form->child;
   if (nochild()) return;
   string p=remquotes(cmd.getparms());
-  cc->setp("caption",p);
+  cc->set("caption",p);
 }
 
 // ---------------------------------------------------------------------
@@ -569,14 +565,18 @@ void wdreset()
 void wdset()
 {
   string n=cmd.getid();
-  string p=cmd.getparms();
+  string p=cmd.getid();
+  string v=cmd.getparms();
   int type=setchild(n);
   switch (type) {
   case 1 :
-    cc->set(p);
+    if (p=="stretch")
+      form->pane->setstretch(cc,v);
+    else
+      cc->set(p,v);
     break;
   case 2 :
-    cc->setp(n,p);
+    cc->set(n+" "+p,v);
     break;
   }
 }
@@ -588,25 +588,12 @@ void wdsetenable()
   string p=cmd.getparms();
   switch (setchild(n)) {
   case 1:
-    cc->setenable(p);
+    //cc->setenable(p);
+    cc->set("enable",p);
     break;
   case 2:
     cc->setenable(n+" "+p);
     break;
-  }
-}
-
-// ---------------------------------------------------------------------
-void wdsetp()
-{
-  string n=cmd.getid();
-  if (nochildset(n)) return;
-  string p=cmd.getid();
-  string v=cmd.getparms();
-  if (p=="stretch")
-    form->pane->setstretch(cc,v);
-  else {
-    cc->setp(p,v);
   }
 }
 
@@ -621,7 +608,7 @@ void wdsetx(string c)
   }
   if (nochildset(n)) return;
   string p=cmd.getparms();
-  cc->setp(c.substr(3),p);
+  cc->set(c.substr(3),p);
 }
 
 // ---------------------------------------------------------------------
@@ -754,7 +741,7 @@ string remquotes(string s)
   return s;
 }
 
-// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------1
 // returns: 0=id not found
 //          1=child id (cc=child)
 //          2=menu id  (cc=menubar)

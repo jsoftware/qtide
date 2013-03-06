@@ -71,6 +71,7 @@ QString toqlist(QStringList);
 
 QList<int> qs2intlist(QString c);
 QString qstaketo(QString s,QString c);
+QVector<int> qs2intvector(QString c);
 
 QStringList qsldtbeach(QStringList s);
 QStringList qsldropeach(int n,QStringList s);

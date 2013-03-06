@@ -19,19 +19,16 @@ Webview::Webview(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Webview::set(string p)
+void Webview::set(string p,string v)
 {
-  ((QWebView *)widget)->load(QUrl(s2q(p)));
-  ((QWebView *)widget)->show();
-}
-
-// ---------------------------------------------------------------------
-void Webview::setp(string p,string v)
-{
+  QWebView *w = (QWebView *)widget;
   if (p=="baseurl") {
     baseUrl = QUrl(s2q(v));
   } else if (p=="html") {
-    ((QWebView *)widget)->setHtml(s2q(v), baseUrl);
-    ((QWebView *)widget)->show();
-  } else Child::setp(p,v);
+    w->setHtml(s2q(v), baseUrl);
+    w->show();
+  } else if (p=="url") {
+    w->load(QUrl(s2q(v)));
+    w->show();
+  } else Child::set(p,v);
 }

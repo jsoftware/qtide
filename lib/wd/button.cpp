@@ -21,9 +21,9 @@ Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Button::setp(string p,string v)
+void Button::set(string p,string v)
 {
-  if (p=="caption")
+  if (p=="caption" || p=="text")
     ((QPushButton *)widget)->setText(s2q(remquotes(v)));
-  else Child::setp(p,v);
+  else Child::set(p,v);
 }

@@ -13,16 +13,49 @@ class Table : public Child
 
 public:
   Table(string n, string s, Form *f, Pane *p);
-  void set(string p);
-  void setcolnames(string v);
-  void setp(string p, string v);
+
+  void set(string p, string v);
   string state();
 
 private slots:
+  void on_cellChanged(int,int);
 
 private:
-  QList<int> coltypes;
+  void applyhdralign();
+  //Qt::AlignmentFlag getalign(int i);
+  Qt::Alignment getalign(int i);
+  QVector<int> getcellvec(QVector<int>);
+  void initglobals();
+  void initsizes(QStringList);
 
+  void setalign(string v);
+  void setdata(string s);
+  void setedit(string v);
+  void sethdr(string v);
+  void sethdralign(string v);
+  void setlab(string v);
+  void settype(string v);
+
+  void tbinfo(QString);
+  bool vecin(QVector<int>vec,QVector<int>values,QString id);
+  bool vecisbool(QVector<int>vec,QString id);
+
+  int cls;
+  int len;
+  int rws;
+
+  bool ifhdr;
+
+  QVector<int> defcellalign;
+  QVector<int> defcelledit;
+  QVector<int> defcelltype;
+
+  QVector<int> cellalign;
+  QVector<int> celledit;
+  QVector<int> celltype;
+  QVector<int> hdralign;
+
+  QStringList dat;
 };
 
 #endif

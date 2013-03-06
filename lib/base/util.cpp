@@ -542,6 +542,16 @@ bool qshasonly(const QString s, const QString t)
 }
 
 // ---------------------------------------------------------------------
+QVector<int> qs2intvector(QString c)
+{
+  QStringList s=c.split(' ',QString::SkipEmptyParts);
+  QVector<int> r(s.size());
+  for (int i=0; i<s.size(); i++)
+    r[i]=s.at(i).toInt();
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QString qstaketo(QString s,QString c)
 {
   int n=s.indexOf(c);

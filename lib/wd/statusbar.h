@@ -14,7 +14,7 @@ class StatusBar : public Child
 
 public:
   StatusBar(string n, string s, Form *f, Pane *p);
-  void setp(string p,string v);
+  void set(string p,string v);
 
 private slots:
 

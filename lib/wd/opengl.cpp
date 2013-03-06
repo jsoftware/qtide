@@ -35,7 +35,7 @@ void Opengl::setform()
 }
 
 // ---------------------------------------------------------------------
-void Opengl::setp(string p,string v)
+void Opengl::set(string p,string v)
 {
-  Child::setp(p,v);
+  Child::set(p,v);
 }

@@ -13,7 +13,7 @@ class ListBox : public Child
 
 public:
   ListBox(string n, string s, Form *f, Pane *p);
-  void set(string p);
+  void set(string p, string v);
   string state();
 
 private slots:

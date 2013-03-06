@@ -37,18 +37,14 @@ RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void RadioButton::set(string p)
+void RadioButton::set(string p,string v)
 {
   QRadioButton *w=(QRadioButton*) widget;
-  w->setChecked(p=="1");
-}
-
-// ---------------------------------------------------------------------
-void RadioButton::setp(string p,string v)
-{
   if (p=="caption")
-    ((QRadioButton *)widget)->setText(s2q(v));
-  else Child::setp(p,v);
+    w->setText(s2q(v));
+  else if (p=="value")
+    w->setChecked(v=="1");
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

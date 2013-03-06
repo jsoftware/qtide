@@ -26,26 +26,23 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   else if (opt.contains("center"))
     w->setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+  if (opt.contains("sunken")) {
+    w->setFrameStyle(QFrame::Sunken|QFrame::Panel);
+    w->setMargin(4);
+  } else if (opt.contains("raised")) {
+    w->setFrameStyle(QFrame::Raised|QFrame::Panel);
+    w->setMargin(4);
+  } else if (opt.contains("panel")) {
+    w->setFrameStyle(QFrame::Panel);
+    w->setMargin(4);
+  }
 }
 
 // ---------------------------------------------------------------------
-void Static::set(string p)
+void Static::set(string p,string v)
 {
-  QLabel *w=(QLabel *)widget;
-  w->setText(s2q(p));
+  if (p=="caption" || p=="text")
+    ((QLabel *)widget)->setText(s2q(v));
+  else Child::set(p,v);
 }
 
-// ---------------------------------------------------------------------
-void Static::setp(string p,string v)
-{
-  if (p=="caption")
-    set(v);
-  else Child::setp(p,v);
-}
-
-// ---------------------------------------------------------------------
-void Static::setminwh(int w, int h)
-{
-  Q_UNUSED(w);
-  Q_UNUSED(h);
-}

@@ -66,7 +66,7 @@ void Tabs::tabCloseRequested(int ndx)
 }
 
 // ---------------------------------------------------------------------
-void Tabs::setp(string p,string v)
+void Tabs::set(string p,string v)
 {
   QTabWidget *w = (QTabWidget *)widget;
   QStringList opt=qsplit(v);
@@ -79,7 +79,7 @@ void Tabs::setp(string p,string v)
   else if (p=="label") {
     if (opt.size()<2) return;
     w->setTabText(ndx,opt.at(1));
-  } else Child::setp(p,v);
+  } else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
@@ -114,9 +114,6 @@ void Tabs::tabend()
 
   if (index)
     w->setCurrentIndex(0);
-
-// force repaint on display
-  QTimer::singleShot(0, this, SLOT(updateit()));
 }
 
 // ---------------------------------------------------------------------
@@ -128,12 +125,4 @@ void Tabs::tabnew(string p)
   pform->addpane(1);
   w->addTab(pform->pane, s2q(p));
   index++;
-}
-
-// ---------------------------------------------------------------------
-// try to fix initial display problem on l64 mint 13 (not working)
-void Tabs::updateit()
-{
-//  qDebug() << "updateit";
-  widget->update();
 }

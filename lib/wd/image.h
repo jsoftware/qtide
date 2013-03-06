@@ -14,8 +14,7 @@ class Image : public Child
 
 public:
   Image(string n, string s, Form *f, Pane *p);
-  void set(string p);
-  void setp(string p,string v);
+  void set(string p,string v);
 
 private:
   QLabel *lab;

@@ -20,7 +20,7 @@ public:
   int menupopz();
   int menusep();
   void setenable(string p);
-  void setp(string p,string v);
+  void set(string p,string v);
 
   QHash<QString,QAction*> items;
 

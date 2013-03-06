@@ -22,20 +22,16 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Editm::set(string p)
-{
-  ((QPlainTextEdit*) widget)->setPlainText(s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void Editm::setp(string p,string v)
+void Editm::set(string p,string v)
 {
   QPlainTextEdit *w=(QPlainTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) return;
   if (p=="limit")
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
-  else Child::setp(p,v);
+  else if (p=="text")
+    w->setPlainText(s2q(v));
+  else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

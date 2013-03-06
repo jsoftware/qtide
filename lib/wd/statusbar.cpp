@@ -19,7 +19,7 @@ StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void StatusBar::setp(string p,string v)
+void StatusBar::set(string p,string v)
 {
   QStatusBar *w=(QStatusBar*) widget;
   QStringList arg=qsplit(v);
@@ -59,6 +59,5 @@ void StatusBar::setp(string p,string v)
       return;
     }
     labelw.at(m)->setText(arg.at(1));
-  } else Child::setp(p,v);
+  } else Child::set(p,v);
 }
-

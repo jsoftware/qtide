@@ -16,7 +16,7 @@ public:
   Tabs(string n, string s, Form *f, Pane *p);
   string state();
 
-  void setp(string p,string v);
+  void set(string p,string v);
   void tabend();
   void tabnew(string p);
 

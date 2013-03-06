@@ -30,28 +30,22 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Image::set(string p)
+void Image::set(string p,string v)
 {
-  QString s=s2q(p);
-  if (s.isEmpty()) {
-    info("Image","needs image filename");
-    return;
-  }
-  QImage image(s);
-  if (image.isNull()) {
-    info("Image","cannot load image " + s);
-    return;
-  }
+  if (p=="image") {
 
-  lab->setPixmap(QPixmap::fromImage(image));
-  lab->adjustSize();
-}
+    QString s=s2q(v);
+    if (s.isEmpty()) {
+      info("Image","needs image filename");
+      return;
+    }
+    QImage image(s);
+    if (image.isNull()) {
+      info("Image","cannot load image " + s);
+      return;
+    }
 
-// ---------------------------------------------------------------------
-void Image::setp(string p,string v)
-{
-  //if (p=="caption")
-  //set(v);
-  //else
-  Child::setp(p,v);
+    lab->setPixmap(QPixmap::fromImage(image));
+    lab->adjustSize();
+  } else Child::set(p,v);
 }

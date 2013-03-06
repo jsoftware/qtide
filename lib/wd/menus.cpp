@@ -86,6 +86,20 @@ void Menus::menu_triggered(QAction *a)
 }
 
 // ---------------------------------------------------------------------
+void Menus::set(string p, string v)
+{
+  QStringList opt=qsplit(p);
+  QString s=opt.at(0);
+  QString m=opt.at(1);
+  if (!items.contains(s)) return;
+  if (m=="checked") {
+    QAction *a=items.value(s);
+    a->setCheckable(true);
+    a->setChecked(0==v.compare("1"));
+  }
+}
+
+// ---------------------------------------------------------------------
 void Menus::setenable(string p)
 {
   int n=p.find_first_of(' ');
@@ -95,13 +109,3 @@ void Menus::setenable(string p)
     items.value(s)->setEnabled(0==p.compare("1"));
 }
 
-// ---------------------------------------------------------------------
-// this sets checked state
-void Menus::setp(string p, string v)
-{
-  QString s=s2q(p);
-  if (!items.contains(s)) return;
-  QAction *a=items.value(s);
-  a->setCheckable(true);
-  a->setChecked(0==v.compare("1"));
-}
