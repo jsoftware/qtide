@@ -40,10 +40,8 @@ QString mbcolor();
 QString mbdir();
 QString mbfont();
 QString mbinfo(QString);
-#ifndef ANDROID
 QString mbprint(bool);
 QString mbprintx(bool);
-#endif
 QString mbmsg();
 QString mbopen();
 QString mbsave();
@@ -74,7 +72,6 @@ QString mb(string p)
     return mbfont();
   if (type=="open")
     return mbopen();
-#ifndef ANDROID
   if (type=="print") {
     QString s=dlb(s2q(p.substr(5)));
     return mbprint('*'==s.at(0));
@@ -83,7 +80,6 @@ QString mb(string p)
     QString s=dlb(s2q(p.substr(6)));
     return mbprintx('*'==s.at(0));
   }
-#endif
   if (type=="save")
     return mbsave();
   if (type=="info"||type=="query"||type=="warn"||type=="critical")
@@ -208,10 +204,13 @@ QString mbopen()
            QApplication::focusWidget(),title,dir,filter);
 }
 
-#ifndef ANDROID
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
+#ifdef ANDROID
+  Q_UNUSED(iftext);
+  return "";
+#else
   QString r="";
   if (arg.size()) {
     QTextDocument *d=0;
@@ -253,12 +252,16 @@ QString mbprint(bool iftext)
     delete dlg;
   }
   return r;
+#endif
 }
 
 // ---------------------------------------------------------------------
 // print with no dialog
 QString mbprintx(bool iftext)
 {
+#ifdef ANDROID
+  Q_UNUSED(iftext);
+#else
   if (arg.size()==0)
     return mbinfo("No text given for printx");
 
@@ -276,9 +279,9 @@ QString mbprintx(bool iftext)
   if (!Printer->isValid())
     return mbinfo("Invalid printer: " + Printer->printerName());
   d->print(Printer);
+#endif
   return "";
 }
-#endif
 
 // ---------------------------------------------------------------------
 QString mbsave()

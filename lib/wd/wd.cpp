@@ -493,9 +493,9 @@ void wdqueries(string s)
   } else if (s=="qwd") {
     result="jqt";
     return;
-#ifndef ANDROID
   } else if (s=="qprinters") {
     string q="";
+#ifndef ANDROID
     QPrinterInfo pd=QPrinterInfo::defaultPrinter();
     if ((!Printer) || !Printer->isValid()) q = string("\012");
     else q = q2s(Printer->printerName()) + "\012";
@@ -506,9 +506,9 @@ void wdqueries(string s)
       for (int i=0; i<pl.size(); i++)
         q = q + q2s(pl.at(i).printerName()) + "\012";
     }
+#endif
     result=q;
     return;
-#endif
   } else if (s=="qpx") {
     if (!Forms.size()) result="";
     else {
