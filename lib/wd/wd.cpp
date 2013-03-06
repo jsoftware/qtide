@@ -4,6 +4,11 @@
 #include <QLayout>
 #include <QTimer>
 
+#ifndef ANDROID
+#include <QPrinterInfo>
+extern QPrinter *Printer;
+#endif
+
 #include "wd.h"
 #include "bitmap.h"
 #include "child.h"
@@ -38,6 +43,7 @@ void wdgroupbox(string c);
 void wdline(string);
 void wdmb();
 void wdmenu(string);
+void wdmsgs();
 void wdnotyet();
 void wdpactive();
 void wdp(string c);
@@ -163,6 +169,8 @@ void wd1()
       wdmb();
     else if (c.substr(0,4)=="menu")
       wdmenu(c);
+    else if (c=="msgs")
+      wdmsgs();
     else if (c[0]=='p')
       wdp(c);
     else if (c[0]=='q')
@@ -195,7 +203,7 @@ void wd1()
       wdversion();
     else if (c=="wh")
       wdwh();
-    else if (((c.substr(0,4)=="tbar") || (c.substr(0,4)=="sbar") || c=="msgs") || 0) {
+    else if (((c.substr(0,4)=="tbar") || (c.substr(0,4)=="sbar")) || 0) {
       cmd.getparms();
       wdnotyet();
     } else
@@ -295,6 +303,13 @@ void wdmenu(string s)
     error("menu command not found");
   }
   if (rc) error("menu command failed");
+}
+
+// ---------------------------------------------------------------------
+void wdmsgs()
+{
+  cmd.getparms();
+  QApplication::processEvents(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------
@@ -478,6 +493,22 @@ void wdqueries(string s)
   } else if (s=="qwd") {
     result="jqt";
     return;
+#ifndef ANDROID
+  } else if (s=="qprinters") {
+    string q="";
+    QPrinterInfo pd=QPrinterInfo::defaultPrinter();
+    if ((!Printer) || !Printer->isValid()) q = string("\012");
+    else q = q2s(Printer->printerName()) + "\012";
+    if (pd.isNull()) q = q + string("\012");
+    else q = q + q2s(pd.printerName()) + "\012";
+    QList<QPrinterInfo> pl=QPrinterInfo::availablePrinters();
+    if (pl.size()) {
+      for (int i=0; i<pl.size(); i++)
+        q = q + q2s(pl.at(i).printerName()) + "\012";
+    }
+    result=q;
+    return;
+#endif
   } else if (s=="qpx") {
     if (!Forms.size()) result="";
     else {
