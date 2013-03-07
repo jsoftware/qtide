@@ -244,6 +244,8 @@ int jefirst(int type,char* arg)
   char* input=(char *)malloc(2000+strlen(arg));
 
 #ifdef ANDROID
+  Q_UNUSED(p);
+  Q_UNUSED(q);
   char *homepath;
   struct stat st;
   if(!getenv("HOME")) {
@@ -269,11 +271,11 @@ int jefirst(int type,char* arg)
   QFile *f2 = new QFile("assets_version.txt");
   if (f1->exists()) {
     QString s= cfread(f1);
-    if (!(s.isNull() || s.isEmpty())) v1=strtoi(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v1=strtol(s.toUtf8().data(),NULL,0);
   }
   if (f2->exists()) {
     QString s= cfread(f2);
-    if (!(s.isNull() || s.isEmpty())) v2=strtoi(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v2=strtol(s.toUtf8().data(),NULL,0);
   }
   delete f1;
   delete f2;
