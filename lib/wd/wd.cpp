@@ -483,7 +483,7 @@ void wdqueries(string s)
     int h=QApplication::desktop()->height();
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
-    int dia=sqrt(dpix*dpix+dpiy*dpiy);
+    int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
     result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(QApplication::desktop()->depth()) + " 1 " + i2s(QApplication::desktop()->colorCount()) + " " + i2s(dpix) + " " + i2s(dpix) + " " + i2s(dia);
     return;
   } else if (s=="qwd") {

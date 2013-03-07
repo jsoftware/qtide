@@ -1,13 +1,13 @@
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#include <cmath>
+#endif
+
 #include <QPrinter>
 
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
-#ifdef _MSC_VER
-#define _USE_MATH_DEFINES
-#include <cmath>
-#endif
 
 #ifndef Max
 #define Max(a, b) ((a) < (b) ? (b) : (a))
