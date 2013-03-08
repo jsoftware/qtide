@@ -62,8 +62,7 @@ QString dialogfileopen(QWidget *w,QString t)
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {
-  if (Printer==0)
-    Printer=new QPrinter(QPrinter::HighResolution);
+  initprinter();
 
   QPrintDialog *dlg = new QPrintDialog(Printer, w);
   dlg->setOptions(
@@ -105,3 +104,10 @@ QString getprojectpath()
   else
     return project.Path;
 };
+
+// ---------------------------------------------------------------------
+void initprinter()
+{
+  if (Printer==0)
+    Printer=new QPrinter(QPrinter::HighResolution);
+}

@@ -36,9 +36,11 @@ extern int jedo(char *);
 void wd1();
 void wdbin();
 void wdcc();
+void wdcmd();
 void wdcn();
 void wdend();
 void wdfontdef();
+void wdget();
 void wdgroupbox(string c);
 void wdline(string);
 void wdmb();
@@ -61,7 +63,6 @@ void wdqueries(string);
 void wdrem();
 void wdreset();
 void wdset();
-void wdsetenable();
 void wdsetx(string);
 void wdsplit(string c);
 void wdstate(int);
@@ -154,12 +155,16 @@ void wd1()
       wdbin();
     else if (c=="cc")
       wdcc();
+    else if (c=="cmd")
+      wdcmd();
     else if (c=="cn")
       wdcn();
     else if (c=="end")
       wdend();
     else if (c=="fontdef")
       wdfontdef();
+    else if (c=="get")
+      wdget();
     else if (c.substr(0,8)=="groupbox")
       wdgroupbox(c);
     else if (c.substr(0,4)=="line")
@@ -183,9 +188,7 @@ void wd1()
       noevents(1);
       wdset();
       noevents(0);
-    } else if (c=="setenable")
-      wdsetenable();
-    else if (c.substr(0,3)=="set")
+    } else if (c.substr(0,3)=="set")
       wdsetx(c);
     else if (c.substr(0,5)=="split")
       wdsplit(c);
@@ -227,6 +230,17 @@ void wdcc()
 }
 
 // ---------------------------------------------------------------------
+void wdcmd()
+{
+  string n=cmd.getid();
+  string p=cmd.getid();
+  string v=cmd.getparms();
+  int type=setchild(n);
+  if (type)
+    cc->cmd(p,v);
+}
+
+// ---------------------------------------------------------------------
 void wdcn()
 {
   if (noform()) return;
@@ -247,6 +261,17 @@ void wdfontdef()
 {
   string p=cmd.getparms();
   fontdef = new Font(p);
+}
+
+// ---------------------------------------------------------------------
+void wdget()
+{
+  string n=cmd.getid();
+  string p=cmd.getid();
+  string v=cmd.getparms();
+  int type=setchild(n);
+  if (type)
+    cc->get(p,v);
 }
 
 // ---------------------------------------------------------------------
@@ -582,33 +607,23 @@ void wdset()
 }
 
 // ---------------------------------------------------------------------
-void wdsetenable()
-{
-  string n=cmd.getid();
-  string p=cmd.getparms();
-  switch (setchild(n)) {
-  case 1:
-    //cc->setenable(p);
-    cc->set("enable",p);
-    break;
-  case 2:
-    cc->setenable(n+" "+p);
-    break;
-  }
-}
-
-// ---------------------------------------------------------------------
 void wdsetx(string c)
 {
   string n=cmd.getid();
-// TODO
-  if (1!=setchild(n)) {
-    string p=cmd.getparms();
-    return;
+  string p=c.substr(3);
+  string v=cmd.getparms();
+  int type=setchild(n);
+  switch (type) {
+  case 1 :
+    if (p=="stretch")
+      form->pane->setstretch(cc,v);
+    else
+      cc->set(p,v);
+    break;
+  case 2 :
+    cc->set(n+" "+p,v);
+    break;
   }
-  if (nochildset(n)) return;
-  string p=cmd.getparms();
-  cc->set(c.substr(3),p);
 }
 
 // ---------------------------------------------------------------------

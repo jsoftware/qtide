@@ -19,8 +19,11 @@ public:
 
   virtual string getsysmodifiers();
   virtual string getsysdata();
+
+  virtual void cmd(string p,string v);
+  virtual void get(string p,string v);
   virtual void set(string p,string v);
-  virtual void setenable(string p);
+
   virtual void setfont(QFont);
   virtual void setform();
   virtual void setstylesheet(string p);

@@ -2,6 +2,7 @@
 #include <QPlainTextEdit>
 #include <QScrollBar>
 
+#include "../base/dialog.h"
 #include "wd.h"
 #include "editm.h"
 #include "form.h"
@@ -19,6 +20,17 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(qn);
   if (opt.contains("readonly"))
     w->setReadOnly(true);
+}
+
+// ---------------------------------------------------------------------
+void Editm::cmd(string p,string v)
+{
+  QPlainTextEdit *w=(QPlainTextEdit*) widget;
+  QStringList opt=qsplit(v);
+  if (p=="print") {
+    initprinter();
+    w->print(Printer);
+  } else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------

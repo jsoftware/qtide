@@ -19,7 +19,6 @@ public:
   int menupop(string c);
   int menupopz();
   int menusep();
-  void setenable(string p);
   void set(string p,string v);
 
   QHash<QString,QAction*> items;

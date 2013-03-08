@@ -88,24 +88,29 @@ void Menus::menu_triggered(QAction *a)
 // ---------------------------------------------------------------------
 void Menus::set(string p, string v)
 {
-  QStringList opt=qsplit(p);
-  QString s=opt.at(0);
-  QString m=opt.at(1);
-  if (!items.contains(s)) return;
+  QString id,m,parm;
+  QStringList sel,opt;
+
+  sel=qsplit(p);
+  if (sel.size()!=2) {
+    info("menu","invalid menu command: " + s2q(p) + " " + s2q(v));
+    return;
+  }
+  id=sel.at(0);
+  m=sel.at(1);
+
+  opt=qsplit(v);
+  if (opt.size()) {
+    parm=opt.at(0);
+    if (parm=="value" && opt.size()>1)
+      parm=opt.at(1);
+  }
+
   if (m=="checked") {
-    QAction *a=items.value(s);
+    QAction *a=items.value(id);
     a->setCheckable(true);
-    a->setChecked(0==v.compare("1"));
+    a->setChecked(parm=="1");
+  } else if (m=="enable") {
+    items.value(id)->setEnabled(parm=="1");
   }
 }
-
-// ---------------------------------------------------------------------
-void Menus::setenable(string p)
-{
-  int n=p.find_first_of(' ');
-  QString s=s2q(p.substr(0,n));
-  p=p.substr(n+1);
-  if (items.contains(s))
-    items.value(s)->setEnabled(0==p.compare("1"));
-}
-

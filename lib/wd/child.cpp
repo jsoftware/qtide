@@ -17,6 +17,20 @@ Child::Child(string n, string s, Form *f, Pane *p)
 }
 
 // ---------------------------------------------------------------------
+void Child::cmd(string p, string v)
+{
+  Q_UNUSED(p);
+  Q_UNUSED(v);
+}
+
+// ---------------------------------------------------------------------
+void Child::get(string p, string v)
+{
+  Q_UNUSED(p);
+  Q_UNUSED(v);
+}
+
+// ---------------------------------------------------------------------
 string Child::getsysdata()
 {
   return"";
@@ -50,12 +64,6 @@ void Child::set(string p, string v)
     setxywh(v,1);
   else
     info("set","set command not recognized: " + s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void Child::setenable(string p)
-{
-  Q_UNUSED(p);
 }
 
 // ---------------------------------------------------------------------
