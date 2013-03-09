@@ -46,7 +46,9 @@ string Child::getsysmodifiers()
 void Child::set(string p, string v)
 {
   if (!widget) return;
-  if (p=="locale")
+  if (p=="enable")
+    widget->setEnabled(remquotes(v)!="0");
+  else if (p=="locale")
     locale=remquotes(v);
   else if (p=="focus")
     widget->setFocus();
@@ -55,7 +57,7 @@ void Child::set(string p, string v)
   else if (p=="invalid")
     widget->update();
   else if (p=="show")
-    widget->setVisible(!(remquotes(v)=="0" || remquotes(v)==""));
+    widget->setVisible(remquotes(v)!="0");
   else if (p=="stylesheet")
     setstylesheet(v);
   else if (p=="xywh")

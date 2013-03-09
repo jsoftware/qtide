@@ -162,7 +162,7 @@ string Form::qformx()
 Child *Form::id2child(string n)
 {
   for (int i=0; i<children.size(); i++)
-    if (n==children.at(i)->id)
+    if ("menu"!=children.at(i)->type && n==children.at(i)->id)
       return children.at(i);
   return (Child *) 0;
 }
