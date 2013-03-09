@@ -43,6 +43,15 @@ void Editm::set(string p,string v)
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
   else if (p=="text")
     w->setPlainText(s2q(v));
+  else if (p=="select")
+// TODO setselect
+    ;
+  else if (p=="scroll")
+// TODO setscroll
+    ;
+  else if (p=="wrap")
+// TODO not work
+    w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);
   else Child::set(p,v);
 }
 
