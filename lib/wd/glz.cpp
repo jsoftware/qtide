@@ -173,7 +173,11 @@ int glzclear2 (void *p)
 #ifdef _WIN32
   glzfont0(prtobj,(char *)"\"MS Sans Serif\" 10");
 #else
+#ifdef __MACH__
+  glzfont0(prtobj,(char *)"\"Lucida Grande\" 10");
+#else
   glzfont0(prtobj,(char *)"SansSerif 10");
+#endif
 #endif
   prtobj->pen = QPen (prtobj->color, 1); // TODO in user space
   prtobj->textpen = QPen (prtobj->pen);
