@@ -84,6 +84,7 @@ int glpaintx()
 // ---------------------------------------------------------------------
 int glqhandles(void **p)
 {
+  if (!p) return 1;
   if (!isigraph) return 1;
   *p = (void *)isigraph;
 #ifdef _WIN32
@@ -98,6 +99,7 @@ int glqhandles(void **p)
 // ---------------------------------------------------------------------
 int glqextent(char *s,int *wh)
 {
+  if (!s || !wh) return 1;
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
@@ -110,6 +112,7 @@ int glqextent(char *s,int *wh)
 // ---------------------------------------------------------------------
 int glqextentw(char *s,int *w)
 {
+  if (!s || !w) return 1;
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
@@ -124,11 +127,24 @@ int glqextentw(char *s,int *w)
 // ---------------------------------------------------------------------
 int glqpixels(const int *p, int *pix)
 {
+  if (!p || !pix) return 1;
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  const uchar *t = ((Isigraph2 *)isigraph->widget)->pixmap->copy (*(p), *(p + 1), *(p + 2), *(p + 3)).toImage().convertToFormat(QImage::Format_RGB32).bits();
-  memcpy((uchar *)pix,t,4*(*(p + 2))*(*(p + 3)));
+  QPixmap *pm = ((Isigraph2 *)isigraph->widget)->pixmap;
+  if (!pm || pm->isNull()) return 1;
+  if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm->width() || (p[1]+p[3])>pm->height()) return 1;
+// one-liner cause does not work ??
+//  const uchar *t = (pm->copy(p[0], p[1], p[2], p[3])).toImage().convertToFormat(QImage::Format_RGB32).bits();
+  QPixmap a1 = (pm->copy(p[0], p[1], p[2], p[3]));
+  if (a1.isNull()) return 1;
+  QImage a2 = a1.toImage();
+  if (a2.isNull()) return 1;
+  QImage a3 = a2.convertToFormat(QImage::Format_RGB32);
+  if (a3.isNull()) return 1;
+  const uchar *t = a3.bits();
+  if (!t) return 1;
+  memcpy((uchar *)pix,t,4*p[2]*p[3]);
   return 0;
 }
 
@@ -136,6 +152,7 @@ int glqpixels(const int *p, int *pix)
 // Height, Ascent, Descent, InternalLeading, ExternalLeading, AverageCharWidth, MaxCharWidth
 int glqtextmetrics(int *tm)
 {
+  if (!tm) return 1;
   if (!isigraph) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
   if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
@@ -486,7 +503,7 @@ int glpixel (const int *p)
 // ---------------------------------------------------------------------
 static int glpixels2(int x,int y,int w,int h,const uchar *p)
 {
-  if (w==0||h==0) return 0;
+  if (!w || !h || !p) return 1;
   QImage image = QImage(w,h,QImage::Format_RGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*w*h);

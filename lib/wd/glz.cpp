@@ -356,7 +356,7 @@ int glzpixel (const int *p)
 // ---------------------------------------------------------------------
 static int glzpixels2(int x,int y,int w,int h,const uchar *p)
 {
-  if (w==0||h==0) return 0;
+  if (!w || !h || !p) return 1;
   QImage image = QImage(w,h,QImage::Format_RGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*w*h);
