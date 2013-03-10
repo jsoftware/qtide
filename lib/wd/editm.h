@@ -3,6 +3,7 @@
 
 #include "child.h"
 
+class QPlainTextEdit;
 class Form;
 class Pane;
 
@@ -18,6 +19,9 @@ public:
   string state();
 
 private slots:
+
+private:
+  void setselect(QPlainTextEdit *w, int bgn, int end);
 
 };
 

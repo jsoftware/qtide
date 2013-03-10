@@ -112,5 +112,6 @@ void Menus::set(string p, string v)
     a->setChecked(parm=="1");
   } else if (m=="enable") {
     items.value(id)->setEnabled(parm=="1");
-  }
+  } else
+    info("menu","invalid menu command: " + s2q(p) + " " + s2q(v));
 }

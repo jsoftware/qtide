@@ -46,6 +46,7 @@ void helpabout();
 std::string i2s(int i);
 bool ifshift();
 void info(QString t,QString s);
+bool isint(std::string s);
 bool isroot(QString name);
 bool isutf8(QByteArray b);
 bool matchhead(QString, QString);

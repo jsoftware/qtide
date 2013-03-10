@@ -388,6 +388,17 @@ void info(QString t,QString s)
 }
 
 // ---------------------------------------------------------------------
+// is non-empty and all digit
+bool isint(const string s)
+{
+  int n=s.size();
+  if (n==0) return false;
+  for(int i=0; i<n; i++)
+    if(!isdigit(s[i])) return false;
+  return true;
+}
+
+// ---------------------------------------------------------------------
 bool isroot(QString s)
 {
 #ifdef Q_WS_WIN

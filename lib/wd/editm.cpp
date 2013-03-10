@@ -38,21 +38,37 @@ void Editm::set(string p,string v)
 {
   QPlainTextEdit *w=(QPlainTextEdit*) widget;
   QStringList opt=qsplit(v);
-  if (opt.isEmpty()) return;
+  int bgn,end,pos=0;
+
   if (p=="limit")
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
   else if (p=="text")
     w->setPlainText(s2q(v));
-  else if (p=="select")
-// TODO setselect
-    ;
-  else if (p=="scroll")
-// TODO setscroll
-    ;
-  else if (p=="wrap")
-// TODO not work
+  else if (p=="select") {
+    if (opt.isEmpty())
+      w->selectAll();
+    else {
+      bgn=end=opt.at(0).toInt();
+      if (opt.size()>1)
+        end=opt.at(1).toInt();
+      setselect(w,bgn,end);
+    }
+  } else if (p=="scroll") {
+    if (opt.size())
+      pos=opt.at(0).toInt();
+    w->verticalScrollBar()->setValue(pos);
+  } else if (p=="wrap")
     w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);
   else Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+void Editm::setselect(QPlainTextEdit *w, int bgn, int end)
+{
+  QTextCursor c = w->textCursor();
+  c.setPosition(end,QTextCursor::MoveAnchor);
+  c.setPosition(bgn,QTextCursor::KeepAnchor);
+  w->setTextCursor(c);
 }
 
 // ---------------------------------------------------------------------
@@ -63,11 +79,10 @@ string Editm::state()
   int b,e;
   b=c.selectionStart();
   e=c.selectionEnd();
-  QScrollBar *h=w->horizontalScrollBar();
   QScrollBar *v=w->verticalScrollBar();
   string r;
   r+=spair(id,q2s(w->toPlainText()));
   r+=spair(id+"_select",i2s(b)+" "+i2s(e));
-  r+=spair(id+"_scroll",i2s(h->value())+" "+i2s(v->value()));
+  r+=spair(id+"_scroll",i2s(v->value()));
   return r;
 }

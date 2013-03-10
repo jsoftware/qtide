@@ -1,4 +1,5 @@
 
+#include <QBoxLayout>
 #include <QCheckBox>
 #include <QHeaderView>
 #include <QTableWidget>
@@ -31,25 +32,27 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   initsizes(opt);
   opt=opt.mid(2);
 
-  w->horizontalHeader()->setVisible(false);
   w->resizeColumnsToContents();
   w->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
   w->horizontalHeader()->setHighlightSections(false);
   w->horizontalHeader()->setStretchLastSection(true);
+  w->horizontalHeader()->setVisible(false);
 
+  w->verticalHeader()->setHighlightSections(false);
+  w->verticalHeader()->setVisible(false);
+  QFontMetrics fm(w->font());
+  w->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
+
+  // turn off cell editing:
   //w->setEditTriggers(QAbstractItemView::NoEditTriggers);
-  //w->setSelectionBehavior(QAbstractItemView::SelectRows);
-  //w->setSelectionMode(QAbstractItemView::SingleSelection);
 
-// make default:
-//if (opt.contains("alternatingrowcolors")
+  // single cell vs cell blocks
+  w->setSelectionMode(QAbstractItemView::SingleSelection);
+
   w->setAlternatingRowColors(true);
 
   if (opt.contains("selectrow"))
     w->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-  QFontMetrics fm(w->font());
-  w->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));
@@ -67,19 +70,6 @@ void Table::applyhdralign()
       (w->horizontalHeaderItem(i))->setTextAlignment(getalign(hdralign.at(i)));
   }
 }
-
-//// ---------------------------------------------------------------------
-//Qt::AlignmentFlag Table::getalign(int i)
-//{
-//switch (cellalign[i]) {
-//case 0:
-//return Qt::AlignLeft;
-//case 1:
-//return Qt::AlignHCenter;
-//default :
-//return Qt::AlignRight;
-//}
-//}
 
 // ---------------------------------------------------------------------
 Qt::Alignment Table::getalign(int i)
@@ -124,9 +114,26 @@ void Table::initsizes(QStringList opt)
   len=rws*cls;
   cellalign.resize(len);
   celltype.resize(len);
+  cellwidget.resize(len);
   QTableWidget *w=(QTableWidget*) widget;
   w->setRowCount(rws);
   w->setColumnCount(cls);
+}
+
+// ---------------------------------------------------------------------
+string Table::readcell(int row,int col)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QTableWidgetItem *m=w->item(row,col);
+  int p=col+row*cls;
+  switch (celltype[p]) {
+  case 0 :
+    return q2s(m->text());
+  case 100 :
+    return ((QCheckBox *)cellwidget[p])->isChecked()?"1":"0";
+  default :
+    return "";
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -167,9 +174,11 @@ void Table::setalign(string v)
 void Table::setdata(string s)
 {
   int c,d,p,r;
-  QTableWidget *w=(QTableWidget*) widget;
   QCheckBox *cb;
+  QTableWidget *w=(QTableWidget*) widget;
   QTableWidgetItem *item;
+  QHBoxLayout *y;
+  QWidget *m;
 
   item=new QTableWidgetItem("");
   Qt::ItemFlags fdef=item->flags();
@@ -201,7 +210,19 @@ void Table::setdata(string s)
       case 100 :
         cb=new QCheckBox();
         cb->setChecked(dat[p]=="1");
-        w->setCellWidget(r,c,cb);
+        cb->setObjectName(QString::number(p));
+        cellwidget[p]=(QWidget*) cb;
+        m=new QWidget();
+        y=new QHBoxLayout();
+        y->setContentsMargins(0,0,0,0);
+        y->setSpacing(0);
+        y->addStretch(1);
+        y->addWidget(cb);
+        y->addStretch(1);
+        m->setLayout(y);
+        w->setCellWidget(r,c,m);
+        connect(cb,SIGNAL(stateChanged(int)),
+                this,SLOT(on_stateChanged(int)));
         break;
       }
     }
@@ -245,7 +266,6 @@ void Table::sethdr(string v)
 // ---------------------------------------------------------------------
 void Table::sethdralign(string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
   QVector<int> a=qs2intvector(s2q(v));
   if (!(a.size()==1 || a.size()==cls)) {
     QString m=QString::number(a.size());
@@ -291,8 +311,18 @@ void Table::settype(string v)
 // ---------------------------------------------------------------------
 string Table::state()
 {
+  //if (this==pform->evtchild && event=="changed")
+  if (this!=pform->evtchild) return "";
+
+
   //QTableWidget *w=(QTableWidget*) widget;
   string r;
+
+  if (event=="changed") {
+    r+=spair(id,readcell(row,col));
+    r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
+    return r;
+  }
 
   //int n=w->currentRow();
   //if (n<0) {
@@ -336,9 +366,24 @@ bool Table::vecisbool(QVector<int>vec,QString id)
 }
 
 // ---------------------------------------------------------------------
-void	Table::on_cellChanged (int row,int col)
+void	Table::on_cellChanged (int r,int c)
 {
   if (NoEvents) return;
-  qDebug() << "cellchanged" << row << col;
+  event="changed";
+  row=r;
+  col=c;
+  pform->signalevent(this);
 }
 
+// ---------------------------------------------------------------------
+// for checkbox
+void	Table::on_stateChanged (int n)
+{
+  Q_UNUSED(n);
+  if (NoEvents) return;
+  event="changed";
+  int p=sender()->objectName().toInt();
+  row=p/cls;
+  col=p-row*cls;
+  pform->signalevent(this);
+}

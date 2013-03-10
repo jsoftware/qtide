@@ -64,6 +64,7 @@ void wdrem();
 void wdreset();
 void wdset();
 void wdsetx(string);
+void wdset1(string n,string p,string v);
 void wdsplit(string c);
 void wdstate(int);
 void wdtab(string);
@@ -592,18 +593,7 @@ void wdset()
   string n=cmd.getid();
   string p=cmd.getid();
   string v=cmd.getparms();
-  int type=setchild(n);
-  switch (type) {
-  case 1 :
-    if (p=="stretch")
-      form->pane->setstretch(cc,v);
-    else
-      cc->set(p,v);
-    break;
-  case 2 :
-    cc->set(n+" "+p,v);
-    break;
-  }
+  wdset1(n,p,v);
 }
 
 // ---------------------------------------------------------------------
@@ -612,13 +602,24 @@ void wdsetx(string c)
   string n=cmd.getid();
   string p=c.substr(3);
   string v=cmd.getparms();
+  wdset1(n,p,v);
+}
+
+// ---------------------------------------------------------------------
+void wdset1(string n,string p,string v)
+{
   int type=setchild(n);
   switch (type) {
   case 1 :
     if (p=="stretch")
       form->pane->setstretch(cc,v);
-    else
+    else {
+      if (v.size()==0 && isint(p)) {
+        v=p;
+        p="value";
+      }
       cc->set(p,v);
+    }
     break;
   case 2 :
     cc->set(n+" "+p,v);

@@ -19,14 +19,16 @@ public:
 
 private slots:
   void on_cellChanged(int,int);
+  void on_stateChanged(int);
 
 private:
   void applyhdralign();
-  //Qt::AlignmentFlag getalign(int i);
   Qt::Alignment getalign(int i);
   QVector<int> getcellvec(QVector<int>);
   void initglobals();
   void initsizes(QStringList);
+
+  string readcell(int row,int col);
 
   void setalign(string v);
   void setdata(string s);
@@ -44,6 +46,9 @@ private:
   int len;
   int rws;
 
+  int col;
+  int row;
+
   bool ifhdr;
 
   QVector<int> defcellalign;
@@ -53,6 +58,7 @@ private:
   QVector<int> cellalign;
   QVector<int> celledit;
   QVector<int> celltype;
+  QVector<QWidget *> cellwidget;
   QVector<int> hdralign;
 
   QStringList dat;
