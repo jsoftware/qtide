@@ -6,6 +6,7 @@ using namespace std;
 
 #include "../base/base.h"
 
+void error(string s);
 string remquotes(string s);
 QString mb(string p);
 

@@ -26,7 +26,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
 
   if (opt.size()<2) {
-    tbinfo("row and column count must be given");
+    error("row and column count must be given");
     return;
   }
   initsizes(opt);
@@ -162,7 +162,7 @@ void Table::setalign(string v)
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
   if (!(n==1 || n==cls || n==len)) {
-    tbinfo("incorrect align length: " + QString::number(n));
+    error("incorrect align length: " + q2s(QString::number(n)));
     return;
   }
   if(!vecin(a,CellAligns,"align")) return;
@@ -191,7 +191,7 @@ void Table::setdata(string s)
     QString m="incorrect data length - ";
     m+= "given " + QString::number(dat.size());
     m+=" cells, require " + QString::number(len) + " cells";
-    info("table",m);
+    error(q2s(m));
     return;
   }
 
@@ -237,7 +237,7 @@ void Table::setedit(string v)
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
   if (!(n==1 || n==cls || n==len)) {
-    tbinfo("incorrect edit length: " + QString::number(n));
+    error("incorrect edit length: " + q2s(QString::number(n)));
     return;
   }
   if(!vecisbool(a,"edit")) return;
@@ -254,7 +254,7 @@ void Table::sethdr(string v)
     QString m=QString::number(s.size());
     m+= " column headers do not match column count of ";
     m+= QString::number(cls);
-    tbinfo(m);
+    error(q2s(m));
     return;
   }
   w->setHorizontalHeaderLabels(s);
@@ -271,7 +271,7 @@ void Table::sethdralign(string v)
     QString m=QString::number(a.size());
     m+= " column header alignments do not match column count of ";
     m+= QString::number(cls);
-    tbinfo(m);
+    error(q2s(m));
     return;
   }
   hdralign=a;
@@ -287,7 +287,7 @@ void Table::setlab(string v)
     QString m=QString::number(s.size());
     m+= " row labels do not match row count of ";
     m+= QString::number(rws);
-    tbinfo(m);
+    error(q2s(m));
     return;
   }
   w->setVerticalHeaderLabels(s);
@@ -300,7 +300,7 @@ void Table::settype(string v)
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
   if (!(n==1 || n==cls || n==len)) {
-    tbinfo("incorrect type length: " + QString::number(n));
+    error("incorrect type length: " + q2s(QString::number(n)));
     return;
   }
   if(!vecin(a,CellTypes,"type")) return;
@@ -337,18 +337,17 @@ string Table::state()
 }
 
 // ---------------------------------------------------------------------
-void Table::tbinfo(QString s)
-{
-  info("Table",s);
-}
-
-
+//void Table::tbinfo(QString s)
+//{
+//  info("Table",s);
+//}
+//
 // ---------------------------------------------------------------------
 bool Table::vecin(QVector<int>vec,QVector<int>values,QString id)
 {
   for(int i=0; i<vec.size(); i++)
     if (!values.contains(vec[i])) {
-      tbinfo(id + " invalid value: " + QString::number(vec[i]));
+      error(q2s(id) + " invalid value: " + q2s(QString::number(vec[i])));
       return false;
     }
   return true;
@@ -359,7 +358,7 @@ bool Table::vecisbool(QVector<int>vec,QString id)
 {
   for(int i=0; i<vec.size(); i++)
     if (!(vec[i]==0 || vec[i]==1)) {
-      tbinfo(id + " invalid value: " + QString::number(vec[i]));
+      error(q2s(id) + " invalid value: " + q2s(QString::number(vec[i])));
       return false;
     }
   return true;

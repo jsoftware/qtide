@@ -38,7 +38,7 @@ private:
   void setlab(string v);
   void settype(string v);
 
-  void tbinfo(QString);
+//  void tbinfo(QString);
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);
 

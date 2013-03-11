@@ -39,7 +39,7 @@ extern QPrinter *Printer;
 QString mbcolor();
 QString mbdir();
 QString mbfont();
-QString mbinfo(QString);
+// QString mbinfo(QString);
 QString mbprint(bool);
 QString mbprintx(bool);
 QString mbmsg();
@@ -60,7 +60,10 @@ QString getname(int);
 QString mb(string p)
 {
   arg=qsplit(p);
-  if (arg.size()<1) return mbinfo("missing mb type");
+  if (arg.size()<1) {
+    error("missing mb type");
+    return "";
+  }
 
   type=arg.first();
   arg.removeFirst();
@@ -84,7 +87,8 @@ QString mb(string p)
     return mbsave();
   if (type=="info"||type=="query"||type=="warn"||type=="critical")
     return mbmsg();
-  return mbinfo("invalid mb type: " + type);
+  error("invalid mb type: " + q2s(type));
+  return "";
 }
 
 // ---------------------------------------------------------------------
@@ -103,7 +107,8 @@ QString mbmsg()
     t=arg.at(0);
     m=arg.at(1);
   } else {
-    return mbinfo ("Need title and message: "+arg.join(" "));
+    error("Need title and message: "+q2s(arg.join(" ")));
+    return "";
   }
 
   if (button1==-1) {
@@ -148,8 +153,10 @@ QString mbcolor()
 QString mbdir()
 {
   QString title,dir;
-  if (arg.size()!=2)
-    return mbinfo("dir needs title and directory");
+  if (arg.size()!=2) {
+    error("dir needs title and directory");
+    return "";
+  }
   title=arg.at(0);
   dir=arg.at(1);
   return QFileDialog::getExistingDirectory(
@@ -194,8 +201,10 @@ QString mbfont()
 QString mbopen()
 {
   QString title,dir,filter;
-  if (arg.size()<2)
-    return mbinfo("open needs title, directory, [filters]");
+  if (arg.size()<2) {
+    error("open needs title, directory, [filters]");
+    return "";
+  }
   title=arg.at(0);
   dir=arg.at(1);
   if (arg.size()==3)
@@ -217,7 +226,7 @@ QString mbprint(bool iftext)
     QString s=arg.at(0);
     if (!iftext) {
       if (!cfexist(s)) {
-        mbinfo("File not found: " + s);
+        error("File not found: " + q2s(s));
         return "";
       }
       s=cfread(s);
@@ -262,13 +271,14 @@ QString mbprintx(bool iftext)
 #ifdef ANDROID
   Q_UNUSED(iftext);
 #else
-  if (arg.size()==0)
-    return mbinfo("No text given for printx");
-
+  if (arg.size()==0) {
+    error("No text given for printx");
+    return "";
+  }
   QString s=arg.at(0);
   if (!iftext) {
     if (!cfexist(s)) {
-      mbinfo("File not found: " + s);
+      error("File not found: " + q2s(s));
       return "";
     }
     s=cfread(s);
@@ -276,8 +286,10 @@ QString mbprintx(bool iftext)
   QTextDocument *d=new QTextDocument(s);
   if (Printer==0)
     Printer=new QPrinter(QPrinter::HighResolution);
-  if (!Printer->isValid())
-    return mbinfo("Invalid printer: " + Printer->printerName());
+  if (!Printer->isValid()) {
+    error("Invalid printer: " + q2s(Printer->printerName()));
+    return "";
+  }
   d->print(Printer);
 #endif
   return "";
@@ -287,8 +299,10 @@ QString mbprintx(bool iftext)
 QString mbsave()
 {
   QString title,dir,filter;
-  if (arg.size()<2)
-    return mbinfo("save needs title, directory, [filters]");
+  if (arg.size()<2) {
+    error("save needs title, directory, [filters]");
+    return "";
+  }
   title=arg.at(0);
   dir=arg.at(1);
   if (arg.size()==3)
@@ -360,12 +374,12 @@ QMessageBox::StandardButtons getotherbuttons()
 }
 
 // ---------------------------------------------------------------------
-QString mbinfo(QString s)
-{
-  info("Message Box",s);
-  return "";
-}
-
+//QString mbinfo(QString s)
+//{
+//  info("Message Box",s);
+//  return "";
+//}
+//
 // ---------------------------------------------------------------------
 QString fixsep(QString s)
 {

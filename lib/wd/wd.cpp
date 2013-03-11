@@ -73,7 +73,6 @@ void wdxywh(int);
 void wdversion();
 void wdwh();
 
-void error(string s);
 bool nochild();
 bool nochildset(string id);
 bool noform();
@@ -297,7 +296,10 @@ void wdline(string c)
 void wdmb()
 {
   result=q2s(mb(cmd.getparms()));
-  rc=-1;
+  if (1==rc)
+    result="";
+  else
+    rc=-1;
 }
 
 // ---------------------------------------------------------------------

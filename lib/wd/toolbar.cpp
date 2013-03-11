@@ -24,7 +24,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     if (qshasonly(t,"0123456789x")) {
       QStringList sizes=t.split('x');
       if (sizes.size()<2) {
-        info("Toolbar","invalid icon width, height: "+t);
+        error("invalid icon width, height: "+q2s(t));
         return;
       }
       qDebug() << "setting icon size" << sizes;
@@ -48,7 +48,7 @@ void ToolBar::actionTriggered(QAction *a)
 void ToolBar::makeact(QStringList opt)
 {
   if (opt.size()<3) {
-    info("Toolbar","toolbar add needs id, text, image");
+    error("toolbar add needs id, text, image");
     return;
   }
   QToolBar *w=(QToolBar *)widget;
@@ -56,7 +56,7 @@ void ToolBar::makeact(QStringList opt)
   QString text=opt.at(1);
   QIcon image=QIcon(opt.at(2));
   if (image.isNull()) {
-    info("Toolbar","invalid icon image: " + opt.at(2));
+    error("invalid icon image: " + q2s(opt.at(2)));
     return;
   }
   QAction *a=w->addAction(image,text);

@@ -65,7 +65,7 @@ void Child::set(string p, string v)
   else if (p=="xywhx")
     setxywh(v,1);
   else
-    info("set","set command not recognized: " + s2q(p));
+    error("set command not recognized: " + p);
 }
 
 // ---------------------------------------------------------------------

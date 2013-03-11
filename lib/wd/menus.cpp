@@ -93,7 +93,7 @@ void Menus::set(string p, string v)
 
   sel=qsplit(p);
   if (sel.size()!=2) {
-    info("menu","invalid menu command: " + s2q(p) + " " + s2q(v));
+    error("invalid menu command: " + p + " " + v);
     return;
   }
   id=sel.at(0);
@@ -113,5 +113,5 @@ void Menus::set(string p, string v)
   } else if (m=="enable") {
     items.value(id)->setEnabled(parm=="1");
   } else
-    info("menu","invalid menu command: " + s2q(p) + " " + s2q(v));
+    error("invalid menu command: " + p + " " + v);
 }

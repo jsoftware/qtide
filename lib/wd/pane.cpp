@@ -203,7 +203,7 @@ bool Pane::groupbox(string c, string s)
         p->groupboxw=0;
         return true;
       }
-      info ("Form definition","No groupbox to end");
+      error("No groupbox to end");
       return false;
     }
   }

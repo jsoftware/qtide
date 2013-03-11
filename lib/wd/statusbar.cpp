@@ -50,12 +50,12 @@ void StatusBar::set(string p,string v)
     w->addPermanentWidget(lab,0);
   } else if (p=="setlabel") {
     if (n<2) {
-      info("Statusbar","setlabel needs label id and text");
+      error("setlabel needs label id and text");
       return;
     }
     m=labels.indexOf(s);
     if (m<0) {
-      info("Statusbar","label not found: " + s);
+      error("label not found: " + q2s(s));
       return;
     }
     labelw.at(m)->setText(arg.at(1));
