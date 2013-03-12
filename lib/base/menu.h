@@ -122,6 +122,7 @@ private:
   QAction *toolsdirmAct;
   QAction *toolsfkeysAct;
   QAction *toolslaunchpadAct;
+  QAction *toolspacmanAct;
   QAction *tosellowerAct;
   QAction *toselminusAct;
   QAction *toselplusAct;

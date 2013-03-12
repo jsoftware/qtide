@@ -19,6 +19,7 @@ public:
 
 private slots:
   void on_cellChanged(int,int);
+  void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
 
 private:
@@ -26,9 +27,9 @@ private:
   Qt::Alignment getalign(int i);
   QVector<int> getcellvec(QVector<int>);
   void initglobals();
-  void initsizes(QStringList);
 
   string readcell(int row,int col);
+  void resetlen(QVector<int> *v, QVector<int> def);
 
   void setalign(string v);
   void setdata(string s);
@@ -36,9 +37,9 @@ private:
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
+  void setshape(QStringList);
   void settype(string v);
 
-//  void tbinfo(QString);
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);
 
@@ -48,6 +49,8 @@ private:
 
   int col;
   int row;
+  int lastcol;
+  int lastrow;
 
   bool ifhdr;
 

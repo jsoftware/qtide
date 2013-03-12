@@ -38,6 +38,8 @@ void Editm::set(string p,string v)
 {
   QPlainTextEdit *w=(QPlainTextEdit*) widget;
   QStringList opt=qsplit(v);
+  QScrollBar *sb;
+
   int bgn,end,pos=0;
 
   if (p=="limit")
@@ -54,9 +56,16 @@ void Editm::set(string p,string v)
       setselect(w,bgn,end);
     }
   } else if (p=="scroll") {
-    if (opt.size())
-      pos=opt.at(0).toInt();
-    w->verticalScrollBar()->setValue(pos);
+    if (opt.size()) {
+      sb=w->verticalScrollBar();
+      if (opt.at(0)=="min")
+        pos=sb->minimum();
+      else if (opt.at(0)=="max")
+        pos=sb->maximum();
+      else
+        pos=opt.at(0).toInt();
+      sb->setValue(pos);
+    }
   } else if (p=="wrap")
     w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);
   else Child::set(p,v);

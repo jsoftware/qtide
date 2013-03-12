@@ -167,6 +167,13 @@ void Term::load(QString s, bool d)
 }
 
 // ---------------------------------------------------------------------
+void Term::pacman()
+{
+  var_cmd("require 'pacman ~addons/ide/qt/pacman.ijs'");
+  var_cmd("runpacman_jpacman_ 0");
+}
+
+// ---------------------------------------------------------------------
 void Term::projectenable()
 {
   bool b=project.Id.size()>0;

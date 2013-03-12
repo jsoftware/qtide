@@ -110,7 +110,8 @@ void Menu::createActions()
   scriptsnapAct = makeact("scriptsnapAct","&Script Snapshots","");
   scriptrestoreAct = makeact("scriptrestoreAct","R&estore","");
 
-  toolsdirmAct = makeact("toolsdirmAct","Directory Match","");
+  toolsdirmAct = makeact("toolsdirmAct","&Directory Match","");
+  toolspacmanAct = makeact("toolspacmanAct","&Package Manager","");
   toolsfkeysAct = makeact("toolsfkeysAct","Function Keys","");
   tosellowerAct = makeact("tosellowerAct","Lower Case","");
   toselminusAct = makeact("toselminusAct","Remove Comment","Ctrl+Shift+B");
@@ -427,6 +428,8 @@ void Menu::createtoolsMenu(QString s)
   toolsMenu = addMenu("&Tools");
   toolsMenu->addAction(toolsdirmAct);
   toolsMenu->addSeparator();
+  toolsMenu->addAction(toolspacmanAct);
+  toolsMenu->addSeparator();
   fkeyMenu = toolsMenu->addMenu("Function Keys");
   createfkeyMenu(s);
 }
@@ -493,7 +496,6 @@ void Note::on_cfgdirmAct_triggered()
 void Note::on_cfgfoldersAct_triggered()
 {
   term->on_cfgfoldersAct_triggered();
-
 }
 
 
@@ -858,6 +860,12 @@ void Note::on_scriptrestoreAct_triggered()
 void Note::on_toolsdirmAct_triggered()
 {
   new Dirm("std");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_toolspacmanAct_triggered()
+{
+  term->on_toolspacmanAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1299,6 +1307,12 @@ void Term::on_runtestAct_triggered()
 void Term::on_toolsdirmAct_triggered()
 {
   new Dirm("std");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_toolspacmanAct_triggered()
+{
+  term->pacman();
 }
 
 // ---------------------------------------------------------------------

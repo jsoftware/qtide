@@ -184,11 +184,9 @@ void wd1()
     else if (c=="reset")
       wdreset();
     // nonce leave in setp
-    else if (c=="set" || c=="setp") {
-      noevents(1);
+    else if (c=="set" || c=="setp")
       wdset();
-      noevents(0);
-    } else if (c.substr(0,3)=="set")
+    else if (c.substr(0,3)=="set")
       wdsetx(c);
     else if (c.substr(0,5)=="split")
       wdsplit(c);
@@ -610,6 +608,7 @@ void wdsetx(string c)
 // ---------------------------------------------------------------------
 void wdset1(string n,string p,string v)
 {
+  noevents(1);
   int type=setchild(n);
   switch (type) {
   case 1 :
@@ -627,6 +626,7 @@ void wdset1(string n,string p,string v)
     cc->set(n+" "+p,v);
     break;
   }
+  noevents(0);
 }
 
 // ---------------------------------------------------------------------

@@ -25,12 +25,10 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
 
-  if (opt.size()<2) {
-    error("row and column count must be given");
-    return;
+  if (opt.size()==2) {
+    setshape(opt);
+    opt=opt.mid(2);
   }
-  initsizes(opt);
-  opt=opt.mid(2);
 
   w->resizeColumnsToContents();
   w->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -43,19 +41,19 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QFontMetrics fm(w->font());
   w->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
-  // turn off cell editing:
-  //w->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-  // single cell vs cell blocks
   w->setSelectionMode(QAbstractItemView::SingleSelection);
 
   w->setAlternatingRowColors(true);
 
-  if (opt.contains("selectrow"))
+  if (opt.contains("selectrows")) {
     w->setSelectionBehavior(QAbstractItemView::SelectRows);
+    w->selectRow(0);
+  }
 
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));
+  connect(w,SIGNAL(currentCellChanged(int,int,int,int)),
+          this,SLOT(on_currentCellChanged(int,int,int,int)));
 }
 
 // ---------------------------------------------------------------------
@@ -74,7 +72,7 @@ void Table::applyhdralign()
 // ---------------------------------------------------------------------
 Qt::Alignment Table::getalign(int i)
 {
-  switch (cellalign[i]) {
+  switch (i) {
   case 0:
     return Qt::AlignLeft|Qt::AlignVCenter;
   case 1:
@@ -107,20 +105,6 @@ void Table::initglobals()
 }
 
 // ---------------------------------------------------------------------
-void Table::initsizes(QStringList opt)
-{
-  rws=opt.at(0).toInt();
-  cls=opt.at(1).toInt();
-  len=rws*cls;
-  cellalign.resize(len);
-  celltype.resize(len);
-  cellwidget.resize(len);
-  QTableWidget *w=(QTableWidget*) widget;
-  w->setRowCount(rws);
-  w->setColumnCount(cls);
-}
-
-// ---------------------------------------------------------------------
 string Table::readcell(int row,int col)
 {
   QTableWidget *w=(QTableWidget*) widget;
@@ -134,6 +118,23 @@ string Table::readcell(int row,int col)
   default :
     return "";
   }
+}
+
+// ---------------------------------------------------------------------
+void Table::resetlen(QVector<int> *v, QVector<int> def)
+{
+  v->resize(len);
+  if (len==0) return;
+
+  if (def.size()==1)
+    v->fill(def.at(0));
+  else if (def.size()==cls) {
+    int i,j;
+    for (i=0; i<rws; i++)
+      for (j=0; j<cls; j++)
+        v->replace(j+i*cls,def[j]);
+  } else
+    v->fill(0);
 }
 
 // ---------------------------------------------------------------------
@@ -151,6 +152,8 @@ void Table::set(string p, string v)
     sethdralign(v);
   else if (p=="lab")
     setlab(v);
+  else if (p=="shape")
+    setshape(qsplit(v));
   else if (p=="type")
     settype(v);
   else Child::set(p,v);
@@ -202,7 +205,7 @@ void Table::setdata(string s)
       switch (celltype[p]) {
       case 0 :
         item=new QTableWidgetItem(dat[d+c]);
-        item->setTextAlignment(getalign(p));
+        item->setTextAlignment(getalign(cellalign[p]));
         if (!celledit[p])
           item->setFlags(fnoedit);
         w->setItem(r,c,item);
@@ -227,8 +230,8 @@ void Table::setdata(string s)
       }
     }
   }
-  w->selectRow(0);
   w->resizeColumnsToContents();
+  w->horizontalHeader()->setStretchLastSection(true);
 }
 
 // ---------------------------------------------------------------------
@@ -295,6 +298,27 @@ void Table::setlab(string v)
 }
 
 // ---------------------------------------------------------------------
+void Table::setshape(QStringList opt)
+{
+  if (opt.size()<2) {
+    error("table shape must have rows and columns: " + q2s(opt.join(" ")));
+    return;
+  }
+  rws=opt.at(0).toInt();
+  cls=opt.at(1).toInt();
+  len=rws*cls;
+
+  QTableWidget *w=(QTableWidget*) widget;
+  w->setRowCount(rws);
+  w->setColumnCount(cls);
+
+  resetlen(&cellalign,defcellalign);
+  resetlen(&celledit,defcelledit);
+  resetlen(&celltype,defcelltype);
+  cellwidget.resize(len);
+}
+
+// ---------------------------------------------------------------------
 void Table::settype(string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
@@ -304,44 +328,25 @@ void Table::settype(string v)
     return;
   }
   if(!vecin(a,CellTypes,"type")) return;
-  defcellalign=a;
+  defcelltype=a;
   celltype=getcellvec(a);
 }
 
 // ---------------------------------------------------------------------
 string Table::state()
 {
-  //if (this==pform->evtchild && event=="changed")
   if (this!=pform->evtchild) return "";
-
-
-  //QTableWidget *w=(QTableWidget*) widget;
   string r;
 
-  if (event=="changed") {
+  if (event=="change") {
     r+=spair(id,readcell(row,col));
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
-    return r;
+  } else if (event=="mark") {
+    r+=spair(id,i2s(row)+" "+i2s(col));
   }
-
-  //int n=w->currentRow();
-  //if (n<0) {
-  //r+=spair(id,"");
-  //r+=spair(id+"_select","");
-  //} else {
-  //r+=spair(id,q2s(w->item(n)->text()));
-  //r+=spair(id+"_select",i2s(n));
-  //}
-
   return r;
 }
 
-// ---------------------------------------------------------------------
-//void Table::tbinfo(QString s)
-//{
-//  info("Table",s);
-//}
-//
 // ---------------------------------------------------------------------
 bool Table::vecin(QVector<int>vec,QVector<int>values,QString id)
 {
@@ -368,9 +373,21 @@ bool Table::vecisbool(QVector<int>vec,QString id)
 void	Table::on_cellChanged (int r,int c)
 {
   if (NoEvents) return;
-  event="changed";
+  event="change";
   row=r;
   col=c;
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+void	Table::on_currentCellChanged (int r,int c, int pr, int pc)
+{
+  if (NoEvents) return;
+  event="mark";
+  row=r;
+  col=c;
+  lastrow=pr;
+  lastcol=pc;
   pform->signalevent(this);
 }
 
@@ -380,7 +397,7 @@ void	Table::on_stateChanged (int n)
 {
   Q_UNUSED(n);
   if (NoEvents) return;
-  event="changed";
+  event="change";
   int p=sender()->objectName().toInt();
   row=p/cls;
   col=p-row*cls;

@@ -23,7 +23,7 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 void CheckBox::set(string p,string v)
 {
   QCheckBox *w=(QCheckBox*) widget;
-  if (p=="caption")
+  if (p=="caption" || p=="text")
     w->setText(s2q(v));
   else if (p=="value")
     w->setChecked(v=="1");

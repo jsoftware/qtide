@@ -88,7 +88,7 @@ void Menus::menu_triggered(QAction *a)
 // ---------------------------------------------------------------------
 void Menus::set(string p, string v)
 {
-  QString id,m,parm;
+  QString id,m,parm,t;
   QStringList sel,opt;
 
   sel=qsplit(p);
@@ -96,22 +96,22 @@ void Menus::set(string p, string v)
     error("invalid menu command: " + p + " " + v);
     return;
   }
+
   id=sel.at(0);
   m=sel.at(1);
+  t=s2q(v);
 
-  opt=qsplit(v);
-  if (opt.size()) {
-    parm=opt.at(0);
-    if (parm=="value" && opt.size()>1)
-      parm=opt.at(1);
+  if (t.size()==0) {
+    t=m;
+    m="checked";
   }
 
-  if (m=="checked") {
+  if (m=="checked" || m=="value") {
     QAction *a=items.value(id);
     a->setCheckable(true);
-    a->setChecked(parm=="1");
+    a->setChecked(t=="1");
   } else if (m=="enable") {
-    items.value(id)->setEnabled(parm=="1");
+    items.value(id)->setEnabled(t=="1");
   } else
-    error("invalid menu command: " + p + " " + v);
+    Child::set(p,v);
 }

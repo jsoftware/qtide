@@ -141,6 +141,7 @@ public slots:
   void on_scriptsnapAct_triggered();
   void on_toolsdirmAct_triggered();
   void on_toolsfkeysAct_triggered();
+  void on_toolspacmanAct_triggered();
   void on_tosellowerAct_triggered();
   void on_toselminusAct_triggered();
   void on_toselplusAct_triggered();

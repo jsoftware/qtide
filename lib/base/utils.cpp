@@ -272,7 +272,7 @@ QString rxassign(QString ext, bool ifglobal)
 {
   QString r;
   if (ext==".ijs"||ext==".ijt")
-    r=ifglobal ? "\\s*=[.:]" : "\\s*:";
+    r=ifglobal ? "\\s*=[.:]=" : "\\s*=:";
   else if (ext==".k"||ext==".q")
     r="\\s*:";
   return r;

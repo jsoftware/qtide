@@ -40,6 +40,7 @@ public:
   void fini();
   void load(QString s, bool display);
   void openconfig(QString s);
+  void pacman();
   void projectenable();
   void vieweditor();
 
@@ -112,6 +113,7 @@ public slots:
   void on_runtestAct_triggered();
   void on_toolsdirmAct_triggered();
   void on_toolsfkeysAct_triggered();
+  void on_toolspacmanAct_triggered();
   void on_tosellowerAct_triggered();
   void on_toselminusAct_triggered();
   void on_toselplusAct_triggered();
