@@ -72,7 +72,7 @@ int glzqextentw(char *s,int *w)
   if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
-  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::SkipEmptyParts);
+  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::KeepEmptyParts);
   QFontMetrics fm = QFontMetrics ( (prtobj->font)->font );
   for (int i=0; i<n.size(); i++) {
     *(w + i) = fm.width ( n.at(i));
@@ -434,18 +434,21 @@ static int glztext_i (const int *p, int len)
 // ---------------------------------------------------------------------
 int glztext (char *ys)
 {
-  Q_UNUSED(ys);
   if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
   if (!prtobj->painter->isActive()) return 1;
+  if (!prtobj->font) return 1;
+  QFontMetrics fm = QFontMetrics ( (prtobj->font)->font );
+  QString qs = QString::fromUtf8 (ys);
+
   prtobj->painter->setPen(prtobj->textpen);
   if (0 == prtobj->font->angle)
-    prtobj->painter->drawText ( prtobj->textx, prtobj->texty + prtobj->fontheight, QString::fromUtf8 (ys));
+    prtobj->painter->drawText ( prtobj->textx, prtobj->texty + fm.ascent(), qs);
   else {
     prtobj->painter->save ();
     prtobj->painter->translate ( prtobj->textx, prtobj->texty );
     prtobj->painter->rotate ( - prtobj->font->angle/10 );
-    prtobj->painter->drawText ( 0, prtobj->fontheight, QString::fromUtf8 (ys));
+    prtobj->painter->drawText ( 0, fm.ascent(), qs);
     prtobj->painter->restore ();
   }
   prtobj->painter->setPen(prtobj->pen);

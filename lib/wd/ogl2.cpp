@@ -59,12 +59,13 @@ int gl_paint()
   return 0;
 //  qDebug() << "gl_paint";
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)) return 1;
-  if (((Opengl2 *)opengl->widget)->epaint) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w) return 1;
+  if (w->epaint) return 1;
 //  qDebug() << "gl_paint begin";
-  ((Opengl2 *)opengl->widget)->nopaint=true;
-  ((Opengl2 *)opengl->widget)->paintgl();
-  ((Opengl2 *)opengl->widget)->nopaint=false;
+  w->nopaint=true;
+  w->paintgl();
+  w->nopaint=false;
 //  qDebug() << "gl_paint end";
   return 0;
 }
@@ -74,9 +75,10 @@ int gl_paintx()
 {
 //  qDebug() << "gl_paintx";
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)) return 1;
-  if (((Opengl2 *)opengl->widget)->jpaint) return 1;
-  ((Opengl2 *)opengl->widget)->updateGL();
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w) return 1;
+  if (w->jpaint) return 1;
+  w->updateGL();
   return 0;
 }
 
@@ -87,7 +89,8 @@ int gl_qhandles(void **p)
   if (!opengl) return 1;
   *p = (void *)opengl;
 #ifdef _WIN32
-  if ((Opengl2 *)opengl->widget) *(p+1) = (void *)((Opengl2 *)opengl->widget)->getDC();
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (w) *(p+1) = (void *)w->getDC();
   else *(p+1) = (void *)0;
 #else
   *(p+1) = (void *)0;
@@ -100,25 +103,27 @@ int gl_qextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(wh) = fm.width( QString::fromUtf8 (s));
   *(wh+1) = fm.height();
   return 0;
 }
 
 // ---------------------------------------------------------------------
-int gl_qextentw(char *s,int *w)
+int gl_qextentw(char *s,int *wi)
 {
-  if (!s || !w) return 1;
+  if (!s || !wi) return 1;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::SkipEmptyParts);
-  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::KeepEmptyParts);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   for (int i=0; i<n.size(); i++) {
-    *(w + i) = fm.width ( n.at(i));
+    wi[i] = fm.width ( n.at(i));
   }
   return 0;
 }
@@ -128,9 +133,10 @@ int gl_qpixels(const int *p, int *pix)
 {
   if (!p || !pix) return 1;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  QPixmap *pm = ((Opengl2 *)opengl->widget)->pixmap;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QPixmap *pm = w->pixmap;
   if (!pm || pm->isNull()) return 1;
   if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm->width() || (p[1]+p[3])>pm->height()) return 1;
 // one-liner cause does not work ??
@@ -153,9 +159,10 @@ int gl_qtextmetrics(int *tm)
 {
   if (!tm) return 1;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(tm) = fm.height();
   *(tm+1) = fm.ascent();
   *(tm+2) = fm.descent();
@@ -171,8 +178,9 @@ int gl_qtextmetrics(int *tm)
 int gl_qwh(int *wh)
 {
   if (!(wh && opengl && opengl->widget)) return 1;
-  wh[0] = ((Opengl2 *)opengl->widget)->width();
-  wh[1] = ((Opengl2 *)opengl->widget)->height();
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  wh[0] = w->width();
+  wh[1] = w->height();
   return 0;
 }
 
@@ -241,10 +249,11 @@ int gl_arc (const int *p)
 {
   int dy[2];
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   qtarcisi (p,  p + 4, dy);
-  ((Opengl2 *)opengl->widget)->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
+  w->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
 }
 
@@ -252,12 +261,13 @@ int gl_arc (const int *p)
 int gl_brush ()
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->brushcolor = QColor (((Opengl2 *)opengl->widget)->color);
-  ((Opengl2 *)opengl->widget)->brush = QBrush (((Opengl2 *)opengl->widget)->brushcolor);
-  ((Opengl2 *)opengl->widget)->painter->setBrush(((Opengl2 *)opengl->widget)->brush);
-  ((Opengl2 *)opengl->widget)->brushnull = 0;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->brushcolor = QColor (w->color);
+  w->brush = QBrush (w->brushcolor);
+  w->painter->setBrush(w->brush);
+  w->brushnull = 0;
   return 0;
 }
 
@@ -265,10 +275,11 @@ int gl_brush ()
 int gl_brushnull ()
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->brushnull = 1;
-  ((Opengl2 *)opengl->widget)->painter->setBrush(Qt::NoBrush);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->brushnull = 1;
+  w->painter->setBrush(Qt::NoBrush);
   return 0;
 }
 
@@ -283,17 +294,18 @@ int gl_capture (int a)
 int gl_caret (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   if (0 == *(p) || 0 == *(p + 1))
     return 0;
-  QPen pen = ((Opengl2 *)opengl->widget)->painter->pen();
-  QBrush brush = ((Opengl2 *)opengl->widget)->painter->brush();
-  ((Opengl2 *)opengl->widget)->painter->setPen(QPen (QColor (0, 0, 0),1));
-  ((Opengl2 *)opengl->widget)->painter->setBrush(QBrush (QColor (0, 0, 0)));
-  ((Opengl2 *)opengl->widget)->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
-  ((Opengl2 *)opengl->widget)->painter->setPen(pen);
-  ((Opengl2 *)opengl->widget)->painter->setBrush(brush);
+  QPen pen = w->painter->pen();
+  QBrush brush = w->painter->brush();
+  w->painter->setPen(QPen (QColor (0, 0, 0),1));
+  w->painter->setBrush(QBrush (QColor (0, 0, 0)));
+  w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  w->painter->setPen(pen);
+  w->painter->setBrush(brush);
   return 0;
 }
 
@@ -302,36 +314,37 @@ int gl_clear2 (void *p)
 {
   Opengl *opengl = (Opengl *) p;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->color = QColor (0, 0, 0);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->color = QColor (0, 0, 0);
 
 // messed up here, but ProFont should be part of config...
   string s=q2s(config.ProFont.family());
   gl_font0(opengl,(char *)s.c_str());
 
-  ((Opengl2 *)opengl->widget)->painter->setWorldMatrixEnabled (true);
-  ((Opengl2 *)opengl->widget)->painter->translate (-((Opengl2 *)opengl->widget)->orgx, -((Opengl2 *)opengl->widget)->orgy);
-  ((Opengl2 *)opengl->widget)->orgx = 0;
-  ((Opengl2 *)opengl->widget)->orgy = 0;
-  ((Opengl2 *)opengl->widget)->painter->setClipping (false);
-  ((Opengl2 *)opengl->widget)->clipped = 0;
+  w->painter->setWorldMatrixEnabled (true);
+  w->painter->translate (-w->orgx, -w->orgy);
+  w->orgx = 0;
+  w->orgy = 0;
+  w->painter->setClipping (false);
+  w->clipped = 0;
 
-  ((Opengl2 *)opengl->widget)->painter->setPen(QPen (QColor (255, 255, 255),1));
-  ((Opengl2 *)opengl->widget)->painter->setBrush(QBrush (QColor (255, 255, 255)));
+  w->painter->setPen(QPen (QColor (255, 255, 255),1));
+  w->painter->setBrush(QBrush (QColor (255, 255, 255)));
 // prevent erase opengl
-//  ((Opengl2 *)opengl->widget)->painter->drawRect (0, 0, ((Opengl2 *)opengl->widget)->width(), ((Opengl2 *)opengl->widget)->height());
+//  w->painter->drawRect (0, 0, w->width(), w->height());
 
-  ((Opengl2 *)opengl->widget)->pen = QPen (((Opengl2 *)opengl->widget)->color, 1); // TODO in user space
-  ((Opengl2 *)opengl->widget)->textpen = QPen (((Opengl2 *)opengl->widget)->pen);
-  ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->pen);
-  ((Opengl2 *)opengl->widget)->brushcolor = QColor (255, 255, 255);
-  ((Opengl2 *)opengl->widget)->brush.setColor(((Opengl2 *)opengl->widget)->brushcolor);
-  ((Opengl2 *)opengl->widget)->brushnull = 1;
-  ((Opengl2 *)opengl->widget)->painter->setBrush(Qt::NoBrush);
-  ((Opengl2 *)opengl->widget)->textx = 0;
-  ((Opengl2 *)opengl->widget)->texty = 0;
-  ((Opengl2 *)opengl->widget)->textcolor = QColor(((Opengl2 *)opengl->widget)->color);
+  w->pen = QPen (w->color, 1); // TODO in user space
+  w->textpen = QPen (w->pen);
+  w->painter->setPen(w->pen);
+  w->brushcolor = QColor (255, 255, 255);
+  w->brush.setColor(w->brushcolor);
+  w->brushnull = 1;
+  w->painter->setBrush(Qt::NoBrush);
+  w->textx = 0;
+  w->texty = 0;
+  w->textcolor = QColor(w->color);
   return 0;
 }
 
@@ -346,11 +359,12 @@ int gl_clear ()
 int gl_clip (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->clipped = 1;
-  ((Opengl2 *)opengl->widget)->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
-  ((Opengl2 *)opengl->widget)->painter->setClipping (true);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->clipped = 1;
+  w->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  w->painter->setClipping (true);
   return 0;
 }
 
@@ -358,11 +372,12 @@ int gl_clip (const int *p)
 int gl_clipreset ()
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  if (((Opengl2 *)opengl->widget)->clipped) {
-    ((Opengl2 *)opengl->widget)->painter->setClipping (false);
-    ((Opengl2 *)opengl->widget)->clipped = 0;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  if (w->clipped) {
+    w->painter->setClipping (false);
+    w->clipped = 0;
   }
   return 0;
 }
@@ -378,9 +393,10 @@ int gl_cursor (int a)
 int gl_ellipse (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
   return 0;
 }
 
@@ -397,12 +413,13 @@ static int gl_font_i (const int *p, int len)
 static int gl_font0 (Opengl *opengl, char *s)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->font = new Font (string(s));
-  ((Opengl2 *)opengl->widget)->painter->setFont ((((Opengl2 *)opengl->widget)->font)->font);
-  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
-  ((Opengl2 *)opengl->widget)->fontheight = fm.height();
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->font = new Font (string(s));
+  w->painter->setFont ((w->font)->font);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  w->fontheight = fm.height();
   return 0;
 }
 
@@ -417,8 +434,9 @@ int gl_font2 (const int *p, int len)
 {
   int size10, degree10, bold, italic, strikeout, underline;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   size10 = *(p);
   bold = 1 & *(p + 1);
   italic = 2 & *(p + 1);
@@ -426,10 +444,10 @@ int gl_font2 (const int *p, int len)
   strikeout = 8 & *(p + 1);
   degree10 = *(p + 2);
   char *face = int2utf8 (p + 3, len - 3);
-  ((Opengl2 *)opengl->widget)->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
-  ((Opengl2 *)opengl->widget)->painter->setFont ((((Opengl2 *)opengl->widget)->font)->font);
-  QFontMetrics fm = QFontMetrics ( (((Opengl2 *)opengl->widget)->font)->font );
-  ((Opengl2 *)opengl->widget)->fontheight = fm.height();
+  w->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  w->painter->setFont ((w->font)->font);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  w->fontheight = fm.height();
   return 0;
 }
 
@@ -437,9 +455,10 @@ int gl_font2 (const int *p, int len)
 int gl_fontangle (int a)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->font->angle = a;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->font->angle = a;
   return 0;
 }
 
@@ -447,13 +466,14 @@ int gl_fontangle (int a)
 int gl_lines (const int *p, int len)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
-  ((Opengl2 *)opengl->widget)->painter->drawPolyline (pt,c);
+  w->painter->drawPolyline (pt,c);
   delete [] pt;
   return 0;
 }
@@ -470,11 +490,12 @@ int gl_nodblbuf (int a)
 int gl_pen (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->pencolor = QColor (((Opengl2 *)opengl->widget)->color);
-  ((Opengl2 *)opengl->widget)->pen = QPen (((Opengl2 *)opengl->widget)->pencolor, Max (0.5, *(p))); // TODO in user space
-  ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->pen);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->pencolor = QColor (w->color);
+  w->pen = QPen (w->pencolor, Max (0.5, *(p))); // TODO in user space
+  w->painter->setPen(w->pen);
   return 0;
 }
 
@@ -483,10 +504,11 @@ int gl_pie (const int *p)
 {
   int dy[2];
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   qtarcisi (p, p + 4, dy);
-  ((Opengl2 *)opengl->widget)->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
+  w->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
 }
 
@@ -494,21 +516,23 @@ int gl_pie (const int *p)
 int gl_pixel (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->painter->drawPoint (*(p), *(p + 1));
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawPoint (*(p), *(p + 1));
   return 0;
 }
 
 // ---------------------------------------------------------------------
-static int glpixels2(int x,int y,int w,int h,const uchar *p)
+static int glpixels2(int x,int y,int wi,int h,const uchar *p)
 {
-  if (!w || !h || !p) return 1;
-  QImage image = QImage(w,h,QImage::Format_RGB32);
+  if (!wi || !h || !p) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  QImage image = QImage(wi,h,QImage::Format_RGB32);
   const uchar *t=image.bits();
-  memcpy((uchar *)t,p,4*w*h);
+  memcpy((uchar *)t,p,4*wi*h);
 
-  ((Opengl2 *)opengl->widget)->painter->drawImage(x, y, image);
+  w->painter->drawImage(x, y, image);
 
   return 0;
 }
@@ -527,8 +551,9 @@ int gl_pixels(const int *p, int len)
 int gl_pixelsx (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
 #if defined(_WIN64)||defined(__LP64__)
   Q_UNUSED(p);
   return 1;
@@ -541,13 +566,14 @@ int gl_pixelsx (const int *p)
 int gl_polygon (const int *p, int len)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
-  ((Opengl2 *)opengl->widget)->painter->drawPolygon (pt,c);
+  w->painter->drawPolygon (pt,c);
   delete [] pt;
   return 0;
 }
@@ -556,9 +582,10 @@ int gl_polygon (const int *p, int len)
 int gl_rect (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
 
@@ -566,7 +593,8 @@ int gl_rect (const int *p)
 int gl_rgb (const int *p)
 {
   if (!opengl) return 1;
-  ((Opengl2 *)opengl->widget)->color = QColor (*(p), *(p + 1), *(p + 2));
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  w->color = QColor (*(p), *(p + 1), *(p + 2));
   return 0;
 }
 
@@ -582,21 +610,25 @@ static int gl_text_i (const int *p, int len)
 // ---------------------------------------------------------------------
 int gl_text (char *ys)
 {
-  Q_UNUSED(ys);
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->textpen);
-  if ((!((Opengl2 *)opengl->widget)->font) || (0 == ((Opengl2 *)opengl->widget)->font->angle))
-    ((Opengl2 *)opengl->widget)->painter->drawText ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty + ((Opengl2 *)opengl->widget)->fontheight, QString::fromUtf8 (ys));
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  if (!w->font) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  QString qs = QString::fromUtf8 (ys);
+
+  w->painter->setPen(w->textpen);
+  if ((!w->font) || (0 == w->font->angle))
+    w->painter->drawText ( w->textx, w->texty + fm.ascent(), qs);
   else {
-    ((Opengl2 *)opengl->widget)->painter->save ();
-    ((Opengl2 *)opengl->widget)->painter->translate ( ((Opengl2 *)opengl->widget)->textx, ((Opengl2 *)opengl->widget)->texty );
-    ((Opengl2 *)opengl->widget)->painter->rotate ( - ((Opengl2 *)opengl->widget)->font->angle/10 );
-    ((Opengl2 *)opengl->widget)->painter->drawText ( 0, ((Opengl2 *)opengl->widget)->fontheight, QString::fromUtf8 (ys));
-    ((Opengl2 *)opengl->widget)->painter->restore ();
+    w->painter->save ();
+    w->painter->translate ( w->textx, w->texty );
+    w->painter->rotate ( - w->font->angle/10 );
+    w->painter->drawText(0, fm.ascent(), qs);
+    w->painter->restore ();
   }
-  ((Opengl2 *)opengl->widget)->painter->setPen(((Opengl2 *)opengl->widget)->pen);
+  w->painter->setPen(w->pen);
   return 0;
 }
 
@@ -604,11 +636,12 @@ int gl_text (char *ys)
 int gl_textcolor ()
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->textcolor = QColor (((Opengl2 *)opengl->widget)->color);
-  ((Opengl2 *)opengl->widget)->textpen = QPen (((Opengl2 *)opengl->widget)->painter->pen());
-  ((Opengl2 *)opengl->widget)->textpen.setColor (((Opengl2 *)opengl->widget)->textcolor);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->textcolor = QColor (w->color);
+  w->textpen = QPen (w->painter->pen());
+  w->textpen.setColor (w->textcolor);
   return 0;
 }
 
@@ -616,8 +649,9 @@ int gl_textcolor ()
 int gl_textxy (const int *p)
 {
   if (!opengl) return 1;
-  ((Opengl2 *)opengl->widget)->textx = *(p);
-  ((Opengl2 *)opengl->widget)->texty = *(p + 1);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  w->textx = *(p);
+  w->texty = *(p + 1);
   return 0;
 }
 
@@ -625,11 +659,12 @@ int gl_textxy (const int *p)
 int gl_windoworg (const int *p)
 {
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
-  ((Opengl2 *)opengl->widget)->painter->translate (*(p), *(p + 1));
-  ((Opengl2 *)opengl->widget)->orgx += *(p);
-  ((Opengl2 *)opengl->widget)->orgy += *(p + 1);
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->translate (*(p), *(p + 1));
+  w->orgx += *(p);
+  w->orgy += *(p + 1);
   return 0;
 }
 
@@ -643,8 +678,9 @@ glcmds (const int *ptr, int ncnt)
 
 //  if (!form) return 1;
   if (!opengl) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter) return 1;
-  if (!((Opengl2 *)opengl->widget)->painter->isActive()) return 1;
+  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
 
   while (p < ncnt) {
     cnt = *(ptr + p);

@@ -59,13 +59,14 @@ int glpaint()
 {
 //  qDebug() << "glpaint";
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (((Isigraph2 *)isigraph->widget)->epaint) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w) return 1;
+  if (!w->painter) return 1;
+  if (w->epaint) return 1;
 //  qDebug() << "glpaint begin";
-  ((Isigraph2 *)isigraph->widget)->nopaint=true;
-  ((Isigraph2 *)isigraph->widget)->repaint(0,0,-1,-1);
-  ((Isigraph2 *)isigraph->widget)->nopaint=false;
+  w->nopaint=true;
+  w->repaint(0,0,-1,-1);
+  w->nopaint=false;
 //  qDebug() << "glpaint end";
   return 0;
 }
@@ -75,9 +76,10 @@ int glpaintx()
 {
 //  qDebug() << "glpaintx";
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)) return 1;
-  if (((Isigraph2 *)isigraph->widget)->jpaint) return 1;
-  ((Isigraph2 *)isigraph->widget)->update();
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w) return 1;
+  if (w->jpaint) return 1;
+  w->update();
   return 0;
 }
 
@@ -88,7 +90,8 @@ int glqhandles(void **p)
   if (!isigraph) return 1;
   *p = (void *)isigraph;
 #ifdef _WIN32
-  if ((Isigraph2 *)isigraph->widget) *(p+1) = (void *)((Isigraph2 *)isigraph->widget)->getDC();
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (w) *(p+1) = (void *)w->getDC();
   else *(p+1) = (void *)0;
 #else
   *(p+1) = (void *)0;
@@ -101,25 +104,27 @@ int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(wh) = fm.width( QString::fromUtf8 (s));
   *(wh+1) = fm.height();
   return 0;
 }
 
 // ---------------------------------------------------------------------
-int glqextentw(char *s,int *w)
+int glqextentw(char *s,int *wi)
 {
-  if (!s || !w) return 1;
+  if (!s || !wi) return 1;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::SkipEmptyParts);
-  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QStringList n=(QString::fromUtf8 (s)).split("\n",QString::KeepEmptyParts);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   for (int i=0; i<n.size(); i++) {
-    *(w + i) = fm.width ( n.at(i));
+    wi[i] = fm.width ( n.at(i));
   }
   return 0;
 }
@@ -129,9 +134,10 @@ int glqpixels(const int *p, int *pix)
 {
   if (!p || !pix) return 1;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  QPixmap *pm = ((Isigraph2 *)isigraph->widget)->pixmap;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QPixmap *pm = w->pixmap;
   if (!pm || pm->isNull()) return 1;
   if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm->width() || (p[1]+p[3])>pm->height()) return 1;
 // one-liner cause does not work ??
@@ -154,9 +160,10 @@ int glqtextmetrics(int *tm)
 {
   if (!tm) return 1;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(tm) = fm.height();
   *(tm+1) = fm.ascent();
   *(tm+2) = fm.descent();
@@ -172,8 +179,9 @@ int glqtextmetrics(int *tm)
 int glqwh(int *wh)
 {
   if (!(wh && isigraph && isigraph->widget)) return 1;
-  wh[0] = ((Isigraph2 *)isigraph->widget)->width();
-  wh[1] = ((Isigraph2 *)isigraph->widget)->height();
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  wh[0] = w->width();
+  wh[1] = w->height();
   return 0;
 }
 
@@ -242,10 +250,11 @@ int glarc (const int *p)
 {
   int dy[2];
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   qtarcisi (p,  p + 4, dy);
-  ((Isigraph2 *)isigraph->widget)->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
+  w->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
 }
 
@@ -253,12 +262,13 @@ int glarc (const int *p)
 int glbrush ()
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->brushcolor = QColor (((Isigraph2 *)isigraph->widget)->color);
-  ((Isigraph2 *)isigraph->widget)->brush = QBrush (((Isigraph2 *)isigraph->widget)->brushcolor);
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(((Isigraph2 *)isigraph->widget)->brush);
-  ((Isigraph2 *)isigraph->widget)->brushnull = 0;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->brushcolor = QColor (w->color);
+  w->brush = QBrush (w->brushcolor);
+  w->painter->setBrush(w->brush);
+  w->brushnull = 0;
   return 0;
 }
 
@@ -266,10 +276,11 @@ int glbrush ()
 int glbrushnull ()
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->brushnull = 1;
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(Qt::NoBrush);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->brushnull = 1;
+  w->painter->setBrush(Qt::NoBrush);
   return 0;
 }
 
@@ -284,17 +295,18 @@ int glcapture (int a)
 int glcaret (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   if (0 == *(p) || 0 == *(p + 1))
     return 0;
-  QPen pen = ((Isigraph2 *)isigraph->widget)->painter->pen();
-  QBrush brush = ((Isigraph2 *)isigraph->widget)->painter->brush();
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(QPen (QColor (0, 0, 0),1));
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(QBrush (QColor (0, 0, 0)));
-  ((Isigraph2 *)isigraph->widget)->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(pen);
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(brush);
+  QPen pen = w->painter->pen();
+  QBrush brush = w->painter->brush();
+  w->painter->setPen(QPen (QColor (0, 0, 0),1));
+  w->painter->setBrush(QBrush (QColor (0, 0, 0)));
+  w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  w->painter->setPen(pen);
+  w->painter->setBrush(brush);
   return 0;
 }
 
@@ -303,35 +315,36 @@ int glclear2 (void *p)
 {
   Isigraph *isigraph = (Isigraph *) p;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->color = QColor (0, 0, 0);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->color = QColor (0, 0, 0);
 
 // messed up here, but ProFont should be part of config...
   string s=q2s(config.ProFont.family());
   glfont0(isigraph,(char *)s.c_str());
 
-  ((Isigraph2 *)isigraph->widget)->painter->setWorldMatrixEnabled (true);
-  ((Isigraph2 *)isigraph->widget)->painter->translate (-((Isigraph2 *)isigraph->widget)->orgx, -((Isigraph2 *)isigraph->widget)->orgy);
-  ((Isigraph2 *)isigraph->widget)->orgx = 0;
-  ((Isigraph2 *)isigraph->widget)->orgy = 0;
-  ((Isigraph2 *)isigraph->widget)->painter->setClipping (false);
-  ((Isigraph2 *)isigraph->widget)->clipped = 0;
+  w->painter->setWorldMatrixEnabled (true);
+  w->painter->translate (-w->orgx, -w->orgy);
+  w->orgx = 0;
+  w->orgy = 0;
+  w->painter->setClipping (false);
+  w->clipped = 0;
 
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(QPen (QColor (255, 255, 255),1));
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(QBrush (QColor (255, 255, 255)));
-  ((Isigraph2 *)isigraph->widget)->painter->drawRect (0, 0, ((Isigraph2 *)isigraph->widget)->width(), ((Isigraph2 *)isigraph->widget)->height());
+  w->painter->setPen(QPen (QColor (255, 255, 255),1));
+  w->painter->setBrush(QBrush (QColor (255, 255, 255)));
+  w->painter->drawRect (0, 0, w->width(), w->height());
 
-  ((Isigraph2 *)isigraph->widget)->pen = QPen (((Isigraph2 *)isigraph->widget)->color, 1); // TODO in user space
-  ((Isigraph2 *)isigraph->widget)->textpen = QPen (((Isigraph2 *)isigraph->widget)->pen);
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->pen);
-  ((Isigraph2 *)isigraph->widget)->brushcolor = QColor (255, 255, 255);
-  ((Isigraph2 *)isigraph->widget)->brush.setColor(((Isigraph2 *)isigraph->widget)->brushcolor);
-  ((Isigraph2 *)isigraph->widget)->brushnull = 1;
-  ((Isigraph2 *)isigraph->widget)->painter->setBrush(Qt::NoBrush);
-  ((Isigraph2 *)isigraph->widget)->textx = 0;
-  ((Isigraph2 *)isigraph->widget)->texty = 0;
-  ((Isigraph2 *)isigraph->widget)->textcolor = QColor(((Isigraph2 *)isigraph->widget)->color);
+  w->pen = QPen (w->color, 1); // TODO in user space
+  w->textpen = QPen (w->pen);
+  w->painter->setPen(w->pen);
+  w->brushcolor = QColor (255, 255, 255);
+  w->brush.setColor(w->brushcolor);
+  w->brushnull = 1;
+  w->painter->setBrush(Qt::NoBrush);
+  w->textx = 0;
+  w->texty = 0;
+  w->textcolor = QColor(w->color);
   return 0;
 }
 
@@ -346,11 +359,12 @@ int glclear ()
 int glclip (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->clipped = 1;
-  ((Isigraph2 *)isigraph->widget)->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
-  ((Isigraph2 *)isigraph->widget)->painter->setClipping (true);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->clipped = 1;
+  w->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  w->painter->setClipping (true);
   return 0;
 }
 
@@ -358,11 +372,12 @@ int glclip (const int *p)
 int glclipreset ()
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  if (((Isigraph2 *)isigraph->widget)->clipped) {
-    ((Isigraph2 *)isigraph->widget)->painter->setClipping (false);
-    ((Isigraph2 *)isigraph->widget)->clipped = 0;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  if (w->clipped) {
+    w->painter->setClipping (false);
+    w->clipped = 0;
   }
   return 0;
 }
@@ -378,9 +393,10 @@ int glcursor (int a)
 int glellipse (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
   return 0;
 }
 
@@ -397,12 +413,13 @@ static int glfont_i (const int *p, int len)
 static int glfont0 (Isigraph *isigraph, char *s)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->font = new Font (string(s));
-  ((Isigraph2 *)isigraph->widget)->painter->setFont ((((Isigraph2 *)isigraph->widget)->font)->font);
-  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
-  ((Isigraph2 *)isigraph->widget)->fontheight = fm.height();
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->font = new Font (string(s));
+  w->painter->setFont ((w->font)->font);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  w->fontheight = fm.height();
   return 0;
 }
 
@@ -417,8 +434,9 @@ int glfont2 (const int *p, int len)
 {
   int size10, degree10, bold, italic, strikeout, underline;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   size10 = *(p);
   bold = 1 & *(p + 1);
   italic = 2 & *(p + 1);
@@ -426,10 +444,10 @@ int glfont2 (const int *p, int len)
   strikeout = 8 & *(p + 1);
   degree10 = *(p + 2);
   char *face = int2utf8 (p + 3, len - 3);
-  ((Isigraph2 *)isigraph->widget)->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
-  ((Isigraph2 *)isigraph->widget)->painter->setFont ((((Isigraph2 *)isigraph->widget)->font)->font);
-  QFontMetrics fm = QFontMetrics ( (((Isigraph2 *)isigraph->widget)->font)->font );
-  ((Isigraph2 *)isigraph->widget)->fontheight = fm.height();
+  w->font = new Font (string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  w->painter->setFont ((w->font)->font);
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  w->fontheight = fm.height();
   return 0;
 }
 
@@ -437,9 +455,10 @@ int glfont2 (const int *p, int len)
 int glfontangle (int a)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->font->angle = a;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->font->angle = a;
   return 0;
 }
 
@@ -447,13 +466,14 @@ int glfontangle (int a)
 int gllines (const int *p, int len)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
-  ((Isigraph2 *)isigraph->widget)->painter->drawPolyline (pt,c);
+  w->painter->drawPolyline (pt,c);
   delete [] pt;
   return 0;
 }
@@ -470,11 +490,12 @@ int glnodblbuf (int a)
 int glpen (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->pencolor = QColor (((Isigraph2 *)isigraph->widget)->color);
-  ((Isigraph2 *)isigraph->widget)->pen = QPen (((Isigraph2 *)isigraph->widget)->pencolor, Max (0.5, *(p))); // TODO in user space
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->pen);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->pencolor = QColor (w->color);
+  w->pen = QPen (w->pencolor, Max (0.5, *(p))); // TODO in user space
+  w->painter->setPen(w->pen);
   return 0;
 }
 
@@ -483,10 +504,11 @@ int glpie (const int *p)
 {
   int dy[2];
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   qtarcisi (p, p + 4, dy);
-  ((Isigraph2 *)isigraph->widget)->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
+  w->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
 }
 
@@ -494,21 +516,23 @@ int glpie (const int *p)
 int glpixel (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->painter->drawPoint (*(p), *(p + 1));
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawPoint (*(p), *(p + 1));
   return 0;
 }
 
 // ---------------------------------------------------------------------
-static int glpixels2(int x,int y,int w,int h,const uchar *p)
+static int glpixels2(int x,int y,int wi,int h,const uchar *p)
 {
-  if (!w || !h || !p) return 1;
-  QImage image = QImage(w,h,QImage::Format_RGB32);
+  if (!wi || !h || !p) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  QImage image = QImage(wi,h,QImage::Format_RGB32);
   const uchar *t=image.bits();
-  memcpy((uchar *)t,p,4*w*h);
+  memcpy((uchar *)t,p,4*wi*h);
 
-  ((Isigraph2 *)isigraph->widget)->painter->drawImage(x, y, image);
+  w->painter->drawImage(x, y, image);
 
   return 0;
 }
@@ -527,8 +551,9 @@ int glpixels(const int *p, int len)
 int glpixelsx (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
 #if defined(_WIN64)||defined(__LP64__)
   Q_UNUSED(p);
   return 1;
@@ -541,13 +566,14 @@ int glpixelsx (const int *p)
 int glpolygon (const int *p, int len)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
   for (int i = 0; i < c; i++) pt[i] = QPoint (*(p + 2 * i), *(p + 1 + 2 * i));
-  ((Isigraph2 *)isigraph->widget)->painter->drawPolygon (pt,c);
+  w->painter->drawPolygon (pt,c);
   delete [] pt;
   return 0;
 }
@@ -556,9 +582,10 @@ int glpolygon (const int *p, int len)
 int glrect (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
 
@@ -566,7 +593,8 @@ int glrect (const int *p)
 int glrgb (const int *p)
 {
   if (!isigraph) return 1;
-  ((Isigraph2 *)isigraph->widget)->color = QColor (*(p), *(p + 1), *(p + 2));
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  w->color = QColor (*(p), *(p + 1), *(p + 2));
   return 0;
 }
 
@@ -582,21 +610,25 @@ static int gltext_i (const int *p, int len)
 // ---------------------------------------------------------------------
 int gltext (char *ys)
 {
-  Q_UNUSED(ys);
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->textpen);
-  if (0 == ((Isigraph2 *)isigraph->widget)->font->angle)
-    ((Isigraph2 *)isigraph->widget)->painter->drawText ( ((Isigraph2 *)isigraph->widget)->textx, ((Isigraph2 *)isigraph->widget)->texty + ((Isigraph2 *)isigraph->widget)->fontheight, QString::fromUtf8 (ys));
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  if (!w->font) return 1;
+  QFontMetrics fm = QFontMetrics ( (w->font)->font );
+  QString qs = QString::fromUtf8 (ys);
+
+  w->painter->setPen(w->textpen);
+  if (0 == w->font->angle)
+    w->painter->drawText ( w->textx, w->texty + fm.ascent(), qs);
   else {
-    ((Isigraph2 *)isigraph->widget)->painter->save ();
-    ((Isigraph2 *)isigraph->widget)->painter->translate ( ((Isigraph2 *)isigraph->widget)->textx, ((Isigraph2 *)isigraph->widget)->texty );
-    ((Isigraph2 *)isigraph->widget)->painter->rotate ( - ((Isigraph2 *)isigraph->widget)->font->angle/10 );
-    ((Isigraph2 *)isigraph->widget)->painter->drawText ( 0, ((Isigraph2 *)isigraph->widget)->fontheight, QString::fromUtf8 (ys));
-    ((Isigraph2 *)isigraph->widget)->painter->restore ();
+    w->painter->save ();
+    w->painter->translate ( w->textx, w->texty );
+    w->painter->rotate ( - w->font->angle/10 );
+    w->painter->drawText(0, fm.ascent(), qs);
+    w->painter->restore ();
   }
-  ((Isigraph2 *)isigraph->widget)->painter->setPen(((Isigraph2 *)isigraph->widget)->pen);
+  w->painter->setPen(w->pen);
   return 0;
 }
 
@@ -604,11 +636,12 @@ int gltext (char *ys)
 int gltextcolor ()
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->textcolor = QColor (((Isigraph2 *)isigraph->widget)->color);
-  ((Isigraph2 *)isigraph->widget)->textpen = QPen (((Isigraph2 *)isigraph->widget)->painter->pen());
-  ((Isigraph2 *)isigraph->widget)->textpen.setColor (((Isigraph2 *)isigraph->widget)->textcolor);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->textcolor = QColor (w->color);
+  w->textpen = QPen (w->painter->pen());
+  w->textpen.setColor (w->textcolor);
   return 0;
 }
 
@@ -616,8 +649,9 @@ int gltextcolor ()
 int gltextxy (const int *p)
 {
   if (!isigraph) return 1;
-  ((Isigraph2 *)isigraph->widget)->textx = *(p);
-  ((Isigraph2 *)isigraph->widget)->texty = *(p + 1);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  w->textx = *(p);
+  w->texty = *(p + 1);
   return 0;
 }
 
@@ -625,11 +659,12 @@ int gltextxy (const int *p)
 int glwindoworg (const int *p)
 {
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
-  ((Isigraph2 *)isigraph->widget)->painter->translate (*(p), *(p + 1));
-  ((Isigraph2 *)isigraph->widget)->orgx += *(p);
-  ((Isigraph2 *)isigraph->widget)->orgy += *(p + 1);
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
+  w->painter->translate (*(p), *(p + 1));
+  w->orgx += *(p);
+  w->orgy += *(p + 1);
   return 0;
 }
 
@@ -643,8 +678,9 @@ glcmds (const int *ptr, int ncnt)
 
 //  if (!form) return 1;
   if (!isigraph) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter) return 1;
-  if (!((Isigraph2 *)isigraph->widget)->painter->isActive()) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  if (!w->painter->isActive()) return 1;
 
   while (p < ncnt) {
     cnt = *(ptr + p);
