@@ -693,7 +693,7 @@ void Note::on_projectbuildAct_triggered()
     info("Build Project","No project build script found");
     return;
   }
-  loadscript(s,false);
+  loadscript(s,true);
 }
 
 // ---------------------------------------------------------------------

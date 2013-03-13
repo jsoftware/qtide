@@ -17,6 +17,10 @@
 
 using namespace std;
 
+extern "C" {
+  Dllexport void openj(char *s);
+}
+
 // ---------------------------------------------------------------------
 // convert name to full path name
 QString cpath(QString s)
@@ -151,6 +155,38 @@ void helpabout()
 }
 
 // ---------------------------------------------------------------------
+// b is base directory
+QStringList folder_tree(QString b,QString filters,bool subdir)
+{
+  if (!subdir)
+    return cflistfull(b,filters);
+  return folder_tree1(b,"",getfilters(filters));
+}
+
+// ---------------------------------------------------------------------
+// b is base directory, s is current subdirectory
+QStringList folder_tree1(QString b,QString s,QStringList f)
+{
+  QString n;
+  QString t=b + "/" + s;
+
+  QDir d(t);
+  d.setNameFilters(f);
+  QStringList r=d.entryList(QDir::Files|QDir::Readable);
+  for(int i=0; i<r.size(); i++)
+    r.replace(i,t+r.at(i));
+
+  QDirIterator p(t,QDir::Dirs|QDir::NoDotAndDotDot);
+  while (p.hasNext()) {
+    p.next();
+    if (!config.DirTreeX.contains(p.fileName()))
+      r=r+folder_tree1(b,s+p.fileName()+"/",f);
+  }
+
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void newfile(QWidget *w)
 {
   QString s = dialogsaveas(w,"New File", getfilepath());
@@ -202,6 +238,12 @@ void openfile1(QString f)
   term->vieweditor();
   note->fileopen(f);
   recent.filesadd(f);
+}
+
+// ---------------------------------------------------------------------
+void openj(char *s)
+{
+  openfile1(QString(s));
 }
 
 // ---------------------------------------------------------------------

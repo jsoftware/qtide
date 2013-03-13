@@ -24,9 +24,6 @@ bool pic_inidir(QString s);
 QByteArray pp_stamp();
 
 // ---------------------------------------------------------------------
-// for testing only (will be called from note):
-// argument is filename, current text
-
 Picm::Picm()
 {
   QString f,s;
@@ -116,16 +113,16 @@ QWidget *Picm::createview()
 void Picm::init()
 {
   int i;
-  QString m,n,t;
+  QList<QByteArray> t;
+  QString m,n;
   QStringList s,f;
 
   f=pic_files();
   sfile->addItems(f);
   sfile->setCurrentIndex(f.indexOf(File));
-  t=cfread(Path + "/" + File);
-  t.resize(t.size()-1);
-  s=t.split((char)255);
-
+  t=cfreadbin(Path + "/" + File).split(char(255));
+  for (i=0; i<t.size(); i++)
+    s.append(QString(t.at(i)));
   Stamps.clear();
   Texts.clear();
   for (i=s.size()-1; i>=0; i--) {
@@ -226,7 +223,6 @@ void pic(QString f,QString s)
   if(!t->exists()) {
     if (!pic_inidir(d)) return;
     a=(cfread(f)+"000000").toUtf8() + (char)255 + a;
-
   }
   cfappend(t,a);
 }

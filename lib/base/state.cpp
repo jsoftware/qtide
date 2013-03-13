@@ -133,6 +133,9 @@ void Config::init(QString path)
   if ("0"==dors("\":4!:0 <'XDiff_j_'"))
     XDiff=dors("XDiff_j_");
 
+  if ("0"==dors("\":4!:0 <'DirTreeX_j_'"))
+    DirTreeX=dors("DirTreeX_j_").split(" ",QString::SkipEmptyParts);
+
   QSettings s(ConfigPath.filePath("qtide.cfg"),QSettings::IniFormat);
   QString t;
 

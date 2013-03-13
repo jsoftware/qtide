@@ -46,6 +46,7 @@ public:
   QString DefExt;
   QString DefIndent;
   QStringList DefTypes;
+  QStringList DirTreeX;
   QString FilePatterns;
   QStringList DMFavorites;
   QString DMType;

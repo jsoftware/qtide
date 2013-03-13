@@ -293,6 +293,8 @@ void Ntabs::tabsaveas(int index)
   QString p=cfpath(e->fname);
   QString s = cfcase(dialogsaveas(this,"Save As", p));
   if (s.isEmpty() || s==e->fname)  return;
+  if (!s.contains('.'))
+    s+=config.DefExt;
   QFile *f=new QFile(s);
   cfwrite(f,e->text);
   e->file = f;

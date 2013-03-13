@@ -194,6 +194,18 @@ QString cfread(QString s)
 }
 
 // ---------------------------------------------------------------------
+QByteArray cfreadbin(QString s)
+{
+  QByteArray r;
+  QFile *f = new QFile(s);
+  if (f->open(QIODevice::ReadOnly)) {
+    r = f->readAll();
+    f->close();
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QStringList cfreads(QFile *file)
 {
   int i;
@@ -315,38 +327,6 @@ QString dtLF(QString s)
 {
   if (s.endsWith('\n')) s.chop(1);
   return s;
-}
-
-// ---------------------------------------------------------------------
-// b is base directory
-QStringList folder_tree(QString b,QString filters,bool subdir)
-{
-  if (!subdir)
-    return cflistfull(b,filters);
-  return folder_tree1(b,"",getfilters(filters));
-}
-
-
-// ---------------------------------------------------------------------
-// b is base directory, s is current subdirectory
-QStringList folder_tree1(QString b,QString s,QStringList f)
-{
-  QString n;
-  QString t=b + "/" + s;
-
-  QDir d(t);
-  d.setNameFilters(f);
-  QStringList r=d.entryList(QDir::Files|QDir::Readable);
-  for(int i=0; i<r.size(); i++)
-    r.replace(i,t+r.at(i));
-
-  QDirIterator p(t,QDir::Dirs|QDir::NoDotAndDotDot);
-  while (p.hasNext()) {
-    p.next();
-    r=r+folder_tree1(b,s+p.fileName()+"/",f);
-  }
-
-  return r;
 }
 
 // ---------------------------------------------------------------------
