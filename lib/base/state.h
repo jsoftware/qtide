@@ -25,6 +25,8 @@ public:
   void folder_init();
   void launch_init();
   void init(QString);
+  void initide();
+  bool initide1(QString f);
   void noprofile();
 
   void toggleascii();
@@ -69,6 +71,7 @@ public:
   bool LineWrap;
   int MaxRecent;
   bool NoProfile;
+  int OpenTabAt;
   QString Pass;
   int Port;
   QString ProjExt;

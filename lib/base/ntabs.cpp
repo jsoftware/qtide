@@ -98,7 +98,7 @@ void Ntabs::projectopen(bool openfiles)
   len=0;
   if(openfiles) {
     for (i=open.size()-1; i>=0; i--) {
-      if (tabopen1(project.fullname(open.at(i)),-1))
+      if (0<=tabopen1(project.fullname(open.at(i)),-1))
         len++;
       else
         index=index-(i<index);
@@ -202,7 +202,7 @@ void Ntabs::tabCloseRequested(int index)
 // ---------------------------------------------------------------------
 bool Ntabs::tabopen(QString s,int line)
 {
-  int i;
+  int i,n;
   Nedit *e;
   for (i=0; i<count(); i++) {
     e=(Nedit *)widget(i);
@@ -212,8 +212,9 @@ bool Ntabs::tabopen(QString s,int line)
       return true;
     }
   }
-  if (!tabopen1(s,line)) return false;
-  tabsetindex(0);
+  n=tabopen1(s,line);
+  if (0>n) return false;
+  tabsetindex(n);
   note->activate();
   pnote->scriptenable();
   return true;
@@ -221,29 +222,41 @@ bool Ntabs::tabopen(QString s,int line)
 
 // ---------------------------------------------------------------------
 // does file open only, s is full name
-bool Ntabs::tabopen1(QString s,int line)
+// returns new tab index or -1
+int Ntabs::tabopen1(QString s,int line)
 {
+  int n;
   s=cfcase(s);
   QFile *f=new QFile(s);
-  if (!f->exists()) return false;
+  if (!f->exists()) return -1;
   Nedit *e = new Nedit;
   e->file = f;
   e->fname = s;
   e->sname = toprojectname(s);
   e->text = cfread(e->file);
-  e->appendPlainText(e->text);
+  //e->appendPlainText(e->text);
+  e->setPlainText(e->text);
   if (line>=0) {
     e->moveCursor(QTextCursor::Start);
     e->selectline(line);
   } else
     e->settop(config.filepos_get(s));
-  insertTab(0,e,e->sname);
-  setmodified(0,false);
+  switch (config.OpenTabAt) {
+  case 1 :
+    n=insertTab(1+currentIndex(),e,e->sname);
+    break;
+  case 2 :
+    n=addTab(e,e->sname);
+    break;
+  default :
+    n=insertTab(0,e,e->sname);
+  }
+  setmodified(n,false);
   connect(e, SIGNAL(modificationChanged(bool)),
           this, SLOT(modificationChanged(bool)));
   if(note2)
     note2->fileclose(s);
-  return true;
+  return n;
 }
 
 // ---------------------------------------------------------------------

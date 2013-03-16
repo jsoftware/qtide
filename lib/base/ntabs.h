@@ -43,7 +43,7 @@ private slots:
 
 private:
   void tabsetcolor(int index,bool ifmod);
-  bool tabopen1(QString s,int line);
+  int tabopen1(QString s,int line);
 
   Note *pnote;
 

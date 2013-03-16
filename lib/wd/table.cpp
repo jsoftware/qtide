@@ -373,6 +373,8 @@ bool Table::vecisbool(QVector<int>vec,QString id)
 void	Table::on_cellChanged (int r,int c)
 {
   if (NoEvents) return;
+  QTableWidget *w=(QTableWidget*) widget;
+  w->resizeColumnsToContents();
   event="change";
   row=r;
   col=c;

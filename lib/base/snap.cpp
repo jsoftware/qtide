@@ -199,11 +199,10 @@ bool ss_match(QString p, QString q)
 // ---------------------------------------------------------------------
 bool ss_mkdir(QString s)
 {
-  QDir d;
-  if (!d.mkpath(s)) {
-    info("Snap","Unable to create snapshot directory: " + s);
-    return false;
-  }
-  return true;
+  QDir d(s);
+  if (d.exists() || d.mkpath(s))
+    return true;
+  info("Snap","Unable to create snapshot directory: " + s);
+  return false;
 }
 

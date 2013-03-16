@@ -59,6 +59,8 @@ void Menu::createActions()
   editfiwAct = makeact("editfiwAct","&Find","Ctrl+F");
   editfontAct = makeact("editfontAct","Session Font","");
   editinputlogAct = makeact("editinputlogAct","Input Log","");
+  editredoAct = makeact("editredoAct","&Redo","Ctrl+Y");
+  editundoAct = makeact("editundoAct","&Undo","Ctrl+Z");
   filecloseAct = makeact("filecloseAct","&Close","Ctrl+W");
   filedeleteAct = makeact("filedeleteAct","&Delete","");
   filecloseallAct = makeact("filecloseallAct","C&lose All","");
@@ -208,6 +210,11 @@ void Menu::createcfgMenu()
 void Menu::createeditMenu(QString s)
 {
   editMenu = addMenu("&Edit");
+  if (s == "note") {
+    editMenu->addAction(editundoAct);
+    editMenu->addAction(editredoAct);
+    editMenu->addSeparator();
+  }
   editMenu->addAction(clipcutAct);
   editMenu->addAction(clipcopyAct);
   editMenu->addAction(clippasteAct);
@@ -573,6 +580,18 @@ void Note::on_editfontAct_triggered()
 void Note::on_editinputlogAct_triggered()
 {
   new Slog();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_editredoAct_triggered()
+{
+  editPage()->redo();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_editundoAct_triggered()
+{
+  editPage()->undo();
 }
 
 // ---------------------------------------------------------------------
@@ -1261,7 +1280,7 @@ void Term::on_runjhsAct_triggered()
 #ifdef ANDROID
   android_exec_host((char *)"android.intent.action.VIEW",(char *)"http://localhost:65001/jijxh",(char *)0);
 #else
-  QDesktopServices::openUrl(QUrl("http://localhost:65001/jijx",QUrl::StrictMode));
+  QDesktopServices::openUrl(QUrl("http://localhost:65001/jijx",QUrl::TolerantMode));
 #endif
 }
 

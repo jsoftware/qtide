@@ -216,8 +216,8 @@ void htmlhelp(QString s)
   else android_exec_host((char *)"android.intent.action.VIEW",s.prepend("http://www.jsoftware.com/help/").append(".htm").toUtf8().data(),(char *)0);
 #else
   if (QFile(t).exists())
-    QDesktopServices::openUrl(QUrl(t,QUrl::StrictMode));
-  else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::StrictMode));
+    QDesktopServices::openUrl(QUrl(t,QUrl::TolerantMode));
+  else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::TolerantMode));
 #endif
 }
 

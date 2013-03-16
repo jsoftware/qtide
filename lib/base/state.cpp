@@ -31,18 +31,11 @@ void Config::config_init()
 {
   QStringList c;
   QString s,t;
-  c << "dirmatch.cfg" << "launch.cfg" << "qtide.cfg";
+  c << "dirmatch.cfg" << "launch.cfg";
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
   if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
     t=cfread(s+f);
-#ifdef __MACH__
-    t=t.replace("FontFamily=monospaced","FontFamily=Menlo");
-    t=t.replace("FontSize=10","FontSize=14");
-#endif
-#ifdef _WIN32
-    t=t.replace("FontFamily=monospaced","FontFamily=Lucida Console");
-#endif
     cfwrite(ConfigPath.filePath(f),t);
   }
 
@@ -136,25 +129,91 @@ void Config::init(QString path)
   if ("0"==dors("\":4!:0 <'DirTreeX_j_'"))
     DirTreeX=dors("DirTreeX_j_").split(" ",QString::SkipEmptyParts);
 
-  QSettings s(ConfigPath.filePath("qtide.cfg"),QSettings::IniFormat);
+  initide();
+}
+
+// ---------------------------------------------------------------------
+// reads and updates qtide.cfg file
+void Config::initide()
+{
+  QString f=ConfigPath.filePath("qtide.cfg");
+  if (initide1(f)) return;
+  QString t=cfread(f);
+  QString h="# Qt IDE config\n"
+            "# This file is read and written by the Qt IDE.\n"
+            "# Make changes in the same format as the original.\n"
+            "# \n"
+            "# ConfirmClose=false           confirm session close\n"
+            "# ConfirmSave=false            confirm script save\n"
+            "# Edit=600 100 750 750         initial edit position\n"
+            "# Extensions=ijs, c cfg...     FIF file extension lists\n"
+            "# FontFamily=Menlo             term/edit font family\n"
+            "# FontSize=10                  font size\n"
+            "# KeepInputLog=true            if inputlog is preserved\n"
+            "# MaxRecent=15                 max number in recent files\n"
+            "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
+            "# Snapshots=5                  number of project snapshots kept\n"
+            "# Snapshotx=                   snapshots exclusion list\n"
+            "# Term=0 0 500 600             initial term position\n"
+            "# Terminal=mate-terminal       show in terminal command\n"
+            ;
+  cfwrite(f,h + "\n" + t);
+}
+
+// ---------------------------------------------------------------------
+bool Config::initide1(QString f)
+{
+  QSettings s(f,QSettings::IniFormat);
   QString t;
+
+  QString font="monospaced";
+  int fontsize=10;
+
+#ifdef __MACH__
+  font="Menlo";
+  fontsize=14;
+#endif
+#ifdef _WIN32
+  font="Lucida Console";
+#endif
 
   ConfirmClose = s.value("Session/ConfirmClose",true).toBool();
   ConfirmSave = s.value("Session/ConfirmSave",true).toBool();
-  Font.setFamily(s.value("Session/FontFamily","").toString());
-  Font.setPointSize(s.value("Session/FontSize",10).toInt());
+  Font.setFamily(s.value("Session/FontFamily",font).toString());
+  Font.setPointSize(s.value("Session/FontSize",fontsize).toInt());
   KeepInputLog = s.value("Session/KeepInputLog",true).toBool();
   MaxRecent = s.value("Session/MaxRecent",15).toInt();
+  OpenTabAt=s.value("Session/OpenTabAt",0).toInt();
   Snapshots = s.value("Session/Snapshots",true).toInt();
   Snapshotx = s.value("Session/Snapshotx","").toString();
 
-  t= s.value("Position/Edit","550 0 500 500").toString();
-  q2p(t,EditPos);
-  t= s.value("Position/Term","0 0 500 500").toString();
-  q2p(t,TermPos);
-
   FifExt = s.value("FindinFiles/Extensions","").toStringList();
   Terminal = s.value("Run/Terminal","").toString();
+
+  t = s.value("Position/Edit","600 100 750 750").toString();
+  q2p(t,EditPos);
+  t = s.value("Position/Term","0 0 500 600").toString();
+  q2p(t,TermPos);
+
+  if (s.allKeys().contains("Session/OpenTabAt")) return true;
+
+  s.clear();
+  s.setValue("Session/ConfirmClose",ConfirmClose);
+  s.setValue("Session/ConfirmSave",ConfirmSave);
+  s.setValue("Session/FontFamily",Font.family());
+  s.setValue("Session/FontSize",Font.pointSize());
+  s.setValue("Session/KeepInputLog",KeepInputLog);
+  s.setValue("Session/MaxRecent",MaxRecent);
+  s.setValue("Session/OpenTabAt",OpenTabAt);
+  s.setValue("Session/Snapshots",Snapshots);
+  s.setValue("Session/Snapshotx",Snapshotx);
+  s.setValue("FindinFiles/Extensions",FifExt);
+  s.setValue("Position/Edit",p2q(EditPos));
+  s.setValue("Position/Term",p2q(TermPos));
+  s.setValue("Run/Terminal",Terminal);
+  s.sync();
+  return false;
+
 }
 
 // ---------------------------------------------------------------------
@@ -319,3 +378,4 @@ void var_set(QString s, QString t)
 {
   jcon->set(s,t);
 }
+

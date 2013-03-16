@@ -75,6 +75,8 @@ private:
   QAction *editfiwAct;
   QAction *editfontAct;
   QAction *editinputlogAct;
+  QAction *editredoAct;
+  QAction *editundoAct;
   QAction *filecloseAct;
   QAction *filecloseallAct;
   QAction *filecloseotherAct;

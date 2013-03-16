@@ -73,6 +73,8 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
+  void on_editredoAct_triggered();
+  void on_editundoAct_triggered();
   void on_filecloseAct_triggered();
   void on_filedeleteAct_triggered();
   void on_filecloseallAct_triggered();
