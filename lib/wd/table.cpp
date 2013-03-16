@@ -230,7 +230,9 @@ void Table::setdata(string s)
       }
     }
   }
+  w->setVisible(false);
   w->resizeColumnsToContents();
+  w->setVisible(true);
   w->horizontalHeader()->setStretchLastSection(true);
 }
 

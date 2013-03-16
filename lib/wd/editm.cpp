@@ -44,6 +44,8 @@ void Editm::set(string p,string v)
 
   if (p=="limit")
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
+  else if (p=="readonly")
+    w->setReadOnly(remquotes(v)!="0");
   else if (p=="text")
     w->setPlainText(s2q(v));
   else if (p=="select") {
@@ -68,6 +70,7 @@ void Editm::set(string p,string v)
     }
   } else if (p=="wrap")
     w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);
+
   else Child::set(p,v);
 }
 

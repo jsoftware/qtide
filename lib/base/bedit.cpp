@@ -89,6 +89,21 @@ int Bedit::readcurpos()
 }
 
 // ---------------------------------------------------------------------
+// get class, position and text
+QString Bedit::readhelptext(int t)
+{
+  int bgn, end;
+  QString txt=toPlainText();
+  QTextCursor c = textCursor();
+  bgn=c.selectionStart();
+  end=c.selectionEnd();
+  QString hdr=QString::number(t)+" "
+              +QString::number(bgn)+" "
+              +QString::number(end)+" ";
+  return hdr+txt;
+}
+
+// ---------------------------------------------------------------------
 QString Bedit::readselected()
 {
   QString s=textCursor().selectedText();

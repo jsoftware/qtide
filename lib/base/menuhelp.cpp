@@ -8,11 +8,15 @@
 #include "menu.h"
 #include "note.h"
 #include "state.h"
+#include "bedit.h"
 #include "term.h"
+#include "tedit.h"
 
 using namespace std;
 
 void helpabout();
+void helpcontext(int c,Bedit *);
+
 void htmlhelp(QString s);
 void helplabs();
 
@@ -71,7 +75,7 @@ void Note::on_helpconstantsAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_helpcontextAct_triggered()
 {
-  notyet ("context sensitive");
+  helpcontext(1,(Bedit *)editPage());
 }
 
 // ---------------------------------------------------------------------
@@ -137,8 +141,7 @@ void Term::on_helpaboutAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helpcontextAct_triggered()
 {
-  notyet ("context sensitive");
-
+  helpcontext(0,(Bedit *)tedit);
 }
 
 // ---------------------------------------------------------------------
@@ -189,7 +192,6 @@ void Term::on_helpreleaseAct_triggered()
   notyet("Release Highlights");
   return;
   htmlhelp("user/relhigh.htm");
-
 }
 
 // ---------------------------------------------------------------------
@@ -207,6 +209,22 @@ void Term::on_helpvocabAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void helpcontext(int c,Bedit *e)
+{
+  qDebug() << e->readhelptext(c);
+  var_set("arg_jqtide_",e->readhelptext(c));
+  QString s=var_cmdr("helpcontext_jqtide_ arg_jqtide_");
+  if (s.size())
+    htmlhelp(s);
+}
+
+// ---------------------------------------------------------------------
+void helplabs()
+{
+  notyet("labs");
+}
+
+// ---------------------------------------------------------------------
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
@@ -220,10 +238,3 @@ void htmlhelp(QString s)
   else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::TolerantMode));
 #endif
 }
-
-// ---------------------------------------------------------------------
-void helplabs()
-{
-  notyet("labs");
-}
-
