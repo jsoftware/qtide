@@ -187,6 +187,7 @@ bool Pane::groupbox(string c, string s)
     if (opt.size())
       id=opt.at(0);
     groupboxw=new QGroupBox(id);
+    if (fontdef) groupboxw->setFont(fontdef->font);
     layout->addWidget(groupboxw);
     QVBoxLayout *vb=new QVBoxLayout;
     vb->addWidget(pform->addpane(0));
