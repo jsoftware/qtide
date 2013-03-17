@@ -234,9 +234,12 @@ void htmlhelp(QString s)
   else android_exec_host((char *)"android.intent.action.VIEW",s.prepend("http://www.jsoftware.com/help/").append(".htm").toUtf8().data(),(char *)0);
 #else
   if (QFile(t).exists())
+#ifdef __MACH__
     QDesktopServices::openUrl(QUrl(t.prepend("file://"),QUrl::TolerantMode));
+#else
+    QDesktopServices::openUrl(QUrl(t,QUrl::TolerantMode));
+#endif
   else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::TolerantMode));
 #endif
 }
 
-//    QDesktopServices::openUrl(QUrl(t,QUrl::TolerantMode));
