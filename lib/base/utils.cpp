@@ -21,6 +21,8 @@ extern "C" {
   Dllexport void openj(char *s);
 }
 
+bool ShowIde=true;
+
 // ---------------------------------------------------------------------
 // convert name to full path name
 QString cpath(QString s)
@@ -359,6 +361,17 @@ void setnote(Note *n)
     note2=note;
     note=n;
   }
+}
+
+// ---------------------------------------------------------------------
+void showide(bool b)
+{
+  if (note2)
+    note2->setVisible(b);
+  if (note)
+    note->setVisible(b);
+  term->setVisible(b);
+  ShowIde=b;
 }
 
 // ---------------------------------------------------------------------

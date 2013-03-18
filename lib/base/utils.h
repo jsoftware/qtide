@@ -31,9 +31,12 @@ void setwh(QWidget *w, QString s);
 void setxywh(QWidget *w, QString s);
 QStringList shell(QString cmd, QString dir);
 void setnote(Note *);
+void showide(bool);
 QString tofoldername(QString s);
 QString toprojectname(QString s);
 void utils_init();
 void xdiff(QString s,QString t);
+
+extern bool ShowIde;
 
 #endif

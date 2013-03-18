@@ -128,7 +128,7 @@ void Term::fini()
   setWindowIcon(QIcon(s));
   if (config.SingleWin)
     new OneWin();
-  else
+  else if (ShowIde)
     show();
 }
 

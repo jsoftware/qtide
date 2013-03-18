@@ -42,6 +42,7 @@ void wdend();
 void wdfontdef();
 void wdget();
 void wdgroupbox(string c);
+void wdide();
 void wdline(string);
 void wdmb();
 void wdmenu(string);
@@ -167,6 +168,8 @@ void wd1()
       wdget();
     else if (c.substr(0,8)=="groupbox")
       wdgroupbox(c);
+    else if (c=="ide")
+      wdide();
     else if (c.substr(0,4)=="line")
       wdline(c);
     else if (c.substr(0,2)=="mb")
@@ -279,6 +282,18 @@ void wdgroupbox(string c)
   string p=cmd.getparms();
   if (!form->pane->groupbox(c,p))
     error("unrecognized command: " + c + " " + p);
+}
+
+// ---------------------------------------------------------------------
+void wdide()
+{
+  string p=cmd.getparms();
+  if (p=="hide")
+    showide(false);
+  else if (p=="show")
+    showide(true);
+  else
+    error("unrecognized command: ide " + p);
 }
 
 // ---------------------------------------------------------------------
