@@ -70,7 +70,6 @@ void wdsplit(string c);
 void wdstate(int);
 void wdtab(string);
 void wdtimer();
-void wdxywh(int);
 void wdversion();
 void wdwh();
 
@@ -186,8 +185,8 @@ void wd1()
       wdrem();
     else if (c=="reset")
       wdreset();
-    // nonce leave in setp
-    else if (c=="set" || c=="setp")
+    // nonce leave in set
+    else if (c=="set")
       wdset();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
@@ -197,8 +196,6 @@ void wd1()
       wdtab(c);
     else if (c=="timer")
       wdtimer();
-    else if (c=="xywh")
-      wdxywh(2);
     else if (c=="version")
       wdversion();
     else if (c=="wh")
@@ -685,20 +682,6 @@ void wdtimer()
     timer->start(n);
   else
     timer->stop();
-}
-
-// ---------------------------------------------------------------------
-void wdxywh(int mul)
-{
-  if (noform()) return;
-  string p=cmd.getparms();
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
-  if (n.size()!=4)
-    error("xywh requires 2 numbers: " + p);
-  else {
-    form->pane->sizew=mul*c_strtoi(q2s(n.at(2)));
-    form->pane->sizeh=mul*c_strtoi(q2s(n.at(3)));
-  }
 }
 
 // ---------------------------------------------------------------------

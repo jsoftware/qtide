@@ -29,7 +29,7 @@ public:
   virtual void setstylesheet(string p);
   virtual string state();
 
-  virtual void setxywh(string,int);
+  virtual void setwh(string,int);
   virtual void setminwh(int,int);
 
   bool grouped;

@@ -60,10 +60,8 @@ void Child::set(string p, string v)
     widget->setVisible(remquotes(v)!="0");
   else if (p=="stylesheet")
     setstylesheet(v);
-  else if (p=="xywh")
-    setxywh(v,2);
-  else if (p=="xywhx")
-    setxywh(v,1);
+  else if (p=="wh")
+    setwh(v,1);
   else
     error("set command not recognized: " + p);
 }
@@ -87,13 +85,13 @@ void Child::setstylesheet(string p)
 }
 
 // ---------------------------------------------------------------------
-void Child::setxywh(string p,int unit)
+void Child::setwh(string p,int unit)
 {
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
-  if (n.size()!=4) {
-    qDebug() << "setxywh requires 4 numbers: " + s2q(p);
+  if (n.size()!=2) {
+    qDebug() << "setwh requires 2 numbers: " + s2q(p);
   } else {
-    widget->resize(c_strtoi(q2s(n.at(2)))*unit,c_strtoi(q2s(n.at(3)))*unit);
+    widget->resize(c_strtoi(q2s(n.at(0)))*unit,c_strtoi(q2s(n.at(1)))*unit);
   }
 }
 
