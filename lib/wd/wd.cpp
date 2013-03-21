@@ -200,7 +200,8 @@ void wd1()
       wdversion();
     else if (c=="wh")
       wdwh();
-    else if (((c.substr(0,4)=="tbar") || (c.substr(0,4)=="sbar")) || 0) {
+// not yet implemented
+    else if (0) {
       cmd.getparms();
       wdnotyet();
     } else
