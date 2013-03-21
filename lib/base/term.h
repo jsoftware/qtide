@@ -107,7 +107,6 @@ public slots:
   void on_projectnewAct_triggered();
   void on_projectopenAct_triggered();
   void on_runclipAct_triggered();
-  void on_runjhsAct_triggered();
   void on_runprojectAct_triggered();
   void on_runselectAct_triggered();
   void on_runtestAct_triggered();

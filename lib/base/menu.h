@@ -19,7 +19,6 @@ public:
   void createMenus_fini(QString s);
 
   QAction *projectcloseAct;
-  QAction *runjhsAct;
   QAction *runprojectAct;
   QAction *viewasciiAct;
   QAction *viewlinenosAct;
