@@ -288,7 +288,8 @@ bool state_init(int argc, char *argv[])
 void state_init_args(int *argc, char *argv[])
 {
 #ifdef ANDROID
-  config.SingleWin=true;
+//  config.SingleWin=true;
+  config.SingleWin=false;
 #else
   config.SingleWin=false;
 #endif

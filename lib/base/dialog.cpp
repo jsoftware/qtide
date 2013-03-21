@@ -104,6 +104,7 @@ QString getprojectpath()
   else
     return project.Path;
 };
+#ifndef ANDROID
 
 // ---------------------------------------------------------------------
 void initprinter()
@@ -111,3 +112,4 @@ void initprinter()
   if (Printer==0)
     Printer=new QPrinter(QPrinter::HighResolution);
 }
+#endif

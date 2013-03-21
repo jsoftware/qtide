@@ -28,8 +28,12 @@ void Editm::cmd(string p,string v)
   QPlainTextEdit *w=(QPlainTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
+#ifndef ANDROID
     initprinter();
     w->print(Printer);
+#else
+    Q_UNUSED(w);
+#endif
   } else Child::set(p,v);
 }
 
