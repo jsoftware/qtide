@@ -21,6 +21,10 @@ extern QPrinter *Printer;
 #include "tabs.h"
 #include "../base/term.h"
 
+#if defined(ANDROID) && defined(QT_OPENGL)
+extern Term *term;
+#endif
+
 #include "math.h"
 
 extern "C" {
@@ -401,7 +405,14 @@ void wdpc()
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
+#if defined(ANDROID) && defined(QT_OPENGL)
+  if (!form) {
+    showide(false);
+    form=new Form(c,p,tlocale,term);
+  } else form=new Form(c,p,tlocale,form);
+#else
   form=new Form(c,p,tlocale,m.contains("owner")?form:0);
+#endif
   evtform=form;
   Forms.append(form);
 }

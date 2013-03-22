@@ -20,7 +20,7 @@ win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 QT += webkit
 QT += opengl
-android:QT -= opengl
+# android:QT -= opengl
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
@@ -29,7 +29,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
 DEFINES += "QT_WEBKIT"
 DEFINES += "QT_OPENGL"
-android:DEFINES -= "QT_OPENGL"
+# android:DEFINES -= "QT_OPENGL"
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
@@ -52,7 +52,7 @@ HEADERS += \
  wd/toolbar.h wd/wd.h wd/webview.h
 
 android:SOURCES -= wd/glz.h wd/prtobj.h
-android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+# android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 android:HEADERS += base/qtjni.h
 
 SOURCES += \
@@ -78,7 +78,7 @@ SOURCES += \
  wd/toolbar.cpp wd/wd.cpp wd/webview.cpp
 
 android:SOURCES -= wd/glz.cpp wd/prtobj.cpp
-android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
+# android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc

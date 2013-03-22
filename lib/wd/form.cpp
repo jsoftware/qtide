@@ -43,10 +43,15 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   if (m.contains("maxbutton")) flags|=Qt::WindowMaximizeButtonHint;
   if (m.contains("closebutton")) flags|=Qt::WindowCloseButtonHint;
   if (m.contains("ptop")) flags=Qt::WindowStaysOnTopHint;
+#if defined(ANDROID) && defined(QT_OPENGL)
+  flags|=Qt::Window;
+  setWindowModality(Qt::WindowModal);
+#else
   if (m.contains("owner")) {
     flags|=Qt::Window;
     setWindowModality(Qt::WindowModal);
   }
+#endif
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
@@ -82,6 +87,9 @@ Form::~Form()
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
   Forms.removeOne(this);
+#if defined(ANDROID) && defined(QT_OPENGL)
+  if (!Forms.size()) showide(true);
+#endif
 }
 
 // ---------------------------------------------------------------------
