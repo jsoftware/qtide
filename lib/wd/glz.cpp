@@ -357,7 +357,7 @@ int glzpixel (const int *p)
 static int glzpixels2(int x,int y,int w,int h,const uchar *p)
 {
   if (!w || !h || !p) return 1;
-  QImage image = QImage(w,h,QImage::Format_RGB32);
+  QImage image = QImage(w,h,QImage::Format_ARGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*w*h);
 
@@ -419,6 +419,14 @@ int glzrgb (const int *p)
 {
   if ((!Printer) || !Printer->isValid()) return 1;
   prtobj->color = QColor (*(p), *(p + 1), *(p + 2));
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glzrgba (const int *p)
+{
+  if ((!Printer) || !Printer->isValid()) return 1;
+  prtobj->color = QColor (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
 
@@ -581,6 +589,10 @@ int glzcmds (const int *ptr, int ncnt)
 
     case 2032:		// glrgb
       glzrgb (ptr + p + 2);
+      break;
+
+    case 2343:		// glrgba
+      glzrgba (ptr + p + 2);
       break;
 
     case 2038:		// gltext

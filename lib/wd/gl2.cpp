@@ -141,12 +141,12 @@ int glqpixels(const int *p, int *pix)
   if (!pm || pm->isNull()) return 1;
   if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm->width() || (p[1]+p[3])>pm->height()) return 1;
 // one-liner cause does not work ??
-//  const uchar *t = (pm->copy(p[0], p[1], p[2], p[3])).toImage().convertToFormat(QImage::Format_RGB32).bits();
+//  const uchar *t = (pm->copy(p[0], p[1], p[2], p[3])).toImage().convertToFormat(QImage::Format_ARGB32).bits();
   QPixmap a1 = (pm->copy(p[0], p[1], p[2], p[3]));
   if (a1.isNull()) return 1;
   QImage a2 = a1.toImage();
   if (a2.isNull()) return 1;
-  QImage a3 = a2.convertToFormat(QImage::Format_RGB32);
+  QImage a3 = a2.convertToFormat(QImage::Format_ARGB32);
   if (a3.isNull()) return 1;
   const uchar *t = a3.bits();
   if (!t) return 1;
@@ -528,7 +528,7 @@ static int glpixels2(int x,int y,int wi,int h,const uchar *p)
 {
   if (!wi || !h || !p) return 1;
   Isigraph2 *w = (Isigraph2 *)isigraph->widget;
-  QImage image = QImage(wi,h,QImage::Format_RGB32);
+  QImage image = QImage(wi,h,QImage::Format_ARGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*wi*h);
 
@@ -595,6 +595,15 @@ int glrgb (const int *p)
   if (!isigraph) return 1;
   Isigraph2 *w = (Isigraph2 *)isigraph->widget;
   w->color = QColor (*(p), *(p + 1), *(p + 2));
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glrgba (const int *p)
+{
+  if (!isigraph) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  w->color = QColor (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
 
@@ -776,6 +785,10 @@ glcmds (const int *ptr, int ncnt)
 
     case 2032:		// glrgb
       glrgb (ptr + p + 2);
+      break;
+
+    case 2343:		// glrgba
+      glrgba (ptr + p + 2);
       break;
 
     case 2038:		// gltext

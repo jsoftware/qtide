@@ -18,7 +18,7 @@ void *wdreadimg(char *s, int *wh)
   if (!image.isNull()) {
     wh[0]=image.width();
     wh[1]=image.height();
-    tmpimage = image.convertToFormat(QImage::Format_RGB32);
+    tmpimage = image.convertToFormat(QImage::Format_ARGB32);
     return (void *) tmpimage.bits();
   } else return 0;
 }
@@ -32,7 +32,7 @@ void *wdgetimg(uchar *data, int len, int *wh)
   if (image.loadFromData(data, len) && !image.isNull()) {
     wh[0]=image.width();
     wh[1]=image.height();
-    tmpimage = image.convertToFormat(QImage::Format_RGB32);
+    tmpimage = image.convertToFormat(QImage::Format_ARGB32);
     return (void *) tmpimage.bits();
   } else return 0;
 }
@@ -57,7 +57,7 @@ int wdwriteimg(uchar *p, int *wh, char *f, char *format, int quality)
 {
   if (!p||!wh||!f) return 0;
   if (wh[0]==0||wh[1]==0) return 0;
-  QImage image = QImage(wh[0],wh[1],QImage::Format_RGB32);
+  QImage image = QImage(wh[0],wh[1],QImage::Format_ARGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*wh[0]*wh[1]);
   return image.save(QString::fromUtf8(f), format, quality);
@@ -69,7 +69,7 @@ void *wdputimg(uchar *p, int *wh, int *len, char *format, int quality)
   if (!tmpba.isNull()) tmpba=QByteArray();
   if (!p || !wh || !len) return 0;
   if (wh[0]==0||wh[1]==0) return 0;
-  QImage image = QImage(wh[0],wh[1],QImage::Format_RGB32);
+  QImage image = QImage(wh[0],wh[1],QImage::Format_ARGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*wh[0]*wh[1]);
   QBuffer buffer(&tmpba);

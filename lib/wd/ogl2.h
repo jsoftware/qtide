@@ -34,6 +34,7 @@ extern "C" {
   Dllexport int gl_qwh (int *wh);
   Dllexport int gl_rect (const int *p);
   Dllexport int gl_rgb (const int *p);
+  Dllexport int gl_rgba (const int *p);
   Dllexport int gl_sel (void *g);
   Dllexport int gl_sel2 (char *id);
   Dllexport int gl_text (char *ys);

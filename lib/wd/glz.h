@@ -27,6 +27,7 @@ extern "C" {
   Dllexport int glzqwh (float *wh, int unit);
   Dllexport int glzrect (const int *p);
   Dllexport int glzrgb (const int *p);
+  Dllexport int glzrgba (const int *p);
   Dllexport int glztext (char *ys);
   Dllexport int glztextcolor ();
   Dllexport int glztextxy (const int *p);
