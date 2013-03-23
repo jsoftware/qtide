@@ -14,6 +14,7 @@
 #include "recent.h"
 #include "svr.h"
 #include "term.h"
+#include "../wd/form.h"
 
 #ifdef ANDROID
 #include <QAndroidStyle>
@@ -338,6 +339,7 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
   state_appname();
   term = new Term;
   if (!state_init(argc,argv)) return 1;
+  if ((!ShowIde) && Forms.isEmpty()) return 0;
   term->fini();
   return state_fini(app);
 }

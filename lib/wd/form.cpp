@@ -15,6 +15,7 @@
 #ifdef QT_OPENGL
 #include "opengl2.h"
 #endif
+#include "../base/term.h"
 
 extern int jedo(char*);
 
@@ -51,7 +52,6 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
     flags|=Qt::Window;
     setWindowModality(Qt::WindowModal);
   }
-#endif
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
@@ -90,6 +90,8 @@ Form::~Form()
 #if defined(ANDROID) && defined(QT_OPENGL)
   if (!Forms.size()) showide(true);
 #endif
+    if (Forms.isEmpty() && (!ShowIde))
+    term->filequit();
 }
 
 // ---------------------------------------------------------------------

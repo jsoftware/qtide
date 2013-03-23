@@ -3,22 +3,26 @@
 S=~/dev/apps/ide/jqt
 cd $S
 
-rm -rf $S/bin/*
-rm -rf $S/main/bin/*
-rm -rf $S/lib/bin/*
-rm -rf $S/lib/build/*
+rm -rf bin/*
+
 rm -f lib/Makefile
 rm -f lib/qrc_lib.cpp
-rm -rf main/release/*
-rm -rf main/debug/*
-rm -rf lib/release/*
+rm -rf lib/bin/*
+rm -rf lib/build/*
 rm -rf lib/debug/*
+rm -rf lib/Info.plist
+rm -rf lib/jqt.xcodeproj
+rm -rf lib/release/*
 
-rm -f main/Makefile
 rm -f main/main.o
+rm -f main/Makefile
+rm -rf main/bin/*
+rm -rf main/debug/*
+rm -rf main/Info.plist
+rm -rf main/jqt.xcodeproj
+rm -rf main/release/*
 
 $S/astyle.sh lib/base
-$S/astyle.sh lib/high
 $S/astyle.sh lib/high
 $S/astyle.sh lib/wd
 

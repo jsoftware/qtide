@@ -245,6 +245,7 @@ void openfile1(QString f)
 // ---------------------------------------------------------------------
 void openj(char *s)
 {
+  if (!ShowIde) return;
   openfile1(QString(s));
 }
 

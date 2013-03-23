@@ -9,6 +9,7 @@ Makefile
 style.sh
 makecdb.sh
 makebill.sh
+makeosx.
 makewincdb.sh
 run.sh
 
@@ -16,6 +17,9 @@ android/bin/
 android/gen/
 android/libs/
 local.properties
+
+jqt.xcodeproj
+Info.plist
 
 moc_*
 qrc_*
