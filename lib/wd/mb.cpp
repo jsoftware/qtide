@@ -234,17 +234,33 @@ QString mbprint(bool iftext)
     d=new QTextDocument(s);
 
 #ifdef __MACH__
-    QApplication::processEvents(QEventLoop::AllEvents);
+    QSysInfo qsi;
+    if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
+      if (Printer==0)
+        Printer=new QPrinter(QPrinter::HighResolution);
+      if (!Printer->isValid()) {
+        error("Invalid printer: " + q2s(Printer->printerName()));
+        delete d;
+        return "";
+      }
+      d->print(Printer);
+      delete d;
+      return "";
+    }
 #endif
     dialogprint(QApplication::focusWidget(),d);
     delete d;
   } else {
     if (Printer==0)
       Printer=new QPrinter(QPrinter::HighResolution);
-    QPrintDialog *dlg = new QPrintDialog(Printer);
 #ifdef __MACH__
-    QApplication::processEvents(QEventLoop::AllEvents);
+    QSysInfo qsi;
+    if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
+      r=Printer->printerName();
+      return r;
+    }
 #endif
+    QPrintDialog *dlg = new QPrintDialog(Printer);
     if (dlg->exec() == QDialog::Accepted) {
       switch (Printer->outputFormat()) {
       case QPrinter::PdfFormat :
