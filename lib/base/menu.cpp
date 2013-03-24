@@ -389,7 +389,7 @@ void Menu::createrunMenu(QString s)
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
- }
+}
 
 // ---------------------------------------------------------------------
 void Menu::createselMenu()
