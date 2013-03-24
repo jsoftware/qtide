@@ -16,6 +16,7 @@ public:
   QString getcomment();
   QFile *file;
   QString fname;
+  bool saved;
   QString sname;
   QString text;
 

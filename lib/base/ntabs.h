@@ -27,9 +27,9 @@ public:
   bool tabopen(QString s,int line);
   void tabrestore(int index);
   bool tabsave(int index);
-  void tabsaveall();
+  bool tabsaveall();
   void tabsaveas(int index);
-  bool tabsaveOK(int index);
+  int tabsaveOK(int index);
   void tabsetindex(int index);
   void tabsettext(QString s);
 

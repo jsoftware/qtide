@@ -46,8 +46,8 @@ OneWin::OneWin()
 // ---------------------------------------------------------------------
 void OneWin::closeEvent(QCloseEvent *event)
 {
-  Q_UNUSED(event);
   term->filequit();
+  event->ignore();
 }
 
 // ---------------------------------------------------------------------
@@ -95,15 +95,15 @@ void Term::activate()
 // ---------------------------------------------------------------------
 void Term::closeEvent(QCloseEvent *event)
 {
-  Q_UNUSED(event);
   filequit();
+  event->ignore();
 }
 
 // ---------------------------------------------------------------------
 bool Term::filequit()
 {
   dlog_write();
-  if (true) {
+  if ((!config.ConfirmClose) || queryOK("Term","OK to exit J?")) {
     state_quit();
     QApplication::quit();
     return true;
@@ -137,7 +137,11 @@ void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
   case Qt::Key_Escape:
-    filequit();
+    if (config.EscClose) {
+      if (!filequit())
+        event->accept();
+    }
+    break;
   default:
     QWidget::keyPressEvent(event);
   }

@@ -15,6 +15,7 @@ public:
   Rsel();
 
 private slots:
+  void on_flist_itemActivated();
   void on_open_clicked();
   void on_view_clicked();
   void on_run_clicked();

@@ -147,8 +147,8 @@ void Note::keyPressEvent(QKeyEvent *event)
 // ---------------------------------------------------------------------
 void Note::loadscript(QString s,bool show)
 {
-  note->saveall();
-  tedit->loadscript(s,show);
+  if (note->saveall())
+    tedit->loadscript(s,show);
 }
 
 // ---------------------------------------------------------------------
@@ -229,9 +229,9 @@ void Note::projectsave()
 }
 
 // ---------------------------------------------------------------------
-void Note::saveall()
+bool Note::saveall()
 {
-  tabs->tabsaveall();
+  return tabs->tabsaveall();
 }
 
 // ---------------------------------------------------------------------

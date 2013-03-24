@@ -232,6 +232,7 @@ int Ntabs::tabopen1(QString s,int line)
   Nedit *e = new Nedit;
   e->file = f;
   e->fname = s;
+  e->saved=false;
   e->sname = toprojectname(s);
   e->text = cfread(e->file);
   //e->appendPlainText(e->text);
@@ -276,26 +277,35 @@ bool Ntabs::tabsave(int index)
   if (index<0) return true;
   Nedit *e=(Nedit *)widget(index);
   config.filepos_set(e->fname,e->readtop());
-  if (!tabsaveOK(index)) return false;
   QString t = e->toPlainText();
-  if (t != e->text) {
+  if (t==e->text) return true;
+  int r=tabsaveOK(index);
+  if (r==0) return false;
+  if (r==1)
+    e->setPlainText(e->text);
+  else {
     pic(e->fname,t);
     cfwrite(e->file,t);
+    e->text=t;
+    e->saved=true;
   }
-  e->text=t;
   setmodified(index,false);
   pnote->siderefresh();
   return true;
 }
 
 // ---------------------------------------------------------------------
-void Ntabs::tabsaveall()
+bool Ntabs::tabsaveall()
 {
+  bool r=true;
   noevents(1);
-  for(int i=0; i<count(); i++)
-    tabsave(i);
+  for(int i=0; i<count(); i++) {
+    r=tabsave(i);
+    if (!r) break;
+  }
   noevents(0);
   pnote->siderefresh();
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -313,16 +323,21 @@ void Ntabs::tabsaveas(int index)
   e->file = f;
   e->fname = s;
   e->sname = cfsname(s);
+  e->saved=true;
   setmodified(index,false);
   setTabText(index,e->sname);
   tabsetindex(index);
 }
 
 // ---------------------------------------------------------------------
-bool Ntabs::tabsaveOK(int index)
+// returns 0=cancel, 1=no save (restore), 2=OK to save
+//
+int Ntabs::tabsaveOK(int index)
 {
-  Q_UNUSED(index);
-  return true;
+  if (!config.ConfirmSave) return 2;
+  Nedit *e=(Nedit *)widget(index);
+  if (e->saved) return 2;
+  return queryCNY("Edit","OK to save: " + e->sname + "?");
 }
 
 // ---------------------------------------------------------------------

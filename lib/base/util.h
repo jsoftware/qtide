@@ -58,6 +58,7 @@ std::string p2s(const void *p);
 void q2p(QString,int *);
 bool qshasonly(const QString s, const QString t);
 std::string q2s(QString);
+int queryCNY(QString t,QString s);
 bool queryNY(QString t,QString s);
 bool queryOK(QString t,QString s);
 bool queryRETRY(QString t,QString s);

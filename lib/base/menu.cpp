@@ -47,18 +47,18 @@ void Menu::createActions()
   cfgbaseAct = makeact("cfgbaseAct","Base","");
   cfgdirmAct = makeact("cfgdirmAct","Directory Match","");
   cfgfoldersAct = makeact("cfgfoldersAct","Folders","");
-  cfglaunchpadAct = makeact("cfglaunchpadAct","Launch Pad","");
+  cfglaunchpadAct = makeact("cfglaunchpadAct","&Launch Pad","");
   cfgopenallAct = makeact("cfgopenallAct","Open All","");
   cfgqtideAct = makeact("cfgqtideAct","Qt Ide","");
   cfgstartupAct = makeact("cfgstartupAct","Startup Script","");
-  cleartermAct = makeact("cleartermAct","Clear Terminal","Ctrl+Shift+T");
+  cleartermAct = makeact("cleartermAct","&Clear Terminal","Ctrl+Shift+T");
   clipcopyAct = makeact("clipcopyAct","&Copy","Ctrl+C");
   clipcutAct = makeact("clipcutAct","Cu&t","Ctrl+X");
   clippasteAct = makeact("clippasteAct","&Paste","Ctrl+V");
   editfifAct = makeact("editfifAct","F&ind in Files","Ctrl+Shift+F");
   editfiwAct = makeact("editfiwAct","&Find","Ctrl+F");
-  editfontAct = makeact("editfontAct","Session Font","");
-  editinputlogAct = makeact("editinputlogAct","Input Log","");
+  editfontAct = makeact("editfontAct","&Session Font","");
+  editinputlogAct = makeact("editinputlogAct","Input &Log","");
   editredoAct = makeact("editredoAct","&Redo","Ctrl+Y");
   editundoAct = makeact("editundoAct","&Undo","Ctrl+Z");
   filecloseAct = makeact("filecloseAct","&Close","Ctrl+W");
@@ -68,17 +68,17 @@ void Menu::createActions()
   filesaveallAct = makeact("filesaveallAct","Save A&ll","Ctrl+Shift+S");
   filesaveasAct = makeact("filesaveasAct","Save &As","");
   filenewAct = makeact("filenewAct","&New","");
-  filenewtempAct = makeact("filenewtempAct","New temp","Ctrl+N");
+  filenewtempAct = makeact("filenewtempAct","&New temp","Ctrl+N");
   fileopenAct = makeact("fileopenAct","&Open","");
-  fileopenallAct = makeact("fileopenallAct","Open All","");
-  fileopentempAct = makeact("fileopentempAct","Open temp","Ctrl+O");
-  fileopenuserAct = makeact("fileopenuserAct","Open user","");
-  fileopensystemAct = makeact("fileopensystemAct","Open system","");
+  fileopenallAct = makeact("fileopenallAct","&Open All","");
+  fileopentempAct = makeact("fileopentempAct","&Open temp","Ctrl+O");
+  fileopenuserAct = makeact("fileopenuserAct","&Open user","");
+  fileopensystemAct = makeact("fileopensystemAct","&Open system","");
 #ifndef ANDROID
-  fileprintAct = makeact("fileprintAct","Print","");
+  fileprintAct = makeact("fileprintAct","&Print","");
 #endif
   filequitAct = makeact("filequitAct","&Quit","Ctrl+Q");
-  filerecentAct = makeact("filerecentAct","Recent","Ctrl+G");
+  filerecentAct = makeact("filerecentAct","&Recent","Ctrl+G");
   filereloadAct = makeact("filereloadAct","Reload q server","");
   filesaveAct = makeact("filesaveAct","&Save","Ctrl+S");
 
@@ -87,7 +87,7 @@ void Menu::createActions()
   projectgitguiAct = makeact("projectgitguiAct","Git Gui","");
   projectgitstatusAct = makeact("projectgitstatusAct","Git Status","");
   projectlastAct = makeact("projectlastAct","Open &Last","");
-  projectnewAct = makeact("projectnewAct","New","");
+  projectnewAct = makeact("projectnewAct","&New","");
   projectopenAct = makeact("projectopenAct","&Open","");
   projectsnapAct = makeact("projectsnapAct","Project Snapshots","");
   projectsnapmakeAct = makeact("projectsnapmakeAct","Make Snapshot","");
@@ -120,12 +120,12 @@ void Menu::createActions()
   toselplusline1Act = makeact("toselplusline1Act","Add Comment ---","Ctrl+Shift+K");
   toselplusline2Act = makeact("toselplusline2Act","Add Comment ===","Ctrl+Shift+L");
   toselsortAct = makeact("toselsortAct","Sort","");
-  toseltoggleAct = makeact("toseltoggleAct","Toggle Case","");
+  toseltoggleAct = makeact("toseltoggleAct","&Toggle Case","");
   toselupperAct = makeact("toselupperAct","Upper Case","");
   toselviewlinewrapAct = makeact("toselviewlinewrapAct","Wrap","");
 
-  viewasciiAct = makeact("viewasciiAct","Toggle Ascii Box Drawing","");
-  vieweditorAct = makeact("vieweditorAct","Editor","Ctrl+M");
+  viewasciiAct = makeact("viewasciiAct","&Toggle Ascii Box Drawing","");
+  vieweditorAct = makeact("vieweditorAct","&Editor","Ctrl+M");
   viewfontminusAct = makeact("viewfontminusAct","Decrease Font","Ctrl+Shift+F12");
   viewfontplusAct = makeact("viewfontplusAct","Increase Font","Ctrl+F12");
   viewlinenosAct = makeact("viewlinenosAct","Toggle Line &Numbers","");
@@ -800,13 +800,13 @@ void Note::on_runclipAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_runlineAct_triggered()
 {
-  runline(false,false);
+  runline(false,true);
 }
 
 // ---------------------------------------------------------------------
 void Note::on_runlineadvanceAct_triggered()
 {
-  runline(true,false);
+  runline(true,true);
 }
 
 // ---------------------------------------------------------------------
@@ -830,7 +830,7 @@ void Note::on_runprojectAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_runscriptAct_triggered()
 {
-  loadscript(editPage()->fname,false);
+  loadscript(editPage()->fname,true);
 }
 
 // ---------------------------------------------------------------------
@@ -1303,7 +1303,7 @@ void Term::on_runselectAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_runtestAct_triggered()
 {
-  var_run("test 0");
+  var_run("test ''");
 }
 
 // ---------------------------------------------------------------------

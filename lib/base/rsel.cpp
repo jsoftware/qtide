@@ -17,6 +17,11 @@ Rsel::Rsel()
 
   recent.Files=qslexists(recent.Files);
 
+  if (recent.Files.isEmpty()) {
+    info("Recent Files","There are no recent files");
+    return;
+  }
+
   for (i=0; i<recent.Files.size(); i++)
     s.append(tofoldername(recent.Files.at(i)));
 
@@ -26,6 +31,8 @@ Rsel::Rsel()
   flist=new QListWidget();
   flist->setAlternatingRowColors(true);
   flist->addItems(s);
+  flist->setCurrentRow(0);
+  flist->setObjectName("flist");
   h->addWidget(flist);
 
   QVBoxLayout *v=new QVBoxLayout();
@@ -52,6 +59,12 @@ QPushButton *Rsel::makebutton(QVBoxLayout *v,QString id)
   p->setObjectName(id.remove(' ').toLower());
   v->addWidget(p);
   return p;
+}
+
+// ---------------------------------------------------------------------
+void Rsel::on_flist_itemActivated()
+{
+  on_open_clicked();
 }
 
 // ---------------------------------------------------------------------

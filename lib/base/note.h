@@ -34,7 +34,7 @@ public:
   void projectenable();
   void projectopen(bool);
   void projectsave();
-  void saveall();
+  bool saveall();
   void savecurrent();
   void scriptenable();
   void setfont(QFont font);

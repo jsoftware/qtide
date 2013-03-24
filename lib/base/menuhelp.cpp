@@ -23,17 +23,17 @@ void helplabs();
 void Menu::createhelpActions()
 {
   helpaboutAct = makeact("helpaboutAct","&About","");
-  helpconstantsAct = makeact("helpconstantsAct","Constants","");
+  helpconstantsAct = makeact("helpconstantsAct","&Constants","");
   helpcontextAct = makeact("helpcontextAct","&Context Sensitive","Ctrl+F1");
-  helpcontrolsAct = makeact("helpcontrolsAct","Control Structures","");
-  helpdictionaryAct = makeact("helpdictionaryAct","Dictionary","");
-  helpforeignsAct = makeact("helpforeignsAct","Foreign Conjunction","");
-  helpgeneralAct = makeact("helpgeneralAct","General Info","");
-  helphelpAct = makeact("helphelpAct","Help","");
-  helplabsAct = makeact("helplabsAct","Labs","");
-  helpreleaseAct = makeact("helpreleaseAct","Release Highlights","");
-  helprelnotesAct = makeact("helprelnotesAct","Release Notes","");
-  helpvocabAct = makeact("helpvocabAct","Vocabulary","F1");
+  helpcontrolsAct = makeact("helpcontrolsAct","&Control Structures","");
+  helpdictionaryAct = makeact("helpdictionaryAct","&Dictionary","");
+  helpforeignsAct = makeact("helpforeignsAct","&Foreign Conjunction","");
+  helpgeneralAct = makeact("helpgeneralAct","&General Info","");
+  helphelpAct = makeact("helphelpAct","&Help","");
+  helplabsAct = makeact("helplabsAct","&Labs","");
+  helpreleaseAct = makeact("helpreleaseAct","&Release Highlights","");
+  helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
+  helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
 }
 
 void Menu::createhelpMenu()

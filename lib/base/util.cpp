@@ -490,6 +490,17 @@ string p2s(const void *p)
 }
 
 // ---------------------------------------------------------------------
+// 0=cancel, 1=no, 2=yes
+int queryCNY(QString t,QString s)
+{
+  int r=QMessageBox::question(QApplication::focusWidget(),t,s,
+        /**/   QMessageBox::Cancel|QMessageBox::No|QMessageBox::Yes,
+        /**/   QMessageBox::Yes);
+
+  return (r==QMessageBox::Cancel) ? 0 : ((r==QMessageBox::No) ? 1 : 2);
+}
+
+// ---------------------------------------------------------------------
 bool queryNY(QString t,QString s)
 {
   int r=QMessageBox::question(QApplication::focusWidget(),t,s,
@@ -549,15 +560,6 @@ QString qstaketo(QString s,QString c)
   if (n<0) return s;
   return s.left(n);
 }
-
-//// ---------------------------------------------------------------------
-//QStringList qsldetabeach(QStringList s)
-//{
-//QStringList r;
-//for(int i=0; i<s.size(); i++)
-//r.append(detab(s.at(i)));
-//return r;
-//}
 
 // ---------------------------------------------------------------------
 QStringList qsldtbeach(QStringList s)

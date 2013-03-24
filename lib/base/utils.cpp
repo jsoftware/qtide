@@ -253,6 +253,7 @@ void openj(char *s)
 void projectclose()
 {
   project.close();
+  term->projectenable();
   if (note) {
     note->setindex(note->editIndex());
     note->projectenable();
