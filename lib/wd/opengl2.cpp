@@ -239,13 +239,22 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
 {
   // sysmodifiers = shift+2*control
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,0
+  int key1=0;
+  int key=event->key();
+//  qDebug() << "isigraph2 keypress " + QString::number(key);
+  if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
+    QWidget::keyPressEvent(event);
+    return;
+  } else if (key>=0x1000000) {
+    key1=(key & 0xff) | 0xf800;
+  }
   char sysmodifiers[20];
   sprintf (sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
   char sysdata[20];
   QString keyt = event->text();
-  if (keyt.size())
-    sprintf (sysdata , "%s", keyt.toUtf8().constData());
-  else sprintf (sysdata , "%s", QString(QChar(event->key())).toUtf8().constData());
+  if (!key1)
+    sprintf (sysdata , "%s", event->text().toUtf8().constData());
+  else sprintf (sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
 
   pchild->event=string("char");
   pchild->sysmodifiers=string(sysmodifiers);
