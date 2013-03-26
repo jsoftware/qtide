@@ -110,6 +110,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       new Slog();
       break;
     case Qt::Key_Return:
+    case Qt::Key_Enter:
       enter();
       break;
     default:
