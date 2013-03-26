@@ -22,6 +22,7 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
   pixmap=0;
   painter=0;
   fontheight=0;
+  setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 //  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);

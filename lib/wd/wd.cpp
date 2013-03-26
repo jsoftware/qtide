@@ -54,7 +54,9 @@ void wdmsgs();
 void wdnotyet();
 void wdpactive();
 void wdp(string c);
+void wdpas();
 void wdpc();
+void wdpcenter();
 void wdpclose();
 void wdpmovex();
 void wdpn();
@@ -361,10 +363,14 @@ void wdnotyet()
 // ---------------------------------------------------------------------
 void wdp(string c)
 {
-  if (c=="pc")
+  if (c=="pas")
+    wdpas();
+  else if (c=="pc")
     wdpc();
   else if (c=="pclose")
     wdpclose();
+  else if (c=="pcenter")
+    wdpcenter();
   else if (c=="pmovex")
     wdpmovex();
   else if (c=="pn")
@@ -379,7 +385,7 @@ void wdp(string c)
     wdpactive();
   else if (c=="ptop")
     wdptop();
-  else if (c=="pas" || c=="pcenter" || 0) {
+  else if (c=="notyet") {
     cmd.getparms();
     wdnotyet();
   } else
@@ -395,6 +401,26 @@ void wdpactive()
   form->activateWindow();
   form->raise();
 #endif
+}
+
+// ---------------------------------------------------------------------
+void wdpas()
+{
+  if (noform()) return;
+  string p=cmd.getparms();
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  int l,t,r,b;
+  if (n.size()==2) {
+    l=r=c_strtoi(q2s(n.at(0)));
+    t=b=c_strtoi(q2s(n.at(1)));
+    form->setpadding(l,t,r,b);
+  } else if (n.size()==4) {
+    l=c_strtoi(q2s(n.at(0)));
+    t=c_strtoi(q2s(n.at(1)));
+    r=c_strtoi(q2s(n.at(2)));
+    b=c_strtoi(q2s(n.at(3)));
+    form->setpadding(l,t,r,b);
+  } else error("pas requires 2 or 4 numbers: " + p);
 }
 
 // ---------------------------------------------------------------------
@@ -415,6 +441,22 @@ void wdpc()
 #endif
   evtform=form;
   Forms.append(form);
+}
+
+// ---------------------------------------------------------------------
+void wdpcenter()
+{
+  if (noform()) return;
+  cmd.getparms();
+#ifndef ANDROID
+  int sw=QApplication::desktop()->width();
+  int sh=QApplication::desktop()->height();
+  int w=form->size().width();
+  int h=form->size().height();
+  int x=(sw-w)/2;
+  int y=(sh-h)/2;
+  form->move((x<0)?0:x,(y<0)?0:y);
+#endif
 }
 
 // ---------------------------------------------------------------------

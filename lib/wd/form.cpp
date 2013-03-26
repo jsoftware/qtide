@@ -56,7 +56,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
-  layout->setContentsMargins(0,0,0,0);
+  setpadding(0,0,0,0);
   layout->setSpacing(0);
   if (m.contains("nosize")) layout->setSizeConstraint( QLayout::SetFixedSize );
   addpane(0);
@@ -211,6 +211,12 @@ Child *Form::setmenuid(string id)
   if (menubar && menubar->items.contains(s2q(id)))
     return (Child *) menubar;
   return (Child *) 0;
+}
+
+// ---------------------------------------------------------------------
+void Form::setpadding(int l,int t,int r,int b)
+{
+  layout->setContentsMargins(l,t,r,b);
 }
 
 // ---------------------------------------------------------------------

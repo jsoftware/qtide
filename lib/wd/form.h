@@ -37,6 +37,7 @@ public:
   bool nochild();
   void setstretch(Child *cc, string factor);
   Child *setmenuid(string id);
+  void setpadding(int l,int t,int r,int b);
   void setpn(string p);
   void showit();
   void signalevent(Child *c);

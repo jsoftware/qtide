@@ -22,6 +22,7 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   pixmap=0;
   painter=0;
   fontheight=0;
+  setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 //  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);

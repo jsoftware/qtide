@@ -117,6 +117,10 @@ bool Pane::addchild(string n,string c,string p)
     layout->addWidget(child->widget);
     child->setminwh(sizew,sizeh);
     lasttype=child->type;
+    if ((c=="isigraph")||(c=="opengl")) {
+      layout->setContentsMargins(0,0,0,0);
+      layout->setSpacing(0);
+    }
   }
   sizew=sizeh=0;
   pform->addchild(child);
@@ -127,6 +131,8 @@ bool Pane::addchild(string n,string c,string p)
 void Pane::addlayout(QBoxLayout *b, int n)
 {
   layout=b;
+//  layout->setContentsMargins(0,0,0,0);
+//  layout->setSpacing(0);
   layouts.append(b);
   layoutx.append(n);
 }
