@@ -449,8 +449,10 @@ void wdpcenter()
   if (noform()) return;
   cmd.getparms();
 #ifndef ANDROID
-  int sw=QApplication::desktop()->width();
-  int sh=QApplication::desktop()->height();
+  QDesktopWidget* dw=QApplication::desktop();
+  QRect screenGeometry = dw->screenGeometry(-1);
+  int sw=screenGeometry.width();
+  int sh=screenGeometry.height();
   int w=form->size().width();
   int h=form->size().height();
   int x=(sw-w)/2;
@@ -569,14 +571,16 @@ void wdqueries(string s)
     error("command not found");
     return;
   } else if (s=="qscreen") {
-    int dpix=QApplication::desktop()->logicalDpiX();
-    int dpiy=QApplication::desktop()->logicalDpiY();
-    int w=QApplication::desktop()->width();
-    int h=QApplication::desktop()->height();
+    QDesktopWidget* dw=QApplication::desktop();
+    QRect screenGeometry = dw->screenGeometry(-1);
+    int dpix=dw->logicalDpiX();
+    int dpiy=dw->logicalDpiY();
+    int w=screenGeometry.width();
+    int h=screenGeometry.height();
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
-    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(QApplication::desktop()->depth()) + " 1 " + i2s(QApplication::desktop()->colorCount()) + " " + i2s(dpix) + " " + i2s(dpix) + " " + i2s(dia);
+    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(dw->colorCount()) + " " + i2s(dpix) + " " + i2s(dpix) + " " + i2s(dia);
     return;
   } else if (s=="qwd") {
     result="jqt";

@@ -21,11 +21,13 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   lab->setBackgroundRole(QPalette::Base);
   lab->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
   //lab->setScaledContents(true);
+  lab->setContentsMargins(0,0,0,0);
 
   QScrollArea *w = new QScrollArea;
   widget=(QWidget *) w;
   w->setObjectName(qn);
   w->setBackgroundRole(QPalette::Dark);
+  w->setContentsMargins(0,0,0,0);
   w->setWidget(lab);
 }
 
