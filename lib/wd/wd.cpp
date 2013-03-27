@@ -58,7 +58,7 @@ void wdpas();
 void wdpc();
 void wdpcenter();
 void wdpclose();
-void wdpmovex();
+void wdpmove();
 void wdpn();
 void wdpsel();
 void wdpshow();
@@ -371,8 +371,8 @@ void wdp(string c)
     wdpclose();
   else if (c=="pcenter")
     wdpcenter();
-  else if (c=="pmovex")
-    wdpmovex();
+  else if ((c=="pmove")||(c=="pmovex"))
+    wdpmove();
   else if (c=="pn")
     wdpn();
   else if (c=="psel")
@@ -472,13 +472,13 @@ void wdpclose()
 }
 
 // ---------------------------------------------------------------------
-void wdpmovex()
+void wdpmove()
 {
   if (noform()) return;
   string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=4)
-    error("pmovex requires 4 numbers: " + p);
+    error("pmove requires 4 numbers: " + p);
   else {
 #ifndef ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
@@ -615,14 +615,14 @@ void wdqueries(string s)
   if (noform()) return;
   if (s=="qhwndp")
     result=form->hsform();
-  else if (s=="qformx")
-    result=form->qformx();
+  else if ((s=="qform")||(s=="qformx"))
+    result=form->qform();
   else if (s=="qhwndc") {
     Child *cc;
     if ((cc=form->id2child(p))) result=p2s(cc);
     else
       error("command failed: " + s);
-  } else if (s=="qchildxywhx") {
+  } else if ((s=="qchildxywh")||(s=="qchildxywhx")) {
     Child *cc;
     if ((cc=form->id2child(p))) {
       if (!cc->widget) error("command failed: " + s);

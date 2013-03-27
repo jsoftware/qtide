@@ -33,7 +33,7 @@ public:
 
   string hschild();
   string hsform();
-  string qformx();
+  string qform();
   bool nochild();
   void setstretch(Child *cc, string factor);
   Child *setmenuid(string id);

@@ -164,7 +164,7 @@ string Form::hsform()
 }
 
 // ---------------------------------------------------------------------
-string Form::qformx()
+string Form::qform()
 {
   return i2s(pos().x())+" "+i2s(pos().y())+" "+i2s(size().width())+" "+i2s(size().height());
 }
