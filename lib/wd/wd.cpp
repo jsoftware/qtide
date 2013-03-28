@@ -371,7 +371,7 @@ void wdp(string c)
     wdpclose();
   else if (c=="pcenter")
     wdpcenter();
-  else if ((c=="pmove")||(c=="pmovex"))
+  else if (c=="pmove")
     wdpmove();
   else if (c=="pn")
     wdpn();
@@ -615,14 +615,14 @@ void wdqueries(string s)
   if (noform()) return;
   if (s=="qhwndp")
     result=form->hsform();
-  else if ((s=="qform")||(s=="qformx"))
+  else if (s=="qform")
     result=form->qform();
   else if (s=="qhwndc") {
     Child *cc;
     if ((cc=form->id2child(p))) result=p2s(cc);
     else
       error("command failed: " + s);
-  } else if ((s=="qchildxywh")||(s=="qchildxywhx")) {
+  } else if (s=="qchildxywh") {
     Child *cc;
     if ((cc=form->id2child(p))) {
       if (!cc->widget) error("command failed: " + s);
