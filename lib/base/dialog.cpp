@@ -16,7 +16,7 @@
 #include "tedit.h"
 
 #ifndef ANDROID
-QPrinter *Printer;
+QPrinter *Printer=new QPrinter(QPrinter::HighResolution);  // gl2 printing needs an initialised session printer
 #endif
 
 // ---------------------------------------------------------------------

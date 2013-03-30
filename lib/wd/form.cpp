@@ -17,7 +17,7 @@
 #endif
 #include "../base/state.h"
 #include "../base/term.h"
-
+extern int jedo(char*);
 // ---------------------------------------------------------------------
 Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 {
@@ -255,7 +255,9 @@ void Form::signalevent(Child *c)
     sysdata=c->sysdata;
     loc = (""!=c->locale)?c->locale:locale;
   }
-  var_run("(i.0 0)\"_ wdhandler_" + s2q(loc) + "_$0");
+  string s="(i.0 0)\"_ wdhandler_" + loc + "_$0";
+  jedo((char *)s.c_str());
+//  var_run("(i.0 0)\"_ wdhandler_" + s2q(loc) + "_$0");
 }
 
 // ---------------------------------------------------------------------

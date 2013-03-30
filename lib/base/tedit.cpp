@@ -29,7 +29,11 @@ Tedit::Tedit()
 // (note appendPlainText appends to new line)
 void Tedit::append(QString s)
 {
-  appendPlainText(s);
+  QTextCursor c=textCursor();
+  c.movePosition(QTextCursor::End);
+  setTextCursor(c);
+  insertPlainText(s);
+//  appendPlainText(s);
 }
 
 // ---------------------------------------------------------------------
