@@ -105,8 +105,7 @@ bool Pane::addchild(string n,string c,string p)
   else if (c=="webview")
     child=(Child *) new Webview(n,p,pform,this);
 #endif
-  else
-  {
+  else {
 //    qDebug () << s2q("child not supported " + c);
     sizew=sizeh=0;
     error("child not supported " + c);
