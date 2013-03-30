@@ -35,8 +35,6 @@ extern "C" {
   Dllexport void *wdgetparentid(void *s);
 }
 
-extern int jedo(char *);
-
 void wd1();
 void wdbin();
 void wdcc();

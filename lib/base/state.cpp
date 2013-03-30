@@ -82,10 +82,8 @@ void Config::folder_init()
 }
 
 // ---------------------------------------------------------------------
-void Config::init(QString path)
+void Config::init()
 {
-  Q_UNUSED(path);
-
   Q_ASSERT(jcon);
 
   DefCmt="NB.";
@@ -105,6 +103,7 @@ void Config::init(QString path)
   ProFont.setFamily("SansSerif 10");
 #endif
 
+  Lang = "J";
   LineNos = false;
   LineWrap = false;
   ScriptFilter="*.ijs";
@@ -294,7 +293,7 @@ bool state_init(int argc, char *argv[])
 {
   state_init_args(&argc,argv);
   svr_init(argc,argv);
-  config.init(cfpath(argv[0]));
+  config.init();
   dlog_init();
   recent.init();
   project.init();

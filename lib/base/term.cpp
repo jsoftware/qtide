@@ -103,7 +103,8 @@ void Term::closeEvent(QCloseEvent *event)
 bool Term::filequit()
 {
   dlog_write();
-  if ((!config.ConfirmClose) || queryOK("Term","OK to exit J?")) {
+  if ((!config.ConfirmClose) ||
+      queryOK("Term","OK to exit " + config.Lang + "?")) {
     state_quit();
     QApplication::quit();
     return true;

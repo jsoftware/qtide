@@ -84,6 +84,7 @@ void fontset(QFont font)
     if (note2)
       note2->setfont(font);
   }
+  tedit->ifResized=false;
 }
 
 // ---------------------------------------------------------------------

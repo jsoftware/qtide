@@ -800,13 +800,14 @@ void Note::on_runclipAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_runlineAct_triggered()
 {
-  runline(false,true);
+  runline(false,false)
+  ;
 }
 
 // ---------------------------------------------------------------------
 void Note::on_runlineadvanceAct_triggered()
 {
-  runline(true,true);
+  runline(true,false);
 }
 
 // ---------------------------------------------------------------------

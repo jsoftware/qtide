@@ -24,7 +24,7 @@ public:
   void fkeys_init();
   void folder_init();
   void launch_init();
-  void init(QString);
+  void init();
   void initide();
   bool initide1(QString f);
   void noprofile();
@@ -65,6 +65,7 @@ public:
   QFont Font;
   QString Host;
   bool KeepInputLog;
+  QString Lang;
   QStringList LaunchPadKeys;
   QStringList LaunchPadValues;
   QString LaunchPadPrefix;

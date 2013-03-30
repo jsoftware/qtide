@@ -16,7 +16,7 @@
 #include "tedit.h"
 
 #ifndef ANDROID
-QPrinter *Printer=new QPrinter(QPrinter::HighResolution);
+QPrinter *Printer;
 #endif
 
 // ---------------------------------------------------------------------
@@ -35,7 +35,7 @@ QString dialogdirectory(QWidget *w,QString t,QString p)
 void dialogfont(QWidget *w)
 {
   bool ok;
-  QFont font = QFontDialog::getFont(&ok,config.Font, w);
+  QFont font = QFontDialog::getFont(&ok,config.Font,w);
   if (font==config.Font) return;
   config.Font=font;
   if (ok) fontset(font);

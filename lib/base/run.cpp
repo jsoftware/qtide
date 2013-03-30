@@ -11,6 +11,7 @@ using namespace std;
 // ---------------------------------------------------------------------
 void Note::runline(bool advance, bool show)
 {
+  Q_UNUSED(show);
   note->saveall();
   Nedit *e = editPage();
   int len = e->blockCount();
@@ -33,7 +34,7 @@ void Note::runline(bool advance, bool show)
     e->setTextCursor(c);
   }
 
-  tedit->docmdp(txt,show);
+  tedit->docmdp(txt,true);
 }
 
 // ---------------------------------------------------------------------

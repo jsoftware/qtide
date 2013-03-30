@@ -36,7 +36,7 @@
 #include "webview.h"
 #endif
 
-extern int jedo(char*);
+
 extern Font *fontdef;
 
 // ---------------------------------------------------------------------

@@ -90,4 +90,3 @@ android:LIBS += -ldl
 
 win32:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
-

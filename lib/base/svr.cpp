@@ -153,7 +153,6 @@ char* _stdcall Jinput(char* p)
   inputs=0;
   logged=true;
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-
   return (char*) 0;
 }
 
@@ -170,7 +169,6 @@ char* _stdcall Jinputcb(char* p)
   QString s=jcon->Sentence.at(0);
   jcon->Sentence.removeFirst();
   strcpy(inputline,q2s(s).c_str());
-
   return inputline;
 }
 
