@@ -91,8 +91,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Slider(n,p,pform,this);
   else if (c=="static")
     child=(Child *) new Static(n,p,pform,this);
-  else if (c=="staticbox")
-    child=(Child *) new Static(n,"staticbox " + p,pform,this);
+//  else if (c=="staticbox")
+//    child=(Child *) new Static(n,"staticbox " + p,pform,this);
   else if (c=="statusbar")
     child=(Child *) new StatusBar(n,p,pform,this);
   else if (c=="table")
@@ -106,11 +106,11 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Webview(n,p,pform,this);
 #endif
   else
-// TODO
   {
-    qDebug () << s2q("child not supported " + c);
+//    qDebug () << s2q("child not supported " + c);
     sizew=sizeh=0;
-    return true;
+    error("child not supported " + c);
+    return false;
   }
   if (fontdef) child->setfont(fontdef->font);
   if (child->widget) {
