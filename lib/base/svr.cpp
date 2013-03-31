@@ -33,9 +33,8 @@ C* _stdcall Jinput(C*);
 C* _stdcall Jinputcb(C*);
 void _stdcall Joutput(J jt, int type, C* s);
 
-static bool active=true;
+static bool ifcmddo=false;
 static bool inputready=false;
-static int inputs=0;
 static QString inputx;
 static bool logged=false;
 static bool quitx=false;
@@ -56,6 +55,13 @@ void Jcon::cmd(QString s)
 QString Jcon::cmdr(QString s)
 {
   return dors(s);
+}
+
+// ---------------------------------------------------------------------
+void Jcon::cmddo(QString s)
+{
+  ifcmddo=true;
+  jedo((char *)q2s(s).c_str());
 }
 
 // ---------------------------------------------------------------------
@@ -127,6 +133,7 @@ void Jcon::immex(QString s)
 // ---------------------------------------------------------------------
 void Jcon::input()
 {
+  ifcmddo=false;
   evloop->exit();
 }
 
@@ -150,7 +157,6 @@ char* _stdcall Jinput(char* p)
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;
-  inputs=0;
   logged=true;
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   return (char*) 0;
@@ -163,7 +169,6 @@ char* _stdcall Jinputcb(char* p)
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;
-  inputs=0;
   logged=true;
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   QString s=jcon->Sentence.at(0);
@@ -175,8 +180,6 @@ char* _stdcall Jinputcb(char* p)
 // ---------------------------------------------------------------------
 // J calls for output
 // logged isn't used
-// active isnt used
-// inputs isnt used
 
 void _stdcall Joutput(J jt,int type, char* s)
 {
@@ -189,15 +192,14 @@ void _stdcall Joutput(J jt,int type, char* s)
 
   int n=strlen(s);
   if (n==0) return;
-//  if (s[n-1]=='\n') s[n-1]='\0';
+  if (s[n-1]=='\n') s[n-1]='\0';
   QString t=QString::fromUtf8(s);
 
-  if (!active) return;
-
-  if(MTYOLOG!=type) {
+  if (MTYOFILE==type && ifcmddo)
+    tedit->append_smoutput(t);
+  else if (MTYOLOG!=type)
     tedit->append(t);
-  } else {
-    if (inputs) return;
+  else {
     if (logged) {
       tedit->append(t);
     } else {

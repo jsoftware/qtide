@@ -13,6 +13,7 @@ class Jcon : public QObject
 public:
   Jcon() {};
   void cmd(QString s);
+  void cmddo(QString s);
   QString cmdr(QString s);
   QString dora(QString s);
   int exec();
@@ -22,6 +23,7 @@ public:
   void set(QString s,QString t);
 
   QStringList Sentence;
+
 
 public slots:
   void input();

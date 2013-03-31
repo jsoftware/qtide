@@ -2,7 +2,7 @@
 #include <QPlainTextEdit>
 #include <QScrollBar>
 
-#include "../base/dialog.h"
+#include "../base/state.h"
 #include "wd.h"
 #include "editm.h"
 #include "form.h"
@@ -29,8 +29,7 @@ void Editm::cmd(string p,string v)
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef ANDROID
-    initprinter();
-    w->print(Printer);
+    w->print(config.Printer);
 #else
     Q_UNUSED(w);
 #endif

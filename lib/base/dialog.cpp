@@ -16,7 +16,7 @@
 #include "tedit.h"
 
 #ifndef ANDROID
-QPrinter *Printer=new QPrinter(QPrinter::HighResolution);  // gl2 printing needs an initialised session printer
+QPrinter *Printer;
 #endif
 
 // ---------------------------------------------------------------------
@@ -62,9 +62,7 @@ QString dialogfileopen(QWidget *w,QString t)
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {
-  initprinter();
-
-  QPrintDialog *dlg = new QPrintDialog(Printer, w);
+  QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
 #ifdef QT48
     QAbstractPrintDialog::PrintCurrentPage|
@@ -76,7 +74,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
   dlg->setWindowTitle("Print Document");
   if (dlg->exec() != QDialog::Accepted)
     return;
-  if (d) d->print(Printer);
+  if (d) d->print(config.Printer);
   delete dlg;
 }
 #endif
@@ -104,12 +102,4 @@ QString getprojectpath()
   else
     return project.Path;
 };
-#ifndef ANDROID
 
-// ---------------------------------------------------------------------
-void initprinter()
-{
-  if (Printer==0)
-    Printer=new QPrinter(QPrinter::HighResolution);
-}
-#endif

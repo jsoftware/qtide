@@ -76,6 +76,9 @@ public:
   int OpenTabAt;
   QString Pass;
   int Port;
+#ifndef ANDROID
+  QPrinter *Printer;
+#endif
   QString ProjExt;
   QFont ProFont;
   QString Rxnna;
@@ -111,6 +114,7 @@ void state_quit();
 void state_reinit();
 
 void var_cmd(QString s);
+void var_cmddo(QString s);
 QString var_cmdr(QString s);
 QString var_load(QString s, bool d);
 void var_run(QString s);

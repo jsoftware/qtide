@@ -29,11 +29,20 @@ Tedit::Tedit()
 // (note appendPlainText appends to new line)
 void Tedit::append(QString s)
 {
-  QTextCursor c=textCursor();
-  c.movePosition(QTextCursor::End);
-  setTextCursor(c);
-  insertPlainText(s);
-//  appendPlainText(s);
+  appendPlainText(s);
+}
+
+// ---------------------------------------------------------------------
+// append smoutput if called from jedo
+void Tedit::append_smoutput(QString s)
+{
+  moveCursor(QTextCursor::End);
+  QTextCursor c = textCursor();
+  if (c.block().text().trimmed().isEmpty()) {
+    c.select(QTextCursor::BlockUnderCursor);
+    c.removeSelectedText();
+  }
+  appendPlainText(s + "\n" + getprompt());
 }
 
 // ---------------------------------------------------------------------

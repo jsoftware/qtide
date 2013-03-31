@@ -12,6 +12,7 @@ public:
   Tedit();
 
   void append(QString s);
+  void append_smoutput(QString s);
   QString getprompt();
   void insert(QString s);
   void setprompt();

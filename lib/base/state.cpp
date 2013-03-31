@@ -2,11 +2,15 @@
 
 #include <QApplication>
 #include <QDate>
+#ifndef ANDROID
+#include <QPrinter>
+#endif
 #include <QSettings>
 #include <QTemporaryFile>
 
 #include "base.h"
 #include "state.h"
+#include "dialog.h"
 #include "dlog.h"
 #include "jsvr.h"
 #include "menu.h"
@@ -101,6 +105,10 @@ void Config::init()
   ProFont.setFamily("\"MS Sans Serif\" 10");
 #else
   ProFont.setFamily("SansSerif 10");
+#endif
+
+#ifndef ANDROID
+  Printer=new QPrinter(QPrinter::HighResolution);
 #endif
 
   Lang = "J";
@@ -369,6 +377,12 @@ void var_cmd(QString s)
 QString var_cmdr(QString s)
 {
   return jcon->cmdr(s);
+}
+
+// ---------------------------------------------------------------------
+void var_cmddo(QString s)
+{
+  jcon->cmddo(s);
 }
 
 // ---------------------------------------------------------------------
