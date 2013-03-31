@@ -97,6 +97,7 @@ void Menu::createActions()
   runalllines1Act = makeact("runalllines1Act","Run All Lines","F10");
   runalllines2Act = makeact("runalllines2Act","Clear Terminal, Run All Lines","Ctrl+Shift+F10");
   runclipAct = makeact("runclipAct","&Clipboard","F8");
+  rundebugAct = makeact("rundebugAct","&Debug...","Ctrl+K");
   runlineAct = makeact("runlineAct","Line","Ctrl+Return");
   runlineadvanceAct = makeact("runlineadvanceAct","Line and &Advance","Ctrl+R");
   runlineadvanceshowAct = makeact("runlineadvanceshowAct","Line Advance &Show","Ctrl+Shift+R");
@@ -389,6 +390,8 @@ void Menu::createrunMenu(QString s)
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
+  runMenu->addSeparator();
+  runMenu->addAction(rundebugAct);
 }
 
 // ---------------------------------------------------------------------
@@ -795,6 +798,12 @@ void Note::on_runalllines2Act_triggered()
 void Note::on_runclipAct_triggered()
 {
   term->on_runclipAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_rundebugAct_triggered()
+{
+  term->on_rundebugAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1267,6 +1276,12 @@ void Term::on_projectopenAct_triggered()
 void Term::on_runclipAct_triggered()
 {
   tedit->docmds(QApplication::clipboard()->text().trimmed());
+}
+
+// ---------------------------------------------------------------------
+void Term::on_rundebugAct_triggered()
+{
+  tedit->docmds("dbjqt_jqtide_ 1");
 }
 
 // ---------------------------------------------------------------------

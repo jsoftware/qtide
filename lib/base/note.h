@@ -130,6 +130,7 @@ public slots:
   void on_runalllines1Act_triggered();
   void on_runalllines2Act_triggered();
   void on_runclipAct_triggered();
+  void on_rundebugAct_triggered();
   void on_runlineAct_triggered();
   void on_runlineadvanceAct_triggered();
   void on_runlineadvanceshowAct_triggered();
