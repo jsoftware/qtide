@@ -1,7 +1,8 @@
 
-#include <QTabWidget>
+//#include <QTabWidget>
 #include <QTimer>
 
+#include "tabwidget.h"
 #include "wd.h"
 #include "tabs.h"
 #include "form.h"
@@ -14,8 +15,8 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="tabs";
   index=0;
 
-  QTabWidget *w=new QTabWidget(p);
-  widget=(QWidget*) w;
+  TabWidget *w=new TabWidget(p);
+  widget=(TabWidget*) w;
 
   form->tabs.append(this);
   form->tab=this;
@@ -40,6 +41,9 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->setTabPosition(QTabWidget::West);
   else if (opt.contains("south"))
     w->setTabPosition(QTabWidget::South);
+
+  if (opt.contains("nobar"))
+    w->nobar(true);
 
   connect(w,SIGNAL(currentChanged(int)),
           this,SLOT(currentChanged(int)));

@@ -5,7 +5,7 @@
 
 class Form;
 class Pane;
-class QTabWidget;
+class TabWidget;
 
 // ---------------------------------------------------------------------
 class Tabs : public Child
