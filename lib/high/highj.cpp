@@ -15,7 +15,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   HighlightingRule rule;
 
   controlFormat.setForeground(Qt::red);
-  controlFormat.setFontWeight(QFont::Bold);
 
   QStringList controlPatterns;
 
@@ -36,7 +35,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
     highlightingRules.append(rule);
   }
 
-  numberFormat.setForeground(Qt::darkRed);
+  numberFormat.setForeground(QColor(160,32,240));
   rule.pattern = QRegExp("\\b[_0-9][_0-9\\.a-zA-Z]*\\b");
   rule.format = numberFormat;
   highlightingRules.append(rule);
@@ -47,7 +46,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = nounFormat;
   highlightingRules.append(rule);
   
-  verbFormat.setFontWeight(QFont::Bold);
   verbFormat.setForeground(QColor(0,153,102));
   rule.pattern = QRegExp("((_?[0-9]:)|(\\bp\\.\\.)|(\\b[AcCeEiIjLopr]\\.)|(\\b[ipqsux]:)|(\\{::)|([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\\[\\{\\}\\\"]:)|([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))(?![\\.\\:])");
 
@@ -77,7 +75,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = verbFormat;
   highlightingRules.append(rule);
 
-  adverbFormat.setFontWeight(QFont::Bold);
   adverbFormat.setForeground(QColor(221,68,68));
   rule.pattern = QRegExp("(([\\/\\\\]\\.)|(\\b[bfMt]\\.)|(\\bt:)|([\\~\\/\\\\}]))(?![\\.\\:])");
 
@@ -99,7 +96,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = adverbFormat;
   highlightingRules.append(rule);
 
-  conjunctionFormat.setFontWeight(QFont::Bold);
   conjunctionFormat.setForeground(QColor(221,153,0));
   rule.pattern = QRegExp("((\\b[dDHT]\\.)|(\\b[DLS]:)|(\\&\\.:)|([\\;\\!\\@\\&]\\.)|([\\^\\!\\`\\@\\&]:)|([\\\"\\`\\@\\&])|(\\s[\\.\\:][\\.\\:])|(\\s[\\.\\:]))(?![\\.\\:])");
 
