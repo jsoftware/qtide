@@ -46,6 +46,36 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.pattern = QRegExp("(_\\.|a\\.|a:)(?![\\.\\:])");
   rule.format = nounFormat;
   highlightingRules.append(rule);
+  
+  verbFormat.setFontWeight(QFont::Bold);
+  verbFormat.setForeground(QColor(0,153,102));
+  rule.pattern = QRegExp("((_?[0-9]:)|(\\bp\\.\\.)|(\\b[AcCeEiIjLopr]\\.)(\\b[ipqsux]:)|(\\{::)|([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\[\\{\\}\\\"]:)|([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))(?![\\.\\:])");
+
+  /* The line continuations below seem to break the RegExp so it doesn't work.
+  rule.pattern = QRegExp("((_?[0-9]:)|             \
+                          (\\bp\\.\\.)|            \
+                          (\\b[AcCeEiIjLopr]\\.)|  \
+                          (\\b[ipqsux]:)|          \
+                          (\\{::)|                 \
+                          ([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|   \
+                          ([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\[\\{\\}\\\"]:)| \
+                          ([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))    \
+                          (?![\\.\\:])");
+  */
+
+  /*  The original gtk regular expressions for verbs.
+        ((_?[0-9]:)|
+        (\\bp\\.\\.)|              
+        (\\b[AcCeEiIjLopr]\\.)|
+        (\\b[ipqsux]:)|
+        ({::)|
+        ([&lt;&gt;\+\*\-\%\^\$\~\|\,\#\{\}&quot;\?]\.)|
+        ([&lt;&gt;\_\+\*\-\%\$\~\|\,\;\#\/\\\[\{\}&quot;]:)|
+        ([&lt;&gt;\=\+\*\-\%\^\$\|\,\;\#\!\[\]\{\?]))
+        (?![\.\:]) 
+  */
+  rule.format = verbFormat;
+  highlightingRules.append(rule);
 
   stringFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("\'.*\'");
