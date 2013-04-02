@@ -49,7 +49,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   
   verbFormat.setFontWeight(QFont::Bold);
   verbFormat.setForeground(QColor(0,153,102));
-  rule.pattern = QRegExp("((_?[0-9]:)|(\\bp\\.\\.)|(\\b[AcCeEiIjLopr]\\.)(\\b[ipqsux]:)|(\\{::)|([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\[\\{\\}\\\"]:)|([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))(?![\\.\\:])");
+  rule.pattern = QRegExp("((_?[0-9]:)|(\\bp\\.\\.)|(\\b[AcCeEiIjLopr]\\.)|(\\b[ipqsux]:)|(\\{::)|([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\\[\\{\\}\\\"]:)|([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))(?![\\.\\:])");
 
   /* The line continuations below seem to break the RegExp so it doesn't work.
   rule.pattern = QRegExp("((_?[0-9]:)|             \
@@ -58,7 +58,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
                           (\\b[ipqsux]:)|          \
                           (\\{::)|                 \
                           ([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|   \
-                          ([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\[\\{\\}\\\"]:)| \
+                          ([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\\[\\{\\}\\\"]:)| \
                           ([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))    \
                           (?![\\.\\:])");
   */
@@ -75,6 +75,28 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
         (?![\.\:]) 
   */
   rule.format = verbFormat;
+  highlightingRules.append(rule);
+
+  adverbFormat.setFontWeight(QFont::Bold);
+  adverbFormat.setForeground(QColor(221,68,68));
+  rule.pattern = QRegExp("(([\\/\\\\]\\.)|(\\b[bfMt]\\.)|(\\bt:)|([\\~\\/\\\\}]))(?![\\.\\:])");
+
+  /* The line continuations below seem to break the RegExp so it doesn't work.
+  rule.pattern = QRegExp("(([\\/\\]\\.)|   \
+                           (\\b[bfMt]\\.)| \
+                           (\\bt:)|        \
+                           ([\\~\\/\\\\}])) \
+                          (?![\\.\\:])");  
+  */
+  /* The original gtk regular expressions for adverbs.
+        (([\/\\]\.)| 
+        (\%[[bfMt]\.)|
+        (\%[t:)|
+        ([\~\/\\\}]))
+        (?![\.\:])
+
+  */
+  rule.format = adverbFormat;
   highlightingRules.append(rule);
 
   stringFormat.setForeground(Qt::blue);

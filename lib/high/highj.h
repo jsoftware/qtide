@@ -29,6 +29,7 @@ private:
   QTextCharFormat numberFormat;
   QTextCharFormat nounFormat;
   QTextCharFormat verbFormat;
+  QTextCharFormat adverbFormat;  
   QTextCharFormat singleLineCommentFormat;
   QTextCharFormat multiLineCommentFormat;
   QTextCharFormat stringFormat;
