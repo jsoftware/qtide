@@ -82,11 +82,11 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.pattern = QRegExp("(([\\/\\\\]\\.)|(\\b[bfMt]\\.)|(\\bt:)|([\\~\\/\\\\}]))(?![\\.\\:])");
 
   /* The line continuations below seem to break the RegExp so it doesn't work.
-  rule.pattern = QRegExp("(([\\/\\]\\.)|   \
-                           (\\b[bfMt]\\.)| \
-                           (\\bt:)|        \
+  rule.pattern = QRegExp("(([\\/\\]\\.)|    \
+                           (\\b[bfMt]\\.)|  \
+                           (\\bt:)|         \
                            ([\\~\\/\\\\}])) \
-                          (?![\\.\\:])");  
+                          (?![\\.\\:])");
   */
   /* The original gtk regular expressions for adverbs.
         (([\/\\]\.)| 
@@ -98,6 +98,37 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   */
   rule.format = adverbFormat;
   highlightingRules.append(rule);
+
+  conjunctionFormat.setFontWeight(QFont::Bold);
+  conjunctionFormat.setForeground(QColor(221,153,0));
+  rule.pattern = QRegExp("((\\b[dDHT]\\.)|(\\b[DLS]:)|(\\&\\.:)|([\\;\\!\\@\\&]\\.)|([\\^\\!\\`\\@\\&]:)|([\\\"\\`\\@\\&])|(\\s[\\.\\:][\\.\\:])|(\\s[\\.\\:]))(?![\\.\\:])");
+
+  /* The line continuations below seem to break the RegExp so it doesn't work.
+  rule.pattern = QRegExp("((\\b[dDHT]\\.)|
+                           (\\b[DLS]:)|
+                           (\\&\\.:)|
+                           ([\\;\\!\\@\\&]\\.)|
+                           ([\\^\\!\\`\\@\\&]:)|
+                           ([\\\"\\`\\@\\&])|
+                           (\\s[\\.\\:][\\.\\:])|
+                           (\\s[\\.\\:]))
+                          (?![\\.\\:])");  
+  */
+
+  /*  The original gtk regular expressions for conjunctions.
+        ((\%[[dDHT]\.)|
+        (\%[[DLS]:)|
+        (&amp;\.:)|
+        ([\;\!\@&amp;]\.)|
+        ([\^\!\`\@&amp;]:)|
+        ([\"\`\@&amp;])|
+        (\s[\.\:][\.\:])|
+        (\s[\.\:]))
+        (?![\.\:])
+  */
+  rule.format = conjunctionFormat;
+  highlightingRules.append(rule);
+
 
   stringFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("\'.*\'");
