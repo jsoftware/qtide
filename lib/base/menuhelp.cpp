@@ -19,6 +19,9 @@ void helpcontext(int c,Bedit *);
 
 void htmlhelp(QString s);
 void helplabs();
+void helplabsadvance();
+void helplabschapters();
+void helplabsauthor();
 
 void Menu::createhelpActions()
 {
@@ -30,7 +33,10 @@ void Menu::createhelpActions()
   helpforeignsAct = makeact("helpforeignsAct","&Foreign Conjunction","");
   helpgeneralAct = makeact("helpgeneralAct","&General Info","");
   helphelpAct = makeact("helphelpAct","&Help","");
-  helplabsAct = makeact("helplabsAct","&Labs","");
+  helplabsAct = makeact("helplabsAct","&Labs...","");
+  helplabsadvanceAct = makeact("helplabsadvanceAct","Advance","Ctrl+J");
+  helplabschaptersAct = makeact("helplabschaptersAct","Chapters...","");
+  helplabsauthorAct = makeact("helplabsauthorAct","Author...","");
   helpreleaseAct = makeact("helpreleaseAct","&Release Highlights","");
   helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
   helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
@@ -55,6 +61,11 @@ void Menu::createhelpMenu()
   QMenu *m = helpMenu->addMenu(tr("Studio"));
   helpMenu->addSeparator();
   m->addAction(helplabsAct);
+  m->addAction(helplabsadvanceAct);
+  m->addAction(helplabschaptersAct);
+  m->addSeparator();
+  m->addAction(helplabsauthorAct);
+  helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpaboutAct);
@@ -112,6 +123,24 @@ void Note::on_helphelpAct_triggered()
 void Note::on_helplabsAct_triggered()
 {
   helplabs();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helplabsadvanceAct_triggered()
+{
+  helplabsadvance();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helplabschaptersAct_triggered()
+{
+  helplabschapters();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helplabsauthorAct_triggered()
+{
+  helplabsauthor();
 }
 
 // ---------------------------------------------------------------------
@@ -187,6 +216,24 @@ void Term::on_helplabsAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Term::on_helplabsadvanceAct_triggered()
+{
+  helplabsadvance();
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helplabschaptersAct_triggered()
+{
+  helplabschapters();
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helplabsauthorAct_triggered()
+{
+  helplabsauthor();
+}
+
+// ---------------------------------------------------------------------
 void Term::on_helpreleaseAct_triggered()
 {
   notyet("Release Highlights");
@@ -211,7 +258,7 @@ void Term::on_helpvocabAct_triggered()
 // ---------------------------------------------------------------------
 void helpcontext(int c,Bedit *e)
 {
-  qDebug() << e->readhelptext(c);
+//  qDebug() << e->readhelptext(c);
   var_set("arg_jqtide_",e->readhelptext(c));
   QString s=var_cmdr("helpcontext_jqtide_ arg_jqtide_");
   if (s.size())
@@ -221,7 +268,25 @@ void helpcontext(int c,Bedit *e)
 // ---------------------------------------------------------------------
 void helplabs()
 {
-  notyet("labs");
+  tedit->docmds("labs_run_jqtide_$0");
+}
+
+// ---------------------------------------------------------------------
+void helplabsadvance()
+{
+  tedit->docmds("labs_run_jqtide_ 0");
+}
+
+// ---------------------------------------------------------------------
+void helplabschapters()
+{
+  tedit->docmds("labs_run_jqtide_ 1");
+}
+
+// ---------------------------------------------------------------------
+void helplabsauthor()
+{
+  tedit->docmds("labs_run_jqtide_ 2");
 }
 
 // ---------------------------------------------------------------------
