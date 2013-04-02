@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QLayout>
 #include <QTimer>
+#include <QSysInfo>
 
 #ifndef ANDROID
 #include <QPrinterInfo>
@@ -583,6 +584,49 @@ void wdqueries(string s)
   } else if (s=="qwd") {
     result="jqt";
     return;
+  } else if (s=="qosver") {
+#ifdef _WIN32
+    QSysInfo qsi;
+    if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8)  {
+      result="6.2";
+      return;
+    } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS7) {
+      result="6.1";
+      return;
+    } else if (qsi.WindowsVersion == QSysInfo::WV_VISTA) {
+      result="6.0";
+      return;
+    } else if (qsi.WindowsVersion == QSysInfo::WV_2003) {
+      result="5.2";
+      return;
+    } else if (qsi.WindowsVersion == QSysInfo::WV_XP) {
+      result="5.1";
+      return;
+    } else {
+      result="5.0";
+      return;
+    }
+#else
+#ifdef  __MACH__
+    QSysInfo qsi;
+    if (qsi.MacintoshVersion == QSysInfo::MV_10_8) {
+      result="10.8";
+      return;
+    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_7) {
+      result="10.7";
+      return;
+    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_6) {
+      result="10.6";
+      return;
+    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_5) {
+      result="10.5";
+      return;
+    }
+#else
+    result="";
+    return;
+#endif
+#endif
   } else if (s=="qprinters") {
     string q="";
 #ifndef ANDROID
