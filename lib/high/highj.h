@@ -26,10 +26,11 @@ private:
   QRegExp commentEndExpression;
 
   QTextCharFormat controlFormat;
-  QTextCharFormat classFormat;
+  QTextCharFormat numberFormat;
+  QTextCharFormat nounFormat;
   QTextCharFormat singleLineCommentFormat;
   QTextCharFormat multiLineCommentFormat;
-  QTextCharFormat quotationFormat;
+  QTextCharFormat stringFormat;
   QTextCharFormat functionFormat;
 };
 

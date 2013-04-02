@@ -1,7 +1,11 @@
 
 /*
- * note this only done as an experiment for simple control words
- * rest is just boilerplate cpp highlighting...
+ * Note this contains experimental highlighting for J.
+ * Current implementation attempts to suppport:
+ * strings, numbers, primitive nouns, control words,
+ * comments, multiline Note.
+ * There is currently no context aware support (for example to show that control
+ * words are not valid outside an explicit definition).
  */
 
 #include "high/high.h"
@@ -22,12 +26,9 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
       << "\\bfor\\." << "\\bselect\\." << "\\bcase\\."
       << "\\bfcase\\." << "\\bthrow\\." << "\\btry\\."
       << "\\bcatch\\." << "\\bcatchd\\." << "\\bcatcht\\."
-      << "\\bwhile\\." << "\\bwhilst\\." << "\\bfor_\\%{valid-name}?\\."
+      << "\\bwhile\\." << "\\bwhilst\\." << "\\bfor_[a-zA-Z][a-zA-Z0-9_]*\\."
+      << "\\bgoto_[a-zA-Z][a-zA-Z0-9_]*\\." << "\\blabel_[a-zA-Z][a-zA-Z0-9_]*\\."
       ;
-
-// not done yet...
-// "\\bgoto_\\%{valid-name}?\\.\\s" << "\\blabel_\\%{valid-name}?\\.\\s"
-
 
   foreach (const QString &pattern, controlPatterns) {
     rule.pattern = QRegExp(pattern);
@@ -35,23 +36,30 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
     highlightingRules.append(rule);
   }
 
-  classFormat.setFontWeight(QFont::Bold);
-  classFormat.setForeground(Qt::darkMagenta);
-  rule.pattern = QRegExp("\\bQ[A-Za-z]+\\b");
-  rule.format = classFormat;
+  numberFormat.setForeground(Qt::darkRed);
+  rule.pattern = QRegExp("\\b[_0-9][_0-9\\.a-zA-Z]*\\b");
+  rule.format = numberFormat;
   highlightingRules.append(rule);
 
-  singleLineCommentFormat.setForeground(Qt::red);
-  rule.pattern = QRegExp("NB\\.[^\n]*");
+  nounFormat.setFontWeight(QFont::Bold);
+  nounFormat.setForeground(Qt::blue);
+  rule.pattern = QRegExp("(_\\.|a\\.|a:)(?![\\.\\:])");
+  rule.format = nounFormat;
+  highlightingRules.append(rule);
+
+  stringFormat.setForeground(Qt::blue);
+  rule.pattern = QRegExp("\'.*\'");
+  rule.format = stringFormat;
+  highlightingRules.append(rule);
+
+  singleLineCommentFormat.setFontItalic(true);
+  singleLineCommentFormat.setForeground(Qt::gray);
+  rule.pattern = QRegExp("\\bNB\\.[^\n]*");
   rule.format = singleLineCommentFormat;
   highlightingRules.append(rule);
 
-  multiLineCommentFormat.setForeground(Qt::red);
-
-  quotationFormat.setForeground(Qt::darkGreen);
-  rule.pattern = QRegExp("\'.*\'");
-  rule.format = quotationFormat;
-  highlightingRules.append(rule);
+  multiLineCommentFormat.setFontItalic(true);
+  multiLineCommentFormat.setForeground(Qt::gray);
 
   functionFormat.setFontItalic(true);
   functionFormat.setForeground(Qt::blue);
@@ -59,8 +67,8 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = functionFormat;
   highlightingRules.append(rule);
 
-  commentStartExpression = QRegExp("/\\*");
-  commentEndExpression = QRegExp("\\*/");
+  commentStartExpression = QRegExp("^\\s*\\bNote\\b(?!\\s*\\=[:.])\\s*['\\d].*$");
+  commentEndExpression = QRegExp("^\\s*\\)\\s*$");
 }
 
 
