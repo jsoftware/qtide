@@ -18,9 +18,9 @@ Nedit::Nedit()
                   QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
   setFont(config.Font);
   QPalette p = palette();
-  p.setColor(QPalette::Active, QPalette::Base, QColor("white"));
-  p.setColor(QPalette::Inactive, QPalette::Base, QColor("white"));
-  p.setColor(QPalette::Text, QColor("blue"));
+  p.setColor(QPalette::Active, QPalette::Base, QColor(221,252,222));
+  p.setColor(QPalette::Inactive, QPalette::Base, QColor(221,252,222));
+  p.setColor(QPalette::Text, QColor("black"));
   setPalette(p);
   new Highj(document());
 }
