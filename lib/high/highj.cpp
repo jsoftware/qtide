@@ -127,7 +127,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
 
 
   stringFormat.setForeground(Qt::blue);
-  rule.pattern = QRegExp("\'.*\'");
+  rule.pattern = QRegExp("'[^']*'");
   rule.format = stringFormat;
   highlightingRules.append(rule);
 
