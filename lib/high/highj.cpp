@@ -125,7 +125,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = conjunctionFormat;
   highlightingRules.append(rule);
 
-
   stringFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("'[^']*'");
   rule.format = stringFormat;
@@ -140,11 +139,16 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   multiLineCommentFormat.setFontItalic(true);
   multiLineCommentFormat.setForeground(Qt::gray);
 
+  noundefFormat.setForeground(Qt::blue);
+
   functionFormat.setFontItalic(true);
   functionFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
   rule.format = functionFormat;
   highlightingRules.append(rule);
+
+  noundefStartExpression = QRegExp("\\b(0\\s+:\\s*0|noun\\s+define)\\b.*$");
+  noundefEndExpression = QRegExp("^\\s*\\)\\s*$");
 
   commentStartExpression = QRegExp("^\\s*\\bNote\\b(?!\\s*\\=[:.])\\s*['\\d].*$");
   commentEndExpression = QRegExp("^\\s*\\)\\s*$");

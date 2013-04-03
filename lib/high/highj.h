@@ -24,6 +24,8 @@ private:
 
   QRegExp commentStartExpression;
   QRegExp commentEndExpression;
+  QRegExp noundefStartExpression;
+  QRegExp noundefEndExpression;
 
   QTextCharFormat controlFormat;
   QTextCharFormat numberFormat;
@@ -31,6 +33,7 @@ private:
   QTextCharFormat verbFormat;
   QTextCharFormat adverbFormat;
   QTextCharFormat conjunctionFormat;
+  QTextCharFormat noundefFormat;
   QTextCharFormat singleLineCommentFormat;
   QTextCharFormat multiLineCommentFormat;
   QTextCharFormat stringFormat;
