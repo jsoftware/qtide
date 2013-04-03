@@ -278,7 +278,10 @@ bool Ntabs::tabsave(int index)
   Nedit *e=(Nedit *)widget(index);
   config.filepos_set(e->fname,e->readtop());
   QString t = e->toPlainText();
-  if (t==e->text) return true;
+  if (t==e->text) {
+    setmodified(index,false);
+    return true;
+  }
   int r=tabsaveOK(index);
   if (r==0) return false;
   if (r==1)
