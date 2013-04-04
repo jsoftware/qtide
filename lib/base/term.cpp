@@ -25,6 +25,8 @@ QString LastLaunch;
 QTime LastLaunchTime;
 QTimer *timer=0;
 
+extern "C" void smact();
+
 // ---------------------------------------------------------------------
 OneWin::OneWin()
 {
@@ -210,4 +212,12 @@ void Term::vieweditor()
       note->projectopen(true);
     note->show();
   }
+}
+
+// ---------------------------------------------------------------------
+void smact()
+{
+#ifndef ANDROID
+  term->activate();
+#endif
 }
