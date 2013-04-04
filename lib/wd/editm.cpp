@@ -45,9 +45,13 @@ void Editm::set(string p,string v)
 
   int bgn,end,pos=0;
 
-  if (p=="limit")
+  if (p=="limit") {
+    if (opt.isEmpty()) {
+      error("set limit requires 1 number: " + p);
+      return;
+    }
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
-  else if (p=="readonly")
+  } else if (p=="readonly")
     w->setReadOnly(remquotes(v)!="0");
   else if (p=="text")
     w->setPlainText(s2q(v));
@@ -70,6 +74,9 @@ void Editm::set(string p,string v)
       else
         pos=opt.at(0).toInt();
       sb->setValue(pos);
+    } else {
+      error("set scroll requires additional parameters: " + p);
+      return;
     }
   } else if (p=="wrap")
     w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);

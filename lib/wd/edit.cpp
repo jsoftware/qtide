@@ -49,13 +49,14 @@ void Edit::set(string p,string v)
   if (p=="text") {
     w->setText(s2q(v));
     return;
-  }
-
-  QStringList opt=qsplit(v);
-  if (opt.isEmpty()) return;
-  if (p=="limit")
+  } else if (p=="limit") {
+    QStringList opt=qsplit(v);
+    if (opt.isEmpty()) {
+      error("set limit requires 1 number: " + p);
+      return;
+    }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
-  else Child::set(p,v);
+  } else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
