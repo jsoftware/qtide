@@ -30,7 +30,7 @@ private:
   QTextCharFormat nounFormat;
   QTextCharFormat verbFormat;
   QTextCharFormat adverbFormat;
-  QTextCharFormat conjunctionFormat;  
+  QTextCharFormat conjunctionFormat;
   QTextCharFormat singleLineCommentFormat;
   QTextCharFormat multiLineCommentFormat;
   QTextCharFormat stringFormat;
