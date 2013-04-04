@@ -45,17 +45,23 @@ void Edit::returnPressed()
 void Edit::set(string p,string v)
 {
   QLineEdit *w = (QLineEdit *)widget;
+  QStringList opt=qsplit(v);
 
   if (p=="text") {
     w->setText(s2q(v));
     return;
   } else if (p=="limit") {
-    QStringList opt=qsplit(v);
     if (opt.isEmpty()) {
       error("set limit requires 1 number: " + p);
       return;
     }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
+  } else if (p=="fixed") {
+    if (opt.isEmpty()) {
+      error("set fixed requires 1 number: " + p);
+      return;
+    }
+    w->setFixedWidth(c_strtoi(q2s(opt.at(0))));
   } else Child::set(p,v);
 }
 
