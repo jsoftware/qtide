@@ -57,6 +57,7 @@ void wdpas();
 void wdpc();
 void wdpcenter();
 void wdpclose();
+void wdpicon();
 void wdpmove();
 void wdpn();
 void wdpsel();
@@ -384,6 +385,8 @@ void wdp(string c)
     wdpactive();
   else if (c=="ptop")
     wdptop();
+  else if (c=="picon")
+    wdpicon();
   else if (c=="notyet") {
     cmd.getparms();
     wdnotyet();
@@ -468,6 +471,14 @@ void wdpclose()
   if (form->closed) return;
   form->closed=true;
   form->close();
+}
+
+// ---------------------------------------------------------------------
+void wdpicon()
+{
+  if (noform()) return;
+  string p=remquotes(cmd.getparms());
+  form->setpicon(p);
 }
 
 // ---------------------------------------------------------------------

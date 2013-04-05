@@ -221,6 +221,13 @@ void Form::setpn(string p)
 }
 
 // ---------------------------------------------------------------------
+void Form::setpicon(string p)
+{
+  QString s=s2q(p);
+  setWindowIcon(QIcon(s));
+}
+
+// ---------------------------------------------------------------------
 void Form::showit()
 {
   for (int i=tabs.size()-1; i>=0; i--)
