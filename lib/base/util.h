@@ -43,6 +43,7 @@ QString dtLF(QString s);
 QStringList getfilters(QString s);
 void helpabout();
 std::string i2s(int i);
+std::string d2s(double d);
 bool ifshift();
 void info(QString t,QString s);
 bool isint(std::string s);
@@ -96,5 +97,6 @@ typedef long SI;
 
 int c_strtoi(std::string s);
 SI c_strtol(std::string s);
+double c_strtod(std::string s);
 
 #endif

@@ -15,6 +15,8 @@
 #include "button.h"
 #include "checkbox.h"
 #include "combobox.h"
+#include "dateedit.h"
+#include "dspinbox.h"
 #include "dummy.h"
 #include "edit.h"
 #include "editm.h"
@@ -32,6 +34,7 @@
 #include "statusbar.h"
 #include "table.h"
 #include "tabs.h"
+#include "timeedit.h"
 #include "toolbar.h"
 #ifdef QT_WEBKIT
 #include "webview.h"
@@ -66,6 +69,10 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Button(n,p,pform,this);
   else if (c=="checkbox")
     child=(Child *) new CheckBox(n,p,pform,this);
+  else if (c=="dateedit")
+    child=(Child *) new DateEdit(n,p,pform,this);
+  else if (c=="dspinbox")
+    child=(Child *) new DSpinBox(n,p,pform,this);
   else if (c=="edit")
     child=(Child *) new Edit(n,p,pform,this);
   else if (c=="editm")
@@ -102,6 +109,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Table(n,p,pform,this);
   else if (c=="tab")
     child=(Child *) new Tabs(n,p,pform,this);
+  else if (c=="timeedit")
+    child=(Child *) new TimeEdit(n,p,pform,this);
   else if (c=="toolbar")
     child=(Child *) new ToolBar(n,p,pform,this);
 #ifdef QT_WEBKIT

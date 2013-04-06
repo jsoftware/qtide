@@ -1,23 +1,24 @@
 
-#include <QSpinBox>
+#include <QDoubleSpinBox>
 
 #include "wd.h"
-#include "spinbox.h"
+#include "dspinbox.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
 
 // optional parms are:
+// decimal places
 // minimum
 // single step
 // maximum
 // value
 
 // ---------------------------------------------------------------------
-SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+DSpinBox::DSpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="SpinBox";
-  QSpinBox *w=new QSpinBox(p);
+  type="DSpinBox";
+  QDoubleSpinBox *w=new QDoubleSpinBox(p);
   QString qn=s2q(n);
   widget=(QWidget*) w;
   w->setObjectName(qn);
@@ -25,54 +26,60 @@ SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   int i=0;
   if (i<opt.size()) {
-    w->setMinimum(c_strtoi(q2s(opt.at(i))));
+    w->setDecimals(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setSingleStep(c_strtoi(q2s(opt.at(i))));
+    w->setMinimum(c_strtod(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setMaximum(c_strtoi(q2s(opt.at(i))));
+    w->setSingleStep(c_strtod(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setValue(c_strtoi(q2s(opt.at(i))));
+    w->setMaximum(c_strtod(q2s(opt.at(i))));
     i++;
   }
-  connect(w,SIGNAL(valueChanged(int)),
+  if (i<opt.size()) {
+    w->setValue(c_strtod(q2s(opt.at(i))));
+    i++;
+  }
+  connect(w,SIGNAL(valueChanged(double)),
           this,SLOT(valueChanged()));
 }
 
 // ---------------------------------------------------------------------
-void SpinBox::valueChanged()
+void DSpinBox::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------
-void SpinBox::set(string p,string v)
+void DSpinBox::set(string p,string v)
 {
-  QSpinBox *w=(QSpinBox*) widget;
+  QDoubleSpinBox *w=(QDoubleSpinBox*) widget;
   QString cmd=s2q(p);
   QStringList arg=qsplit(v);
   if (arg.isEmpty()) {
     Child::set(p,v);
     return;
   }
-  if (cmd=="min")
-    w->setMinimum(c_strtoi(q2s(arg.at(0))));
+  if (cmd=="decimals")
+    w->setDecimals(c_strtoi(q2s(arg.at(0))));
+  else if (cmd=="min")
+    w->setMinimum(c_strtod(q2s(arg.at(0))));
   else if (cmd=="max")
-    w->setMaximum(c_strtoi(q2s(arg.at(0))));
+    w->setMaximum(c_strtod(q2s(arg.at(0))));
   else if (cmd=="value")
-    w->setValue(c_strtoi(v));
+    w->setValue(c_strtod(v));
   else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string SpinBox::state()
+string DSpinBox::state()
 {
-  QSpinBox *w=(QSpinBox*) widget;
-  return spair(id,i2s(w->value()));
+  QDoubleSpinBox *w=(QDoubleSpinBox*) widget;
+  return spair(id,d2s(w->value()));
 }

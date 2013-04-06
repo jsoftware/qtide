@@ -356,6 +356,18 @@ string i2s(int i)
 }
 
 // ---------------------------------------------------------------------
+// double to string
+string d2s(double d)
+{
+  stringstream s;
+  s.precision(16);
+  s << d;
+  string s1=s.str();
+  if (s1[0]=='-') s1[0]='_';
+  return s1;
+}
+
+// ---------------------------------------------------------------------
 bool ifshift()
 {
   return QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
@@ -734,4 +746,13 @@ SI c_strtol(string s)
 #else
   return strtol(p.c_str(),NULL,0);
 #endif
+}
+
+// ---------------------------------------------------------------------
+double c_strtod(string s)
+{
+  if (!s.size()) return 0;
+  string p=s;
+  if (p[0]=='_') p[0]='-';
+  return strtod(p.c_str(),NULL);
 }
