@@ -41,6 +41,7 @@ public:
   QStringList AllFolderValues;
   QString AppName;
   bool Ascii;
+  QDir BinPath;
   int BoxForm;
   QDir ConfigPath;
   bool ConfirmClose;

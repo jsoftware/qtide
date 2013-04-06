@@ -129,7 +129,7 @@ void Term::fini()
   p.setColor(QPalette::Inactive, QPalette::Base, QColor("cornsilk"));
   p.setColor(QPalette::Text, QColor("blue"));
   tedit->setPalette(p);
-  QString s=config.SystemPath.filePath("bin/icons/jgreen.png");
+  QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
   if (config.SingleWin)
     new OneWin();

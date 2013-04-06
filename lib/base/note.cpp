@@ -50,7 +50,7 @@ Note::Note()
   menuBar->createActions();
   menuBar->createMenus("note");
   menuBar->createMenus_fini("note");
-  QString s=config.SystemPath.filePath("bin/icons/jgreen.png");
+  QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
   QMetaObject::connectSlotsByName(this);
 }

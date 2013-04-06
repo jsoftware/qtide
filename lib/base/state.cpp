@@ -73,6 +73,7 @@ void Config::folder_init()
   AllFolderKeys=k;
   AllFolderValues=v;
 
+  BinPath.setPath(cpath("~bin"));
   ConfigPath.setPath(cpath("~config"));
   SnapPath.setPath(cpath("~snap"));
   SystemPath.setPath(cpath("~install"));
