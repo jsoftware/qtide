@@ -64,6 +64,8 @@ void Child::set(string p, string v)
     setstylesheet(v);
   else if (p=="wh")
     setwh(v,1);
+  else if (p=="minwh")
+    setminwhv(v);
   else
     error("set command not recognized: " + p);
 }
@@ -108,6 +110,24 @@ void Child::setwh(string p,int unit)
     error("set wh requires 2 numbers: " + p);
   } else {
     widget->resize(c_strtoi(q2s(n.at(0)))*unit,c_strtoi(q2s(n.at(1)))*unit);
+  }
+}
+
+// ---------------------------------------------------------------------
+void Child::setminwhv(string p)
+{
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  if (n.size()!=2) {
+    error("set minwh requires 2 numbers: " + p);
+  } else {
+#ifdef ANDROID
+    if (! ((type=="isigraph")||(type=="opengl")||(type=="listbox")||(type=="editm")||(type=="webview"))) return;
+#endif
+    int w=c_strtoi(q2s(n.at(0)));
+    int h=c_strtoi(q2s(n.at(1)));
+    widget->resize(w,h);
+    widget->setMinimumSize(w,h);
+    widget->updateGeometry();
   }
 }
 

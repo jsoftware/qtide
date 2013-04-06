@@ -31,6 +31,7 @@ public:
   virtual string state();
 
   virtual void setwh(string,int);
+  virtual void setminwhv(string);
   virtual void setminwh(int,int);
 
   bool grouped;
