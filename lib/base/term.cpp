@@ -105,6 +105,8 @@ void Term::closeEvent(QCloseEvent *event)
 bool Term::filequit()
 {
   dlog_write();
+  if (note && (!note->saveall())) return false;
+  if (note2 && (!note2->saveall())) return false;
   if ((!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
     state_quit();
