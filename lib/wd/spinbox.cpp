@@ -1,8 +1,8 @@
 
-#include <QSlider>
+#include <QSpinBox>
 
 #include "wd.h"
-#include "slider.h"
+#include "spinbox.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
@@ -17,24 +17,16 @@
 // position
 
 // ---------------------------------------------------------------------
-Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="Slider";
-  QSlider *w=new QSlider(Qt::Horizontal,p);
+  type="SpinBox";
+  QSpinBox *w=new QSpinBox(p);
   QString qn=s2q(n);
   widget=(QWidget*) w;
   w->setObjectName(qn);
   QStringList opt=qsplit(s);
 
   int i=0;
-  if (opt.at(i)=="v") {
-    i++;
-    w->setOrientation(Qt::Vertical);
-  }
-  if (i<opt.size()) {
-    w->setTickPosition((QSlider::TickPosition)opt.at(i).toInt());
-    i++;
-  }
   if (i<opt.size()) {
     w->setMinimum(opt.at(i).toInt());
     i++;
@@ -44,15 +36,11 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     i++;
   }
   if (i<opt.size()) {
-    w->setPageStep(opt.at(i).toInt());
-    i++;
-  }
-  if (i<opt.size()) {
     w->setMaximum(opt.at(i).toInt());
     i++;
   }
   if (i<opt.size()) {
-    w->setSliderPosition(opt.at(i).toInt());
+    w->setValue(opt.at(i).toInt());
     i++;
   }
   connect(w,SIGNAL(valueChanged(int)),
@@ -60,16 +48,16 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Slider::valueChanged()
+void SpinBox::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------
-void Slider::set(string p,string v)
+void SpinBox::set(string p,string v)
 {
-  QSlider *w=(QSlider*) widget;
+  QSpinBox *w=(QSpinBox*) widget;
   QString cmd=s2q(p);
   QStringList arg=qsplit(v);
   if (arg.isEmpty()) {
@@ -80,14 +68,14 @@ void Slider::set(string p,string v)
     w->setMinimum(arg.at(0).toInt());
   else if (cmd=="max")
     w->setMaximum(arg.at(0).toInt());
-  else if (cmd=="pos"|| cmd=="value")
-    w->setSliderPosition(s2q(v).toInt());
+  else if (cmd=="value")
+    w->setValue(s2q(v).toInt());
   else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string Slider::state()
+string SpinBox::state()
 {
-  QSlider *w=(QSlider*) widget;
-  return spair(id,i2s(w->sliderPosition()));
+  QSpinBox *w=(QSpinBox*) widget;
+  return spair(id,i2s(w->value()));
 }

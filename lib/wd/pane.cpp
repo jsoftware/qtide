@@ -27,6 +27,7 @@
 #include "progressbar.h"
 #include "radiobutton.h"
 #include "slider.h"
+#include "spinbox.h"
 #include "static.h"
 #include "statusbar.h"
 #include "table.h"
@@ -89,6 +90,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new RadioButton(n,p,pform,this);
   else if (c=="slider")
     child=(Child *) new Slider(n,p,pform,this);
+  else if (c=="spinbox")
+    child=(Child *) new SpinBox(n,p,pform,this);
   else if (c=="static")
     child=(Child *) new Static(n,p,pform,this);
 //  else if (c=="staticbox")

@@ -41,7 +41,10 @@ void ProgressBar::set(string p,string v)
   QProgressBar *w=(QProgressBar*) widget;
   QString cmd=s2q(p);
   QStringList arg=qsplit(v);
-  if (arg.isEmpty()) return;
+  if (arg.isEmpty()) {
+    Child::set(p,v);
+    return;
+  }
   if (cmd=="min")
     w->setMinimum(arg.at(0).toInt());
   else if (cmd=="max")

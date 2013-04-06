@@ -48,7 +48,7 @@ HEADERS += \
  wd/gl2.h wd/glz.h wd/prtobj.h wd/image.h wd/isigraph.h wd/isigraph2.h wd/listbox.h \
  wd/menus.h wd/ogl2.h wd/opengl.h wd/opengl2.h wd/pane.h \
  wd/progressbar.h wd/radiobutton.h \
- wd/slider.h wd/static.h wd/statusbar.h wd/table.h wd/tabs.h wd/tabwidget.h \
+ wd/slider.h wd/spinbox.h wd/static.h wd/statusbar.h wd/table.h wd/tabs.h wd/tabwidget.h \
  wd/toolbar.h wd/wd.h wd/webview.h
 
 android:SOURCES -= wd/glz.h wd/prtobj.h
@@ -74,7 +74,7 @@ SOURCES += \
  wd/isigraph.cpp wd/isigraph2.cpp wd/listbox.cpp wd/mb.cpp \
  wd/menus.cpp wd/opengl.cpp wd/opengl2.cpp wd/pane.cpp \
  wd/progressbar.cpp wd/radiobutton.cpp \
- wd/slider.cpp wd/static.cpp wd/statusbar.cpp wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
+ wd/slider.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/toolbar.cpp wd/wd.cpp wd/webview.cpp
 
 android:SOURCES -= wd/glz.cpp wd/prtobj.cpp
