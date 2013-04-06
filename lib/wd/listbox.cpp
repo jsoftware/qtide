@@ -44,7 +44,7 @@ void ListBox::set(string p, string v)
     w->clear();
     w->addItems(qsplit(v));
   } else if (p=="select") {
-    w->setCurrentRow(s2q(v).toInt());
+    w->setCurrentRow(c_strtoi(v));
 
   } else
     Child::set(p,v);

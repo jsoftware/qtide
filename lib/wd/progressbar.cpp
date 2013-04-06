@@ -22,15 +22,15 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->setOrientation(Qt::Vertical);
   }
   if (i<opt.size()) {
-    w->setMinimum(opt.at(i).toInt());
+    w->setMinimum(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setMaximum(opt.at(i).toInt());
+    w->setMaximum(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setValue(opt.at(i).toInt());
+    w->setValue(c_strtoi(q2s(opt.at(i))));
     i++;
   }
 }
@@ -46,11 +46,11 @@ void ProgressBar::set(string p,string v)
     return;
   }
   if (cmd=="min")
-    w->setMinimum(arg.at(0).toInt());
+    w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
-    w->setMaximum(arg.at(0).toInt());
+    w->setMaximum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="pos" || cmd=="value")
-    w->setValue(s2q(v).toInt());
+    w->setValue(c_strtoi((v)));
   else Child::set(p,v);
 }
 

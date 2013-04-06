@@ -32,27 +32,27 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->setOrientation(Qt::Vertical);
   }
   if (i<opt.size()) {
-    w->setTickPosition((QSlider::TickPosition)opt.at(i).toInt());
+    w->setTickPosition((QSlider::TickPosition)c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setMinimum(opt.at(i).toInt());
+    w->setMinimum(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setSingleStep(opt.at(i).toInt());
+    w->setSingleStep(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setPageStep(opt.at(i).toInt());
+    w->setPageStep(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setMaximum(opt.at(i).toInt());
+    w->setMaximum(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
-    w->setSliderPosition(opt.at(i).toInt());
+    w->setSliderPosition(c_strtoi(q2s(opt.at(i))));
     i++;
   }
   connect(w,SIGNAL(valueChanged(int)),
@@ -77,11 +77,11 @@ void Slider::set(string p,string v)
     return;
   }
   if (cmd=="min")
-    w->setMinimum(arg.at(0).toInt());
+    w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
-    w->setMaximum(arg.at(0).toInt());
+    w->setMaximum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="pos"|| cmd=="value")
-    w->setSliderPosition(s2q(v).toInt());
+    w->setSliderPosition(c_strtoi(v));
   else Child::set(p,v);
 }
 

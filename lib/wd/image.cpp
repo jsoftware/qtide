@@ -38,12 +38,12 @@ void Image::set(string p,string v)
 
     QString s=s2q(v);
     if (s.isEmpty()) {
-      error("needs image filename");
+      error("set image needs image filename");
       return;
     }
     QImage image(s);
     if (image.isNull()) {
-      error("cannot load image " + q2s(s));
+      error("set image cannot load image " + q2s(s));
       return;
     }
 

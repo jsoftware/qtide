@@ -52,6 +52,8 @@ void Child::set(string p, string v)
     locale=remquotes(v);
   else if (p=="focus")
     widget->setFocus();
+  else if (p=="focuspolicy")
+    setfocuspolicy(v);
   else if (p=="font")
     setfont((Font(v)).font);
   else if (p=="invalid")
@@ -73,6 +75,20 @@ void Child::setfont(QFont f)
 }
 
 // ---------------------------------------------------------------------
+void Child::setfocuspolicy(string p)
+{
+  if (p=="tab")
+    widget->setFocusPolicy(Qt::TabFocus);
+  else if (p=="click")
+    widget->setFocusPolicy(Qt::ClickFocus);
+  else if (p=="strong")
+    widget->setFocusPolicy(Qt::StrongFocus);
+  else if (p=="no")
+    widget->setFocusPolicy(Qt::NoFocus);
+  else error("set focuspolicy command option not recognized: " + p);
+}
+
+// ---------------------------------------------------------------------
 void Child::setform()
 {
   if (widget) form=pform;
@@ -89,7 +105,7 @@ void Child::setwh(string p,int unit)
 {
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=2) {
-    qDebug() << "setwh requires 2 numbers: " + s2q(p);
+    error("set wh requires 2 numbers: " + p);
   } else {
     widget->resize(c_strtoi(q2s(n.at(0)))*unit,c_strtoi(q2s(n.at(1)))*unit);
   }

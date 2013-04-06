@@ -59,9 +59,9 @@ void Editm::set(string p,string v)
     if (opt.isEmpty())
       w->selectAll();
     else {
-      bgn=end=opt.at(0).toInt();
+      bgn=end=c_strtoi(q2s(opt.at(0)));
       if (opt.size()>1)
-        end=opt.at(1).toInt();
+        end=c_strtoi(q2s(opt.at(1)));
       setselect(w,bgn,end);
     }
   } else if (p=="scroll") {
@@ -72,7 +72,7 @@ void Editm::set(string p,string v)
       else if (opt.at(0)=="max")
         pos=sb->maximum();
       else
-        pos=opt.at(0).toInt();
+        pos=c_strtoi(q2s(opt.at(0)));
       sb->setValue(pos);
     } else {
       error("set scroll requires additional parameters: " + p);

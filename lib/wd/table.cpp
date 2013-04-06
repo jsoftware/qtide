@@ -306,8 +306,8 @@ void Table::setshape(QStringList opt)
     error("table shape must have rows and columns: " + q2s(opt.join(" ")));
     return;
   }
-  rws=opt.at(0).toInt();
-  cls=opt.at(1).toInt();
+  rws=c_strtoi(q2s(opt.at(0)));
+  cls=c_strtoi(q2s(opt.at(1)));
   len=rws*cls;
 
   QTableWidget *w=(QTableWidget*) widget;
