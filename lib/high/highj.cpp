@@ -170,19 +170,20 @@ void Highj::highlightBlock(const QString &text)
 
   int startIndex = 0;
   if (previousBlockState() != 1)
-    startIndex = commentStartExpression.indexIn(text);
+    startIndex = noundefStartExpression.indexIn(text);
 
   while (startIndex >= 0) {
-    int endIndex = commentEndExpression.indexIn(text, startIndex);
-    int commentLength;
+    int endIndex = noundefEndExpression.indexIn(text, startIndex);
+    int noundefLength;
     if (endIndex == -1) {
       setCurrentBlockState(1);
-      commentLength = text.length() - startIndex;
+      noundefLength = text.length() - startIndex;
     } else {
-      commentLength = endIndex - startIndex
-                      + commentEndExpression.matchedLength();
+      noundefLength = endIndex - startIndex
+                      + noundefEndExpression.matchedLength();
     }
-    setFormat(startIndex, commentLength, multiLineCommentFormat);
-    startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
+    setFormat(startIndex, noundefLength, noundefFormat);
+    startIndex = noundefStartExpression.indexIn(text, startIndex + noundefLength);
   }
+
 }
