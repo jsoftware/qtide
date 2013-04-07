@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QCloseEvent>
+#include <QEvent>
 
 class QMenuBar;
 class QSignalMapper;
@@ -41,7 +42,7 @@ public:
   void setpn(string p);
   void setpicon(string p);
   void showit();
-  void signalevent(Child *c);
+  void signalevent(Child *c, QKeyEvent *e = 0);
   string state(int evt);
   void status(string);
 
@@ -78,6 +79,7 @@ protected:
 private:
   bool closeok;
   bool escclose;
+  string fakeid;
 
 };
 

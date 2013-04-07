@@ -3,6 +3,8 @@
 #include <QMenuBar>
 #include <QSignalMapper>
 
+#include <sstream>  //include this to use string streams
+
 #include "wd.h"
 #include "font.h"
 #include "cmd.h"
@@ -187,16 +189,26 @@ bool Form::ischild(Child *n)
 // ---------------------------------------------------------------------
 void Form::keyPressEvent(QKeyEvent *e)
 {
+  int k=e->key();
 #ifdef ANDROID
-  if (e->key()==Qt::Key_MediaPrevious) {
+  if (k==Qt::Key_MediaPrevious) {
     activateWindow();
     raise();
     close();
+    return;
   }
 #endif
-  if (escclose && e->key()==Qt::Key_Escape) {
+  if (escclose && k==Qt::Key_Escape) {
     e->ignore();
     delete this;
+  } else if (k>=Qt::Key_F1 && k<=Qt::Key_F35) {
+    event="fkey";
+    form=this;
+    signalevent(0,e);
+  } else if (k>=Qt::Key_A && k<=Qt::Key_Z && (e->modifiers() & Qt::ControlModifier)) {
+    event="fkey";
+    form=this;
+    signalevent(0,e);
   }
 }
 
@@ -246,17 +258,30 @@ void Form::showit()
 }
 
 // ---------------------------------------------------------------------
-void Form::signalevent(Child *c)
+void Form::signalevent(Child *c, QKeyEvent *e)
 {
   if (NoEvents || closed) return;
   string loc = locale;
   evtform=this;
-  evtchild=c;
   if (c) {
+    evtchild=c;
     c->setform();
     sysmodifiers=c->sysmodifiers;
     sysdata=c->sysdata;
     loc = (""!=c->locale)?c->locale:locale;
+  } else {
+    evtchild=0;
+    if (event=="fkey") {
+      int k=e->key();
+      if (k>=Qt::Key_A && k<=Qt::Key_Z && (e->modifiers() & Qt::ControlModifier)) {
+        fakeid=(char)e->key()+32;  // lower case
+        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+      } else if (k>=Qt::Key_F1 && k<=Qt::Key_F35) {
+        ostringstream ostr;
+        ostr << e->key()+1-Qt::Key_F1;
+        fakeid="f"+ ostr.str() + string((e->modifiers() & Qt::ControlModifier) ? "ctrl" : "") + string((e->modifiers() & Qt::ShiftModifier) ? "shift" : "");
+      }
+    }
   }
   var_cmddo("(i.0 0)\"_ wdhandler_" + s2q(loc) + "_$0");
 }
@@ -272,8 +297,11 @@ string Form::state(int evt)
       c1=c+"_";
       e=evtchild->event;
       ec=evtchild->locale;
-    } else
+    } else {
+      c=fakeid;
+      c1=c+"_";
       e=event;
+    }
     r+=spair("syshandler",id+"_handler");
     r+=spair("sysevent",id+"_"+c1+e);
     r+=spair("sysdefault",id+"_default");
