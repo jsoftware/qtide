@@ -140,8 +140,8 @@ string DateEdit::state()
 // ---------------------------------------------------------------------
 void toymd(int v, int *y, int *m, int *d)
 {
-  *y=(int)floor(v/10000);
+  *y=(int)floor((float)v/10000);
   v=v%10000;
-  *m=(int)floor(v/100);
+  *m=(int)floor((float)v/100);
   *d=v%100;
 }

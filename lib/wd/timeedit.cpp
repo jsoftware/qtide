@@ -100,9 +100,9 @@ string TimeEdit::state()
 void totime(double v, int *h, int *m, int *se, int *mi)
 {
   int v1=(int)floor(v);
-  *h=(int)floor(v1/10000);
+  *h=(int)floor((float)v1/10000);
   v1=v1%10000;
-  *m=(int)floor(v1/100);
+  *m=(int)floor((float)v1/100);
   *se=v1%100;
   *mi=(int)floor(1000 * (v-((*h *10000)+(*m *100)+ *se)));
 }
