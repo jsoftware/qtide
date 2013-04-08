@@ -136,6 +136,7 @@ void Form::closeEvent(QCloseEvent *e)
   }
   e->ignore();
   event="close";
+  fakeid="";
   form=this;
   signalevent(0);
   if (closed) {
@@ -294,14 +295,13 @@ string Form::state(int evt)
   if (evt) {
     if (evtchild) {
       c=evtchild->id;
-      c1=c+"_";
       e=evtchild->event;
       ec=evtchild->locale;
     } else {
       c=fakeid;
-      c1=c+"_";
       e=event;
     }
+    c1=(c.empty()) ? string("") : (c+"_") ;
     r+=spair("syshandler",id+"_handler");
     r+=spair("sysevent",id+"_"+c1+e);
     r+=spair("sysdefault",id+"_default");
