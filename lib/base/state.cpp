@@ -155,7 +155,7 @@ void Config::initide()
   QSettings *s=new QSettings(f,QSettings::IniFormat);
   QString h,t,w;
 
-  QString font="monospaced";
+  QString font="Monospace";
   int fontsize=10;
   QFont::Weight fontweight=QFont::Normal;
 
@@ -246,7 +246,8 @@ void Config::noprofile()
 {
   ConfirmClose = false;
   ConfirmSave = false;
-  Font.setFamily("monospace");
+  Font.setFamily("Monospace");
+  Font.setStyleHint(QFont::TypeWriter);
   Font.setPointSize(12);
   q2p("0 0 500 500",TermPos);
   term->menuBar->hide();
