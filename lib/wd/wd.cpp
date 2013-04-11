@@ -4,6 +4,7 @@
 #include <QLayout>
 #include <QTimer>
 #include <QSysInfo>
+#include <QPrinter>
 
 #ifndef ANDROID
 #include <QPrinterInfo>
@@ -21,6 +22,7 @@ extern QPrinter *Printer;
 #include "menus.h"
 #include "tabs.h"
 #include "../base/term.h"
+#include "../base/state.h"
 
 #if defined(ANDROID) && defined(QT_OPENGL)
 extern Term *term;
@@ -41,6 +43,7 @@ void wdbin();
 void wdcc();
 void wdcmd();
 void wdcn();
+void wddefprint();
 void wdend();
 void wdfontdef();
 void wdget();
@@ -165,6 +168,8 @@ void wd1()
       wdcmd();
     else if (c=="cn")
       wdcn();
+    else if (c=="defprint")
+      wddefprint();
     else if (c=="end")
       wdend();
     else if (c=="fontdef")
@@ -253,6 +258,37 @@ void wdcn()
   if (nochild()) return;
   string p=remquotes(cmd.getparms());
   cc->set("caption",p);
+}
+
+// ---------------------------------------------------------------------
+void wddefprint()
+{
+#ifndef ANDROID
+  string c=cmd.getid();
+  string p=cmd.getparms();
+  if (c=="orient") {
+    if (p=="landscape")
+      config.Printer->setOrientation(QPrinter::Landscape);
+    else
+      config.Printer->setOrientation(QPrinter::Portrait);
+  } else if (c=="margin") {
+    QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+    if (n.size()==1) {
+      qreal m=c_strtod(q2s(n.at(0)));
+      config.Printer->setPageMargins(m, m, m, m, QPrinter::Millimeter);
+    } else if (n.size()==2) {
+      qreal l=c_strtod(q2s(n.at(0)));
+      qreal t=c_strtod(q2s(n.at(1)));
+      config.Printer->setPageMargins(l, t, l, t, QPrinter::Millimeter);
+    } else if (n.size()==4) {
+      qreal l=c_strtod(q2s(n.at(0)));
+      qreal t=c_strtod(q2s(n.at(1)));
+      qreal r=c_strtod(q2s(n.at(2)));
+      qreal b=c_strtod(q2s(n.at(3)));
+      config.Printer->setPageMargins(l, t, r, b, QPrinter::Millimeter);
+    } else error("margin requires 1, 2, or 4 numbers: " + p);
+  } else error("invalid option: " + c);
+#endif
 }
 
 // ---------------------------------------------------------------------
