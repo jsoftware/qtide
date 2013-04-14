@@ -55,6 +55,7 @@ qtarcisi (const int *y, const int *y2, int *ang)
 }
 
 // ---------------------------------------------------------------------
+// unit in point?
 int glzqextent(char *s,int *wh)
 {
   if ((!Printer) || !Printer->isValid()) return 1;
@@ -67,6 +68,7 @@ int glzqextent(char *s,int *wh)
 }
 
 // ---------------------------------------------------------------------
+// unit in point?
 int glzqextentw(char *s,int *w)
 {
   if ((!Printer) || !Printer->isValid()) return 1;
@@ -82,6 +84,7 @@ int glzqextentw(char *s,int *w)
 
 // ---------------------------------------------------------------------
 // Height, Ascent, Descent, InternalLeading, ExternalLeading, AverageCharWidth, MaxCharWidth
+// unit in point
 int glzqtextmetrics(int *tm)
 {
   if ((!Printer) || !Printer->isValid()) return 1;
@@ -116,6 +119,19 @@ int glzqwh(float *wh, int unit)
   QSizeF size = Printer->paperSize((QPrinter::Unit)unit);
   wh[0] = (float) size.width();
   wh[1] = (float) size.height();
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glzqmargins(float *ltrb, int unit)
+{
+  if (!(ltrb && Printer)) return 1;
+  qreal l,t,r,b;
+  Printer->getPageMargins(&l,&t,&r,&b,(QPrinter::Unit)unit);
+  ltrb[0] = (float) l;
+  ltrb[1] = (float) t;
+  ltrb[2] = (float) r;
+  ltrb[3] = (float) b;
   return 0;
 }
 
@@ -819,4 +835,11 @@ int glzstartdoc (char *jobname, char *filename)
   if (!prtobj->painter) return 1;
   glzclear2 (prtobj);
   return 0;
+}
+
+// ---------------------------------------------------------------------
+int glzinitprinter ()
+{
+  if (!Printer) Printer=new QPrinter(QPrinter::HighResolution);
+  return (!Printer);
 }

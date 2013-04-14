@@ -25,6 +25,7 @@ extern "C" {
   Dllexport int glzqextentw (char *s,int *w);
   Dllexport int glzqtextmetrics (int *tm);
   Dllexport int glzqwh (float *wh, int unit);
+  Dllexport int glzqmargins(float *ltrb, int unit);
   Dllexport int glzrect (const int *p);
   Dllexport int glzrgb (const int *p);
   Dllexport int glzrgba (const int *p);
@@ -45,19 +46,21 @@ extern "C" {
   Dllexport int glzqpapersource ();
 
   Dllexport int glzresolution (int n);
-  Dllexport int colormode (int n);
-  Dllexport int duplexmode (int n);
-  Dllexport int orientation (int n);
-  Dllexport int outputformat (int n);
-  Dllexport int pageorder (int n);
-  Dllexport int papersize (int n);
-  Dllexport int papersource (int n);
+  Dllexport int glzcolormode (int n);
+  Dllexport int glzduplexmode (int n);
+  Dllexport int glzorientation (int n);
+  Dllexport int glzoutputformat (int n);
+  Dllexport int glzpageorder (int n);
+  Dllexport int glzpapersize (int n);
+  Dllexport int glzpapersource (int n);
 
   Dllexport int glzabortdoc ();
   Dllexport int glzenddoc ();
   Dllexport int glznewpage ();
   Dllexport int glzprinter (char *printername);
   Dllexport int glzstartdoc (char *jobname, char *filename);
+
+  Dllexport int glzinitprinter ();
 
   int glzclear2 (void *);
 }
