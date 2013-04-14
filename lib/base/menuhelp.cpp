@@ -260,7 +260,7 @@ void helpcontext(int c,Bedit *e)
 {
 //  qDebug() << e->readhelptext(c);
   var_set("arg_jqtide_",e->readhelptext(c));
-  QString s=var_cmdr("helpcontext_jqtide_ arg_jqtide_");
+  QString s=var_cmdr("helpcontext0_jqtide_ arg_jqtide_");
   if (s.size())
     htmlhelp(s);
 }
