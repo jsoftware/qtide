@@ -67,6 +67,7 @@ private:
   QAction *cfgopenallAct;
   QAction *cfgqtideAct;
   QAction *cfgstartupAct;
+  QAction *cfgstyleAct;
   QAction *cleartermAct;
   QAction *clipcopyAct;
   QAction *clipcutAct;

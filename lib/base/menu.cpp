@@ -51,6 +51,7 @@ void Menu::createActions()
   cfgopenallAct = makeact("cfgopenallAct","Open All","");
   cfgqtideAct = makeact("cfgqtideAct","Qt Ide","");
   cfgstartupAct = makeact("cfgstartupAct","Startup Script","");
+  cfgstyleAct = makeact("cfgstyleAct","Styles","");
   cleartermAct = makeact("cleartermAct","&Clear Terminal","Ctrl+Shift+T");
   clipcopyAct = makeact("clipcopyAct","&Copy","Ctrl+C");
   clipcutAct = makeact("clipcutAct","Cu&t","Ctrl+X");
@@ -199,6 +200,7 @@ void Menu::createcfgMenu()
   cfgMenu->addAction(cfglaunchpadAct);
   if (config.AppName=="jqt") {
     cfgMenu->addAction(cfgqtideAct);
+    cfgMenu->addAction(cfgstyleAct);
     cfgMenu->addSeparator();
     cfgMenu->addAction(cfgstartupAct);
   }
@@ -236,6 +238,7 @@ void Menu::createeditMenu(QString s)
   editMenu->addAction(cfglaunchpadAct);
   if (config.AppName=="jqt") {
     editMenu->addAction(cfgqtideAct);
+    editMenu->addAction(cfgstyleAct);
     editMenu->addSeparator();
     editMenu->addAction(cfgstartupAct);
   }
@@ -526,6 +529,12 @@ void Note::on_cfgqtideAct_triggered()
 void Note::on_cfgstartupAct_triggered()
 {
   term->on_cfgstartupAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_cfgstyleAct_triggered()
+{
+  term->on_cfgstyleAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1115,6 +1124,7 @@ void Term::on_cfglaunchpadAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_cfgopenallAct_triggered()
 {
+  openconfig ("style.cfg");
   openconfig ("qtide.cfg");
   openconfig ("launch.cfg");
   openconfig ("folders.cfg");
@@ -1126,13 +1136,18 @@ void Term::on_cfgopenallAct_triggered()
 void Term::on_cfgqtideAct_triggered()
 {
   openconfig ("qtide.cfg");
-
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgstartupAct_triggered()
 {
   openconfig ("startup.ijs");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_cfgstyleAct_triggered()
+{
+  openconfig ("style.cfg");
 }
 
 // ---------------------------------------------------------------------

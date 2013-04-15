@@ -5,6 +5,7 @@
 
 #include "base.h"
 #include "bedit.h"
+#include "state.h"
 
 // ---------------------------------------------------------------------
 Bedit::Bedit(QWidget *parent) : QPlainTextEdit(parent)
@@ -42,7 +43,7 @@ void Bedit::highlightCurrentLine()
 
   if (!isReadOnly()) {
     QTextEdit::ExtraSelection selection;
-    QColor lineColor = QColor(240,240,232);
+    QColor lineColor = (type==1)?config.TermHigh.color:config.EditHigh.color;
     selection.format.setBackground(lineColor);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = textCursor();
@@ -57,12 +58,13 @@ void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   if (!visible) {
     QPainter painter(lineNumberArea);
-    painter.fillRect(event->rect(), QColor("cornsilk"));
+    painter.fillRect(event->rect(), config.TermBack.color);
     return;
   }
 
   QPainter painter(lineNumberArea);
-  painter.fillRect(event->rect(), Qt::lightGray);
+  QColor fillColor = (type==1)?config.TermHigh.color:config.EditHigh.color;
+  painter.fillRect(event->rect(), fillColor);
 
   QTextBlock block = firstVisibleBlock();
   int blockNumber = block.blockNumber();

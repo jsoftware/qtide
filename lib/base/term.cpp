@@ -125,9 +125,9 @@ void Term::fini()
   resize(config.TermPos[2],config.TermPos[3]);
   tedit->setFont(config.Font);
   QPalette p = palette();
-  p.setColor(QPalette::Active, QPalette::Base, QColor("cornsilk"));
-  p.setColor(QPalette::Inactive, QPalette::Base, QColor("cornsilk"));
-  p.setColor(QPalette::Text, QColor("blue"));
+  p.setColor(QPalette::Active, QPalette::Base, config.TermBack.color);
+  p.setColor(QPalette::Inactive, QPalette::Base, config.TermBack.color);
+  p.setColor(QPalette::Text, config.TermFore.color);
   tedit->setPalette(p);
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));

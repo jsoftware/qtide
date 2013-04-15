@@ -39,7 +39,7 @@ HEADERS += \
  base/fif.h base/fiw.h base/jsvr.h base/menu.h \
  base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h \
  base/pnew.h base/proj.h base/psel.h base/recent.h base/rsel.h \
- base/snap.h base/spic.h base/state.h base/svr.h \
+ base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
  base/tedit.h base/term.h base/util.h base/utils.h \
  base/view.h base/widget.h \
  high/high.h high/highj.h \
@@ -63,7 +63,7 @@ SOURCES += \
  base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
  base/pnew.cpp base/proj.cpp base/psel.cpp base/recent.cpp base/rsel.cpp \
  base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
- base/svr.cpp base/tedit.cpp base/term.cpp \
+ base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
  base/util.cpp base/utils.cpp \
  base/view.cpp base/widget.cpp \
  high/highj.cpp \

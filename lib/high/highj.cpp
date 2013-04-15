@@ -8,13 +8,14 @@
  * words are not valid outside an explicit definition).
  */
 
+#include "base/state.h"
 #include "high/high.h"
 
+// ---------------------------------------------------------------------
 Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
 {
+  init();
   HighlightingRule rule;
-
-  controlFormat.setForeground(Qt::red);
 
   QStringList controlPatterns;
 
@@ -35,18 +36,14 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
     highlightingRules.append(rule);
   }
 
-  numberFormat.setForeground(QColor(160,32,240));
   rule.pattern = QRegExp("\\b[_0-9][_0-9\\.a-zA-Z]*\\b");
   rule.format = numberFormat;
   highlightingRules.append(rule);
 
-  nounFormat.setFontWeight(QFont::Bold);
-  nounFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("(_\\.|a\\.|a:)(?![\\.\\:])");
   rule.format = nounFormat;
   highlightingRules.append(rule);
 
-  verbFormat.setForeground(QColor(0,153,102));
   rule.pattern = QRegExp("((_?[0-9]:)|(\\bp\\.\\.)|(\\b[AcCeEiIjLopr]\\.)|(\\b[ipqsux]:)|(\\{::)|([\\<\\>\\+\\*\\-\\%\\^\\$\\~\\|\\,\\#\\{\\}\\\"\\;\\?]\\.)|([\\<\\>\\_\\+\\*\\-\\%\\$\\~\\|\\,\\;\\#\\/\\\\[\\{\\}\\\"]:)|([\\<\\>\\=\\+\\*\\-\\%\\^\\$\\|\\,\\;\\#\\!\\[\\]\\{\\?]))(?![\\.\\:])");
 
   /* The line continuations below seem to break the RegExp so it doesn't work.
@@ -75,7 +72,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = verbFormat;
   highlightingRules.append(rule);
 
-  adverbFormat.setForeground(QColor(221,68,68));
   rule.pattern = QRegExp("(([\\/\\\\]\\.)|(\\b[bfMt]\\.)|(\\bt:)|([\\~\\/\\\\}]))(?![\\.\\:])");
 
   /* The line continuations below seem to break the RegExp so it doesn't work.
@@ -96,7 +92,6 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = adverbFormat;
   highlightingRules.append(rule);
 
-  conjunctionFormat.setForeground(QColor(221,153,0));
   rule.pattern = QRegExp("((\\b[dDHT]\\.)|(\\b[DLS]:)|(\\&\\.:)|([\\;\\!\\@\\&]\\.)|([\\^\\!\\`\\@\\&]:)|([\\\"\\`\\@\\&])|(\\s[\\.\\:][\\.\\:])|(\\s[\\.\\:]))(?![\\.\\:])");
 
   /* The line continuations below seem to break the RegExp so it doesn't work.
@@ -125,24 +120,14 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = conjunctionFormat;
   highlightingRules.append(rule);
 
-  stringFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("'[^']*'");
   rule.format = stringFormat;
   highlightingRules.append(rule);
 
-  singleLineCommentFormat.setFontItalic(true);
-  singleLineCommentFormat.setForeground(Qt::gray);
   rule.pattern = QRegExp("\\bNB\\.[^\n]*");
   rule.format = singleLineCommentFormat;
   highlightingRules.append(rule);
 
-  multiLineCommentFormat.setFontItalic(true);
-  multiLineCommentFormat.setForeground(Qt::gray);
-
-  noundefFormat.setForeground(Qt::blue);
-
-  functionFormat.setFontItalic(true);
-  functionFormat.setForeground(Qt::blue);
   rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
   rule.format = functionFormat;
   highlightingRules.append(rule);
@@ -154,7 +139,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   commentEndExpression = QRegExp("^\\s*\\)\\s*$");
 }
 
-
+// ---------------------------------------------------------------------
 void Highj::highlightBlock(const QString &text)
 {
   foreach (const HighlightingRule &rule, highlightingRules) {
@@ -185,5 +170,32 @@ void Highj::highlightBlock(const QString &text)
     setFormat(startIndex, noundefLength, noundefFormat);
     startIndex = noundefStartExpression.indexIn(text, startIndex + noundefLength);
   }
+
+}
+
+// ---------------------------------------------------------------------
+// set up styles
+void Highj::init()
+{
+  init1(&adverbFormat, config.adverbStyle);
+  init1(&singleLineCommentFormat, config.commentStyle);
+  init1(&multiLineCommentFormat, config.commentStyle);
+  init1(&conjunctionFormat, config.conjunctionStyle);
+  init1(&controlFormat, config.controlStyle);
+  init1(&functionFormat, config.functionStyle);
+  init1(&nounFormat, config.nounStyle);
+  init1(&noundefFormat, config.noundefStyle);
+  init1(&numberFormat, config.numberStyle);
+  init1(&stringFormat, config.stringStyle);
+  init1(&verbFormat, config.verbStyle);
+}
+
+// ---------------------------------------------------------------------
+void Highj::init1(QTextCharFormat *f, Style s)
+{
+
+  f->setForeground(s.color);
+  f->setFontItalic(s.italic);
+  f->setFontWeight(s.weight);
 
 }

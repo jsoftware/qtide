@@ -138,6 +138,7 @@ void Config::init()
     DirTreeX=dors("DirTreeX_j_").split(" ",QString::SkipEmptyParts);
 
   initide();
+  initstyle();
 
   Ascii="+"==dors("{.9!:6$0");
   if (Ascii!=(BoxForm==1)) {

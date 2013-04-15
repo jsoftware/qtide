@@ -17,6 +17,7 @@ using namespace std;
 // ---------------------------------------------------------------------
 Tedit::Tedit()
 {
+  type=0;
   ifResized=Tw=Th=0;
   hScroll=horizontalScrollBar();
   ensureCursorVisible();

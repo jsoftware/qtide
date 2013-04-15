@@ -3,6 +3,7 @@
 
 #include <QSyntaxHighlighter>
 #include "../base/base.h"
+#include "../base/style.h"
 
 class Highj : public QSyntaxHighlighter
 {
@@ -11,6 +12,8 @@ class Highj : public QSyntaxHighlighter
 
 public:
   Highj(QTextDocument *parent=0);
+  void init();
+  void init1(QTextCharFormat *f,Style s);
 
 protected:
   void highlightBlock(const QString &text);

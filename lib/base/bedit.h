@@ -32,6 +32,7 @@ public:
   void setcurpos(int pos);
   void settop(int p);
 
+  int type;
   bool visible;
 
 protected:

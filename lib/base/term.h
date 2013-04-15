@@ -58,6 +58,7 @@ public slots:
   void on_cfglaunchpadAct_triggered();
   void on_cfgopenallAct_triggered();
   void on_cfgstartupAct_triggered();
+  void on_cfgstyleAct_triggered();
 
   void on_cleartermAct_triggered();
   void on_clipcopyAct_triggered();

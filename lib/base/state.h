@@ -5,8 +5,8 @@
 #include <QDir>
 #include <QFont>
 #include <QMap>
-
 #include "base.h"
+#include "style.h"
 
 class Config : public QObject
 {
@@ -26,9 +26,10 @@ public:
   void launch_init();
   void init();
   void initide();
+  void initstyle();
   bool initide1(QString f);
   void noprofile();
-
+  void setfolders();
   void toggleascii();
   void togglelinenos();
   void togglelinewrap();
@@ -100,6 +101,24 @@ public:
   QStringList UserFolderValues;
   QMap<QString,QList<int> >WinPos;
   QString XDiff;
+
+  Style EditFore;
+  Style EditBack;
+  Style EditHigh;
+  Style TermFore;
+  Style TermBack;
+  Style TermHigh;
+
+  Style adverbStyle;
+  Style commentStyle;
+  Style conjunctionStyle;
+  Style controlStyle;
+  Style functionStyle;
+  Style nounStyle;
+  Style noundefStyle;
+  Style numberStyle;
+  Style stringStyle;
+  Style verbStyle;
 };
 
 extern Config config;
