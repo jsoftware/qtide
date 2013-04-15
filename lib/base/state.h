@@ -95,6 +95,7 @@ public:
   QDir TempPath;
   QString Terminal;
   int TermPos[4];
+  bool TermSyntaxHighlight;
   QString User;
   QDir UserPath;
   QStringList UserFolderKeys;

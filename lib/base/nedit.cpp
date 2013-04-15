@@ -19,14 +19,11 @@ Nedit::Nedit()
                   QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
   setFont(config.Font);
   QPalette p = palette();
-  //p.setColor(QPalette::Active, QPalette::Base, QColor(221,252,222));
-  //p.setColor(QPalette::Inactive, QPalette::Base, QColor(221,252,222));
-  //p.setColor(QPalette::Text, QColor("black"));
   p.setColor(QPalette::Active, QPalette::Base, config.EditBack.color);
   p.setColor(QPalette::Inactive, QPalette::Base, config.EditBack.color);
   p.setColor(QPalette::Text, config.EditFore.color);
   setPalette(p);
-  new Highj(document());
+  high=new Highj(document());
 }
 
 // ---------------------------------------------------------------------

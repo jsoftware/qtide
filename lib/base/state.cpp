@@ -184,6 +184,7 @@ void Config::initide()
   OpenTabAt=s->value("Session/OpenTabAt",0).toInt();
   Snapshots = s->value("Session/Snapshots",true).toInt();
   Snapshotx = s->value("Session/Snapshotx","").toString();
+  TermSyntaxHighlight = s->value("Session/TermSyntaxHighlight",false).toBool();
 
   FifExt = s->value("FindinFiles/Extensions","").toStringList();
   Terminal = s->value("Run/Terminal","").toString();
@@ -193,7 +194,7 @@ void Config::initide()
   t = s->value("Position/Term","0 0 500 600").toString();
   q2p(t,TermPos);
 
-  if (s->allKeys().contains("Session/BoxForm")) return;
+  if (s->allKeys().contains("Session/TermSyntaxHighlight")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -212,6 +213,7 @@ void Config::initide()
   s->setValue("Session/OpenTabAt",OpenTabAt);
   s->setValue("Session/Snapshots",Snapshots);
   s->setValue("Session/Snapshotx",Snapshotx);
+  s->setValue("Session/TermSyntaxHighlight",TermSyntaxHighlight);
   s->setValue("FindinFiles/Extensions",FifExt);
   s->setValue("Position/Edit",p2q(EditPos));
   s->setValue("Position/Term",p2q(TermPos));
@@ -238,6 +240,7 @@ void Config::initide()
     "# Snapshotx=                   snapshots exclusion list\n"
     "# Term=0 0 500 600             initial term position\n"
     "# Terminal=mate-terminal       show in terminal command\n"
+    "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
     ;
   cfwrite(f,h + "\n" + t);
 }

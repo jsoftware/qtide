@@ -7,12 +7,14 @@
 
 #include "base.h"
 #include "tedit.h"
+
 #include "dlog.h"
 #include "state.h"
 #include "term.h"
 #include "svr.h"
 
 using namespace std;
+
 
 // ---------------------------------------------------------------------
 Tedit::Tedit()

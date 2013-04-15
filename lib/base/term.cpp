@@ -5,6 +5,7 @@
 #include <QTimer>
 
 #include "base.h"
+#include "high/high.h"
 #include "dialog.h"
 #include "dlog.h"
 #include "menu.h"
@@ -131,6 +132,8 @@ void Term::fini()
   tedit->setPalette(p);
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
+  if (config.TermSyntaxHighlight)
+    new Highj(tedit->document());
   if (config.SingleWin)
     new OneWin();
   else if (ShowIde)
