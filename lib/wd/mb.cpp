@@ -44,6 +44,7 @@ QString mbprint(bool);
 QString mbprintx(bool);
 QString mbmsg();
 QString mbopen();
+QString mbopen1();
 QString mbsave();
 
 QString fixsep(QString s);
@@ -75,6 +76,8 @@ QString mb(string p)
     return mbfont();
   if (type=="open")
     return mbopen();
+  if (type=="open1")
+    return mbopen1();
   if (type=="print") {
     QString s=dlb(s2q(p.substr(5)));
     return mbprint('*'==s.at(0));
@@ -201,8 +204,28 @@ QString mbfont()
 QString mbopen()
 {
   QString title,dir,filter;
+  QStringList fl;
   if (arg.size()<2) {
     error("open needs title, directory, [filters]");
+    return "";
+  }
+  title=arg.at(0);
+  dir=arg.at(1);
+  if (arg.size()==3)
+    filter=fixsep(arg.at(2));
+  fl = QFileDialog::getOpenFileNames(
+         QApplication::focusWidget(),title,dir,filter);
+  if (fl.isEmpty())
+    return "";
+  else return fl.join("\012") + "\012";
+}
+
+// ---------------------------------------------------------------------
+QString mbopen1()
+{
+  QString title,dir,filter;
+  if (arg.size()<2) {
+    error("open1 needs title, directory, [filters]");
     return "";
   }
   title=arg.at(0);
