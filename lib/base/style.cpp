@@ -16,28 +16,27 @@ void Config::initstyle()
   QString h,t,w;
 
   EditFore.set(s->value("Edit/fore","0 0 0").toString());
-  EditBack.set(s->value("Edit/back","255 255 255").toString());
+  EditBack.set(s->value("Edit/back","221 252 222").toString());
   EditHigh.set(s->value("Edit/high","240 240 232").toString());
 
   TermFore.set(s->value("Term/fore","0 0 0").toString());
-  TermBack.set(s->value("Term/back","255 255 255").toString());
+  TermBack.set(s->value("Term/back","252 252 221").toString());
   TermHigh.set(s->value("Term/high","240 240 232").toString());
 
   QString def=TermFore.read();
 
-  adverbStyle.set(s->value("Class/adverb",def).toString());
-  commentStyle.set(s->value("Class/comment",def).toString());
-  //CommentMulti.set(s->value("Class/",def).toString());
-  conjunctionStyle.set(s->value("Class/conjunction",def).toString());
-  controlStyle.set(s->value("Class/control",def).toString());
-  functionStyle.set(s->value("Class/function",def).toString());
-  nounStyle.set(s->value("Class/noun",def).toString());
-  noundefStyle.set(s->value("Class/noundef",def).toString());
-  numberStyle.set(s->value("Class/number",def).toString());
-  stringStyle.set(s->value("Class/string",def).toString());
-  verbStyle.set(s->value("Class/verb",def).toString());
+  adverbStyle.set(s->value("Class/adverb","221 68 68").toString());
+  commentStyle.set(s->value("Class/comment","136 136 136 italic").toString());
+  conjunctionStyle.set(s->value("Class/conjunction","221 153 153").toString());
+  controlStyle.set(s->value("Class/control","255 0 0").toString());
+  functionStyle.set(s->value("Class/function","0 0 255").toString());
+  nounStyle.set(s->value("Class/noun","0 0 255 bold").toString());
+  noundefStyle.set(s->value("Class/noundef","0 0 255").toString());
+  numberStyle.set(s->value("Class/number","160 32 240").toString());
+  stringStyle.set(s->value("Class/string","0 0 255").toString());
+  verbStyle.set(s->value("Class/verb","0 153 102").toString());
 
-  //if (s->allKeys().contains("Edit/high")) return;
+  if (s->allKeys().contains("Edit/high")) return;
 
   delete s;
   QTemporaryFile temp;
