@@ -253,6 +253,10 @@ void Config::noprofile()
   Font.setFamily("Monospace");
   Font.setStyleHint(QFont::TypeWriter);
   Font.setPointSize(12);
+  TermBack.color = QColor("mistyrose");
+  TermFore.color = QColor("black");
+  TermHigh.color = QColor("gainsboro");
+  EditHigh.color = QColor("gainsboro");
   q2p("0 0 500 500",TermPos);
   term->menuBar->hide();
 }
