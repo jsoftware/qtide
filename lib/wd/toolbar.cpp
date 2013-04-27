@@ -79,17 +79,18 @@ void ToolBar::set(string p,string v)
     setbutton(p,opt);
   else if (p=="checked")
     setbutton(p,opt);
-  else if (p=="enable")
-    setbutton(p,opt);
-  else
+  else if (p=="enable") {
+    if (opt.isEmpty()) Child::set(p,v);
+    else if (1==opt.size() && (!opt.at(0).isEmpty()) && opt.at(0)[0].isNumber()) Child::set(p,v);
+    else setbutton(p,opt);
+  } else
     Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
 int ToolBar::getindex(QString p)
 {
-  int i;
-  for (i=0; i<ids.size(); i++)
+  for (int i=0; i<ids.size(); i++)
     if (ids.at(i)==p) return i;
   return -1;
 }
