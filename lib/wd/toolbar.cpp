@@ -61,6 +61,8 @@ void ToolBar::makeact(QStringList opt)
   }
   QAction *a=w->addAction(image,text);
   a->setObjectName(id);
+  ids.append(id);
+  acts.append(a);
 }
 
 // ---------------------------------------------------------------------
@@ -73,7 +75,48 @@ void ToolBar::set(string p,string v)
     makeact(opt);
   else if (p=="addsep")
     w->addSeparator();
+  else if (p=="checkable")
+    setbutton(p,opt);
+  else if (p=="checked")
+    setbutton(p,opt);
+  else if (p=="enable")
+    setbutton(p,opt);
   else
     Child::set(p,v);
 }
 
+// ---------------------------------------------------------------------
+int ToolBar::getindex(QString p)
+{
+  int i;
+  for (i=0; i<ids.size(); i++)
+    if (ids.at(i)==p) return i;
+  return -1;
+}
+
+// ---------------------------------------------------------------------
+void ToolBar::setbutton(string p, QStringList opt)
+{
+  bool n=true;
+  if (opt.isEmpty()) {
+    error("set toolbar requires button_id: " + p);
+    return;
+  } else if (1<opt.size())
+    n=!!c_strtoi(q2s(opt.at(1)));
+  QString btnid= opt.at(0);
+  int i=getindex(btnid);
+  if (0>i) {
+    error("set toolbar cannot find button_id: " + p + " " + q2s(btnid));
+    return;
+  }
+  if (p=="checkable")
+    acts.at(i)->setCheckable(n);
+  else if (p=="checked")
+    acts.at(i)->setChecked(n);
+  else if (p=="enable")
+    acts.at(i)->setEnabled(n);
+  else {
+    error("set toolbar attribute error: " + p);
+    return;
+  }
+}

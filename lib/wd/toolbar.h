@@ -18,11 +18,15 @@ public:
 
   void makeact(QStringList opt);
   void set(string p,string v);
+  int getindex(QString p);
+  void setbutton(string p, QStringList opt);
 
 private slots:
   void actionTriggered(QAction *action);
 
 private:
+  QList<QString>ids;
+  QList<QAction *>acts;
 
 };
 
