@@ -294,7 +294,7 @@ string Form::state(int evt)
 
   if (evt) {
     if (evtchild) {
-      c=evtchild->id;
+      c=evtchild->eid;
       e=evtchild->event;
       ec=evtchild->locale;
     } else {

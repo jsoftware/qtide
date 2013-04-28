@@ -40,7 +40,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 void ToolBar::actionTriggered(QAction *a)
 {
   event="button";
-  id=q2s(a->objectName());
+  eid=q2s(a->objectName());
   pform->signalevent(this);
 }
 

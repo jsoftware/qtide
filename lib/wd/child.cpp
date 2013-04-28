@@ -10,6 +10,7 @@ Child::Child(string n, string s, Form *f, Pane *p)
 {
   grouped=false;
   id=n;
+  eid=n;
   parms=s;
   pform=f;
   ppane=p;

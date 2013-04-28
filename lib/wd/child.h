@@ -36,6 +36,7 @@ public:
 
   bool grouped;
   string id;
+  string eid;  // for event
   string event;
   string parms;
   string type;

@@ -864,7 +864,7 @@ bool nochild()
 {
   if (cc) return false;
 // TODO
-  qDebug() << "no child selected " + s2q(cmdstr);
+  qDebug() << "no child selected (nochild) " + s2q(cmdstr);
   error("no child selected");
   return true;
 }
@@ -916,7 +916,7 @@ int setchild(string id)
   cc=form->setmenuid(id);
   if (cc) return 2;
 // TODO
-  qDebug() << "no child selected " + s2q(cmdstr);
+  qDebug() << "no child selected (setchild) " + s2q(cmdstr);
 //  nochild();
   return 0;
 }
