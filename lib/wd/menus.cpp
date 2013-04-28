@@ -81,7 +81,7 @@ int Menus::menusep()
 void Menus::menu_triggered(QAction *a)
 {
   event="button";
-  id=q2s(a->objectName());
+  eid=q2s(a->objectName());
   pform->signalevent(this);
 }
 
