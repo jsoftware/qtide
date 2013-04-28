@@ -248,6 +248,8 @@ void wdcmd()
   int type=setchild(n);
   if (type)
     cc->cmd(p,v);
+  else
+    error("bad child id");
 }
 
 // ---------------------------------------------------------------------
@@ -313,6 +315,8 @@ void wdget()
   int type=setchild(n);
   if (type)
     cc->get(p,v);
+  else
+    error("bad child id");
 }
 
 // ---------------------------------------------------------------------
@@ -784,6 +788,8 @@ void wdset1(string n,string p,string v)
   case 2 :
     cc->set(n+" "+p,v);
     break;
+  default :
+    error("bad child id");
   }
   noevents(0);
 }
