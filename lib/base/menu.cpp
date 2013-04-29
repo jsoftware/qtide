@@ -198,9 +198,11 @@ void Menu::createcfgMenu()
   cfgMenu->addAction(cfgdirmAct);
   cfgMenu->addAction(cfgfoldersAct);
   cfgMenu->addAction(cfglaunchpadAct);
-  if (config.AppName=="jqt") {
+  if (config.AppName=="jqt")
     cfgMenu->addAction(cfgqtideAct);
-    cfgMenu->addAction(cfgstyleAct);
+
+  cfgMenu->addAction(cfgstyleAct);
+  if (config.AppName=="jqt") {
     cfgMenu->addSeparator();
     cfgMenu->addAction(cfgstartupAct);
   }

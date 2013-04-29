@@ -23,8 +23,6 @@ void Config::initstyle()
   TermBack.set(s->value("Term/back","252 252 221").toString());
   TermHigh.set(s->value("Term/high","240 240 232").toString());
 
-  QString def=TermFore.read();
-
   adverbStyle.set(s->value("Class/adverb","221 68 68").toString());
   commentStyle.set(s->value("Class/comment","136 136 136 italic").toString());
   conjunctionStyle.set(s->value("Class/conjunction","221 153 153").toString());
@@ -65,7 +63,7 @@ void Config::initstyle()
   h="# Qt Styles config\n"
     "# This file is read and written by the Qt IDE.\n"
     "# Make changes in the same format as the original.\n"
-    "# \n"
+    "#\n"
     "# Each style has rgb color values (0-255), optionally\n"
     "# followed by bold or italic, e.g.\n"
     "#  verb=0 128 128 bold\n"

@@ -3,7 +3,6 @@
 
 #include "bedit.h"
 
-class Highj;
 class QFile;
 
 class Nedit : public Bedit
@@ -25,7 +24,6 @@ public slots:
 private:
   void keyPressEvent(QKeyEvent *);
   void init_comments();
-  Highj *high;
 };
 
 #endif

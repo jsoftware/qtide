@@ -24,7 +24,6 @@ Tedit::Tedit()
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
   setLineWrapMode(QPlainTextEdit::NoWrap);
-  setprompt();
 }
 
 // ---------------------------------------------------------------------

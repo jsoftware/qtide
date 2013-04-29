@@ -6,6 +6,7 @@
 #include <QPrinter>
 #endif
 #include <QSettings>
+#include <QSyntaxHighlighter>
 #include <QTemporaryFile>
 
 #include "base.h"
@@ -19,6 +20,7 @@
 #include "recent.h"
 #include "svr.h"
 #include "term.h"
+#include "../high/high.h"
 #include "../wd/form.h"
 
 #ifdef ANDROID
@@ -274,6 +276,12 @@ void Config::toggleascii()
   QString s="0 0$boxdraw_j_ ";
   s+=Ascii?"1":"0";
   jcon->cmd(s);
+}
+
+// ---------------------------------------------------------------------
+QSyntaxHighlighter *highlight(QTextDocument *d)
+{
+  return new Highj(d);
 }
 
 // ---------------------------------------------------------------------

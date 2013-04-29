@@ -2,7 +2,6 @@
 
 #include "base.h"
 #include "nedit.h"
-#include "high/high.h"
 #include "state.h"
 #include "term.h"
 
@@ -23,7 +22,7 @@ Nedit::Nedit()
   p.setColor(QPalette::Inactive, QPalette::Base, config.EditBack.color);
   p.setColor(QPalette::Text, config.EditFore.color);
   setPalette(p);
-  high=new Highj(document());
+  highlight(document());
 }
 
 // ---------------------------------------------------------------------

@@ -8,6 +8,9 @@
 #include "base.h"
 #include "style.h"
 
+class QSyntaxHighlighter;
+class QTextDocument;
+
 class Config : public QObject
 {
 
@@ -115,6 +118,7 @@ public:
   Style conjunctionStyle;
   Style controlStyle;
   Style functionStyle;
+  Style keywordStyle;
   Style nounStyle;
   Style noundefStyle;
   Style numberStyle;
@@ -123,6 +127,8 @@ public:
 };
 
 extern Config config;
+
+QSyntaxHighlighter *highlight(QTextDocument *);
 
 void state_appname();
 QStringList state_about();
