@@ -1,4 +1,5 @@
 
+#include <QGridLayout>
 #include <QBoxLayout>
 #include <QButtonGroup>
 #include <QGroupBox>
@@ -11,6 +12,7 @@
 #include "form.h"
 #include "pane.h"
 #include "child.h"
+#include "layout.h"
 
 #include "button.h"
 #include "checkbox.h"
@@ -54,8 +56,8 @@ Pane::Pane(int n,Form *f) : QWidget(f)
   sizew=sizeh=0;
   if (n==1) {
     bin("v");
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
+    layout->bin->setContentsMargins(0,0,0,0);
+    layout->bin->setSpacing(0);
   }
 }
 
@@ -129,8 +131,8 @@ bool Pane::addchild(string n,string c,string p)
     child->setminwh(sizew,sizeh);
     lasttype=child->type;
     if ((c=="isigraph")||(c=="opengl")) {
-      layout->setContentsMargins(0,0,0,0);
-      layout->setSpacing(0);
+      layout->bin->setContentsMargins(0,0,0,0);
+      layout->bin->setSpacing(0);
     }
   }
   sizew=sizeh=0;
@@ -139,13 +141,10 @@ bool Pane::addchild(string n,string c,string p)
 }
 
 // ---------------------------------------------------------------------
-void Pane::addlayout(QBoxLayout *b, int n)
+void Pane::addlayout(Layout *b)
 {
   layout=b;
-//  layout->setContentsMargins(0,0,0,0);
-//  layout->setSpacing(0);
   layouts.append(b);
-  layoutx.append(n);
 }
 
 // ---------------------------------------------------------------------
@@ -153,7 +152,7 @@ void Pane::bin(string s)
 {
   QChar c;
   int i,n;
-  QBoxLayout *b;
+  Layout *b;
   QString m;
   QStringList p=bsplit(s);
 
@@ -161,21 +160,18 @@ void Pane::bin(string s)
     m=p.at(i);
     c=m[0];
     n=c_strtoi(q2s(m.mid(1)));
-    if (c=='h')
-      addlayout(new QHBoxLayout,n);
-    else if (c=='v')
-      addlayout(new QVBoxLayout,n);
-    else if (c=='p')
+    if (c=='h'||c=='v'||c=='g')
+      addlayout(new Layout(c,n,this));
+    else if (c=='p' && layout->type!='g')
       layout->addSpacing(n);
     else if (c=='s')
       layout->addStretch(n);
     else if (c=='z' && layouts.size()>1) {
       b=layout;
-      n=layoutx.last();
+      n=layouts.last()->stretch;
       layouts.removeLast();
-      layoutx.removeLast();
       layout=layouts.last();
-      layout->addLayout(b,n);
+      layout->addLayout(b);
     }
   }
 }
@@ -186,9 +182,66 @@ void Pane::fini()
   if (layouts.size()) {
     while (layouts.size()>1)
       bin("z");
-    setLayout(layout);
+    setLayout(layout->bin);
   }
   pform->closepane();
+}
+
+// ---------------------------------------------------------------------
+void Pane::grid(string c, string s)
+{
+  if (c=="size") {
+    int rmax,cmax;
+    QStringList opt=qsplit(s);
+    int n=opt.size();
+    if (2>n) {
+      error("no grid row_size and column_size");
+      return;
+    }
+    if (!layout)
+      bin("v");
+    if ('g'!=layout->type)
+      bin("g");
+    rmax=c_strtoi(q2s(opt.at(0)));
+    cmax=c_strtoi(q2s(opt.at(1)));
+    layout->rmax=(rmax<=0)?1:rmax;
+    layout->cmax=(cmax<=0)?1:cmax;
+    layout->razed=true;
+  } else if (c=="cell") {
+    int r,c,rs,cs,alignment=0;
+    QStringList opt=qsplit(s);
+    int n=opt.size();
+    if (!(2==n || 3==n || 4==n || 5==n)) {
+      error("no grid row, column [,row_span, column)span] [,alignment] ");
+      return;
+    }
+    if (!layout)
+      bin("v");
+    if ('g'!=layout->type)
+      bin("g");
+    if (layout->razed) {
+      error("grid is razed");
+      return;
+    }
+    if (4>n) {
+      r=c_strtoi(q2s(opt.at(0)));
+      c=c_strtoi(q2s(opt.at(1)));
+      rs=cs=1;
+      if (3==n) alignment=c_strtoi(q2s(opt.at(2)));
+    } else {
+      r=c_strtoi(q2s(opt.at(0)));
+      c=c_strtoi(q2s(opt.at(1)));
+      cs=c_strtoi(q2s(opt.at(2)));
+      rs=c_strtoi(q2s(opt.at(3)));
+      if (5==n) alignment=c_strtoi(q2s(opt.at(4)));
+    }
+    layout->r=(r<0)?0:r;
+    layout->c=(c<0)?0:c;
+    layout->rs=(rs<=0)?1:rs;
+    layout->cs=(cs<=0)?1:cs;
+    layout->alignment=(alignment<0)?0:alignment;
+  } else
+    error("bad grid command");
 }
 
 // ---------------------------------------------------------------------
@@ -245,7 +298,7 @@ bool Pane::line(string c, string s)
 // ---------------------------------------------------------------------
 void Pane::setstretch(Child *cc, string factor)
 {
-  layout->setStretchFactor(cc->widget,atoi(factor.c_str()));
+  if (layout->type!='g') ((QBoxLayout *)(layout->bin))->setStretchFactor(cc->widget,atoi(factor.c_str()));
 }
 
 // ---------------------------------------------------------------------

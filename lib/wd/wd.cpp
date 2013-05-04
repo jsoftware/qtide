@@ -47,6 +47,7 @@ void wddefprint();
 void wdend();
 void wdfontdef();
 void wdget();
+void wdgrid();
 void wdgroupbox(string c);
 void wdide();
 void wdline(string);
@@ -176,6 +177,8 @@ void wd1()
       wdfontdef();
     else if (c=="get")
       wdget();
+    else if (c=="grid")
+      wdgrid();
     else if (c.substr(0,8)=="groupbox")
       wdgroupbox(c);
     else if (c=="ide")
@@ -317,6 +320,15 @@ void wdget()
     cc->get(p,v);
   else
     error("bad child id");
+}
+
+// ---------------------------------------------------------------------
+void wdgrid()
+{
+  if (noform()) return;
+  string n=cmd.getid();
+  string v=cmd.getparms();
+  form->pane->grid(n,v);
 }
 
 // ---------------------------------------------------------------------

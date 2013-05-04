@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 
+class QGridLayout;
 class QBoxLayout;
 class QButtonGroup;
 class QGroupBox;
@@ -13,11 +14,13 @@ class QSplitter;
 class Child;
 class Form;
 class GroupBox;
+class Layout;
 
 #include "wd.h"
 #include "form.h"
 #include "font.h"
 #include "child.h"
+#include "layout.h"
 
 class Pane : public QWidget
 {
@@ -26,9 +29,10 @@ class Pane : public QWidget
 public:
   Pane(int n,Form *f);
   bool addchild(string n,string c,string p);
-  void addlayout(QBoxLayout *b, int n);
+  void addlayout(Layout *b);
   void bin(string c);
   void fini();
+  void grid(string c, string s);
   bool groupbox(string c, string s);
   bool line(string c, string s);
   string hschild();
@@ -57,9 +61,8 @@ public:
   Child *evtchild;
   QGroupBox *groupboxw;
   QSignalMapper *signalMapper;
-  QBoxLayout *layout;
-  QList<QBoxLayout *>layouts;
-  QList<int>layoutx;
+  Layout *layout;
+  QList<Layout *>layouts;
   QSplitter *qsplitter;
   QList<int> qsplitterp;
 
