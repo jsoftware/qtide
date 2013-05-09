@@ -240,6 +240,50 @@ void Pane::grid(string c, string s)
     layout->rs=(rs<=0)?1:rs;
     layout->cs=(cs<=0)?1:cs;
     layout->alignment=(alignment<0)?0:alignment;
+  } else if (c=="colwidth") {
+      QStringList opt=qsplit(s);
+      int c,w=0;
+      int n=opt.size();
+	      if (2>n) {
+           error("must specify column and width");
+           return;
+          }
+      c=c_strtoi(q2s(opt.at(0)));
+      w=c_strtoi(q2s(opt.at(1)));
+	  ((QGridLayout *)(layout->bin))->setColumnMinimumWidth(c,w);
+  } else if (c=="colstretch") {
+      QStringList opt=qsplit(s);
+      int c,s=0;
+      int n=opt.size();
+	      if (2>n) {
+           error("must specify column and stretch");
+           return;
+          }
+      c=c_strtoi(q2s(opt.at(0)));
+      s=c_strtoi(q2s(opt.at(1)));
+	  ((QGridLayout *)(layout->bin))->setColumnStretch(c,s);
+  } else if (c=="rowheight") {
+      QStringList opt=qsplit(s);
+      int r,h=0;
+      int n=opt.size();
+	      if (2>n) {
+           error("must specify row and height");
+           return;
+          }
+      r=c_strtoi(q2s(opt.at(0)));
+      h=c_strtoi(q2s(opt.at(1)));
+	  ((QGridLayout *)(layout->bin))->setRowMinimumHeight(r,h);
+  } else if (c=="rowstretch") {
+      QStringList opt=qsplit(s);
+      int r,s=0;
+      int n=opt.size();
+	      if (2>n) {
+           error("must specify row and height");
+           return;
+          }
+      r=c_strtoi(q2s(opt.at(0)));
+      s=c_strtoi(q2s(opt.at(1)));
+	  ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
   } else
     error("bad grid command");
 }
