@@ -1,5 +1,6 @@
 
 #include <QtWebKit>
+#include <QDir>
 
 #include "wd.h"
 #include "webview.h"
