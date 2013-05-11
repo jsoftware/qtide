@@ -23,6 +23,7 @@ extern QPrinter *Printer;
 #include "tabs.h"
 #include "../base/term.h"
 #include "../base/state.h"
+extern char* jegetlocale();
 
 #if defined(ANDROID) && defined(QT_OPENGL)
 extern Term *term;
@@ -31,7 +32,7 @@ extern Term *term;
 #include "math.h"
 
 extern "C" {
-  Dllexport int wd(char *s,char *&r,int &len,char *loc);
+  Dllexport int wd(char *s,char *&r,int &len);
 
 // TODO
   Dllexport int wdisparent(char *s);
@@ -100,7 +101,6 @@ QList<Form *>Forms;
 int rc;
 string lasterror="";
 string result="";
-string tlocale="";
 
 // TODO  for debug
 string cmdstr;
@@ -134,11 +134,10 @@ void *wdgetparentid(void *s)
 }
 
 // ---------------------------------------------------------------------
-int wd(char *s,char *&res,int &len,char *loc)
+int wd(char *s,char *&res,int &len)
 {
   rc=0;
   result.clear();
-  tlocale=loc;
   cmd.init(s);
 //  noevents(1);
   wd1();
@@ -481,6 +480,7 @@ void wdpas()
 void wdpc()
 {
   string c,p;
+  string tlocale=jegetlocale();
   c=cmd.getid();
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
