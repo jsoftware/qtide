@@ -164,9 +164,13 @@ void Pane::bin(string s)
       addlayout(new Layout(c,n,this));
     else if (c=='p' && layout->type!='g')
       layout->addSpacing(n);
-    else if (c=='s')
+    else if (c=='s') {
+      if ('g'==layout->type) {
+        error("grid cannot contain bin s");
+        return;
+      }
       layout->addStretch(n);
-    else if (c=='z' && layouts.size()>1) {
+    } else if (c=='z' && layouts.size()>1) {
       b=layout;
       n=layouts.last()->stretch;
       layouts.removeLast();
@@ -270,6 +274,10 @@ void Pane::grid(string c, string s)
       error("grid colwidth column and width must be non-negative");
       return;
     }
+    if (layout->razed && (layout->cmax<=c)) {
+      error("grid colwidth invalid column");
+      return;
+    }
     ((QGridLayout *)(layout->bin))->setColumnMinimumWidth(c,w);
   } else if (c=="colstretch") {
     QStringList opt=qsplit(s);
@@ -283,6 +291,10 @@ void Pane::grid(string c, string s)
     s=c_strtoi(q2s(opt.at(1)));
     if ((c<0)||(s<0)) {
       error("grid colstretch column and stretch must be non-negative");
+      return;
+    }
+    if (layout->razed && (layout->cmax<=c)) {
+      error("grid colstretch invalid column");
       return;
     }
     ((QGridLayout *)(layout->bin))->setColumnStretch(c,s);
@@ -300,6 +312,10 @@ void Pane::grid(string c, string s)
       error("grid rowheight row and height must be non-negative");
       return;
     }
+    if (layout->razed && (layout->rmax<=r)) {
+      error("grid rowheight invalid row");
+      return;
+    }
     ((QGridLayout *)(layout->bin))->setRowMinimumHeight(r,h);
   } else if (c=="rowstretch") {
     QStringList opt=qsplit(s);
@@ -313,6 +329,10 @@ void Pane::grid(string c, string s)
     s=c_strtoi(q2s(opt.at(1)));
     if ((r<0)||(s<0)) {
       error("grid rowstretch row and stretch must be non-negative");
+      return;
+    }
+    if (layout->razed && (layout->rmax<=r)) {
+      error("grid rowstretch invalid row");
       return;
     }
     ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
