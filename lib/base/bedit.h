@@ -27,13 +27,13 @@ public:
   QString readselect_text(int *pos, int *len);
   int readcurpos();
   int readtop();
+  void resizer();
   void selectline(int p);
   void setselect(int p, int len);
   void setcurpos(int pos);
   void settop(int p);
 
   int type;
-  bool visible;
 
 protected:
   void resizeEvent(QResizeEvent *event);

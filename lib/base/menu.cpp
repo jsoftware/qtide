@@ -99,10 +99,10 @@ void Menu::createActions()
   runalllines2Act = makeact("runalllines2Act","Clear Terminal, Run All Lines","Ctrl+Shift+F10");
   runclipAct = makeact("runclipAct","&Clipboard","F8");
   rundebugAct = makeact("rundebugAct","&Debug...","Ctrl+K");
-  runlineAct = makeact("runlineAct","Line","Ctrl+Return");
-  runlineadvanceAct = makeact("runlineadvanceAct","Line and &Advance","Ctrl+R");
-  runlineadvanceshowAct = makeact("runlineadvanceshowAct","Line Advance &Show","Ctrl+Shift+R");
-  runlineshowAct = makeact("runlineshowAct","Line Show","Ctrl+Shift+Return");
+  runlineAct = makeact("runlineAct","Line","Ctrl+R");
+  runlineadvanceAct = makeact("runlineadvanceAct","Line and &Advance","Ctrl+Return");
+  runlineadvanceshowAct = makeact("runlineadvanceshowAct","Line Advance &Show","Ctrl+Shift+Return");
+  runlineshowAct = makeact("runlineshowAct","Line Show","Ctrl+Shift+R");
   runprojectAct = makeact("runprojectAct","Run &Project","F9");
   runscriptAct = makeact("runscriptAct","&Load Script","Ctrl+L");
   runselectAct = makeact("runselectAct","S&election","Ctrl+E");
@@ -378,10 +378,15 @@ void Menu::createrunMenu(QString s)
 {
   runMenu = addMenu("&Run");
   if (s == "note") {
+#ifdef JQT
     runMenu->addAction(runlineAct);
-    runMenu->addAction(runlineshowAct);
+    runMenu->addAction(runlineadvanceAct);
+#else
+    runMenu->addAction(runlineAct);
+    runMenu->addAction(runlineshowActrn);
     runMenu->addAction(runlineadvanceAct);
     runMenu->addAction(runlineadvanceshowAct);
+#endif
     runMenu->addSeparator();
     runMenu->addAction(runselectAct);
     runMenu->addAction(runalllinesAct);

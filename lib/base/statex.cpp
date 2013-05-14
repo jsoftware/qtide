@@ -130,7 +130,6 @@ void Config::launch_init()
 // ---------------------------------------------------------------------
 void Config::togglelinenos()
 {
-  info("Info","toggle line nos not yet working properly");
   LineNos=!LineNos;
   note->setlinenos(LineNos);
   if(note2)
@@ -140,7 +139,6 @@ void Config::togglelinenos()
 // ---------------------------------------------------------------------
 void Config::togglelinewrap()
 {
-  info("Info","toggle line wrap not yet working properly");
   LineWrap=!LineWrap;
   note->setlinewrap(LineWrap);
   if(note2)

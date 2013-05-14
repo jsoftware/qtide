@@ -126,10 +126,9 @@ void Ntabs::setfont(QFont font)
 // ---------------------------------------------------------------------
 void Ntabs::setlinenos(bool b)
 {
-  setUpdatesEnabled(false);
+  Q_UNUSED(b);
   for(int i=0; i<count(); i++)
-    ((Nedit *)widget(i))->visible=b;
-  setUpdatesEnabled(true);
+    ((Nedit *)widget(i))->resizer();
   repaint();
 }
 

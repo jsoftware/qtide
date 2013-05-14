@@ -10,13 +10,15 @@
 // ---------------------------------------------------------------------
 Bedit::Bedit(QWidget *parent) : QPlainTextEdit(parent)
 {
-  visible=false;
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
 
   connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
   connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
   connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+
+  if (config.LineWrap)
+    setLineWrapMode(QPlainTextEdit::WidgetWidth);
 
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
@@ -25,14 +27,15 @@ Bedit::Bedit(QWidget *parent) : QPlainTextEdit(parent)
 // ---------------------------------------------------------------------
 int Bedit::lineNumberAreaWidth()
 {
-  if (!visible) return 2;
+  if (!config.LineNos) return 2;
   int digits = 1;
   int max = qMax(1, blockCount());
   while (max >= 10) {
     max /= 10;
     ++digits;
   }
-  int space = 6 + fontMetrics().width(QLatin1Char('9')) * digits;
+  digits=qMax(2,digits);
+  int space = 10 + fontMetrics().width(QLatin1Char('9')) * digits;
   return space;
 }
 
@@ -56,7 +59,7 @@ void Bedit::highlightCurrentLine()
 // ---------------------------------------------------------------------
 void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-  if (!visible) {
+  if (!config.LineNos) {
     QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), config.TermBack.color);
     return;
@@ -74,7 +77,7 @@ void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number = QString::number(blockNumber + 1);
       painter.setPen(Qt::black);
-      painter.drawText(0, top, lineNumberArea->width()-3, fontMetrics().height(),
+      painter.drawText(0, top, lineNumberArea->width()-5, fontMetrics().height(),
                        Qt::AlignRight, number);
     }
     block = block.next();
@@ -161,6 +164,18 @@ void Bedit::resizeEvent(QResizeEvent *e)
 }
 
 // ---------------------------------------------------------------------
+// code here just forces a resize event when setting linenos
+// there should be a better way...
+void Bedit::resizer()
+{
+  updateLineNumberAreaWidth(0);
+  int w=size().width();
+  int h=size().height();
+  resize(w,h-1);
+  resize(w,h);
+}
+
+// ---------------------------------------------------------------------
 void Bedit::selectline(int p)
 {
   if (0>p) return;
@@ -215,7 +230,7 @@ void Bedit::updateLineNumberAreaWidth(int newBlockCount)
 // ---------------------------------------------------------------------
 void Bedit::updateLineNumberArea(const QRect &rect, int dy)
 {
-  if (!visible) return;
+  if (!config.LineNos) return;
   if (dy)
     lineNumberArea->scroll(0, dy);
   else

@@ -234,7 +234,7 @@ QStringList cfreadx(QString s)
   r.removeDuplicates();
   for(int i=r.size()-1; i>=0; i--) {
     t=r.at(i);
-    if (t.isEmpty() || t.at(0)=='#' || t.at(0)=='/' || t.mid(0,3)=="NB.")
+    if (t.isEmpty() || t.at(0)=='#' || t.mid(0,3)=="NB.")
       r.removeAt(i);
   }
   return r;
