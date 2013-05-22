@@ -22,6 +22,7 @@
 #include "dummy.h"
 #include "edit.h"
 #include "editm.h"
+#include "edith.h"
 #include "image.h"
 #include "isigraph.h"
 #include "listbox.h"
@@ -79,6 +80,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Edit(n,p,pform,this);
   else if (c=="editm")
     child=(Child *) new Editm(n,p,pform,this);
+  else if (c=="edith")
+    child=(Child *) new Edith(n,p,pform,this);
   else if (c=="combobox")
     child=(Child *) new ComboBox(n,"edit " + p,pform,this);
   else if (c=="combolist")
@@ -134,6 +137,13 @@ bool Pane::addchild(string n,string c,string p)
       layout->bin->setContentsMargins(0,0,0,0);
       layout->bin->setSpacing(0);
     }
+	if ((c=="editm")||(c=="edith")) {
+	  QStringList opt=qsplit(p);
+	  if (opt.contains("flush")) {
+        layout->bin->setContentsMargins(0,0,0,0);
+        layout->bin->setSpacing(0);
+	  }
+    }    
   }
   sizew=sizeh=0;
   pform->addchild(child);
@@ -239,8 +249,8 @@ void Pane::grid(string c, string s)
     } else {
       r=c_strtoi(q2s(opt.at(0)));
       c=c_strtoi(q2s(opt.at(1)));
-      cs=c_strtoi(q2s(opt.at(2)));
-      rs=c_strtoi(q2s(opt.at(3)));
+      rs=c_strtoi(q2s(opt.at(2)));
+      cs=c_strtoi(q2s(opt.at(3)));
       if (5==n) alignment=c_strtoi(q2s(opt.at(4)));
     }
     if ((r<0)||(c<0)) {
