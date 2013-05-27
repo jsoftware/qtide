@@ -26,6 +26,8 @@ Note *note2=0;
 // ---------------------------------------------------------------------
 Note::Note()
 {
+  if (!config.ProjInit)
+    project.init();
   setFocusPolicy(Qt::StrongFocus);
   sideBarShow=true;
   QVBoxLayout *layout=new QVBoxLayout;

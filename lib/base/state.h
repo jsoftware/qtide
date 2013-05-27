@@ -85,6 +85,7 @@ public:
   QPrinter *Printer;
 #endif
   QString ProjExt;
+  bool ProjInit;
   QFont ProFont;
   QString Rxnna;
   QString Rxnnz;

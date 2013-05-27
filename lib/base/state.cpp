@@ -103,6 +103,7 @@ void Config::init()
 
   FilePatterns="Scripts (*.ijs);;All files (*.*)";
   ProjExt = ".jproj";
+  ProjInit = false;
 
 #ifdef _WIN32
   ProFont.setFamily("\"MS Sans Serif\" 10");
@@ -322,7 +323,7 @@ bool state_init(int argc, char *argv[])
   config.init();
   dlog_init();
   recent.init();
-  project.init();
+  //project.init();
   return true;
 }
 

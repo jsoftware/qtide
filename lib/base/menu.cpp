@@ -383,7 +383,7 @@ void Menu::createrunMenu(QString s)
     runMenu->addAction(runlineadvanceAct);
 #else
     runMenu->addAction(runlineAct);
-    runMenu->addAction(runlineshowActrn);
+    runMenu->addAction(runlineshowAct);
     runMenu->addAction(runlineadvanceAct);
     runMenu->addAction(runlineadvanceshowAct);
 #endif

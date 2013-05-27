@@ -52,6 +52,8 @@ void Project::init()
   QString id,lastid,t;
   QStringList s;
 
+  config.ProjInit=true;
+
   while (recent.Projects.size()>0) {
     id = recent.Projects.at(0).at(0);
     if (cfexist(id2qproj(id)))
@@ -73,7 +75,6 @@ void Project::init()
     }
   } else
     recent.ProjectOpen=false;
-
 }
 
 // ---------------------------------------------------------------------
