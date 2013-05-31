@@ -30,7 +30,7 @@ public:
   virtual void setstylesheet(string p);
   virtual string state();
 
-  virtual void setwh(string,int);
+  virtual void setwh(string);
   virtual void setminwhv(string);
   virtual void setminwh(int,int);
 

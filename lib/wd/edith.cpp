@@ -74,23 +74,6 @@ void Edith::set(string p,string v)
     }
   } else if (p=="wrap") {
     w->setLineWrapMode((remquotes(v)!="0")?QTextEdit::WidgetWidth:QTextEdit::NoWrap);
-  } else if (p=="fixed") {
-    int ww,hh=0;
-    int n=opt.size();
-    if (!(2==n)) {
-      error("set fixed requires 2 numbers: " + p);
-      return;
-    }
-    ww=c_strtoi(q2s(opt.at(0)));
-    hh=c_strtoi(q2s(opt.at(1)));
-    if (ww!=-1 || hh!=-1) {
-      if (ww==-1)
-        w->setFixedHeight(hh);
-      else if (hh==-1)
-        w->setFixedWidth(ww);
-      else
-        w->setFixedSize(ww,hh);
-    }
   } else Child::set(p,v);
 }
 

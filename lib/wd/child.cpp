@@ -64,7 +64,7 @@ void Child::set(string p, string v)
   else if (p=="stylesheet")
     setstylesheet(v);
   else if (p=="wh")
-    setwh(v,1);
+    setwh(v);
   else if (p=="minwh")
     setminwhv(v);
   else
@@ -104,13 +104,22 @@ void Child::setstylesheet(string p)
 }
 
 // ---------------------------------------------------------------------
-void Child::setwh(string p,int unit)
+void Child::setwh(string p)
 {
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=2) {
     error("set wh requires 2 numbers: " + p);
   } else {
-    widget->resize(c_strtoi(q2s(n.at(0)))*unit,c_strtoi(q2s(n.at(1)))*unit);
+    int w=c_strtoi(q2s(n.at(0)));
+    int h=c_strtoi(q2s(n.at(1)));
+    if (w!=-1 || h!=-1) {
+      if (w==-1)
+        widget->setFixedHeight(h);
+      else if (h==-1)
+        widget->setFixedWidth(w);
+      else
+        widget->setFixedSize(w,h);
+    }
   }
 }
 

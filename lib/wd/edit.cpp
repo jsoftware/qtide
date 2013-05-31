@@ -56,12 +56,6 @@ void Edit::set(string p,string v)
       return;
     }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
-  } else if (p=="fixed") {
-    if (opt.isEmpty()) {
-      error("set fixed requires 1 number: " + p);
-      return;
-    }
-    w->setFixedWidth(c_strtoi(q2s(opt.at(0))));
   } else Child::set(p,v);
 }
 
