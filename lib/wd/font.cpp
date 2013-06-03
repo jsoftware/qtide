@@ -12,7 +12,7 @@ Font::Font(string s)
   QString face, sizestyle;
   int bold=0,italic=0,strikeout=0,underline=0;
   float size=0;
-  QString textstring = QString::fromUtf8 (s.c_str());
+  QString textstring = (QString::fromUtf8 (s.c_str())).simplified();
   if (textstring.startsWith("\"")) {
     QStringList ss=textstring.split("\"",QString::SkipEmptyParts);
     if (ss.length()>0) {
