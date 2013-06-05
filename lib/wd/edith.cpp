@@ -45,14 +45,23 @@ void Edith::set(string p,string v)
   int bgn,end,pos=0;
 
   if (p=="edit") {
-    if (!w->isReadOnly())  {
-      QString t=w->toPlainText();
-      w->setHtml(t);
-      w->setReadOnly(1);
+    int s;
+    if (opt.isEmpty()) 
+      s=1;
+    else
+      s=c_strtoi(q2s(opt.at(0)));
+    if (0==s) {
+      if (!w->isReadOnly())  {
+        QString t=w->toPlainText();
+        w->setHtml(t);
+        w->setReadOnly(1);
+      }
     } else {
-      QString t=w->toHtml();
-      w->setPlainText(t);
-      w->setReadOnly(0);
+      if (w->isReadOnly()) {
+        QString t=w->toHtml();
+        w->setPlainText(t);
+        w->setReadOnly(0);
+      }
     }
   } else if (p=="text") {
     w->setHtml(s2q(v));
