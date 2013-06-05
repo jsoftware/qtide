@@ -18,8 +18,7 @@ Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
-  if (opt.contains("readonly"))
-    w->setReadOnly(true);
+  w->setReadOnly(true);
 }
 
 // ---------------------------------------------------------------------
@@ -45,11 +44,20 @@ void Edith::set(string p,string v)
 
   int bgn,end,pos=0;
 
-  if (p=="readonly")
-    w->setReadOnly(remquotes(v)!="0");
-  else if (p=="text")
+  if (p=="edit") {
+    if (!w->isReadOnly())  {
+      QString t=w->toPlainText();
+      w->setHtml(t);
+      w->setReadOnly(1);
+    } else {
+      QString t=w->toHtml();
+      w->setPlainText(t);
+      w->setReadOnly(0);
+    }
+  } else if (p=="text") {
     w->setHtml(s2q(v));
-  else if (p=="select") {
+    w->setReadOnly(1);
+  } else if (p=="select") {
     if (opt.isEmpty())
       w->selectAll();
     else {
