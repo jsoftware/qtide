@@ -46,7 +46,7 @@ void Edith::set(string p,string v)
 
   if (p=="edit") {
     int s;
-    if (opt.isEmpty()) 
+    if (opt.isEmpty())
       s=1;
     else
       s=c_strtoi(q2s(opt.at(0)));

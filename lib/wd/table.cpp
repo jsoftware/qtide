@@ -185,8 +185,7 @@ void Table::setdata(string s)
 
   item=new QTableWidgetItem("");
   Qt::ItemFlags fdef=item->flags();
-  Qt::ItemFlags fnoedit=fdef &
-      ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
+  Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
 
   dat=qsplit(s);
 
