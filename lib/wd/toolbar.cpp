@@ -19,6 +19,8 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
 
+  if (opt.contains("vertical"))
+    w->setOrientation(Qt::Vertical);
   if (opt.size()) {
     QString t=opt.at(0);
     if (qshasonly(t,"0123456789x")) {
