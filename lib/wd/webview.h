@@ -15,10 +15,14 @@ class Webview : public Child
 public:
   Webview(string n, string s, Form *f, Pane *p);
   void set(string p,string v);
+  string state();
 
   QUrl baseUrl;
+  QString curl;
 
 private slots:
+
+  void urlChanged ( const QUrl & url );
 
 };
 

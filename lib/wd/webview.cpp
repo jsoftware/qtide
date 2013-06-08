@@ -17,6 +17,7 @@ Webview::Webview(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   w->setObjectName(qn);
   baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
+  connect(w,SIGNAL(urlChanged( const QUrl & )), this,SLOT(urlChanged( const QUrl & )));
 }
 
 // ---------------------------------------------------------------------
@@ -32,4 +33,18 @@ void Webview::set(string p,string v)
     w->load(QUrl(s2q(v)));
     w->show();
   } else Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+void Webview::urlChanged(const QUrl & url)
+{
+  curl=url.toString();
+  event="curl";
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+string Webview::state()
+{
+  return spair(id+"_curl",q2s(curl));
 }
