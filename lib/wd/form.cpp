@@ -35,7 +35,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   escclose=m.contains("escclose");
-  closeok=escclose||m.contains("closeok");
+  closeok=m.contains("closeok");
   setpn(s);
 
   Qt::WindowFlags flags=0;
@@ -201,7 +201,14 @@ void Form::keyPressEvent(QKeyEvent *e)
 #endif
   if (escclose && k==Qt::Key_Escape) {
     e->ignore();
-    delete this;
+    if (closeok)
+      delete this;
+    else  {
+      event="close";
+      fakeid="";
+      form=this;
+      signalevent(0);
+    }
   } else if (k>=Qt::Key_F1 && k<=Qt::Key_F35) {
     event="fkey";
     form=this;
