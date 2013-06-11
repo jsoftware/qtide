@@ -25,7 +25,14 @@ void Webview::set(string p,string v)
 {
   QWebView *w = (QWebView *)widget;
   if (p=="baseurl") {
-    baseUrl = QUrl(s2q(v));
+    QString t = s2q(v);
+#ifdef _WIN32
+    baseUrl = QUrl(t);
+#else
+    if (t.contains("://"))
+      baseUrl = QUrl(t);
+    else baseUrl = QUrl::fromLocalFile(t);
+#endif
   } else if (p=="html") {
     w->setHtml(s2q(v), baseUrl);
     w->show();
