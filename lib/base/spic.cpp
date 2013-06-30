@@ -120,7 +120,11 @@ void Picm::init()
   f=pic_files();
   sfile->addItems(f);
   sfile->setCurrentIndex(f.indexOf(File));
+
   t=cfreadbin(Path + "/" + File).split(char(255));
+  t.removeLast();
+  if (t.isEmpty())
+    t.append((Text+"000000").toUtf8());
   for (i=0; i<t.size(); i++)
     s.append(QString(t.at(i)));
   Stamps.clear();

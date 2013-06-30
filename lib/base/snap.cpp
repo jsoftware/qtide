@@ -205,4 +205,3 @@ bool ss_mkdir(QString s)
   info("Snap","Unable to create snapshot directory: " + s);
   return false;
 }
-

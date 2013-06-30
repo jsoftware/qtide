@@ -87,6 +87,7 @@ void Note::closeEvent(QCloseEvent *event)
 // ---------------------------------------------------------------------
 void Note::closeit()
 {
+  if (!saveall()) return;
   projectsave();
   if (note2) {
     note=note2;
