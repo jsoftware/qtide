@@ -25,10 +25,11 @@ void Child::cmd(string p, string v)
 }
 
 // ---------------------------------------------------------------------
-void Child::get(string p, string v)
+string Child::get(string p, string v)
 {
   Q_UNUSED(p);
   Q_UNUSED(v);
+  return"";
 }
 
 // ---------------------------------------------------------------------

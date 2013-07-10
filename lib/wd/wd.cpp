@@ -315,8 +315,8 @@ void wdget()
   string p=cmd.getid();
   string v=cmd.getparms();
   int type=setchild(n);
-  if (type)
-    cc->get(p,v);
+  if (type) 
+    result=cc->get(p,v);
   else
     error("bad child id");
 }

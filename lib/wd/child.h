@@ -21,7 +21,7 @@ public:
   virtual string getsysdata();
 
   virtual void cmd(string p,string v);
-  virtual void get(string p,string v);
+  virtual string get(string p,string v);
   virtual void set(string p,string v);
 
   virtual void setfont(QFont);

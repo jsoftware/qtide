@@ -15,12 +15,14 @@ public:
   Table(string n, string s, Form *f, Pane *p);
 
   void set(string p, string v);
+  string get(string p, string v);
   string state();
 
 private slots:
   void on_cellChanged(int,int);
   void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
+  void on_headerClicked(int);
 
 private:
   void applyhdralign();
@@ -29,15 +31,22 @@ private:
   void initglobals();
 
   string readcell(int row,int col);
+  string readcellvalue(int row,int col);
+  string readcolvalue(int col);
+  string readrowvalue(int row);
+  string readtable();
+  
   void resetlen(QVector<int> *v, QVector<int> def);
 
   void setalign(string v);
+  void setcell(string v);
   void setdata(string s);
   void setedit(string v);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
   void setshape(QStringList);
+  void setsort(string v);
   void settype(string v);
 
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
