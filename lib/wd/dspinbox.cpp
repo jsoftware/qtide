@@ -72,6 +72,8 @@ void DSpinBox::set(string p,string v)
     w->setMinimum(c_strtod(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtod(q2s(arg.at(0))));
+  else if (cmd=="step")
+    w->setSingleStep(c_strtod(q2s(arg.at(0))));
   else if (cmd=="value")
     w->setValue(c_strtod(v));
   else Child::set(p,v);

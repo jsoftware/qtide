@@ -16,8 +16,9 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   w->setObjectName(qn);
   QStringList opt=qsplit(s);
+
   int i=0;
-  if (opt.at(i)=="v") {
+  if ((i<opt.size()) && (opt.at(i)=="v")) {
     i++;
     w->setOrientation(Qt::Vertical);
   }

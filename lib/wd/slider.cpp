@@ -27,9 +27,9 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
 
   int i=0;
-  if (opt.at(i)=="v") {
-    i++;
+  if ((i<opt.size()) && (opt.at(i)=="v")) {
     w->setOrientation(Qt::Vertical);
+    i++;
   }
   if (i<opt.size()) {
     w->setTickPosition((QSlider::TickPosition)c_strtoi(q2s(opt.at(i))));
@@ -80,6 +80,12 @@ void Slider::set(string p,string v)
     w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtoi(q2s(arg.at(0))));
+  else if (cmd=="tic")
+    w->setTickPosition((QSlider::TickPosition)(c_strtoi(q2s(arg.at(0)))));
+  else if (cmd=="step")
+    w->setSingleStep(c_strtoi(q2s(arg.at(0))));
+  else if (cmd=="page")
+    w->setPageStep(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="pos"|| cmd=="value")
     w->setSliderPosition(c_strtoi(v));
   else Child::set(p,v);

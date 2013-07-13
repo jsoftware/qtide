@@ -65,6 +65,8 @@ void SpinBox::set(string p,string v)
     w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtoi(q2s(arg.at(0))));
+  else if (cmd=="step")
+    w->setSingleStep(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="value")
     w->setValue(c_strtoi(v));
   else Child::set(p,v);
