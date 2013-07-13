@@ -35,7 +35,7 @@ private:
   string readcolvalue(int col);
   string readrowvalue(int row);
   string readtable();
-  
+
   void resetlen(QVector<int> *v, QVector<int> def);
 
   void setalign(string v);

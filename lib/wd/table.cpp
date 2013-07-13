@@ -59,7 +59,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->horizontalHeader()->setClickable(true);
     connect(w->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),this,SLOT(on_headerClicked(int)));
   }
-  
+
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));
   connect(w,SIGNAL(currentCellChanged(int,int,int,int)),
@@ -84,7 +84,7 @@ string Table::get(string p, string v)
 {
   QStringList opt;
   int r,c;
-  
+
   if (p=="cell") {
     opt=qsplit(v);
     if (!(opt.size()==2)) {
@@ -126,12 +126,12 @@ string Table::get(string p, string v)
     rc=-1;
     return (readcolvalue(c));
   } else if (p=="table") {
-      rc=-1;
-      return(readtable());
+    rc=-1;
+    return(readtable());
   } else {
-      error("get must specify cell or table: " + q2s(opt.join(" ")));
-      return Child::get(p,v);
-    }
+    error("get must specify cell or table: " + q2s(opt.join(" ")));
+    return Child::get(p,v);
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -176,7 +176,7 @@ string Table::readcell(int row,int col)
   QTableWidgetItem *m=w->item(row,col);
   QString s;
   int p=col+row*cls;
-  if (0==celltype[p]) 
+  if (0==celltype[p])
     return q2s(m->text());
   else if (100==celltype[p])
     return ((QCheckBox *)cellwidget[p])->isChecked()?"1":"0";
@@ -193,7 +193,7 @@ string Table::readcellvalue(int row,int col)
   QTableWidgetItem *m=w->item(row,col);
   QString s;
   int p=col+row*cls;
-  if (0==celltype[p]) 
+  if (0==celltype[p])
     return q2s(m->text());
   else if (100==celltype[p])
     return ((QCheckBox *)cellwidget[p])->isChecked()?"1":"0";
@@ -209,7 +209,7 @@ string Table::readcolvalue(int col)
   string colout="";
   int r;
 
-  for (r=0; r<rws; r++) 
+  for (r=0; r<rws; r++)
     colout += readcellvalue(r,col) + "\012";
   return (colout);
 }
@@ -220,7 +220,7 @@ string Table::readrowvalue(int row)
   string rowout="";
   int c;
 
-  for (c=0; c<cls; c++) 
+  for (c=0; c<cls; c++)
     rowout += readcellvalue(row,c) + "\012";
   return (rowout);
 }
@@ -310,22 +310,21 @@ void Table::setcell(string v)
   }
   r=c_strtoi(q2s(opt.at(0)));
   c=c_strtoi(q2s(opt.at(1)));
-    if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
-      error("cell index out of bounds: " + q2s(opt.join(" ")));
-      return;
-    }
-  
+  if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
+    error("cell index out of bounds: " + q2s(opt.join(" ")));
+    return;
+  }
+
   QTableWidgetItem *m=w->item(r,c);
   p=c+r*cls;
-  if (0==celltype[p]) 
+  if (0==celltype[p])
     m->setText(opt.at(2));
   else if (100==celltype[p]) {
     if ("1"==q2s(opt.at(2)))
       ((QCheckBox *)cellwidget[p])->setChecked(true);
     else
       ((QCheckBox *)cellwidget[p])->setChecked(false);
-  }
-  else if ((200==celltype[p]) || (300==celltype[p])) {
+  } else if ((200==celltype[p]) || (300==celltype[p])) {
     int cmind=0;
     dat= qsplit(q2s(opt.at(2)));
     if (1==dat.size()) {
@@ -340,10 +339,10 @@ void Table::setcell(string v)
     ((QComboBox *)cellwidget[p])->clear();
     ((QComboBox *)cellwidget[p])->addItems(dat);
     ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
-  } 
+  }
   return;
 }
-  
+
 // ---------------------------------------------------------------------
 void Table::setdata(string s)
 {
@@ -531,7 +530,7 @@ void Table::setsort(string v)
   else
     w->sortItems(c,Qt::AscendingOrder);
 }
-  
+
 // ---------------------------------------------------------------------
 void Table::settype(string v)
 {
