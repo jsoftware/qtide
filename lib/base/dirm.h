@@ -179,6 +179,4 @@ private:
 
 };
 
-void dirm_init();
-
 #endif

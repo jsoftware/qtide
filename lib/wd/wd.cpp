@@ -139,9 +139,7 @@ int wd(char *s,char *&res,int &len)
   rc=0;
   result.clear();
   cmd.init(s);
-//  noevents(1);
   wd1();
-//  noevents(0);
   len=result.size();
   res=(char *)result.c_str();
   return rc;
