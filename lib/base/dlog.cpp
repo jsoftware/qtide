@@ -115,7 +115,7 @@ QString dlog_scroll(int m)
 // write and clean up when session closes
 void dlog_write()
 {
-  cfwrite(InputLogFile,InputLog.join("\n"));
+  cfwrite(InputLogFile,InputLog.join("\n")+"\n");
 }
 
 // ---------------------------------------------------------------------

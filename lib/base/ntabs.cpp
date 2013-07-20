@@ -29,6 +29,9 @@ Ntabs::Ntabs(Note *p)
 }
 
 // ---------------------------------------------------------------------
+// when current tab index changed, not tabs rearranged for which
+// there is no signal
+
 void Ntabs::currentChanged(int index)
 {
   if (NoEvents) return;
@@ -37,6 +40,7 @@ void Ntabs::currentChanged(int index)
   Nedit *e=(Nedit *)widget(index);
   pnote->settitle(e->fname,e->document()->isModified());
   pnote->siderefresh();
+  pnote->projectsave();
 }
 
 // ---------------------------------------------------------------------

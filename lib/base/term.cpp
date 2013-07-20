@@ -144,12 +144,14 @@ void Term::fini()
 void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
+#ifdef JQT
   case Qt::Key_Escape:
     if (config.EscClose) {
       if (!filequit())
         event->accept();
     }
     break;
+#endif
   default:
     QWidget::keyPressEvent(event);
   }
