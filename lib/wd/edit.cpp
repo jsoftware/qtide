@@ -56,6 +56,9 @@ void Edit::set(string p,string v)
       return;
     }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
+  } else if (p=="select") {
+      w->selectAll();
+      return;
   } else Child::set(p,v);
 }
 

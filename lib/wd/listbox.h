@@ -13,8 +13,13 @@ class ListBox : public Child
 
 public:
   ListBox(string n, string s, Form *f, Pane *p);
+  string get(string p, string v);
   void set(string p, string v);
   string state();
+
+private:
+  string getselection();
+  string getselectionindex();
 
 private slots:
   void currentRowChanged();
