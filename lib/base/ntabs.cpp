@@ -80,6 +80,7 @@ void Ntabs::projectopen(bool openfiles)
 
   if (project.Id == Id) return;
 
+  noevents(1);
   tabcloseall();
   Id = project.Id;
   if (Id.isEmpty()) {
@@ -88,6 +89,7 @@ void Ntabs::projectopen(bool openfiles)
     recent.ProjectOpen=false;
     return;
   }
+  noevents(0);
 
   s=recent.projectget(Id);
   index=s.at(1).toInt();
