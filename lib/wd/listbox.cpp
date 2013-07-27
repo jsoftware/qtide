@@ -20,7 +20,7 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
   if (opt.contains("multiple"))
-    w->setSelectionMode(QAbstractItemView::ExtendedSelection); 
+    w->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   connect(w,SIGNAL(currentRowChanged(int)),
           this,SLOT(currentRowChanged()));
@@ -38,7 +38,7 @@ void ListBox::currentRowChanged()
 // ---------------------------------------------------------------------
 string ListBox::get(string p, string v)
 {
-  
+
   if (p=="items") {
     rc=-1;
     return(getselection());
@@ -52,7 +52,7 @@ string ListBox::getselection()
   QListWidget *w=(QListWidget*) widget;
   QList <QListWidgetItem*> list = w->selectedItems();
   string s="";
-  
+
   for (int i=0; i<list.count(); i++) {
     s += q2s(((QListWidgetItem*) list.at(i))->text());
     s += "\012";
@@ -66,7 +66,7 @@ string ListBox::getselectionindex()
   QListWidget *w=(QListWidget*) widget;
   QModelIndexList list = ((QItemSelectionModel *)w->selectionModel())->selectedIndexes();
   string s="";
-  
+
   for (int i=0; i<list.size(); i++) {
     s += i2s(list[i].row());
     s += " ";

@@ -70,7 +70,6 @@ void wdpshow();
 void wdpstylesheet();
 void wdptop();
 void wdq();
-void wdqd();
 void wdqueries(string);
 void wdrem();
 void wdreset();
@@ -78,7 +77,7 @@ void wdset();
 void wdsetx(string);
 void wdset1(string n,string p,string v);
 void wdsplit(string c);
-void wdstate(int);
+void wdstate(Form *,int);
 void wdtab(string);
 void wdtimer();
 void wdversion();
@@ -608,7 +607,7 @@ void wdptop()
 void wdq()
 {
   string p=cmd.getparms();
-  wdstate(1);
+  wdstate(evtform,1);
 }
 
 // ---------------------------------------------------------------------
@@ -617,7 +616,7 @@ void wdqueries(string s)
   string p=cmd.getparms();
 
   if (s=="qd") {
-    wdstate(0);
+    wdstate(form,0);
     return;
   }
 
@@ -814,10 +813,10 @@ void wdsplit(string c)
 }
 
 // ---------------------------------------------------------------------
-void wdstate(int event)
+void wdstate(Form * f,int event)
 {
-  if (evtform)
-    result=evtform->state(event);
+  if (f)
+    result=f->state(event);
   rc=-2;
 }
 
