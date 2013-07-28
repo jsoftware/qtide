@@ -34,20 +34,21 @@ private:
   string readcellvalue(int row,int col);
   string readcolvalue(int col);
   string readrowvalue(int row);
-  string readtable();
+  string readtable(string v);
 
   void resetlen(QVector<int> *v, QVector<int> def);
 
-  void setalign(string v);
+  void setalign(string v,int mode);
+  void setblock(string v);
   void setcell(string v);
-  void setdata(string s);
-  void setedit(string v);
+  void setdata(string s,int mode);
+  void setedit(string v,int mode);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
   void setshape(QStringList);
   void setsort(string v);
-  void settype(string v);
+  void settype(string v,int mode);
 
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);
@@ -61,6 +62,7 @@ private:
   int lastcol;
   int lastrow;
 
+  int row1,row2,col1,col2;
   bool ifhdr;
 
   QVector<int> defcellalign;
