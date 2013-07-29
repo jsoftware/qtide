@@ -46,6 +46,7 @@ private:
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
+  void setresizecol();
   void setshape(QStringList);
   void setsort(string v);
   void settype(string v,int mode);

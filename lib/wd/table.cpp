@@ -306,6 +306,8 @@ void Table::set(string p, string v)
     sethdralign(v);
   else if (p=="lab")
     setlab(v);
+  else if (p=="resizecol")
+    setresizecol();
   else if (p=="shape")
     setshape(qsplit(v));
   else if (p=="type")
@@ -707,6 +709,13 @@ void Table::setlab(string v)
   w->verticalHeader()->setVisible(true);
 }
 
+// ---------------------------------------------------------------------
+void Table::setresizecol()
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  w->resizeColumnsToContents();
+}
+  
 // ---------------------------------------------------------------------
 void Table::setshape(QStringList opt)
 {
