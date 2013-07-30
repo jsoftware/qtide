@@ -42,7 +42,7 @@ private:
   void setblock(string v);
   void setcell(string v);
   void setdata(string s,int mode);
-  void setedit(string v,int mode);
+  void setprotect(string v,int mode);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
@@ -67,11 +67,11 @@ private:
   bool ifhdr;
 
   QVector<int> defcellalign;
-  QVector<int> defcelledit;
+  QVector<int> defcellprotect;
   QVector<int> defcelltype;
 
   QVector<int> cellalign;
-  QVector<int> celledit;
+  QVector<int> cellprotect;
   QVector<int> celltype;
   QVector<QWidget *> cellwidget;
   QVector<int> hdralign;

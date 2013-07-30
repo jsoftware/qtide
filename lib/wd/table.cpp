@@ -298,10 +298,10 @@ void Table::set(string p, string v)
     setdata(v,0);
   else if (p=="data2")
     setdata(v,1);
-  else if (p=="edit")
-    setedit(v,0);
-  else if (p=="edit2")
-    setedit(v,1);
+  else if (p=="protect")
+    setprotect(v,0);
+  else if (p=="protect2")
+    setprotect(v,1);
   else if (p=="hdr")
     sethdr(v);
   else if (p=="hdralign")
@@ -433,7 +433,7 @@ void Table::setcell(string v)
     if (!m) {
       QTableWidgetItem *item=new QTableWidgetItem(opt.at(2));
       item->setTextAlignment(getalign(cellalign[p]));
-      if (!celledit[p]) {
+      if (cellprotect[p]) {
         Qt::ItemFlags fdef=item->flags();
         Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
         item->setFlags(fnoedit);
@@ -555,7 +555,7 @@ void Table::setdata(string s,int mode)
       if (0==celltype[p]) {
         item=new QTableWidgetItem(dat[q]);
         item->setTextAlignment(getalign(cellalign[p]));
-        if (!celledit[p])
+        if (cellprotect[p])
           item->setFlags(fnoedit);
         w->setItem(r,c,item);
       } else if (100==celltype[p]) {
@@ -613,7 +613,7 @@ void Table::setdata(string s,int mode)
 }
 
 // ---------------------------------------------------------------------
-void Table::setedit(string v,int mode)
+void Table::setprotect(string v,int mode)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
@@ -644,16 +644,16 @@ void Table::setedit(string v,int mode)
     return;
   }
   if(!vecisbool(a,"edit")) return;
-  if (0==defcelledit.size()) {
-    defcelledit=QVector<int>(len,0);
-    celledit=QVector<int>(len,0);
+  if (0==defcellprotect.size()) {
+    defcellprotect=QVector<int>(len,0);
+    cellprotect=QVector<int>(len,0);
   }
   int p,q=0;
   for (int i=r1; i<=r2; i++) {
     for (int j=c1; j<=c2; j++) {
       p=j + i*cls;
-      defcelledit[p]=a.at(q);
-      celledit[p]=a.at(q);
+      defcellprotect[p]=a.at(q);
+      cellprotect[p]=a.at(q);
       if (n!=1) {
         q++;
         if (colmode && q>=cls) q=0;
@@ -734,7 +734,7 @@ void Table::setshape(QStringList opt)
   w->setColumnCount(cls);
 
   resetlen(&cellalign,defcellalign);
-  resetlen(&celledit,defcelledit);
+  resetlen(&cellprotect,defcellprotect);
   resetlen(&celltype,defcelltype);
   cellwidget.resize(len);
 }
