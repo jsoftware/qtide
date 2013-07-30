@@ -21,6 +21,8 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="table";
   initglobals();
   ifhdr=false;
+  row1=col1=0;
+  row2=col2=-1;
 
   QTableWidget *w=new QTableWidget(p);
   widget=(QWidget*) w;
@@ -329,7 +331,10 @@ void Table::setblock(string v)
   int r1,r2,c1,c2;
   QStringList arg=qsplit(v);
   int n=arg.size();
-  if (2==n) {
+  if (0==n) {
+    r1= c1= 0;
+    r2= c2= -1;
+  } else if (2==n) {
     r1= r2= c_strtoi(q2s(arg.at(0)));
     c1= c2= c_strtoi(q2s(arg.at(1)));
   } else if (4==n) {
@@ -715,7 +720,7 @@ void Table::setresizecol()
   QTableWidget *w=(QTableWidget*) widget;
   w->resizeColumnsToContents();
 }
-  
+
 // ---------------------------------------------------------------------
 void Table::setshape(QStringList opt)
 {
@@ -735,7 +740,6 @@ void Table::setshape(QStringList opt)
   resetlen(&celledit,defcelledit);
   resetlen(&celltype,defcelltype);
   cellwidget.resize(len);
-  row1=row2=col1=col2=0;
 }
 
 // ---------------------------------------------------------------------
