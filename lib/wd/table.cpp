@@ -364,10 +364,8 @@ void Table::setalign(string v,int mode)
 
   int len1,r1,r2,c1,c2;
   if (0==mode) {
-    r1=0;
-    r2=-1;
-    c1=0;
-    c2=-1;
+    r1=c1=0;
+    r2=c2=-1;
   } else {
     r1=row1;
     r2=row2;
@@ -380,8 +378,9 @@ void Table::setalign(string v,int mode)
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
-  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || (0==mode && n==cls))) {
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect align length - ";
     m+= "given " + QString::number(n);
     m+=" cells, require " + QString::number(len1) + " cells";
@@ -401,7 +400,7 @@ void Table::setalign(string v,int mode)
       cellalign[p]=a.at(q);
       if (n!=1) {
         q++;
-        if (0==mode && n==cls && q>=cls) q=0;
+        if (colmode && q>=cls) q=0;
       }
     }
   }
@@ -513,12 +512,13 @@ void Table::setdata(string s,int mode)
   QHBoxLayout *y;
   QWidget *m;
 
+  dat=qsplit(s);
+  int n=dat.size();
+
   int len1,r1,r2,c1,c2;
   if (0==mode) {
-    r1=0;
-    r2=-1;
-    c1=0;
-    c2=-1;
+    r1=c1=0;
+    r2=c2=-1;
   } else {
     r1=row1;
     r2=row2;
@@ -531,15 +531,13 @@ void Table::setdata(string s,int mode)
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
   item=new QTableWidgetItem("");
   Qt::ItemFlags fdef=item->flags();
   Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
 
-  dat=qsplit(s);
-  int n=dat.size();
-
-  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || (0==mode && n==cls))) {
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect data length - ";
     m+= "given " + QString::number(n);
     m+=" cells, require " + QString::number(len1) + " cells";
@@ -604,7 +602,7 @@ void Table::setdata(string s,int mode)
       }
       if (n!=1) {
         q++;
-        if (0==mode && n==cls && q>=cls) q=0;
+        if (colmode && q>=cls) q=0;
       }
     }
   }
@@ -622,10 +620,8 @@ void Table::setedit(string v,int mode)
 
   int len1,r1,r2,c1,c2;
   if (0==mode) {
-    r1=0;
-    r2=-1;
-    c1=0;
-    c2=-1;
+    r1=c1=0;
+    r2=c2=-1;
   } else {
     r1=row1;
     r2=row2;
@@ -638,8 +634,9 @@ void Table::setedit(string v,int mode)
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
-  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || (0==mode && n==cls))) {
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect edit length - ";
     m+= "given " + QString::number(n);
     m+=" cells, require " + QString::number(len1) + " cells";
@@ -659,7 +656,7 @@ void Table::setedit(string v,int mode)
       celledit[p]=a.at(q);
       if (n!=1) {
         q++;
-        if (0==mode && n==cls && q>=cls) q=0;
+        if (colmode && q>=cls) q=0;
       }
     }
   }
@@ -769,10 +766,8 @@ void Table::settype(string v,int mode)
 
   int len1,r1,r2,c1,c2;
   if (0==mode) {
-    r1=0;
-    r2=-1;
-    c1=0;
-    c2=-1;
+    r1=c1=0;
+    r2=c2=-1;
   } else {
     r1=row1;
     r2=row2;
@@ -785,8 +780,9 @@ void Table::settype(string v,int mode)
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
-  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || (0==mode && n==cls))) {
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect type length - ";
     m+= "given " + QString::number(n);
     m+=" cells, require " + QString::number(len1) + " cells";
@@ -806,7 +802,7 @@ void Table::settype(string v,int mode)
       celltype[p]=a.at(q);
       if (n!=1) {
         q++;
-        if (0==mode && n==cls && q>=cls) q=0;
+        if (colmode && q>=cls) q=0;
       }
     }
   }
