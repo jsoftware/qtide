@@ -294,6 +294,8 @@ void Table::set(string p, string v)
     setalign(v,0);
   else if (p=="align2")
     setalign(v,1);
+  else if (p=="colwidth")
+    setcolwidth(v);
   else if (p=="data")
     setdata(v,0);
   else if (p=="data2")
@@ -498,6 +500,28 @@ void Table::setcell(string v)
     ((QComboBox *)cellwidget[p])->addItems(dat);
     ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
   }
+  return;
+}
+
+// ---------------------------------------------------------------------
+void Table::setcolwidth(string s)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt;
+  int col,width;
+
+  opt=qsplit(s);
+  if (!(opt.size()==2)) {
+    error("set colwidth must specify column and width: " + q2s(opt.join(" ")));
+    return;
+  }
+  col= c_strtoi(q2s(opt.at(0)));
+  width= c_strtoi(q2s(opt.at(1)));
+  if (!(col<cls)) {
+    error("column outside of range: " + q2s(opt.join(" ")));
+    return;
+  }
+  w->setColumnWidth(col,width);
   return;
 }
 

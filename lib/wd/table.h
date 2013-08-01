@@ -40,6 +40,7 @@ private:
 
   void setalign(string v,int mode);
   void setblock(string v);
+  void setcolwidth(string v);
   void setcell(string v);
   void setdata(string s,int mode);
   void setprotect(string v,int mode);
