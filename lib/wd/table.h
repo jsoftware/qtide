@@ -39,19 +39,19 @@ private:
   void resetlen(QVector<int> *v, QVector<int> def);
   void set_cell(int r,int c,QString v);
 
-  void setalign(string v,int mode);
+  void setalign(string v);
   void setblock(string v);
   void setcolwidth(string v);
   void setcell(string v);
-  void setdata(string s,int mode);
-  void setprotect(string v,int mode);
+  void setdata(string s);
+  void setprotect(string v);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
   void setresizecol();
   void setshape(QStringList);
   void setsort(string v);
-  void settype(string v,int mode);
+  void settype(string v);
 
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);

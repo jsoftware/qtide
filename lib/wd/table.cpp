@@ -292,19 +292,13 @@ void Table::resetlen(QVector<int> *v, QVector<int> def)
 void Table::set(string p, string v)
 {
   if (p=="align")
-    setalign(v,0);
-  else if (p=="align2")
-    setalign(v,1);
+    setalign(v);
   else if (p=="colwidth")
     setcolwidth(v);
   else if (p=="data")
-    setdata(v,0);
-  else if (p=="data2")
-    setdata(v,1);
+    setdata(v);
   else if (p=="protect")
-    setprotect(v,0);
-  else if (p=="protect2")
-    setprotect(v,1);
+    setprotect(v);
   else if (p=="hdr")
     sethdr(v);
   else if (p=="hdralign")
@@ -316,9 +310,7 @@ void Table::set(string p, string v)
   else if (p=="shape")
     setshape(qsplit(v));
   else if (p=="type")
-    settype(v,0);
-  else if (p=="type2")
-    settype(v,1);
+    settype(v);
   else if (p=="cell")
     setcell(v);
   else if (p=="sort")
@@ -360,24 +352,19 @@ void Table::setblock(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setalign(string v,int mode)
+void Table::setalign(string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
 
   int len1,r1,r2,c1,c2;
-  if (0==mode) {
-    r1=c1=0;
-    r2=c2=-1;
-  } else {
-    r1=row1;
-    r2=row2;
-    c1=col1;
-    c2=col2;
-    if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-      error("set align row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
-      return;
-    }
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set align row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
@@ -413,20 +400,16 @@ void Table::setalign(string v,int mode)
 // called by setcell and setdata
 void Table::set_cell(int r,int c,QString v)
 {
-  int p;
+  int p=c+r*cls;
   QTableWidget *w=(QTableWidget*) widget;
   QStringList dat;
 
-  p=c+r*cls;
   if (0==celltype[p]) {
     QTableWidgetItem *m=w->item(r,c);
     QWidget *g=w->cellWidget(r,c);
     if (g) {
       w->removeCellWidget(r,c);
-      delete g;
       cellwidget[p]=0;
-      if (m) delete m;
-      m=0;
     }
     if (!m) {
       QTableWidgetItem *item=new QTableWidgetItem(v);
@@ -444,7 +427,6 @@ void Table::set_cell(int r,int c,QString v)
     QWidget *g=cellwidget[p];
     if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
-      if (g) delete g;
       QCheckBox *cb=new QCheckBox();
       cb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) cb;
@@ -469,7 +451,6 @@ void Table::set_cell(int r,int c,QString v)
     QWidget *g=cellwidget[p];
     if (!(g && QString("QComboBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
-      if (g) delete g;
       QComboBox *cm=new QComboBox();
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
@@ -504,7 +485,6 @@ void Table::set_cell(int r,int c,QString v)
     QWidget *g=cellwidget[p];
     if (!(g && QString("QPushButton")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
-      if (g) delete g;
       QPushButton *pb=new QPushButton(v);
       pb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) pb;
@@ -558,7 +538,7 @@ void Table::setcolwidth(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setdata(string s,int mode)
+void Table::setdata(string s)
 {
   int c,r;
   QTableWidget *w=(QTableWidget*) widget;
@@ -567,18 +547,13 @@ void Table::setdata(string s,int mode)
   int n=dat.size();
 
   int len1,r1,r2,c1,c2;
-  if (0==mode) {
-    r1=c1=0;
-    r2=c2=-1;
-  } else {
-    r1=row1;
-    r2=row2;
-    c1=col1;
-    c2=col2;
-    if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-      error("set data row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
-      return;
-    }
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set data row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
@@ -609,24 +584,19 @@ void Table::setdata(string s,int mode)
 }
 
 // ---------------------------------------------------------------------
-void Table::setprotect(string v,int mode)
+void Table::setprotect(string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
 
   int len1,r1,r2,c1,c2;
-  if (0==mode) {
-    r1=c1=0;
-    r2=c2=-1;
-  } else {
-    r1=row1;
-    r2=row2;
-    c1=col1;
-    c2=col2;
-    if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-      error("set edit row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
-      return;
-    }
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set edit row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
@@ -755,24 +725,19 @@ void Table::setsort(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::settype(string v,int mode)
+void Table::settype(string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
 
   int len1,r1,r2,c1,c2;
-  if (0==mode) {
-    r1=c1=0;
-    r2=c2=-1;
-  } else {
-    r1=row1;
-    r2=row2;
-    c1=col1;
-    c2=col2;
-    if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-      error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
-      return;
-    }
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
