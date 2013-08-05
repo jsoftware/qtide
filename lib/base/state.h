@@ -51,6 +51,7 @@ public:
   bool ConfirmClose;
   bool ConfirmSave;
   QString DefCmt;
+  QString DefCCmt;
   QString DefExt;
   QString DefIndent;
   QStringList DefTypes;

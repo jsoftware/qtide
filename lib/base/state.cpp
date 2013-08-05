@@ -94,6 +94,7 @@ void Config::init()
   Q_ASSERT(jcon);
 
   DefCmt="NB.";
+  DefCCmt="NB.";
   DefExt=".ijs";
   DefIndent="   ";
   DefTypes << "Scripts ijs"
@@ -323,7 +324,6 @@ bool state_init(int argc, char *argv[])
   config.init();
   dlog_init();
   recent.init();
-  //project.init();
   return true;
 }
 

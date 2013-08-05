@@ -152,7 +152,7 @@ void Pnew::on_create_clicked()
   foreach(QString m,p)
   cfcreate(Dir->filePath(m));
 
-  t=config.DefCmt;
+  t=config.DefCCmt;
   m=t+" project:\n"+t+"\n"+t+" defines list of source files.\n";
   m+=t+" path defaults to project directory.\n\n";
 
