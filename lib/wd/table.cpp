@@ -4,6 +4,7 @@
 #include <QHeaderView>
 #include <QTableWidget>
 #include <QComboBox>
+#include <QPushButton>
 
 #include "wd.h"
 #include "table.h"
@@ -166,7 +167,7 @@ void Table::initglobals()
 {
   if (CellAligns.size()) return;
   CellAligns << 0 << 1 << 2;
-  CellTypes << 0 << 100 << 200 << 300;
+  CellTypes << 0 << 100 << 200 << 300 << 400;
 }
 
 // ---------------------------------------------------------------------
@@ -409,31 +410,26 @@ void Table::setalign(string v,int mode)
 }
 
 // ---------------------------------------------------------------------
-void Table::setcell(string v)
+// called by setcell and setdata
+void Table::set_cell(int r,int c,QString v)
 {
-  int r,c,p;
+  int p;
   QTableWidget *w=(QTableWidget*) widget;
-  QStringList opt,dat;
-
-  opt=qsplit(v);
-  if (!(opt.size()==3)) {
-    error("set cell must specify row, column, and data: " + q2s(opt.join(" ")));
-    return;
-  }
-  r=c_strtoi(q2s(opt.at(0)));
-  c=c_strtoi(q2s(opt.at(1)));
-  if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
-    error("cell index out of bounds: " + q2s(opt.join(" ")));
-    return;
-  }
+  QStringList dat;
 
   p=c+r*cls;
   if (0==celltype[p]) {
-    cellwidget[p]=0;
-    if (w->cellWidget(r,c)) delete w->cellWidget(r,c);
     QTableWidgetItem *m=w->item(r,c);
+    QWidget *g=w->cellWidget(r,c);
+    if (g) {
+      w->removeCellWidget(r,c);
+      delete g;
+      cellwidget[p]=0;
+      if (m) delete m;
+      m=0;
+    }
     if (!m) {
-      QTableWidgetItem *item=new QTableWidgetItem(opt.at(2));
+      QTableWidgetItem *item=new QTableWidgetItem(v);
       item->setTextAlignment(getalign(cellalign[p]));
       if (cellprotect[p]) {
         Qt::ItemFlags fdef=item->flags();
@@ -442,14 +438,16 @@ void Table::setcell(string v)
       }
       w->setItem(r,c,item);
     } else
-      m->setText(opt.at(2));
+      m->setText(v);
   } else if (100==celltype[p]) {
+    if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];
-    if (!g) {
-      if (w->item(r,c)) delete w->item(r,c);
+    if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
+      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (g) delete g;
       QCheckBox *cb=new QCheckBox();
       cb->setObjectName(QString::number(p));
-      cellwidget[p]=(QWidget*) cb;
+      g=cellwidget[p]=(QWidget*) cb;
       QWidget *m=new QWidget();
       QHBoxLayout *y=new QHBoxLayout();
       y->setContentsMargins(0,0,0,0);
@@ -462,19 +460,21 @@ void Table::setcell(string v)
       connect(cb,SIGNAL(stateChanged(int)),
               this,SLOT(on_stateChanged(int)));
     }
-    if ("1"==q2s(opt.at(2)))
+    if ("1"==q2s(v))
       ((QCheckBox *)cellwidget[p])->setChecked(true);
     else
       ((QCheckBox *)cellwidget[p])->setChecked(false);
   } else if ((200==celltype[p]) || (300==celltype[p])) {
+    if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];
-    if (!g) {
-      if (w->item(r,c)) delete w->item(r,c);
+    if (!(g && QString("QComboBox")==g->metaObject()->className())) {
+      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (g) delete g;
       QComboBox *cm=new QComboBox();
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
         cm->setEditable(true);
-      cellwidget[p]=(QWidget*) cm;
+      g=cellwidget[p]=(QWidget*) cm;
       QWidget *m=new QWidget();
       QHBoxLayout *y=new QHBoxLayout();
       y->setContentsMargins(0,0,0,0);
@@ -486,21 +486,53 @@ void Table::setcell(string v)
               this,SLOT(on_stateChanged(int)));
     }
     int cmind=0;
-    dat= qsplit(q2s(opt.at(2)));
-    if (1==dat.size()) {
+    dat= qsplit(q2s(v));
+    if (1==dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
       ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
       return;
     }
-    if (isint(q2s(dat.at(0)))) {
+    if (1<dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
       dat.removeFirst();
     }
     ((QComboBox *)cellwidget[p])->clear();
     ((QComboBox *)cellwidget[p])->addItems(dat);
     ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
+  } else if (400==celltype[p]) {
+    if (w->item(r,c)) delete w->item(r,c);
+    QWidget *g=cellwidget[p];
+    if (!(g && QString("QPushButton")==g->metaObject()->className())) {
+      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (g) delete g;
+      QPushButton *pb=new QPushButton(v);
+      pb->setObjectName(QString::number(p));
+      g=cellwidget[p]=(QWidget*) pb;
+      w->setCellWidget(r,c,pb);
+      connect(pb,SIGNAL(clicked()),this,SLOT(on_cellClicked()));
+    } else
+      ((QPushButton *)g)->setText(v);
   }
-  return;
+}
+
+// ---------------------------------------------------------------------
+void Table::setcell(string v)
+{
+  int r,c;
+  QStringList opt;
+
+  opt=qsplit(v);
+  if (!(opt.size()==3)) {
+    error("set cell must specify row, column, and data: " + q2s(opt.join(" ")));
+    return;
+  }
+  r=c_strtoi(q2s(opt.at(0)));
+  c=c_strtoi(q2s(opt.at(1)));
+  if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
+    error("cell index out of bounds: " + q2s(opt.join(" ")));
+    return;
+  }
+  set_cell(r,c,opt.at(2));
 }
 
 // ---------------------------------------------------------------------
@@ -528,13 +560,8 @@ void Table::setcolwidth(string s)
 // ---------------------------------------------------------------------
 void Table::setdata(string s,int mode)
 {
-  int c,p,r,cmind;
-  QCheckBox *cb;
-  QComboBox *cm;
+  int c,r;
   QTableWidget *w=(QTableWidget*) widget;
-  QTableWidgetItem *item;
-  QHBoxLayout *y;
-  QWidget *m;
 
   dat=qsplit(s);
   int n=dat.size();
@@ -557,10 +584,6 @@ void Table::setdata(string s,int mode)
   if (c2==-1) c2=cls-1;
   bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
-  item=new QTableWidgetItem("");
-  Qt::ItemFlags fdef=item->flags();
-  Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
-
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect data length - ";
     m+= "given " + QString::number(n);
@@ -572,58 +595,7 @@ void Table::setdata(string s,int mode)
   int q=0;
   for (r=r1; r<=r2; r++) {
     for (c=c1; c<=c2; c++) {
-      p=c + r*cls;
-      cellwidget[p]=0;
-      if (w->item(r,c)) delete w->item(r,c);
-      if (w->cellWidget(r,c)) delete w->cellWidget(r,c);
-      if (0==celltype[p]) {
-        item=new QTableWidgetItem(dat[q]);
-        item->setTextAlignment(getalign(cellalign[p]));
-        if (cellprotect[p])
-          item->setFlags(fnoedit);
-        w->setItem(r,c,item);
-      } else if (100==celltype[p]) {
-        cb=new QCheckBox();
-        cb->setChecked(dat[q]=="1");
-        cb->setObjectName(QString::number(p));
-        cellwidget[p]=(QWidget*) cb;
-        m=new QWidget();
-        y=new QHBoxLayout();
-        y->setContentsMargins(0,0,0,0);
-        y->setSpacing(0);
-        y->addStretch(1);
-        y->addWidget(cb);
-        y->addStretch(1);
-        m->setLayout(y);
-        w->setCellWidget(r,c,m);
-        connect(cb,SIGNAL(stateChanged(int)),
-                this,SLOT(on_stateChanged(int)));
-      } else if ((200==celltype[p]) || (300==celltype[p])) {
-        cm=new QComboBox();
-        QStringList cmi=qsplit(q2s(dat[q]));
-        cmind=0;
-        if (0<cmi.size()) {
-          if (isint(q2s(cmi.at(0)))) {
-            cmind=c_strtoi(q2s(cmi.at(0)));
-            cmi.removeFirst();
-          }
-          cm->addItems(cmi);
-          cm->setCurrentIndex(cmind);
-        }
-        cm->setObjectName(QString::number(p));
-        if (300==celltype[p])
-          cm->setEditable(true);
-        cellwidget[p]=(QWidget*) cm;
-        m=new QWidget();
-        y=new QHBoxLayout();
-        y->setContentsMargins(0,0,0,0);
-        y->setSpacing(0);
-        y->addWidget(cm);
-        m->setLayout(y);
-        w->setCellWidget(r,c,m);
-        connect(cm,SIGNAL(currentIndexChanged(int)),
-                this,SLOT(on_stateChanged(int)));
-      }
+      set_cell(r,c,dat[q]);
       if (n!=1) {
         q++;
         if (colmode && q>=cls) q=0;
@@ -844,6 +816,8 @@ string Table::state()
     r+=spair(id+"_value",readcellvalue(row,col));
   } else if (event=="mark") {
     r+=spair(id,i2s(row)+" "+i2s(col));
+  } else if (event=="clicked") {
+    r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
   }
   return r;
 }
@@ -908,6 +882,18 @@ void Table::on_stateChanged (int n)
   Q_UNUSED(n);
   if (NoEvents) return;
   event="change";
+  int p=sender()->objectName().toInt();
+  row=p/cls;
+  col=p-row*cls;
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+// for button
+void Table::on_cellClicked ()
+{
+  if (NoEvents) return;
+  event="clicked";
   int p=sender()->objectName().toInt();
   row=p/cls;
   col=p-row*cls;

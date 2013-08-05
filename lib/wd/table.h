@@ -23,6 +23,7 @@ private slots:
   void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
   void on_headerClicked(int);
+  void on_cellClicked();
 
 private:
   void applyhdralign();
@@ -35,8 +36,8 @@ private:
   string readcolvalue(int col);
   string readrowvalue(int row);
   string readtable(string v);
-
   void resetlen(QVector<int> *v, QVector<int> def);
+  void set_cell(int r,int c,QString v);
 
   void setalign(string v,int mode);
   void setblock(string v);
