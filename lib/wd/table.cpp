@@ -595,7 +595,7 @@ void Table::setprotect(string v)
   c1=col1;
   c2=col2;
   if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-    error("set edit row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
