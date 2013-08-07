@@ -293,18 +293,24 @@ void Table::set(string p, string v)
 {
   if (p=="align")
     setalign(v);
+  else if (p=="background")
+    setbackforeground(false,v);
+  else if (p=="block")
+    setblock(v);
   else if (p=="colwidth")
     setcolwidth(v);
   else if (p=="data")
     setdata(v);
-  else if (p=="protect")
-    setprotect(v);
+  else if (p=="foreground")
+    setbackforeground(true,v);
   else if (p=="hdr")
     sethdr(v);
   else if (p=="hdralign")
     sethdralign(v);
   else if (p=="lab")
     setlab(v);
+  else if (p=="protect")
+    setprotect(v);
   else if (p=="resizecol")
     setresizecol();
   else if (p=="shape")
@@ -315,8 +321,6 @@ void Table::set(string p, string v)
     setcell(v);
   else if (p=="sort")
     setsort(v);
-  else if (p=="block")
-    setblock(v);
   else Child::set(p,v);
 }
 
@@ -391,6 +395,55 @@ void Table::setalign(string v)
       if (n!=1) {
         q++;
         if (colmode && q>=cls) q=0;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------
+void Table::setbackforeground(bool foreground, string s)
+{
+  int c,r;
+  QTableWidget *w=(QTableWidget*) widget;
+
+  QStringList opt=qsplit(s);
+
+  int r1,r2,c1,c2;
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set background/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
+  }
+  if (r2==-1) r2=rws-1;
+  if (c2==-1) c2=cls-1;
+
+  if (opt.size()<3) {
+    error("set background must specify red green blue [alpha] : " + q2s(opt.join(" ")));
+    return;
+  }
+
+  int red,green,blue,alpha=255;
+  red= c_strtoi(q2s(opt.at(0)));
+  green= c_strtoi(q2s(opt.at(1)));
+  blue= c_strtoi(q2s(opt.at(2)));
+  if (opt.size()>3) alpha= c_strtoi(q2s(opt.at(3)));
+  QBrush brush = QBrush(QColor(red,green,blue,alpha));
+
+  QTableWidgetItem *m;
+  QWidget *g;
+  QString color= "rgba("+QString().setNum(red)+","+QString().setNum(green)+","+QString().setNum(blue)+","+QString().setNum(alpha)+")";
+  for (r=r1; r<=r2; r++) {
+    for (c=c1; c<=c2; c++) {
+//    int p= c + r*cls;
+      if ((m=w->item(r,c))) {
+        if (foreground) m->setForeground(brush);
+        else m->setBackground(brush);
+      } else if ((g=w->cellWidget(r,c))) {
+        if (foreground) g->setStyleSheet("color: " + color);
+        else g->setStyleSheet("background-color: " + color);
       }
     }
   }
@@ -584,51 +637,6 @@ void Table::setdata(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setprotect(string v)
-{
-  QVector<int> a=qs2intvector(s2q(v));
-  int n=a.size();
-
-  int len1,r1,r2,c1,c2;
-  r1=row1;
-  r2=row2;
-  c1=col1;
-  c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-    error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
-    return;
-  }
-  if (r2==-1) r2=rws-1;
-  if (c2==-1) c2=cls-1;
-  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
-
-  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
-    QString m="incorrect edit length - ";
-    m+= "given " + QString::number(n);
-    m+=" cells, require " + QString::number(len1) + " cells";
-    error(q2s(m));
-    return;
-  }
-  if(!vecisbool(a,"edit")) return;
-  if (0==defcellprotect.size()) {
-    defcellprotect=QVector<int>(len,0);
-    cellprotect=QVector<int>(len,0);
-  }
-  int p,q=0;
-  for (int i=r1; i<=r2; i++) {
-    for (int j=c1; j<=c2; j++) {
-      p=j + i*cls;
-      defcellprotect[p]=a.at(q);
-      cellprotect[p]=a.at(q);
-      if (n!=1) {
-        q++;
-        if (colmode && q>=cls) q=0;
-      }
-    }
-  }
-}
-
-// ---------------------------------------------------------------------
 void Table::sethdr(string v)
 {
   QTableWidget *w=(QTableWidget*) widget;
@@ -675,6 +683,51 @@ void Table::setlab(string v)
   }
   w->setVerticalHeaderLabels(s);
   w->verticalHeader()->setVisible(true);
+}
+
+// ---------------------------------------------------------------------
+void Table::setprotect(string v)
+{
+  QVector<int> a=qs2intvector(s2q(v));
+  int n=a.size();
+
+  int len1,r1,r2,c1,c2;
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
+  }
+  if (r2==-1) r2=rws-1;
+  if (c2==-1) c2=cls-1;
+  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
+
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
+    QString m="incorrect edit length - ";
+    m+= "given " + QString::number(n);
+    m+=" cells, require " + QString::number(len1) + " cells";
+    error(q2s(m));
+    return;
+  }
+  if(!vecisbool(a,"edit")) return;
+  if (0==defcellprotect.size()) {
+    defcellprotect=QVector<int>(len,0);
+    cellprotect=QVector<int>(len,0);
+  }
+  int p,q=0;
+  for (int i=r1; i<=r2; i++) {
+    for (int j=c1; j<=c2; j++) {
+      p=j + i*cls;
+      defcellprotect[p]=a.at(q);
+      cellprotect[p]=a.at(q);
+      if (n!=1) {
+        q++;
+        if (colmode && q>=cls) q=0;
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------

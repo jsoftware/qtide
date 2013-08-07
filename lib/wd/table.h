@@ -40,14 +40,15 @@ private:
   void set_cell(int r,int c,QString v);
 
   void setalign(string v);
+  void setbackforeground(bool foreground, string s);
   void setblock(string v);
-  void setcolwidth(string v);
   void setcell(string v);
+  void setcolwidth(string v);
   void setdata(string s);
-  void setprotect(string v);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);
+  void setprotect(string v);
   void setresizecol();
   void setshape(QStringList);
   void setsort(string v);
