@@ -303,12 +303,35 @@ bool Ntabs::tabsave(int index)
 }
 
 // ---------------------------------------------------------------------
+bool Ntabs::tabprint(int index)
+{
+  if (index<0) return true;
+  Nedit *e=(Nedit *)widget(index);
+  e->print(config.Printer);
+  return true;
+}
+
+// ---------------------------------------------------------------------
 bool Ntabs::tabsaveall()
 {
   bool r=true;
   noevents(1);
   for(int i=0; i<count(); i++) {
     r=tabsave(i);
+    if (!r) break;
+  }
+  noevents(0);
+  pnote->siderefresh();
+  return r;
+}
+
+// ---------------------------------------------------------------------
+bool Ntabs::tabprintall()
+{
+  bool r=true;
+  noevents(1);
+  for(int i=0; i<count(); i++) {
+    r=tabprint(i);
     if (!r) break;
   }
   noevents(0);

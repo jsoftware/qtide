@@ -4,6 +4,7 @@
 #include "nedit.h"
 #include "state.h"
 #include "term.h"
+#include <QPrinter>
 
 using namespace std;
 

@@ -28,6 +28,8 @@ public:
   void tabrestore(int index);
   bool tabsave(int index);
   bool tabsaveall();
+  bool tabprint(int index);
+  bool tabprintall();
   void tabsaveas(int index);
   int tabsaveOK(int index);
   void tabsetindex(int index);

@@ -77,6 +77,7 @@ void Menu::createActions()
   fileopensystemAct = makeact("fileopensystemAct","&Open system","");
 #ifndef ANDROID
   fileprintAct = makeact("fileprintAct","&Print","");
+  fileprintallAct = makeact("fileprintallAct","Print all","");
 #endif
   filequitAct = makeact("filequitAct","&Quit","Ctrl+Q");
   filerecentAct = makeact("filerecentAct","&Recent","Ctrl+G");
@@ -159,7 +160,7 @@ void Menu::createActions()
                << editfiwAct << filecloseAct << filecloseallAct << filecloseotherAct
                << filedeleteAct
 #ifndef ANDROID
-               << fileprintAct
+               << fileprintAct << fileprintallAct
 #endif
                << filesaveAct << filesaveallAct
                << filesaveasAct << runalllinesAct << runalllines1Act
@@ -271,6 +272,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addSeparator();
 #ifndef ANDROID
     fileMenu->addAction(fileprintAct);
+    fileMenu->addAction(fileprintallAct);
 #endif
     fileMenu->addSeparator();
     fileMenu->addAction(filecloseAct);
@@ -679,6 +681,13 @@ void Note::on_fileprintAct_triggered()
 {
   if(editIndex()>=0)
     dialogprint(note,editPage()->document());
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileprintallAct_triggered()
+{
+  if(editIndex()>=0)
+    tabs->tabprintall();
 }
 #endif
 

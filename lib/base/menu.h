@@ -91,6 +91,7 @@ private:
   QAction *fileopenuserAct;
 #ifndef ANDROID
   QAction *fileprintAct;
+  QAction *fileprintallAct;
 #endif
   QAction *filequitAct;
   QAction *filerecentAct;

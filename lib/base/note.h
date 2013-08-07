@@ -89,6 +89,7 @@ public slots:
   void on_fileopentempAct_triggered();
 #ifndef ANDROID
   void on_fileprintAct_triggered();
+  void on_fileprintallAct_triggered();
 #endif
   void on_filequitAct_triggered();
   void on_filerecentAct_triggered();
