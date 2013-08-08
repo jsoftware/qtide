@@ -366,12 +366,13 @@ void Table::setalign(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
     error("set align row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  if (0==rws || 0==n) return;
   bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
@@ -413,12 +414,13 @@ void Table::setbackforeground(bool foreground, string s)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws))) {
     error("set background/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  if (0==rws) return;
 
   if (opt.size()<3) {
     error("set background must specify red green blue [alpha] : " + q2s(opt.join(" ")));
@@ -604,12 +606,13 @@ void Table::setdata(string s)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
     error("set data row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  if (0==rws || 0==n) return;
   bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
@@ -696,22 +699,23 @@ void Table::setprotect(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
     error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  if (0==rws || 0==n) return;
   bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
-    QString m="incorrect edit length - ";
+    QString m="incorrect protect length - ";
     m+= "given " + QString::number(n);
     m+=" cells, require " + QString::number(len1) + " cells";
     error(q2s(m));
     return;
   }
-  if(!vecisbool(a,"edit")) return;
+  if(!vecisbool(a,"protect")) return;
   if (0==defcellprotect.size()) {
     defcellprotect=QVector<int>(len,0);
     cellprotect=QVector<int>(len,0);
@@ -788,12 +792,13 @@ void Table::settype(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
     error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
+  if (0==rws || 0==n) return;
   bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
