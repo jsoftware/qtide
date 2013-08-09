@@ -3,6 +3,7 @@
 
 #include "child.h"
 
+class QTableWidgetItem;
 class Form;
 class Pane;
 
@@ -31,6 +32,7 @@ private:
   QVector<int> getcellvec(QVector<int>);
   void initglobals();
 
+  QTableWidgetItem * newitem(int r, int c,QString s);
   string readcell(int row,int col);
   string readcellvalue(int row,int col);
   string readcolvalue(int col);
@@ -45,6 +47,7 @@ private:
   void setcell(string v);
   void setcolwidth(string v);
   void setdata(string s);
+  void setfont(string s);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);

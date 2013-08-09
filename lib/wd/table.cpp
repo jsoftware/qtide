@@ -11,6 +11,7 @@
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
+#include "font.h"
 
 static QVector<int>CellAligns;
 static QVector<int>CellTypes;
@@ -171,6 +172,20 @@ void Table::initglobals()
 }
 
 // ---------------------------------------------------------------------
+QTableWidgetItem * Table::newitem(int r, int c,QString s)
+{
+  int p= c + r*cls;
+  QTableWidgetItem * m= new QTableWidgetItem(s);
+  m->setTextAlignment(getalign(cellalign[p]));
+  if (cellprotect[p]) {
+    Qt::ItemFlags fdef=m->flags();
+    Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
+    m->setFlags(fnoedit);
+  }
+  return m;
+}
+
+// ---------------------------------------------------------------------
 string Table::readcell(int row,int col)
 {
   QTableWidget *w=(QTableWidget*) widget;
@@ -301,6 +316,8 @@ void Table::set(string p, string v)
     setcolwidth(v);
   else if (p=="data")
     setdata(v);
+  else if (p=="font")
+    setfont(v);
   else if (p=="foreground")
     setbackforeground(true,v);
   else if (p=="hdr")
@@ -439,8 +456,12 @@ void Table::setbackforeground(bool foreground, string s)
   QString color= "rgba("+QString().setNum(red)+","+QString().setNum(green)+","+QString().setNum(blue)+","+QString().setNum(alpha)+")";
   for (r=r1; r<=r2; r++) {
     for (c=c1; c<=c2; c++) {
-//    int p= c + r*cls;
-      if ((m=w->item(r,c))) {
+      int p= c + r*cls;
+      if (0==celltype[p]) {
+        if (!(m=w->item(r,c))) {
+          m= newitem(r,c,"");
+          w->setItem(r,c,m);
+        }
         if (foreground) m->setForeground(brush);
         else m->setBackground(brush);
       } else if ((g=w->cellWidget(r,c))) {
@@ -467,14 +488,8 @@ void Table::set_cell(int r,int c,QString v)
       cellwidget[p]=0;
     }
     if (!m) {
-      QTableWidgetItem *item=new QTableWidgetItem(v);
-      item->setTextAlignment(getalign(cellalign[p]));
-      if (cellprotect[p]) {
-        Qt::ItemFlags fdef=item->flags();
-        Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
-        item->setFlags(fnoedit);
-      }
-      w->setItem(r,c,item);
+      m= newitem(r,c,v);
+      w->setItem(r,c,m);
     } else
       m->setText(v);
   } else if (100==celltype[p]) {
@@ -637,6 +652,45 @@ void Table::setdata(string s)
   w->resizeColumnsToContents();
   w->setVisible(true);
   w->horizontalHeader()->setStretchLastSection(true);
+}
+
+// ---------------------------------------------------------------------
+void Table::setfont(string s)
+{
+  int c,r;
+  QTableWidget *w=(QTableWidget*) widget;
+
+  int r1,r2,c1,c2;
+  r1=row1;
+  r2=row2;
+  c1=col1;
+  c2=col2;
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws))) {
+    error("set font row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
+  }
+  if (r2==-1) r2=rws-1;
+  if (c2==-1) c2=cls-1;
+  if (0==rws) return;
+
+  QFont font= (Font(s)).font;
+
+  QTableWidgetItem *m;
+  QWidget *g;
+  for (r=r1; r<=r2; r++) {
+    for (c=c1; c<=c2; c++) {
+      int p= c + r*cls;
+      if (0==celltype[p]) {
+        if (!(m=w->item(r,c))) {
+          m= newitem(r,c,"");
+          w->setItem(r,c,m);
+        }
+        m->setFont(font);
+      } else if ((g=w->cellWidget(r,c))) {
+        g->setFont(font);
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------
