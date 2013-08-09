@@ -359,7 +359,7 @@ void Table::setblock(string v)
     c1= c_strtoi(q2s(arg.at(2)));
     c2= c_strtoi(q2s(arg.at(3)));
   } else {
-    error("set block incorrect len: " + q2s(QString::number(n)));
+    error("set block incorrect length: " + q2s(arg.join(" ")));
     return;
   }
   if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
@@ -440,7 +440,7 @@ void Table::setbackforeground(bool foreground, string s)
   if (0==rws) return;
 
   if (opt.size()<3) {
-    error("set background must specify red green blue [alpha] : " + q2s(opt.join(" ")));
+    error("set background/foreground must specify red green blue [alpha] : " + q2s(opt.join(" ")));
     return;
   }
 
