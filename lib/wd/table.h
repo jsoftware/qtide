@@ -53,6 +53,7 @@ private:
   void setlab(string v);
   void setprotect(string v);
   void setresizecol();
+  void setrowheight(string v);
   void setshape(QStringList);
   void setsort(string v);
   void settype(string v);

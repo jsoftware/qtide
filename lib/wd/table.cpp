@@ -330,6 +330,8 @@ void Table::set(string p, string v)
     setprotect(v);
   else if (p=="resizecol")
     setresizecol();
+  else if (p=="rowheight")
+    setrowheight(v);
   else if (p=="shape")
     setshape(qsplit(v));
   else if (p=="type")
@@ -590,20 +592,29 @@ void Table::setcolwidth(string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QStringList opt;
-  int col,width;
+  int c,c1,c2,cs,i,width;
 
+  c1=col1;
+  c2=col2;
+  if (!((c1>=0 && c1<cls && c2>=-1 && c2<cls && (-1==c2 || c1<=c2)) || (0==cls))) {
+    error("set colwidth col1 col2 out of bound: " + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    return;
+  }
+  if (c2==-1) c2=cls-1;
+  if (0==cls) return;
+  cs=1+(c2-c1);
   opt=qsplit(s);
-  if (!(opt.size()==2)) {
-    error("set colwidth must specify column and width: " + q2s(opt.join(" ")));
+  if (!((opt.size()==1) || opt.size()==cs)) {
+    error("set colwidth must specify a single width or one for each column in block: " + q2s(opt.join(" ")));
     return;
   }
-  col= c_strtoi(q2s(opt.at(0)));
-  width= c_strtoi(q2s(opt.at(1)));
-  if (!(col<cls)) {
-    error("column outside of range: " + q2s(opt.join(" ")));
-    return;
+  bool eqwid= (1==opt.size());
+  i=0;
+  for (c=c1; c<=c2; c++) {
+    width= c_strtoi(q2s(opt.at(i)));
+    w->setColumnWidth(c,width);
+    if (!eqwid) i++;
   }
-  w->setColumnWidth(col,width);
   return;
 }
 
@@ -793,6 +804,37 @@ void Table::setresizecol()
 {
   QTableWidget *w=(QTableWidget*) widget;
   w->resizeColumnsToContents();
+}
+
+// ---------------------------------------------------------------------
+void Table::setrowheight(string s)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt;
+  int r,r1,r2,rs,i,height;
+
+  r1=row1;
+  r2=row2;
+  if (!((r1>=0 && r1<rws && r2>=-1 && r2<rws && (-1==r2 || r1<=r2)) || (0==rws))) {
+    error("set rowheight row1 row2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)));
+    return;
+  }
+  if (r2==-1) r2=rws-1;
+  if (0==rws) return;
+  rs=1+(r2-r1);
+  opt=qsplit(s);
+  if (!((opt.size()==1) || opt.size()==rs)) {
+    error("set rowheight must specify a single height or one for each row in block: " + q2s(opt.join(" ")));
+    return;
+  }
+  bool eqht= (1==opt.size());
+  i=0;
+  for (r=r1; r<=r2; r++) {
+    height= c_strtoi(q2s(opt.at(i)));
+    w->setRowHeight(r,height);
+    if (!eqht) i++;
+  }
+  return;
 }
 
 // ---------------------------------------------------------------------
