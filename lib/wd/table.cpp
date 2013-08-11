@@ -231,7 +231,7 @@ string Table::readcolvalue(int col)
   int r;
 
   for (r=0; r<rws; r++)
-    colout += readcellvalue(r,col) + "\012";
+    colout += readcellvalue(r,col) + "\177";
   return (colout);
 }
 
@@ -242,7 +242,7 @@ string Table::readrowvalue(int row)
   int c;
 
   for (c=0; c<cls; c++)
-    rowout += readcellvalue(row,c) + "\012";
+    rowout += readcellvalue(row,c) + "\177";
   return (rowout);
 }
 
@@ -281,7 +281,7 @@ string Table::readtable(string v)
 
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
-      tableout += readcellvalue(r,c) + "\012";
+      tableout += readcellvalue(r,c) + "\177";
     }
   }
   rc=-1;
