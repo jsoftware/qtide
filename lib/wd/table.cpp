@@ -245,7 +245,6 @@ string Table::readrowvalue(int row)
 string Table::readtable(string v)
 {
   string tableout="";
-  int r,c;
   int r1,r2,c1,c2;
 
   QStringList opt;
@@ -269,14 +268,14 @@ string Table::readtable(string v)
   }
 
   if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-    error("get table row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("get table row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return "";
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
 
-  for (r=r1; r<=r2; r++) {
-    for (c=c1; c<=c2; c++) {
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
       tableout += readcellvalue(r,c) + "\012";
     }
   }
@@ -365,7 +364,7 @@ void Table::setblock(string v)
     return;
   }
   if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-    error("set block row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("set block row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   row1= r1;
@@ -385,14 +384,14 @@ void Table::setalign(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
-    error("set align row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
+    error("set align row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
   if (0==rws || 0==n) return;
-  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
+  bool colmode= (c2-c1+1)==n;
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect align length - ";
@@ -402,20 +401,19 @@ void Table::setalign(string v)
     return;
   }
   if(!vecin(a,CellAligns,"align")) return;
-  int p,q=0;
   if (0==defcellalign.size()) {
     defcellalign=QVector<int>(len,0);
     cellalign=QVector<int>(len,0);
   }
-  for (int i=r1; i<=r2; i++) {
-    for (int j=c1; j<=c2; j++) {
-      p=j + i*cls;
+
+  int q=0;
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
+      int p=c + r*cls;
+      if (colmode && c==c1) q=0;
       defcellalign[p]=a.at(q);
       cellalign[p]=a.at(q);
-      if (n!=1) {
-        q++;
-        if (colmode && q>=cls) q=0;
-      }
+      if (n!=1) q++;
     }
   }
 }
@@ -423,7 +421,6 @@ void Table::setalign(string v)
 // ---------------------------------------------------------------------
 void Table::setbackforeground(bool foreground, string s)
 {
-  int c,r;
   QTableWidget *w=(QTableWidget*) widget;
 
   QStringList opt=qsplit(s);
@@ -434,7 +431,7 @@ void Table::setbackforeground(bool foreground, string s)
   c1=col1;
   c2=col2;
   if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws))) {
-    error("set background/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("set background/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
@@ -455,9 +452,9 @@ void Table::setbackforeground(bool foreground, string s)
 
   QTableWidgetItem *m;
   QWidget *g;
-  QString color= "rgba("+QString().setNum(red)+","+QString().setNum(green)+","+QString().setNum(blue)+","+QString().setNum(alpha)+")";
-  for (r=r1; r<=r2; r++) {
-    for (c=c1; c<=c2; c++) {
+  QString color= "rgba("+QString().setNum(red)+" "+QString().setNum(green)+" "+QString().setNum(blue)+" "+QString().setNum(alpha)+")";
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
       int p= c + r*cls;
       if (0==celltype[p]) {
         if (!(m=w->item(r,c))) {
@@ -570,7 +567,6 @@ void Table::set_cell(int r,int c,QString v)
 // ---------------------------------------------------------------------
 void Table::setcell(string v)
 {
-  int r,c;
   QStringList opt;
 
   opt=qsplit(v);
@@ -578,8 +574,8 @@ void Table::setcell(string v)
     error("set cell must specify row, column, and data: " + q2s(opt.join(" ")));
     return;
   }
-  r=c_strtoi(q2s(opt.at(0)));
-  c=c_strtoi(q2s(opt.at(1)));
+  int r=c_strtoi(q2s(opt.at(0)));
+  int c=c_strtoi(q2s(opt.at(1)));
   if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
     error("cell index out of bounds: " + q2s(opt.join(" ")));
     return;
@@ -597,7 +593,7 @@ void Table::setcolwidth(string s)
   c1=col1;
   c2=col2;
   if (!((c1>=0 && c1<cls && c2>=-1 && c2<cls && (-1==c2 || c1<=c2)) || (0==cls))) {
-    error("set colwidth col1 col2 out of bound: " + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("set colwidth col1 col2 out of bound: " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (c2==-1) c2=cls-1;
@@ -621,7 +617,6 @@ void Table::setcolwidth(string s)
 // ---------------------------------------------------------------------
 void Table::setdata(string s)
 {
-  int c,r;
   QTableWidget *w=(QTableWidget*) widget;
 
   dat=qsplit(s);
@@ -632,14 +627,14 @@ void Table::setdata(string s)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
-    error("set data row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
+    error("set data row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
   if (0==rws || 0==n) return;
-  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
+  bool colmode= (c2-c1+1)==n;
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect data length - ";
@@ -650,13 +645,12 @@ void Table::setdata(string s)
   }
 
   int q=0;
-  for (r=r1; r<=r2; r++) {
-    for (c=c1; c<=c2; c++) {
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
+//    int p= c + r*cls;
+      if (colmode && c==c1) q=0;
       set_cell(r,c,dat[q]);
-      if (n!=1) {
-        q++;
-        if (colmode && q>=cls) q=0;
-      }
+      if (n!=1) q++;
     }
   }
   w->setVisible(false);
@@ -677,7 +671,7 @@ void Table::setfont(string s)
   c1=col1;
   c2=col2;
   if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws))) {
-    error("set font row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+    error("set font row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
@@ -764,14 +758,14 @@ void Table::setprotect(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
-    error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
+    error("set protect row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
   if (0==rws || 0==n) return;
-  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
+  bool colmode= (c2-c1+1)==n;
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect protect length - ";
@@ -785,16 +779,14 @@ void Table::setprotect(string v)
     defcellprotect=QVector<int>(len,0);
     cellprotect=QVector<int>(len,0);
   }
-  int p,q=0;
-  for (int i=r1; i<=r2; i++) {
-    for (int j=c1; j<=c2; j++) {
-      p=j + i*cls;
+  int q=0;
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
+      int p=c + r*cls;
+      if (colmode && c==c1) q=0;
       defcellprotect[p]=a.at(q);
       cellprotect[p]=a.at(q);
-      if (n!=1) {
-        q++;
-        if (colmode && q>=cls) q=0;
-      }
+      if (n!=1) q++;
     }
   }
 }
@@ -816,7 +808,7 @@ void Table::setrowheight(string s)
   r1=row1;
   r2=row2;
   if (!((r1>=0 && r1<rws && r2>=-1 && r2<rws && (-1==r2 || r1<=r2)) || (0==rws))) {
-    error("set rowheight row1 row2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)));
+    error("set rowheight row1 row2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)));
     return;
   }
   if (r2==-1) r2=rws-1;
@@ -888,14 +880,14 @@ void Table::settype(string v)
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && (cls==n || 1==n || 0==n)))) {
-    error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + "," + q2s(QString::number(r2)) + "," + q2s(QString::number(c1)) + "," + q2s(QString::number(c2)));
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
+    error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
   if (0==rws || 0==n) return;
-  bool colmode= (c1==0) && (c2==cls-1) && (n==cls);
+  bool colmode= (c2-c1+1)==n;
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
     QString m="incorrect type length - ";
@@ -909,16 +901,14 @@ void Table::settype(string v)
     defcelltype=QVector<int>(len,0);
     celltype=QVector<int>(len,0);
   }
-  int p,q=0;
-  for (int i=r1; i<=r2; i++) {
-    for (int j=c1; j<=c2; j++) {
-      p=j + i*cls;
+  int q=0;
+  for (int r=r1; r<=r2; r++) {
+    for (int c=c1; c<=c2; c++) {
+      int p=c + r*cls;
+      if (colmode && c==c1) q=0;
       defcelltype[p]=a.at(q);
       celltype[p]=a.at(q);
-      if (n!=1) {
-        q++;
-        if (colmode && q>=cls) q=0;
-      }
+      if (n!=1) q++;
     }
   }
 }
