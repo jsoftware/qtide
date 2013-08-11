@@ -5,6 +5,7 @@
 #include <QTableWidget>
 #include <QComboBox>
 #include <QPushButton>
+#include <QPlainTextEdit>
 
 #include "wd.h"
 #include "table.h"
@@ -168,7 +169,7 @@ void Table::initglobals()
 {
   if (CellAligns.size()) return;
   CellAligns << 0 << 1 << 2;
-  CellTypes << 0 << 100 << 200 << 300 << 400;
+  CellTypes << 0 << 10 << 100 << 200 << 300 << 400;
 }
 
 // ---------------------------------------------------------------------
@@ -194,6 +195,8 @@ string Table::readcell(int row,int col)
   QWidget *g=cellwidget[p];
   if (0==celltype[p])
     return (!m)?"":q2s(m->text());
+  else if (10==celltype[p])
+    return (!g)?"":q2s(((QPlainTextEdit *)g)->toPlainText());
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
@@ -211,6 +214,8 @@ string Table::readcellvalue(int row,int col)
   QWidget *g=cellwidget[p];
   if (0==celltype[p])
     return (!m)?"":q2s(m->text());
+  else if (10==celltype[p])
+    return (!g)?"":q2s(((QPlainTextEdit *)g)->toPlainText());
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
@@ -491,6 +496,25 @@ void Table::set_cell(int r,int c,QString v)
       w->setItem(r,c,m);
     } else
       m->setText(v);
+  } else if (10==celltype[p]) {
+    if (w->item(r,c)) delete w->item(r,c);
+    QWidget *g=cellwidget[p];
+    if (!(g && QString("QPlainTextEdit")==g->metaObject()->className())) {
+      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      QPlainTextEdit *ed=new QPlainTextEdit();
+      ed->setObjectName(QString::number(p));
+      g=cellwidget[p]=(QWidget*) ed;
+      QWidget *m=new QWidget();
+      QHBoxLayout *y=new QHBoxLayout();
+      y->setContentsMargins(0,0,0,0);
+      y->setSpacing(0);
+      y->addStretch(1);
+      y->addWidget(ed);
+      y->addStretch(1);
+      m->setLayout(y);
+      w->setCellWidget(r,c,m);
+    }
+    ((QPlainTextEdit  *)cellwidget[p])->setPlainText(v);
   } else if (100==celltype[p]) {
     if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];
