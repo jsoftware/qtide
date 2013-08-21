@@ -208,7 +208,7 @@ void wd1()
       wdtimer();
     else if (c=="version")
       wdversion();
-    else if ((c=="wh") || (c=="minwh"))
+    else if (c=="minwh")
       wdwh();
 // not yet implemented
     else if (0) {
