@@ -122,6 +122,8 @@ void DateEdit::set(string p,string v)
     i=c_strtoi(q2s(arg.at(0)));
     toymd(i, &y, &m, &d);
     w->setMaximumDate(QDate(y,m,d));
+  } else if (p=="readonly") {
+    w->setReadOnly(remquotes(v)!="0");
   } else if (cmd=="value") {
     i=c_strtoi(q2s(arg.at(0)));
     toymd(i, &y, &m, &d);

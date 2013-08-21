@@ -81,6 +81,8 @@ void TimeEdit::set(string p,string v)
     i=c_strtod(q2s(arg.at(0)));
     totime(i, &h, &m, &se, &mi);
     w->setMaximumTime(QTime(h,m,se,mi));
+  } else if (p=="readonly") {
+    w->setReadOnly(remquotes(v)!="0");
   } else if (cmd=="value") {
     i=c_strtod(q2s(arg.at(0)));
     totime(i, &h, &m, &se, &mi);

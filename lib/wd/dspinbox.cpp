@@ -72,6 +72,8 @@ void DSpinBox::set(string p,string v)
     w->setMinimum(c_strtod(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtod(q2s(arg.at(0))));
+  else if (p=="readonly")
+    w->setReadOnly(remquotes(v)!="0");
   else if (cmd=="step")
     w->setSingleStep(c_strtod(q2s(arg.at(0))));
   else if (cmd=="value")
