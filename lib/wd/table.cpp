@@ -429,8 +429,9 @@ void Table::setbackforeground(bool foreground, string s)
   QTableWidget *w=(QTableWidget*) widget;
 
   QStringList opt=qsplit(s);
+  int n=opt.size();
 
-  int r1,r2,c1,c2;
+  int len1,r1,r2,c1,c2;
   r1=row1;
   r2=row2;
   c1=col1;
@@ -442,36 +443,36 @@ void Table::setbackforeground(bool foreground, string s)
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
   if (0==rws) return;
+  bool colmode= (c2-c1+1)==n;
 
-  if (opt.size()<3) {
-    error("set background/foreground must specify red green blue [alpha] : " + q2s(opt.join(" ")));
+  if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
+    QString m="incorrect back/foreground length - ";
+    m+= "given " + QString::number(n);
+    m+=" cells, require " + QString::number(len1) + " cells";
+    error(q2s(m));
     return;
   }
 
-  int red,green,blue,alpha=255;
-  red= c_strtoi(q2s(opt.at(0)));
-  green= c_strtoi(q2s(opt.at(1)));
-  blue= c_strtoi(q2s(opt.at(2)));
-  if (opt.size()>3) alpha= c_strtoi(q2s(opt.at(3)));
-  QBrush brush = QBrush(QColor(red,green,blue,alpha));
-
   QTableWidgetItem *m;
   QWidget *g;
-  QString color= "rgba("+QString().setNum(red)+" "+QString().setNum(green)+" "+QString().setNum(blue)+" "+QString().setNum(alpha)+")";
+
+  int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
       int p= c + r*cls;
+      if (colmode && c==c1) q=0;
       if (0==celltype[p]) {
         if (!(m=w->item(r,c))) {
           m= newitem(r,c,"");
           w->setItem(r,c,m);
         }
+        QBrush brush = QBrush(QColor(opt.at(q)));
         if (foreground) m->setForeground(brush);
         else m->setBackground(brush);
       } else if ((g=w->cellWidget(r,c))) {
-        if (foreground) g->setStyleSheet("color: " + color);
-        else g->setStyleSheet("background-color: " + color);
+        if (foreground) g->setStyleSheet("color: " + opt.at(q));
       }
+      if (n!=1) q++;
     }
   }
 }
