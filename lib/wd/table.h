@@ -42,7 +42,7 @@ private:
   void set_cell(int r,int c,QString v);
 
   void setalign(string v);
-  void setbackforeground(bool foreground, string s);
+  void setbackforeground(int colortype, string s);
   void setblock(string v);
   void setcell(string v);
   void setcolwidth(string v);

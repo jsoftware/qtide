@@ -313,9 +313,11 @@ void Table::set(string p, string v)
   if (p=="align")
     setalign(v);
   else if (p=="background")
-    setbackforeground(false,v);
+    setbackforeground(0,v);
   else if (p=="block")
     setblock(v);
+  else if (p=="color")
+    setbackforeground(2,v);
   else if (p=="colwidth")
     setcolwidth(v);
   else if (p=="data")
@@ -323,7 +325,7 @@ void Table::set(string p, string v)
   else if (p=="font")
     setfont(v);
   else if (p=="foreground")
-    setbackforeground(true,v);
+    setbackforeground(1,v);
   else if (p=="hdr")
     sethdr(v);
   else if (p=="hdralign")
@@ -424,25 +426,32 @@ void Table::setalign(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setbackforeground(bool foreground, string s)
+void Table::setbackforeground(int colortype, string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
 
   QStringList opt=qsplit(s);
+  int len1,r1,r2,c1,c2;
   int n=opt.size();
 
-  int len1,r1,r2,c1,c2;
+  if (2==colortype) {
+    if (!(0==n%2)) {
+      error("set color requires paired background and foreground values");
+      return;
+    }
+    n=n/2;
+  }
   r1=row1;
   r2=row2;
   c1=col1;
   c2=col2;
-  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws))) {
-    error("set background/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
+  if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
+    error("set back/foreground row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
   }
   if (r2==-1) r2=rws-1;
   if (c2==-1) c2=cls-1;
-  if (0==rws) return;
+  if (0==rws || 0==n) return;
   bool colmode= (c2-c1+1)==n;
 
   if (!(n==1 || n== (len1=(r2-r1+1)*(c2-c1+1)) || colmode)) {
@@ -455,7 +464,7 @@ void Table::setbackforeground(bool foreground, string s)
 
   QTableWidgetItem *m;
   QWidget *g;
-
+  QBrush brush,brush2;
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
@@ -466,13 +475,26 @@ void Table::setbackforeground(bool foreground, string s)
           m= newitem(r,c,"");
           w->setItem(r,c,m);
         }
-        QBrush brush = QBrush(QColor(opt.at(q)));
-        if (foreground) m->setForeground(brush);
-        else m->setBackground(brush);
+        brush = QBrush(QColor(opt.at(q)));  
+        if (0==colortype) m->setBackground(brush);
+        else if (1==colortype) m->setForeground(brush);
+        else if (2==colortype) {
+          m->setBackground(brush);
+          brush2 = QBrush(QColor(opt.at(q+1)));
+          m->setForeground(brush2);
+        }
       } else if ((g=w->cellWidget(r,c))) {
-        if (foreground) g->setStyleSheet("color: " + opt.at(q));
+          if ((0==colortype) && (200>celltype[p])) g->setStyleSheet("background-color: " + opt.at(q));
+          else if (1==colortype) g->setStyleSheet("color: " + opt.at(q));
+          else if (2==colortype) {
+            if (200>celltype[p]) g->setStyleSheet("background-color: " + opt.at(q) + "; color: " + opt.at(q+1));
+            else  g->setStyleSheet("color: " + opt.at(q+1));
+          }
       }
-      if (n!=1) q++;
+      if (n!=1) {
+        q++;
+        if (2==colortype) q++;
+      }
     }
   }
 }
