@@ -265,7 +265,7 @@ void wdclipcopyx()
   string p=cmd.getparms();
   if ("image"==n) {
     if (wdclipwriteimage((char *)p.c_str()))
-      error("clipboard error: " + n + " " + p);
+      error("clipboard or filename error: " + n + " " + p);
   } else
     error("clipboard format not supported: " + n);
 }
@@ -295,7 +295,7 @@ void wdclippastex()
   char *m;
   if ("image"==n) {
     if (!(m=(char *)wdclipreadimage((char *)p.c_str())))
-      error("clipboard or filename error: " + n);
+      error("clipboard or filename error: " + n + " " + p);
   } else
     error("clipboard format not supported: " + n);
 }
