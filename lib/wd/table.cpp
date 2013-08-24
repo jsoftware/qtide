@@ -475,7 +475,7 @@ void Table::setbackforeground(int colortype, string s)
           m= newitem(r,c,"");
           w->setItem(r,c,m);
         }
-        brush = QBrush(QColor(opt.at(q)));  
+        brush = QBrush(QColor(opt.at(q)));
         if (0==colortype) m->setBackground(brush);
         else if (1==colortype) m->setForeground(brush);
         else if (2==colortype) {
@@ -484,12 +484,12 @@ void Table::setbackforeground(int colortype, string s)
           m->setForeground(brush2);
         }
       } else if ((g=w->cellWidget(r,c))) {
-          if ((0==colortype) && (200>celltype[p])) g->setStyleSheet("background-color: " + opt.at(q));
-          else if (1==colortype) g->setStyleSheet("color: " + opt.at(q));
-          else if (2==colortype) {
-            if (200>celltype[p]) g->setStyleSheet("background-color: " + opt.at(q) + "; color: " + opt.at(q+1));
-            else  g->setStyleSheet("color: " + opt.at(q+1));
-          }
+        if ((0==colortype) && (200>celltype[p])) g->setStyleSheet("background-color: " + opt.at(q));
+        else if (1==colortype) g->setStyleSheet("color: " + opt.at(q));
+        else if (2==colortype) {
+          if (200>celltype[p]) g->setStyleSheet("background-color: " + opt.at(q) + "; color: " + opt.at(q+1));
+          else  g->setStyleSheet("color: " + opt.at(q+1));
+        }
       }
       if (n!=1) {
         q++;

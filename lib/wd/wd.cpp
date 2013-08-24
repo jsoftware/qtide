@@ -14,6 +14,7 @@ extern QPrinter *Printer;
 #include "wd.h"
 #include "bitmap.h"
 #include "child.h"
+#include "clipboard.h"
 #include "cmd.h"
 #include "font.h"
 #include "form.h"
@@ -42,6 +43,10 @@ extern "C" {
 void wd1();
 void wdbin();
 void wdcc();
+void wdclipcopy();
+void wdclipcopyx();
+void wdclippaste();
+void wdclippastex();
 void wdcmd();
 void wdcn();
 void wddefprint();
@@ -161,6 +166,14 @@ void wd1()
       wdbin();
     else if (c=="cc")
       wdcc();
+    else if (c=="clipcopy")
+      wdclipcopy();
+    else if (c=="clipcopyx")
+      wdclipcopyx();
+    else if (c=="clippaste")
+      wdclippaste();
+    else if (c=="clippastex")
+      wdclippastex();
     else if (c=="cmd")
       wdcmd();
     else if (c=="cn")
@@ -236,6 +249,55 @@ void wdcc()
   p=cmd.getparms();
   if (form->pane->addchild(n,c,p)) return;
   error ("child not supported: " + c);
+}
+
+// ---------------------------------------------------------------------
+void wdclipcopy()
+{
+  string p=cmd.getparms();
+  wdclipwrite((char *)p.c_str());
+}
+
+// ---------------------------------------------------------------------
+void wdclipcopyx()
+{
+  string n=cmd.getid();
+  string p=cmd.getparms();
+  if ("image"==n) {
+    if (wdclipwriteimage((char *)p.c_str()))
+      error("clipboard error: " + n + " " + p);
+  } else
+    error("clipboard format not supported: " + n);
+}
+
+// ---------------------------------------------------------------------
+void wdclippaste()
+{
+  string p=cmd.getparms();
+  int len=-1;
+  char *m;
+  if ((m=(char *)wdclipread(&len))) {
+    rc=-1;
+    result= std::string(m,len);
+  } else if ("1"==p)
+    error("clipboard is empty");
+  else {
+    rc=-1;
+    result= "";
+  }
+}
+
+// ---------------------------------------------------------------------
+void wdclippastex()
+{
+  string n=cmd.getid();
+  string p=cmd.getparms();
+  char *m;
+  if ("image"==n) {
+    if (!(m=(char *)wdclipreadimage((char *)p.c_str())))
+      error("clipboard or filename error: " + n);
+  } else
+    error("clipboard format not supported: " + n);
 }
 
 // ---------------------------------------------------------------------
