@@ -52,14 +52,14 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
   jclass ap,ac;
   qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
   qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
-  ap=jnienv->FindClass("com/jsoftware/android/qtide/QtApplication");
-  ac=jnienv->FindClass("com/jsoftware/android/qtide/QtActivity");
+  ap=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtApplication");
+  ac=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtActivity");
   qtapp=(jclass)jnienv->NewGlobalRef(ap);
   qtact=(jclass)jnienv->NewGlobalRef(ac);
   jnienv->DeleteLocalRef(ap);
   jnienv->DeleteLocalRef(ac);
-  qDebug() << "com/jsoftware/android/qtide/QtApplication jclass " << QString::number((long)qtapp);
-  qDebug() << "com/jsoftware/android/qtide/QtActivity jclass " << QString::number((long)qtact);
+  qDebug() << "org/qtproject/qt5/android/bindings/QtApplication jclass " << QString::number((long)qtapp);
+  qDebug() << "org/qtproject/qt5/android/bindings/QtActivity jclass " << QString::number((long)qtact);
 
   return JNI_VERSION_1_6;
 }

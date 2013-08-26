@@ -1,3 +1,5 @@
+equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 
 android:{
           CONFIG += mobility

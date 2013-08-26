@@ -302,6 +302,7 @@ bool Ntabs::tabsave(int index)
   return true;
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 bool Ntabs::tabprint(int index)
 {
@@ -310,6 +311,7 @@ bool Ntabs::tabprint(int index)
   e->print(config.Printer);
   return true;
 }
+#endif
 
 // ---------------------------------------------------------------------
 bool Ntabs::tabsaveall()
@@ -325,6 +327,7 @@ bool Ntabs::tabsaveall()
   return r;
 }
 
+#ifndef ANDROID
 // ---------------------------------------------------------------------
 bool Ntabs::tabprintall()
 {
@@ -338,6 +341,7 @@ bool Ntabs::tabprintall()
   pnote->siderefresh();
   return r;
 }
+#endif
 
 // ---------------------------------------------------------------------
 void Ntabs::tabsaveas(int index)

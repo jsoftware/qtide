@@ -28,8 +28,10 @@ public:
   void tabrestore(int index);
   bool tabsave(int index);
   bool tabsaveall();
+#ifndef ANDROID
   bool tabprint(int index);
   bool tabprintall();
+#endif
   void tabsaveas(int index);
   int tabsaveOK(int index);
   void tabsetindex(int index);

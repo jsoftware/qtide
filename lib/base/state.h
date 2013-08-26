@@ -1,6 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <QtPrintSupport/QPrinter>
 #include <QObject>
 #include <QDir>
 #include <QFont>

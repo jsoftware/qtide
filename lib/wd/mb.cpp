@@ -27,8 +27,13 @@
 #include <QTextDocument>
 
 #ifndef ANDROID
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintDialog>
+#else
 #include <QPrinter>
 #include <QPrintDialog>
+#endif
 extern QPrinter *Printer;
 #endif
 
@@ -289,9 +294,11 @@ QString mbprint(bool iftext)
       case QPrinter::PdfFormat :
         r="_pdf:" + Printer->outputFileName();
         break;
+#ifndef QT50
       case QPrinter::PostScriptFormat :
         r="_ps:" + Printer->outputFileName();
         break;
+#endif
       default :
         r=Printer->printerName();
         break;

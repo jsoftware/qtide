@@ -3,8 +3,13 @@
 #include <QFont>
 #include <QFontDialog>
 #ifndef ANDROID
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintDialog>
+#else
 #include <QPrinter>
 #include <QPrintDialog>
+#endif
 #endif
 #include <QTextDocument>
 

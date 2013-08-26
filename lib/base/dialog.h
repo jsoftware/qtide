@@ -1,4 +1,5 @@
 
+class QPrinter;
 class QTextDocument;
 
 QString dialogdirectory(QWidget *w,QString t,QString p);

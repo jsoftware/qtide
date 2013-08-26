@@ -617,7 +617,9 @@ Favs::Favs(Dirm *d)
 
   w->resizeColumnsToContents();
   w->setAlternatingRowColors(true);
+#ifndef QT50
   w->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+#endif
   w->verticalHeader()->setVisible(false);
   w->setSelectionBehavior(QAbstractItemView::SelectRows);
   w->setSelectionMode(QAbstractItemView::SingleSelection);

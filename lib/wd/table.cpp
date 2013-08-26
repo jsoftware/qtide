@@ -60,10 +60,12 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->selectRow(0);
   }
 
+#ifndef QT50
   if (opt.contains("sortable")) {
     w->horizontalHeader()->setClickable(true);
     connect(w->horizontalHeader(),SIGNAL(sectionDoubleClicked(int)),this,SLOT(on_headerClicked(int)));
   }
+#endif
 
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));

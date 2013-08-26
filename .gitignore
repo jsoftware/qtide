@@ -16,6 +16,7 @@ run.sh
 android/bin/
 android/gen/
 android/libs/
+android/assets/--Managed_by_Qt_Creator--/
 local.properties
 
 jqt.xcodeproj

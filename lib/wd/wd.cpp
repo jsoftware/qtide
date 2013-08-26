@@ -4,10 +4,14 @@
 #include <QLayout>
 #include <QTimer>
 #include <QSysInfo>
-#include <QPrinter>
-
 #ifndef ANDROID
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrinterInfo>
+#else
+#include <QPrinter>
 #include <QPrinterInfo>
+#endif
 extern QPrinter *Printer;
 #endif
 

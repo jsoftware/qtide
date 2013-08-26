@@ -10,7 +10,7 @@ android:{
           TEMPLATE = lib
           TARGET = ../bin/jqt
           DEFINES += "ANDROID" }
-else {    TEMPLATE = lib
+else: {    TEMPLATE = lib
           TARGET = ../bin/jqt }
 
 OBJECTS_DIR = build
@@ -18,20 +18,22 @@ MOC_DIR = build
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-QT += webkit
+!android: QT += webkit
 QT += opengl
-# android:QT -= opengl
+equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5):!android: QT += webkitwidgets
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
-DEFINES += "QT_WEBKIT"
+!android: DEFINES += "QT_WEBKIT"
 DEFINES += "QT_OPENGL"
-# android:DEFINES -= "QT_OPENGL"
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
+equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
+android: DEFINES += QT_OPENGL_ES_2
 
 # Input
 HEADERS += \
@@ -57,6 +59,7 @@ HEADERS += \
 
 android:SOURCES -= wd/glz.h wd/prtobj.h
 # android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+android:HEADERS -= wd/webview.h
 android:HEADERS += base/qtjni.h
 
 SOURCES += \
@@ -85,6 +88,7 @@ SOURCES += \
 
 android:SOURCES -= wd/glz.cpp wd/prtobj.cpp
 # android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
+android:SOURCES -= wd/webview.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc

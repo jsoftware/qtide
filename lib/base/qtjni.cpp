@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QPlatformNativeInterface>
 #include <QDebug>
 #include "qtjni.h"
 #include "base.h"
@@ -8,18 +7,25 @@ static JNIEnv *jnienv=0;
 static jclass qtapp = 0;
 static jclass qtact= 0;
 
+#ifdef QT50
+#define ATTACHTHREAD
+#define DETACHTHREAD
+#else
 #define ATTACHTHREAD jnivm->AttachCurrentThread(&jnienv, NULL);
 #define DETACHTHREAD jnivm->DetachCurrentThread();
+#endif
 
 void javaOnLoad (void *vm,jclass app,jclass act)
 {
   jnivm = (JavaVM *)vm;
   qtapp = app;
   qtact = act;
+#ifndef QT50
   if (jnivm->AttachCurrentThread(&jnienv, 0)) {
     qDebug() << "javaOnLoad AttachCurrentThread failed";
     return;
   }
+#endif
   jnivm->DetachCurrentThread();
   qDebug() << "javaOnLoad DetachCurrentThread";
 }

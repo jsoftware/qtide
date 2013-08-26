@@ -3,7 +3,11 @@
 #include <cmath>
 #endif
 
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#else
 #include <QPrinter>
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -647,7 +651,11 @@ int glzqresolution ()
 enum ColorMode { Color, GrayScale }
 enum DuplexMode { DuplexNone, DuplexAuto, DuplexLongSide, DuplexShortSide }
 enum Orientation { Portrait, Landscape }
+#ifdef QT50
+enum OutputFormat { NativeFormat, PdfFormat }
+#else
 enum OutputFormat { NativeFormat, PdfFormat, PostScriptFormat }
+#endif
 enum PageOrder { FirstPageFirst, LastPageFirst }
 enum PaperSize { A0, A1, A2, A3, ..., Custom }
 enum PaperSource { Auto, Cassette, Envelope, EnvelopeManual, ..., SmallFormat }
@@ -818,7 +826,9 @@ int glzprinter (char *printername)
   } else {
     QString p=s2q(printername);
     if (p==s2q("_pdf")) Printer->setOutputFormat(QPrinter::PdfFormat);
+#ifndef QT50
     else if (p==s2q("_ps")) Printer->setOutputFormat(QPrinter::PostScriptFormat);
+#endif
     else return 1;
   }
   return !Printer->isValid();

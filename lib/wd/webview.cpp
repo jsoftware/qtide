@@ -1,5 +1,9 @@
 
+#ifdef QT50
+#include <QtWebKitWidgets>
+#else
 #include <QtWebKit>
+#endif
 #include <QDir>
 
 #include "wd.h"

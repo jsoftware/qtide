@@ -3,7 +3,11 @@
 #include <QApplication>
 #include <QDate>
 #ifndef ANDROID
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#else
 #include <QPrinter>
+#endif
 #endif
 #include <QSettings>
 #include <QSyntaxHighlighter>
@@ -24,7 +28,9 @@
 #include "../wd/form.h"
 
 #ifdef ANDROID
+#ifndef QT50
 #include <QAndroidStyle>
+#endif
 extern "C" void javaOnLoad(void *,void *,void *);
 #endif
 
@@ -371,9 +377,11 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
 {
 #ifdef ANDROID
   javaOnLoad(vm,qtapp,qtact);
+#ifndef QT50
   QAndroidStyle *androidStyle = new QAndroidStyle();
   QApplication::setPalette(androidStyle->standardPalette());
   QApplication::setStyle(androidStyle);
+#endif
 #endif
   LibName=lib;
   state_init_resource();
