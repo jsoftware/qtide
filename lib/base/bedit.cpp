@@ -46,7 +46,7 @@ void Bedit::highlightCurrentLine()
 
   if (!isReadOnly()) {
     QTextEdit::ExtraSelection selection;
-    QColor lineColor = (type==1)?config.TermHigh.color:config.EditHigh.color;
+    QColor lineColor = (type==0)?config.TermHigh.color:config.EditHigh.color;
     selection.format.setBackground(lineColor);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = textCursor();
@@ -66,7 +66,7 @@ void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
   }
 
   QPainter painter(lineNumberArea);
-  QColor fillColor = (type==1)?config.TermHigh.color:config.EditHigh.color;
+  QColor fillColor = (type==0)?config.TermHigh.color:config.EditHigh.color;
   painter.fillRect(event->rect(), fillColor);
 
   QTextBlock block = firstVisibleBlock();
