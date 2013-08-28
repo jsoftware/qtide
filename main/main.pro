@@ -7,7 +7,7 @@ android:{
           TEMPLATE = lib
           TARGET = ../bin/qtide
           DEFINES += "ANDROID" }
-else {    TEMPLATE = app
+else:{    TEMPLATE = app
           TARGET = ../bin/jqt }
 win32-msvc*:TARGET = ../bin/jqtx
 DEPENDPATH += .

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [ "5" = ${QT_SELECT} ]; then
-QM=$HOME/Qt5.1.0/5.1.0/android_armv7/bin/qmake
+# QM=$HOME/Qt5.1.0/5.1.0/android_armv7/bin/qmake
+QM=qmake
 LIBS=armeabi-v7a
 else
 QM=qmake
