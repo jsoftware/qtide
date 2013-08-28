@@ -1,5 +1,5 @@
-#ifndef EDIT_H
-#define EDIT_H
+#ifndef BEDIT_H
+#define BEDIT_H
 
 #include <QPlainTextEdit>
 
