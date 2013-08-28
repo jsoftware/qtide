@@ -90,7 +90,11 @@ int gl_qhandles(void **p)
   *p = (void *)opengl;
 #ifdef _WIN32
   Opengl2 *w = (Opengl2 *)opengl->widget;
+#ifndef QT50
   if (w) *(p+1) = (void *)w->getDC();
+#else
+  if (w) *(p+1) = (void *)0;
+#endif
   else *(p+1) = (void *)0;
 #else
   *(p+1) = (void *)0;

@@ -29,7 +29,11 @@ void Editm::cmd(string p,string v)
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef ANDROID
+#ifdef QT50
+    w->print((QPagedPaintDevice *)config.Printer);
+#else
     w->print(config.Printer);
+#endif
 #else
     Q_UNUSED(w);
 #endif

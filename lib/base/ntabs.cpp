@@ -308,7 +308,11 @@ bool Ntabs::tabprint(int index)
 {
   if (index<0) return true;
   Nedit *e=(Nedit *)widget(index);
+#ifdef QT50
+  e->print((QPagedPaintDevice *)config.Printer);
+#else
   e->print(config.Printer);
+#endif
   return true;
 }
 #endif

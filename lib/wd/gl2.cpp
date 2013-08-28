@@ -91,7 +91,11 @@ int glqhandles(void **p)
   *p = (void *)isigraph;
 #ifdef _WIN32
   Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+#ifndef QT50
   if (w) *(p+1) = (void *)w->getDC();
+#else
+  if (w) *(p+1) = (void *)0;
+#endif
   else *(p+1) = (void *)0;
 #else
   *(p+1) = (void *)0;
