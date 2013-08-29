@@ -2,7 +2,7 @@
 #include <QFileDialog>
 #include <QFont>
 #include <QFontDialog>
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
@@ -20,7 +20,7 @@
 #include "state.h"
 #include "tedit.h"
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 QPrinter *Printer;
 #endif
 
@@ -63,7 +63,7 @@ QString dialogfileopen(QWidget *w,QString t)
   return QFileDialog::getOpenFileName(w,t,d,config.FilePatterns);
 }
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTDIALOG
 // ---------------------------------------------------------------------
 void dialogprint(QWidget *w,QTextDocument *d)
 {

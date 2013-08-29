@@ -8,7 +8,7 @@
 #include "base.h"
 #include "style.h"
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 class QPrinter;
 #endif
 class QSyntaxHighlighter;
@@ -85,7 +85,7 @@ public:
   int OpenTabAt;
   QString Pass;
   int Port;
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   QPrinter *Printer;
 #endif
   QString ProjExt;
@@ -153,7 +153,7 @@ void var_run(QString s);
 void var_runs(QString s);
 void var_set(QString s, QString t);
 
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
 #else
 extern "C" {

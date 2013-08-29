@@ -76,7 +76,7 @@ public slots:
   void on_fileopensystemAct_triggered();
   void on_fileopentempAct_triggered();
   void on_fileopenuserAct_triggered();
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   void on_fileprintAct_triggered();
 #endif
   void on_filequitAct_triggered();

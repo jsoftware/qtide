@@ -5,8 +5,7 @@ android:{
           CONFIG += mobility
           MOBILITY +=
           TEMPLATE = lib
-          TARGET = ../bin/qtide
-          DEFINES += "ANDROID" }
+          TARGET = ../bin/qtide }
 else:{    TEMPLATE = app
           TARGET = ../bin/jqt }
 win32-msvc*:TARGET = ../bin/jqtx

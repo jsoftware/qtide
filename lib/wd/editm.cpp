@@ -28,7 +28,7 @@ void Editm::cmd(string p,string v)
   QPlainTextEdit *w=(QPlainTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
     w->print((QPagedPaintDevice *)config.Printer);
 #else

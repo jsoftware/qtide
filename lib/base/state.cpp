@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QDate>
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #else
@@ -27,10 +27,7 @@
 #include "../high/high.h"
 #include "../wd/form.h"
 
-#ifdef ANDROID
-#ifndef QT50
-#include <QAndroidStyle>
-#endif
+#ifdef Q_OS_ANDROID
 extern "C" void javaOnLoad(void *,void *,void *);
 #endif
 
@@ -118,7 +115,7 @@ void Config::init()
   ProFont.setFamily("SansSerif 10");
 #endif
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   Printer=new QPrinter(QPrinter::HighResolution);
 #endif
 
@@ -336,12 +333,7 @@ bool state_init(int argc, char *argv[])
 // ---------------------------------------------------------------------
 void state_init_args(int *argc, char *argv[])
 {
-#ifdef ANDROID
-//  config.SingleWin=true;
   config.SingleWin=false;
-#else
-  config.SingleWin=false;
-#endif
   int n=*argc;
   for(int i=1; i<n; i++)
     if (!strcmp(argv[i],"-singlewin")) {
@@ -369,21 +361,26 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
 int state_run(int argc, char *argv[],QApplication *app,QString lib,void *vm,void *qtapp,void *qtact)
 #else
 int state_run(int argc, char *argv[],QApplication *app,QString lib)
 #endif
 {
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
   javaOnLoad(vm,qtapp,qtact);
-#ifndef QT50
-  QAndroidStyle *androidStyle = new QAndroidStyle();
-  QApplication::setPalette(androidStyle->standardPalette());
-  QApplication::setStyle(androidStyle);
-#endif
 #endif
   LibName=lib;
+#ifdef Q_OS_ANDROID
+  if (LibName.left(8)=="/system/") {
+    QString f1="/mnt/asec/com.jsoftware.android.qtide-1/lib/libjqt.so";
+    QString f2="/mnt/asec/com.jsoftware.android.qtide-2/lib/libjqt.so";
+    QString f3="/mnt/asec/com.jsoftware.android.qtide-3/lib/libjqt.so";
+    if (QFile::exists(f1)) LibName=f1;
+    else if (QFile::exists(f2)) LibName=f2;
+    else if (QFile::exists(f3)) LibName=f3;
+  }
+#endif
   state_init_resource();
   setlocale(1,"C");
   state_appname();

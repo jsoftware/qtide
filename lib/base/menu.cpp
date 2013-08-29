@@ -75,7 +75,7 @@ void Menu::createActions()
   fileopentempAct = makeact("fileopentempAct","&Open temp","Ctrl+O");
   fileopenuserAct = makeact("fileopenuserAct","&Open user","");
   fileopensystemAct = makeact("fileopensystemAct","&Open system","");
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   fileprintAct = makeact("fileprintAct","&Print","");
   fileprintallAct = makeact("fileprintallAct","Print all","");
 #endif
@@ -159,7 +159,7 @@ void Menu::createActions()
   ScriptEnable << clipcopyAct << clipcutAct << clippasteAct
                << editfiwAct << filecloseAct << filecloseallAct << filecloseotherAct
                << filedeleteAct
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
                << fileprintAct << fileprintallAct
 #endif
                << filesaveAct << filesaveallAct
@@ -233,24 +233,8 @@ void Menu::createeditMenu(QString s)
   }
   editMenu->addSeparator();
   editMenu->addAction(editfontAct);
-// TODO wrokaround necessitas bug
-#ifdef ANDROID
-  editMenu->addAction(cfgbaseAct);
-  editMenu->addAction(cfgdirmAct);
-  editMenu->addAction(cfgfoldersAct);
-  editMenu->addAction(cfglaunchpadAct);
-  if (config.AppName=="jqt") {
-    editMenu->addAction(cfgqtideAct);
-    editMenu->addAction(cfgstyleAct);
-    editMenu->addSeparator();
-    editMenu->addAction(cfgstartupAct);
-  }
-  editMenu->addSeparator();
-  editMenu->addAction(cfgopenallAct);
-#else
   cfgMenu = editMenu->addMenu("Configure");
   createcfgMenu();
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -270,7 +254,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addAction(filesaveasAct);
     fileMenu->addAction(filesaveallAct);
     fileMenu->addSeparator();
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
     fileMenu->addAction(fileprintAct);
     fileMenu->addAction(fileprintallAct);
 #endif
@@ -293,7 +277,7 @@ void Menu::createfileMenu(QString s)
       fileMenu->addAction(filereloadAct);
     }
     fileMenu->addSeparator();
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
     fileMenu->addAction(fileprintAct);
 #endif
   }
@@ -464,6 +448,9 @@ void Menu::createviewMenu(QString s)
   if (s == "note") {
     viewMenu->addAction(viewsidebarAct);
     viewMenu->addAction(viewterminalAct);
+#ifndef Q_OS_ANDROID
+    viewMenu->addAction(vieweditorAct);
+#endif
   } else
     viewMenu->addAction(vieweditorAct);
   viewMenu->addSeparator();
@@ -675,7 +662,7 @@ void Note::on_fileopentempAct_triggered()
   openfile(this,"temp");
 }
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
 void Note::on_fileprintAct_triggered()
 {
@@ -694,7 +681,11 @@ void Note::on_fileprintallAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_filequitAct_triggered()
 {
+#ifndef Q_OS_ANDROID
   closeit();
+#else
+  term->filequit();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -1021,6 +1012,12 @@ void Note::on_viewsidebarAct_triggered()
 void Note::on_viewterminalAct_triggered()
 {
   term->activate();
+#ifdef Q_OS_ANDROID
+  note->setVisible(false);
+  term->activateWindow();
+  term->raise();
+  term->repaint();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -1257,7 +1254,7 @@ void Term::on_fileopensystemAct_triggered()
   openfile(this,"system");
 }
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
 void Term::on_fileprintAct_triggered()
 {

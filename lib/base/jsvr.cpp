@@ -1,4 +1,3 @@
-#include <QApplication>
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
@@ -13,7 +12,8 @@
 #include "jsvr.h"
 #include "util.h"
 
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
+#include <QDir>
 #include <sys/stat.h>
 #endif
 
@@ -166,9 +166,9 @@ void jepath(char* arg)
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
-#elif defined(ANDROID)
+#elif defined(Q_OS_ANDROID)
   Q_UNUSED(arg);
-  strcpy(path,QCoreApplication::applicationDirPath().toUtf8().data());
+  strcpy(path,(QDir::currentPath()+"/../lib").toUtf8().data());
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -243,7 +243,7 @@ int jefirst(int type,char* arg)
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
 
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
   Q_UNUSED(p);
   Q_UNUSED(q);
   char *homepath;
@@ -314,7 +314,7 @@ int jefirst(int type,char* arg)
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
   strcat(input,homepath);
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");

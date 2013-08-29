@@ -5,26 +5,26 @@
         android:enabled="true"
         android:hasCode="true"
         android:persistent="true">
-        <activity android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden|navigation" android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtActivity">
+        <activity android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden|navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:resource="@array/qt_sources" android:name="android.app.qt_sources_resource_id"/>
+            <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
             <meta-data android:value="@string/repository" android:name="android.app.repository"/>
-            <meta-data android:resource="@array/qt_libs" android:name="android.app.qt_libs_resource_id"/>
-            <meta-data android:resource="@array/bundled_libs" android:name="android.app.bundled_libs_resource_id"/>
+            <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
+            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <meta-data android:value="jqt" android:name="android.app.lib_name"/>
             <!-- Deploy Qt libs as part of package -->
             <meta-data android:value="1" android:name="android.app.bundle_local_qt_libs"/>
-            <meta-data android:resource="@array/bundled_in_lib" android:name="android.app.bundled_in_lib_resource_id"/>
-            <meta-data android:resource="@array/bundled_in_assets" android:name="android.app.bundled_in_assets_resource_id"/>
+            <meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/>
+            <meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/>
             <!-- Run with local libs -->
             <meta-data android:value="1" android:name="android.app.use_local_qt_libs"/>
             <meta-data android:value="/data/local/tmp/qt/" android:name="android.app.libs_prefix"/>
-            <meta-data android:value="libs/libgnustl_shared.so:plugins/mediaservice/libandroidmediaplayer.so:lib/libQt5MultimediaQuick_p.so:plugins/platforms/android/libqtforandroidGL.so:lib/libQt5QuickParticles.so:plugins/sensors/libqtsensors_android.so:" android:name="android.app.load_local_libs"/>
-            <meta-data android:value="jar/QtAndroid-bundled.jar:jar/QtMultimedia-bundled.jar:jar/QtSensors-bundled.jar:" android:name="android.app.load_local_jars"/>
-            <meta-data android:value="org.qtproject.qt5.android.multimedia.QtAndroidMediaPlayer:org.qtproject.qt5.android.sensors.QtSensors:" android:name="android.app.static_init_classes"/>
+            <meta-data android:value="libs/libgnustl_shared.so:plugins/platforms/android/libqtforandroidGL.so:" android:name="android.app.load_local_libs"/>
+            <meta-data android:value="jar/QtAndroid-bundled.jar:" android:name="android.app.load_local_jars"/>
+            <meta-data android:value=":" android:name="android.app.static_init_classes"/>
             <!--  Messages maps -->
             <meta-data android:value="@string/ministro_not_found_msg" android:name="android.app.ministro_not_found_msg"/>
             <meta-data android:value="@string/ministro_needed_msg" android:name="android.app.ministro_needed_msg"/>
@@ -35,7 +35,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <supports-screens android:smallScreens="true" android:largeScreens="true" android:normalScreens="true" android:anyDensity="true"/>
+    <supports-screens android:anyDensity="true" android:normalScreens="true" android:smallScreens="true" android:largeScreens="true"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.PERSISTENT_ACTIVITY"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

@@ -89,7 +89,7 @@ private:
   QAction *fileopensystemAct;
   QAction *fileopentempAct;
   QAction *fileopenuserAct;
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   QAction *fileprintAct;
   QAction *fileprintallAct;
 #endif

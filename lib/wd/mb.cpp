@@ -26,7 +26,7 @@
 #include <QMessageBox>
 #include <QTextDocument>
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
@@ -245,7 +245,7 @@ QString mbopen1()
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
-#ifdef ANDROID
+#ifdef QT_NO_PRINTER
   Q_UNUSED(iftext);
   return "";
 #else
@@ -317,7 +317,7 @@ QString mbprint(bool iftext)
 // print with no dialog
 QString mbprintx(bool iftext)
 {
-#ifdef ANDROID
+#ifdef QT_NO_PRINTER
   Q_UNUSED(iftext);
 #else
   if (arg.size()==0) {

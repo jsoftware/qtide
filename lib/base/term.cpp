@@ -82,9 +82,6 @@ Term::Term()
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
   QMetaObject::connectSlotsByName(this);
-#ifdef ANDROID
-  activate();
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -105,6 +102,11 @@ void Term::closeEvent(QCloseEvent *event)
 bool Term::filequit()
 {
   dlog_write();
+#ifdef Q_OS_ANDROID
+  state_quit();
+  QApplication::quit();
+  return true;
+#else
   if (note && (!note->saveall())) return false;
   if (note2 && (!note2->saveall())) return false;
   if ((!config.ConfirmClose) ||
@@ -114,6 +116,7 @@ bool Term::filequit()
     return true;
   } else
     return false;
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -213,18 +216,31 @@ void Term::vieweditor()
 {
   if (note)
     note->activate();
+#if Q_OS_ANDORID
+  term->setVisible(false);
+  note->activateWindow();
+  note->raise();
+  note->repaint();
+#endif
   else {
     note = new Note();
     if (recent.ProjectOpen)
       note->projectopen(true);
     note->show();
+#if Q_OS_ANDORID
+    term->setVisible(false);
+    note->activateWindow();
+    note->raise();
+    note->repaint();
+#endif
   }
 }
 
 // ---------------------------------------------------------------------
 void smact()
 {
-#ifndef ANDROID
-  term->activate();
-#endif
+  if (!term->isVisible()) return;
+  term->activateWindow();
+  term->raise();
+  term->repaint();
 }

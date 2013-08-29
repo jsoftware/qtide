@@ -98,7 +98,7 @@ int Jcon::init(int argc, char* argv[])
   if(!jt) {
     char m[1000];
     jefail(m), fputs(m,stdout);
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
     info("Server","jeload failed: " + QString(m));
 #endif
     exit(1);

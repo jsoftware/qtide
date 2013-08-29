@@ -4,11 +4,6 @@
 #include "nedit.h"
 #include "state.h"
 #include "term.h"
-#ifdef QT50
-#include <QtPrintSupport/QPrinter>
-#else
-#include <QPrinter>
-#endif
 
 using namespace std;
 

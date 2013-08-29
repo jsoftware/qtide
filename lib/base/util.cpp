@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <QDirIterator>
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
 #include <QProcess>
 #endif
 
@@ -710,7 +710,7 @@ QString toqlist(QStringList s)
   return r;
 }
 
-#ifdef ANDROID
+#ifdef Q_OS_ANDROID
 // ---------------------------------------------------------------------
 void android_exec_host(char *intent,char *cmd,char *mimetype)
 {

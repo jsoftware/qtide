@@ -302,7 +302,7 @@ bool Ntabs::tabsave(int index)
   return true;
 }
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
 bool Ntabs::tabprint(int index)
 {
@@ -331,7 +331,7 @@ bool Ntabs::tabsaveall()
   return r;
 }
 
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
 bool Ntabs::tabprintall()
 {

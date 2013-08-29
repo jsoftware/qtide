@@ -27,7 +27,7 @@ void Edith::cmd(string p,string v)
   QTextEdit *w=(QTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
     w->print((QPagedPaintDevice *)config.Printer);
 #else

@@ -28,7 +28,7 @@ public:
   void tabrestore(int index);
   bool tabsave(int index);
   bool tabsaveall();
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   bool tabprint(int index);
   bool tabprintall();
 #endif

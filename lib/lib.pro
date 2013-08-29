@@ -8,8 +8,7 @@ android:{
           CONFIG += mobility
           MOBILITY +=
           TEMPLATE = lib
-          TARGET = ../bin/jqt
-          DEFINES += "ANDROID" }
+          TARGET = ../bin/jqt }
 else: {    TEMPLATE = lib
           TARGET = ../bin/jqt }
 

@@ -45,15 +45,10 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   if (m.contains("maxbutton")) flags|=Qt::WindowMaximizeButtonHint;
   if (m.contains("closebutton")) flags|=Qt::WindowCloseButtonHint;
   if (m.contains("ptop")) flags=Qt::WindowStaysOnTopHint;
-#if defined(ANDROID) && defined(QT_OPENGL)
-  flags|=Qt::Window;
-  setWindowModality(Qt::WindowModal);
-#else
   if (m.contains("owner")) {
     flags|=Qt::Window;
     setWindowModality(Qt::WindowModal);
   }
-#endif
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
@@ -89,11 +84,23 @@ Form::~Form()
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
   Forms.removeOne(this);
-#if defined(ANDROID) && defined(QT_OPENGL)
-  if (!Forms.size()) showide(true);
+#ifdef Q_OS_ANDROID
+  if (!Forms.isEmpty()) {
+    (Forms.last())->setVisible(true);
+    (Forms.last())->activateWindow();
+    (Forms.last())->raise();
+    (Forms.last())->repaint();
+  }
 #endif
   if (Forms.isEmpty() && (!ShowIde))
+#ifndef Q_OS_ANDROID
     term->filequit();
+#else
+    showide(true);
+  term->activateWindow();
+  term->raise();
+  term->repaint();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -191,11 +198,14 @@ bool Form::ischild(Child *n)
 void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
-#ifdef ANDROID
-  if (k==Qt::Key_MediaPrevious) {
-    activateWindow();
-    raise();
-    close();
+#ifdef Q_OS_ANDROID
+  qDebug() << "form key press " + QString::number(k) + " " + QString::number(Qt::Key_F12);
+  if (k==16777220) {
+    e->accept();
+    event="close";
+    fakeid="";
+    form=this;
+    signalevent(0);
     return;
   }
 #endif
@@ -250,6 +260,11 @@ void Form::setpicon(string p)
 // ---------------------------------------------------------------------
 void Form::showit()
 {
+#ifdef Q_OS_ANDROID
+  showide(false);
+  if (Forms.size()>1)
+    (Forms.at(Forms.size()-2))->setVisible(false);
+#endif
   for (int i=tabs.size()-1; i>=0; i--)
     tabs.last()->tabend();
   for (int i=panes.size()-1; i>=0; i--)
@@ -257,10 +272,6 @@ void Form::showit()
   layout->addWidget(pane);
   setLayout(layout);
   show();
-#ifdef ANDROID
-  activateWindow();
-  raise();
-#endif
 
   shown=true;
 }

@@ -131,9 +131,6 @@ void Child::setminwhv(string p)
   if (n.size()!=2) {
     error("set minwh requires 2 numbers: " + p);
   } else {
-#ifdef ANDROID
-    if (! ((type=="isigraph")||(type=="opengl")||(type=="listbox")||(type=="editm")||(type=="webview"))) return;
-#endif
     int w=c_strtoi(q2s(n.at(0)));
     int h=c_strtoi(q2s(n.at(1)));
     widget->resize(w,h);
@@ -146,9 +143,6 @@ void Child::setminwhv(string p)
 void Child::setminwh(int w, int h)
 {
   if (widget && w && h) {
-#ifdef ANDROID
-    if (! ((type=="isigraph")||(type=="opengl")||(type=="listbox")||(type=="editm")||(type=="webview"))) return;
-#endif
     widget->resize(w,h);
     widget->setMinimumSize(w,h);
     widget->updateGeometry();
