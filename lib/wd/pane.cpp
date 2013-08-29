@@ -133,16 +133,10 @@ bool Pane::addchild(string n,string c,string p)
     layout->addWidget(child->widget);
     child->setminwh(sizew,sizeh);
     lasttype=child->type;
-    if ((c=="isigraph")||(c=="opengl")) {
+    QStringList opt=qsplit(p);
+    if (opt.contains("flush")) {
       layout->bin->setContentsMargins(0,0,0,0);
       layout->bin->setSpacing(0);
-    }
-    if ((c=="editm")||(c=="edith")) {
-      QStringList opt=qsplit(p);
-      if (opt.contains("flush")) {
-        layout->bin->setContentsMargins(0,0,0,0);
-        layout->bin->setSpacing(0);
-      }
     }
   }
   sizew=sizeh=0;

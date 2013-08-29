@@ -2,7 +2,7 @@
 # and the line DEFINES += "QT_WEBKIT"
 # and remove files webview.h and webview.cpp in HEADERS and SOURCES
 
-VERSION = 1.0.17
+VERSION = 1.0.18
 
 android:{
           CONFIG += mobility
