@@ -40,6 +40,7 @@ extern QPrinter *Printer;
 #include "wd.h"
 #include "cmd.h"
 #include "../base/dialog.h"
+#include "../base/state.h"
 
 QString mbcolor();
 QString mbdir();
@@ -306,6 +307,8 @@ QString mbprint(bool iftext)
     }
     delete dlg;
   }
+//set default printer
+  config.Printer->setPrinterName(r);
   return r;
 #endif
 }
