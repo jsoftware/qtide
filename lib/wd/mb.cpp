@@ -308,7 +308,7 @@ QString mbprint(bool iftext)
     delete dlg;
   }
 //set default printer
-  config.Printer->setPrinterName(r);
+  if (0<r.size()) config.Printer->setPrinterName(r);
   return r;
 #endif
 }
