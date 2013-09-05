@@ -22,6 +22,6 @@ Run:
 Example shell script:
 
 #!/bin/bash
-J=~/j7
+J=~/j8
 cd $J
 bin/jqt "$@"

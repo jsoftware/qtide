@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # QM=qmake
-QM=$HOME/Qt/Qt/5.1.0/5.1.0/android/bin/qmake
+QM=$HOME/Qt/5.1.1/5.1.1/android-armv5/bin/qmake
 LIBS=$ANDROID_TARGET_ARCH
 
 S=~/dev/apps/ide/jqt
