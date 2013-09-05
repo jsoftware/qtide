@@ -1,15 +1,17 @@
-equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
-
 android {
   CONFIG += mobility
   MOBILITY +=
   TEMPLATE = lib
   TARGET = ../bin/qtide
+  !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
 } else {
   TEMPLATE = app
   TARGET = ../bin/jqt
 }
+
+equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
+
 win32-msvc*:TARGET = ../bin/jqtx
 DEPENDPATH += .
 INCLUDEPATH += .

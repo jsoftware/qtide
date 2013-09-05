@@ -1,7 +1,7 @@
 #!/bin/bash
 
 QM=qmake
-LIBS=$(ANDROID_TARGET_ARCH)
+LIBS=$ANDROID_TARGET_ARCH
 
 S=~/dev/apps/ide/jqt
 
