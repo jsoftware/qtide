@@ -4,7 +4,7 @@
 #include <QLayout>
 #include <QTimer>
 #include <QSysInfo>
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrinterInfo>
@@ -29,7 +29,7 @@
 #include "../base/state.h"
 extern char* jegetlocale();
 
-#if defined(ANDROID) && defined(QT_OPENGL)
+#ifdef QT_NO_PRINTER
 extern Term *term;
 #endif
 
@@ -329,7 +329,7 @@ void wdcn()
 // ---------------------------------------------------------------------
 void wddefprint()
 {
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
   string c=cmd.getid();
   string p=cmd.getparms();
   if (c=="orient") {
@@ -528,10 +528,8 @@ void wdpactive()
 {
   if (noform()) return;
   cmd.getparms();
-#ifndef ANDROID
   form->activateWindow();
   form->raise();
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -563,14 +561,7 @@ void wdpc()
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
-#if defined(ANDROID) && defined(QT_OPENGL)
-  if (!form) {
-    showide(false);
-    form=new Form(c,p,tlocale,term);
-  } else form=new Form(c,p,tlocale,form);
-#else
   form=new Form(c,p,tlocale,m.contains("owner")?form:0);
-#endif
   evtform=form;
   Forms.append(form);
 }
@@ -580,7 +571,6 @@ void wdpcenter()
 {
   if (noform()) return;
   cmd.getparms();
-#ifndef ANDROID
   QDesktopWidget* dw=QApplication::desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
   int sw=screenGeometry.width();
@@ -590,7 +580,6 @@ void wdpcenter()
   int x=(sw-w)/2;
   int y=(sh-h)/2;
   form->move((x<0)?0:x,(y<0)?0:y);
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -620,12 +609,10 @@ void wdpmove()
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
   else {
-#ifndef ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
       form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
     if (c_strtoi(q2s(n.at(2)))!=-1 && c_strtoi(q2s(n.at(3)))!=-1)
       form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
-#endif
   }
 }
 
@@ -679,7 +666,7 @@ void wdptop()
   if (noform()) return;
   cmd.getparms();
 // TODO
-#ifndef ANDROID
+#ifndef Q_OS_ANDROID
   form->raise();
 #endif
 }
@@ -770,7 +757,7 @@ void wdqueries(string s)
 #endif
   } else if (s=="qprinters") {
     string q="";
-#ifndef ANDROID
+#ifndef QT_NO_PRINTER
     QPrinterInfo pd=QPrinterInfo::defaultPrinter();
     if ((!config.Printer) || !config.Printer->isValid()) q = string("\012");
     else q = q2s(config.Printer->printerName()) + "\012";
@@ -931,7 +918,7 @@ void wdtimer()
 void wdversion()
 {
   result=APP_VERSION;
-#if ! (defined(QT_WEBKIT))
+#ifdef QT_NO_WEBKIT
   result=result+"s";
 #endif
   result=result+"/"+qVersion();
