@@ -1,45 +1,60 @@
-# to exclude QtWebKit, comment out the line QT += webkit
-# and the line DEFINES += "QT_WEBKIT"
-# and remove files webview.h and webview.cpp in HEADERS and SOURCES
+# to exclude QtWebKit
+# DEFINES += QT_NO_WEBKIT
+# to exclude OpenGL
+# DEFINES += QT_NO_OPENGL
 
 VERSION = 1.0.18
 
-android:{
-          CONFIG += mobility
-          MOBILITY +=
-          TEMPLATE = lib
-          TARGET = ../bin/jqt }
-else: {    TEMPLATE = lib
-          TARGET = ../bin/jqt }
+android {
+  CONFIG += mobility
+  !contains(DEFINES, QT_NO_WEBKIT): DEFINES += QT_NO_WEBKIT
+  !contains(DEFINES, QT_NO_PRINTER): DEFINES += QT_NO_PRINTER
+  MOBILITY +=
+  TEMPLATE = lib
+  TARGET = ../bin/jqt
+  !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
+} else {
+  TEMPLATE = lib
+  TARGET = ../bin/jqt
+}
+
+!contains(DEFINES, QT_NO_WEBKIT) {
+  equals(QT_MAJOR_VERSION, 5) {
+    QT += webkitwidgets
+  } else {
+    QT += webkit
+  }
+}
+
+# DEFINES += QT_NO_OPENGL
+!contains(DEFINES, QT_NO_OPENGL) {
+  QT += opengl
+  android: DEFINES += QT_OPENGL_ES_2
+}
+
+equals(QT_MAJOR_VERSION, 5): QT += widgets
 
 OBJECTS_DIR = build
 MOC_DIR = build
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-!android: QT += webkit
-QT += opengl
-equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5):!android: QT += webkitwidgets
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
-!android: DEFINES += "QT_WEBKIT"
-DEFINES += "QT_OPENGL"
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
-android: DEFINES += QT_OPENGL_ES_2
 
 # Input
 HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
  base/fif.h base/fiw.h base/jsvr.h base/menu.h \
  base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h \
- base/pnew.h base/proj.h base/psel.h base/recent.h base/rsel.h \
+ base/pnew.h base/proj.h base/psel.h base/qtjni.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
  base/tedit.h base/term.h base/util.h base/utils.h \
  base/view.h base/widget.h high/high.h high/highj.h \
@@ -56,10 +71,10 @@ HEADERS += \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webview.h
 
-android:SOURCES -= wd/glz.h wd/prtobj.h
-# android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-android:HEADERS -= wd/webview.h
-android:HEADERS += base/qtjni.h
+!android:HEADERS -= base/qtjni.h
+contains(DEFINES, QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
+contains(DEFINES, QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+contains(DEFINES, QT_NO_WEBKIT): HEADERS -= wd/webview.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -67,7 +82,7 @@ SOURCES += \
  base/fif.cpp base/fifx.cpp base/fiw.cpp base/jsvr.cpp \
  base/menu.cpp base/menuhelp.cpp \
  base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
- base/pnew.cpp base/proj.cpp base/psel.cpp base/recent.cpp base/rsel.cpp \
+ base/pnew.cpp base/proj.cpp base/psel.cpp base/qtjni.cpp base/recent.cpp base/rsel.cpp \
  base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
  base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp \
@@ -85,10 +100,10 @@ SOURCES += \
  wd/ogl2.cpp  wd/opengl.cpp wd/opengl2.cpp \
  wd/webview.cpp
 
-android:SOURCES -= wd/glz.cpp wd/prtobj.cpp
-# android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
-android:SOURCES -= wd/webview.cpp
-android:SOURCES += base/qtjni.cpp ../main/main.cpp
+!android:SOURCES -= base/qtjni.cpp
+contains(DEFINES, QT_NO_PRINTER): SOURCES -= wd/glz.cpp wd/prtobj.cpp
+contains(DEFINES, QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
+contains(DEFINES, QT_NO_WEBKIT): SOURCES -= wd/webview.cpp
 
 RESOURCES += lib.qrc
 

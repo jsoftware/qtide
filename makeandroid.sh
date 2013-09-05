@@ -1,13 +1,7 @@
 #!/bin/bash
 
-if [ "5" = ${QT_SELECT} ]; then
 QM=qmake
-# LIBS=armeabi-v7a
-LIBS=armeabi
-else
-QM=qmake
-LIBS=armeabi
-fi;
+LIBS=$(ANDROID_TARGET_ARCH)
 
 S=~/dev/apps/ide/jqt
 

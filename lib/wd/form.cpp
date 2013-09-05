@@ -14,7 +14,7 @@
 #include "child.h"
 #include "isigraph2.h"
 #include "menus.h"
-#ifdef QT_OPENGL
+#ifndef QT_NO_OPENGL
 #include "opengl2.h"
 #endif
 #include "../base/state.h"
@@ -72,7 +72,7 @@ Form::~Form()
         delete ((Isigraph2*)n->widget)->painter;
         ((Isigraph2*)n->widget)->painter=0;
       }
-#ifdef QT_OPENGL
+#ifndef QT_NO_OPENGL
     } else if ("opengl"==(n=children.at(i))->type) {
       if (((Opengl2*)n->widget)->painter) {
         ((Opengl2*)n->widget)->painter->end();

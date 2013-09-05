@@ -903,7 +903,7 @@ void wdtimer()
 void wdversion()
 {
   result=APP_VERSION;
-#ifndef QT_WEBKIT
+#ifdef QT_NO_WEBKIT
   result=result+"s";
 #endif
   result=result+"/"+qVersion();

@@ -26,7 +26,7 @@
 #include "image.h"
 #include "isigraph.h"
 #include "listbox.h"
-#ifdef QT_OPENGL
+#ifndef QT_NO_OPENGL
 #include "opengl.h"
 #endif
 #include "progressbar.h"
@@ -39,7 +39,7 @@
 #include "tabs.h"
 #include "timeedit.h"
 #include "toolbar.h"
-#ifdef QT_WEBKIT
+#ifndef QT_NO_WEBKIT
 #include "webview.h"
 #endif
 
@@ -92,7 +92,7 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Isigraph(n,p,pform,this);
   else if (c=="listbox")
     child=(Child *) new ListBox(n,p,pform,this);
-#ifdef QT_OPENGL
+#ifndef QT_NO_OPENGL
   else if (c=="opengl")
     child=(Child *) new Opengl(n,p,pform,this);
 #endif
@@ -118,7 +118,7 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new TimeEdit(n,p,pform,this);
   else if (c=="toolbar")
     child=(Child *) new ToolBar(n,p,pform,this);
-#ifdef QT_WEBKIT
+#ifndef QT_NO_WEBKIT
   else if (c=="webview")
     child=(Child *) new Webview(n,p,pform,this);
 #endif
