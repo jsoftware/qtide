@@ -1,0 +1,39 @@
+#!/bin/sh
+
+S=$HOME/Qt/5.1.1/5.1.1/android-armv5
+D=$HOME/dev/apps/ide/jqt/android/libs/armeabi
+E=$HOME/dev/apps/ide/jqt/android/assets/--Managed_by_Qt_Creator--
+
+mkdir -p ${D}
+mkdir -p ${E}
+
+cp -r ${S}/imports ${E}/.
+cp -r ${S}/plugins ${E}/.
+cp -r ${S}/qml ${E}/.
+find ${E} -name '*.so' -delete
+
+# cp ${ANDROID_NDK_ROOT}/prebuilt/android-arm/gdbserver/gdbserver ${D}/.
+cp ${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/${ANDROID_NDK_TOOLCHAIN_VERSION}/libs/${ANDROID_TARGET_ARCH}/thumb/libgnustl_shared.so ${D}/.
+
+cp ${S}/jar/QtAndroid-bundled.jar ${D}/../--Managed_by_Qt_Creator--QtAndroid-bundled.jar
+
+cp ${S}/plugins/accessible/libqtaccessiblequick.so ${D}/lib--Managed_by_Qt_Creator--plugins_accessible_libqtaccessiblequick.so
+cp ${S}/plugins/accessible/libqtaccessiblewidgets.so ${D}/lib--Managed_by_Qt_Creator--plugins_accessible_libqtaccessiblewidgets.so
+cp ${S}/plugins/imageformats/libqgif.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqgif.so
+cp ${S}/plugins/imageformats/libqico.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqico.so
+cp ${S}/plugins/imageformats/libqjpeg.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqjpeg.so
+cp ${S}/plugins/imageformats/libqmng.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqmng.so
+cp ${S}/plugins/imageformats/libqsvg.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqsvg.so
+cp ${S}/plugins/imageformats/libqtga.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqtga.so
+cp ${S}/plugins/imageformats/libqtiff.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqtiff.so
+cp ${S}/plugins/imageformats/libqwbmp.so ${D}/lib--Managed_by_Qt_Creator--plugins_imageformats_libqwbmp.so
+cp ${S}/plugins/platforms/android/libqtforandroidGL.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroidGL.so
+cp ${S}/plugins/platforms/android/libqtforandroid.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroid.so
+cp ${S}/plugins/platforms/libqeglfs.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_libqeglfs.so
+cp ${S}/plugins/platforms/libqminimalegl.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_libqminimalegl.so
+cp ${S}/plugins/platforms/libqminimal.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_libqminimal.so
+cp ${S}/plugins/platforms/libqoffscreen.so ${D}/lib--Managed_by_Qt_Creator--plugins_platforms_libqoffscreen.so
+cp ${S}/lib/libQt5Core.so ${D}/libQt5Core.so
+cp ${S}/lib/libQt5Gui.so ${D}/libQt5Gui.so
+cp ${S}/lib/libQt5OpenGL.so ${D}/libQt5OpenGL.so
+cp ${S}/lib/libQt5Widgets.so ${D}/libQt5Widgets.so

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+./configure \
+ -prefix $HOME/Qt/5.1.1/5.1.1/android-armv5 \
+ -opensource \
+ -confirm-license \
+ -developer-build \
+ -release \
+ -make libs \
+ -make tools \
+ -xplatform android-g++ \
+ -nomake tests \
+ -nomake examples \
+ -android-ndk-host linux-x86_64 \
+ -android-ndk $HOME/android/android-ndk-r8e \
+ -android-sdk $HOME/android/android-sdk-linux \
+ -android-toolchain-version 4.7 \
+ -android-ndk-platform android-9 \
+ -android-arch armeabi \
+ -skip qttranslations \
+ -skip qtwebkit \
+ -skip qtserialport \
+ -skip qtwebkit-examples
