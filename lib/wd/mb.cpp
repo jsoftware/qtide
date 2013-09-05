@@ -26,7 +26,7 @@
 #include <QMessageBox>
 #include <QTextDocument>
 
-#ifndef QT_NO_PRINTER
+#ifndef ANDROID
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
@@ -34,7 +34,6 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #endif
-extern QPrinter *Printer;
 #endif
 
 #include "wd.h"
@@ -245,7 +244,7 @@ QString mbopen1()
 // ---------------------------------------------------------------------
 QString mbprint(bool iftext)
 {
-#ifdef QT_NO_PRINTER
+#ifdef ANDROID
   Q_UNUSED(iftext);
   return "";
 #else
@@ -261,18 +260,17 @@ QString mbprint(bool iftext)
       s=cfread(s);
     }
     d=new QTextDocument(s);
+    d->setDefaultFont(config.Font);
 
 #ifdef __MACH__
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
-      if (Printer==0)
-        Printer=new QPrinter(QPrinter::HighResolution);
-      if (!Printer->isValid()) {
-        error("Invalid printer: " + q2s(Printer->printerName()));
+      if (!config.Printer->isValid()) {
+        error("Invalid printer: " + q2s(config.Printer->printerName()));
         delete d;
         return "";
       }
-      d->print(Printer);
+      d->print(config.Printer);
       delete d;
       return "";
     }
@@ -280,8 +278,6 @@ QString mbprint(bool iftext)
     dialogprint(QApplication::focusWidget(),d);
     delete d;
   } else {
-    if (Printer==0)
-      Printer=new QPrinter(QPrinter::HighResolution);
 #ifdef __MACH__
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
@@ -289,26 +285,24 @@ QString mbprint(bool iftext)
       return r;
     }
 #endif
-    QPrintDialog *dlg = new QPrintDialog(Printer);
+    QPrintDialog *dlg = new QPrintDialog(config.Printer);
     if (dlg->exec() == QDialog::Accepted) {
-      switch (Printer->outputFormat()) {
+      switch (config.Printer->outputFormat()) {
       case QPrinter::PdfFormat :
-        r="_pdf:" + Printer->outputFileName();
+        r="_pdf:" + config.Printer->outputFileName();
         break;
 #ifndef QT50
       case QPrinter::PostScriptFormat :
-        r="_ps:" + Printer->outputFileName();
+        r="_ps:" + config.Printer->outputFileName();
         break;
 #endif
       default :
-        r=Printer->printerName();
+        r=config.Printer->printerName();
         break;
       }
     }
     delete dlg;
   }
-//set default printer
-  if (0<r.size()) config.Printer->setPrinterName(r);
   return r;
 #endif
 }
@@ -317,7 +311,7 @@ QString mbprint(bool iftext)
 // print with no dialog
 QString mbprintx(bool iftext)
 {
-#ifdef QT_NO_PRINTER
+#ifdef ANDROID
   Q_UNUSED(iftext);
 #else
   if (arg.size()==0) {
@@ -333,13 +327,12 @@ QString mbprintx(bool iftext)
     s=cfread(s);
   }
   QTextDocument *d=new QTextDocument(s);
-  if (Printer==0)
-    Printer=new QPrinter(QPrinter::HighResolution);
-  if (!Printer->isValid()) {
-    error("Invalid printer: " + q2s(Printer->printerName()));
+  d->setDefaultFont(config.Font);
+  if (!config.Printer->isValid()) {
+    error("Invalid printer: " + q2s(config.Printer->printerName()));
     return "";
   }
-  d->print(Printer);
+  d->print(config.Printer);
 #endif
   return "";
 }

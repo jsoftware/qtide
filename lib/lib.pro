@@ -2,7 +2,7 @@
 # and the line DEFINES += "QT_NO_WEBKIT"
 # and remove files webview.h and webview.cpp in HEADERS and SOURCES
 
-VERSION = 1.0.18
+VERSION = 1.0.19
 
 android:{
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
