@@ -281,7 +281,7 @@ QString mbprint(bool iftext)
 #ifdef __MACH__
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
-      r=Printer->printerName();
+      r=config.Printer->printerName();
       return r;
     }
 #endif
