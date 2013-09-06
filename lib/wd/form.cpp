@@ -84,22 +84,24 @@ Form::~Form()
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
   Forms.removeOne(this);
+  if (Forms.isEmpty()) form=0;
 #ifdef Q_OS_ANDROID
   if (!Forms.isEmpty()) {
-    (Forms.last())->setVisible(true);
-    (Forms.last())->activateWindow();
-    (Forms.last())->raise();
-    (Forms.last())->repaint();
+    form=Forms.last();
+    wdactivateform();
   }
 #endif
-  if (Forms.isEmpty() && (!ShowIde))
 #ifndef Q_OS_ANDROID
+  if (Forms.isEmpty() && (!ShowIde))
     term->filequit();
 #else
+  if (Forms.isEmpty() && (!ShowIde)) {
     showide(true);
-  term->activateWindow();
-  term->raise();
-  term->repaint();
+    term->activateWindow();
+    term->raise();
+    term->repaint();
+    idewin=0;
+  }
 #endif
 }
 
@@ -199,13 +201,18 @@ void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
 #ifdef Q_OS_ANDROID
-  qDebug() << "form key press " + QString::number(k) + " " + QString::number(Qt::Key_F12);
-  if (k==16777220) {
+  if (k==16777220) {  // back button
     e->accept();
-    event="close";
-    fakeid="";
-    form=this;
-    signalevent(0);
+#if 0
+    if (closeok) {
+      delete this;
+    } else {
+      event="close";
+      fakeid="";
+      form=this;
+      signalevent(0);
+    }
+#endif
     return;
   }
 #endif

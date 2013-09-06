@@ -5,11 +5,9 @@ using namespace std;
 
 #ifdef Q_OS_ANDROID
 #include <jni.h>
-extern int state_run (int,char **,QApplication *,QString,void *,void *,void *);
+extern int state_run (int,char **,QApplication *,QString);
+extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 
-static JavaVM *jnivm=0;
-static jclass qtapp=0;
-static jclass qtact=0;
 #else
 #include <QLibrary>
 
@@ -21,7 +19,7 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
 
 #ifdef Q_OS_ANDROID
-  return state_run(argc, argv, &app, QCoreApplication::applicationFilePath(), (void *)jnivm, (void *)qtapp, (void *)qtact);
+  return state_run(argc, argv, &app, QCoreApplication::applicationFilePath());
 #else
 #ifdef _WIN32
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
@@ -48,18 +46,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
     qCritical() << "JNI_OnLoad GetEnv Failed";
     return -1;
   }
-  jnivm = vm;
-  jclass ap,ac;
-  qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
-  qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
-  ap=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtApplication");
-  ac=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtActivity");
-  qtapp=(jclass)jnienv->NewGlobalRef(ap);
-  qtact=(jclass)jnienv->NewGlobalRef(ac);
-  jnienv->DeleteLocalRef(ap);
-  jnienv->DeleteLocalRef(ac);
-  qDebug() << "org/qtproject/qt5/android/bindings/QtApplication jclass " << QString::number((long)qtapp);
-  qDebug() << "org/qtproject/qt5/android/bindings/QtActivity jclass " << QString::number((long)qtact);
+  javaOnLoad(vm, jnienv);
 
   return JNI_VERSION_1_6;
 }

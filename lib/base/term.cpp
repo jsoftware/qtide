@@ -20,6 +20,7 @@ using namespace std;
 
 Term *term;
 Tedit *tedit;
+int idewin=0;  // 0: term  1: note 2: note2
 
 QString LastLaunch;
 QTime LastLaunchTime;
@@ -88,6 +89,7 @@ Term::Term()
 void Term::activate()
 {
   activateWindow();
+  raise();
   tedit->setFocus();
 }
 
@@ -148,6 +150,12 @@ void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
 #ifdef JQT
+#ifdef Q_OS_ANDROID
+  case 16777220:
+    event->accept();
+    filequit();
+    break;
+#endif
   case Qt::Key_Escape:
     if (config.EscClose) {
       if (!filequit())
@@ -214,26 +222,27 @@ void Term::systimer()
 // ---------------------------------------------------------------------
 void Term::vieweditor()
 {
-  if (note)
+  if (note) {
     note->activate();
-#if Q_OS_ANDORID
-  term->setVisible(false);
-  note->activateWindow();
-  note->raise();
-  note->repaint();
+#ifdef Q_OS_ANDROID
+    term->setVisible(false);
+    note->activateWindow();
+    note->raise();
+    note->repaint();
 #endif
-  else {
+  } else {
     note = new Note();
     if (recent.ProjectOpen)
       note->projectopen(true);
     note->show();
-#if Q_OS_ANDORID
+#ifdef Q_OS_ANDROID
     term->setVisible(false);
     note->activateWindow();
     note->raise();
     note->repaint();
 #endif
   }
+  idewin=1;
 }
 
 // ---------------------------------------------------------------------
@@ -243,4 +252,5 @@ void smact()
   term->activateWindow();
   term->raise();
   term->repaint();
+  idewin=0;
 }

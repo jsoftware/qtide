@@ -114,7 +114,17 @@ Fiw::Fiw(int p, QString s)
 // ---------------------------------------------------------------------
 void Fiw::finfo(QString s)
 {
+#ifdef Q_OS_ANDROID
+  int t=idewin;
+  idewin=-1;
+#endif
   info("Find",s);
+#ifdef Q_OS_ANDROID
+  activateWindow();
+  raise();
+  repaint();
+  idewin=t;
+#endif
 }
 
 // ---------------------------------------------------------------------

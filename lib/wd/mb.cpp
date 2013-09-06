@@ -38,6 +38,7 @@
 
 #include "wd.h"
 #include "cmd.h"
+#include "form.h"
 #include "../base/dialog.h"
 #include "../base/state.h"
 
@@ -128,6 +129,9 @@ QString mbmsg()
 
   if (type=="query") {
     r=QMessageBox::question(QApplication::focusWidget(),t,m,buttons,button1);
+#ifdef Q_OS_ANDROID
+    wdactivateform();
+#endif
     return getname(r);
   }
   if (type=="critical")
@@ -136,6 +140,9 @@ QString mbmsg()
     QMessageBox::information(QApplication::focusWidget(),t,m,buttons,button1);
   else if (type=="warn")
     QMessageBox::warning(QApplication::focusWidget(),t,m,buttons,button1);
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
   return "";
 }
 
@@ -153,6 +160,9 @@ QString mbcolor()
   } else
     c=Qt::white;
   c=QColorDialog::getColor(c,QApplication::focusWidget());
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
   if (!c.isValid()) return "";
   return s2q(i2s(c.red()) + " " + i2s(c.green()) + " " + i2s(c.blue()));
 }
@@ -160,15 +170,19 @@ QString mbcolor()
 // ---------------------------------------------------------------------
 QString mbdir()
 {
-  QString title,dir;
+  QString title,dir,fl;
   if (arg.size()!=2) {
     error("dir needs title and directory");
     return "";
   }
   title=arg.at(0);
   dir=arg.at(1);
-  return QFileDialog::getExistingDirectory(
-           QApplication::focusWidget(),title,dir);
+  fl=QFileDialog::getExistingDirectory(
+       QApplication::focusWidget(),title,dir);
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
+  return fl;
 }
 
 // ---------------------------------------------------------------------
@@ -195,6 +209,9 @@ QString mbfont()
       def.setUnderline(true);
   }
   font=QFontDialog::getFont(&ok,def,QApplication::focusWidget());
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
   if (!ok) return "";
   QString r;
   r="\"" + font.family() + "\" " + QString::number(font.pointSize());
@@ -218,8 +235,11 @@ QString mbopen()
   dir=arg.at(1);
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
-  fl = QFileDialog::getOpenFileNames(
-         QApplication::focusWidget(),title,dir,filter);
+  fl=QFileDialog::getOpenFileNames(
+       QApplication::focusWidget(),title,dir,filter);
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
   if (fl.isEmpty())
     return "";
   else return fl.join("\012") + "\012";
@@ -228,7 +248,7 @@ QString mbopen()
 // ---------------------------------------------------------------------
 QString mbopen1()
 {
-  QString title,dir,filter;
+  QString title,dir,filter,fl;
   if (arg.size()<2) {
     error("open1 needs title, directory, [filters]");
     return "";
@@ -237,8 +257,12 @@ QString mbopen1()
   dir=arg.at(1);
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
-  return QFileDialog::getOpenFileName(
-           QApplication::focusWidget(),title,dir,filter);
+  fl=QFileDialog::getOpenFileName(
+       QApplication::focusWidget(),title,dir,filter);
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
+  return fl;
 }
 
 // ---------------------------------------------------------------------
@@ -340,7 +364,7 @@ QString mbprintx(bool iftext)
 // ---------------------------------------------------------------------
 QString mbsave()
 {
-  QString title,dir,filter;
+  QString title,dir,filter,fl;
   if (arg.size()<2) {
     error("save needs title, directory, [filters]");
     return "";
@@ -349,8 +373,12 @@ QString mbsave()
   dir=arg.at(1);
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
-  return QFileDialog::getSaveFileName(
-           QApplication::focusWidget(),title,dir,filter);
+  fl=QFileDialog::getSaveFileName(
+       QApplication::focusWidget(),title,dir,filter);
+#ifdef Q_OS_ANDROID
+  wdactivateform();
+#endif
+  return fl;
 }
 
 // ---------------------------------------------------------------------

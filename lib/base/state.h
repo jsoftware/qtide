@@ -154,7 +154,7 @@ void var_runs(QString s);
 void var_set(QString s, QString t);
 
 #ifdef Q_OS_ANDROID
-int state_run(int argc, char *argv[],QApplication *app,QString lib,void *,void *,void *);
+int state_run(int argc, char *argv[],QApplication *app,QString lib);
 #else
 extern "C" {
   Dllexport int state_run(int argc, char *argv[],QApplication *app,QString lib);

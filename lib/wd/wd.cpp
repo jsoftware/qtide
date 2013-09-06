@@ -28,20 +28,9 @@
 #include "../base/term.h"
 #include "../base/state.h"
 extern char* jegetlocale();
-
-#ifdef QT_NO_PRINTER
-extern Term *term;
-#endif
+extern Term * term;
 
 #include "math.h"
-
-extern "C" {
-  Dllexport int wd(char *s,char *&r,int &len);
-
-// TODO
-  Dllexport int wdisparent(char *s);
-  Dllexport void *wdgetparentid(void *s);
-}
 
 void wd1();
 void wdbin();
@@ -112,33 +101,6 @@ string result="";
 // TODO  for debug
 string cmdstr;
 string ccmd;
-
-// TODO
-// ---------------------------------------------------------------------
-int wdisparent(char *s)
-{
-  string p= string(s);
-  Form *f;
-  void *n=(void *) c_strtol(p);
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (n==f || p==f->id)
-      return 1;
-  }
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-void *wdgetparentid(void *s)
-{
-  Form *f;
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild((Child *) s))
-      return (void *)(f->id).c_str();
-  }
-  return 0;
-}
 
 // ---------------------------------------------------------------------
 int wd(char *s,char *&res,int &len)
@@ -233,6 +195,35 @@ void wd1()
     } else
       error("command not found");
   }
+}
+
+// ---------------------------------------------------------------------
+void wdactivateform()
+{
+  if (form) {
+    form->setVisible(true);
+    form->activateWindow();
+    form->raise();
+    form->repaint();
+  } else if (0==Forms.size()) {
+    showide(true);
+    term->activateWindow();
+    term->raise();
+    term->repaint();
+    idewin=0;
+  }
+}
+
+// ---------------------------------------------------------------------
+void *wdgetparentid(void *s)
+{
+  Form *f;
+  for (int i=0; i<Forms.size(); i++) {
+    f=Forms.at(i);
+    if (f->ischild((Child *) s))
+      return (void *)(f->id).c_str();
+  }
+  return 0;
 }
 
 // ---------------------------------------------------------------------
@@ -528,6 +519,9 @@ void wdpactive()
 {
   if (noform()) return;
   cmd.getparms();
+#ifdef Q_OS_ANDROID
+  if(form!=Forms.last()) return;
+#endif
   form->activateWindow();
   form->raise();
 }
@@ -665,10 +659,10 @@ void wdptop()
 {
   if (noform()) return;
   cmd.getparms();
-// TODO
-#ifndef Q_OS_ANDROID
-  form->raise();
+#ifdef Q_OS_ANDROID
+  if(form!=Forms.last()) return;
 #endif
+  form->raise();
 }
 
 // ---------------------------------------------------------------------
@@ -991,7 +985,7 @@ string remquotes(string s)
   return s;
 }
 
-// ---------------------------------------------------------------------1
+// ---------------------------------------------------------------------
 // returns: 0=id not found
 //          1=child id (cc=child)
 //          2=menu id  (cc=menubar)

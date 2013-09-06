@@ -28,7 +28,8 @@
 #include "../wd/form.h"
 
 #ifdef Q_OS_ANDROID
-extern "C" void javaOnLoad(void *,void *,void *);
+#include <jni.h>
+extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 #endif
 
 using namespace std;
@@ -361,15 +362,8 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-#ifdef Q_OS_ANDROID
-int state_run(int argc, char *argv[],QApplication *app,QString lib,void *vm,void *qtapp,void *qtact)
-#else
 int state_run(int argc, char *argv[],QApplication *app,QString lib)
-#endif
 {
-#ifdef Q_OS_ANDROID
-  javaOnLoad(vm,qtapp,qtact);
-#endif
   LibName=lib;
 #ifdef Q_OS_ANDROID
   if (LibName.left(8)=="/system/") {

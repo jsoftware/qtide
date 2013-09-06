@@ -1013,10 +1013,10 @@ void Note::on_viewterminalAct_triggered()
 {
   term->activate();
 #ifdef Q_OS_ANDROID
-  note->setVisible(false);
   term->activateWindow();
   term->raise();
   term->repaint();
+  idewin=0;
 #endif
 }
 

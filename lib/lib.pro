@@ -1,16 +1,19 @@
-# to exclude QtWebKit, comment out the line QT += webkit
-# and the line DEFINES += "QT_NO_WEBKIT"
-# and remove files webview.h and webview.cpp in HEADERS and SOURCES
+# to exclude QtWebKit, add a line QT -= webkit
+# to exclude OpenGL, add a line QT -= opengl
 
 VERSION = 1.0.19
 
-android:{
+android: {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
           CONFIG += mobility
           MOBILITY +=
+          QT -= webkit
+          QT -= opengl
           TEMPLATE = lib
           TARGET = ../bin/jqt }
 else: {   TEMPLATE = lib
+          QT += webkit
+          QT += opengl
           TARGET = ../bin/jqt }
 
 OBJECTS_DIR = build
@@ -18,22 +21,28 @@ MOC_DIR = build
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-!android: QT += webkit
-QT += opengl
 equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5):!android: QT += webkitwidgets
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
-android: DEFINES += "QT_NO_WEBKIT"
-# DEFINES += "QT_OPENGL"
+!contains(QT,webkit) {
+DEFINES += QT_NO_WEBKIT
+DEFINES -= QT_WEBKIT
+} else {
+equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
+}
+!contains(QT,opengl) {
+DEFINES += QT_NO_OPENGL
+DEFINES -= QT_OPENGL
+} else {
+android: DEFINES += QT_OPENGL_ES_2
+}
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
-android: DEFINES += QT_OPENGL_ES_2
 
 # Input
 HEADERS += \
@@ -57,9 +66,9 @@ HEADERS += \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webview.h
 
-android:SOURCES -= wd/glz.h wd/prtobj.h
-# android:HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-android:HEADERS -= wd/webview.h
+!contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+!contains(QT,webkit): HEADERS -= wd/webview.h
+contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 android:HEADERS += base/qtjni.h
 
 SOURCES += \
@@ -86,9 +95,9 @@ SOURCES += \
  wd/ogl2.cpp  wd/opengl.cpp wd/opengl2.cpp \
  wd/webview.cpp
 
-android:SOURCES -= wd/glz.cpp wd/prtobj.cpp
-# android:SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
-android:SOURCES -= wd/webview.cpp
+!contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
+!contains(QT,webkit): SOURCES -= wd/webview.cpp
+contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc

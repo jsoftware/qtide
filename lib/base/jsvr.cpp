@@ -247,10 +247,14 @@ int jefirst(int type,char* arg)
   Q_UNUSED(p);
   Q_UNUSED(q);
   char *homepath;
+  char *sdcard;
+  char SDCARD[] = "/sdcard";
   struct stat st;
+  if (!(sdcard=getenv("EXTERNAL_STORAGE")))
+    sdcard=&SDCARD[0];
   if(!getenv("HOME")) {
-    if(!stat("/sdcard",&st)) {
-      setenv("HOME","/sdcard",1);
+    if(!stat(sdcard,&st)) {
+      setenv("HOME",sdcard,1);
     } else {
       setenv("HOME",path,1);
     }

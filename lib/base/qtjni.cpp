@@ -2,37 +2,39 @@
 #include <QDebug>
 #include "qtjni.h"
 #include "base.h"
-static JavaVM *jnivm=0;
+static JavaVM *m_javaVM=0;
 static JNIEnv *jnienv=0;
 static jclass qtapp = 0;
 static jclass qtact= 0;
 
-#ifdef QT50
+#if 0
 #define ATTACHTHREAD
 #define DETACHTHREAD
 #else
-#define ATTACHTHREAD jnivm->AttachCurrentThread(&jnienv, NULL);
-#define DETACHTHREAD jnivm->DetachCurrentThread();
+#define ATTACHTHREAD m_javaVM->AttachCurrentThread(&jnienv, NULL);
+#define DETACHTHREAD m_javaVM->DetachCurrentThread();
 #endif
 
-void javaOnLoad (void *vm,jclass app,jclass act)
+void javaOnLoad(JavaVM * vm, JNIEnv * env)
 {
-  jnivm = (JavaVM *)vm;
-  qtapp = app;
-  qtact = act;
-#ifndef QT50
-  if (jnivm->AttachCurrentThread(&jnienv, 0)) {
-    qDebug() << "javaOnLoad AttachCurrentThread failed";
-    return;
-  }
-#endif
-  jnivm->DetachCurrentThread();
-  qDebug() << "javaOnLoad DetachCurrentThread";
+  m_javaVM=vm;
+  jnienv=env;
+  jclass ap,ac;
+  qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
+  qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
+  ap=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtApplication");
+  ac=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtActivity");
+  qtapp=(jclass)jnienv->NewGlobalRef(ap);
+  qtact=(jclass)jnienv->NewGlobalRef(ac);
+  jnienv->DeleteLocalRef(ap);
+  jnienv->DeleteLocalRef(ac);
+  qDebug() << "org/qtproject/qt5/android/bindings/QtApplication jclass " << QString::number((long)qtapp);
+  qDebug() << "org/qtproject/qt5/android/bindings/QtActivity jclass " << QString::number((long)qtact);
 }
 
 int GetJavaVMENV(JavaVM ** pvm, JNIEnv ** penv)
 {
-  *pvm = jnivm;
+  *pvm = m_javaVM;
   *penv = jnienv;
   return 0;
 }
@@ -44,9 +46,11 @@ jclass GetClassID(int id)
   switch (id) {
   case 0 :
     z=(jclass)jnienv->NewLocalRef((jobject)qtapp);
+    qDebug() << "qtapp " << QString::number((long)qtapp);
     break;
   case 1 :
     z=(jclass)jnienv->NewLocalRef((jobject)qtact);
+    qDebug() << "qtact " << QString::number((long)qtact);
     break;
   }
   DETACHTHREAD
