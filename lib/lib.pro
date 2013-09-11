@@ -1,5 +1,3 @@
-# to exclude QtWebKit, add a line QT -= webkit
-# to exclude OpenGL, add a line QT -= opengl
 
 VERSION = 1.0.19
 
@@ -15,6 +13,11 @@ else: {   TEMPLATE = lib
           QT += webkit
           QT += opengl
           TARGET = ../bin/jqt }
+
+# to exclude QtWebKit, uncomment the following line
+# QT -= webkit
+# to exclude OpenGL, uncomment the following line
+# QT -= opengl
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -33,12 +36,14 @@ DEFINES += QT_NO_WEBKIT
 DEFINES -= QT_WEBKIT
 } else {
 equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
+!contains(DEFINES,QT_WEBKIT): DEFINES += QT_WEBKIT
 }
 !contains(QT,opengl) {
 DEFINES += QT_NO_OPENGL
 DEFINES -= QT_OPENGL
 } else {
 android: DEFINES += QT_OPENGL_ES_2
+!contains(DEFINES,QT_OPENGL): DEFINES += QT_OPENGL
 }
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
