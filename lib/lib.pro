@@ -112,5 +112,5 @@ win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 android:LIBS += -ldl
 
-win32:QMAKE_LFLAGS += -static-libgcc -static-libstdc++
+win32:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
