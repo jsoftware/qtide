@@ -1,17 +1,16 @@
-bin/jqt*
-bin/lib*
-lib/build
-lib/jqt_resource.rc
-jwd/libjwd*
+bin/
+build/
 config/
+jwd/
+lib/
 
-Makefile
-style.sh
-makecdb.sh
 makebill.sh
+makecdb.sh
+Makefile*
 makeosx.
 makewincdb.sh
 run.sh
+style.sh
 
 android/bin/
 android/gen/
@@ -22,17 +21,16 @@ local.properties
 jqt.xcodeproj
 Info.plist
 
-moc_*
-qrc_*
+*.a
 *.dll
 *.exe
-*.Debug
-*.Release
-*.a
 *.o
+*.pro.user
 *.so
 *.so.*
-*.pro.user
 *.sublime-project
 *.sublime-workspace
 *.tgz
+moc_*
+object_script.*
+qrc_*

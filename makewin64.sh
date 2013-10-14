@@ -7,10 +7,10 @@ cd $S
 ./clean.sh
 
 cd lib
-qmake -spec win32-cross && make && cp bin/jqt1.dll ../bin/jqt.dll
+qmake -spec win32-cross && make && cp ../bin/win-x86_64/release/jqt1.dll ../bin/win-x86_64/release/jqt.dll
 cd ..
 
 cd main
-qmake -spec win32-cross && make && cp bin/jqt.exe ../bin/.
+qmake -spec win32-cross && make
 
 

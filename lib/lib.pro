@@ -8,19 +8,47 @@ android: {
           QT -= webkit
           QT -= opengl
           TEMPLATE = lib
-          TARGET = ../bin/jqt }
+          TARGET = jqt }
 else: {   TEMPLATE = lib
           QT += webkit
           QT += opengl
-          TARGET = ../bin/jqt }
+          TARGET = jqt }
 
 # to exclude QtWebKit, uncomment the following line
 # QT -= webkit
 # to exclude OpenGL, uncomment the following line
 # QT -= opengl
 
-OBJECTS_DIR = build
-MOC_DIR = build
+CONFIG(debug, debug|release) {
+rel = debug
+} else {
+rel = release
+}
+
+linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
+linux-g++-32: QMAKE_TARGET.arch = x86
+linux-g++-64: QMAKE_TARGET.arch = x86_64
+linux-cross: QMAKE_TARGET.arch = x86
+win32-cross-32: QMAKE_TARGET.arch = x86
+win32-cross: QMAKE_TARGET.arch = x86_64
+android: QMAKE_TARGET.arch = arm
+linux-raspi: QMAKE_TARGET.arch = arm
+
+win32: arch = win-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
+macx: arch = mac-$$QMAKE_TARGET.arch
+unix:!macx: arch = linux-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
+
+BUILDROOT = build/$$arch/$$rel
+TARGETROOT = ../bin/$$arch/$$rel
+DESTDIR = $$TARGETROOT
+DLLDESTDIR = $$TARGETROOT
+
+OBJECTS_DIR = $$BUILDROOT/obj
+MOC_DIR = $$BUILDROOT/moc
+RCC_DIR = $$BUILDROOT/rcc
+UI_DIR = $$BUILDROOT/ui
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
