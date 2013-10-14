@@ -32,7 +32,6 @@ android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 android: arch = android-$$QMAKE_TARGET.arch
-linux-raspi:arch = raspi-$$QMAKE_TARGET.arch
 
 BUILDROOT = build/$$arch/$$rel
 TARGETROOT = ../bin/$$arch/$$rel
