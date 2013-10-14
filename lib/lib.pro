@@ -1,5 +1,5 @@
 
-VERSION = 1.0.19
+VERSION = 1.0.20
 
 android: {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
