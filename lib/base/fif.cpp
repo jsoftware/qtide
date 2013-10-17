@@ -18,6 +18,8 @@
 #include "term.h"
 #include "view.h"
 
+static int MaxFif=100; // max search length
+
 using namespace std;
 
 Fif::Fif(QString s, bool ifname)
@@ -252,6 +254,7 @@ void Fif::refresh()
 // ---------------------------------------------------------------------
 void Fif::reject()
 {
+  setsearchmaxlength();
   recent.Fif=SearchList;
   recent.save_recent();
 
@@ -301,6 +304,17 @@ void Fif::setsearchlist(QString s)
   SearchList.prepend(s);
   SearchList.removeDuplicates();
   SearchList=SearchList.mid(0,Max);
+}
+
+// ---------------------------------------------------------------------
+void Fif::setsearchmaxlength()
+{
+  QString s;
+  for (int i=0; i<SearchList.size(); i++) {
+    s=SearchList.at(i);
+    if (s.length()>MaxFif)
+      SearchList.replace(i,s.left(MaxFif));
+  }
 }
 
 // ---------------------------------------------------------------------

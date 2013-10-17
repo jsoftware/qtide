@@ -47,6 +47,7 @@ private:
   void setenable();
   void setpathlist(QString p);
   void setsearchlist(QString s);
+  void setsearchmaxlength();
   void settypelist(QString t);
   void write();
   void writebuttons();
