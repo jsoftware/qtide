@@ -5,6 +5,7 @@
 S=~/dev/apps/ide/jqt
 
 ./clean.sh
+./clean.l32
 
 cd lib
 qmake -spec linux-cross && make

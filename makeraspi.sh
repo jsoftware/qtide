@@ -5,6 +5,7 @@
 S=~/dev/apps/ide/jqt
 
 ./clean.sh
+./clean.rpi
 
 cd lib
 qmake -spec linux-raspi && make

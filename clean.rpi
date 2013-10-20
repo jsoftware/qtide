@@ -1,0 +1,7 @@
+#!/bin/bash
+
+S=~/dev/apps/ide/jqt
+
+rm -rf $S/bin/linux-arm
+rm -rf $S/lib/build/linux-arm
+rm -rf $S/main/build/linux-arm

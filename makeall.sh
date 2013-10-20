@@ -5,6 +5,7 @@
 S=~/dev/apps/ide/jqt
 
 ./clean.sh
+./clean.l64
 
 cd lib
 qmake && make

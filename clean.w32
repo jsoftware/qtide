@@ -1,0 +1,7 @@
+#!/bin/bash
+
+S=~/dev/apps/ide/jqt
+
+rm -rf $S/bin/win-x86
+rm -rf $S/lib/build/win-x86
+rm -rf $S/main/build/win-x86
