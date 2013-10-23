@@ -24,6 +24,7 @@ linux-g++-64: QMAKE_TARGET.arch = x86_64
 linux-cross: QMAKE_TARGET.arch = x86
 win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
+win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 android: QMAKE_TARGET.arch = arm
 linux-raspi: QMAKE_TARGET.arch = arm
 
