@@ -29,8 +29,7 @@
 
 using namespace std;
 
-C* _stdcall Jinput(C*);
-C* _stdcall Jinputcb(C*);
+C* _stdcall Jinput(J jt, C*);
 void _stdcall Joutput(J jt, int type, C* s);
 
 static bool ifcmddo=false;
@@ -71,7 +70,7 @@ int Jcon::exec()
 
   while(1) {
     cnt++;
-    Jinput((char *)"   ");
+    jinput((char *)"   ");
     if (quitx) break;
     while(!Sentence.isEmpty()) {
       s=Sentence.at(0);
@@ -88,7 +87,7 @@ int Jcon::exec()
 int Jcon::init(int argc, char* argv[])
 {
 
-  void* callbacks[] = {(void*)Joutput,0,(void*)Jinputcb,0,(void*)SMCON};
+  void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,0,(void*)SMCON};
   int type;
 
   evloop=new QEventLoop();
@@ -149,7 +148,7 @@ void Jcon::set(QString s, QString t)
 
 // ---------------------------------------------------------------------
 //J calls for input (debug suspension and 1!:1[1) and we call for input
-char* _stdcall Jinput(char* p)
+char* Jcon::jinput(char* p)
 {
   tedit->prompt=c2q(p);
   tedit->setprompt();
@@ -161,8 +160,10 @@ char* _stdcall Jinput(char* p)
 
 // ---------------------------------------------------------------------
 //J calls for input (debug suspension and 1!:1[1) and we call for input
-char* _stdcall Jinputcb(char* p)
+char* _stdcall Jinput(J jt, char* p)
 {
+  Q_UNUSED(jt);
+
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;

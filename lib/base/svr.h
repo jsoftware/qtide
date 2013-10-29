@@ -29,6 +29,7 @@ public slots:
   void input();
 
 private:
+  char* jinput(char*);
 
 };
 
