@@ -51,6 +51,14 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
+linux-raspi: DEFINES += RASPI
+unix:!macx {
+DEFINES += FHS=2
+} else {
+DEFINES += FHS=0
+}
+DEFINES += JDLLVER=\\\"8.0.1\\\"
+
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 equals(QT_MAJOR_VERSION, 5): QT += widgets

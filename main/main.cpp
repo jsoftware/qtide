@@ -24,7 +24,19 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
 #else
+#if FHS == 0
   QString s=QCoreApplication::applicationDirPath() + "/libjqt";
+#elif FHS == 1
+  QString s= "/usr/lib/libjqt";
+#elif FHS == 2
+#if defined(RASPI)
+  QString s="/usr/lib/arm-linux-gnueabihf/libjqt";
+#elif defined(__LP64__)
+  QString s="/usr/lib/x86_64-linux-gnu/libjqt";
+#elif 1
+  QString s="/usr/lib/i386-linux-gnu/libjqt";
+#endif
+#endif
 #endif
   QLibrary *lib=new QLibrary(s);
   Run state_run=(Run) lib->resolve("state_run");

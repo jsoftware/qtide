@@ -218,7 +218,19 @@ void jepath(char* arg)
   snk=path+strlen(path)-1;
   if('/'==*snk) *snk=0;
 #endif
+#if FHS == 0
   strcpy(pathdll,path);
+#elif FHS == 1
+  strcpy(pathdll,"/usr/lib");
+#elif FHS == 2
+#if defined(RASPI)
+  strcpy(pathdll,"/usr/lib/arm-linux-gnueabihf");
+#elif defined(__LP64__)
+  strcpy(pathdll,"/usr/lib/x86_64-linux-gnu/libjqt");
+#elif 1
+  strcpy(pathdll,"/usr/lib/i386-linux-gnu/libjqt");
+#endif
+#endif
   strcat(pathdll,JDLLNAME);
 // fprintf(stderr,"arg4 %s\n",path);
 }
@@ -306,7 +318,11 @@ int jefirst(int type,char* arg)
 
   *input=0;
   if(0==type) {
+#if FHS == 0
     strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+#else
+    strcat(input,"(3 : '0!:0 y')<'/etc/j/"JDLLVER);
+#endif
     strcat(input,filesepx);
     strcat(input,"profile.ijs'");
   } else if(1==type)
@@ -331,6 +347,15 @@ int jefirst(int type,char* arg)
   }
   *q=0;
   strcat(input,"'");
+#endif
+#if FHS == 0
+  strcat(input,"[FHS_z_=:0");
+#elif FHS == 1
+  strcat(input,"[FHS_z_=:1");
+#elif FHS == 2
+  strcat(input,"[FHS_z_=:2");
+#elif 1
+#error invalid value for FHS
 #endif
   strcat(input,"[IFQT_z_=:1");
   string s="[libjqt_z_=: '"+q2s(LibName)+"'";

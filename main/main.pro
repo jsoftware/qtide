@@ -44,6 +44,13 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
+linux-raspi: DEFINES += RASPI
+unix:!macx {
+DEFINES += FHS=2
+} else {
+DEFINES += FHS=0
+}
+
 win32-msvc*:TARGET = ../bin/jqtx
 DEPENDPATH += .
 INCLUDEPATH += .
