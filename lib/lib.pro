@@ -1,5 +1,7 @@
 
 VERSION = 1.0.20
+FHS = 2            # ignored except linux
+JDLLVER = 8.0.1    # ignored if FHS == 0
 
 android: {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
@@ -53,11 +55,11 @@ UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
 unix:!macx {
-DEFINES += FHS=2
+DEFINES += FHS=$$FHS
 } else {
 DEFINES += FHS=0
 }
-DEFINES += JDLLVER=\\\"8.0.1\\\"
+DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS

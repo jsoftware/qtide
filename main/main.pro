@@ -1,3 +1,6 @@
+
+FHS = 2            # ignored except linux
+
 android {
   CONFIG += mobility
   MOBILITY +=
@@ -46,7 +49,7 @@ UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
 unix:!macx {
-DEFINES += FHS=2
+DEFINES += FHS=$$FHS
 } else {
 DEFINES += FHS=0
 }
