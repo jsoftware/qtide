@@ -226,9 +226,9 @@ void jepath(char* arg)
 #if defined(RASPI)
   strcpy(pathdll,"/usr/lib/arm-linux-gnueabihf");
 #elif defined(__LP64__)
-  strcpy(pathdll,"/usr/lib/x86_64-linux-gnu/libjqt");
+  strcpy(pathdll,"/usr/lib/x86_64-linux-gnu");
 #elif 1
-  strcpy(pathdll,"/usr/lib/i386-linux-gnu/libjqt");
+  strcpy(pathdll,"/usr/lib/i386-linux-gnu");
 #endif
 #endif
   strcat(pathdll,JDLLNAME);

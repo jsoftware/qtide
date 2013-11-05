@@ -67,14 +67,14 @@ void Config::folder_init()
   QString s;
   QStringList k,v;
 
-  k=dors("}.;',',&.>{.\"1 UserFolders_j_").split(",");
-  v=dors("}.;',',&.>{:\"1 UserFolders_j_").split(",");
+  k=dors("'',}.;',',&.>{.\"1 UserFolders_j_").split(",");
+  v=dors("'',}.;',',&.>{:\"1 UserFolders_j_").split(",");
 
   UserFolderKeys=k;
   UserFolderValues=v;
 
-  k+=dors("}.;',',&.>{.\"1 SystemFolders_j_").split(",");
-  v+=dors("}.;',',&.>{:\"1 SystemFolders_j_").split(",");
+  k+=dors("'',}.;',',&.>{.\"1 SystemFolders_j_").split(",");
+  v+=dors("'',}.;',',&.>{:\"1 SystemFolders_j_").split(",");
 
   AllFolderKeys=k;
   AllFolderValues=v;
