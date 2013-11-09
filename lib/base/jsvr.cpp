@@ -220,18 +220,11 @@ void jepath(char* arg)
 #endif
 #if FHS == 0
   strcpy(pathdll,path);
-#elif FHS == 1
-  strcpy(pathdll,"/usr/lib");
-#elif FHS == 2
-#if defined(RASPI)
-  strcpy(pathdll,"/usr/lib/arm-linux-gnueabihf");
-#elif defined(__LP64__)
-  strcpy(pathdll,"/usr/lib/x86_64-linux-gnu");
-#elif 1
-  strcpy(pathdll,"/usr/lib/i386-linux-gnu");
-#endif
-#endif
+  strcat(pathdll,filesepx );
   strcat(pathdll,JDLLNAME);
+#else
+  strcpy(pathdll,JDLLNAME);
+#endif
 // fprintf(stderr,"arg4 %s\n",path);
 }
 

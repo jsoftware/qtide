@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <direct.h>
 #define GETPROCADDRESS(h,p) GetProcAddress(h,p)
-#define JDLLNAME "\\j.dll"
+#define JDLLNAME "j.dll"
 #define filesep '\\'
 #define filesepx "\\"
 #else
@@ -17,12 +17,12 @@
 #include <dlfcn.h>
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
 #ifdef __MACH__
-#define JDLLNAME "/libj.dylib"
+#define JDLLNAME "libj.dylib"
 #else
 #if FHS == 0
-#define JDLLNAME "/libj.so"
+#define JDLLNAME "libj.so"
 #else
-#define JDLLNAME "/libj.so."JDLLVER
+#define JDLLNAME "libj.so."JDLLVER
 #endif
 #endif
 #define _getcwd getcwd
