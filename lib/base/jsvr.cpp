@@ -343,12 +343,8 @@ int jefirst(int type,char* arg)
 #endif
 #if FHS == 0
   strcat(input,"[FHS_z_=:0");
-#elif FHS == 1
+#else
   strcat(input,"[FHS_z_=:1");
-#elif FHS == 2
-  strcat(input,"[FHS_z_=:2");
-#elif 1
-#error invalid value for FHS
 #endif
   strcat(input,"[IFQT_z_=:1");
   string s="[libjqt_z_=: '"+q2s(LibName)+"'";
