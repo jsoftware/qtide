@@ -731,7 +731,10 @@ void wdqueries(string s)
 #else
 #ifdef  __MACH__
     QSysInfo qsi;
-    if (qsi.MacintoshVersion == QSysInfo::MV_10_8) {
+    if (qsi.MacintoshVersion > QSysInfo::MV_10_8) {
+      result="10.9";
+      return;
+    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_8) {
       result="10.8";
       return;
     } else if (qsi.MacintoshVersion == QSysInfo::MV_10_7) {
