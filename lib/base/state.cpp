@@ -86,10 +86,14 @@ void Config::folder_init()
   TempPath.setPath(cpath("~temp"));
   UserPath.setPath(cpath("~user"));
 
-  createdir(SnapPath);
-  createdir(TempPath);
-  createdir(UserPath);
-
+// ??? should them be created for root user
+/*
+  if (!NoProfile) {
+    createdir(SnapPath);
+    createdir(TempPath);
+    createdir(UserPath);
+  }
+*/
 }
 
 // ---------------------------------------------------------------------
@@ -128,7 +132,7 @@ void Config::init()
   Rxnna = "\\b";
   Rxnnz = "\\b";
 
-  NoProfile="0"!=dors("\":~. 4!:0 ;:'SystemFolders_j_ UserFolders_j_'");
+  NoProfile="0"==dors("\":'/profile.ijs'-:(}.~i:&'/')jpathsep>{.4!:3''");
   if (NoProfile) {
     noprofile();
     return;
