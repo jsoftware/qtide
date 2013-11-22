@@ -1,6 +1,6 @@
 
 VERSION = 1.0.21
-FHS = 2            # ignored except linux
+FHS = 1            # ignored except linux
 JDLLVER = 8.0.1    # ignored if FHS == 0
 
 android: {

@@ -1,5 +1,5 @@
 
-FHS = 2            # ignored except linux
+FHS = 1            # ignored except linux
 
 android {
   CONFIG += mobility
