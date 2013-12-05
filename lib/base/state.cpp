@@ -87,13 +87,13 @@ void Config::folder_init()
   UserPath.setPath(cpath("~user"));
 
 // ??? should them be created for root user
-/*
-  if (!NoProfile) {
-    createdir(SnapPath);
-    createdir(TempPath);
-    createdir(UserPath);
-  }
-*/
+  /*
+    if (!NoProfile) {
+      createdir(SnapPath);
+      createdir(TempPath);
+      createdir(UserPath);
+    }
+  */
 }
 
 // ---------------------------------------------------------------------

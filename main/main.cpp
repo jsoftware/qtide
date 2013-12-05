@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
 #else
-#if FHS == 0
+#ifndef FHS
   QString s=QCoreApplication::applicationDirPath() + "/libjqt";
 #else
   QString s= "libjqt";

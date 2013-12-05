@@ -1,5 +1,5 @@
 
-FHS = 1            # ignored except linux
+# unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
 
 android {
   CONFIG += mobility
@@ -48,11 +48,6 @@ RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
-unix:!macx {
-DEFINES += FHS=$$FHS
-} else {
-DEFINES += FHS=0
-}
 
 win32-msvc*:TARGET = ../bin/jqtx
 DEPENDPATH += .

@@ -218,7 +218,7 @@ void jepath(char* arg)
   snk=path+strlen(path)-1;
   if('/'==*snk) *snk=0;
 #endif
-#if FHS == 0
+#ifndef FHS
   strcpy(pathdll,path);
   strcat(pathdll,filesepx );
   strcat(pathdll,JDLLNAME);
@@ -311,7 +311,7 @@ int jefirst(int type,char* arg)
 
   *input=0;
   if(0==type) {
-#if FHS == 0
+#ifndef FHS
     strcat(input,"(3 : '0!:0 y')<BINPATH,'");
 #else
     strcat(input,"(3 : '0!:0 y')<'/etc/j/"JDLLVER);
@@ -341,7 +341,7 @@ int jefirst(int type,char* arg)
   *q=0;
   strcat(input,"'");
 #endif
-#if FHS == 0
+#ifndef FHS
   strcat(input,"[FHS_z_=:0");
 #else
   strcat(input,"[FHS_z_=:1");

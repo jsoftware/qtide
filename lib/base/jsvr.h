@@ -19,7 +19,7 @@
 #ifdef __MACH__
 #define JDLLNAME "libj.dylib"
 #else
-#if FHS == 0
+#ifndef FHS
 #define JDLLNAME "libj.so"
 #else
 #define JDLLNAME "libj.so."JDLLVER

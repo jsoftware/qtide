@@ -1,7 +1,8 @@
 
 VERSION = 1.0.21
-FHS = 1            # ignored except linux
-JDLLVER = 8.0.1    # ignored if FHS == 0
+JDLLVER = 8.0.1    # ignored ifndef FHS
+
+# unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
 
 android: {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
@@ -54,11 +55,6 @@ RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
-unix:!macx {
-DEFINES += FHS=$$FHS
-} else {
-DEFINES += FHS=0
-}
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 win32:CONFIG += dll console
