@@ -32,7 +32,11 @@ int main(int argc, char *argv[])
   return state_run(argc, argv, &app, QCoreApplication::applicationFilePath());
 #else
 #ifdef _WIN32
+#ifndef FHS
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
+#else
+  QString s= "jqt";
+#endif
 #else
 #ifndef FHS
   QString s=QCoreApplication::applicationDirPath() + "/libjqt";
