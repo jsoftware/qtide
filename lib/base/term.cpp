@@ -26,7 +26,7 @@ QString LastLaunch;
 QTime LastLaunchTime;
 QTimer *timer=0;
 
-extern "C" void smact();
+extern "C" Dllexport void smact();
 
 // ---------------------------------------------------------------------
 OneWin::OneWin()
