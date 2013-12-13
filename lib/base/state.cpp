@@ -380,7 +380,11 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
   }
 #endif
   state_init_resource();
+#if defined(__MACH__) || defined(_WIN32)
+  setlocale(4,"C");
+#else
   setlocale(1,"C");
+#endif
   state_appname();
   term = new Term;
   if (!state_init(argc,argv)) return 1;
