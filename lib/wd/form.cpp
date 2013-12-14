@@ -66,18 +66,22 @@ Form::~Form()
 {
   Child *n;
   for (int i=0; i<children.size(); i++)
-    if ("isigraph"==(n=children.at(i))->type) {
-      if (((Isigraph2*)n->widget)->painter) {
-        ((Isigraph2*)n->widget)->painter->end();
-        delete ((Isigraph2*)n->widget)->painter;
-        ((Isigraph2*)n->widget)->painter=0;
+    if ("isigraph0"==(n=children.at(i))->type) {
+      if ((Isigraph2*)n->widget) {
+        if (((Isigraph2*)n->widget)->painter) {
+          ((Isigraph2*)n->widget)->painter->end();
+          delete ((Isigraph2*)n->widget)->painter;
+          ((Isigraph2*)n->widget)->painter=0;
+        }
       }
 #ifndef QT_NO_OPENGL
     } else if ("opengl"==(n=children.at(i))->type) {
-      if (((Opengl2*)n->widget)->painter) {
-        ((Opengl2*)n->widget)->painter->end();
-        delete ((Opengl2*)n->widget)->painter;
-        ((Opengl2*)n->widget)->painter=0;
+      if ((Opengl2*)n->widget) {
+        if (((Opengl2*)n->widget)->painter) {
+          ((Opengl2*)n->widget)->painter->end();
+          delete ((Opengl2*)n->widget)->painter;
+          ((Opengl2*)n->widget)->painter=0;
+        }
       }
 #endif
     }
@@ -201,26 +205,18 @@ void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
 #ifdef Q_OS_ANDROID
-  if (k==16777220) {  // back button
-    e->accept();
-#if 0
-    if (closeok) {
-      delete this;
-    } else {
-      event="close";
-      fakeid="";
-      form=this;
-      signalevent(0);
-    }
-#endif
+  if (k==Qt::Key_Back) {
+    QWidget::keyPressEvent(e);
     return;
   }
 #endif
   if (escclose && k==Qt::Key_Escape) {
     e->ignore();
-    if (closeok)
-      delete this;
-    else  {
+    if (closed) return;
+    if (closeok) {
+      closed=true;
+      close();
+    } else  {
       event="close";
       fakeid="";
       form=this;
@@ -234,7 +230,28 @@ void Form::keyPressEvent(QKeyEvent *e)
     event="fkey";
     form=this;
     signalevent(0,e);
-  }
+  } else
+    QWidget::keyPressEvent(e);
+}
+
+// ---------------------------------------------------------------------
+void Form::keyReleaseEvent(QKeyEvent *e)
+{
+#ifdef Q_OS_ANDROID
+  if (e->key()==Qt::Key_Back) {
+    if (closed) return;
+    if (closeok) {
+      closed=true;
+      close();
+    } else {
+      event="close";
+      fakeid="";
+      form=this;
+      signalevent(0);
+    }
+  } else QWidget::keyReleaseEvent(e);
+#endif
+  QWidget::keyReleaseEvent(e);
 }
 
 // ---------------------------------------------------------------------

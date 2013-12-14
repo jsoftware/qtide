@@ -151,7 +151,7 @@ void Menu::createActions()
   ProjectEnable <<  projectbuildAct << projectcloseAct << projectsnapAct
                 << projectsnapmakeAct << projectterminalAct
                 << runprojectAct << winscriptsAct
-#ifndef _WIN32
+#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
                 << projectgitstatusAct << projectgitguiAct
 #endif
                 << winsourceAct << wintextAct << winfileclosexAct;
@@ -348,7 +348,7 @@ void Menu::createprojectMenu(QString s)
       projMenu->addAction(projectsnapAct);
       projMenu->addAction(projectsnapmakeAct);
     }
-#ifndef _WIN32
+#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     projMenu->addSeparator();
     projMenu->addAction(projectgitguiAct);
     projMenu->addAction(projectgitstatusAct);
@@ -681,11 +681,7 @@ void Note::on_fileprintallAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_filequitAct_triggered()
 {
-#ifndef Q_OS_ANDROID
-  closeit();
-#else
   term->filequit();
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -1012,12 +1008,6 @@ void Note::on_viewsidebarAct_triggered()
 void Note::on_viewterminalAct_triggered()
 {
   term->activate();
-#ifdef Q_OS_ANDROID
-  term->activateWindow();
-  term->raise();
-  term->repaint();
-  idewin=0;
-#endif
 }
 
 // ---------------------------------------------------------------------

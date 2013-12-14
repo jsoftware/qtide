@@ -9,6 +9,7 @@ QString defext(QString s);
 int fkeynum(int key,bool c,bool s);
 QStringList folder_tree(QString b,QString f,bool subdir);
 QStringList folder_tree1(QString b,QString s,QStringList f);
+extern "C" Dllexport void fontsetsize(int n);
 void fontdiff(int n);
 void fontset(QFont font);
 QString getcmd(QString,QString);

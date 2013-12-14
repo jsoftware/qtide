@@ -31,6 +31,7 @@ private slots:
 private:
   void reject();
   void savepos();
+  void keyReleaseEvent(QKeyEvent *e);
 
 };
 

@@ -12,14 +12,13 @@ makewincdb.sh
 run.sh
 style.sh
 
-android/bin/
-android/gen/
-android/libs/
-android/assets/--Managed_by_Qt_Creator--/
-local.properties
+android-build/
 
 jqt.xcodeproj
 Info.plist
+
+profile.ijs
+profilex.ijs
 
 *.a
 *.dll

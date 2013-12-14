@@ -37,6 +37,7 @@ private:
   void read();
   void refresh();
   void reject();
+  void keyReleaseEvent(QKeyEvent *e);
   QList<int> removedups(QList<int> n);
   void research();
   void search();

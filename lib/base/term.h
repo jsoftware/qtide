@@ -136,6 +136,7 @@ public slots:
 
 private:
   void keyPressEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *e);
   void resizeEvent(QResizeEvent *event);
   void closeEvent(QCloseEvent *event);
 

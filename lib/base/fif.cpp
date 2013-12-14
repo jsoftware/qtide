@@ -118,17 +118,7 @@ Fif::Fif(QString s, bool ifname)
 // ---------------------------------------------------------------------
 void Fif::finfo(QString txt)
 {
-#ifdef Q_OS_ANDROID
-  int t=idewin;
-  idewin=-1;
-#endif
   info(Title,txt);
-#ifdef Q_OS_ANDROID
-  activateWindow();
-  raise();
-  repaint();
-  idewin=t;
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -265,6 +255,18 @@ void Fif::reject()
     Pos[3]=size().height();
   config.winpos_save1(Pos,"Fif");
   QDialog::reject();
+}
+
+// ---------------------------------------------------------------------
+void Fif::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    reject();
+  } else QDialog::keyReleaseEvent(event);
+#else
+  QDialog::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------

@@ -172,6 +172,10 @@ void Config::initide()
   int fontsize=10;
   QFont::Weight fontweight=QFont::Normal;
 
+#ifdef Q_OS_ANDROID
+  font="Droid San Mono";
+  fontsize=16;
+#endif
 #ifdef __MACH__
   font="Menlo";
   fontsize=14;
@@ -262,9 +266,14 @@ void Config::noprofile()
 {
   ConfirmClose = false;
   ConfirmSave = false;
-  Font.setFamily("Monospace");
   Font.setStyleHint(QFont::TypeWriter);
+#ifdef Q_OS_ANDROID
+  Font.setFamily("Droid San Mono");
+  Font.setPointSize(16);
+#else
+  Font.setFamily("Monospace");
   Font.setPointSize(12);
+#endif
   TermBack.color = QColor("mistyrose");
   TermFore.color = QColor("black");
   TermHigh.color = QColor("gainsboro");

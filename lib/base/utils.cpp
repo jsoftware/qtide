@@ -68,6 +68,13 @@ int fkeynum(int key,bool c,bool s)
 }
 
 // ---------------------------------------------------------------------
+void fontsetsize(int n)
+{
+  config.Font.setPointSize(n);
+  fontset(config.Font);
+}
+
+// ---------------------------------------------------------------------
 void fontdiff(int n)
 {
   config.Font.setPointSize(n+config.Font.pointSize());

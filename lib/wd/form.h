@@ -75,6 +75,7 @@ public slots:
 protected:
   void closeEvent(QCloseEvent *);
   void keyPressEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *e);
 
 private:
   bool closeok;

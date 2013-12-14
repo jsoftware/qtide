@@ -238,6 +238,12 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,0
   int key1=0;
   int key=event->key();
+#ifdef Q_OS_ANDROID
+  if (key==Qt::Key_Back) {
+    QWidget::keyPressEvent(event);
+    return;
+  }
+#endif
 //  qDebug() << "isigraph2 keypress " + QString::number(key);
   if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
     QWidget::keyPressEvent(event);

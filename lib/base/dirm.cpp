@@ -218,17 +218,7 @@ QStringList Dirm::dmgetnames()
 // ---------------------------------------------------------------------
 void Dirm::dminfo(QString txt)
 {
-#ifdef Q_OS_ANDROID
-  int t=idewin;
-  idewin=-1;
-#endif
   info(Title,txt);
-#ifdef Q_OS_ANDROID
-  activateWindow();
-  raise();
-  repaint();
-  idewin=t;
-#endif
 }
 
 // ---------------------------------------------------------------------

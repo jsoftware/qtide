@@ -114,22 +114,18 @@ Fiw::Fiw(int p, QString s)
 // ---------------------------------------------------------------------
 void Fiw::finfo(QString s)
 {
-#ifdef Q_OS_ANDROID
-  int t=idewin;
-  idewin=-1;
-#endif
   info("Find",s);
-#ifdef Q_OS_ANDROID
-  activateWindow();
-  raise();
-  repaint();
-  idewin=t;
-#endif
 }
 
 // ---------------------------------------------------------------------
 void Fiw::keyPressEvent(QKeyEvent *e)
 {
+#ifdef Q_OS_ANDROID
+  if (e->key()==Qt::Key_Back) {
+    QDialog::keyPressEvent(e);
+    return;
+  }
+#endif
   Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   if (ctrl && e->key()==Qt::Key_R && !ifReplace)
@@ -267,6 +263,18 @@ void Fiw::reject()
 {
   config.winpos_save(this,"Fiw");
   QDialog::reject();
+}
+
+// ---------------------------------------------------------------------
+void Fiw::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    reject();
+  } else QDialog::keyReleaseEvent(event);
+#else
+  QDialog::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------

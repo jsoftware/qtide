@@ -10,6 +10,7 @@ android: {
           MOBILITY +=
           QT -= webkit
           QT -= opengl
+          DEFINES += QT_NO_PRINTER
           TEMPLATE = lib
           TARGET = jqt }
 else: {   TEMPLATE = lib

@@ -168,7 +168,9 @@ void jepath(char* arg)
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
 #elif defined(Q_OS_ANDROID)
   Q_UNUSED(arg);
-  strcpy(path,(QDir::currentPath()+"/../lib").toUtf8().data());
+  QFileInfo fileInfo(LibName);
+  strcpy(path,fileInfo.canonicalPath().toUtf8().data());
+  qDebug() << "jepath " << s2q(path);
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -253,28 +255,55 @@ int jefirst(int type,char* arg)
   Q_UNUSED(q);
   char *homepath;
   char *sdcard;
-  char SDCARD[] = "/sdcard";
+  char SDCARD[] = "/mnt/sdcard";
   struct stat st;
   if (!(sdcard=getenv("EXTERNAL_STORAGE")))
     sdcard=&SDCARD[0];
-  if(!getenv("HOME")) {
-    if(!stat(sdcard,&st)) {
-      setenv("HOME",sdcard,1);
-    } else {
+  else {
+    setenv("EXTERNAL_STORAGE",sdcard,1);
+  }
+  int sdcardok = !stat(sdcard,&st);
+  if(sdcardok)
+    setenv("HOME",sdcard,1);
+  else {
+    if(!getenv("HOME"))
       setenv("HOME",path,1);
-    }
   }
   homepath=getenv("HOME");
-  if(!getenv("TMP")) {
-    char tmp[PLEN];
-    strcpy(tmp, homepath);
-    strcat(tmp, filesepx);
-    strcat(tmp, "tmp");
-    if(stat(tmp,&st)) mkdir(tmp, S_IRWXU | S_IRWXG | S_IRWXO);
-    setenv("TMP",tmp,1);
+  qDebug() << "homepath: " << s2q(homepath);
+  if(!getenv("TMP"))
+    setenv("TMP",QDir::tempPath().toUtf8().data(),1);
+
+  QString appcurrentpath = QDir::currentPath();
+  qDebug() << "application current path: " << appcurrentpath;
+  char install[PLEN];
+  if (sdcardok) {
+    strcpy(install, sdcard);
+    strcat(install, "/Android/data");
+    strcat(install, "/com.jsoftware.android.qtide");
+    if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
+    strcat(install, "/files");
+    if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
+  } else {
+    strcpy(install, appcurrentpath.toUtf8().data());
+  }
+  qDebug() << "install path: " << s2q(install);
+  QDir::setCurrent(install);
+// assume cwd is .../files
+
+  char binpath[PLEN];
+  strcpy(binpath, appcurrentpath.toUtf8().data());
+  strcat(binpath, "/bin");
+  if(stat(binpath,&st)) mkdir(binpath, S_IRWXU | S_IRWXG | S_IRWXO);
+// always install new profile.ijs
+  QFile("assets:/profile.ijs").copy(QString(binpath).append("/profile.ijs"));
+  QFile::setPermissions(QString(binpath).append("/profile.ijs"),(QFile::Permission)0x6666);
+// not overwrite profilex.ijs
+  if(!(QFile(QString(binpath).append("/profilex.ijs.ijs")).exists())) {
+    QFile("assets:/profilex.ijs").copy(QString(binpath).append("/profilex.ijs"));
+    QFile::setPermissions(QString(binpath).append("/profilex.ijs"),(QFile::Permission)0x6666);
   }
 
-// assume cwd is .../files
   int v1=0, v2=0;
   QFile *f1 = new QFile("assets:/assets_version.txt");
   QFile *f2 = new QFile("assets_version.txt");
@@ -297,16 +326,20 @@ int jefirst(int type,char* arg)
     QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6666);
     jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
     jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
-// neither worked, will be done on load ide/qt
-//    QFile::setPermissions("tools/zip/7za",(QFile::Permission)0x7777);
-//    QFile::setPermissions("tools/ftp/wget",(QFile::Permission)0x7777);
-//    jedo((char *)"(i.0 0)['rwxrwxrwx'1!:7 ::0:<'tools/zip/7za'['rwxrwxrwx'1!:7 ::0:<'tools/ftp/wget'");
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets_version.txt").remove();
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6666);
   }
+
+// not overwrite welcome.ijs
+  if(!(QFile("welcome.ijs.ijs").exists())) {
+    QFile("assets:/welcome.ijs").copy("welcome.ijs");
+    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6666);
+  }
+
+  QDir::setCurrent(homepath);
 #endif
 
   *input=0;
@@ -328,9 +361,13 @@ int jefirst(int type,char* arg)
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
 #ifdef Q_OS_ANDROID
-  strcat(input,homepath);
+  strcat(input,appcurrentpath.toUtf8().data());
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");
+  strcat(input,"[INSTALLROOT_z_=:'");
+  strcat(input,install);
+  strcat(input,"'");
+  qDebug() << "jefirst: " << s2q(input);
 #else
   p=path;
   q=input+strlen(input);

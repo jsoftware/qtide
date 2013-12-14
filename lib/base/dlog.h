@@ -17,6 +17,7 @@ public slots:
 private:
   void init();
   void savepos();
+  void keyReleaseEvent(QKeyEvent *e);
 };
 
 void dlog_add(QString);

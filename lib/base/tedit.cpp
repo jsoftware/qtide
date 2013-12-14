@@ -113,6 +113,12 @@ void Tedit::itemActivated(QListWidgetItem *item)
 // ---------------------------------------------------------------------
 void Tedit::keyPressEvent(QKeyEvent *e)
 {
+#ifdef Q_OS_ANDROID
+  if (e->key()==Qt::Key_Back) {
+    QPlainTextEdit::keyPressEvent(e);
+    return;
+  }
+#endif
   Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
   bool shift = mod.testFlag(Qt::ShiftModifier);
   bool ctrl = mod.testFlag(Qt::ControlModifier);

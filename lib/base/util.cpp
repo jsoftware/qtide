@@ -21,27 +21,6 @@ int NoEvents=0;
 void about(QString t,QString s)
 {
   QMessageBox::about(QApplication::focusWidget(), t, s);
-#ifdef Q_OS_ANDROID
-  switch (idewin) {
-  case 0:
-    term->activateWindow();
-    term->raise();
-    term->repaint();
-    break;
-  case 1:
-    note->activateWindow();
-    note->raise();
-    note->repaint();
-    break;
-  case 2:
-    note2->activateWindow();
-    note2->raise();
-    note2->repaint();
-    break;
-  default:
-    ;
-  }
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -400,27 +379,6 @@ bool ifshift()
 void info(QString t,QString s)
 {
   QMessageBox::information(QApplication::focusWidget(), t, s);
-#ifdef Q_OS_ANDROID
-  switch (idewin) {
-  case 0:
-    term->activateWindow();
-    term->raise();
-    term->repaint();
-    break;
-  case 1:
-    note->activateWindow();
-    note->raise();
-    note->repaint();
-    break;
-  case 2:
-    note2->activateWindow();
-    note2->raise();
-    note2->repaint();
-    break;
-  default:
-    ;
-  }
-#endif
 }
 
 // ---------------------------------------------------------------------

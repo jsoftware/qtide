@@ -40,6 +40,7 @@ private:
   void readwin();
   void refresh();
   void reject();
+  void keyReleaseEvent(QKeyEvent *e);
 
   void search(int dir);
   int search1(int dir);

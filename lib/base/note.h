@@ -189,6 +189,7 @@ private:
   void closeEvent(QCloseEvent *event);
 
   void keyPressEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *e);
   bool maybeSave();
   QString readentry(Nedit *, int *);
   QString readnextentry(QStringList,QString,QString, int*);

@@ -129,9 +129,6 @@ QString mbmsg()
 
   if (type=="query") {
     r=QMessageBox::question(QApplication::focusWidget(),t,m,buttons,button1);
-#ifdef Q_OS_ANDROID
-    wdactivateform();
-#endif
     return getname(r);
   }
   if (type=="critical")
@@ -140,9 +137,6 @@ QString mbmsg()
     QMessageBox::information(QApplication::focusWidget(),t,m,buttons,button1);
   else if (type=="warn")
     QMessageBox::warning(QApplication::focusWidget(),t,m,buttons,button1);
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   return "";
 }
 
@@ -160,9 +154,6 @@ QString mbcolor()
   } else
     c=Qt::white;
   c=QColorDialog::getColor(c,QApplication::focusWidget());
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   if (!c.isValid()) return "";
   return s2q(i2s(c.red()) + " " + i2s(c.green()) + " " + i2s(c.blue()));
 }
@@ -179,9 +170,6 @@ QString mbdir()
   dir=arg.at(1);
   fl=QFileDialog::getExistingDirectory(
        QApplication::focusWidget(),title,dir);
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   return fl;
 }
 
@@ -209,9 +197,6 @@ QString mbfont()
       def.setUnderline(true);
   }
   font=QFontDialog::getFont(&ok,def,QApplication::focusWidget());
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   if (!ok) return "";
   QString r;
   r="\"" + font.family() + "\" " + QString::number(font.pointSize());
@@ -237,9 +222,6 @@ QString mbopen()
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getOpenFileNames(
        QApplication::focusWidget(),title,dir,filter);
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   if (fl.isEmpty())
     return "";
   else return fl.join("\012") + "\012";
@@ -259,9 +241,6 @@ QString mbopen1()
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getOpenFileName(
        QApplication::focusWidget(),title,dir,filter);
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   return fl;
 }
 
@@ -375,9 +354,6 @@ QString mbsave()
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getSaveFileName(
        QApplication::focusWidget(),title,dir,filter);
-#ifdef Q_OS_ANDROID
-  wdactivateform();
-#endif
   return fl;
 }
 

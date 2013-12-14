@@ -139,6 +139,18 @@ void Slog::savepos()
 }
 
 // ---------------------------------------------------------------------
+void Slog::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    reject();
+  } else QDialog::keyReleaseEvent(event);
+#else
+  QDialog::keyReleaseEvent(event);
+#endif
+}
+
+// ---------------------------------------------------------------------
 QStringList qsreverse(const QStringList list)
 {
   QStringList r;

@@ -151,9 +151,8 @@ void Term::keyPressEvent(QKeyEvent *event)
   switch (event->key()) {
 #ifdef JQT
 #ifdef Q_OS_ANDROID
-  case 16777220:
-    event->accept();
-    filequit();
+  case Qt::Key_Back:
+    QWidget::keyPressEvent(event);
     break;
 #endif
   case Qt::Key_Escape:
@@ -166,6 +165,18 @@ void Term::keyPressEvent(QKeyEvent *event)
   default:
     QWidget::keyPressEvent(event);
   }
+}
+
+// ---------------------------------------------------------------------
+void Term::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    filequit();
+  } else QWidget::keyReleaseEvent(event);
+#else
+  QWidget::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -224,23 +235,11 @@ void Term::vieweditor()
 {
   if (note) {
     note->activate();
-#ifdef Q_OS_ANDROID
-    term->setVisible(false);
-    note->activateWindow();
-    note->raise();
-    note->repaint();
-#endif
   } else {
     note = new Note();
     if (recent.ProjectOpen)
       note->projectopen(true);
     note->show();
-#ifdef Q_OS_ANDROID
-    term->setVisible(false);
-    note->activateWindow();
-    note->raise();
-    note->repaint();
-#endif
   }
   idewin=1;
 }

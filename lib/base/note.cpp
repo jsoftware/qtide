@@ -140,11 +140,28 @@ bool Note::fileopen(QString s,int line)
 void Note::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
+#ifdef Q_OS_ANDROID
+  case Qt::Key_Back:
+    QWidget::keyPressEvent(event);
+    break;
+#endif
   case Qt::Key_Escape:
     closeit();
   default:
     QWidget::keyPressEvent(event);
   }
+}
+
+// ---------------------------------------------------------------------
+void Note::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    closeit();
+  } else QWidget::keyReleaseEvent(event);
+#else
+  QWidget::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------
