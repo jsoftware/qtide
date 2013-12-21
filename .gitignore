@@ -2,7 +2,6 @@ bin/
 build/
 config/
 jwd/
-lib/
 
 makebill.sh
 makecdb.sh
@@ -16,6 +15,7 @@ android-build/
 
 jqt.xcodeproj
 Info.plist
+jqt_resource.rc
 
 profile.ijs
 profilex.ijs

@@ -30,7 +30,7 @@ void Webview::set(string p,string v)
   QWebView *w = (QWebView *)widget;
   if (p=="baseurl") {
     QString t = s2q(v);
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(QT50)
     baseUrl = QUrl(t);
 #else
     if (t.contains("://"))
