@@ -104,7 +104,6 @@ Form::~Form()
     term->activateWindow();
     term->raise();
     term->repaint();
-    idewin=0;
   }
 #endif
 }

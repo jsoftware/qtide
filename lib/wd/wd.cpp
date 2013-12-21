@@ -210,7 +210,6 @@ void wdactivateform()
     term->activateWindow();
     term->raise();
     term->repaint();
-    idewin=0;
   }
 }
 
@@ -519,7 +518,7 @@ void wdpactive()
 {
   if (noform()) return;
   cmd.getparms();
-#ifdef Q_OS_ANDORID
+#ifdef Q_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
   form->activateWindow();

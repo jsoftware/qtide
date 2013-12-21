@@ -20,7 +20,6 @@ using namespace std;
 
 Term *term;
 Tedit *tedit;
-int idewin=0;  // 0: term  1: note 2: note2
 
 QString LastLaunch;
 QTime LastLaunchTime;
@@ -241,7 +240,6 @@ void Term::vieweditor()
       note->projectopen(true);
     note->show();
   }
-  idewin=1;
 }
 
 // ---------------------------------------------------------------------
@@ -251,5 +249,4 @@ void smact()
   term->activateWindow();
   term->raise();
   term->repaint();
-  idewin=0;
 }

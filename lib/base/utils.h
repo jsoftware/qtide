@@ -39,6 +39,5 @@ void utils_init();
 void xdiff(QString s,QString t);
 
 extern bool ShowIde;
-extern int idewin;
 
 #endif
