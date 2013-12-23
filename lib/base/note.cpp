@@ -61,6 +61,7 @@ Note::Note()
 void Note::activate()
 {
   activateWindow();
+  raise();
   int n=editIndex();
   if (n>=0)
     tabs->currentWidget()->setFocus();

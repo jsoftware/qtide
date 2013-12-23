@@ -28,10 +28,17 @@ Slog::Slog()
   QListWidget *s = new QListWidget();
   s->addItems(makeitems());
   s->setCurrentRow(InputLog.size()-1);
+#ifdef Q_OS_ANDROID
+  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
+          this,SLOT(itemActivated()));
+  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
+          tedit,SLOT(itemActivated(QListWidgetItem*)));
+#else
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(itemActivated()));
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           tedit,SLOT(itemActivated(QListWidgetItem*)));
+#endif
   QVBoxLayout *b = new QVBoxLayout;
   b->setContentsMargins(0,0,0,0);
   b->addWidget(s);

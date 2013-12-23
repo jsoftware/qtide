@@ -107,6 +107,7 @@ void Tedit::insert(QString s)
 void Tedit::itemActivated(QListWidgetItem *item)
 {
   term->activateWindow();
+  term->raise();
   promptreplace(getprompt() + item->text());
 }
 

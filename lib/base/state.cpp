@@ -173,7 +173,7 @@ void Config::initide()
   QFont::Weight fontweight=QFont::Normal;
 
 #ifdef Q_OS_ANDROID
-  font="Droid San Mono";
+  font="Droid Sans Mono";
   fontsize=16;
 #endif
 #ifdef __MACH__
@@ -268,7 +268,7 @@ void Config::noprofile()
   ConfirmSave = false;
   Font.setStyleHint(QFont::TypeWriter);
 #ifdef Q_OS_ANDROID
-  Font.setFamily("Droid San Mono");
+  Font.setFamily("Droid Sans Mono");
   Font.setPointSize(16);
 #else
   Font.setFamily("Monospace");
