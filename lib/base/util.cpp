@@ -718,8 +718,8 @@ void android_exec_host(char *intent,char *cmd,char *mimetype)
 {
 // eg. QProcess::execute( "am start -a android.intent.action.VIEW -d file:///sdcard/test.mp3 -t audio/mp3" );
   if ((!mimetype) || !strlen(mimetype))
-    QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d " + QString::fromUtf8(cmd) );
-  else QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d " + QString::fromUtf8(cmd) + " -t " + QString::fromUtf8(mimetype) );
+    QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d \"" + QString::fromUtf8(cmd) + "\"" );
+  else QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d \"" + QString::fromUtf8(cmd) + "\" -t " + QString::fromUtf8(mimetype) );
 }
 #endif
 
