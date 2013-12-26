@@ -12,7 +12,7 @@ android {
   TARGET = jqt
 }
 
-equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5): QT += widgets printsupport
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 
 CONFIG(debug, debug|release) {
@@ -28,6 +28,7 @@ linux-cross: QMAKE_TARGET.arch = x86
 win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
+win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 android: QMAKE_TARGET.arch = arm
 linux-raspi: QMAKE_TARGET.arch = arm
 
@@ -49,7 +50,7 @@ UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
 
-win32-msvc*:TARGET = ../bin/jqtx
+win32-msvc*:TARGET = ../bin/jqt
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -58,6 +59,6 @@ SOURCES += main.cpp
 win32:config += console
 CONFIG+= release
 
-win32:QMAKE_LFLAGS += -static-libgcc
+win32-g++:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
 win32:RC_FILE = jqt.rc
