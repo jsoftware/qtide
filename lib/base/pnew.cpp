@@ -30,7 +30,12 @@ Pnew::Pnew()
   v->addWidget(createbuttonpanel());
   setLayout(v);
   setWindowTitle(Title);
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(500,0);
+#endif
   QMetaObject::connectSlotsByName(this);
 }
 

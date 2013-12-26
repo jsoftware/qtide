@@ -347,7 +347,7 @@ int jefirst(int type,char* arg)
 #if !defined(FHS) || defined(_WIN32) || defined(ANDROID)
     strcat(input,"(3 : '0!:0 y')<BINPATH,'");
 #else
-    strcat(input,"(3 : '0!:0 y')<'/etc/j/"JDLLVER);
+    strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
 #endif
     strcat(input,filesepx);
     strcat(input,"profile.ijs'");

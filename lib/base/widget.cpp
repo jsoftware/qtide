@@ -1,7 +1,8 @@
 
 #include <QCheckBox>
-#include <QComboBox>
 #include <QPushButton>
+
+#include "pcombobox.h"
 
 // ---------------------------------------------------------------------
 QPushButton *makebutton(QString id)
@@ -25,9 +26,9 @@ QCheckBox *makecheckbox(QString text, QString id="")
 }
 
 // ---------------------------------------------------------------------
-QComboBox *makecombobox(QString id)
+PComboBox *makecombobox(QString id)
 {
-  QComboBox *p=new QComboBox();
+  PComboBox *p=new PComboBox();
   p->setEditable(true);
   p->setCompleter(0);
   p->setObjectName(id.remove(' ').remove('&').toLower());

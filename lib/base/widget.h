@@ -1,10 +1,10 @@
 
 class QCheckBox;
-class QComboBox;
+class PComboBox;
 class QFrame;
 class QPushButton;
 
 QPushButton *makebutton(QString text);
 QCheckBox *makecheckbox(QString text, QString id="");
-QComboBox *makecombobox(QString id);
+PComboBox *makecombobox(QString id);
 QFrame *makehline();

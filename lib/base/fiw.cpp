@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QLabel>
@@ -9,6 +8,7 @@
 #include <QPushButton>
 #include <QRegExp>
 
+#include "pcombobox.h"
 #include "base.h"
 #include "widget.h"
 
@@ -19,6 +19,8 @@
 #include "tedit.h"
 #include "term.h"
 #include "state.h"
+
+Fiw *fiw;
 
 using namespace std;
 
@@ -35,9 +37,7 @@ Fiw::Fiw(int p, QString s)
   Matchcase=true;
   Max=15;
   Name=false;
-  Parent=p;
   readwin();
-  setsearchlist(s);
 
   QVBoxLayout *v=new QVBoxLayout();
   v->setSpacing(12);
@@ -92,11 +92,8 @@ Fiw::Fiw(int p, QString s)
   g->addWidget(replace,1,1);
   g->addWidget(replaceforward,1,2);
 
-  write();
   findtop->setFocus();
   searchfor->setFocus();
-  if (s.size())
-    searchfor->lineEdit()->selectAll();
 
   lreplaceby->hide();
   replaceby->hide();
@@ -106,9 +103,28 @@ Fiw::Fiw(int p, QString s)
   v->addStretch(1);
   setLayout(v);
   setWindowTitle("Find");
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(450,0);
+#endif
   QMetaObject::connectSlotsByName(this);
+
+  initshow(p,s);
+}
+
+// ---------------------------------------------------------------------
+void Fiw::initshow(int p, QString s)
+{
+  Parent=p;
+  setsearchlist(s);
+  write();
+  if (s.size())
+    searchfor->lineEdit()->selectAll();
   show();
+  activateWindow();
+  raise();
 }
 
 // ---------------------------------------------------------------------
@@ -120,12 +136,6 @@ void Fiw::finfo(QString s)
 // ---------------------------------------------------------------------
 void Fiw::keyPressEvent(QKeyEvent *e)
 {
-#ifdef Q_OS_ANDROID
-  if (e->key()==Qt::Key_Back) {
-    QDialog::keyPressEvent(e);
-    return;
-  }
-#endif
   Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   if (ctrl && e->key()==Qt::Key_R && !ifReplace)
@@ -270,7 +280,8 @@ void Fiw::keyReleaseEvent(QKeyEvent *event)
 {
 #ifdef Q_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
-    reject();
+//    reject();
+    hide();
   } else QDialog::keyReleaseEvent(event);
 #else
   QDialog::keyReleaseEvent(event);

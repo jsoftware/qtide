@@ -29,6 +29,12 @@
 #include "term.h"
 #include "view.h"
 
+#ifdef Q_OS_ANDROID
+#include "../wd/form.h"
+extern Fif *fif;
+extern Fiw *fiw;
+#endif
+
 using namespace std;
 
 QAction *Menu::makeact(QString id, QString text, QString shortcut)
@@ -60,6 +66,9 @@ void Menu::createActions()
   editfiwAct = makeact("editfiwAct","&Find","Ctrl+F");
   editfontAct = makeact("editfontAct","&Session Font","");
   editinputlogAct = makeact("editinputlogAct","Input &Log","");
+#ifdef Q_OS_ANDROID
+  editwdformAct = makeact("editwdformAct","wd form","");
+#endif
   editredoAct = makeact("editredoAct","&Redo","Ctrl+Y");
   editundoAct = makeact("editundoAct","&Undo","Ctrl+Z");
   filecloseAct = makeact("filecloseAct","&Close","Ctrl+W");
@@ -444,13 +453,14 @@ void Menu::createviewMenu(QString s)
 
   viewMenu = addMenu("&View");
   viewMenu->addAction(editinputlogAct);
+#ifdef Q_OS_ANDROID
+  viewMenu->addAction(editwdformAct);
+#endif
   viewMenu->addSeparator();
   if (s == "note") {
     viewMenu->addAction(viewsidebarAct);
     viewMenu->addAction(viewterminalAct);
-#ifndef Q_OS_ANDROID
     viewMenu->addAction(vieweditorAct);
-#endif
   } else
     viewMenu->addAction(vieweditorAct);
   viewMenu->addSeparator();
@@ -563,14 +573,24 @@ void Note::on_editfifAct_triggered()
   QString s;
   if (tabs->count())
     s=((Nedit *)tabs->currentWidget())->readselected();
+#ifdef Q_OS_ANDROID
+  if (!fif) fif = new Fif(s,false);
+  else fif->initshow(s,false);
+#else
   new Fif(s,false);
+#endif
 }
 
 // ---------------------------------------------------------------------
 void Note::on_editfiwAct_triggered()
 {
   QString s=((Nedit *)tabs->currentWidget())->readselected();
+#ifdef Q_OS_ANDROID
+  if (!fiw) fiw = new Fiw(1,s);
+  else fiw->initshow(1,s);
+#else
   new Fiw(1,s);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -584,6 +604,17 @@ void Note::on_editinputlogAct_triggered()
 {
   new Slog();
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Note::on_editwdformAct_triggered()
+{
+  if (!Forms.isEmpty()) {
+    form=Forms.last();
+    wdactivateform();
+  }
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Note::on_editredoAct_triggered()
@@ -1181,13 +1212,23 @@ void Term::on_clippasteAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_editfifAct_triggered()
 {
+#ifdef Q_OS_ANDROID
+  if (!fif) fif = new Fif(tedit->readselected(),false);
+  else fif->initshow(tedit->readselected(),false);
+#else
   new Fif(tedit->readselected(),false);
+#endif
 }
 
 // ---------------------------------------------------------------------
 void Term::on_editfiwAct_triggered()
 {
+#ifdef Q_OS_ANDROID
+  if (!fiw) fiw = new Fiw(0,tedit->readselected());
+  else fiw->initshow(0,tedit->readselected());
+#else
   new Fiw(0,tedit->readselected());
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -1201,6 +1242,17 @@ void Term::on_editinputlogAct_triggered()
 {
   new Slog();
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Term::on_editwdformAct_triggered()
+{
+  if (!Forms.isEmpty()) {
+    form=Forms.last();
+    wdactivateform();
+  }
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Term::on_filedeleteAct_triggered()

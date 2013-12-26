@@ -48,7 +48,12 @@ Psel::Psel()
 
   setLayout (v);
   setWindowTitle("Open Project");
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(600,600);
+#endif
 
   init();
   initsel();

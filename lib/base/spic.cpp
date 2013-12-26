@@ -1,13 +1,13 @@
 #include <QBoxLayout>
 #include <QDate>
-#include <QComboBox>
 #include <QFormLayout>
 #include <QLabel>
 #include <QListWidget>
-#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSplitter>
 
+#include "pcombobox.h"
+#include "plaintextedit.h"
 #include "base.h"
 #include "spic.h"
 #include "comp.h"
@@ -17,6 +17,7 @@
 #include "recent.h"
 #include "view.h"
 #include "widget.h"
+#include "term.h"
 
 using namespace std;
 
@@ -45,7 +46,12 @@ Picm::Picm()
   layout->addWidget(r);
   setWindowTitle(Title);
   setLayout(layout);
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   setxywh(this,"Picm");
+#endif
   QMetaObject::connectSlotsByName(this);
   init();
   show();
@@ -95,7 +101,7 @@ QWidget *Picm::createview()
   times->setObjectName("times");
   tview = new Eview();
   tview->ensureCursorVisible();
-  tview->setLineWrapMode(QPlainTextEdit::NoWrap);
+  tview->setLineWrapMode(PlainTextEdit::NoWrap);
   tview->setFont(config.Font);
   s->addWidget(times);
   s->addWidget(tview);

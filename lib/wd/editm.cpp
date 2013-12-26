@@ -1,7 +1,7 @@
 
-#include <QPlainTextEdit>
 #include <QScrollBar>
 
+#include "../base/plaintextedit.h"
 #include "../base/state.h"
 #include "wd.h"
 #include "editm.h"
@@ -13,7 +13,7 @@
 Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="editm";
-  QPlainTextEdit *w=new QPlainTextEdit(p);
+  PlainTextEdit *w=new PlainTextEdit(p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
@@ -25,7 +25,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // ---------------------------------------------------------------------
 void Editm::cmd(string p,string v)
 {
-  QPlainTextEdit *w=(QPlainTextEdit*) widget;
+  PlainTextEdit *w=(PlainTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef QT_NO_PRINTER
@@ -43,7 +43,7 @@ void Editm::cmd(string p,string v)
 // ---------------------------------------------------------------------
 void Editm::set(string p,string v)
 {
-  QPlainTextEdit *w=(QPlainTextEdit*) widget;
+  PlainTextEdit *w=(PlainTextEdit*) widget;
   QStringList opt=qsplit(v);
   QScrollBar *sb;
 
@@ -83,12 +83,12 @@ void Editm::set(string p,string v)
       return;
     }
   } else if (p=="wrap") {
-    w->setLineWrapMode((remquotes(v)!="0")?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap);
+    w->setLineWrapMode((remquotes(v)!="0")?PlainTextEdit::WidgetWidth:PlainTextEdit::NoWrap);
   } else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-void Editm::setselect(QPlainTextEdit *w, int bgn, int end)
+void Editm::setselect(PlainTextEdit *w, int bgn, int end)
 {
   QTextCursor c = w->textCursor();
   c.setPosition(end,QTextCursor::MoveAnchor);
@@ -99,7 +99,7 @@ void Editm::setselect(QPlainTextEdit *w, int bgn, int end)
 // ---------------------------------------------------------------------
 string Editm::state()
 {
-  QPlainTextEdit *w=(QPlainTextEdit*) widget;
+  PlainTextEdit *w=(PlainTextEdit*) widget;
   QTextCursor c=w->textCursor();
   int b,e;
   b=c.selectionStart();

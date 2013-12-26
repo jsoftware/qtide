@@ -142,8 +142,8 @@ void Ntabs::setlinenos(bool b)
 void Ntabs::setlinewrap(bool b)
 {
   setUpdatesEnabled(false);
-  QPlainTextEdit::LineWrapMode
-  m=b?QPlainTextEdit::WidgetWidth:QPlainTextEdit::NoWrap;
+  PlainTextEdit::LineWrapMode
+  m=b?PlainTextEdit::WidgetWidth:PlainTextEdit::NoWrap;
   for(int i=0; i<count(); i++)
     ((Nedit *)widget(i))->setLineWrapMode(m);
   setUpdatesEnabled(true);

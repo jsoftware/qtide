@@ -2,10 +2,10 @@
 #define VIEW_H
 
 #include <QDialog>
-#include <QPlainTextEdit>
+#include "plaintextedit.h"
 
 // ---------------------------------------------------------------------
-class Eview : public QPlainTextEdit
+class Eview : public PlainTextEdit
 {
   Q_OBJECT
 

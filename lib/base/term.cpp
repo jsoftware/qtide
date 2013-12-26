@@ -103,11 +103,6 @@ void Term::closeEvent(QCloseEvent *event)
 bool Term::filequit()
 {
   dlog_write();
-#ifdef Q_OS_ANDROID
-  state_quit();
-  QApplication::quit();
-  return true;
-#else
   if (note && (!note->saveall())) return false;
   if (note2 && (!note2->saveall())) return false;
   if ((!config.ConfirmClose) ||
@@ -117,7 +112,6 @@ bool Term::filequit()
     return true;
   } else
     return false;
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -133,8 +127,10 @@ void Term::fini()
   p.setColor(QPalette::Inactive, QPalette::Base, config.TermBack.color);
   p.setColor(QPalette::Text, config.TermFore.color);
   tedit->setPalette(p);
+#ifndef Q_OS_ANDROID
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
+#endif
   if (config.TermSyntaxHighlight)
     highlight(tedit->document());
   tedit->setprompt();
@@ -151,7 +147,8 @@ void Term::keyPressEvent(QKeyEvent *event)
 #ifdef JQT
 #ifdef Q_OS_ANDROID
   case Qt::Key_Back:
-    QWidget::keyPressEvent(event);
+    if (!filequit())
+      event->accept();
     break;
 #endif
   case Qt::Key_Escape:
@@ -164,18 +161,6 @@ void Term::keyPressEvent(QKeyEvent *event)
   default:
     QWidget::keyPressEvent(event);
   }
-}
-
-// ---------------------------------------------------------------------
-void Term::keyReleaseEvent(QKeyEvent *event)
-{
-#ifdef Q_OS_ANDROID
-  if (event->key()==Qt::Key_Back) {
-    filequit();
-  } else QWidget::keyReleaseEvent(event);
-#else
-  QWidget::keyReleaseEvent(event);
-#endif
 }
 
 // ---------------------------------------------------------------------

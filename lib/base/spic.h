@@ -3,10 +3,10 @@
 
 #include <QDialog>
 
-class QComboBox;
+class PComboBox;
 class QPushButton;
 class QListWidget;
-class QPlainTextEdit;
+class PlainTextEdit;
 class Eview;
 
 // ---------------------------------------------------------------------
@@ -37,7 +37,7 @@ private:
   QString unstamp(QString);
   void keyReleaseEvent(QKeyEvent *e);
 
-  QComboBox *sfile;
+  PComboBox *sfile;
   QString File;
   QString Path;
   QStringList Stamps;

@@ -1,5 +1,5 @@
 
-#include <QComboBox>
+#include "../base/pcombobox.h"
 
 #include "wd.h"
 #include "combobox.h"
@@ -11,7 +11,7 @@
 ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
-  QComboBox *w=new QComboBox(p);
+  PComboBox *w=new PComboBox(p);
   widget=(QWidget*) w;
   if (s.substr(0,4)=="edit")
     w->setEditable(true);
@@ -31,19 +31,19 @@ void ComboBox::activated()
 // ---------------------------------------------------------------------
 void ComboBox::set(string p,string v)
 {
-  QComboBox *w=(QComboBox*) widget;
+  PComboBox *w=(PComboBox*) widget;
   if (p=="items") {
     w->clear();
     w->addItems(qsplit(v));
   } else if (p=="select")
-    ((QComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
+    ((PComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
   else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
 string ComboBox::state()
 {
-  QComboBox *w=(QComboBox*) widget;
+  PComboBox *w=(PComboBox*) widget;
   int n=w->currentIndex();
   string r;
   if (n<0) {

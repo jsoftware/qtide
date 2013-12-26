@@ -22,7 +22,7 @@
 #ifndef FHS
 #define JDLLNAME "libj.so"
 #else
-#define JDLLNAME "libj.so."JDLLVER
+#define JDLLNAME "libj.so." JDLLVER
 #endif
 #endif
 #define _getcwd getcwd

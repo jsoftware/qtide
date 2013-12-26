@@ -22,7 +22,6 @@ public:
 public slots:
 
 private:
-  void keyPressEvent(QKeyEvent *);
   void init_comments();
 };
 

@@ -36,6 +36,10 @@ Note::Note()
   menuBar = new Menu();
   split = new QSplitter(0);
   sideBar = new Nside();
+#ifdef SMALL_SCREEN
+  sideBar->hide();
+  sideBarShow=false;
+#endif
   mainBar = new Nmain(this);
   split->addWidget(sideBar);
   split->addWidget(mainBar);
@@ -52,8 +56,10 @@ Note::Note()
   menuBar->createActions();
   menuBar->createMenus("note");
   menuBar->createMenus_fini("note");
+#ifndef Q_OS_ANDROID
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
+#endif
   QMetaObject::connectSlotsByName(this);
 }
 
@@ -141,11 +147,6 @@ bool Note::fileopen(QString s,int line)
 void Note::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
-#ifdef Q_OS_ANDROID
-  case Qt::Key_Back:
-    QWidget::keyPressEvent(event);
-    break;
-#endif
   case Qt::Key_Escape:
     closeit();
   default:
@@ -157,8 +158,8 @@ void Note::keyPressEvent(QKeyEvent *event)
 void Note::keyReleaseEvent(QKeyEvent *event)
 {
 #ifdef Q_OS_ANDROID
-  if (event->key()==Qt::Key_Back) {
-    closeit();
+  if (event->key() == Qt::Key_Back) {
+    term->activate();
   } else QWidget::keyReleaseEvent(event);
 #else
   QWidget::keyReleaseEvent(event);

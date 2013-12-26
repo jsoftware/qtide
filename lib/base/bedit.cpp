@@ -1,14 +1,14 @@
 
 #include <QPainter>
-#include <QPlainTextEdit>
 #include <QTextBlock>
 
+#include "plaintextedit.h"
 #include "base.h"
 #include "bedit.h"
 #include "state.h"
 
 // ---------------------------------------------------------------------
-Bedit::Bedit(QWidget *parent) : QPlainTextEdit(parent)
+Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent)
 {
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
@@ -18,7 +18,7 @@ Bedit::Bedit(QWidget *parent) : QPlainTextEdit(parent)
   connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
   if (config.LineWrap)
-    setLineWrapMode(QPlainTextEdit::WidgetWidth);
+    setLineWrapMode(PlainTextEdit::WidgetWidth);
 
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
@@ -158,7 +158,7 @@ int Bedit::readtop()
 // ---------------------------------------------------------------------
 void Bedit::resizeEvent(QResizeEvent *e)
 {
-  QPlainTextEdit::resizeEvent(e);
+  PlainTextEdit::resizeEvent(e);
   QRect cr = contentsRect();
   lineNumberArea->setGeometry(QRect(cr.left(),cr.top(),lineNumberAreaWidth(),cr.height()));
 }

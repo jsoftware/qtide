@@ -11,6 +11,7 @@ android: {
           QT -= webkit
           QT -= opengl
           DEFINES += QT_NO_PRINTER
+          DEFINES += SMALL_SCREEN
           TEMPLATE = lib
           TARGET = jqt }
 else: {   TEMPLATE = lib
@@ -90,7 +91,7 @@ equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
  base/fif.h base/fiw.h base/jsvr.h base/menu.h \
- base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h \
+ base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h base/plaintextedit.h base/pcombobox.h \
  base/pnew.h base/proj.h base/psel.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
  base/tedit.h base/term.h base/util.h base/utils.h \
@@ -118,7 +119,7 @@ SOURCES += \
  base/dirm.cpp base/dirmx.cpp base/dlog.cpp \
  base/fif.cpp base/fifx.cpp base/fiw.cpp base/jsvr.cpp \
  base/menu.cpp base/menuhelp.cpp \
- base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
+ base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp base/plaintextedit.cpp base/pcombobox.cpp \
  base/pnew.cpp base/proj.cpp base/psel.cpp base/recent.cpp base/rsel.cpp \
  base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \

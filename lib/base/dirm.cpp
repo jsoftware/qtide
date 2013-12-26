@@ -1,8 +1,6 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QComboBox>
-#include <QComboBox>
 #include <QFontMetrics>
 #include <QFormLayout>
 #include <QLabel>
@@ -12,6 +10,7 @@
 #include <QTableWidget>
 #include <QHeaderView>
 
+#include "pcombobox.h"
 #include "base.h"
 #include "widget.h"
 #include "dirm.h"
@@ -43,7 +42,12 @@ Dirm::Dirm(QString s)
   layout->addWidget(createview(),1);
   setWindowTitle(Title);
   setLayout(layout);
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   setxywh(this,"Dirm");
+#endif
   QMetaObject::connectSlotsByName(this);
   init();
   show();
@@ -85,7 +89,11 @@ QWidget *Dirm::createpanel()
 {
   QWidget *w=new QWidget();
   QHBoxLayout *h=new QHBoxLayout();
+#ifdef SMALL_SCREEN
+  h->setSpacing(0);
+#else
   h->setSpacing(15);
+#endif
 
   QFormLayout *f = new QFormLayout;
   lsource = new QLabel();
@@ -102,7 +110,13 @@ QWidget *Dirm::createpanel()
 
   filler=new hPushButton("Compare Select");
 
+#ifdef SMALL_SCREEN
+  subdir= makecheckbox("Include subdir","subdir");
+#else
   subdir= makecheckbox("Include subdirectories","subdir");
+#endif
+
+#ifndef SMALL_SCREEN
   QVBoxLayout *m=new QVBoxLayout;
   m->setSpacing(0);
   m->addWidget(subdir);
@@ -111,8 +125,14 @@ QWidget *Dirm::createpanel()
   m->addWidget(filler);
   m->addStretch(1);
   h->addLayout(m);
+#endif
 
   QVBoxLayout *v=new QVBoxLayout();
+#ifdef SMALL_SCREEN
+  v->addWidget(subdir);
+  if (Tab=="snp")
+    subdir->hide();
+#endif
   match=makebutton("match","Match");
   v->addWidget(match);
   v->addWidget(filler);
@@ -611,7 +631,9 @@ Favs::Favs(Dirm *d)
   b->setContentsMargins(0,0,0,0);
   b->addWidget(w);
   setLayout(b);
+#ifndef SMALL_SCREEN
   resize(600,300);
+#endif
   setObjectName("fav");
   setWindowTitle("Directory Match Favorites");
 

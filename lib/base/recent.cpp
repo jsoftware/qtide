@@ -37,7 +37,7 @@ void Recent::init()
 
   QSettings s(RecentFile,QSettings::IniFormat);
   DirMatch = qslfcase(s.value("Recent/DirMatch", "").toStringList());
-  Fif = s.value("Recent/Fif", "").toStringList();
+  recentFif = s.value("Recent/Fif", "").toStringList();
   Files = qslfcase(s.value("Recent/Files", "").toStringList());
   ProjectOpen = s.value("Recent/ProjectOpen", "true").toBool();
 
@@ -99,7 +99,7 @@ void Recent::save_recent()
 {
   QSettings s(RecentFile,QSettings::IniFormat);
   s.setValue("Recent/DirMatch",DirMatch);
-  s.setValue("Recent/Fif",Fif);
+  s.setValue("Recent/Fif",recentFif);
   s.setValue("Recent/Files",Files);
   s.setValue("Recent/ProjectOpen",ProjectOpen);
 }

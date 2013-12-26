@@ -378,7 +378,11 @@ bool ifshift()
 // ---------------------------------------------------------------------
 void info(QString t,QString s)
 {
+#ifdef Q_OS_ANDROID
+  QMessageBox::about(QApplication::focusWidget(), t, s);
+#else
   QMessageBox::information(QApplication::focusWidget(), t, s);
+#endif
 }
 
 // ---------------------------------------------------------------------

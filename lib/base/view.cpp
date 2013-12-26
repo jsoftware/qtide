@@ -1,8 +1,9 @@
 
-#include <QPlainTextEdit>
 #include <QVBoxLayout>
+#include "plaintextedit.h"
 #include "state.h"
 #include "view.h"
+#include "term.h"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ using namespace std;
 Eview::Eview()
 {
   ensureCursorVisible();
-  setLineWrapMode(QPlainTextEdit::NoWrap);
+  setLineWrapMode(PlainTextEdit::NoWrap);
   setFont(config.Font);
   connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
   highlightCurrentLine();
@@ -44,7 +45,12 @@ TextView::TextView(QString t,QString s)
   v->addWidget(e);
   setLayout(v);
   setWindowTitle(t);
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(600,500);
+#endif
   activateWindow();
   show();
   e->setFocus();

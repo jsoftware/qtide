@@ -23,7 +23,7 @@ Tedit::Tedit()
   ifResized=Tw=Th=0;
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
-  setLineWrapMode(QPlainTextEdit::NoWrap);
+  setLineWrapMode(PlainTextEdit::NoWrap);
 }
 
 // ---------------------------------------------------------------------
@@ -114,12 +114,6 @@ void Tedit::itemActivated(QListWidgetItem *item)
 // ---------------------------------------------------------------------
 void Tedit::keyPressEvent(QKeyEvent *e)
 {
-#ifdef Q_OS_ANDROID
-  if (e->key()==Qt::Key_Back) {
-    QPlainTextEdit::keyPressEvent(e);
-    return;
-  }
-#endif
   Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
   bool shift = mod.testFlag(Qt::ShiftModifier);
   bool ctrl = mod.testFlag(Qt::ControlModifier);
@@ -134,13 +128,13 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       enter();
       break;
     default:
-      QPlainTextEdit::keyPressEvent(e);
+      PlainTextEdit::keyPressEvent(e);
     }
     return;
   }
 
   if (shift>ctrl) {
-    QPlainTextEdit::keyPressEvent(e);
+    PlainTextEdit::keyPressEvent(e);
     return;
   }
 
@@ -153,7 +147,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       promptreplace(dlog_scroll (1));
       break;
     default:
-      QPlainTextEdit::keyPressEvent(e);
+      PlainTextEdit::keyPressEvent(e);
     }
     return;
   }
@@ -168,7 +162,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
     break;
 
   default:
-    QPlainTextEdit::keyPressEvent(e);
+    PlainTextEdit::keyPressEvent(e);
   }
 }
 

@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
-class QComboBox;
+class PComboBox;
 class QLabel;
 class QListWidget;
 
@@ -19,6 +19,7 @@ class Fiw : public QDialog
 
 public:
   Fiw(int, QString);
+  void initshow(int, QString);
 
 private slots:
   void on_assigned_clicked();
@@ -34,13 +35,13 @@ private slots:
 private:
   void finfo(QString s);
   void keyPressEvent(QKeyEvent *);
+  void keyReleaseEvent(QKeyEvent *e);
   void open_replace();
   void read();
   void readtext();
   void readwin();
   void refresh();
   void reject();
-  void keyReleaseEvent(QKeyEvent *e);
 
   void search(int dir);
   int search1(int dir);
@@ -59,8 +60,8 @@ private:
   QCheckBox *matchcase;
   QCheckBox *assigned;
   QCheckBox *nameonly;
-  QComboBox *searchfor;
-  QComboBox *replaceby;
+  PComboBox *searchfor;
+  PComboBox *replaceby;
   QLabel *lsearchfor;
   QLabel *lreplaceby;
   QListWidget *flist;

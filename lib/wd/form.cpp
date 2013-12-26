@@ -99,7 +99,7 @@ Form::~Form()
   if (Forms.isEmpty() && (!ShowIde))
     term->filequit();
 #else
-  if (Forms.isEmpty() && (!ShowIde)) {
+  if (Forms.isEmpty()) {
     showide(true);
     term->activateWindow();
     term->raise();
@@ -284,7 +284,7 @@ void Form::setpicon(string p)
 void Form::showit()
 {
 #ifdef Q_OS_ANDROID
-  showide(false);
+// showide(false);
   if (Forms.size()>1)
     (Forms.at(Forms.size()-2))->setVisible(false);
 #endif

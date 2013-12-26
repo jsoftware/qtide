@@ -309,7 +309,8 @@ QStringList state_about()
   QStringList r;
   QString engine,msg,ver,year;
   engine=dors("9!:14''");
-  ver=qstaketo(engine,"/").toUpper();
+//  ver=qstaketo(engine,"/").toUpper();
+  ver= "J" JDLLVER;
   year=QString::number(QDate::currentDate().year());
   msg=dors("JVERSION");
   msg=msg + "\n\nCopyright 1994-"+year+" Jsoftware\n";

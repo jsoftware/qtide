@@ -74,6 +74,9 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
+#ifdef Q_OS_ANDROID
+  void on_editwdformAct_triggered();
+#endif
   void on_editredoAct_triggered();
   void on_editundoAct_triggered();
   void on_filecloseAct_triggered();

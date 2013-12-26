@@ -23,7 +23,9 @@ void Fif::search()
 
   if(!ifResults) {
     QSize s=size();
+#ifndef SMALL_SCREEN
     resize(s.width(),qMax(Pos[3],s.height()+100));
+#endif
     found->show();
     ifResults=true;
   }

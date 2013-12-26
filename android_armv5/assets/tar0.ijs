@@ -10,7 +10,7 @@ jpathsep=: '/'&(('\' I.@:= ])})
 cd=: 15!:0
 ucp=: 7&u:
 unxlib=: 'libz.so'"_
-fread=:  3 : '1!:1 :: _1: fboxname y'
+fread=: 3 : '1!:1 :: _1: fboxname y'
 fwrite=: 4 : '(,x) (#@[ [ 1!:2) :: _1: fboxname y'
 fboxname=: <@jpath@(8 u: >) ::]
 ferase=: 1!:55 ::(_1:)@(fboxname&>)@boxopen
@@ -113,6 +113,10 @@ select. {.t-.'z'
 case. 'x' do.
   assert. 3=#y['needs 3 paramters'
   assert. fexist f['file must exist'
+  if. _1-.@-: (2!:0 ::_1:) 'which tar' do.
+    2!:0 'tar x',(z#'z'),'f "',f,'" -C "',(>@{:y),'"'
+    0 return.
+  end.
   if. z do.
     f=. jpathsep^:IFWIN f
     fz=. (jpath '~temp'),((}.~ i:&'/') f),'.tar',":2!:6''

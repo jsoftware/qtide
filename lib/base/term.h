@@ -68,6 +68,9 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
+#ifdef Q_OS_ANDROID
+  void on_editwdformAct_triggered();
+#endif
 
   void on_filedeleteAct_triggered();
   void on_filenewtempAct_triggered();
@@ -136,7 +139,6 @@ public slots:
 
 private:
   void keyPressEvent(QKeyEvent *e);
-  void keyReleaseEvent(QKeyEvent *e);
   void resizeEvent(QResizeEvent *event);
   void closeEvent(QCloseEvent *event);
 

@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
-class QComboBox;
+class PComboBox;
 class QLabel;
 class QListWidget;
 class QListWidgetItem;
@@ -16,6 +16,7 @@ class Fif : public QDialog
 
 public:
   Fif(QString s, bool b);
+  void initshow(QString s, bool b);
 
 private slots:
   void on_assigned_clicked();
@@ -60,9 +61,9 @@ private:
   QCheckBox *regex;
   QCheckBox *subdir;
 
-  QComboBox *searchfor;
-  QComboBox *infolder;
-  QComboBox *filetypes;
+  PComboBox *searchfor;
+  PComboBox *infolder;
+  PComboBox *filetypes;
 
   QListWidget *found;
   QPushButton *find;

@@ -15,7 +15,7 @@ public:
   Recent() {};
 
   QStringList DirMatch;
-  QStringList Fif;
+  QStringList recentFif;
   QStringList Files;
 
   QString ProjectFile;

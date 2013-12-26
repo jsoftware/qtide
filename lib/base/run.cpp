@@ -1,6 +1,6 @@
-#include <QPlainTextEdit>
 #include <QTextBlock>
 
+#include "plaintextedit.h"
 #include "base.h"
 #include "nedit.h"
 #include "note.h"

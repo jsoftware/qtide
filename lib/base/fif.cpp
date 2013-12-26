@@ -1,12 +1,12 @@
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QPushButton>
 
+#include "pcombobox.h"
 #include "base.h"
 #include "widget.h"
 #include "fif.h"
@@ -19,6 +19,8 @@
 #include "view.h"
 
 static int MaxFif=100; // max search length
+
+Fif *fif;
 
 using namespace std;
 
@@ -100,11 +102,22 @@ Fif::Fif(QString s, bool ifname)
   setWindowTitle(Title);
 
   Pos=config.winpos_read("Fif");
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   move(Pos[0],Pos[1]);
   resize(Pos[2],0);
+#endif
 
   QMetaObject::connectSlotsByName(this);
 
+  initshow(s,ifname);
+}
+
+// ---------------------------------------------------------------------
+void Fif::initshow(QString s, bool ifname)
+{
   init(s,ifname);
   write();
   if (s.size())
@@ -113,6 +126,8 @@ Fif::Fif(QString s, bool ifname)
     searchfor->setCurrentIndex(-1);
 
   show();
+  activateWindow();
+  raise();
 }
 
 // ---------------------------------------------------------------------
@@ -130,7 +145,7 @@ void Fif::init(QString s, bool ifname)
   Name=ifname;
   Max=15;
   Regex=false;
-  SearchList=recent.Fif;
+  SearchList=recent.recentFif;
   Subdir=true;
   Types=config.FifExt;
   Type=Types.at(0);
@@ -245,7 +260,7 @@ void Fif::refresh()
 void Fif::reject()
 {
   setsearchmaxlength();
-  recent.Fif=SearchList;
+  recent.recentFif=SearchList;
   recent.save_recent();
 
   Pos[0]=pos().rx();
@@ -262,7 +277,8 @@ void Fif::keyReleaseEvent(QKeyEvent *event)
 {
 #ifdef Q_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
-    reject();
+//    reject();
+    hide();
   } else QDialog::keyReleaseEvent(event);
 #else
   QDialog::keyReleaseEvent(event);

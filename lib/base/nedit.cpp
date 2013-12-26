@@ -15,7 +15,7 @@ Nedit::Nedit()
   type=1;
   ensureCursorVisible();
   setLineWrapMode(config.LineWrap ?
-                  QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
+                  PlainTextEdit::WidgetWidth : PlainTextEdit::NoWrap);
   setFont(config.Font);
   QPalette p = palette();
   p.setColor(QPalette::Active, QPalette::Base, config.EditBack.color);
@@ -45,10 +45,4 @@ void Nedit::init_comments()
   Comments["R"]="#";
   Comments["sh"]="#";
   Comments["tex"]="#";
-}
-
-// ---------------------------------------------------------------------
-void Nedit::keyPressEvent(QKeyEvent *e)
-{
-  QPlainTextEdit::keyPressEvent(e);
 }

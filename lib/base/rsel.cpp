@@ -47,7 +47,12 @@ Rsel::Rsel()
 
   setLayout(h);
   setWindowTitle("Recent Files");
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(450,400);
+#endif
   QMetaObject::connectSlotsByName(this);
 #ifdef Q_OS_ANDROID
   connect(flist, SIGNAL(itemClicked(QListWidgetItem*)),

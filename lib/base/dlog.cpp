@@ -7,6 +7,7 @@
 #include "recent.h"
 #include "state.h"
 #include "tedit.h"
+#include "term.h"
 
 using namespace std;
 
@@ -24,7 +25,12 @@ Slog::Slog()
 {
   setWindowTitle("Input Log");
   QList<int>d=config.winpos_read("Dlog");
+#ifdef SMALL_SCREEN
+  move(0,0);
+  resize(term->width(),term->height());
+#else
   resize(qMax(300,d[2]),qMax(300,d[3]));
+#endif
   QListWidget *s = new QListWidget();
   s->addItems(makeitems());
   s->setCurrentRow(InputLog.size()-1);

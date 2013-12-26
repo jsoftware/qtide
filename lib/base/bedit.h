@@ -1,7 +1,7 @@
 #ifndef BEDIT_H
 #define BEDIT_H
 
-#include <QPlainTextEdit>
+#include "plaintextedit.h"
 
 class QPaintEvent;
 class QResizeEvent;
@@ -12,7 +12,7 @@ class QWidget;
 class LineNumberArea;
 
 // ---------------------------------------------------------------------
-class Bedit : public QPlainTextEdit
+class Bedit : public PlainTextEdit
 {
   Q_OBJECT
 
