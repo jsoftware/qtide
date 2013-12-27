@@ -68,7 +68,7 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   void on_editwdformAct_triggered();
 #endif
 

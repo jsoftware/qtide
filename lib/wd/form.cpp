@@ -89,13 +89,13 @@ Form::~Form()
   if (this==evtform) evtform = 0;
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (!Forms.isEmpty()) {
     form=Forms.last();
     wdactivateform();
   }
 #endif
-#ifndef Q_OS_ANDROID
+#ifndef QT_OS_ANDROID
   if (Forms.isEmpty() && (!ShowIde))
     term->filequit();
 #else
@@ -203,7 +203,7 @@ bool Form::ischild(Child *n)
 void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (k==Qt::Key_Back) {
     QWidget::keyPressEvent(e);
     return;
@@ -236,7 +236,7 @@ void Form::keyPressEvent(QKeyEvent *e)
 // ---------------------------------------------------------------------
 void Form::keyReleaseEvent(QKeyEvent *e)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (e->key()==Qt::Key_Back) {
     if (closed) return;
     if (closeok) {
@@ -283,7 +283,7 @@ void Form::setpicon(string p)
 // ---------------------------------------------------------------------
 void Form::showit()
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 // showide(false);
   if (Forms.size()>1)
     (Forms.at(Forms.size()-2))->setVisible(false);

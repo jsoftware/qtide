@@ -84,7 +84,15 @@ Fif::Fif(QString s, bool ifname)
   e->setSpacing(0);
   find=makebutton("&Find");
   e->addWidget(find,0);
+#ifndef QT_OS_ANDROID
   e->addStretch(1);
+#else
+  view=makebutton("View");
+  e->addWidget(view,0);
+  e->addStretch(1);
+  cancel=makebutton("Cancel");
+  e->addWidget(cancel,0);
+#endif
   h->addLayout(e,0);
   searchfor->setFocus();
   v->addLayout(h,0);
@@ -179,6 +187,22 @@ void Fif::on_find_clicked()
   read();
   search();
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Fif::on_view_clicked()
+{
+  on_found_itemActivated(found->currentItem());
+}
+
+// ---------------------------------------------------------------------
+void Fif::on_cancel_clicked()
+{
+  reject();
+  term->vieweditor();
+  fif=0;
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Fif::on_found_itemActivated(QListWidgetItem * item)
@@ -275,7 +299,7 @@ void Fif::reject()
 // ---------------------------------------------------------------------
 void Fif::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
 //    reject();
     hide();

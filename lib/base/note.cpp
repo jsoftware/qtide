@@ -56,7 +56,7 @@ Note::Note()
   menuBar->createActions();
   menuBar->createMenus("note");
   menuBar->createMenus_fini("note");
-#ifndef Q_OS_ANDROID
+#ifndef QT_OS_ANDROID
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
 #endif
@@ -157,7 +157,7 @@ void Note::keyPressEvent(QKeyEvent *event)
 // ---------------------------------------------------------------------
 void Note::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (event->key() == Qt::Key_Back) {
     term->activate();
   } else QWidget::keyReleaseEvent(event);

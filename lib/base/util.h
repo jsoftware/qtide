@@ -85,7 +85,7 @@ QStringList qsltrim(QStringList p);
 
 extern int NoEvents;
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 extern "C" void android_exec_host(char *,char *,char *);
 #endif
 

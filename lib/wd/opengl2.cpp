@@ -242,7 +242,7 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,0
   int key1=0;
   int key=event->key();
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (key==Qt::Key_Back) {
     QWidget::keyPressEvent(event);
     return;

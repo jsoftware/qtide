@@ -34,7 +34,7 @@ Slog::Slog()
   QListWidget *s = new QListWidget();
   s->addItems(makeitems());
   s->setCurrentRow(InputLog.size()-1);
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
           this,SLOT(itemActivated()));
   connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
@@ -154,7 +154,7 @@ void Slog::savepos()
 // ---------------------------------------------------------------------
 void Slog::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
     reject();
   } else QDialog::keyReleaseEvent(event);

@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <QDirIterator>
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 #include <QProcess>
 #endif
 
@@ -378,7 +378,7 @@ bool ifshift()
 // ---------------------------------------------------------------------
 void info(QString t,QString s)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   QMessageBox::about(QApplication::focusWidget(), t, s);
 #else
   QMessageBox::information(QApplication::focusWidget(), t, s);
@@ -716,7 +716,7 @@ QString toqlist(QStringList s)
   return r;
 }
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 // ---------------------------------------------------------------------
 void android_exec_host(char *intent,char *cmd,char *mimetype)
 {

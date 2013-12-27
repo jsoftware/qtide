@@ -92,6 +92,13 @@ Fiw::Fiw(int p, QString s)
   g->addWidget(replace,1,1);
   g->addWidget(replaceforward,1,2);
 
+#ifdef QT_OS_ANDROID
+  cancel=makebutton("Cancel");
+  view=makebutton("View");
+  g->addWidget(cancel,2,1);
+  g->addWidget(view,2,2);
+#endif
+
   findtop->setFocus();
   searchfor->setFocus();
 
@@ -220,6 +227,22 @@ void Fiw::on_undolast_clicked()
   showit();
 }
 
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Fiw::on_cancel_clicked()
+{
+  reject();
+  term->vieweditor();
+  fiw=0;
+}
+
+// ---------------------------------------------------------------------
+void Fiw::on_view_clicked()
+{
+  term->vieweditor();
+}
+#endif
+
 // ---------------------------------------------------------------------
 void Fiw::open_replace()
 {
@@ -278,9 +301,8 @@ void Fiw::reject()
 // ---------------------------------------------------------------------
 void Fiw::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
-//    reject();
     hide();
   } else QDialog::keyReleaseEvent(event);
 #else

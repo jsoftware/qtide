@@ -127,7 +127,7 @@ void Term::fini()
   p.setColor(QPalette::Inactive, QPalette::Base, config.TermBack.color);
   p.setColor(QPalette::Text, config.TermFore.color);
   tedit->setPalette(p);
-#ifndef Q_OS_ANDROID
+#ifndef QT_OS_ANDROID
   QString s=config.BinPath.filePath("icons/jgreen.png");
   setWindowIcon(QIcon(s));
 #endif
@@ -145,7 +145,7 @@ void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
 #ifdef JQT
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   case Qt::Key_Back:
     if (!filequit())
       event->accept();

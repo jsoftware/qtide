@@ -87,7 +87,7 @@ void Project::open(QString id)
   Id=id;
   Folder=qstaketo(Id,"/");
   Path=cpath("~" + Id);
-#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(QT_OS_ANDROID)
   Git=gitstatus(Path).size()>0;
 #endif
   snapshot_tree(Folder);

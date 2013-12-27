@@ -54,7 +54,7 @@ Rsel::Rsel()
   resize(450,400);
 #endif
   QMetaObject::connectSlotsByName(this);
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   connect(flist, SIGNAL(itemClicked(QListWidgetItem*)),
           this,SLOT(itemActivated()));
 #endif

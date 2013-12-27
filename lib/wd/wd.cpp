@@ -518,7 +518,7 @@ void wdpactive()
 {
   if (noform()) return;
   cmd.getparms();
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
   form->activateWindow();
@@ -572,7 +572,7 @@ void wdpcenter()
   int h=form->size().height();
   int x=(sw-w)/2;
   int y=(sh-h)/2;
-#ifndef Q_OS_ANDROID
+#ifndef QT_OS_ANDROID
   form->move((x<0)?0:x,(y<0)?0:y);
 #endif
 }
@@ -604,7 +604,7 @@ void wdpmove()
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
   else {
-#ifndef Q_OS_ANDROID
+#ifndef QT_OS_ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
       form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
 #endif
@@ -662,7 +662,7 @@ void wdptop()
 {
   if (noform()) return;
   cmd.getparms();
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
   form->raise();

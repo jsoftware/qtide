@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 #include <jni.h>
 extern int state_run (int,char **,QApplication *,QString);
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
   QApplication app(argc, argv);
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   return state_run(argc, argv, &app, QCoreApplication::applicationFilePath());
 #else
 #ifdef _WIN32
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 #endif
 }
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
 {
   JNIEnv *jnienv;

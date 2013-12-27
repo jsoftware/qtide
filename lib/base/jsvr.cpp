@@ -12,7 +12,7 @@
 #include "jsvr.h"
 #include "util.h"
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 #include <QDir>
 #include <sys/stat.h>
 #endif
@@ -166,7 +166,7 @@ void jepath(char* arg)
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
-#elif defined(Q_OS_ANDROID)
+#elif defined(QT_OS_ANDROID)
   Q_UNUSED(arg);
   QFileInfo fileInfo(LibName);
   strcpy(path,fileInfo.canonicalPath().toUtf8().data());
@@ -250,7 +250,7 @@ int jefirst(int type,char* arg)
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   Q_UNUSED(p);
   Q_UNUSED(q);
   char *homepath;
@@ -360,7 +360,7 @@ int jefirst(int type,char* arg)
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   strcat(input,appcurrentpath.toUtf8().data());
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");

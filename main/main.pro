@@ -4,6 +4,7 @@
 android {
   CONFIG += mobility
   MOBILITY +=
+  DEFINES += QT_OS_ANDROID
   TEMPLATE = lib
   TARGET = qtide
   !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
@@ -12,7 +13,8 @@ android {
   TARGET = jqt
 }
 
-equals(QT_MAJOR_VERSION, 5): QT += widgets printsupport
+equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5):!android: QT += printsupport
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 
 CONFIG(debug, debug|release) {
@@ -59,6 +61,6 @@ SOURCES += main.cpp
 win32:config += console
 CONFIG+= release
 
-win32-g++:QMAKE_LFLAGS += -static-libgcc
+win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
 win32:RC_FILE = jqt.rc

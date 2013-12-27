@@ -27,7 +27,7 @@
 #include "../high/high.h"
 #include "../wd/form.h"
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
 #include <jni.h>
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 #endif
@@ -172,7 +172,7 @@ void Config::initide()
   int fontsize=10;
   QFont::Weight fontweight=QFont::Normal;
 
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   font="Droid Sans Mono";
   fontsize=16;
 #endif
@@ -267,7 +267,7 @@ void Config::noprofile()
   ConfirmClose = false;
   ConfirmSave = false;
   Font.setStyleHint(QFont::TypeWriter);
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   Font.setFamily("Droid Sans Mono");
   Font.setPointSize(16);
 #else
@@ -379,7 +379,7 @@ void state_reinit() {}
 int state_run(int argc, char *argv[],QApplication *app,QString lib)
 {
   LibName=lib;
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (LibName.left(8)=="/system/") {
     QString f1="/mnt/asec/com.jsoftware.android.qtide-1/lib/libjqt.so";
     QString f2="/mnt/asec/com.jsoftware.android.qtide-2/lib/libjqt.so";

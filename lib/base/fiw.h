@@ -31,6 +31,10 @@ private slots:
   void on_replaceforward_clicked();
   void on_searchfor_activated();
   void on_undolast_clicked();
+#ifdef QT_OS_ANDROID
+  void on_view_clicked();
+  void on_cancel_clicked();
+#endif
 
 private:
   void finfo(QString s);
@@ -71,6 +75,10 @@ private:
   QPushButton *replace;
   QPushButton *replaceforward;
   QPushButton *undolast;
+#ifdef QT_OS_ANDROID
+  QPushButton *view;
+  QPushButton *cancel;
+#endif
 
   bool Assign;
   bool ifReplace;

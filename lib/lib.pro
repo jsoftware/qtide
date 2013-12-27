@@ -10,6 +10,7 @@ android: {
           MOBILITY +=
           QT -= webkit
           QT -= opengl
+          DEFINES += QT_OS_ANDROID
           DEFINES += QT_NO_PRINTER
           DEFINES += SMALL_SCREEN
           TEMPLATE = lib
@@ -62,7 +63,8 @@ DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-equals(QT_MAJOR_VERSION, 5): QT += widgets printsupport
+equals(QT_MAJOR_VERSION, 5): QT += widgets
+equals(QT_MAJOR_VERSION, 5):!android: QT += printsupport
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
@@ -145,10 +147,10 @@ android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 
-win32-g++:LIBS += -shared
+win32:!win32-msvc*:LIBS += -shared
 win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 android:LIBS += -ldl
 
-win32-g++:QMAKE_LFLAGS += -static-libgcc
+win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=

@@ -72,7 +72,7 @@ void TextView::savepos()
 // ---------------------------------------------------------------------
 void TextView::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   if (event->key()==Qt::Key_Back) {
     reject();
   } else QDialog::keyReleaseEvent(event);

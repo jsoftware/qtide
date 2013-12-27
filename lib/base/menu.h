@@ -76,7 +76,7 @@ private:
   QAction *editfiwAct;
   QAction *editfontAct;
   QAction *editinputlogAct;
-#ifdef Q_OS_ANDROID
+#ifdef QT_OS_ANDROID
   QAction *editwdformAct;
 #endif
   QAction *editredoAct;
