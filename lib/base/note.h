@@ -183,6 +183,10 @@ public slots:
   void on_lastprojectAct_triggered();
   void on_openprojectAct_triggered();
   void on_runallAct_triggered();
+#ifdef QT_OS_ANDROID
+  void on_xeditAct_triggered();
+  void on_reloadfileAct_triggered();
+#endif
 
 private:
   void createActions();

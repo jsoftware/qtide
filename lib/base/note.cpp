@@ -201,6 +201,26 @@ void Note::on_runallAct_triggered()
   runlines(true);
 }
 
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Note::on_xeditAct_triggered()
+{
+  savecurrent();
+  QString fn=editFile();
+  if (fn.isEmpty()) return;
+  android_exec_host((char *)"android.intent.action.EDIT",fn.prepend("file://").toUtf8().data(),(char *)"text/plain");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_reloadfileAct_triggered()
+{
+  Nedit *e=editPage();
+  if (!e) return;
+  e->text = cfread(e->file);
+  e->setPlainText(e->text);
+}
+#endif
+
 // ---------------------------------------------------------------------
 void Note::prettyprint()
 {

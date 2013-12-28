@@ -31,17 +31,34 @@ Nmain::Nmain(Note *n)
 void Nmain::createActions()
 {
   lastprojectAct = makeact("lastprojectAct","undo.png", "Open Last Project");
+#ifdef QT_OS_ANDROID
+  openprojectAct = makeact("openprojectAct","folder.png","Open Project");
+  runallAct = makeact("runallAct","run.png","Run All Lines");
+  xeditAct = makeact("xeditAct","regular.png","External editor");
+  reloadfileAct = makeact("reloadfileAct","refresh.png","Reload file");
+#else
   openprojectAct = makeact("openprojectAct","folder.svg","Open Project");
   runallAct = makeact("runallAct","run.svg","Run All Lines");
+#endif
 }
 
 // ---------------------------------------------------------------------
 void Nmain::createToolBar()
 {
+#ifdef QT_OS_ANDROID
+  toolBar->setIconSize(QSize(32,32));
+#else
   toolBar->setIconSize(QSize(16,16));
+#endif
   toolBar->addAction(lastprojectAct);
   toolBar->addAction(openprojectAct);
   toolBar->addAction(runallAct);
+#ifdef QT_OS_ANDROID
+  toolBar->addSeparator();
+  toolBar->addAction(xeditAct);
+  toolBar->addSeparator();
+  toolBar->addAction(reloadfileAct);
+#endif
 }
 
 // ---------------------------------------------------------------------

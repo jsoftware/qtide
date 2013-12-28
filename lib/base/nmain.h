@@ -28,6 +28,10 @@ private:
   QAction *lastprojectAct;
   QAction *openprojectAct;
   QAction *runallAct;
+#ifdef QT_OS_ANDROID
+  QAction *xeditAct;
+  QAction *reloadfileAct;
+#endif
 };
 
 #endif
