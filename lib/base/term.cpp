@@ -127,10 +127,7 @@ void Term::fini()
   p.setColor(QPalette::Inactive, QPalette::Base, config.TermBack.color);
   p.setColor(QPalette::Text, config.TermFore.color);
   tedit->setPalette(p);
-#ifndef QT_OS_ANDROID
-  QString s=config.BinPath.filePath("icons/jgreen.png");
-  setWindowIcon(QIcon(s));
-#endif
+  setWindowIcon(QIcon(":/images/jgreen.png"));
   if (config.TermSyntaxHighlight)
     highlight(tedit->document());
   tedit->setprompt();

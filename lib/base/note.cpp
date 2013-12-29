@@ -56,10 +56,7 @@ Note::Note()
   menuBar->createActions();
   menuBar->createMenus("note");
   menuBar->createMenus_fini("note");
-#ifndef QT_OS_ANDROID
-  QString s=config.BinPath.filePath("icons/jgreen.png");
-  setWindowIcon(QIcon(s));
-#endif
+  setWindowIcon(QIcon(":/images/jgreen.png"));
   QMetaObject::connectSlotsByName(this);
 }
 
@@ -208,7 +205,7 @@ void Note::on_xeditAct_triggered()
   savecurrent();
   QString fn=editFile();
   if (fn.isEmpty()) return;
-  android_exec_host((char *)"android.intent.action.EDIT",fn.prepend("file://").toUtf8().data(),(char *)"text/plain");
+  android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().data(),(char *)"text/plain");
 }
 
 // ---------------------------------------------------------------------

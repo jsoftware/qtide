@@ -295,6 +295,8 @@ int jefirst(int type,char* arg)
   strcpy(binpath, appcurrentpath.toUtf8().data());
   strcat(binpath, "/bin");
   if(stat(binpath,&st)) mkdir(binpath, S_IRWXU | S_IRWXG | S_IRWXO);
+  QFile("assets:/installer.txt").copy(QString(binpath).append("/installer.txt"));
+  QFile::setPermissions(QString(binpath).append("/installer.txt"),(QFile::Permission)0x6666);
 // always install new profile.ijs
   QFile("assets:/profile.ijs").copy(QString(binpath).append("/profile.ijs"));
   QFile::setPermissions(QString(binpath).append("/profile.ijs"),(QFile::Permission)0x6666);
