@@ -249,8 +249,9 @@ void Form::keyReleaseEvent(QKeyEvent *e)
       signalevent(0);
     }
   } else QWidget::keyReleaseEvent(e);
-#endif
+#else
   QWidget::keyReleaseEvent(e);
+#endif
 }
 
 // ---------------------------------------------------------------------

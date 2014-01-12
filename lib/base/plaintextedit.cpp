@@ -16,6 +16,7 @@ void PlainTextEdit::keyReleaseEvent(QKeyEvent *event)
     event->ignore();
     return;
   } else QPlainTextEdit::keyReleaseEvent(event);
-#endif
+#else
   QPlainTextEdit::keyReleaseEvent(event);
+#endif
 }

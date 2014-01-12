@@ -16,6 +16,7 @@ void PComboBox::keyReleaseEvent(QKeyEvent *event)
     event->ignore();
     return;
   } else QComboBox::keyReleaseEvent(event);
-#endif
+#else
   QComboBox::keyReleaseEvent(event);
+#endif
 }
