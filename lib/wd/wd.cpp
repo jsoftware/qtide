@@ -29,6 +29,9 @@
 #include "../base/state.h"
 extern char* jegetlocale();
 extern Term * term;
+extern "C" Dllexport void dirmatch(const char *s,const char *t);
+extern "C" Dllexport void openj(const char *s);
+extern "C" Dllexport void smact();
 
 #include "math.h"
 
@@ -48,11 +51,13 @@ void wdget();
 void wdgrid();
 void wdgroupbox(string c);
 void wdide();
+void wdimmexj();
 void wdline(string);
 void wdmb();
 void wdmenu(string);
 void wdmsgs();
 void wdnotyet();
+void wdopenj();
 void wdpactive();
 void wdp(string c);
 void wdpas();
@@ -73,6 +78,7 @@ void wdreset();
 void wdset();
 void wdsetx(string);
 void wdset1(string n,string p,string v);
+void wdsmact();
 void wdsplit(string c);
 void wdstate(Form *,int);
 void wdtab(string);
@@ -145,6 +151,8 @@ void wd1()
       wdcn();
     else if (c=="defprint")
       wddefprint();
+    else if (c=="dirmatch")
+      wddirmatch();
     else if (c=="end")
       wdend();
     else if (c=="fontdef")
@@ -157,6 +165,8 @@ void wd1()
       wdgroupbox(c);
     else if (c=="ide")
       wdide();
+    else if (c=="immexj")
+      wdimmexj();
     else if (c.substr(0,4)=="line")
       wdline(c);
     else if (c.substr(0,2)=="mb")
@@ -165,6 +175,8 @@ void wd1()
       wdmenu(c);
     else if (c=="msgs")
       wdmsgs();
+    else if (c=="openj")
+      wdopenj();
     else if (c[0]=='p')
       wdp(c);
     else if (c[0]=='q')
@@ -178,6 +190,8 @@ void wd1()
       wdset();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
+    else if (c=="smact")
+      wdsmact();
     else if (c.substr(0,5)=="split")
       wdsplit(c);
     else if (c.substr(0,3)=="tab")
@@ -364,6 +378,18 @@ void wddefprint()
 }
 
 // ---------------------------------------------------------------------
+void wddirmatch()
+{
+  string p=cmd.getparms();
+  QStringList f=qsplit(p);
+  if (f.size()!=2) {
+    error("dirmatch requires 2 directories");
+    return;
+  }
+  dirmatch(q2s(f.at(0)).c_str(),q2s(f.at(1)).c_str());
+}
+
+// ---------------------------------------------------------------------
 void wdend()
 {
   cmd.end();
@@ -417,6 +443,13 @@ void wdide()
     showide(true);
   else
     error("unrecognized command: ide " + p);
+}
+
+// ---------------------------------------------------------------------
+void wdimmexj()
+{
+  string p=cmd.getparms();
+  immexj(p.c_str());
 }
 
 // ---------------------------------------------------------------------
@@ -477,6 +510,13 @@ void wdmsgs()
 void wdnotyet()
 {
   cmd.getparms();
+}
+
+// ---------------------------------------------------------------------
+void wdopenj()
+{
+  string p=cmd.getparms();
+  openj(p.c_str());
 }
 
 // ---------------------------------------------------------------------
@@ -802,6 +842,13 @@ void wdqueries(string s)
         result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
       }
     } else error("command failed: " + s);
+  } else if (s=="qpid") {
+    SI m, n = c_strtoi(p);
+    if ((m=(SI)wdgetparentid((void *)n))) {
+      result= p2s((void *)m);
+    } else {
+      result= "0";
+    }
   } else
     error("command not found");
 }
@@ -869,6 +916,13 @@ void wdset1(string n,string p,string v)
     error("bad child id");
   }
   noevents(0);
+}
+
+// ---------------------------------------------------------------------
+void wdsmact()
+{
+  cmd.getparms();
+  smact();
 }
 
 // ---------------------------------------------------------------------

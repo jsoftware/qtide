@@ -160,6 +160,6 @@ extern "C" {
   Dllexport int state_run(int argc, char *argv[],QApplication *app,QString lib);
 }
 #endif
-extern "C" Dllexport void immexj(char *s);
+extern "C" Dllexport void immexj(const char *s);
 
 #endif

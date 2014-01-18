@@ -18,7 +18,7 @@
 using namespace std;
 
 extern "C" {
-  Dllexport void openj(char *s);
+  Dllexport void openj(const char *s);
 }
 
 bool ShowIde=true;
@@ -251,7 +251,7 @@ void openfile1(QString f)
 }
 
 // ---------------------------------------------------------------------
-void openj(char *s)
+void openj(const char *s)
 {
   if (!ShowIde) return;
   openfile1(QString(s));

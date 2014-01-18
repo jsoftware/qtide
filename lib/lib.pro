@@ -4,7 +4,7 @@ JDLLVER = 8.0.1    # ignored ifndef FHS
 
 # unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
 
-android: {
+android  {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
           CONFIG += mobility
           MOBILITY +=
@@ -15,7 +15,7 @@ android: {
           DEFINES += SMALL_SCREEN
           TEMPLATE = lib
           TARGET = jqt }
-else: {   TEMPLATE = lib
+else  {   TEMPLATE = lib
           QT += webkit
           QT += opengl
           TARGET = jqt }

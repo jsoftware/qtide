@@ -444,7 +444,7 @@ void var_set(QString s, QString t)
 }
 
 // ---------------------------------------------------------------------
-void immexj(char *s)
+void immexj(const char *s)
 {
   sets("inputx_jrx_",QString::fromUtf8(s));
   jcon->immex("0!:100 inputx_jrx_");
