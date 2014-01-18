@@ -21,12 +21,12 @@ using namespace std;
 
 typedef void* (_stdcall *JInitType)     ();
 typedef int   (_stdcall *JDoType)       (void*, C*);
-typedef A   (_stdcall *JGetAType)       (void*, I n, C*);
+typedef A     (_stdcall *JGetAType)     (void*, I n, C*);
 typedef C*    (_stdcall *JGetLocaleType)(void*);
 typedef void  (_stdcall *JSMType)       (void*, void*);
 typedef void  (_stdcall *JFreeType)     (void*);
 typedef A     (_stdcall *JgaType)       (J jt, I t, I n, I r, I*s);
-typedef int   (_stdcall *JSetAType)      (void*, I n, C*, I x, C*);
+typedef int   (_stdcall *JSetAType)     (void*, I n, C*, I x, C*);
 
 typedef void  (_stdcall * outputtype)(J,int,C*);
 typedef int   (_stdcall * dowdtype)  (J,int, A, A*);
@@ -453,6 +453,50 @@ void sets(QString name, QString s)
   strncpy(buf+hlen,sb,slen);
   if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
   free(buf);
+}
+
+// ---------------------------------------------------------------------
+// set character in J
+void jsetc(QString name, C* sb, I slen)
+{
+  int n,hlen,nlen,tlen;
+
+  I hdr[5];
+  n=sizeof(I);
+  hlen=n*5;
+
+  QByteArray nb=name.toUtf8();
+  nlen=nb.size();
+
+  tlen=n*(1+slen/n);
+
+  hdr[0]=(4==n) ? 225 : 227;
+  hdr[1]=2;
+  hdr[3]=1;
+  hdr[2]=hdr[4]=slen;
+
+  C* buf=(C*)calloc(hlen+tlen,sizeof(char));
+  memcpy(buf,hdr,hlen);
+  strncpy(buf+hlen,sb,slen);
+  if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
+  free(buf);
+}
+
+// ---------------------------------------------------------------------
+// get character in J
+C* jgetc(C* name, I* len)
+{
+  A r = jgeta(jt,strlen(name),name);
+  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  assert(p->t==2);
+  assert(p->r<2);
+  if (p->r==0) {
+    *len = 1;
+    return (C*)((char*)p->s);
+  } else {
+    *len = p->c;
+    return (C*)(sizeof(AREP_RECORD)+(char*)p);
+  }
 }
 
 // ---------------------------------------------------------------------

@@ -3,6 +3,7 @@ VERSION = 1.0.22
 JDLLVER = 8.0.1    # ignored ifndef FHS
 
 # unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
+DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
 android  {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
@@ -30,6 +31,8 @@ rel = debug
 } else {
 rel = release
 }
+
+contains(DEFINES,QTWEBSOCKET): QT +=  network
 
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -114,6 +117,8 @@ HEADERS += \
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
+contains(DEFINES,QTWEBSOCKET): HEADERS += QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
+contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h
 android:HEADERS += base/qtjni.h
 
 SOURCES += \
@@ -143,6 +148,8 @@ SOURCES += \
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
+contains(DEFINES,QTWEBSOCKET): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
+contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc

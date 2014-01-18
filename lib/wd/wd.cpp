@@ -25,6 +25,9 @@
 #include "isigraph.h"
 #include "menus.h"
 #include "tabs.h"
+#ifdef QTWEBSOCKET
+#include "../base/wssvr.h"
+#endif
 #include "../base/term.h"
 #include "../base/state.h"
 extern char* jegetlocale();
@@ -86,6 +89,10 @@ void wdtab(string);
 void wdtimer();
 void wdversion();
 void wdwh();
+#ifdef QTWEBSOCKET
+void wdwss();
+void wdwsw(int binary);
+#endif
 
 bool nochild();
 bool nochildset(string id);
@@ -203,6 +210,14 @@ void wd1()
       wdversion();
     else if (c=="minwh")
       wdwh();
+#ifdef QTWEBSOCKET
+    else if (c=="wss")
+      wdwss();
+    else if (c=="wsw")
+      wdwsw(0);
+    else if (c=="wswb")
+      wdwsw(1);
+#endif
 // not yet implemented
     else if (0) {
       cmd.getparms();
@@ -968,6 +983,45 @@ void wdtimer()
   else
     timer->stop();
 }
+
+#ifdef QTWEBSOCKET
+// ---------------------------------------------------------------------
+void wdwss()
+{
+  int port=0,protocol=1;
+  string p=cmd.getparms();
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  if (n.size()==0) {
+    error("wss requires 1 or 2 numbers: " + p);
+    return;
+  }
+  port=c_strtoi(q2s(n.at(0)));
+  if (n.size()>1)
+    protocol=c_strtoi(q2s(n.at(1)));
+  if (wssvr) {
+    delete wssvr;
+    wssvr = 0;
+  }
+  if (port)
+    wssvr = new WsSvr(port,protocol);
+}
+
+// ---------------------------------------------------------------------
+void wdwsw(int binary)
+{
+  string c=cmd.getid();
+  string p=remquotes(cmd.getparms());
+  if (c.empty()) {
+    error("wsw requires a number: " + p);
+    return;
+  }
+  if (!wssvr) {
+    error("wsw requires an active websocket server: " + p);
+    return;
+  }
+  wssvr->write((void *)c_strtol(c), p.c_str(), p.size(), binary);
+}
+#endif
 
 // ---------------------------------------------------------------------
 void wdversion()

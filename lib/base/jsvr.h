@@ -74,5 +74,7 @@ QString dors(QString s);
 void dumpA(A a);
 void dumpAREP(AREP a);
 void sets(QString name, QString s);
+void jsetc(QString name, C* sb, I slen);
+C* jgetc(C* name, I* len);
 
 #endif

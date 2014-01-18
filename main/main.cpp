@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QSysInfo>
 #include <QFont>
+#include <QDateTime>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
   }
 #endif
 
+  qsrand(QDateTime::currentMSecsSinceEpoch());
   QApplication app(argc, argv);
 
 #ifdef QT_OS_ANDROID
