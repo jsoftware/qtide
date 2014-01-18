@@ -45,6 +45,7 @@ void wdclippastex();
 void wdcmd();
 void wdcn();
 void wddefprint();
+void wddirmatch();
 void wdend();
 void wdfontdef();
 void wdget();
