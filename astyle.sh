@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LC_ALL=en_US.UTF-8
+
 if [ ! -f /usr/bin/astyle ]; then exit 0; fi
 
 f() {

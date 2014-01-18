@@ -48,14 +48,14 @@ void Menu::createhelpMenu()
   helpMenu->addAction(helphelpAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpgeneralAct);
-  helpMenu->addAction(helpreleaseAct);
+//  helpMenu->addAction(helpreleaseAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpvocabAct);
   helpMenu->addAction(helpconstantsAct);
   helpMenu->addAction(helpcontrolsAct);
   helpMenu->addAction(helpforeignsAct);
   helpMenu->addSeparator();
-  helpMenu->addAction(helprelnotesAct);
+//  helpMenu->addAction(helprelnotesAct);
   helpMenu->addAction(helpdictionaryAct);
   helpMenu->addSeparator();
   QMenu *m = helpMenu->addMenu(tr("Studio"));

@@ -3,6 +3,7 @@ build/
 config/
 jwd/
 
+cleancdb.sh
 makebill.sh
 makecdb.sh
 Makefile*
