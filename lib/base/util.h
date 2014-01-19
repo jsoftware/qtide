@@ -33,8 +33,8 @@ int cfwrite(QString s, QString t);
 int cfwrite(QString s, QByteArray b);
 
 void about(QString t,QString s);
-QString c2q(char *);
-std::string c2s(char *);
+QString c2q(const char *);
+std::string c2s(const char *);
 bool createdir(QDir d);
 QString detab(QString s);
 QString dlb(QString s);
@@ -86,7 +86,7 @@ QStringList qsltrim(QStringList p);
 extern int NoEvents;
 
 #ifdef QT_OS_ANDROID
-extern "C" void android_exec_host(char *,char *,char *);
+extern "C" void android_exec_host(const char *,const char *,const char *);
 #endif
 
 #if defined(_WIN64)||defined(__LP64__)

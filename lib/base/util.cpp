@@ -24,13 +24,13 @@ void about(QString t,QString s)
 }
 
 // ---------------------------------------------------------------------
-QString c2q(char *c)
+QString c2q(const char *c)
 {
   return QString::fromUtf8(c);
 }
 
 // ---------------------------------------------------------------------
-string c2s(char *c)
+string c2s(const char *c)
 {
   string s(c);
   return s;
@@ -718,7 +718,7 @@ QString toqlist(QStringList s)
 
 #ifdef QT_OS_ANDROID
 // ---------------------------------------------------------------------
-void android_exec_host(char *intent,char *cmd,char *mimetype)
+void android_exec_host(const char *intent,const char *cmd,const char *mimetype)
 {
 // eg. QProcess::execute( "am start -a android.intent.action.VIEW -d file:///sdcard/test.mp3 -t audio/mp3" );
   if ((!mimetype) || !strlen(mimetype))

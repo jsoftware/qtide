@@ -665,7 +665,7 @@ void Favs::cellActivated(int row)
 }
 
 // ---------------------------------------------------------------------
-void dirmatch(char *s,char *t)
+void dirmatch(const char *s,const char *t)
 {
   Dirm *d=new Dirm("std");
   if (strlen(s)) {
