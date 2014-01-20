@@ -995,7 +995,7 @@ void wdtimer()
 // ---------------------------------------------------------------------
 void wdwss()
 {
-  int port=0,protocol=1;
+  int port=0,protocol=0;
   string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()==0) {
@@ -1010,7 +1010,7 @@ void wdwss()
     wssvr = 0;
   }
   if (port)
-    wssvr = new WsSvr(port,protocol);
+    wssvr = new WsSvr(port,1+protocol);
 }
 
 // ---------------------------------------------------------------------
