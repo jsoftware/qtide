@@ -836,6 +836,13 @@ void wdqueries(string s)
       result=q;
     }
     return;
+#ifdef QTWEBSOCKET
+  } else if (s=="qwsc") {
+    if (!wssvr) result="";
+    else
+      result=wssvr->queryClient();
+    return;
+#endif
   }
 // queries that form is needed
   if (noform()) return;

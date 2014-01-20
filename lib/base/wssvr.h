@@ -17,14 +17,15 @@ public:
   WsSvr(int port = 80, int protocol = 1);
   ~WsSvr();
   void write(void * socket, const char * msg, I len, bool binary);
+  std::string queryClient();
 
 public slots:
-  void socketNewConnection();
-  void socketDisconnected();
-  void socketFrameReceived(QString message);
-  void socketFrameReceived(QByteArray message);
-  void socketPong(quint64 elapsedTime);
-  void socketSslErrors(const QList<QSslError>& errors);
+  void onOpen();
+  void onClose();
+  void onMessage(QString message);
+  void onMessage(QByteArray message);
+  void onPong(quint64 elapsedTime);
+  void onError(const QList<QSslError>& errors);
 
 private:
   QtWebsocket::QWsServer* server;
