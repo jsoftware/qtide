@@ -1,38 +1,38 @@
-#ifndef WSSVR_H
-#define WSSVR_H
+#ifndef WSCLN_H
+#define WSCLN_H
 
 #include <QtCore>
 #include <QtNetwork>
 
-#include "../QtWebsocket/QWsServer.h"
 #include "../QtWebsocket/QWsSocket.h"
 
 #include "jsvr.h"
 
-class WsSvr : public QObject
+class WsCln : public QObject
 {
   Q_OBJECT
 
 public:
-  WsSvr(int port = 80, int protocol = 1);
-  ~WsSvr();
-  void write(void * client, const char * msg, I len, bool binary);
-  std::string queryClient();
+  WsCln();
+  ~WsCln();
+  void * connect(QString ipaddr);
+  void disconnect(void * server);
+  void write(void * server, const char * msg, I len, bool binary);
+  std::string queryServer();
 
 public slots:
   void onOpen();
   void onClose();
   void onMessage(QString message);
   void onMessage(QByteArray message);
-  void onPong(quint64 elapsedTime);
+  void onStateChange(QAbstractSocket::SocketState socketState);
   void onError(const QList<QSslError>& errors);
 
 private:
-  QtWebsocket::QWsServer* server;
-  QList<QtWebsocket::QWsSocket*> clients;
+  QList<QtWebsocket::QWsSocket*> servers;
   void frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary);
 };
 
-extern WsSvr *wssvr;
+extern WsCln *wscln;
 
 #endif

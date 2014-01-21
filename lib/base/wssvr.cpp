@@ -8,11 +8,12 @@ using namespace std;
 
 WsSvr *wssvr;
 
-#define   ONOPEN      0
-#define   ONCLOSE     1
-#define   ONMESSAGE   2
-#define   ONERROR     3
-#define   ONPONG      4
+#define   ONOPEN        0
+#define   ONCLOSE       1
+#define   ONMESSAGE     2
+#define   ONERROR       3
+#define   ONSTATECHANGE 4
+#define   ONPONG        5
 
 WsSvr::WsSvr(int port, int protocol)
 {
@@ -47,7 +48,7 @@ void WsSvr::onOpen()
   QObject::connect(clientSocket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onError(const QList<QSslError>&)));
 
   clients << clientSocket;
-  string s = "websocket_handler_z_ " + p2s((void *)ONOPEN) + " " + p2s((void *)clientSocket);
+  string s = "wssvr_handler_z_ " + p2s((void *)ONOPEN) + " " + p2s((void *)clientSocket);
   jedo((char *)s.c_str());
   qDebug() << QString("Client 0x%1 connected: ").arg((quintptr)clientSocket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 }
@@ -60,7 +61,7 @@ void WsSvr::onClose()
   }
   qDebug() << QString("Client 0x%1 disconnected: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 
-  string s = "websocket_handler_z_ " + p2s((void *)ONCLOSE) + " " + p2s((void *)socket);
+  string s = "wssvr_handler_z_ " + p2s((void *)ONCLOSE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
 
   clients.removeOne(socket);
@@ -71,17 +72,17 @@ void WsSvr::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool bi
 {
   qDebug() << QString("Client 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 
-  jsetc((char *)"ws0_jrx_",(C*)ba.data(), ba.size());
+  jsetc((char *)"wssvr0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
-    jsetc((char *)"ws1_jrx_",(C*)"binary", 6);
+    jsetc((char *)"wssvr1_jrx_",(C*)"binary", 6);
   else
-    jsetc((char *)"ws1_jrx_",(C*)"utf8", 4);
-  string s = "websocket_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
+    jsetc((char *)"wssvr1_jrx_",(C*)"utf8", 4);
+  string s = "wssvr_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
   I len0,len1;
   C *data0, *data1;
-  data0 = jgetc((char *)"ws0_jrx_", &len0);
-  data1 = jgetc((char *)"ws1_jrx_", &len1);
+  data0 = jgetc((char *)"wssvr0_jrx_", &len0);
+  data1 = jgetc((char *)"wssvr1_jrx_", &len1);
   if (string("binary")==string(data1))
     socket->write(QByteArray(data0,(int)len0));
   else
@@ -108,14 +109,19 @@ void WsSvr::onMessage(QByteArray frame)
 
 void WsSvr::onError(const QList<QSslError>& errors)
 {
-  Q_UNUSED(errors);
   QtWebsocket::QWsSocket* socket = qobject_cast<QtWebsocket::QWsSocket*>(sender());
   if (socket == 0) {
     return;
   }
   qDebug() << QString("Client 0x%1 ssl error: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 
-  string s = "websocket_handler_z_ " + p2s((void *)ONERROR) + " " + p2s((void *)socket);
+  string s = "wssvr_handler_z_ " + p2s((void *)ONERROR) + " " + p2s((void *)socket);
+  string er = "";
+  for (int i=0, sz=errors.size(); i<sz; i++) {
+    er = er + q2s(errors.at(i).errorString()) + '\012';
+  }
+  jsetc((char *)"wssrv0_jrx_",(C*)er.c_str(), er.size());
+  jsetc((char *)"wssvr1_jrx_",(C*)"utf8", 4);
   jedo((char *)s.c_str());
 }
 
@@ -129,7 +135,7 @@ void WsSvr::onPong(quint64 elapsedTime)
   qDebug() << QString("ping: %1 ms").arg(elapsedTime);
 
 // no need to call J until there is a reason
-//  string s = "websocket_handler_z_ " + p2s((void *)ONPONG) + " " + p2s((void *)socket);
+//  string s = "wssvr_handler_z_ " + p2s((void *)ONPONG) + " " + p2s((void *)socket);
 //  jedo((char *)s.c_str());
 }
 
@@ -143,29 +149,29 @@ string WsSvr::queryClient()
   return s;
 }
 
-void WsSvr::write(void * socket, const char * msg, I len, bool binary)
+void WsSvr::write(void * client, const char * msg, I len, bool binary)
 {
   QByteArray ba;
   QString s;
-  QtWebsocket::QWsSocket* client;
+  QtWebsocket::QWsSocket* socket;
   if (binary)
     ba = QByteArray(msg,len);
   else
     s = QString::fromUtf8(msg,len);
-  if (socket) {
-    client = (QtWebsocket::QWsSocket*)socket;
-    if (clients.contains(client)) {
+  if (client) {
+    socket = (QtWebsocket::QWsSocket*)client;
+    if (clients.contains(socket)) {
       if (binary)
-        client->write(ba);
+        socket->write(ba);
       else
-        client->write(s);
+        socket->write(s);
     }
   } else {
-    foreach (client, clients) {
+    foreach (socket, clients) {
       if (binary)
-        client->write(ba);
+        socket->write(ba);
       else
-        client->write(s);
+        socket->write(s);
     }
   }
 }

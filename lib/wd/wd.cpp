@@ -27,6 +27,7 @@
 #include "tabs.h"
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
+#include "../base/wscln.h"
 #endif
 #include "../base/term.h"
 #include "../base/state.h"
@@ -91,7 +92,10 @@ void wdversion();
 void wdwh();
 #ifdef QTWEBSOCKET
 void wdwss();
-void wdwsw(int binary);
+void wdwssw(int binary);
+void wdwsc();
+void wdwscw(int binary);
+void wdwscdis();
 #endif
 
 bool nochild();
@@ -213,10 +217,18 @@ void wd1()
 #ifdef QTWEBSOCKET
     else if (c=="wss")
       wdwss();
-    else if (c=="wsw")
-      wdwsw(0);
-    else if (c=="wswb")
-      wdwsw(1);
+    else if (c=="wssw")
+      wdwssw(0);
+    else if (c=="wsswb")
+      wdwssw(1);
+    else if (c=="wsc")
+      wdwsc();
+    else if (c=="wscw")
+      wdwscw(0);
+    else if (c=="wscwb")
+      wdwscw(1);
+    else if (c=="wscdis")
+      wdwscdis();
 #endif
 // not yet implemented
     else if (0) {
@@ -837,10 +849,15 @@ void wdqueries(string s)
     }
     return;
 #ifdef QTWEBSOCKET
-  } else if (s=="qwsc") {
+  } else if (s=="qwss") {
     if (!wssvr) result="";
     else
       result=wssvr->queryClient();
+    return;
+  } else if (s=="qwsc") {
+    if (!wscln) result="";
+    else
+      result=wscln->queryServer();
     return;
 #endif
   }
@@ -1014,19 +1031,62 @@ void wdwss()
 }
 
 // ---------------------------------------------------------------------
-void wdwsw(int binary)
+void wdwssw(int binary)
 {
   string c=cmd.getid();
   string p=remquotes(cmd.getparms());
   if (c.empty()) {
-    error("wsw requires a number: " + p);
+    error("wssw requires a number: " + p);
     return;
   }
   if (!wssvr) {
-    error("wsw requires an active websocket server: " + p);
+    error("wssw requires an active websocket server: " + p);
     return;
   }
   wssvr->write((void *)c_strtol(c), p.c_str(), p.size(), binary);
+}
+
+// ---------------------------------------------------------------------
+void wdwsc()
+{
+  string p=cmd.getparms();
+  if (p.empty()) {
+    error("wsc requires a parameter: " + p);
+    return;
+  }
+  if (!wscln)
+    wscln = new WsCln();
+  result = p2s(wscln->connect(s2q(p)));
+}
+
+// ---------------------------------------------------------------------
+void wdwscw(int binary)
+{
+  string c=cmd.getid();
+  string p=remquotes(cmd.getparms());
+  if (c.empty()) {
+    error("wscw requires a number: " + p);
+    return;
+  }
+  if (!wscln) {
+    error("wscw requires an active websocket server: " + p);
+    return;
+  }
+  wscln->write((void *)c_strtol(c), p.c_str(), p.size(), binary);
+}
+
+// ---------------------------------------------------------------------
+void wdwscdis()
+{
+  string c=cmd.getid();
+  if (c.empty()) {
+    error("wscdis requires a number: " + c);
+    return;
+  }
+  if (!wscln) {
+    return;
+  }
+  wscln->disconnect((void *)c_strtol(c));
 }
 #endif
 

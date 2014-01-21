@@ -118,7 +118,7 @@ HEADERS += \
 !contains(QT,webkit): HEADERS -= wd/webview.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
-contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h
+contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
 android:HEADERS += base/qtjni.h
 
 SOURCES += \
@@ -149,7 +149,7 @@ SOURCES += \
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
-contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp
+contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
