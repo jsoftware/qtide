@@ -16,8 +16,10 @@ class WsSvr : public QObject
 public:
   WsSvr(int port = 80, int protocol = 1);
   ~WsSvr();
+  void disconnect(void * client);
   void write(void * client, const char * msg, I len, bool binary);
   std::string queryClient();
+  std::string errstring;
 
 public slots:
   void onOpen();

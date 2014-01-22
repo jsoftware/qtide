@@ -30,7 +30,7 @@ WsCln::~WsCln()
   qDebug() << QString("Websocket client terminated");
 }
 
-void * WsCln::connect(QString ipaddr)
+void * WsCln::connect(QString ipaddr, int port)
 {
   ipaddr.trimmed();
   if (ipaddr.isEmpty()) {
@@ -38,25 +38,7 @@ void * WsCln::connect(QString ipaddr)
     return (void *) 0;
   }
 
-  qDebug() << QString("try connect to: ") + ipaddr;
-
-  QString ip;
-  quint16 port;
-  if (ipaddr.contains(QRegExp(QLatin1String(":([0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{1,4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")))) {
-    QStringList splitted = ipaddr.split(':');
-    port = splitted.takeLast().toUInt();
-    ip = splitted.join(':');
-  } else {
-    ip = ipaddr;
-    port = 80;
-  }
-
   QtWebsocket::QWsSocket* socket = new QtWebsocket::QWsSocket(this, NULL, QtWebsocket::WS_V13);
-  servers << socket;
-  socket->connectToHost(ip.toUtf8(), port);
-
-
-  onStateChange(socket->state());
 
   QObject::connect(socket, SIGNAL(connected()), this, SLOT(onOpen()));
   QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(onClose()));
@@ -65,17 +47,15 @@ void * WsCln::connect(QString ipaddr)
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onError(const QList<QSslError>&)));
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChange(QAbstractSocket::SocketState)));
 
-  return (void *) socket;
-}
+  servers << socket;
 
-void WsCln::disconnect(void * server)
-{
-  QtWebsocket::QWsSocket* socket;
-  if (server) {
-    socket = (QtWebsocket::QWsSocket*)server;
-    if (servers.contains(socket))
-      socket->disconnectFromHost();
-  }
+  qDebug() << QString("try connect to: ") + ipaddr + " port " + QString::number(port);
+
+  socket->connectToHost(ipaddr.toUtf8(), port);
+
+  onStateChange(socket->state());
+
+  return (void *) socket;
 }
 
 void WsCln::onOpen()
@@ -108,21 +88,13 @@ void WsCln::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool bi
 {
   qDebug() << QString("Server 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 
-  jsetc((char *)"wscln0_jrx_",(C*)ba.data(), ba.size());
+  jsetc((char *)"wsc0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
-    jsetc((char *)"wscln1_jrx_",(C*)"binary", 6);
+    jsetc((char *)"wsc1_jrx_",(C*)"binary", 6);
   else
-    jsetc((char *)"wscln1_jrx_",(C*)"utf8", 4);
+    jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
   string s = "wscln_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
-  I len0,len1;
-  C *data0, *data1;
-  data0 = jgetc((char *)"wscln0_jrx_", &len0);
-  data1 = jgetc((char *)"wscln1_jrx_", &len1);
-  if (string("binary")==string(data1))
-    socket->write(QByteArray(data0,(int)len0));
-  else
-    socket->write(QString::fromUtf8(data0,(int)len0));
 }
 
 void WsCln::onMessage(QString frame)
@@ -156,8 +128,8 @@ void WsCln::onError(const QList<QSslError>& errors)
   for (int i=0, sz=errors.size(); i<sz; i++) {
     er = er + q2s(errors.at(i).errorString()) + '\012';
   }
-  jsetc((char *)"wscln0_jrx_",(C*)er.c_str(), er.size());
-  jsetc((char *)"wscln1_jrx_",(C*)"utf8", 4);
+  jsetc((char *)"wsc0_jrx_",(C*)er.c_str(), er.size());
+  jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
   jedo((char *)s.c_str());
 }
 
@@ -167,7 +139,6 @@ void WsCln::onStateChange(QAbstractSocket::SocketState socketState)
   if (socket == 0) {
     return;
   }
-  qDebug() << QString("Server 0x%1 statechange: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
   string st;
   switch (socketState) {
   case QAbstractSocket::UnconnectedState:
@@ -196,9 +167,10 @@ void WsCln::onStateChange(QAbstractSocket::SocketState socketState)
     break;
   }
 
+  qDebug() << QString("Server 0x%1 statechange: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0')) << s2q(st);;
   string s = "wscln_handler_z_ " + p2s((void *)ONSTATECHANGE) + " " + p2s((void *)socket);
-  jsetc((char *)"wscln0_jrx_",(C*)st.c_str(), st.size());
-  jsetc((char *)"wscln1_jrx_",(C*)"utf8", 4);
+  jsetc((char *)"wsc0_jrx_",(C*)st.c_str(), st.size());
+  jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
   jedo((char *)s.c_str());
 }
 
@@ -210,6 +182,16 @@ string WsCln::queryServer()
     s = s + p2s((void *)socket) + '\012';
   }
   return s;
+}
+
+void WsCln::disconnect(void * server)
+{
+  QtWebsocket::QWsSocket* socket;
+  if (server) {
+    socket = (QtWebsocket::QWsSocket*)server;
+    if (servers.contains(socket))
+      socket->disconnectFromHost();
+  }
 }
 
 void WsCln::write(void * server, const char * msg, I len, bool binary)

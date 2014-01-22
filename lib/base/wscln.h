@@ -15,7 +15,7 @@ class WsCln : public QObject
 public:
   WsCln();
   ~WsCln();
-  void * connect(QString ipaddr);
+  void * connect(QString ipaddr, int port = 80);
   void disconnect(void * server);
   void write(void * server, const char * msg, I len, bool binary);
   std::string queryServer();

@@ -17,14 +17,17 @@ WsSvr *wssvr;
 
 WsSvr::WsSvr(int port, int protocol)
 {
+  errstring = "";
   server = new QtWebsocket::QWsServer(this, (QtWebsocket::Protocol)protocol);
   if (! server->listen(QHostAddress::Any, port)) {
+    errstring = q2s(server->errorString());
     qDebug() << "Error: Can't launch websocket server";
     qDebug() << QString("QWsServer error : %1").arg(server->errorString());
+    return;
   } else {
     qDebug() << QString("Websocket server is listening on port %1").arg(port);
+    QObject::connect(server, SIGNAL(newConnection()), this, SLOT(onOpen()));
   }
-  QObject::connect(server, SIGNAL(newConnection()), this, SLOT(onOpen()));
 }
 
 WsSvr::~WsSvr()
@@ -72,21 +75,13 @@ void WsSvr::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool bi
 {
   qDebug() << QString("Client 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 
-  jsetc((char *)"wssvr0_jrx_",(C*)ba.data(), ba.size());
+  jsetc((char *)"wss0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
-    jsetc((char *)"wssvr1_jrx_",(C*)"binary", 6);
+    jsetc((char *)"wss1_jrx_",(C*)"binary", 6);
   else
-    jsetc((char *)"wssvr1_jrx_",(C*)"utf8", 4);
+    jsetc((char *)"wss1_jrx_",(C*)"utf8", 4);
   string s = "wssvr_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
-  I len0,len1;
-  C *data0, *data1;
-  data0 = jgetc((char *)"wssvr0_jrx_", &len0);
-  data1 = jgetc((char *)"wssvr1_jrx_", &len1);
-  if (string("binary")==string(data1))
-    socket->write(QByteArray(data0,(int)len0));
-  else
-    socket->write(QString::fromUtf8(data0,(int)len0));
 }
 
 void WsSvr::onMessage(QString frame)
@@ -120,8 +115,8 @@ void WsSvr::onError(const QList<QSslError>& errors)
   for (int i=0, sz=errors.size(); i<sz; i++) {
     er = er + q2s(errors.at(i).errorString()) + '\012';
   }
-  jsetc((char *)"wssrv0_jrx_",(C*)er.c_str(), er.size());
-  jsetc((char *)"wssvr1_jrx_",(C*)"utf8", 4);
+  jsetc((char *)"wss0_jrx_",(C*)er.c_str(), er.size());
+  jsetc((char *)"wss1_jrx_",(C*)"utf8", 4);
   jedo((char *)s.c_str());
 }
 
@@ -147,6 +142,16 @@ string WsSvr::queryClient()
     s = s + p2s((void *)client) + '\012';
   }
   return s;
+}
+
+void WsSvr::disconnect(void * client)
+{
+  QtWebsocket::QWsSocket* socket;
+  if (client) {
+    socket = (QtWebsocket::QWsSocket*)client;
+    if (clients.contains(socket))
+      socket->disconnectFromHost();
+  }
 }
 
 void WsSvr::write(void * client, const char * msg, I len, bool binary)
