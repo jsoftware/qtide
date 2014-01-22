@@ -154,8 +154,9 @@ void WsSvr::disconnect(void * client)
   }
 }
 
-void WsSvr::write(void * client, const char * msg, I len, bool binary)
+I WsSvr::write(void * client, const char * msg, I len, bool binary)
 {
+  I r=-1;
   QByteArray ba;
   QString s;
   QtWebsocket::QWsSocket* socket;
@@ -167,16 +168,17 @@ void WsSvr::write(void * client, const char * msg, I len, bool binary)
     socket = (QtWebsocket::QWsSocket*)client;
     if (clients.contains(socket)) {
       if (binary)
-        socket->write(ba);
+        r = socket->write(ba);
       else
-        socket->write(s);
+        r = socket->write(s);
     }
   } else {
     foreach (socket, clients) {
       if (binary)
-        socket->write(ba);
+        r = socket->write(ba);
       else
-        socket->write(s);
+        r = socket->write(s);
     }
   }
+  return r;
 }

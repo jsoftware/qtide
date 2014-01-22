@@ -194,8 +194,9 @@ void WsCln::disconnect(void * server)
   }
 }
 
-void WsCln::write(void * server, const char * msg, I len, bool binary)
+I WsCln::write(void * server, const char * msg, I len, bool binary)
 {
+  I r = -1;
   QByteArray ba;
   QString s;
   QtWebsocket::QWsSocket* socket;
@@ -207,16 +208,17 @@ void WsCln::write(void * server, const char * msg, I len, bool binary)
     socket = (QtWebsocket::QWsSocket*)server;
     if (servers.contains(socket)) {
       if (binary)
-        socket->write(ba);
+        r = socket->write(ba);
       else
-        socket->write(s);
+        r = socket->write(s);
     }
   } else {
     foreach (socket, servers) {
       if (binary)
-        socket->write(ba);
+        r = socket->write(ba);
       else
-        socket->write(s);
+        r = socket->write(s);
     }
   }
+  return r;
 }

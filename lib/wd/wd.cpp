@@ -1052,7 +1052,8 @@ void wdwssw(int binary)
     error("wssw requires an active websocket server: " + p);
     return;
   }
-  wssvr->write((void *)c_strtol(c), p.c_str(), p.size(), binary);
+  rc=-1;
+  result = p2s((void *)wssvr->write((void *)c_strtol(c), p.c_str(), p.size(), binary));
 }
 
 // ---------------------------------------------------------------------
@@ -1109,7 +1110,8 @@ void wdwscw(int binary)
     error("wscw requires an active websocket server: " + p);
     return;
   }
-  wscln->write((void *)c_strtol(c), p.c_str(), p.size(), binary);
+  rc=-1;
+  result = p2s((void *)wscln->write((void *)c_strtol(c), p.c_str(), p.size(), binary));
 }
 
 // ---------------------------------------------------------------------
