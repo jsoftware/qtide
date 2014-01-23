@@ -42,26 +42,27 @@
 #include "../base/dialog.h"
 #include "../base/state.h"
 
-QString mbcolor();
-QString mbdir();
-QString mbfont();
-// QString mbinfo(QString);
-QString mbprint(bool);
-QString mbprintx(bool);
-QString mbmsg();
-QString mbopen();
-QString mbopen1();
-QString mbsave();
+QString mb(string p);
+static QString mbcolor();
+static QString mbdir();
+static QString mbfont();
+// static QString mbinfo(QString);
+static QString mbprint(bool);
+static QString mbprintx(bool);
+static QString mbmsg();
+static QString mbopen();
+static QString mbopen1();
+static QString mbsave();
 
-QString fixsep(QString s);
+static QString fixsep(QString s);
 
-QString type;
-QStringList arg;
+static QString type;
+static QStringList arg;
 
-QMessageBox::StandardButton getdefaultbutton();
-QMessageBox::StandardButton getonebutton();
-QMessageBox::StandardButtons getotherbuttons();
-QString getname(int);
+static QMessageBox::StandardButton getdefaultbutton();
+static QMessageBox::StandardButton getonebutton();
+static QMessageBox::StandardButtons getotherbuttons();
+static QString getname(int);
 
 // ---------------------------------------------------------------------
 QString mb(string p)

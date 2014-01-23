@@ -149,7 +149,7 @@ SOURCES += \
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
-contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp
+contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
 android:SOURCES += base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc

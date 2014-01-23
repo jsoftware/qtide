@@ -18,7 +18,8 @@ public:
   void * connect(QString ipaddr, int port = 80);
   void disconnect(void * server);
   I write(void * server, const char * msg, I len, bool binary);
-  std::string queryServer();
+  std::string querySocket();
+  bool hasSocket(void * server);
 
 public slots:
   void onOpen();
@@ -32,7 +33,5 @@ private:
   QList<QtWebsocket::QWsSocket*> servers;
   void frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary);
 };
-
-extern WsCln *wscln;
 
 #endif

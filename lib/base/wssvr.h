@@ -18,8 +18,9 @@ public:
   ~WsSvr();
   void disconnect(void * client);
   I write(void * client, const char * msg, I len, bool binary);
-  std::string queryClient();
+  std::string querySocket();
   std::string errstring;
+  bool hasSocket(void * client);
 
 public slots:
   void onOpen();
@@ -34,7 +35,5 @@ private:
   QList<QtWebsocket::QWsSocket*> clients;
   void frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary);
 };
-
-extern WsSvr *wssvr;
 
 #endif

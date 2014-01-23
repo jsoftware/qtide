@@ -1,12 +1,15 @@
+// for debug only
+// #define DEBUG_WEBSOCKET
+
+#ifdef DEBUG_WEBSOCKET
 #include <QDebug>
+#endif
 
 #include "wssvr.h"
 #include "jsvr.h"
 #include "util.h"
 
 using namespace std;
-
-WsSvr *wssvr;
 
 #define   ONOPEN        0
 #define   ONCLOSE       1
@@ -15,17 +18,23 @@ WsSvr *wssvr;
 #define   ONSTATECHANGE 4
 #define   ONPONG        5
 
+extern WsSvr *wssvr;
+
 WsSvr::WsSvr(int port, int protocol)
 {
   errstring = "";
   server = new QtWebsocket::QWsServer(this, (QtWebsocket::Protocol)protocol);
   if (! server->listen(QHostAddress::Any, port)) {
     errstring = q2s(server->errorString());
+#ifdef DEBUG_WEBSOCKET
     qDebug() << "Error: Can't launch websocket server";
     qDebug() << QString("QWsServer error : %1").arg(server->errorString());
+#endif
     return;
   } else {
+#ifdef DEBUG_WEBSOCKET
     qDebug() << QString("Websocket server is listening on port %1").arg(port);
+#endif
     QObject::connect(server, SIGNAL(newConnection()), this, SLOT(onOpen()));
   }
 }
@@ -37,7 +46,9 @@ WsSvr::~WsSvr()
     clients.removeOne(client);
     client->deleteLater();
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Websocket server terminated");
+#endif
 }
 
 void WsSvr::onOpen()
@@ -53,7 +64,9 @@ void WsSvr::onOpen()
   clients << clientSocket;
   string s = "wssvr_handler_z_ " + p2s((void *)ONOPEN) + " " + p2s((void *)clientSocket);
   jedo((char *)s.c_str());
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 connected: ").arg((quintptr)clientSocket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 }
 
 void WsSvr::onClose()
@@ -62,7 +75,9 @@ void WsSvr::onClose()
   if (socket == 0) {
     return;
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 disconnected: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   string s = "wssvr_handler_z_ " + p2s((void *)ONCLOSE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
@@ -73,7 +88,9 @@ void WsSvr::onClose()
 
 void WsSvr::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary)
 {
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   jsetc((char *)"wss0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
@@ -108,7 +125,9 @@ void WsSvr::onError(const QList<QSslError>& errors)
   if (socket == 0) {
     return;
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 ssl error: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   string s = "wssvr_handler_z_ " + p2s((void *)ONERROR) + " " + p2s((void *)socket);
   string er = "";
@@ -127,14 +146,16 @@ void WsSvr::onPong(quint64 elapsedTime)
   if (socket == 0) {
     return;
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("ping: %1 ms").arg(elapsedTime);
+#endif
 
 // no need to call J until there is a reason
 //  string s = "wssvr_handler_z_ " + p2s((void *)ONPONG) + " " + p2s((void *)socket);
 //  jedo((char *)s.c_str());
 }
 
-string WsSvr::queryClient()
+string WsSvr::querySocket()
 {
   QtWebsocket::QWsSocket* client;
   string s = "";
@@ -142,6 +163,12 @@ string WsSvr::queryClient()
     s = s + p2s((void *)client) + '\012';
   }
   return s;
+}
+
+bool WsSvr::hasSocket(void * client)
+{
+  QtWebsocket::QWsSocket* socket = (QtWebsocket::QWsSocket*)client;
+  return clients.contains(socket);
 }
 
 void WsSvr::disconnect(void * client)

@@ -91,12 +91,8 @@ void wdtimer();
 void wdversion();
 void wdwh();
 #ifdef QTWEBSOCKET
-void wdwss();
-void wdwssw(int binary);
-void wdwssdis();
-void wdwsc();
-void wdwscw(int binary);
-void wdwscdis();
+void wdws();
+extern string ws(string p);
 #endif
 
 bool nochild();
@@ -216,22 +212,8 @@ void wd1()
     else if (c=="minwh")
       wdwh();
 #ifdef QTWEBSOCKET
-    else if (c=="wss")
-      wdwss();
-    else if (c=="wssw")
-      wdwssw(0);
-    else if (c=="wsswb")
-      wdwssw(1);
-    else if (c=="wssdis")
-      wdwssdis();
-    else if (c=="wsc")
-      wdwsc();
-    else if (c=="wscw")
-      wdwscw(0);
-    else if (c=="wscwb")
-      wdwscw(1);
-    else if (c=="wscdis")
-      wdwscdis();
+    else if (c=="ws")
+      wdws();
 #endif
 // not yet implemented
     else if (0) {
@@ -851,18 +833,6 @@ void wdqueries(string s)
       result=q;
     }
     return;
-#ifdef QTWEBSOCKET
-  } else if (s=="qwss") {
-    if (!wssvr) result="";
-    else
-      result=wssvr->queryClient();
-    return;
-  } else if (s=="qwsc") {
-    if (!wscln) result="";
-    else
-      result=wscln->queryServer();
-    return;
-#endif
   }
 // queries that form is needed
   if (noform()) return;
@@ -1013,118 +983,13 @@ void wdtimer()
 
 #ifdef QTWEBSOCKET
 // ---------------------------------------------------------------------
-void wdwss()
+void wdws()
 {
-  int port=0,protocol=0;
-  string p=cmd.getparms();
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
-  if (n.size()==0) {
-    error("wss requires 1 or 2 numbers: " + p);
-    return;
-  }
-  port=c_strtoi(q2s(n.at(0)));
-  if (n.size()>1)
-    protocol=c_strtoi(q2s(n.at(1)));
-  if (wssvr) {
-    delete wssvr;
-    wssvr = 0;
-  }
-  if (port) {
-    wssvr = new WsSvr(port,1+protocol);
-    if (!wssvr->errstring.empty()) {
-      error("wss failed: " + wssvr->errstring);
-      delete wssvr;
-      wssvr = 0;
-    }
-  }
-}
-
-// ---------------------------------------------------------------------
-void wdwssw(int binary)
-{
-  string c=cmd.getid();
-  string p=remquotes(cmd.getparms());
-  if (c.empty()) {
-    error("wssw requires a number: " + p);
-    return;
-  }
-  if (!wssvr) {
-    error("wssw requires an active websocket server: " + p);
-    return;
-  }
-  rc=-1;
-  result = p2s((void *)wssvr->write((void *)c_strtol(c), p.c_str(), p.size(), binary));
-}
-
-// ---------------------------------------------------------------------
-void wdwssdis()
-{
-  string c=cmd.getid();
-  if (c.empty()) {
-    return;
-  }
-  if (!wssvr) {
-    return;
-  }
-  wssvr->disconnect((void *)c_strtol(c));
-}
-
-// ---------------------------------------------------------------------
-void wdwsc()
-{
-  string p=cmd.getparms();
-  int port=0, protocol=0;
-  if (p.empty()) {
-    error("wsc requires a parameter: " + p);
-    return;
-  }
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
-  if (n.size()>1)
-    port=c_strtoi(q2s(n.at(1)));
-  string q = q2s(n.at(0));
-  if (q.substr(0,5)=="ws://") {
-    protocol=0;
-  } else if (q.substr(0,6)=="wss://") {
-    protocol=1;
-  } else {
-    error("wsc not ws:// or wss:// : " + p);
-    return;
-  }
-  if (!port) port = (0==protocol) ? 80 : 443;
-  if (!wscln)
-    wscln = new WsCln();
-  rc=-1;
-  result = p2s(wscln->connect(s2q(q),port));
-}
-
-// ---------------------------------------------------------------------
-void wdwscw(int binary)
-{
-  string c=cmd.getid();
-  string p=remquotes(cmd.getparms());
-  if (c.empty()) {
-    error("wscw requires a number: " + p);
-    return;
-  }
-  if (!wscln) {
-    error("wscw requires an active websocket server: " + p);
-    return;
-  }
-  rc=-1;
-  result = p2s((void *)wscln->write((void *)c_strtol(c), p.c_str(), p.size(), binary));
-}
-
-// ---------------------------------------------------------------------
-void wdwscdis()
-{
-  string c=cmd.getid();
-  if (c.empty()) {
-    return;
-  }
-  if (!wscln) {
-    return;
-  }
-  wscln->disconnect((void *)c_strtol(c));
+  result=ws(cmd.getparms());
+  if (1==rc)
+    result="";
+  else
+    rc=-1;
 }
 #endif
 

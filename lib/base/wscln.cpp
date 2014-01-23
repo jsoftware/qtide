@@ -1,12 +1,15 @@
+// for debug only
+// #define DEBUG_WEBSOCKET
+
+#ifdef DEBUG_WEBSOCKET
 #include <QDebug>
+#endif
 
 #include "wscln.h"
 #include "jsvr.h"
 #include "util.h"
 
 using namespace std;
-
-WsCln *wscln;
 
 #define   ONOPEN        0
 #define   ONCLOSE       1
@@ -15,9 +18,13 @@ WsCln *wscln;
 #define   ONSTATECHANGE 4
 #define   ONPONG        5
 
+extern WsCln *wscln;
+
 WsCln::WsCln()
 {
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Websocket client terminated");
+#endif
 }
 
 WsCln::~WsCln()
@@ -27,14 +34,18 @@ WsCln::~WsCln()
     servers.removeOne(socket);
     socket->deleteLater();
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Websocket client terminated");
+#endif
 }
 
 void * WsCln::connect(QString ipaddr, int port)
 {
   ipaddr.trimmed();
   if (ipaddr.isEmpty()) {
+#ifdef DEBUG_WEBSOCKET
     qDebug() << QString("empty ip address");
+#endif
     return (void *) 0;
   }
 
@@ -49,10 +60,11 @@ void * WsCln::connect(QString ipaddr, int port)
 
   servers << socket;
 
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("try connect to: ") + ipaddr + " port " + QString::number(port);
+#endif
 
   socket->connectToHost(ipaddr.toUtf8(), port);
-
   onStateChange(socket->state());
 
   return (void *) socket;
@@ -66,7 +78,9 @@ void WsCln::onOpen()
   }
   string s = "wscln_handler_z_ " + p2s((void *)ONOPEN) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Server 0x%1 connected: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 }
 
 void WsCln::onClose()
@@ -75,7 +89,9 @@ void WsCln::onClose()
   if (socket == 0) {
     return;
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Server 0x%1 disconnected: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   string s = "wscln_handler_z_ " + p2s((void *)ONCLOSE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
@@ -86,7 +102,9 @@ void WsCln::onClose()
 
 void WsCln::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary)
 {
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Server 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   jsetc((char *)"wsc0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
@@ -121,7 +139,9 @@ void WsCln::onError(const QList<QSslError>& errors)
   if (socket == 0) {
     return;
   }
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Server 0x%1 ssl error: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+#endif
 
   string s = "wscln_handler_z_ " + p2s((void *)ONERROR) + " " + p2s((void *)socket);
   string er = "";
@@ -167,14 +187,16 @@ void WsCln::onStateChange(QAbstractSocket::SocketState socketState)
     break;
   }
 
+#ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Server 0x%1 statechange: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0')) << s2q(st);;
+#endif
   string s = "wscln_handler_z_ " + p2s((void *)ONSTATECHANGE) + " " + p2s((void *)socket);
   jsetc((char *)"wsc0_jrx_",(C*)st.c_str(), st.size());
   jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
   jedo((char *)s.c_str());
 }
 
-string WsCln::queryServer()
+string WsCln::querySocket()
 {
   QtWebsocket::QWsSocket* socket;
   string s = "";
@@ -182,6 +204,12 @@ string WsCln::queryServer()
     s = s + p2s((void *)socket) + '\012';
   }
   return s;
+}
+
+bool WsCln::hasSocket(void * server)
+{
+  QtWebsocket::QWsSocket* socket = (QtWebsocket::QWsSocket*)server;
+  return servers.contains(socket);
 }
 
 void WsCln::disconnect(void * server)
