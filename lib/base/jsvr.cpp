@@ -450,7 +450,7 @@ void sets(QString name, QString s)
 
   C* buf=(C*)calloc(hlen+tlen,sizeof(char));
   memcpy(buf,hdr,hlen);
-  strncpy(buf+hlen,sb,slen);
+  memcpy(buf+hlen,sb,slen);
   if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
   free(buf);
 }
@@ -477,7 +477,7 @@ void jsetc(QString name, C* sb, I slen)
 
   C* buf=(C*)calloc(hlen+tlen,sizeof(char));
   memcpy(buf,hdr,hlen);
-  strncpy(buf+hlen,sb,slen);
+  memcpy(buf+hlen,sb,slen);
   if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
   free(buf);
 }
