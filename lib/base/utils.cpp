@@ -113,18 +113,33 @@ QString getcmd(QString mode,QString t)
 }
 
 // ---------------------------------------------------------------------
-// return status or empty if not git
-QString gitstatus(QString path)
+// return if git available
+bool gitavailable()
 {
-  return (shell("git status",path)).at(0);
+#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(QT_OS_ANDROID)
+  return !shell("which git","").at(0).isEmpty();
+#else
+  return false;
+#endif
+}
+
+// ---------------------------------------------------------------------
+// git gui
+void gitgui(QString path)
+{
+  if (config.ifGit) {
+    QProcess p;
+    p.startDetached("git",QStringList() << "gui",path);
+  }
 }
 
 // ---------------------------------------------------------------------
 // return status or empty if not git
-void gitgui(QString path)
+QString gitstatus(QString path)
 {
-  QProcess p;
-  p.startDetached("git",QStringList() << "gui",path);
+  if (config.ifGit)
+    return shell("git status",path).at(0);
+  return "";
 }
 
 // ---------------------------------------------------------------------
@@ -353,10 +368,15 @@ QStringList shell(QString cmd, QString dir)
 {
   QStringList r;
   QProcess p;
-  p.setWorkingDirectory(dir);
+  if (!dir.isEmpty())
+    p.setWorkingDirectory(dir);
   p.start(cmd);
-  if (!p.waitForStarted())
+  try {
+    if (!p.waitForStarted())
+      return r;
+  } catch (...) {
     return r;
+  }
   if (!p.waitForFinished())
     return r;
   r.append((QString)p.readAllStandardOutput());

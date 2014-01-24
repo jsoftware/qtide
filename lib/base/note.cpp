@@ -250,6 +250,11 @@ void Note::projectenable()
   bool b=project.Id.size()>0;
   foreach(QAction *s, menuBar->ProjectEnable)
   s->setEnabled(b);
+  if (config.ifGit) {
+    b=project.Git;
+    foreach(QAction *s, menuBar->GitEnable)
+    s->setEnabled(b);
+  }
 }
 
 // ---------------------------------------------------------------------

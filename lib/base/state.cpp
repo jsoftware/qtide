@@ -111,6 +111,7 @@ void Config::init()
            << "All *";
 
   FilePatterns="Scripts (*.ijs);;All files (*.*)";
+  ifGit = gitavailable();
   ProjExt = ".jproj";
   ProjInit = false;
 

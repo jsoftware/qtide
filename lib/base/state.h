@@ -73,6 +73,7 @@ public:
   QList<QStringList> FKeyValues;
   QFont Font;
   QString Host;
+  bool ifGit;
   bool KeepInputLog;
   QString Lang;
   QStringList LaunchPadKeys;

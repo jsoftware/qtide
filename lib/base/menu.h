@@ -28,6 +28,7 @@ public:
   QMenu *selMenu;
   QMenu *viewMenu;
 
+  QList<QAction *> GitEnable;
   QList<QAction *> ProjectEnable;
   QList<QAction *> ScriptEnable;
 

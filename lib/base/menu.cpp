@@ -157,12 +157,11 @@ void Menu::createActions()
   wintextAct = makeact("wintextAct","Open All Te&xt","");
   winthrowAct = makeact("winthrowAct","&Throw Tab","");
 
-  ProjectEnable <<  projectbuildAct << projectcloseAct << projectsnapAct
+  GitEnable << projectgitstatusAct << projectgitguiAct;
+
+  ProjectEnable << projectbuildAct << projectcloseAct << projectsnapAct
                 << projectsnapmakeAct << projectterminalAct
                 << runprojectAct << winscriptsAct
-#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(QT_OS_ANDROID)
-                << projectgitstatusAct << projectgitguiAct
-#endif
                 << winsourceAct << wintextAct << winfileclosexAct;
 
   ScriptEnable << clipcopyAct << clipcutAct << clippasteAct
@@ -357,11 +356,11 @@ void Menu::createprojectMenu(QString s)
       projMenu->addAction(projectsnapAct);
       projMenu->addAction(projectsnapmakeAct);
     }
-#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(QT_OS_ANDROID)
-    projMenu->addSeparator();
-    projMenu->addAction(projectgitguiAct);
-    projMenu->addAction(projectgitstatusAct);
-#endif
+    if (config.ifGit) {
+      projMenu->addSeparator();
+      projMenu->addAction(projectgitguiAct);
+      projMenu->addAction(projectgitstatusAct);
+    }
     projMenu->addSeparator();
     projMenu->addAction(projectterminalAct);
   } else

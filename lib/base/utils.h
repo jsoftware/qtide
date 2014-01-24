@@ -13,6 +13,7 @@ extern "C" Dllexport void fontsetsize(int n);
 void fontdiff(int n);
 void fontset(QFont font);
 QString getcmd(QString,QString);
+bool gitavailable();
 void gitgui(QString path);
 QString gitstatus(QString path);
 QStringList globalassigns(QString s,QString ext);

@@ -37,6 +37,4 @@ private:
 
 extern Project project;
 
-bool state_init(char *path);
-
 #endif
