@@ -11,10 +11,10 @@ WsCln *wscln;
 
 string ws(string p);
 static string wsconnect();
-static string wsdisconnect();
+static string wsclose();
 static string wslisten();
 static string wsquery();
-static string wswrite(int binary);
+static string wssend(int binary);
 
 static QStringList arg;
 
@@ -33,12 +33,12 @@ string ws(string p)
     return wslisten();
   if (type=="connect")
     return wsconnect();
-  if (type=="write")
-    return wswrite(0);
-  if (type=="writeb")
-    return wswrite(1);
-  if (type=="disconnect")
-    return wsdisconnect();
+  if (type=="send")
+    return wssend(0);
+  if (type=="sendb")
+    return wssend(1);
+  if (type=="close")
+    return wsclose();
   if (type=="query")
     return wsquery();
   error("invalid ws cmd: " + q2s(type));
@@ -75,7 +75,7 @@ string wsconnect()
 }
 
 // ---------------------------------------------------------------------
-string wsdisconnect()
+string wsclose()
 {
   if (arg.size()==0) {
     return "";
@@ -136,7 +136,7 @@ string wsquery()
 }
 
 // ---------------------------------------------------------------------
-string wswrite(int binary)
+string wssend(int binary)
 {
   I socket=0;
   string r, data="";
