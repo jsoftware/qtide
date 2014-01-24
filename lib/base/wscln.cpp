@@ -110,7 +110,7 @@ void WsCln::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool bi
   if (binary)
     jsetc((char *)"wsc1_jrx_",(C*)"binary", 6);
   else
-    jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
+    jsetc((char *)"wsc1_jrx_",(C*)"text", 4);
   string s = "wscln_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
   jedo((char *)s.c_str());
 }
@@ -149,7 +149,7 @@ void WsCln::onError(const QList<QSslError>& errors)
     er = er + q2s(errors.at(i).errorString()) + '\012';
   }
   jsetc((char *)"wsc0_jrx_",(C*)er.c_str(), er.size());
-  jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
+  jsetc((char *)"wsc1_jrx_",(C*)"text", 4);
   jedo((char *)s.c_str());
 }
 
@@ -192,7 +192,7 @@ void WsCln::onStateChange(QAbstractSocket::SocketState socketState)
 #endif
   string s = "wscln_handler_z_ " + p2s((void *)ONSTATECHANGE) + " " + p2s((void *)socket);
   jsetc((char *)"wsc0_jrx_",(C*)st.c_str(), st.size());
-  jsetc((char *)"wsc1_jrx_",(C*)"utf8", 4);
+  jsetc((char *)"wsc1_jrx_",(C*)"text", 4);
   jedo((char *)s.c_str());
 }
 
