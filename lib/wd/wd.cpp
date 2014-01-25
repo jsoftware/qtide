@@ -255,14 +255,18 @@ void *wdgetparentid(void *s)
 // ---------------------------------------------------------------------
 void wdbin()
 {
+  string p=cmd.getparms();
   if (noform()) return;
-  form->pane->bin(cmd.getparms());
+  form->pane->bin(p);
 }
 
 // ---------------------------------------------------------------------
 void wdcc()
 {
-  if (noform()) return;
+  if (noform()) {
+    cmd.getparms();
+    return;
+  }
   string c,n,p;
   n=cmd.getid();
   c=cmd.getid();
@@ -336,10 +340,10 @@ void wdcmd()
 // ---------------------------------------------------------------------
 void wdcn()
 {
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
   cc=form->child;
   if (nochild()) return;
-  string p=remquotes(cmd.getparms());
   cc->set("caption",p);
 }
 
@@ -387,6 +391,8 @@ void wddefprint()
       if (f.contains("bold")) config.Font.setWeight (QFont::Bold);
     }
   } else error("invalid option: " + c);
+#else
+  cmd.getparms();
 #endif
 }
 
@@ -431,7 +437,10 @@ void wdget()
 // ---------------------------------------------------------------------
 void wdgrid()
 {
-  if (noform()) return;
+  if (noform()) {
+    cmd.getparms();
+    return;
+  }
   string n=cmd.getid();
   string v=cmd.getparms();
   form->pane->grid(n,v);
@@ -440,8 +449,8 @@ void wdgrid()
 // ---------------------------------------------------------------------
 void wdgroupbox(string c)
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   if (!form->pane->groupbox(c,p))
     error("unrecognized command: " + c + " " + p);
 }
@@ -468,8 +477,8 @@ void wdimmexj()
 // ---------------------------------------------------------------------
 void wdline(string c)
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   if (!form->pane->line(c,p))
     error("unrecognized command: " + c + " " + p);
 }
@@ -488,7 +497,10 @@ void wdmb()
 void wdmenu(string s)
 {
   int rc=0;
-  if (noform()) return;
+  if (noform()) {
+    cmd.getparms();
+    return;
+  }
   if (form->menubar==0) form->addmenu();
   string c,p;
   if (s=="menu") {
@@ -569,8 +581,8 @@ void wdp(string c)
 // ---------------------------------------------------------------------
 void wdpactive()
 {
-  if (noform()) return;
   cmd.getparms();
+  if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
@@ -581,8 +593,8 @@ void wdpactive()
 // ---------------------------------------------------------------------
 void wdpas()
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   int l,t,r,b;
   if (n.size()==2) {
@@ -615,8 +627,8 @@ void wdpc()
 // ---------------------------------------------------------------------
 void wdpcenter()
 {
-  if (noform()) return;
   cmd.getparms();
+  if (noform()) return;
 #ifndef QT_OS_ANDROID
   QDesktopWidget* dw=QApplication::desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
@@ -633,8 +645,8 @@ void wdpcenter()
 // ---------------------------------------------------------------------
 void wdpclose()
 {
-  if (noform()) return;
   cmd.getparms();
+  if (noform()) return;
   if (form->closed) return;
   form->closed=true;
   form->close();
@@ -643,16 +655,16 @@ void wdpclose()
 // ---------------------------------------------------------------------
 void wdpicon()
 {
-  if (noform()) return;
   string p=remquotes(cmd.getparms());
+  if (noform()) return;
   form->setpicon(p);
 }
 
 // ---------------------------------------------------------------------
 void wdpmove()
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
@@ -669,8 +681,8 @@ void wdpmove()
 // ---------------------------------------------------------------------
 void wdpn()
 {
-  if (noform()) return;
   string p=remquotes(cmd.getparms());
+  if (noform()) return;
   form->setpn(p);
 }
 
@@ -697,24 +709,24 @@ void wdpsel()
 // ---------------------------------------------------------------------
 void wdpshow()
 {
-  if (noform()) return;
   cmd.getparms();
+  if (noform()) return;
   form->showit();
 }
 
 // ---------------------------------------------------------------------
 void wdpstylesheet()
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   form->setStyleSheet(s2q(p));
 }
 
 // ---------------------------------------------------------------------
 void wdptop()
 {
-  if (noform()) return;
   cmd.getparms();
+  if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
@@ -724,7 +736,7 @@ void wdptop()
 // ---------------------------------------------------------------------
 void wdq()
 {
-  string p=cmd.getparms();
+  cmd.getparms();
   wdstate(evtform,1);
 }
 
@@ -941,8 +953,8 @@ void wdsmact()
 // ---------------------------------------------------------------------
 void wdsplit(string c)
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   if (!form->pane->split(c,p))
     error("unrecognized command: " + c + " " + p);
 }
@@ -958,8 +970,8 @@ void wdstate(Form * f,int event)
 // ---------------------------------------------------------------------
 void wdtab(string c)
 {
-  if (notab()) return;
   string p=cmd.getparms();
+  if (notab()) return;
   if (c=="tabend")
     form->tab->tabend();
   else if (c=="tabnew") {
@@ -996,6 +1008,7 @@ void wdws()
 // ---------------------------------------------------------------------
 void wdversion()
 {
+  cmd.getparms();
   result=APP_VERSION;
 #ifdef QT_NO_WEBKIT
   result=result+"s";
@@ -1007,8 +1020,8 @@ void wdversion()
 // ---------------------------------------------------------------------
 void wdwh()
 {
-  if (noform()) return;
   string p=cmd.getparms();
+  if (noform()) return;
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=2)
     error("wh requires 2 numbers: " + p);
