@@ -138,7 +138,7 @@ QSyntaxHighlighter *highlight(QTextDocument *);
 
 void state_appname();
 QStringList state_about();
-int state_fini(QApplication *);
+int state_fini();
 bool state_init(int argc, char *argv[]);
 void state_init_args(int *,char *argv[]);
 
@@ -154,13 +154,9 @@ void var_run(QString s);
 void var_runs(QString s);
 void var_set(QString s, QString t);
 
-#ifdef QT_OS_ANDROID
-int state_run(int argc, char *argv[],QApplication *app,QString lib);
-#else
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[],QApplication *app,QString lib);
+  Dllexport int state_run(int argc, char *argv[], QString lib);
+  Dllexport void immexj(const char *s);
 }
-#endif
-extern "C" Dllexport void immexj(const char *s);
 
 #endif

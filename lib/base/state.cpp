@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QDate>
+#include <QFont>
 #ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
@@ -328,9 +329,8 @@ void state_appname()
 }
 
 // ---------------------------------------------------------------------
-int state_fini(QApplication *app)
+int state_fini()
 {
-  Q_UNUSED(app);
   return jcon->exec();
 }
 
@@ -377,9 +377,16 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],QApplication *app,QString lib)
+int state_run(int argc, char *argv[],QString lib)
 {
   LibName=lib;
+#ifdef __MACH__
+  if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
+    // fix Mac OS X 10.9 (mavericks) font issue
+    // https://bugreports.qt-project.org/browse/QTBUG-32789
+    QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
+  }
+#endif
 #ifdef QT_OS_ANDROID
   if (LibName.left(8)=="/system/") {
     QString f1="/mnt/asec/com.jsoftware.android.qtide-1/lib/libjqt.so";
@@ -390,6 +397,7 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
     else if (QFile::exists(f3)) LibName=f3;
   }
 #endif
+  qsrand(QDateTime::currentMSecsSinceEpoch());
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
@@ -397,7 +405,7 @@ int state_run(int argc, char *argv[],QApplication *app,QString lib)
   if (!state_init(argc,argv)) return 1;
   if ((!ShowIde) && Forms.isEmpty()) return 0;
   term->fini();
-  return state_fini(app);
+  return state_fini();
 }
 
 // ---------------------------------------------------------------------

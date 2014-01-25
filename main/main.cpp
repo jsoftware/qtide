@@ -1,37 +1,26 @@
 #include <QApplication>
 #include <QDebug>
 #include <QSysInfo>
-#include <QFont>
-#include <QDateTime>
 
 using namespace std;
 
 #ifdef QT_OS_ANDROID
 #include <jni.h>
-extern int state_run (int,char **,QApplication *,QString);
+extern int state_run (int,char **,QString);
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 
 #else
 #include <QLibrary>
 
-typedef int (*Run)(int,char **,QApplication *,QString);
+typedef int (*Run)(int,char **,QString);
 #endif
 
 int main(int argc, char *argv[])
 {
-#ifdef __MACH__
-  if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
-    // fix Mac OS X 10.9 (mavericks) font issue
-    // https://bugreports.qt-project.org/browse/QTBUG-32789
-    QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
-  }
-#endif
-
-  qsrand(QDateTime::currentMSecsSinceEpoch());
   QApplication app(argc, argv);
 
 #ifdef QT_OS_ANDROID
-  return state_run(argc, argv, &app, QCoreApplication::applicationFilePath());
+  return state_run(argc, argv, QCoreApplication::applicationFilePath());
 #else
 #ifdef _WIN32
 #ifndef FHS
@@ -49,7 +38,7 @@ int main(int argc, char *argv[])
   QLibrary *lib=new QLibrary(s);
   Run state_run=(Run) lib->resolve("state_run");
   if (state_run)
-    return state_run(argc, argv, &app, lib->fileName());
+    return state_run(argc, argv, lib->fileName());
 
   qDebug() << lib->fileName();
   qDebug() << "could not resolve: state_run:\n\n" + lib->errorString();
