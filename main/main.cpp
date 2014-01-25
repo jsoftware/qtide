@@ -5,7 +5,7 @@ using namespace std;
 
 #ifdef QT_OS_ANDROID
 #include <jni.h>
-extern int state_run (int,char **,QString);
+extern "C" int state_run (int,char **,QString);
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 
 #else

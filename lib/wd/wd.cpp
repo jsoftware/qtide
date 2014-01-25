@@ -617,6 +617,7 @@ void wdpcenter()
 {
   if (noform()) return;
   cmd.getparms();
+#ifndef QT_OS_ANDROID
   QDesktopWidget* dw=QApplication::desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
   int sw=screenGeometry.width();
@@ -625,7 +626,6 @@ void wdpcenter()
   int h=form->size().height();
   int x=(sw-w)/2;
   int y=(sh-h)/2;
-#ifndef QT_OS_ANDROID
   form->move((x<0)?0:x,(y<0)?0:y);
 #endif
 }
