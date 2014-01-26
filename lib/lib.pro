@@ -1,5 +1,5 @@
 
-VERSION = 1.0.22
+VERSION = 1.0.23
 JDLLVER = 8.0.1    # ignored ifndef FHS
 
 # unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
