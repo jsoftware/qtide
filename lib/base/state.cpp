@@ -380,13 +380,6 @@ void state_reinit() {}
 int state_run(int argc, char *argv[],QString lib)
 {
   LibName=lib;
-#ifdef __MACH__
-  if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
-    // fix Mac OS X 10.9 (mavericks) font issue
-    // https://bugreports.qt-project.org/browse/QTBUG-32789
-    QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
-  }
-#endif
 #ifdef QT_OS_ANDROID
   if (LibName.left(8)=="/system/") {
     QString f1="/mnt/asec/com.jsoftware.android.qtide-1/lib/libjqt.so";

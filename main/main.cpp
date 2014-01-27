@@ -16,6 +16,13 @@ typedef int (*Run)(int,char **,QString);
 
 int main(int argc, char *argv[])
 {
+#if defined(__MACH__) && !defined(QT50)
+  if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
+    // fix Mac OS X 10.9 (mavericks) font issue
+    // https://bugreports.qt-project.org/browse/QTBUG-32789
+    QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
+  }
+#endif
   QApplication app(argc, argv);
 
 #ifdef QT_OS_ANDROID
