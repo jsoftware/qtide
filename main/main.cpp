@@ -1,5 +1,7 @@
 #include <QApplication>
 #include <QDebug>
+#include <QSysInfo>
+#include <QFont>
 
 using namespace std;
 
