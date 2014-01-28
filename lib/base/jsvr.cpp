@@ -457,7 +457,7 @@ void sets(QString name, QString s)
 
 // ---------------------------------------------------------------------
 // set character in J
-void jsetc(QString name, C* sb, I slen)
+void jsetc(C* name, C* sb, I slen)
 {
   int n,hlen,nlen,tlen;
 
@@ -465,8 +465,7 @@ void jsetc(QString name, C* sb, I slen)
   n=sizeof(I);
   hlen=n*5;
 
-  QByteArray nb=name.toUtf8();
-  nlen=nb.size();
+  nlen=strlen(name);
 
   tlen=n*(1+slen/n);
 
@@ -478,7 +477,7 @@ void jsetc(QString name, C* sb, I slen)
   C* buf=(C*)calloc(hlen+tlen,sizeof(char));
   memcpy(buf,hdr,hlen);
   memcpy(buf+hlen,sb,slen);
-  if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
+  if (jt) jseta(jt,nlen,name,(hlen+tlen),buf);
   free(buf);
 }
 
