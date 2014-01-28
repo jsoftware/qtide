@@ -90,8 +90,9 @@ void WsSvr::frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool bi
 {
 #ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 frame received: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
+  qDebug() << "number of bytes received: " + QString::number(ba.size());
+  qDebug() << QString(ba.toHex());
 #endif
-
   jsetc((char *)"wss0_jrx_",(C*)ba.data(), ba.size());
   if (binary)
     jsetc((char *)"wss1_jrx_",(C*)"binary", 6);
