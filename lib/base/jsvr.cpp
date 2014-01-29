@@ -443,7 +443,15 @@ void sets(QString name, QString s)
   slen=sb.size();
   tlen=n*(1+slen/n);
 
-  hdr[0]=(4==n) ? 225 : 227;
+//  hdr[0]=(4==n) ? 225 : 227;
+  hdr[0]=0;
+  unsigned char flag[1];
+#if defined(BIGENDIAN)
+  flag[0]=(4==n) ? 224 : 226;
+#else
+  flag[0]=(4==n) ? 225 : 227;
+#endif
+  memcpy(hdr,flag,1);
   hdr[1]=2;
   hdr[3]=1;
   hdr[2]=hdr[4]=slen;
@@ -469,7 +477,15 @@ void jsetc(C* name, C* sb, I slen)
 
   tlen=n*(1+slen/n);
 
-  hdr[0]=(4==n) ? 225 : 227;
+//  hdr[0]=(4==n) ? 225 : 227;
+  hdr[0]=0;
+  unsigned char flag[1];
+#if defined(BIGENDIAN)
+  flag[0]=(4==n) ? 224 : 226;
+#else
+  flag[0]=(4==n) ? 225 : 227;
+#endif
+  memcpy(hdr,flag,1);
   hdr[1]=2;
   hdr[3]=1;
   hdr[2]=hdr[4]=slen;
