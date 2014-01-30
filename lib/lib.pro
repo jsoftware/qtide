@@ -3,6 +3,8 @@ VERSION = 1.0.23
 JDLLVER = 8.0.1    # ignored ifndef FHS
 
 # unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
+# DEFINES += BIGENDIAN # uncomment this line for ppc mac
+
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
 android  {
