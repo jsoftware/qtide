@@ -1,4 +1,5 @@
 
+#include <QApplication>
 #include <QBoxLayout>
 #include <QMenuBar>
 #include <QSignalMapper>
@@ -95,17 +96,19 @@ Form::~Form()
     wdactivateform();
   }
 #endif
-#ifndef QT_OS_ANDROID
-  if (Forms.isEmpty() && (!ShowIde))
-    term->filequit();
+  if (Forms.isEmpty() && (!ShowIde)) {
+#ifdef QT_OS_ANDROID
+    state_quit();
+    QApplication::quit();
 #else
-  if (Forms.isEmpty()) {
     showide(true);
-    term->activateWindow();
-    term->raise();
-    term->repaint();
-  }
+    if (ShowIde) {
+      term->activateWindow();
+      term->raise();
+      term->repaint();
+    }
 #endif
+  }
 }
 
 // ---------------------------------------------------------------------

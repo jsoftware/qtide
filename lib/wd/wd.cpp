@@ -234,9 +234,11 @@ void wdactivateform()
     form->repaint();
   } else if (0==Forms.size()) {
     showide(true);
-    term->activateWindow();
-    term->raise();
-    term->repaint();
+    if (ShowIde) {
+      term->activateWindow();
+      term->raise();
+      term->repaint();
+    }
   }
 }
 

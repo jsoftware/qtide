@@ -22,8 +22,8 @@ void Fif::search()
   found->addItems(r);
 
   if(!ifResults) {
-    QSize s=size();
 #ifndef SMALL_SCREEN
+    QSize s=size();
     resize(s.width(),qMax(Pos[3],s.height()+100));
 #endif
     found->show();

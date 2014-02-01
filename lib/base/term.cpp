@@ -87,6 +87,7 @@ Term::Term()
 // ---------------------------------------------------------------------
 void Term::activate()
 {
+  if (!term->isVisible()) return;
   activateWindow();
   raise();
   tedit->setFocus();

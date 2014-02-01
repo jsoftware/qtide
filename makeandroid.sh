@@ -9,6 +9,7 @@ S=~/dev/apps/ide/jqt
 cd $S
 
 ./clean.sh
+./clean.and
 
 cd lib
 $QM -spec android-g++ && make

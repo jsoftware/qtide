@@ -87,7 +87,7 @@ find $S/android-assets/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.ex
 cd $S/android-assets
 tar czf ../jqtdata.tgz *
 cd $S
-cp jqtdata.tgz android_armv5/assets/.
-cp $HOME/jalgit/base8/main/config/profile.ijs android_armv5/assets/.
-cp $HOME/jalgit/base8/main/config/profilex_template.ijs android_armv5/assets/profilex.ijs
-sed -i -e '/^NB\./!d' android_armv5/assets/profilex.ijs
+cp jqtdata.tgz android_qtide/assets/.
+cp $HOME/jalgit/base8/main/config/profile.ijs android_qtide/assets/.
+cp $HOME/jalgit/base8/main/config/profilex_template.ijs android_qtide/assets/profilex.ijs
+sed -i -e '/^NB\./!d' android_qtide/assets/profilex.ijs

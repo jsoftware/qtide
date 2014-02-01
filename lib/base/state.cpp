@@ -31,6 +31,7 @@
 #ifdef QT_OS_ANDROID
 #include <jni.h>
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
+QString AndroidPackage;
 #endif
 
 extern bool FHS;
@@ -384,13 +385,24 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   FHS=fhs;
   LibName=lib;
 #ifdef QT_OS_ANDROID
+//  eg. /data/data/com.jsoftware.android.qtide/lib/libjqt.so
+  qDebug() << "LibName" << LibName;
+  QStringList p=LibName.split("/");
+  qDebug()<<p;
+  AndroidPackage = p.at(p.size()-3);
+  QChar p1=AndroidPackage.at(AndroidPackage.size()-2);
+  if (p1=='-') AndroidPackage = AndroidPackage.left(AndroidPackage.size()-2);
+  qDebug() << "AndroidPackage" << AndroidPackage;
   if (LibName.left(8)=="/system/") {
-    QString f1="/mnt/asec/com.jsoftware.android.qtide-1/lib/libjqt.so";
-    QString f2="/mnt/asec/com.jsoftware.android.qtide-2/lib/libjqt.so";
-    QString f3="/mnt/asec/com.jsoftware.android.qtide-3/lib/libjqt.so";
-    if (QFile::exists(f1)) LibName=f1;
-    else if (QFile::exists(f2)) LibName=f2;
-    else if (QFile::exists(f3)) LibName=f3;
+    QString f1;
+    for (int i=1; i<10; i++) {
+      f1="/mnt/asec/" + AndroidPackage + "-" + QString::number(i) + "/lib/libjqt.so";
+      if (QFile::exists(f1)) {
+        LibName=f1;
+        break;
+      }
+    }
+    qDebug() << "LibName changed to" << LibName;
   }
 #endif
   qsrand(QDateTime::currentMSecsSinceEpoch());
@@ -399,7 +411,15 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_appname();
   term = new Term;
   if (!state_init(argc,argv)) return 1;
-  if ((!ShowIde) && Forms.isEmpty()) return 0;
+#ifdef QT_OS_ANDROID
+  if (AndroidPackage=="com.jsoftware.android.qtide")
+    showide(true);
+  else
+    showide(false);
+#else
+  showide(true);
+#endif
+  term->fini();
   term->fini();
   return state_fini();
 }

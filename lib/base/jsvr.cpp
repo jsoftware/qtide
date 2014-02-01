@@ -15,6 +15,7 @@
 #ifdef QT_OS_ANDROID
 #include <QDir>
 #include <sys/stat.h>
+extern QString AndroidPackage;
 #endif
 
 using namespace std;
@@ -282,7 +283,8 @@ int jefirst(int type,char* arg)
   if (sdcardok) {
     strcpy(install, sdcard);
     strcat(install, "/Android/data");
-    strcat(install, "/com.jsoftware.android.qtide");
+    strcat(install, "/");
+    strcat(install, AndroidPackage.toUtf8().constData());
     if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
     strcat(install, "/files");
     if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
@@ -374,7 +376,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[INSTALLROOT_z_=:'");
   strcat(input,install);
   strcat(input,"'");
-  qDebug() << "jefirst: " << s2q(input);
 #else
   p=path;
   q=input+strlen(input);
@@ -390,8 +391,10 @@ int jefirst(int type,char* arg)
   else
     strcat(input,"[FHS_z_=:1");
   strcat(input,"[IFQT_z_=:1");
-  string s="[libjqt_z_=: '"+q2s(LibName)+"'";
-  strcat(input,s.c_str());
+  strcat(input,"[libjqt_z_=:'");
+  strcat(input,LibName.toUtf8().data());
+  strcat(input,"'");
+  qDebug() << "jefirst: " << QString::fromUtf8(input);
   r=jedo(input);
   free(input);
   return r;
