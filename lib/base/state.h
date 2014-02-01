@@ -155,7 +155,7 @@ void var_runs(QString s);
 void var_set(QString s, QString t);
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], QString lib);
+  Dllexport int state_run(int argc, char *argv[], QString lib, bool fhs);
   Dllexport void immexj(const char *s);
 }
 

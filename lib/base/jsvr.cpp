@@ -60,6 +60,7 @@ static void* hjdll;
 static JSetAType jseta;
 
 extern QString LibName;
+bool FHS;
 
 // ---------------------------------------------------------------------
 void addargv(int argc, char* argv[], C* d)
@@ -220,13 +221,14 @@ void jepath(char* arg)
   snk=path+strlen(path)-1;
   if('/'==*snk) *snk=0;
 #endif
-#ifndef FHS
-  strcpy(pathdll,path);
-  strcat(pathdll,filesepx );
-  strcat(pathdll,JDLLNAME);
-#else
-  strcpy(pathdll,JDLLNAME);
-#endif
+  if (!FHS) {
+    strcpy(pathdll,path);
+    strcat(pathdll,filesepx );
+    strcat(pathdll,JDLLNAME);
+  } else {
+    strcpy(pathdll,JDLLNAME);
+    strcat(pathdll,"." JDLLVER);
+  }
 // fprintf(stderr,"arg4 %s\n",path);
 }
 
@@ -346,10 +348,13 @@ int jefirst(int type,char* arg)
 
   *input=0;
   if(0==type) {
-#if !defined(FHS) || defined(_WIN32) || defined(ANDROID)
+#if defined(_WIN32) || defined(ANDROID)
     strcat(input,"(3 : '0!:0 y')<BINPATH,'");
 #else
-    strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
+    if (!FHS)
+      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+    else
+      strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
 #endif
     strcat(input,filesepx);
     strcat(input,"profile.ijs'");
@@ -380,11 +385,10 @@ int jefirst(int type,char* arg)
   *q=0;
   strcat(input,"'");
 #endif
-#ifndef FHS
-  strcat(input,"[FHS_z_=:0");
-#else
-  strcat(input,"[FHS_z_=:1");
-#endif
+  if (!FHS)
+    strcat(input,"[FHS_z_=:0");
+  else
+    strcat(input,"[FHS_z_=:1");
   strcat(input,"[IFQT_z_=:1");
   string s="[libjqt_z_=: '"+q2s(LibName)+"'";
   strcat(input,s.c_str());

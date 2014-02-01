@@ -19,11 +19,7 @@
 #ifdef __MACH__
 #define JDLLNAME "libj.dylib"
 #else
-#ifndef FHS
 #define JDLLNAME "libj.so"
-#else
-#define JDLLNAME "libj.so." JDLLVER
-#endif
 #endif
 #define _getcwd getcwd
 #define filesep '/'

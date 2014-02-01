@@ -1,6 +1,4 @@
 
-# unix:!macx: DEFINES += FHS  # comment this line if jqt libjqt.so jlib.so will be put in the same folder
-
 android {
   CONFIG += mobility
   MOBILITY +=

@@ -33,6 +33,8 @@
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 #endif
 
+extern bool FHS;
+
 using namespace std;
 
 Config config;
@@ -377,8 +379,9 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],QString lib)
+int state_run(int argc, char *argv[],QString lib,bool fhs)
 {
+  FHS=fhs;
   LibName=lib;
 #ifdef QT_OS_ANDROID
   if (LibName.left(8)=="/system/") {
