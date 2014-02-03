@@ -12,10 +12,10 @@
  -nomake tests \
  -nomake examples \
  -android-ndk-host linux-x86_64 \
- -android-ndk $HOME/android/android-ndk-r9b \
+ -android-ndk $HOME/android/android-ndk-r9c \
  -android-sdk $HOME/android/android-sdk-linux \
  -android-toolchain-version 4.8 \
- -android-ndk-platform android-9 \
+ -android-ndk-platform android-10 \
  -android-arch armeabi \
  -skip qttranslations \
  -skip qtwebkit \
