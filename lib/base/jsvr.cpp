@@ -171,7 +171,7 @@ void jepath(char* arg)
 #elif defined(QT_OS_ANDROID)
   Q_UNUSED(arg);
   QFileInfo fileInfo(LibName);
-  strcpy(path,fileInfo.canonicalPath().toUtf8().data());
+  strcpy(path,fileInfo.canonicalPath().toUtf8().constData());
   qDebug() << "jepath " << s2q(path);
 #else
 #define sz 4000
@@ -266,16 +266,18 @@ int jefirst(int type,char* arg)
     setenv("EXTERNAL_STORAGE",sdcard,1);
   }
   int sdcardok = !stat(sdcard,&st);
+// a dummy file signifying internal install for scripts
+  if (QFile("assets:/internal_install.txt").exists()) sdcardok = 0;
   if(sdcardok)
     setenv("HOME",sdcard,1);
   else {
     if(!getenv("HOME"))
-      setenv("HOME",path,1);
+      setenv("HOME",QDir::currentPath().toUtf8().constData(),1);
   }
   homepath=getenv("HOME");
   qDebug() << "homepath: " << s2q(homepath);
   if(!getenv("TMP"))
-    setenv("TMP",QDir::tempPath().toUtf8().data(),1);
+    setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
 
   QString appcurrentpath = QDir::currentPath();
   qDebug() << "application current path: " << appcurrentpath;
@@ -289,14 +291,14 @@ int jefirst(int type,char* arg)
     strcat(install, "/files");
     if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
   } else {
-    strcpy(install, appcurrentpath.toUtf8().data());
+    strcpy(install, appcurrentpath.toUtf8().constData());
   }
   qDebug() << "install path: " << s2q(install);
   QDir::setCurrent(install);
 // assume cwd is .../files
 
   char binpath[PLEN];
-  strcpy(binpath, appcurrentpath.toUtf8().data());
+  strcpy(binpath, appcurrentpath.toUtf8().constData());
   strcat(binpath, "/bin");
   if(stat(binpath,&st)) mkdir(binpath, S_IRWXU | S_IRWXG | S_IRWXO);
   QFile("assets:/installer.txt").copy(QString(binpath).append("/installer.txt"));
@@ -305,7 +307,7 @@ int jefirst(int type,char* arg)
   QFile("assets:/profile.ijs").copy(QString(binpath).append("/profile.ijs"));
   QFile::setPermissions(QString(binpath).append("/profile.ijs"),(QFile::Permission)0x6666);
 // not overwrite profilex.ijs
-  if(!(QFile(QString(binpath).append("/profilex.ijs.ijs")).exists())) {
+  if(!(QFile(QString(binpath).append("/profilex.ijs")).exists())) {
     QFile("assets:/profilex.ijs").copy(QString(binpath).append("/profilex.ijs"));
     QFile::setPermissions(QString(binpath).append("/profilex.ijs"),(QFile::Permission)0x6666);
   }
@@ -315,11 +317,11 @@ int jefirst(int type,char* arg)
   QFile *f2 = new QFile("assets_version.txt");
   if (f1->exists()) {
     QString s= cfread(f1);
-    if (!(s.isNull() || s.isEmpty())) v1=strtol(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v1=strtol(s.toUtf8().constData(),NULL,0);
   }
   if (f2->exists()) {
     QString s= cfread(f2);
-    if (!(s.isNull() || s.isEmpty())) v2=strtol(s.toUtf8().data(),NULL,0);
+    if (!(s.isNull() || s.isEmpty())) v2=strtol(s.toUtf8().constData(),NULL,0);
   }
   delete f1;
   delete f2;
@@ -340,7 +342,7 @@ int jefirst(int type,char* arg)
   }
 
 // not overwrite welcome.ijs
-  if(!(QFile("welcome.ijs.ijs").exists())) {
+  if(!(QFile("welcome.ijs").exists())) {
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
     QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6666);
   }
@@ -370,11 +372,14 @@ int jefirst(int type,char* arg)
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
 #ifdef QT_OS_ANDROID
-  strcat(input,appcurrentpath.toUtf8().data());
+  strcat(input,appcurrentpath.toUtf8().constData());
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");
   strcat(input,"[INSTALLROOT_z_=:'");
   strcat(input,install);
+  strcat(input,"'");
+  strcat(input,"[AndroidPackage_z_=:'");
+  strcat(input,AndroidPackage.toUtf8().constData());
   strcat(input,"'");
 #else
   p=path;
@@ -392,7 +397,7 @@ int jefirst(int type,char* arg)
     strcat(input,"[FHS_z_=:1");
   strcat(input,"[IFQT_z_=:1");
   strcat(input,"[libjqt_z_=:'");
-  strcat(input,LibName.toUtf8().data());
+  strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");
   qDebug() << "jefirst: " << QString::fromUtf8(input);
   r=jedo(input);

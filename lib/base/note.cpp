@@ -205,7 +205,7 @@ void Note::on_xeditAct_triggered()
   savecurrent();
   QString fn=editFile();
   if (fn.isEmpty()) return;
-  android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().data(),(char *)"text/plain");
+  android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().constData(),(char *)"text/plain");
 }
 
 // ---------------------------------------------------------------------
