@@ -1,0 +1,6 @@
+#!/bin/bash
+
+S=~/dev/apps/ide/jqt
+
+rm -rf $S/bin/android-arm
+rm -rf $S/lib/build/android-arm
