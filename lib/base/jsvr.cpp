@@ -297,21 +297,6 @@ int jefirst(int type,char* arg)
   QDir::setCurrent(install);
 // assume cwd is .../files
 
-  char binpath[PLEN];
-  strcpy(binpath, appcurrentpath.toUtf8().constData());
-  strcat(binpath, "/bin");
-  if(stat(binpath,&st)) mkdir(binpath, S_IRWXU | S_IRWXG | S_IRWXO);
-  QFile("assets:/installer.txt").copy(QString(binpath).append("/installer.txt"));
-  QFile::setPermissions(QString(binpath).append("/installer.txt"),(QFile::Permission)0x6666);
-// always install new profile.ijs
-  QFile("assets:/profile.ijs").copy(QString(binpath).append("/profile.ijs"));
-  QFile::setPermissions(QString(binpath).append("/profile.ijs"),(QFile::Permission)0x6666);
-// not overwrite profilex.ijs
-  if(!(QFile(QString(binpath).append("/profilex.ijs")).exists())) {
-    QFile("assets:/profilex.ijs").copy(QString(binpath).append("/profilex.ijs"));
-    QFile::setPermissions(QString(binpath).append("/profilex.ijs"),(QFile::Permission)0x6666);
-  }
-
   int v1=0, v2=0;
   QFile *f1 = new QFile("assets:/assets_version.txt");
   QFile *f2 = new QFile("assets_version.txt");
@@ -325,26 +310,26 @@ int jefirst(int type,char* arg)
   }
   delete f1;
   delete f2;
-  if (v1>v2) {
+  if ((v1>v2) && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
     QFile("assets:/tar0.ijs").copy("tar0.ijs");
-    QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);
-    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6666);
+    QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);  // for busybox tar
+    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6640);
     jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
     jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets_version.txt").remove();
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
-    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6666);
+    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6640);
   }
 
 // not overwrite welcome.ijs
   if(!(QFile("welcome.ijs").exists())) {
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
-    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6666);
+    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6640);
   }
 
   QDir::setCurrent(homepath);

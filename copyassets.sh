@@ -8,6 +8,11 @@ rm -rf $S/android-assets
 mkdir -p $S/android-assets
 cp -r $HOME/jalgit/base8/release/install/system $S/android-assets/.
 
+mkdir -p $S/android-assets/bin
+cp $HOME/jalgit/base8/main/config/profile.ijs $S/android-assets/bin/.
+cp $HOME/jalgit/base8/main/config/profilex_template.ijs $S/android-assets/bin/.
+echo "j801 install" > $S/android-assets/bin/installer.txt
+
 P=~/jalgit/addons/graphics
 Q=$S/android-assets/addons/graphics
 mkdir -p $Q
@@ -87,7 +92,7 @@ find $S/android-assets/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.ex
 cd $S/android-assets
 tar czf ../jqtdata.tgz *
 cd $S
-cp jqtdata.tgz android_qtide/assets/.
-cp $HOME/jalgit/base8/main/config/profile.ijs android_qtide/assets/.
-cp $HOME/jalgit/base8/main/config/profilex_template.ijs android_qtide/assets/profilex.ijs
-sed -i -e '/^NB\./!d' android_qtide/assets/profilex.ijs
+cp -f jqtdata.tgz android_qtide/assets/.
+# cp $HOME/jalgit/base8/main/config/profile.ijs android_qtide/assets/.
+# cp $HOME/jalgit/base8/main/config/profilex_template.ijs android_qtide/assets/profilex.ijs
+# sed -i -e '/^NB\./!d' android_qtide/assets/profilex.ijs
