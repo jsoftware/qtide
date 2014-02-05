@@ -326,8 +326,8 @@ int jefirst(int type,char* arg)
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6640);
   }
 
-// not overwrite welcome.ijs
-  if(!(QFile("welcome.ijs").exists())) {
+  if (QFile("assets:/welcome.ijs").exists()) {
+    QFile("welcome.ijs").remove();
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
     QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6640);
   }
@@ -357,7 +357,8 @@ int jefirst(int type,char* arg)
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
 #ifdef QT_OS_ANDROID
-  strcat(input,appcurrentpath.toUtf8().constData());
+//  strcat(input,appcurrentpath.toUtf8().constData());
+  strcat(input,install);
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");
   strcat(input,"[INSTALLROOT_z_=:'");

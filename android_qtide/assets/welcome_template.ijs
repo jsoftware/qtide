@@ -1,5 +1,3 @@
-dver_z_=: 3 : '1!:55 ::0: <jpath ''~install/assets_version.txt'''
-
 jd_z_=:  >@({."1)@fdir@jpath
 je_z_=: xedit_j_@([ ''&fappend)@jpath
 jf_z_=: ('"',libjqt,'" fontsetsize > n i')&cd

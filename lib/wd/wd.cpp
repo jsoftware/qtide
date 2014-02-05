@@ -48,6 +48,7 @@ void wdclippaste();
 void wdclippastex();
 void wdcmd();
 void wdcn();
+void wddbmsg();
 void wddefprint();
 void wddirmatch();
 void wdend();
@@ -158,6 +159,8 @@ void wd1()
       wdcmd();
     else if (c=="cn")
       wdcn();
+    else if (c=="dbmsg")
+      wddbmsg();
     else if (c=="defprint")
       wddefprint();
     else if (c=="dirmatch")
@@ -347,6 +350,14 @@ void wdcn()
   cc=form->child;
   if (nochild()) return;
   cc->set("caption",p);
+}
+
+// ---------------------------------------------------------------------
+void wddbmsg()
+{
+  string p=remquotes(cmd.getparms());
+// do not comment the following line
+  qDebug() << s2q(p);
 }
 
 // ---------------------------------------------------------------------
