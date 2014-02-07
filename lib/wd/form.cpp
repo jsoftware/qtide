@@ -21,6 +21,8 @@
 #include "../base/state.h"
 #include "../base/term.h"
 
+extern bool standAlone;
+
 // ---------------------------------------------------------------------
 Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 {
@@ -101,11 +103,16 @@ Form::~Form()
     state_quit();
     QApplication::quit();
 #else
-    showide(true);
-    if (ShowIde) {
-      term->activateWindow();
-      term->raise();
-      term->repaint();
+    if (standAlone) {
+      state_quit();
+      QApplication::quit();
+    } else {
+      showide(true);
+      if (ShowIde) {
+        term->activateWindow();
+        term->raise();
+        term->repaint();
+      }
     }
 #endif
   }

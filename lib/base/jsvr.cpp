@@ -1,6 +1,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
+#include <QDataStream>
 
 #include <csignal>
 #include <assert.h>
@@ -62,6 +63,7 @@ static JSetAType jseta;
 
 extern QString LibName;
 bool FHS;
+bool standAlone=false;
 
 // ---------------------------------------------------------------------
 void addargv(int argc, char* argv[], C* d)
@@ -336,23 +338,45 @@ int jefirst(int type,char* arg)
 #endif
 
   *input=0;
-  if(0==type) {
+  QFile sprofile(":/standalone/profile.ijs");
+  if (sprofile.exists() && sprofile.size()>0) standAlone=true;
+  if (standAlone) {
+    bool done=false;
+    qint64 ssize=sprofile.size();
+    if(sprofile.open(QFile::ReadOnly)) {
+      char * sdata=(char *)malloc(ssize);
+      QDataStream in(&sprofile);
+      if (ssize==in.readRawData(sdata,ssize)) {
+        jsetc((char *)"profile_jrx_",sdata, ssize);
+        strcat(input,"0!:0 profile_jrx_[4!:55<'profile_jrx_'");
+        done=true;
+      }
+      sprofile.close();
+      free(sdata);
+    }
+    if (!done) {
+      jsetc((char *)"profile_jrx_",(char *)"2!:55[1", 7);
+      strcat(input,"0!:0 profile_jrx_[4!:55<'profile_jrx_'");
+    }
+  } else {
+    if(0==type) {
 #if defined(_WIN32) || defined(ANDROID)
-    strcat(input,"(3 : '0!:0 y')<BINPATH,'");
-#else
-    if (!FHS)
       strcat(input,"(3 : '0!:0 y')<BINPATH,'");
-    else
-      strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
+#else
+      if (!FHS)
+        strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+      else
+        strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
 #endif
-    strcat(input,filesepx);
-    strcat(input,"profile.ijs'");
-  } else if(1==type)
-    strcat(input,"(3 : '0!:0 y')2{ARGV");
-  else if(2==type)
-    strcat(input,"");   // strcat(input,ijx);
-  else
-    strcat(input,"i.0 0");
+      strcat(input,filesepx);
+      strcat(input,"profile.ijs'");
+    } else if(1==type)
+      strcat(input,"(3 : '0!:0 y')2{ARGV");
+    else if(2==type)
+      strcat(input,"");   // strcat(input,ijx);
+    else
+      strcat(input,"i.0 0");
+  }
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
@@ -385,7 +409,7 @@ int jefirst(int type,char* arg)
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");
-  qDebug() << "jefirst: " << QString::fromUtf8(input);
+//  qDebug() << "jefirst: " << QString::fromUtf8(input);
   r=jedo(input);
   free(input);
   return r;
