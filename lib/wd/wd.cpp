@@ -48,7 +48,6 @@ void wdclippaste();
 void wdclippastex();
 void wdcmd();
 void wdcn();
-void wddbmsg();
 void wddefprint();
 void wddirmatch();
 void wdend();
@@ -59,6 +58,7 @@ void wdgroupbox(string c);
 void wdide();
 void wdimmexj();
 void wdline(string);
+void wdlogcat();
 void wdmb();
 void wdmenu(string);
 void wdmsgs();
@@ -159,8 +159,6 @@ void wd1()
       wdcmd();
     else if (c=="cn")
       wdcn();
-    else if (c=="dbmsg")
-      wddbmsg();
     else if (c=="defprint")
       wddefprint();
     else if (c=="dirmatch")
@@ -181,6 +179,8 @@ void wd1()
       wdimmexj();
     else if (c.substr(0,4)=="line")
       wdline(c);
+    else if (c=="logcat")
+      wdlogcat();
     else if (c.substr(0,2)=="mb")
       wdmb();
     else if (c.substr(0,4)=="menu")
@@ -353,14 +353,6 @@ void wdcn()
 }
 
 // ---------------------------------------------------------------------
-void wddbmsg()
-{
-  string p=remquotes(cmd.getparms());
-// do not comment the following line
-  qDebug() << s2q(p);
-}
-
-// ---------------------------------------------------------------------
 void wddefprint()
 {
 #ifndef QT_NO_PRINTER
@@ -494,6 +486,14 @@ void wdline(string c)
   if (noform()) return;
   if (!form->pane->line(c,p))
     error("unrecognized command: " + c + " " + p);
+}
+
+// ---------------------------------------------------------------------
+void wdlogcat()
+{
+  string p=remquotes(cmd.getparms());
+// for debug android standalone app
+  qDebug () /* do not comment this line */ << s2q(p);
 }
 
 // ---------------------------------------------------------------------
