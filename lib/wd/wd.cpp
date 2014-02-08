@@ -858,6 +858,25 @@ void wdqueries(string s)
       result=q;
     }
     return;
+  } else if (s=="qfile") {
+    bool done=false;
+    QFile f(s2q(remquotes(p)));
+    QFileInfo info=QFileInfo(f);
+    if (info.exists() && info.isFile() && info.size()>0) {
+      qint64 ssize=info.size();
+      if(f.open(QFile::ReadOnly)) {
+        char * sdata=(char *)malloc(ssize);
+        QDataStream in(&f);
+        if (ssize==in.readRawData(sdata,ssize)) {
+          result=std::string(sdata,ssize);
+          done=true;
+        }
+        f.close();
+        free(sdata);
+      }
+    }
+    if (!done) result="";
+    return;
   }
 // queries that form is needed
   if (noform()) return;

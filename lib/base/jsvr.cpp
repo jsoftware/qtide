@@ -1,6 +1,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QDataStream>
 
 #include <csignal>
@@ -339,10 +340,11 @@ int jefirst(int type,char* arg)
 
   *input=0;
   QFile sprofile(":/standalone/profile.ijs");
-  if (sprofile.exists() && sprofile.size()>0) standAlone=true;
+  QFileInfo info=QFileInfo(sprofile);
+  if (info.exists() && info.isFile() && info.size()>0) standAlone=true;
   if (standAlone) {
     bool done=false;
-    qint64 ssize=sprofile.size();
+    qint64 ssize=info.size();
     if(sprofile.open(QFile::ReadOnly)) {
       char * sdata=(char *)malloc(ssize);
       QDataStream in(&sprofile);
