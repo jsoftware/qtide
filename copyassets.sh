@@ -36,7 +36,6 @@ copyaddon games nurikabe
 copyaddon games pousse
 copyaddon games solitaire
 copyaddon general misc
-copyaddon general scriptdoc
 copyaddon graphics afm
 copyaddon graphics bmp
 copyaddon graphics color

@@ -261,14 +261,23 @@ int jefirst(int type,char* arg)
   Q_UNUSED(q);
   char *homepath;
   char *sdcard;
-  char SDCARD[] = "/mnt/sdcard";
+  char *SDCARD[] = {
+    (char *)"/storage/emulated/0",
+    (char *)"/storage/emulated/legacy",
+    (char *)"/mnt/sdcard"
+  };
   struct stat st;
-  if (!(sdcard=getenv("EXTERNAL_STORAGE")))
-    sdcard=&SDCARD[0];
-  else {
-    setenv("EXTERNAL_STORAGE",sdcard,1);
+  if (!(sdcard=getenv("EXTERNAL_STORAGE"))) {
+    for (int i=0; i < 3; i++) {
+      if (!stat(SDCARD[i],&st)) {
+        sdcard = SDCARD[i];
+        break;
+      }
+    }
   }
-  int sdcardok = !stat(sdcard,&st);
+  int sdcardok = sdcard && !stat(sdcard,&st);
+  if (sdcardok) setenv("EXTERNAL_STORAGE",sdcard,1);
+
 // a dummy file signifying internal install for scripts
   if (QFile("assets:/internal_install.txt").exists()) sdcardok = 0;
   if(sdcardok)
@@ -372,9 +381,9 @@ int jefirst(int type,char* arg)
 #endif
       strcat(input,filesepx);
       strcat(input,"profile.ijs'");
-    } else if(1==type)
+    } else if (1==type)
       strcat(input,"(3 : '0!:0 y')2{ARGV");
-    else if(2==type)
+    else if (2==type)
       strcat(input,"");   // strcat(input,ijx);
     else
       strcat(input,"i.0 0");
