@@ -385,11 +385,14 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   FHS=fhs;
   LibName=lib;
 #ifdef QT_OS_ANDROID
-//  eg. /data/data/com.jsoftware.android.qtide/lib/libjqt.so
+// assume LibName is in the following formats
+//      /data/data/com.jsoftware.android.qtide/lib/libjqt.so
+//  4.3 /data/app-lib/com.jsoftware.android.qtide-1/libjqt.so
+//      /mnt/asec/com.jsoftware.android.qtide-2/lib/libjq.so
   qDebug() << "LibName" << LibName;
   QStringList p=LibName.split("/");
   qDebug()<<p;
-  AndroidPackage = p.at(p.size()-3);
+  AndroidPackage = p.at(3);
   QChar p1=AndroidPackage.at(AndroidPackage.size()-2);
   if (p1=='-') AndroidPackage = AndroidPackage.left(AndroidPackage.size()-2);
   qDebug() << "AndroidPackage" << AndroidPackage;

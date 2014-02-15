@@ -291,6 +291,8 @@ int jefirst(int type,char* arg)
   if(!getenv("TMP"))
     setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
 
+  qDebug() << "TMP: " << QString::fromUtf8(getenv("TMP"));
+
   QString appcurrentpath = QDir::currentPath();
   qDebug() << "application current path: " << appcurrentpath;
   char install[PLEN];
@@ -302,10 +304,15 @@ int jefirst(int type,char* arg)
     if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
     strcat(install, "/files");
     if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
+    if(stat(install,&st)) {
+      qDebug() << "can not mkdir install: " << s2q(install);
+      strcpy(install, appcurrentpath.toUtf8().constData());
+    }
   } else {
     strcpy(install, appcurrentpath.toUtf8().constData());
   }
   qDebug() << "install path: " << s2q(install);
+
   QDir::setCurrent(install);
 // assume cwd is .../files
 
