@@ -113,10 +113,10 @@ select. {.t-.'z'
 case. 'x' do.
   assert. 3=#y['needs 3 paramters'
   assert. fexist f['file must exist'
-  if. _1-.@-: (2!:0 ::_1:) 'which tar' do.
-    2!:0 'tar x',(z#'z'),'f "',f,'" -C "',(>@{:y),'"'
-    0 return.
-  end.
+NB.   if. _1-.@-: (2!:0 ::_1:) 'which tar' do.
+NB.     2!:0 'tar x',(z#'z'),'f "',f,'" -C "',(>@{:y),'"'
+NB.     0 return.
+NB.   end.
   if. z do.
     f=. jpathsep^:IFWIN f
     fz=. (jpath '~temp'),((}.~ i:&'/') f),'.tar',":2!:6''

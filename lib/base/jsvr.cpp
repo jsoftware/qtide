@@ -276,6 +276,7 @@ int jefirst(int type,char* arg)
     }
   }
   int sdcardok = sdcard && !stat(sdcard,&st);
+//  sdcardok = 0;
   if (sdcardok) setenv("EXTERNAL_STORAGE",sdcard,1);
 
 // a dummy file signifying internal install for scripts
@@ -314,6 +315,7 @@ int jefirst(int type,char* arg)
   qDebug() << "install path: " << s2q(install);
 
   QDir::setCurrent(install);
+  qDebug() << "current path: " << QDir::currentPath();
 // assume cwd is .../files
 
   int v1=0, v2=0;
@@ -329,15 +331,20 @@ int jefirst(int type,char* arg)
   }
   delete f1;
   delete f2;
+  qDebug() << "check assets version";
   if ((v1>v2) && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
+    qDebug() << "decompress assets";
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
     QFile("assets:/tar0.ijs").copy("tar0.ijs");
     QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);  // for busybox tar
     QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6640);
+    qDebug() << "jedo: " << QString("script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
     jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
+    qDebug() << "jedo: " << QString("(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
     jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
+    qDebug() << "decompress assets clean";
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets_version.txt").remove();
@@ -345,6 +352,7 @@ int jefirst(int type,char* arg)
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6640);
   }
 
+  qDebug() << "check welcome.ijs";
   if (QFile("assets:/welcome.ijs").exists()) {
     QFile("welcome.ijs").remove();
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
@@ -352,6 +360,7 @@ int jefirst(int type,char* arg)
   }
 
   QDir::setCurrent(homepath);
+  qDebug() << "current path :(home) " << QDir::currentPath();
 #endif
 
   *input=0;
@@ -409,6 +418,8 @@ int jefirst(int type,char* arg)
   strcat(input,"[AndroidPackage_z_=:'");
   strcat(input,AndroidPackage.toUtf8().constData());
   strcat(input,"'");
+  strcat(input,"'");
+  qDebug() << "jefirst: " << QString::fromUtf8(input);
 #else
   p=path;
   q=input+strlen(input);
@@ -427,7 +438,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");
-//  qDebug() << "jefirst: " << QString::fromUtf8(input);
   r=jedo(input);
   free(input);
   return r;
