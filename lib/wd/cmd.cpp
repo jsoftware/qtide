@@ -146,6 +146,31 @@ QStringList Cmd::qsplits()
 }
 
 // ---------------------------------------------------------------------
+// split on WS, or paired "" or DEL (=ascii 127)
+vector<string> Cmd::ssplits()
+{
+  char c;
+  vector<string> r;
+  while (pos<len) {
+    skips(WS);
+    bgn=pos;
+    c=str[pos++];
+    if (c=='*') {
+      r.push_back(str.substr(pos));
+      break;
+    }
+    if (c=='"' || c==DEL) {
+      skippast(c);
+      r.push_back(str.substr(bgn+1,pos-bgn-2));
+    } else {
+      skiptows();
+      r.push_back(str.substr(bgn,pos-bgn));
+    }
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 string Cmd::remws(const string s)
 {
   string r;

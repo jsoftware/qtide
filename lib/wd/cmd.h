@@ -19,6 +19,7 @@ public:
 
   QStringList bsplits();
   QStringList qsplits();
+  vector<string> ssplits();
 
 private:
   bool contains(string s,char c);
