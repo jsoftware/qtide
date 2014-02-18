@@ -145,7 +145,9 @@ void Note::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
   case Qt::Key_Escape:
+      if (config.EscClose) {
     closeit();
+}
   default:
     QWidget::keyPressEvent(event);
   }
