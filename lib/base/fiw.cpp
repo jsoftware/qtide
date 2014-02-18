@@ -46,6 +46,7 @@ Fiw::Fiw(int p, QString s)
   QFormLayout *f = new QFormLayout;
   lsearchfor = new QLabel("&Search for:");
   searchfor = makecombobox("searchfor");
+  searchfor->installEventFilter(this);
   lsearchfor->setBuddy(searchfor);
   lreplaceby = new QLabel("&Replace by:");
   replaceby = makecombobox("replaceby");
@@ -131,6 +132,22 @@ void Fiw::initshow(int p, QString s)
   setsearchdirection(0);
   activateWindow();
   raise();
+}
+
+// ---------------------------------------------------------------------
+bool Fiw::eventFilter(QObject *obj, QEvent *e)
+{
+  if (obj == searchfor && e->type() == QEvent::KeyPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+    if (keyEvent->key() == Qt::Key_Up) {
+      setsearchdirection(Dir-1);
+      return true;
+    } else if (keyEvent->key() == Qt::Key_Down) {
+      setsearchdirection(Dir+1);
+      return true;
+    }
+  }
+  return QWidget::eventFilter(obj,e);
 }
 
 // ---------------------------------------------------------------------
@@ -450,10 +467,11 @@ QStringList Fiw::setlist(QString s, QStringList t)
 // ---------------------------------------------------------------------
 void Fiw::setsearchdirection(int d)
 {
-  Dir=d;
+  d=qMax(-1,qMin(1,d));
   findback->setDefault(d<0);
   findtop->setDefault(d==0);
   findnext->setDefault(d>0);
+  Dir=d;
 }
 
 // ---------------------------------------------------------------------

@@ -36,9 +36,10 @@ private slots:
 #endif
 
 private:
+  bool eventFilter(QObject *, QEvent *);
   void finfo(QString s);
   void keyPressEvent(QKeyEvent *);
-  void keyReleaseEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *);
   void open_replace();
   void read();
   void readtext();
