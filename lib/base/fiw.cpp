@@ -26,6 +26,7 @@ using namespace std;
 
 QStringList Fiw::ReplaceList;
 QStringList Fiw::SearchList;
+int Dir;
 
 // ---------------------------------------------------------------------
 Fiw::Fiw(int p, QString s)
@@ -116,7 +117,6 @@ Fiw::Fiw(int p, QString s)
   QMetaObject::connectSlotsByName(this);
 
   initshow(p,s);
-  findtop->setDefault(true);
 }
 
 // ---------------------------------------------------------------------
@@ -128,6 +128,7 @@ void Fiw::initshow(int p, QString s)
   if (s.size())
     searchfor->lineEdit()->selectAll();
   show();
+  setsearchdirection(0);
   activateWindow();
   raise();
 }
@@ -208,12 +209,6 @@ void Fiw::on_replaceforward_clicked()
 }
 
 // ---------------------------------------------------------------------
-void Fiw::on_searchfor_activated()
-{
-  on_findnext_clicked();
-}
-
-// ---------------------------------------------------------------------
 void Fiw::on_undolast_clicked()
 {
   read();
@@ -251,7 +246,7 @@ void Fiw::open_replace()
   replaceby->setFocus();
   replaceforward->setText("Replace For&ward");
   ifReplace=1;
-  findtop->setDefault(true);
+  setsearchdirection(0);
 }
 
 // ---------------------------------------------------------------------
@@ -324,12 +319,12 @@ void Fiw::search(int d)
     showhit();
   }
   show();
+  setsearchdirection((d==0) ? 1 : d);
 }
 
 // ---------------------------------------------------------------------
 int Fiw::search1(int d)
 {
-
   int p,r;
   QString f,txt,s;
 
@@ -357,7 +352,6 @@ int Fiw::search1(int d)
 // ---------------------------------------------------------------------
 int Fiw::searchback(QString s, QString txt)
 {
-
   QRegExp r;
   if (Assign) {
     r.setPattern(config.Rxnna+s+rxassign(config.DefExt,false));
@@ -451,6 +445,15 @@ QStringList Fiw::setlist(QString s, QStringList t)
   t.prepend(s);
   t.removeDuplicates();
   return t.mid(0,Max);
+}
+
+// ---------------------------------------------------------------------
+void Fiw::setsearchdirection(int d)
+{
+  Dir=d;
+  findback->setDefault(d<0);
+  findtop->setDefault(d==0);
+  findnext->setDefault(d>0);
 }
 
 // ---------------------------------------------------------------------

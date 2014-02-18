@@ -29,7 +29,6 @@ private slots:
   void on_nameonly_clicked();
   void on_replace_clicked();
   void on_replaceforward_clicked();
-  void on_searchfor_activated();
   void on_undolast_clicked();
 #ifdef QT_OS_ANDROID
   void on_view_clicked();
@@ -53,6 +52,7 @@ private:
   int searchforward(QString s, QString txt);
   void search_replace(int dir);
   QStringList setlist(QString s, QStringList t);
+  void setsearchdirection(int d);
   void setsearchlist(QString s);
   void setreplacelist(QString s);
 
