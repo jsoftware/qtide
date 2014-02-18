@@ -99,9 +99,6 @@ Fiw::Fiw(int p, QString s)
   g->addWidget(view,2,2);
 #endif
 
-  findtop->setFocus();
-  searchfor->setFocus();
-
   lreplaceby->hide();
   replaceby->hide();
   undolast->hide();
@@ -119,6 +116,7 @@ Fiw::Fiw(int p, QString s)
   QMetaObject::connectSlotsByName(this);
 
   initshow(p,s);
+  findtop->setDefault(true);
 }
 
 // ---------------------------------------------------------------------
@@ -253,6 +251,7 @@ void Fiw::open_replace()
   replaceby->setFocus();
   replaceforward->setText("Replace For&ward");
   ifReplace=1;
+  findtop->setDefault(true);
 }
 
 // ---------------------------------------------------------------------
