@@ -293,7 +293,7 @@ void Note::scriptenable()
   menuBar->selMenu->setEnabled(b);
   foreach(QAction *s, menuBar->ScriptEnable)
   s->setEnabled(b);
-
+  mainBar->runallAct->setEnabled(b);
 }
 
 // ---------------------------------------------------------------------

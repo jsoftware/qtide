@@ -24,7 +24,6 @@ Nmain::Nmain(Note *n)
   createActions();
   createToolBar();
   setLayout(layout);
-
 }
 
 // ---------------------------------------------------------------------
