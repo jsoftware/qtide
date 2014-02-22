@@ -418,7 +418,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[AndroidPackage_z_=:'");
   strcat(input,AndroidPackage.toUtf8().constData());
   strcat(input,"'");
-  strcat(input,"'");
   qDebug() << "jefirst: " << QString::fromUtf8(input);
 #else
   p=path;
