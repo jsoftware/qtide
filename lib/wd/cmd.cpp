@@ -225,6 +225,16 @@ QStringList qsplit(string s)
 }
 
 // ---------------------------------------------------------------------
+// split on blank (except in quotes) and LF
+// *indicates rest is a single string
+vector<string> ssplit(string s)
+{
+  Cmd c;
+  c.init((char*)s.c_str());
+  return c.ssplits();
+}
+
+// ---------------------------------------------------------------------
 string Cmd::getcmdstr()
 {
   return str.substr(pos);

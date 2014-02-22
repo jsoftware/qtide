@@ -16,19 +16,21 @@ static string wslisten();
 static string wsquery();
 static string wssend(int binary);
 
-static QStringList arg;
+static vector<string> arg;
+static string argjoin;
 
 // ---------------------------------------------------------------------
 string ws(string p)
 {
-  arg=qsplit(p);
+  argjoin=p;
+  arg=ssplit(p);
   if (arg.size()<1) {
     error("missing ws cmd");
     return "";
   }
 
-  QString type=arg.first();
-  arg.removeFirst();
+  string type=arg.front();
+  arg.erase(arg.begin());
   if (type=="listen")
     return wslisten();
   if (type=="connect")
@@ -41,7 +43,7 @@ string ws(string p)
     return wsclose();
   if (type=="query")
     return wsquery();
-  error("invalid ws cmd: " + q2s(type));
+  error("invalid ws cmd: " + type);
   return "";
 }
 
@@ -52,12 +54,12 @@ string wsconnect()
   string q;
 
   if (arg.size()==1) {
-    q=q2s(arg.at(0));
+    q=arg.at(0);
   } else if (arg.size()==2) {
-    q=q2s(arg.at(0));
-    port=c_strtoi(q2s(arg.at(1)));
+    q=arg.at(0);
+    port=c_strtoi(arg.at(1));
   } else {
-    error("Need url [port]: "+q2s(arg.join(" ")));
+    error("Need url [port]: "+argjoin);
     return "";
   }
   if (q.substr(0,5)=="ws://") {
@@ -65,7 +67,7 @@ string wsconnect()
   } else if (q.substr(0,6)=="wss://") {
     protocol=1;
   } else {
-    error("url not ws:// or wss:// : "+q2s(arg.join(" ")));
+    error("url not ws:// or wss:// : "+argjoin);
     return "";
   }
   if (!port) port = (0==protocol) ? 80 : 443;
@@ -80,7 +82,7 @@ string wsclose()
   if (arg.size()==0) {
     return "";
   }
-  I socket=c_strtol(q2s(arg.at(0)));
+  I socket=c_strtol(arg.at(0));
   if ((wssvr) && wssvr->hasSocket((void *)socket)) {
     wssvr->disconnect((void *)socket);
   } else if ((wscln) && wscln->hasSocket((void *)socket)) {
@@ -95,12 +97,12 @@ string wslisten()
   int port=0,protocol=0;
 
   if (arg.size()==1) {
-    port=c_strtoi(q2s(arg.at(0)));
+    port=c_strtoi(arg.at(0));
   } else if (arg.size()==2) {
-    port=c_strtoi(q2s(arg.at(0)));
-    protocol=c_strtoi(q2s(arg.at(1)));
+    port=c_strtoi(arg.at(0));
+    protocol=c_strtoi(arg.at(1));
   } else {
-    error("Need port [protocol]: "+q2s(arg.join(" ")));
+    error("Need port [protocol]: "+argjoin);
     return "";
   }
   if (wssvr) {
@@ -124,7 +126,7 @@ string wsquery()
   int type=0;
   string r="";
   if (arg.size()!=0)
-    type=c_strtoi(q2s(arg.at(0)));
+    type=c_strtoi(arg.at(0));
   if (0==type) {
     if (wssvr)
       r=wssvr->querySocket();
@@ -142,12 +144,12 @@ string wssend(int binary)
   string r, data="";
 
   if (arg.size()==1) {
-    socket=c_strtol(q2s(arg.at(0)));
+    socket=c_strtol(arg.at(0));
   } else if (arg.size()==2) {
-    socket=c_strtol(q2s(arg.at(0)));
-    data=q2s(arg.at(1));
+    socket=c_strtol(arg.at(0));
+    data=arg.at(1);
   } else {
-    error("Need socket [data]: "+q2s(arg.join(" ")));
+    error("Need socket [data]: "+argjoin);
     return "";
   }
   if ((wssvr) && (0==socket))
@@ -159,7 +161,7 @@ string wssend(int binary)
   else if ((wscln) && wscln->hasSocket((void *)socket))
     r=  p2s((void *)wscln->write((void *)socket, data.c_str(), data.size(), binary));
   else {
-    error("Need active websocket connection: "+q2s(arg.join(" ")));
+    error("Need active websocket connection: "+argjoin);
     return "";
   }
   return r;

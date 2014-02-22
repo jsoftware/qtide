@@ -35,5 +35,6 @@ private:
 
 QStringList bsplit(string s);
 QStringList qsplit(string s);
+vector<string> ssplit(string s);
 
 #endif
