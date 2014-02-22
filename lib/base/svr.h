@@ -15,7 +15,6 @@ public:
   void cmd(QString s);
   void cmddo(QString s);
   QString cmdr(QString s);
-  QString dora(QString s);
   int exec();
   void immex(QString s);
   int init(int argc, char* argv[]);

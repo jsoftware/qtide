@@ -137,7 +137,7 @@ void Config::init()
   Rxnna = "\\b";
   Rxnnz = "\\b";
 
-  NoProfile="0"==dors("\":'/profile.ijs'-:(}.~i:&'/')jpathsep>{.4!:3''");
+  NoProfile="1"!=dors("\":'/profile.ijs'-:(}.~i:&'/')jpathsep>{.4!:3''");
   if (NoProfile) {
     noprofile();
     return;

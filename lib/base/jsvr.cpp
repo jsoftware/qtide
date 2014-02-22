@@ -453,11 +453,15 @@ void sigint(int k)
 
 // ---------------------------------------------------------------------
 // jdo with result (contains 3!:1 rep)
+// return 0 on error
 A dora(QString s)
 {
   strcpy(inputline,q2s("r_jrx_=:"+s).c_str());
-  jdo(jt,inputline);
-  return jgeta(jt,6,(char*)"r_jrx_");
+  int e = jdo(jt,inputline);
+  if (!e)
+    return jgeta(jt,6,(char*)"r_jrx_");
+  else
+    return 0;
 }
 
 // ---------------------------------------------------------------------
@@ -467,6 +471,7 @@ QString dors(QString s)
   QString t;
   if (!jt) return "";
   A r=dora(s);
+  if (!r) return "";
   AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
   assert(p->t==2);
   assert(p->r<2);
