@@ -408,7 +408,13 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
     qDebug() << "LibName changed to" << LibName;
   }
 #endif
+#ifdef QTWEBSOCKET
+#ifdef QT48
   qsrand(QDateTime::currentMSecsSinceEpoch());
+#else
+  qsrand(QTime::currentTime().msec());
+#endif
+#endif
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
