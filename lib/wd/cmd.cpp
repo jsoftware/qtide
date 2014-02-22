@@ -18,9 +18,9 @@ void Cmd::end()
 }
 
 // ---------------------------------------------------------------------
-void Cmd::init(char *s)
+void Cmd::init(char *s,int slen)
 {
-  str=s;
+  str=string(s,slen);
   len=str.size();
   while (len>0) {
     if (!contains(WS,str[len-1])) break;
@@ -210,7 +210,7 @@ void Cmd::skiptows()
 QStringList bsplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str());
+  c.init((char*)s.c_str(),s.size());
   return c.bsplits();
 }
 
@@ -220,7 +220,7 @@ QStringList bsplit(string s)
 QStringList qsplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str());
+  c.init((char*)s.c_str(),s.size());
   return c.qsplits();
 }
 
@@ -230,7 +230,7 @@ QStringList qsplit(string s)
 vector<string> ssplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str());
+  c.init((char*)s.c_str(),s.size());
   return c.ssplits();
 }
 

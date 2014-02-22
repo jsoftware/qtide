@@ -7,7 +7,7 @@ using namespace std;
 #include "../base/base.h"
 
 extern "C" {
-  Dllexport int wd(char *s,char *&r,int &len);
+  Dllexport int wd(char *s,int slen,char *&r,int &len);
   Dllexport void wdactivateform();
   Dllexport void *wdgetparentid(void *s);
 }

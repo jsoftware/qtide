@@ -11,7 +11,7 @@ public:
   string getid();
   string getline();
   string getparms();
-  void init(char *);
+  void init(char *,int);
   bool more();
 
   string getcmdstr();

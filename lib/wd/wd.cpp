@@ -119,11 +119,11 @@ string cmdstr;
 string ccmd;
 
 // ---------------------------------------------------------------------
-int wd(char *s,char *&res,int &len)
+int wd(char *s,int slen,char *&res,int &len)
 {
   rc=0;
   result.clear();
-  cmd.init(s);
+  cmd.init(s,slen);
   wd1();
   len=result.size();
   res=(char *)result.c_str();
