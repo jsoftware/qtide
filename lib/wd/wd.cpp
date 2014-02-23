@@ -58,7 +58,6 @@ void wdgroupbox(string c);
 void wdide();
 void wdimmexj();
 void wdline(string);
-void wdlogcat();
 void wdmb();
 void wdmenu(string);
 void wdmsgs();
@@ -179,8 +178,6 @@ void wd1()
       wdimmexj();
     else if (c.substr(0,4)=="line")
       wdline(c);
-    else if (c=="logcat")
-      wdlogcat();
     else if (c.substr(0,2)=="mb")
       wdmb();
     else if (c.substr(0,4)=="menu")
@@ -486,14 +483,6 @@ void wdline(string c)
   if (noform()) return;
   if (!form->pane->line(c,p))
     error("unrecognized command: " + c + " " + p);
-}
-
-// ---------------------------------------------------------------------
-void wdlogcat()
-{
-  string p=remquotes(cmd.getparms());
-// for debug android standalone app
-  qDebug () /* do not comment this line */ << s2q(p);
 }
 
 // ---------------------------------------------------------------------

@@ -18,6 +18,7 @@
 using namespace std;
 
 extern "C" {
+  Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
@@ -209,6 +210,13 @@ QStringList folder_tree1(QString b,QString s,QStringList f)
   }
 
   return r;
+}
+
+// ---------------------------------------------------------------------
+void logcat(const char *s)
+{
+// for debug android standalone app
+  qDebug () /* do not comment this line */ << QString::fromUtf8(s);
 }
 
 // ---------------------------------------------------------------------
