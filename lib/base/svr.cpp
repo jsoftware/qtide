@@ -53,7 +53,7 @@ void Jcon::cmd(QString s)
 // ---------------------------------------------------------------------
 QString Jcon::cmdr(QString s)
 {
-  return dors(s);
+  return s2q(dors(q2s(s)));
 }
 
 // ---------------------------------------------------------------------
@@ -75,6 +75,7 @@ int Jcon::exec()
     while(!Sentence.isEmpty()) {
       s=Sentence.at(0);
       Sentence.removeFirst();
+      if (sizeof(inputline)<s.size()) exit(100);
       strcpy(inputline,q2s(s).c_str());
       jedo(inputline);
     }
@@ -150,7 +151,7 @@ void Jcon::quit()
 // ---------------------------------------------------------------------
 void Jcon::set(QString s, QString t)
 {
-  sets(s,t);
+  sets(s,q2s(t));
 }
 
 // ---------------------------------------------------------------------
@@ -178,6 +179,7 @@ char* _stdcall Jinput(J jt, char* p)
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   QString s=jcon->Sentence.at(0);
   jcon->Sentence.removeFirst();
+  if (sizeof(inputline)<s.size()) exit(100);
   strcpy(inputline,q2s(s).c_str());
   return inputline;
 }

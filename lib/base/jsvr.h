@@ -65,11 +65,11 @@ extern char inputline[BUFLEN+1];
 extern char **adadbreak;
 extern J jt;
 
-A dora(QString s);
-QString dors(QString s);
+A dora(std::string s);
+std::string dors(std::string s);
 void dumpA(A a);
 void dumpAREP(AREP a);
-void sets(QString name, QString s);
+void sets(QString name, std::string s);
 void jsetc(C * name, C* sb, I slen);
 C* jgetc(C* name, I* len);
 

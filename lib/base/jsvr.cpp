@@ -453,21 +453,30 @@ void sigint(int k)
 // ---------------------------------------------------------------------
 // jdo with result (contains 3!:1 rep)
 // return 0 on error
-A dora(QString s)
+A dora(string s)
 {
-  strcpy(inputline,q2s("r_jrx_=:"+s).c_str());
+  if (sizeof(inputline)<8+s.size()) exit(100);
+  strcpy(inputline,"r_jrx_=:");
+  strcat(inputline,s.c_str());
   int e = jdo(jt,inputline);
-  if (!e)
-    return jgeta(jt,6,(char*)"r_jrx_");
-  else
+  if (!e) {
+    if (!jdo(jt,(C*)"q_jrx_=:4!:0<'r_jrx_'")) {
+      A at=jgeta(jt,6,(char*)"q_jrx_");
+      AREP p=(AREP) (sizeof(A_RECORD) + (char*)at);
+      assert(p->t==4);
+      assert(p->r==0);
+      return (0==*(I*)p->s)?jgeta(jt,6,(char*)"r_jrx_"):0;
+    }
+    return 0;
+  } else
     return 0;
 }
 
 // ---------------------------------------------------------------------
 // jdo with QString result
-QString dors(QString s)
+string dors(string s)
 {
-  QString t;
+  string t;
   if (!jt) return "";
   A r=dora(s);
   if (!r) return "";
@@ -475,14 +484,14 @@ QString dors(QString s)
   assert(p->t==2);
   assert(p->r<2);
   if (p->r==0)
-    return QString::fromUtf8(((char*)p->s),1);
+    return string(((char*)p->s),1);
   else
-    return QString::fromUtf8((sizeof(AREP_RECORD)+(char*)p), p->c);
+    return string((sizeof(AREP_RECORD)+(char*)p), p->c);
 }
 
 // ---------------------------------------------------------------------
-// set QString in J
-void sets(QString name, QString s)
+// set string in J
+void sets(QString name, string s)
 {
   int n,hlen,nlen,slen,tlen;
 
@@ -493,8 +502,7 @@ void sets(QString name, QString s)
   QByteArray nb=name.toUtf8();
   nlen=nb.size();
 
-  QByteArray sb=s.toUtf8();
-  slen=sb.size();
+  slen=s.size();
   tlen=n*(1+slen/n);
 
 //  hdr[0]=(4==n) ? 225 : 227;
@@ -512,7 +520,7 @@ void sets(QString name, QString s)
 
   C* buf=(C*)calloc(hlen+tlen,sizeof(char));
   memcpy(buf,hdr,hlen);
-  memcpy(buf+hlen,sb,slen);
+  memcpy(buf+hlen,s.c_str(),slen);
   if (jt) jseta(jt,nlen,(C*)nb.constData(),(hlen+tlen),buf);
   free(buf);
 }

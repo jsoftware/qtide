@@ -71,14 +71,14 @@ void Config::folder_init()
   QString s;
   QStringList k,v;
 
-  k=dors("'',}.;',',&.>{.\"1 UserFolders_j_").split(",");
-  v=dors("'',}.;',',&.>{:\"1 UserFolders_j_").split(",");
+  k=s2q(dors("'',}.;',',&.>{.\"1 UserFolders_j_")).split(",");
+  v=s2q(dors("'',}.;',',&.>{:\"1 UserFolders_j_")).split(",");
 
   UserFolderKeys=k;
   UserFolderValues=v;
 
-  k+=dors("'',}.;',',&.>{.\"1 SystemFolders_j_").split(",");
-  v+=dors("'',}.;',',&.>{:\"1 SystemFolders_j_").split(",");
+  k+=s2q(dors("'',}.;',',&.>{.\"1 SystemFolders_j_")).split(",");
+  v+=s2q(dors("'',}.;',',&.>{:\"1 SystemFolders_j_")).split(",");
 
   AllFolderKeys=k;
   AllFolderValues=v;
@@ -149,10 +149,10 @@ void Config::init()
   winpos_init();
 
   if ("0"==dors("\":4!:0 <'XDiff_j_'"))
-    XDiff=dors("XDiff_j_");
+    XDiff=s2q(dors("XDiff_j_"));
 
   if ("0"==dors("\":4!:0 <'DirTreeX_j_'"))
-    DirTreeX=dors("DirTreeX_j_").split(" ",QString::SkipEmptyParts);
+    DirTreeX=s2q(dors("DirTreeX_j_")).split(" ",QString::SkipEmptyParts);
 
   initide();
   initstyle();
@@ -312,12 +312,13 @@ QSyntaxHighlighter *highlight(QTextDocument *d)
 QStringList state_about()
 {
   QStringList r;
-  QString engine,msg,ver,year;
-  engine=dors("9!:14''");
+  QString msg,ver,year;
+//  QString engine;
+//  engine=s2q(dors("9!:14''"));
 //  ver=qstaketo(engine,"/").toUpper();
   ver= "J" JDLLVER;
   year=QString::number(QDate::currentDate().year());
-  msg=dors("JVERSION");
+  msg=s2q(dors("JVERSION"));
   msg=msg + "\n\nCopyright 1994-"+year+" Jsoftware\n";
   msg=msg + "www.jsoftware.com";
   r.append("About " + ver);
@@ -467,7 +468,7 @@ void var_run(QString s)
 // ---------------------------------------------------------------------
 void var_runs(QString s)
 {
-  sets("inputx_jrx_",s);
+  sets("inputx_jrx_",q2s(s));
   jcon->immex("0!:101 inputx_jrx_");
 }
 
@@ -480,7 +481,7 @@ void var_set(QString s, QString t)
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
-  sets("inputx_jrx_",QString::fromUtf8(s));
+  sets("inputx_jrx_",string(s));
   jcon->immex("0!:100 inputx_jrx_");
 }
 
