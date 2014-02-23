@@ -331,8 +331,9 @@ int jefirst(int type,char* arg)
   }
   delete f1;
   delete f2;
-  qDebug() << "check assets version";
-  if ((v1>v2) && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
+// for testing, always decompress
+//  if ((1 || v1>v2) && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
+  if (v1>v2 && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
     qDebug() << "decompress assets";
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
@@ -340,11 +341,17 @@ int jefirst(int type,char* arg)
     QFile("assets:/tar0.ijs").copy("tar0.ijs");
     QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);  // for busybox tar
     QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6640);
-    qDebug() << "jedo: " << QString("script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
-    jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
-    qDebug() << "jedo: " << QString("(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
-    jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
-    qDebug() << "decompress assets clean";
+// for testing, display script
+//    int e=jedo((char *)"script0=: [: 3 : '0!:1 y [ 4!:55<''y''' ]&.:>");
+    int e=jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
+    if (!e) {
+      e=jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
+      if (e) {
+        qDebug() << "script0 error:" << QString::number(e);
+      }
+    } else {
+      qDebug() << "can not set script0";
+    }
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
     QFile("assets_version.txt").remove();
@@ -352,7 +359,6 @@ int jefirst(int type,char* arg)
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6640);
   }
 
-  qDebug() << "check welcome.ijs";
   if (QFile("assets:/welcome.ijs").exists()) {
     QFile("welcome.ijs").remove();
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
@@ -387,7 +393,11 @@ int jefirst(int type,char* arg)
     }
   } else {
     if(0==type) {
-#if defined(_WIN32) || defined(ANDROID)
+#if defined(_WIN32)
+      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+#elif  defined(ANDROID)
+// for testing, display script
+//      strcat(input,"(3 : '0!:1 y')<BINPATH,'");
       strcat(input,"(3 : '0!:0 y')<BINPATH,'");
 #else
       if (!FHS)
@@ -418,7 +428,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[AndroidPackage_z_=:'");
   strcat(input,AndroidPackage.toUtf8().constData());
   strcat(input,"'");
-  qDebug() << "jefirst: " << QString::fromUtf8(input);
 #else
   p=path;
   q=input+strlen(input);
@@ -437,7 +446,13 @@ int jefirst(int type,char* arg)
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");
+#ifdef QT_OS_ANDROID
+  qDebug() << "j first line: " << QString::fromUtf8(input);
+#endif
   r=jedo(input);
+  if (r) {
+    qDebug() << "j first line error: " << QString::number(r);
+  }
   free(input);
   return r;
 }
