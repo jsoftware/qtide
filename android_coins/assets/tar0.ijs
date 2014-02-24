@@ -113,9 +113,9 @@ select. {.t-.'z'
 case. 'x' do.
   assert. 3=#y['needs 3 paramters'
   assert. fexist f['file must exist'
-  if. _1-.@-: (2!:0 ::_1:) 'which tar' do.
-    2!:0 'tar x',(z#'z'),'f "',f,'" -C "',(>@{:y),'"'
-    0 return.
+  if. ('/mnt/sdcard'-:2!:5'EXTERNAL_STORAGE') *. _1-.@-: (2!:0 ::_1:) 'which tar' do.
+    2!:0 'tar -x',(z#'z'),'f "',f,'" -C "',(>@{:y),'"'
+    i.0 0 return.
   end.
   if. z do.
     f=. jpathsep^:IFWIN f
