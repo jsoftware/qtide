@@ -20,6 +20,8 @@ along with QtWebsocket.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTWS_FUNCTIONS_H
 #define QTWS_FUNCTIONS_H
 
+#include "compat.h"
+
 #include <QtCore/qmath.h>
 
 namespace QtWebsocket
