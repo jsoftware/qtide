@@ -427,9 +427,8 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   else
     showide(false);
 #else
-  showide(true);
+  if ((!ShowIde) && Forms.isEmpty()) return 0;
 #endif
-  term->fini();
   term->fini();
   return state_fini();
 }
