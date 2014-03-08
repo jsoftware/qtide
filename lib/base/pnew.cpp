@@ -62,7 +62,6 @@ QWidget *Pnew::createfolderpanel()
   folder=new QLineEdit();
   s=termsep(tofoldername(Path));
   folder->setText(s);
-
   h->addWidget(folder,1);
   QPushButton *browse=makebutton("Browse");
   browse->setAutoDefault(false);

@@ -143,4 +143,3 @@ QStringList Project::source()
   if (p.isEmpty()) return (QStringList)"";
   return cfreadx(p);
 }
-

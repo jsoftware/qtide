@@ -102,9 +102,16 @@ QString getfilepath()
 // ---------------------------------------------------------------------
 QString getprojectpath()
 {
-  if (project.Id.isEmpty())
-    return config.UserPath.absolutePath();
-  else
+  if (!project.Id.isEmpty())
     return project.Path;
-};
-
+  QString r;
+  if (config.UserFolderKeys.contains("Project"))
+    r=cpath ("~Project");
+  else if (config.UserFolderKeys.contains("User"))
+    r=cpath ("~User");
+  else if  (!config.UserFolderKeys.isEmpty())
+    r= config.UserFolderValues.at(0);
+  else
+    r=config.UserPath.absolutePath();
+  return r+"/";
+}

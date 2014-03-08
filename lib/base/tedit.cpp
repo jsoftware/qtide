@@ -185,6 +185,7 @@ void Tedit::promptreplace(QString t)
   moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
   textCursor().removeSelectedText();
   append(t);
+  moveCursor(QTextCursor::End);
 }
 
 // ---------------------------------------------------------------------

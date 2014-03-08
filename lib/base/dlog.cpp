@@ -77,7 +77,7 @@ void dlog_add(QString s)
   if (i >= 0)
     InputLog.removeAt(i);
   InputLog.append(s);
-  cfappend(InputLogFile,s + "\n");
+  if (config.KeepInputLog) cfappend(InputLogFile,s + "\n");
   dlog_max();
 }
 
@@ -86,6 +86,7 @@ void dlog_init()
 {
   InputLogMax = 100;
   InputLogPos = 0;
+  if (!config.KeepInputLog) return;
   InputLogFile = new QFile(config.ConfigPath.filePath("inputlog.dat"));
   QString s = cfread(InputLogFile);
   s.remove('\r');
@@ -128,7 +129,8 @@ QString dlog_scroll(int m)
 // write and clean up when session closes
 void dlog_write()
 {
-  cfwrite(InputLogFile,InputLog.join("\n")+"\n");
+  if (config.KeepInputLog)
+    cfwrite(InputLogFile,InputLog.join("\n")+"\n");
 }
 
 // ---------------------------------------------------------------------

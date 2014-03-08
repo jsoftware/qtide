@@ -6,6 +6,7 @@ cd $S
 $S/astyle.sh lib/base
 $S/astyle.sh lib/high
 $S/astyle.sh lib/wd
+$S/astyle.sh lib/QtWebsocket
 
 exit 0
 

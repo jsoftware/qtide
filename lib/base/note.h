@@ -47,7 +47,6 @@ public:
   void siderefresh();
   void tabclose(int index);
 
-
   Nmain *mainBar;
   Menu *menuBar;
   Nside *sideBar;
@@ -200,6 +199,7 @@ private:
   bool maybeSave();
   QString readentry(Nedit *, int *);
   QString readnextentry(QStringList,QString,QString, int*);
+  void replacetext(Nedit *e, QString txt);
 
   void runline(bool advance, bool show);
   void runlines(bool all);

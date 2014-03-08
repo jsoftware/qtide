@@ -275,6 +275,15 @@ void Note::projectsave()
 }
 
 // ---------------------------------------------------------------------
+void Note::replacetext(Nedit *e, QString txt)
+{
+  QTextDocument *doc=e->document();
+  QTextCursor c(doc);
+  c.select(QTextCursor::Document);
+  c.insertText(txt);
+}
+
+// ---------------------------------------------------------------------
 bool Note::saveall()
 {
   return tabs->tabsaveall();
@@ -315,7 +324,7 @@ void Note::select_line(QString s)
   mid=txt.mid(pos,len).split('\n');
   ftr=txt.mid(pos+len);
   mid=select_line1(mid,s,&pos,&len);
-  e->setPlainText(hdr+mid.join("\n")+ftr);
+  replacetext(e,hdr+mid.join("\n")+ftr);
   e->settop(config.filepos_get(e->fname));
   e->setselect(pos,len);
   siderefresh();
@@ -407,7 +416,7 @@ void Note::select_text(QString s)
     for (i=0; i<mid.size(); i++)
       if(mid[i]==old[i]) mid[i]=lc[i];
   }
-  e->setPlainText(hdr+mid+ftr);
+  replacetext(e,hdr+mid+ftr);
   e->settop(config.filepos_get(e->fname));
   e->setselect(pos,0);
   siderefresh();

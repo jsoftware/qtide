@@ -219,14 +219,21 @@ void Form::keyPressEvent(QKeyEvent *e)
     return;
   }
 #endif
-  if (escclose && k==Qt::Key_Escape) {
+  if (k==Qt::Key_Escape) {
     e->ignore();
     if (closed) return;
-    if (closeok) {
-      closed=true;
-      close();
-    } else  {
-      event="close";
+    if (escclose) {
+      if (closeok) {
+        closed=true;
+        close();
+      } else  {
+        event="close";
+        fakeid="";
+        form=this;
+        signalevent(0);
+      }
+    } else {
+      event="cancel";
       fakeid="";
       form=this;
       signalevent(0);
