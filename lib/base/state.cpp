@@ -192,7 +192,7 @@ void Config::initide()
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
   ConfirmSave = s->value("Session/ConfirmSave",false).toBool();
-  EscClose = s->value("Session/EscClose",true).toBool();
+  EscClose = s->value("Session/EscClose",false).toBool();
   Font.setFamily(s->value("Session/FontFamily",font).toString());
   Font.setPointSize(s->value("Session/FontSize",fontsize).toInt());
 
@@ -249,7 +249,7 @@ void Config::initide()
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
     "# Edit=600 100 750 750         initial edit position\n"
-    "# EscClose=true                if Esc will close a window\n"
+    "# EscClose=false               if Esc will close a window\n"
     "# Extensions=ijs, c cfg...     FIF file extension lists\n"
     "# FontFamily=Menlo             term/edit font family\n"
     "# FontSize=10                  font size\n"

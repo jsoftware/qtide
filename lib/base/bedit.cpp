@@ -57,6 +57,24 @@ void Bedit::highlightCurrentLine()
 }
 
 // ---------------------------------------------------------------------
+void Bedit::home()
+{
+  QString ws=" \t";
+  QTextCursor c = textCursor();
+  QString txt = c.block().text();
+  int pos= c.positionInBlock();
+  txt = txt.left(pos);
+  int mov=0;
+  for (int i=0; i<pos; i++)
+    if (!ws.contains(txt.at(i))) {
+      mov=i;
+      break;
+    }
+  c.setPosition(c.position()-pos+mov);
+  setTextCursor(c);
+}
+
+// ---------------------------------------------------------------------
 void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   if (!config.LineNos) {

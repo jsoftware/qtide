@@ -58,7 +58,7 @@ quint16 rand16(quint16 low, quint16 high)
 quint32 rand32(quint32 low, quint32 high)
 {
   if (low == 0 && high == 0) {
-    high = ULONG_MAX;
+    high =  UINT_MAX;
   } else if (low > high) {
     qSwap(low, high);
   }

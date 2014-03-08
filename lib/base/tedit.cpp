@@ -153,6 +153,10 @@ void Tedit::keyPressEvent(QKeyEvent *e)
   }
 
   switch (key) {
+  case Qt::Key_Home:
+    home();
+    break;
+    return;
   case Qt::Key_Return:
   case Qt::Key_Enter:
     enter();

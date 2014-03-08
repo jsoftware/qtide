@@ -19,6 +19,7 @@ class Bedit : public PlainTextEdit
 public:
   Bedit(QWidget *parent = 0);
 
+  void home();
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
   QString readhelptext(int);

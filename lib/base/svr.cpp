@@ -75,7 +75,7 @@ int Jcon::exec()
     while(!Sentence.isEmpty()) {
       s=Sentence.at(0);
       Sentence.removeFirst();
-      if (sizeof(inputline)<s.size()) exit(100);
+      if ((int)sizeof(inputline)<s.size()) exit(100);
       strcpy(inputline,q2s(s).c_str());
       jedo(inputline);
     }
@@ -179,7 +179,7 @@ char* _stdcall Jinput(J jt, char* p)
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   QString s=jcon->Sentence.at(0);
   jcon->Sentence.removeFirst();
-  if (sizeof(inputline)<s.size()) exit(100);
+  if ((int)sizeof(inputline)<s.size()) exit(100);
   strcpy(inputline,q2s(s).c_str());
   return inputline;
 }

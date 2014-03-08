@@ -46,3 +46,16 @@ void Nedit::init_comments()
   Comments["sh"]="#";
   Comments["tex"]="#";
 }
+
+// ---------------------------------------------------------------------
+void Nedit::keyPressEvent(QKeyEvent *e)
+{
+  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  bool shift = mod.testFlag(Qt::ShiftModifier);
+  bool ctrl = mod.testFlag(Qt::ControlModifier);
+  int key = e->key();
+  if (key==Qt::Key_Home && (ctrl==false) && shift==false)
+    home();
+  else
+    PlainTextEdit::keyPressEvent(e);
+}

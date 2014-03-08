@@ -23,6 +23,7 @@ public slots:
 
 private:
   void init_comments();
+  void keyPressEvent(QKeyEvent *);
 };
 
 #endif
