@@ -82,9 +82,15 @@ void Tedit::enter()
   QString txt = c.block().text();
   int row = c.blockNumber();
   int len = blockCount();
-  if (row < len - 1)
+  if (row < len - 1) {
+    QString p=getprompt();
+    if (initialblanks(p) == p.length()) {
+      int pad=qMax(0,p.length() - initialblanks(txt));
+      QString hdr(pad,' ');
+      txt=hdr + txt;
+    }
     promptreplace(txt);
-  else
+  } else
     docmd(txt.trimmed());
 }
 

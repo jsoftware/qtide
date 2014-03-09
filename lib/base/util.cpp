@@ -386,6 +386,15 @@ void info(QString t,QString s)
 }
 
 // ---------------------------------------------------------------------
+int initialblanks(QString t)
+{
+  int r=0;
+  for (; r<t.length(); r++)
+    if (t[r] != ' ') break;
+  return r;
+}
+
+// ---------------------------------------------------------------------
 // is non-empty and all digit
 bool isint(const string s)
 {
