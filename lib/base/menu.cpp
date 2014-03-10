@@ -460,7 +460,6 @@ void Menu::createviewMenu(QString s)
   if (s == "note") {
     viewMenu->addAction(viewsidebarAct);
     viewMenu->addAction(viewterminalAct);
-    viewMenu->addAction(vieweditorAct);
   } else
     viewMenu->addAction(vieweditorAct);
   viewMenu->addSeparator();
