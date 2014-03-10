@@ -131,9 +131,12 @@ void Config::launch_init()
 void Config::togglelinenos()
 {
   LineNos=!LineNos;
-  note->setlinenos(LineNos);
-  if(note2)
-    note2->setlinenos(LineNos);
+  term->refresh();
+  if (note) {
+    note->setlinenos(LineNos);
+    if(note2)
+      note2->setlinenos(LineNos);
+  }
 }
 
 // ---------------------------------------------------------------------

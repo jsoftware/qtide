@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QMenu>
@@ -394,8 +395,8 @@ void Menu::createrunMenu(QString s)
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
-  runMenu->addSeparator();
-  runMenu->addAction(rundebugAct);
+  // runMenu->addSeparator();
+  // runMenu->addAction(rundebugAct);
 }
 
 // ---------------------------------------------------------------------
@@ -468,8 +469,8 @@ void Menu::createviewMenu(QString s)
   viewMenu->addSeparator();
   viewMenu->addAction(viewasciiAct);
 #endif
+  viewMenu->addAction(viewlinenosAct);
   if (s == "note") {
-    viewMenu->addAction(viewlinenosAct);
     viewMenu->addAction(viewlinewrapAct);
   }
 }
@@ -1023,7 +1024,7 @@ void Note::on_viewfontplusAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_viewlinenosAct_triggered()
 {
-  config.togglelinenos();
+  term->on_viewlinenosAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1499,6 +1500,12 @@ void Term::on_viewfontminusAct_triggered()
 void Term::on_viewfontplusAct_triggered()
 {
   fontdiff(1);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_viewlinenosAct_triggered()
+{
+  config.togglelinenos();
 }
 
 // ---------------------------------------------------------------------

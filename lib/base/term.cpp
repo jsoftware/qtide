@@ -200,6 +200,13 @@ void Term::projectenable()
 }
 
 // ---------------------------------------------------------------------
+void Term::refresh()
+{
+  if (!term->isVisible()) return;
+  tedit->resizer();
+}
+
+// ---------------------------------------------------------------------
 void Term::resizeEvent(QResizeEvent *event)
 {
   tedit->setresized(0);
