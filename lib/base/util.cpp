@@ -105,6 +105,14 @@ bool cfcreate(QString s)
 }
 
 // ---------------------------------------------------------------------
+bool cftouch(QString s)
+{
+  QFile f(s);
+  f.open(QIODevice::Append);
+  return f.exists();
+}
+
+// ---------------------------------------------------------------------
 bool cfdelete(QString s)
 {
   QFile f(s);

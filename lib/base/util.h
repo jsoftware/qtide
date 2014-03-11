@@ -12,6 +12,7 @@ int cfappend (QFile *, QByteArray);
 QString cfcase(QString s);
 bool cfcopy(QString from, QString to);
 bool cfcreate(QString s);
+bool cftouch(QString s);
 bool cfdelete(QString s);
 bool cfexist(QString s);
 QString cfext(QString s);

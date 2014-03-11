@@ -1182,7 +1182,9 @@ void Term::on_cfgqtideAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_cfgstartupAct_triggered()
 {
-  openconfig ("startup.ijs");
+  QString s = "startup.ijs";
+  cftouch(config.ConfigPath.filePath(s));
+  openconfig(s);
 }
 
 // ---------------------------------------------------------------------
