@@ -56,6 +56,7 @@ Note::Note()
   menuBar->createActions();
   menuBar->createMenus("note");
   menuBar->createMenus_fini("note");
+  scriptenable();
   setWindowIcon(QIcon(":/images/jgreen.png"));
   QMetaObject::connectSlotsByName(this);
 }
