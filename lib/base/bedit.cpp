@@ -62,7 +62,11 @@ void Bedit::home()
   QString ws=" \t";
   QTextCursor c = textCursor();
   QString txt = c.block().text();
+#ifndef QT47
+  int pos= c.position() - c.block().position();
+#else
   int pos= c.positionInBlock();
+#endif
   txt = txt.left(pos);
   int mov=0;
   for (int i=0; i<pos; i++)
