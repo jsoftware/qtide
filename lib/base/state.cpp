@@ -465,10 +465,11 @@ void var_run(QString s)
 }
 
 // ---------------------------------------------------------------------
-void var_runs(QString s)
+void var_runs(QString s, bool show)
 {
+  QString f=show ? "0!:101" : "0!:100";
   sets("inputx_jrx_",q2s(s));
-  jcon->immex("0!:101 inputx_jrx_");
+  jcon->immex(f + " inputx_jrx_");
 }
 
 // ---------------------------------------------------------------------

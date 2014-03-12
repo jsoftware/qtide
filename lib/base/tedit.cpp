@@ -63,9 +63,9 @@ void Tedit::docmdp(QString t,bool show)
 }
 
 // ---------------------------------------------------------------------
-void Tedit::docmds(QString t)
+void Tedit::docmds(QString t, bool show)
 {
-  var_runs(t);
+  var_runs(t, show);
 }
 
 // ---------------------------------------------------------------------

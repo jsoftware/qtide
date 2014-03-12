@@ -25,7 +25,7 @@ public:
 
 public slots:
   void docmdp(QString t, bool show);
-  void docmds(QString t);
+  void docmds(QString t, bool show);
   void docmdx(QString t);
   void itemActivated(QListWidgetItem *);
   void loadscript(QString s,bool show);

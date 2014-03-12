@@ -267,25 +267,25 @@ void helpcontext(int c,Bedit *e)
 // ---------------------------------------------------------------------
 void helplabs()
 {
-  tedit->docmds("labs_run_jqtide_$0");
+  tedit->docmds("labs_run_jqtide_$0", false);
 }
 
 // ---------------------------------------------------------------------
 void helplabsadvance()
 {
-  tedit->docmds("labs_run_jqtide_ 0");
+  tedit->docmds("labs_run_jqtide_ 0", false);
 }
 
 // ---------------------------------------------------------------------
 void helplabschapters()
 {
-  tedit->docmds("labs_run_jqtide_ 1");
+  tedit->docmds("labs_run_jqtide_ 1", false);
 }
 
 // ---------------------------------------------------------------------
 void helplabsauthor()
 {
-  tedit->docmds("labs_run_jqtide_ 2");
+  tedit->docmds("labs_run_jqtide_ 2", false);
 }
 
 // ---------------------------------------------------------------------

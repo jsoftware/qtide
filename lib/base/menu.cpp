@@ -1358,13 +1358,13 @@ void Term::on_projectopenAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_runclipAct_triggered()
 {
-  tedit->docmds(QApplication::clipboard()->text().trimmed());
+  tedit->docmds(QApplication::clipboard()->text().trimmed(),true);
 }
 
 // ---------------------------------------------------------------------
 void Term::on_rundebugAct_triggered()
 {
-  tedit->docmds("dbjqt_jqtide_ 1");
+  tedit->docmds("dbjqt_jqtide_ 1", false);
 }
 
 // ---------------------------------------------------------------------

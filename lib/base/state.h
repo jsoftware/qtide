@@ -151,7 +151,7 @@ void var_cmddo(QString s);
 QString var_cmdr(QString s);
 QString var_load(QString s, bool d);
 void var_run(QString s);
-void var_runs(QString s);
+void var_runs(QString s, bool show);
 void var_set(QString s, QString t);
 
 extern "C" {

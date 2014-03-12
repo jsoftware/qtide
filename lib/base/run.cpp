@@ -47,5 +47,5 @@ void Note::runlines(bool all)
     txt=e->toPlainText();
   else
     txt=e->readselected();
-  tedit->docmds(txt);
+  tedit->docmds(txt, true);
 }
