@@ -38,6 +38,7 @@ Fiw::Fiw(int p, QString s)
   Matchcase=true;
   Max=15;
   Name=false;
+  Parent=p;
   readwin();
 
   QVBoxLayout *v=new QVBoxLayout();
@@ -109,21 +110,23 @@ Fiw::Fiw(int p, QString s)
   v->addStretch(1);
   setLayout(v);
   setWindowTitle("Find");
+
+  Pos=config.winpos_read("Fiw");
 #ifdef SMALL_SCREEN
   move(0,0);
   resize(term->width(),term->height());
 #else
-  resize(450,0);
+  move(Pos[0],Pos[1]);
+  resize(Pos[2],0);
 #endif
   QMetaObject::connectSlotsByName(this);
 
-  initshow(p,s);
+  initshow(s);
 }
 
 // ---------------------------------------------------------------------
-void Fiw::initshow(int p, QString s)
+void Fiw::initshow(QString s)
 {
-  Parent=p;
   setsearchlist(s);
   write();
   if (s.size())

@@ -19,7 +19,7 @@ class Fiw : public QDialog
 
 public:
   Fiw(int, QString);
-  void initshow(int, QString);
+  void initshow(QString);
 
 private slots:
   void on_assigned_clicked();
@@ -80,6 +80,8 @@ private:
   QPushButton *view;
   QPushButton *cancel;
 #endif
+
+  QList<int>Pos;
 
   bool Assign;
   bool ifReplace;

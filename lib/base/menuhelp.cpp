@@ -21,7 +21,6 @@ void htmlhelp(QString s);
 void helplabs();
 void helplabsadvance();
 void helplabschapters();
-void helplabsauthor();
 
 void Menu::createhelpActions()
 {
@@ -36,7 +35,6 @@ void Menu::createhelpActions()
   helplabsAct = makeact("helplabsAct","&Labs...","");
   helplabsadvanceAct = makeact("helplabsadvanceAct","Advance","Ctrl+J");
   helplabschaptersAct = makeact("helplabschaptersAct","Chapters...","");
-  helplabsauthorAct = makeact("helplabsauthorAct","Author...","");
   helpreleaseAct = makeact("helpreleaseAct","&Release Highlights","");
   helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
   helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
@@ -64,7 +62,6 @@ void Menu::createhelpMenu()
   m->addAction(helplabsadvanceAct);
   m->addAction(helplabschaptersAct);
   m->addSeparator();
-  m->addAction(helplabsauthorAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
   helpMenu->addSeparator();
@@ -135,12 +132,6 @@ void Note::on_helplabsadvanceAct_triggered()
 void Note::on_helplabschaptersAct_triggered()
 {
   helplabschapters();
-}
-
-// ---------------------------------------------------------------------
-void Note::on_helplabsauthorAct_triggered()
-{
-  helplabsauthor();
 }
 
 // ---------------------------------------------------------------------
@@ -228,24 +219,14 @@ void Term::on_helplabschaptersAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Term::on_helplabsauthorAct_triggered()
-{
-  helplabsauthor();
-}
-
-// ---------------------------------------------------------------------
 void Term::on_helpreleaseAct_triggered()
 {
-  notyet("Release Highlights");
-  return;
   htmlhelp("user/relhigh.htm");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_helprelnotesAct_triggered()
 {
-  notyet("Release Notes");
-  return;
   htmlhelp("release/contents");
 }
 
@@ -280,12 +261,6 @@ void helplabsadvance()
 void helplabschapters()
 {
   tedit->docmds("labs_run_jqtide_ 1", false);
-}
-
-// ---------------------------------------------------------------------
-void helplabsauthor()
-{
-  tedit->docmds("labs_run_jqtide_ 2", false);
 }
 
 // ---------------------------------------------------------------------

@@ -110,7 +110,6 @@ public slots:
   void on_helplabsAct_triggered();
   void on_helplabsadvanceAct_triggered();
   void on_helplabschaptersAct_triggered();
-  void on_helplabsauthorAct_triggered();
   void on_helpgeneralAct_triggered();
   void on_helpreleaseAct_triggered();
   void on_helprelnotesAct_triggered();

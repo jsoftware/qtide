@@ -31,6 +31,7 @@
 #endif
 #include "../base/term.h"
 #include "../base/state.h"
+#include "../base/view.h"
 extern char* jegetlocale();
 extern Term * term;
 extern "C" Dllexport void dirmatch(const char *s,const char *t);
@@ -87,6 +88,7 @@ void wdsmact();
 void wdsplit(string c);
 void wdstate(Form *,int);
 void wdtab(string);
+void wdtextview();
 void wdtimer();
 void wdversion();
 void wdwh();
@@ -135,7 +137,6 @@ void wd1()
 {
   string c,p;
   while ((rc==0) && cmd.more()) {
-// TODO
     cmdstr=cmd.getcmdstr();
     c=cmd.getid();
     ccmd=c;
@@ -205,6 +206,8 @@ void wd1()
       wdsplit(c);
     else if (c.substr(0,3)=="tab")
       wdtab(c);
+    else if (c=="textview")
+      wdtextview();
     else if (c=="timer")
       wdtimer();
     else if (c=="version")
@@ -1001,6 +1004,12 @@ void wdtab(string c)
     noevents(0);
   } else
     error("unrecognized command: " + c + " " + p);
+}
+
+// ---------------------------------------------------------------------
+void wdtextview()
+{
+  textview(s2q(cmd.getparms()));
 }
 
 // ---------------------------------------------------------------------

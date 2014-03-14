@@ -166,7 +166,6 @@ private:
   QAction *helplabsAct;
   QAction *helplabsadvanceAct;
   QAction *helplabschaptersAct;
-  QAction *helplabsauthorAct;
   QAction *helpreleaseAct;
   QAction *helprelnotesAct;
   QAction *helpvocabAct;
