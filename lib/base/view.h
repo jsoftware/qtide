@@ -24,7 +24,7 @@ class TextView : public QDialog
   Q_OBJECT
 
 public:
-  TextView(QString t,QString s);
+  TextView(QString t,QString h,QString s);
 
 private slots:
 
@@ -37,6 +37,7 @@ private:
 
 void textview(QString t,QString s);
 void textview(QString t,QStringList s);
+void textview(QString t,QString c,QString s);
 void textview(QString s);
 void textview(QStringList s);
 

@@ -1,4 +1,5 @@
 
+#include <QLabel>
 #include <QVBoxLayout>
 #include "plaintextedit.h"
 #include "state.h"
@@ -35,13 +36,20 @@ void Eview::highlightCurrentLine()
 }
 
 // ---------------------------------------------------------------------
-TextView::TextView(QString t,QString s)
+TextView::TextView(QString t,QString c,QString s)
 {
-  QVBoxLayout *v=new QVBoxLayout();
-  v->setContentsMargins(0,0,0,0);
   Eview *e=new Eview();
   e->document()->setPlainText(s);
   e->moveCursor(QTextCursor::Start);
+
+  QVBoxLayout *v=new QVBoxLayout();
+
+  if (c.isEmpty())
+    v->setContentsMargins(0,0,0,0);
+  else {
+    QLabel *cap=new QLabel(c);
+    v->addWidget(cap);
+  }
   v->addWidget(e);
   setLayout(v);
   setWindowTitle(t);
@@ -96,7 +104,14 @@ void textview(QStringList s)
 // ---------------------------------------------------------------------
 void textview(QString t,QString s)
 {
-  new TextView(t,s);
+  textview(t,"",s);
+}
+
+// ---------------------------------------------------------------------
+// title, caption, text
+void textview(QString t,QString c,QString s)
+{
+  new TextView(t,c,s);
 }
 
 // ---------------------------------------------------------------------

@@ -1009,7 +1009,20 @@ void wdtab(string c)
 // ---------------------------------------------------------------------
 void wdtextview()
 {
-  textview(s2q(cmd.getparms()));
+  QString p, title,header,text;
+  QChar d;
+  int n;
+  p=s2q(cmd.getparms());
+  if (p.isEmpty()) return;
+  d= p[0];
+  p= p.mid(1);
+  n= p.indexOf(d);
+  title= p.left(n);
+  p= p.mid(n+1);
+  n= p.indexOf(d);
+  header= p.left(n);
+  text= p.mid(n+1);
+  textview(title,header,text);
 }
 
 // ---------------------------------------------------------------------
