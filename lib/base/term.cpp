@@ -1,6 +1,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QBoxLayout>
+#include <QPushButton>
 #include <QTime>
 #include <QTimer>
 
@@ -15,6 +16,11 @@
 #include "svr.h"
 #include "state.h"
 #include "recent.h"
+
+#ifdef QT_OS_ANDROID
+#include "../wd/form.h"
+static int fkeys[]= {Qt::Key_F1,Qt::Key_F2,Qt::Key_F3,Qt::Key_F4,Qt::Key_F5,Qt::Key_F6,Qt::Key_F7,Qt::Key_F8,Qt::Key_F9,Qt::Key_F10,Qt::Key_F11,Qt::Key_F12};
+#endif
 
 using namespace std;
 
@@ -78,6 +84,23 @@ Term::Term()
   setWindowTitle("Term");
   menuBar->createActions();
   menuBar->createMenus("term");
+#ifdef QT_OS_ANDROID
+#ifdef SMALL_SCREEN
+#define nfunc 6
+#else
+#define nfunc 12
+#endif
+  QPushButton *w[nfunc];
+  vfunc=new QHBoxLayout;
+  for(int i=0; i<nfunc; i++) {
+    w[i]=new QPushButton("F"+QString::number(i+1),this);
+    w[i]->setObjectName(QString::number(i+1));
+    w[i]->setFocusPolicy(Qt::NoFocus);
+    QObject::connect(w[i], SIGNAL(clicked()), this, SLOT(vfuncClicked()));
+    vfunc->addWidget(w[i]);
+  }
+  layout->addLayout(vfunc);
+#endif
   setLayout(layout);
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
@@ -231,6 +254,29 @@ void Term::vieweditor()
     note->show();
   }
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Term::vfuncClicked()
+{
+// menu shortcut does not work in android
+  int c = sender()->objectName().toInt() - 1;
+  switch (fkeys[c]) {
+  case Qt::Key_F1:
+    if (!Forms.isEmpty()) {
+      form=Forms.last();
+      wdactivateform();
+    }
+    break;
+  case Qt::Key_F6:
+    tedit->docmds("labs_run_jqtide_ 0", false);
+    break;
+  default:
+//    tedit->docmds("fkey"+sender()->objectName()+"_run_jqtide_$0", false);
+    break;
+  }
+}
+#endif
 
 // ---------------------------------------------------------------------
 void smact()

@@ -439,9 +439,11 @@ void Menu::createtoolsMenu(QString s)
   toolsMenu->addAction(toolsdirmAct);
   toolsMenu->addSeparator();
   toolsMenu->addAction(toolspacmanAct);
+#ifndef QT_OS_ANDROID
   toolsMenu->addSeparator();
   fkeyMenu = toolsMenu->addMenu("Function Keys");
   createfkeyMenu(s);
+#endif
 }
 
 // ---------------------------------------------------------------------
