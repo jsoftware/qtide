@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QMenu>
