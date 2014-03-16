@@ -98,10 +98,10 @@ bool cfcopy(QString from, QString to)
 // ---------------------------------------------------------------------
 bool cfcreate(QString s)
 {
-  QFile *f=new QFile(s);
+  QFile f(s);
   QString p;
-  cfwrite(f,p);
-  return f->exists();
+  cfwrite(&f,p);
+  return f.exists();
 }
 
 // ---------------------------------------------------------------------
@@ -161,14 +161,14 @@ QStringList cflisttext(QString path)
 {
   QByteArray b;
   QStringList p=cflistfull(path,"");
-  QFile *f=new QFile;
+  QFile f;
   QStringList r;
   foreach (QString s,p) {
-    f->setFileName(s);
-    if (f->size() < 1e6 && f->open(QIODevice::ReadOnly)) {
-      if(isutf8(f->readAll()))
+    f.setFileName(s);
+    if (f.size() < 1e6 && f.open(QIODevice::ReadOnly)) {
+      if(isutf8(f.readAll()))
         r.append(s);
-      f->close();
+      f.close();
     }
   }
   return r;
@@ -199,18 +199,18 @@ QString cfread(QFile *file)
 // ---------------------------------------------------------------------
 QString cfread(QString s)
 {
-  QFile *f = new QFile(s);
-  return cfread(f);
+  QFile f(s);
+  return cfread(&f);
 }
 
 // ---------------------------------------------------------------------
 QByteArray cfreadbin(QString s)
 {
   QByteArray r;
-  QFile *f = new QFile(s);
-  if (f->open(QIODevice::ReadOnly)) {
-    r = f->readAll();
-    f->close();
+  QFile f(s);
+  if (f.open(QIODevice::ReadOnly)) {
+    r = f.readAll();
+    f.close();
   }
   return r;
 }
@@ -232,8 +232,8 @@ QStringList cfreads(QFile *file)
 // ---------------------------------------------------------------------
 QStringList cfreads(QString s)
 {
-  QFile *f = new QFile(s);
-  return cfreads(f);
+  QFile f(s);
+  return cfreads(&f);
 }
 
 // ---------------------------------------------------------------------
@@ -281,18 +281,18 @@ int cfwrite(QFile *file, QString t)
 // ---------------------------------------------------------------------
 int cfwrite(QString s, QString t)
 {
-  QFile *f=new QFile(s);
-  return cfwrite(f,t);
+  QFile f(s);
+  return cfwrite(&f,t);
 }
 
 // ---------------------------------------------------------------------
 int cfwrite(QString s, QByteArray b)
 {
-  QFile *f=new QFile(s);
-  if (!f->open(QIODevice::WriteOnly))
+  QFile f(s);
+  if (!f.open(QIODevice::WriteOnly))
     return 0;
-  int r=f->write(b);
-  f->close();
+  int r=f.write(b);
+  f.close();
   return r;
 }
 

@@ -18,6 +18,7 @@ public:
   bool saved;
   QString sname;
   QString text;
+  ~Nedit();
 
 public slots:
 

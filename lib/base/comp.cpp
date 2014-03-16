@@ -87,7 +87,7 @@ bool Compare::compend()
   int i,m,n,t;
   int ox=0,oy=0;
   int nx=X.size(),ny=Y.size();
-  QVector<int> *p;
+  QVector<int> p;
 
   while (ox != nx || oy != ny) {
     ox=nx;
@@ -116,25 +116,25 @@ bool Compare::compend()
     }
 
 // remove lines not in both
-    p=new QVector<int>;
+    p.clear();
     for (i=0; i<X.size(); i++)
       if (!Y.contains(X.at(i))) {
-        p->append(i);
+        p.append(i);
         SX.append(NX.at(i));
       }
-    for (i=p->size(); i>0; i--) {
-      X.remove(p->at(i-1));
-      NX.remove(p->at(i-1));
+    for (i=p.size(); i>0; i--) {
+      X.remove(p.at(i-1));
+      NX.remove(p.at(i-1));
     }
-    p=new QVector<int>;
+    p.clear();
     for (i=0; i<Y.size(); i++)
       if (!X.contains(Y.at(i))) {
-        p->append(i);
+        p.append(i);
         SY.append(NY.at(i));
       }
-    for (i=p->size(); i>0; i--) {
-      Y.remove(p->at(i-1));
-      NY.remove(p->at(i-1));
+    for (i=p.size(); i>0; i--) {
+      Y.remove(p.at(i-1));
+      NY.remove(p.at(i-1));
     }
 
     nx=X.size(),ny=Y.size();
@@ -151,7 +151,7 @@ bool Compare::compend()
 void Compare::complcs()
 {
   int n;
-  QVector<int> p,r,w;
+  QVector<int> w;
 
   w=seqlcs(X,Y);
 
@@ -206,15 +206,15 @@ QVector<int> Compare::seqlcs(QVector<int> x,QVector<int> y)
 // ---------------------------------------------------------------------
 QString compare(QStringList s,QStringList t)
 {
-  Compare *n=new Compare();
-  return n->comp(s,t);
+  Compare n;
+  return n.comp(s,t);
 }
 
 // ---------------------------------------------------------------------
 QString fcompare(QString s, QString t)
 {
-  Compare *n=new Compare();
-  QString r=n->comp(cfreads(s),cfreads(t));
+  Compare n;
+  QString r=n.comp(cfreads(s),cfreads(t));
   QString p="comparing:\n";
   return p + r;
 }

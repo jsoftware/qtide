@@ -188,10 +188,14 @@ bool ss_match(QString p, QString q)
   pf.sort();
   qf.sort();
   QFile *pn, *qn;
+  bool match;
   for (int i=0; i<pf.size(); i++) {
     pn=new QFile(p + "/" + pf.at(i));
     qn=new QFile(q + "/" + pf.at(i));
-    if (!(cfread(pn) == cfread(qn))) return false;
+    match = (cfread(pn) == cfread(qn));
+    delete pn;
+    delete qn;
+    if (!match) return false;
   }
   return true;
 }

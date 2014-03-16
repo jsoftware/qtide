@@ -184,8 +184,8 @@ bool Dirm::match_do()
   int i;
   QString filter;
   QStringList dx,dy,nx,ny;
-  QFile *fx=new QFile;
-  QFile *fy=new QFile;
+  QFile fx;
+  QFile fy;
 
   NotInSource.clear();
   NotInTarget.clear();
@@ -216,9 +216,9 @@ bool Dirm::match_do()
     }
 
   for(i=0; i<nx.size(); i++) {
-    fx->setFileName(Source+"/"+nx.at(i));
-    fy->setFileName(Target+"/"+nx.at(i));
-    if(!(fx->size()==fy->size()&&cfread(fx)==cfread(fy)))
+    fx.setFileName(Source+"/"+nx.at(i));
+    fy.setFileName(Target+"/"+nx.at(i));
+    if(!(fx.size()==fy.size()&&cfread(&fx)==cfread(&fy)))
       Diff.append(nx.at(i));
   }
 

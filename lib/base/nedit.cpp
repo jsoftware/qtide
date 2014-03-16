@@ -59,3 +59,8 @@ void Nedit::keyPressEvent(QKeyEvent *e)
   else
     PlainTextEdit::keyPressEvent(e);
 }
+
+// ---------------------------------------------------------------------
+Nedit::~Nedit() {
+  delete file;
+}

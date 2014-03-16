@@ -120,7 +120,7 @@ void Picm::init()
 {
   int i;
   QList<QByteArray> t;
-  QString m,n;
+  QString m;
   QStringList s,f;
 
   f=pic_files();
@@ -231,7 +231,6 @@ QString Picm::unstamp(QString s)
 // ---------------------------------------------------------------------
 void pic(QString f,QString s)
 {
-  QFile *t;
   QString d,n,p,v;
   QByteArray a;
 
@@ -240,13 +239,13 @@ void pic(QString f,QString s)
   p=snapgetpath(cfpath(f));
   n=cfsname(f);
   d=p + "/p" + ss_date();
-  t=new QFile(d + "/" + n);
+  QFile t(d + "/" + n);
 
-  if(!t->exists()) {
+  if(!t.exists()) {
     if (!pic_inidir(d)) return;
     a=(cfread(f)+"000000").toUtf8() + (char)255 + a;
   }
-  cfappend(t,a);
+  cfappend(&t,a);
 }
 
 // ---------------------------------------------------------------------

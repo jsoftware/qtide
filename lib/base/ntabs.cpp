@@ -233,9 +233,12 @@ int Ntabs::tabopen1(QString s,int line)
   int n;
   s=cfcase(s);
   QFile *f=new QFile(s);
-  if (!f->exists()) return -1;
+  if (!f->exists()) {
+    delete f;
+    return -1;
+  }
   Nedit *e = new Nedit;
-  e->file = f;
+  e->file = f; // NB. e takes ownership
   e->fname = s;
   e->saved=false;
   e->sname = toprojectname(s);
@@ -359,7 +362,7 @@ void Ntabs::tabsaveas(int index)
     s+=config.DefExt;
   QFile *f=new QFile(s);
   cfwrite(f,e->text);
-  e->file = f;
+  e->file = f; // NB. e takes ownership
   e->fname = s;
   e->sname = cfsname(s);
   e->saved=true;
