@@ -242,6 +242,7 @@ void Menu::createeditMenu(QString s)
   editMenu->addSeparator();
   editMenu->addAction(editfontAct);
   cfgMenu = editMenu->addMenu("Configure");
+  cfgMenu->menuAction()->setMenuRole(QAction::NoRole);
   createcfgMenu();
 }
 
