@@ -37,7 +37,7 @@ public:
   Term();
 
   void activate();
-  bool filequit();
+  bool filequit(bool ignoreconfirm);
   void fini();
   void load(QString s, bool display);
   void openconfig(QString s);

@@ -720,7 +720,7 @@ void Note::on_fileprintallAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_filequitAct_triggered()
 {
-  term->filequit();
+  term->filequit(false);
 }
 
 // ---------------------------------------------------------------------
@@ -1323,7 +1323,7 @@ void Term::on_fileprintAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_filequitAct_triggered()
 {
-  filequit();
+  filequit(true);
 }
 
 // ---------------------------------------------------------------------

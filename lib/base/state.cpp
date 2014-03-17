@@ -189,6 +189,9 @@ void Config::initide()
   font="Lucida Console";
 #endif
 
+#ifdef QT_OS_ANDROID
+  BackButtonClose = s->value("Session/BackButtonClose",false).toBool();
+#endif
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
   ConfirmSave = s->value("Session/ConfirmSave",false).toBool();
@@ -222,6 +225,9 @@ void Config::initide()
   QTemporaryFile temp;
   temp.open();
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
+#ifdef QT_OS_ANDROID
+  s->setValue("Session/BackButtonClose",BackButtonClose);
+#endif
   s->setValue("Session/BoxForm",BoxForm);
   s->setValue("Session/ConfirmClose",ConfirmClose);
   s->setValue("Session/ConfirmSave",ConfirmSave);
@@ -245,6 +251,9 @@ void Config::initide()
     "# This file is read and written by the Qt IDE.\n"
     "# Make changes in the same format as the original.\n"
     "# \n"
+#ifdef QT_OS_ANDROID
+    "# BackButtonClose=false        if Back Button will close the Term (Android only)\n"
+#endif
     "# BoxForm                      0=linedraw 1=ascii (overrides base cfg)\n"
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"

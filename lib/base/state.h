@@ -48,6 +48,9 @@ public:
   QStringList AllFolderValues;
   QString AppName;
   bool Ascii;
+#ifdef QT_OS_ANDROID
+  bool BackButtonClose;
+#endif
   QDir BinPath;
   int BoxForm;
   QDir ConfigPath;

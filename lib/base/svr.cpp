@@ -194,7 +194,7 @@ void _stdcall Joutput(J jt,int type, char* s)
 
   if(MTYOEXIT==type) {
     exit((int)(intptr_t)s);
-    // term->filequit();
+    // term->filequit(true);
   }
 
   int n=strlen(s);

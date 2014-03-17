@@ -54,7 +54,7 @@ OneWin::OneWin()
 // ---------------------------------------------------------------------
 void OneWin::closeEvent(QCloseEvent *event)
 {
-  term->filequit();
+  term->filequit(true);
   event->ignore();
 }
 
@@ -119,18 +119,23 @@ void Term::activate()
 // ---------------------------------------------------------------------
 void Term::closeEvent(QCloseEvent *event)
 {
-  filequit();
+  filequit(false);
   event->ignore();
 }
 
 // ---------------------------------------------------------------------
-bool Term::filequit()
+bool Term::filequit(bool ignoreconfirm)
 {
   dlog_write();
   if (note && (!note->saveall())) return false;
   if (note2 && (!note2->saveall())) return false;
+#ifdef QT_OS_ANDROID
+// QMessageBox not work inside keypress event
+  if (ignoreconfirm||config.BackButtonClose) {
+#else
   if ((!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
+#endif
     state_quit();
     QApplication::quit();
     return true;
@@ -168,13 +173,13 @@ void Term::keyPressEvent(QKeyEvent *event)
 #ifdef JQT
 #ifdef QT_OS_ANDROID
   case Qt::Key_Back:
-    if (!filequit())
+    if (!filequit(false))
       event->accept();
     break;
 #endif
   case Qt::Key_Escape:
     if (config.EscClose) {
-      if (!filequit())
+      if (!filequit(false))
         event->accept();
     }
     break;
