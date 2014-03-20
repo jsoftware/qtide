@@ -45,7 +45,7 @@ void Nmain::createActions()
 void Nmain::createToolBar()
 {
 #ifdef QT_OS_ANDROID
-  toolBar->setIconSize(QSize(32,32));
+  toolBar->setIconSize(QSize(36,36));
 #else
   toolBar->setIconSize(QSize(16,16));
 #endif
