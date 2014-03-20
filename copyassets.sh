@@ -31,6 +31,7 @@ copyaddon data jmf
 copyaddon demos isigraph
 copyaddon demos wd
 copyaddon demos wdplot
+copyaddon docs help
 copyaddon games minesweeper
 copyaddon games nurikabe
 copyaddon games pousse
@@ -40,13 +41,14 @@ copyaddon graphics afm
 copyaddon graphics bmp
 copyaddon graphics color
 copyaddon graphics gl2
+copyaddon graphics graph
 copyaddon graphics grid
 copyaddon graphics plot
 copyaddon graphics print
 copyaddon graphics viewmat
-copyaddon gui wdclass
 copyaddon ide jhs
 copyaddon ide qt
+copyaddon labs labs
 copyaddon math deoptim
 copyaddon math misc
 copyaddon stats base
