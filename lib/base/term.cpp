@@ -133,6 +133,7 @@ bool Term::filequit(bool ignoreconfirm)
 // QMessageBox not work inside keypress event
   if (ignoreconfirm||config.BackButtonClose) {
 #else
+  Q_UNUSED(ignoreconfirm);
   if ((!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
 #endif
