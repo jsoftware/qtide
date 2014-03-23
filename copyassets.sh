@@ -46,6 +46,7 @@ copyaddon graphics grid
 copyaddon graphics plot
 copyaddon graphics print
 copyaddon graphics viewmat
+copyaddon gui android
 copyaddon ide jhs
 copyaddon ide qt
 copyaddon labs labs

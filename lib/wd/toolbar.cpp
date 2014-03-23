@@ -8,6 +8,10 @@
 #include "pane.h"
 #include "cmd.h"
 
+#ifdef QT_OS_ANDROID
+extern float DM_density;
+#endif
+
 // ---------------------------------------------------------------------
 ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
@@ -30,7 +34,11 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
         return;
       }
       qDebug() << "setting icon size" << sizes;
+#ifdef QT_OS_ANDROID
+      w->setIconSize(QSize((int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(0))),(int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(1)))));
+#else
       w->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
+#endif
     }
   }
 

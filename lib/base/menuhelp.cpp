@@ -12,6 +12,10 @@
 #include "term.h"
 #include "tedit.h"
 
+#ifdef QT_OS_ANDROID
+extern "C" void android_exec_host(char*,char*,char*,int);
+#endif
+
 using namespace std;
 
 void helpabout();
@@ -267,11 +271,10 @@ void helplabschapters()
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
-// 'am start' not working on android 4.3
-#if 0 && defined(QT_OS_ANDROID)
+#ifdef QT_OS_ANDROID
   if (QFile(t).exists())
-    android_exec_host((char *)"android.intent.action.VIEW",t.prepend("file://").toUtf8().constData(),(char *)"text/html");
-  else android_exec_host((char *)"android.intent.action.VIEW",s.prepend("http://www.jsoftware.com/help/").append(".htm").toUtf8().constData(),(char *)"text/html");
+    android_exec_host((char *)"android.intent.action.VIEW",t.prepend("file://").toUtf8().data(),(char *)"text/html",0x00040000);
+  else android_exec_host((char *)"android.intent.action.VIEW",s.prepend("http://www.jsoftware.com/help/").append(".htm").toUtf8().data(),(char *)"text/html",0x00040000);
 #else
   if (QFile(t).exists())
     QDesktopServices::openUrl(QUrl::fromLocalFile(t));

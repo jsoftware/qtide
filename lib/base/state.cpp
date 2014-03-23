@@ -32,6 +32,7 @@
 #include <jni.h>
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 QString AndroidPackage;
+extern "C" void android_getdisplaymetrics(double * dmetrics);
 #endif
 
 extern bool FHS;
@@ -417,6 +418,7 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
     }
     qDebug() << "LibName changed to" << LibName;
   }
+  android_getdisplaymetrics(0);
 #endif
 #ifdef QTWEBSOCKET
 #ifdef QT48

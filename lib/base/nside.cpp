@@ -17,6 +17,10 @@
 #include "state.h"
 #include "recent.h"
 
+#ifdef QT_OS_ANDROID
+extern float DM_density;
+#endif
+
 using namespace std;
 
 Nicon *nicon=0;
@@ -82,7 +86,11 @@ QToolBar *Nside::createdefsTB()
 {
   QToolBar *t=  new QToolBar(0);
   t->setObjectName("defsTB");
+#ifdef QT_OS_ANDROID
+  t->setIconSize(QSize((int)DM_density*(5.0/3)*18,(int)DM_density*(5.0/3)*18));
+#else
   t->setIconSize(QSize(18,18));
+#endif
   refreshdefsAct = makeact("refresh.svg","Refresh");
   t->addAction(refreshdefsAct);
   return t;
@@ -125,7 +133,11 @@ QToolBar *Nside::createfileTB()
 {
   QToolBar *t=  new QToolBar(0);
   t->setObjectName("fileTB");
+#ifdef QT_OS_ANDROID
+  t->setIconSize(QSize((int)DM_density*(5.0/3)*16,(int)DM_density*(5.0/3)*16));
+#else
   t->setIconSize(QSize(16,16));
+#endif
 
   refreshAct = makeact("view-refresh.png", "Refresh");
   homeAct = makeact("home.png", "Home");
@@ -159,7 +171,11 @@ QToolBar *Nside::createsourceTB()
 {
   QToolBar *t=  new QToolBar(0);
   t->setObjectName("sourceTB");
+#ifdef QT_OS_ANDROID
+  t->setIconSize(QSize((int)DM_density*(5.0/3)*18,(int)DM_density*(5.0/3)*18));
+#else
   t->setIconSize(QSize(18,18));
+#endif
   refreshsourceAct = makeact("refresh.svg", "Refresh");
   t->addAction(refreshsourceAct);
   return t;

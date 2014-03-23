@@ -8,6 +8,10 @@
 #include "ntabs.h"
 #include "state.h"
 
+#ifdef QT_OS_ANDROID
+extern float DM_density;
+#endif
+
 using namespace std;
 
 // ---------------------------------------------------------------------
@@ -45,7 +49,7 @@ void Nmain::createActions()
 void Nmain::createToolBar()
 {
 #ifdef QT_OS_ANDROID
-  toolBar->setIconSize(QSize(36,36));
+  toolBar->setIconSize(QSize((int)DM_density*(5.0/3)*16,(int)DM_density*(5.0/3)*16));
 #else
   toolBar->setIconSize(QSize(16,16));
 #endif

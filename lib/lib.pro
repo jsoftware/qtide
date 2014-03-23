@@ -10,6 +10,7 @@ android  {
           !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
           CONFIG += mobility
           MOBILITY +=
+          QT += androidextras
           QT -= webkit
           QT -= opengl
           DEFINES += QT_OS_ANDROID
@@ -120,7 +121,7 @@ HEADERS += \
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
-android:HEADERS += base/qtjni.h
+android:HEADERS += base/androidextras.h base/qtjni.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -151,7 +152,7 @@ SOURCES += \
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
-android:SOURCES += base/qtjni.cpp ../main/main.cpp
+android:SOURCES += base/androidextras.cpp base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 

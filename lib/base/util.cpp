@@ -733,17 +733,6 @@ QString toqlist(QStringList s)
   return r;
 }
 
-#ifdef QT_OS_ANDROID
-// ---------------------------------------------------------------------
-void android_exec_host(const char *intent,const char *cmd,const char *mimetype)
-{
-// eg. QProcess::execute( "am start -a android.intent.action.VIEW -d file:///sdcard/test.mp3 -t audio/mp3" );
-  if ((!mimetype) || !strlen(mimetype))
-    QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d \"" + QString::fromUtf8(cmd) + "\"" );
-  else QProcess::execute( "am start -a " + QString::fromUtf8(intent) + " -d \"" + QString::fromUtf8(cmd) + "\" -t " + QString::fromUtf8(mimetype) );
-}
-#endif
-
 // ---------------------------------------------------------------------
 int c_strtoi(string s)
 {

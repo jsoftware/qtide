@@ -87,10 +87,6 @@ QStringList qsltrim(QStringList p);
 
 extern int NoEvents;
 
-#ifdef QT_OS_ANDROID
-extern "C" void android_exec_host(const char *,const char *,const char *);
-#endif
-
 #if defined(_WIN64)||defined(__LP64__)
 typedef long long SI;
 #else

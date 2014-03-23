@@ -25,6 +25,9 @@
 #include "isigraph.h"
 #include "menus.h"
 #include "tabs.h"
+#ifdef QT_OS_ANDROID
+#include "../base/androidextras.h"
+#endif
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
 #include "../base/wscln.h"
@@ -766,15 +769,23 @@ void wdqueries(string s)
     return;
   } else if (s=="qscreen") {
     QDesktopWidget* dw=QApplication::desktop();
+#ifdef QT_OS_ANDROID
+    android_getdisplaymetrics(0);
+    int dpix=DM_xdpi;
+    int dpiy=DM_ydpi;
+    int w=DM_widthPixels;
+    int h=DM_heightPixels;
+#else
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
     int dpiy=dw->logicalDpiY();
     int w=screenGeometry.width();
     int h=screenGeometry.height();
+#endif
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
-    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(dw->colorCount()) + " " + i2s(dpix) + " " + i2s(dpix) + " " + i2s(dia);
+    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(dw->colorCount()) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dia);
     return;
   } else if (s=="qwd") {
     result="jqt";
