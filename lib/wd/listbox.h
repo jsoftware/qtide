@@ -22,8 +22,8 @@ private:
   string getselectionindex();
 
 private slots:
-  void currentRowChanged();
   void itemActivated();
+  void itemSelectionChanged();
 
 };
 

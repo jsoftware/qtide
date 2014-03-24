@@ -12,7 +12,6 @@ extern int rc;
 // ---------------------------------------------------------------------
 ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-//  qDebug() << "make ListBox";
   type="listbox";
   QListWidget *w=new QListWidget(p);
   widget=(QWidget*) w;
@@ -22,17 +21,10 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (opt.contains("multiple"))
     w->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  connect(w,SIGNAL(currentRowChanged(int)),
-          this,SLOT(currentRowChanged()));
   connect(w,SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(itemActivated()));
-}
-
-// ---------------------------------------------------------------------
-void ListBox::currentRowChanged()
-{
-  event="select";
-  pform->signalevent(this);
+  connect(w,SIGNAL(itemSelectionChanged()),
+          this,SLOT(itemSelectionChanged()));
 }
 
 // ---------------------------------------------------------------------
@@ -78,6 +70,13 @@ string ListBox::getselectionindex()
 void ListBox::itemActivated()
 {
   event="button";
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+void ListBox::itemSelectionChanged()
+{
+  event="select";
   pform->signalevent(this);
 }
 
