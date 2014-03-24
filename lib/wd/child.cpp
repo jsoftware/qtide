@@ -39,12 +39,6 @@ string Child::getsysdata()
 }
 
 // ---------------------------------------------------------------------
-string Child::getsysmodifiers()
-{
-  return"";
-}
-
-// ---------------------------------------------------------------------
 void Child::set(string p, string v)
 {
   if (!widget) return;

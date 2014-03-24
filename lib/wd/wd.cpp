@@ -198,7 +198,6 @@ void wd1()
       wdrem();
     else if (c=="reset")
       wdreset();
-    // nonce leave in set
     else if (c=="set")
       wdset();
     else if (c.substr(0,3)=="set")

@@ -34,7 +34,7 @@ void ComboBox::set(string p,string v)
   PComboBox *w=(PComboBox*) widget;
   if (p=="items") {
     w->clear();
-    w->addItems(qsplit(v));
+    w->addItems(rsplit(v));
   } else if (p=="select")
     ((PComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
   else Child::set(p,v);

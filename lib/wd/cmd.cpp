@@ -225,6 +225,15 @@ QStringList qsplit(string s)
 }
 
 // ---------------------------------------------------------------------
+// split on LF if present, otherwise do qsplit
+QStringList rsplit(string s)
+{
+  if (string::npos==s.find('\n'))
+    return qsplit(s);
+  return s2q(s).split('\n',QString::SkipEmptyParts);
+}
+
+// ---------------------------------------------------------------------
 // split on blank (except in quotes) and LF
 // *indicates rest is a single string
 vector<string> ssplit(string s)

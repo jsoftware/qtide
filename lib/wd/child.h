@@ -17,7 +17,6 @@ class Child : public QObject
 public:
   Child(string n, string s, Form *f, Pane *p);
 
-  virtual string getsysmodifiers();
   virtual string getsysdata();
 
   virtual void cmd(string p,string v);

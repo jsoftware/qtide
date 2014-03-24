@@ -78,6 +78,7 @@ protected:
   void keyReleaseEvent(QKeyEvent *e);
 
 private:
+  string getsysmodifiers();
   bool closeok;
   bool escclose;
   string fakeid;

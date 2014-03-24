@@ -87,7 +87,7 @@ void ListBox::set(string p, string v)
   QListWidget *w=(QListWidget*) widget;
   if (p=="items") {
     w->clear();
-    w->addItems(qsplit(v));
+    w->addItems(rsplit(v));
   } else if (p=="select") {
     w->setCurrentRow(c_strtoi(v));
   } else

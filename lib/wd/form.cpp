@@ -176,6 +176,14 @@ void Form::closepane()
 }
 
 // ---------------------------------------------------------------------
+string Form::getsysmodifiers()
+{
+  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  return i2s((mod.testFlag(Qt::ShiftModifier) ? 1 : 0) +
+             (mod.testFlag(Qt::ControlModifier)? 2 : 0));
+}
+
+// ---------------------------------------------------------------------
 string Form::hschild()
 {
   return p2s((void *)child);
@@ -327,6 +335,8 @@ void Form::signalevent(Child *c, QKeyEvent *e)
     evtchild=c;
     c->setform();
     sysmodifiers=c->sysmodifiers;
+    if (sysmodifiers.empty())
+      sysmodifiers=getsysmodifiers();
     sysdata=c->sysdata;
     loc = (""!=c->locale)?c->locale:locale;
   } else {
