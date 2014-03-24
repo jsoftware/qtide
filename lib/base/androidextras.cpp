@@ -58,6 +58,7 @@ void android_getdisplaymetrics(double * dmetrics)
   DM_widthPixels = dm.getField<jint>("widthPixels");
   DM_xdpi = dm.getField<jfloat>("xdpi");
   DM_ydpi = dm.getField<jfloat>("ydpi");
+  if (((DM_xdpi>DM_ydpi)?DM_xdpi:DM_ydpi)<0.5*DM_densityDpi) DM_xdpi = DM_ydpi = (float)DM_densityDpi;  // workaround android bug
   DM_rotation = ds.getField<jint>("getOrientation");
   if (env->ExceptionCheck()) {
     // Handle exception here.
