@@ -4,10 +4,16 @@
 
 #include "wd.h"
 #include "font.h"
+#include "../base/state.h"
 
 // ---------------------------------------------------------------------
 Font::Font(string s)
 {
+
+  if (s=="fixfont") {
+    font=config.Font;
+    return;
+  }
   angle=0;
   QString face, sizestyle;
   int bold=0,italic=0,strikeout=0,underline=0;
