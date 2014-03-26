@@ -6,13 +6,18 @@ JDLLVER = 8.0.1    # ignored if not FHS
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
+greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
+greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
+equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
+!lessThan(QT_VERSION,5.3.0): DEFINES += QT53
+
 android  {
-          !equals(QT_MAJOR_VERSION, 5): error(requires Qt5)
+          !contains(DEFINES,QT50): error(requires Qt5)
           CONFIG += mobility
           MOBILITY +=
           QT += androidextras
           QT -= webkit
-          QT -= opengl
+          contains(DEFINES,QT53) {QT += opengl} else {QT -= opengl}
           DEFINES += QT_OS_ANDROID
           DEFINES += QT_NO_PRINTER
           DEFINES += SMALL_SCREEN
@@ -84,15 +89,13 @@ equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
 !contains(DEFINES,QT_WEBKIT): DEFINES += QT_WEBKIT
 }
 !contains(QT,opengl) {
-DEFINES += QT_NO_OPENGL
-DEFINES -= QT_OPENGL
+!contains(DEFINES,QT_NO_OPENGL): DEFINES += QT_NO_OPENGL
+contains(DEFINES,QT_OPENGL): DEFINES -= QT_OPENGL
 } else {
 android: DEFINES += QT_OPENGL_ES_2
+contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
 !contains(DEFINES,QT_OPENGL): DEFINES += QT_OPENGL
 }
-greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
-greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
-equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 
 # Input
 HEADERS += \
