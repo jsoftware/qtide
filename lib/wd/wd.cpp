@@ -32,6 +32,9 @@
 #include "../base/wssvr.h"
 #include "../base/wscln.h"
 #endif
+#ifndef QT_NO_QUICKVIEW
+#include "quickview.h"
+#endif
 #include "../base/term.h"
 #include "../base/state.h"
 #include "../base/view.h"
@@ -82,6 +85,10 @@ void wdpstylesheet();
 void wdptop();
 void wdq();
 void wdqueries(string);
+#ifndef QT_NO_QUICKVIEW
+void wdquickview();
+QuickView *quickview;
+#endif
 void wdrem();
 void wdreset();
 void wdset();
@@ -192,6 +199,10 @@ void wd1()
       wdopenj();
     else if (c[0]=='p')
       wdp(c);
+#ifndef QT_NO_QUICKVIEW
+    else if (c=="quickview")
+      wdquickview();
+#endif
     else if (c[0]=='q')
       wdqueries(c);
     else if (c=="rem")
@@ -912,6 +923,46 @@ void wdqueries(string s)
     error("command not found");
 }
 
+#ifndef QT_NO_QUICKVIEW
+// ---------------------------------------------------------------------
+void wdquickview()
+{
+  string p=cmd.getparms();
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  int mode=1;
+  if (n.size()==0) {
+    if (quickview) {
+      quickview->close();
+      quickview=0;
+    }
+  } else if (n.size()<2)
+    error("quickview requires at least 2 parameters: " + p);
+  else {
+    string t=remquotes(q2s(n.at(0)));
+    string f=remquotes(q2s(n.at(1)));
+    if (!QFile(s2q(f)).exists()) {
+      error("quickview file error: " + p);
+      return;
+    }
+    if (n.size()>2) mode=!!c_strtoi(q2s(n.at(2)));
+    if (quickview) quickview->close();
+    quickview=new QuickView(t,f,mode);
+#ifdef QT_OS_ANDROID
+    quickview->showFullScreen();
+#else
+    quickview->show();
+#endif
+    quickview->raise();
+    quickview->requestActivate();
+#ifdef QT_OS_ANDROID
+    if (Forms.size()>0)
+      (Forms.at(Forms.size()-1))->setVisible(false);
+    showide(false);
+#endif
+  }
+}
+#endif
+
 // ---------------------------------------------------------------------
 void wdrem()
 {
@@ -924,6 +975,12 @@ void wdrem()
 void wdreset()
 {
   cmd.getparms();
+#ifndef QT_NO_QUICKVIEW
+  if (quickview) {
+    quickview->close();
+    quickview=0;
+  }
+#endif
   foreach (Form *f,Forms) {
     f->closed=true;
     f->close();
