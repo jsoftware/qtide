@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QStringList>
 #include <QString>
 #include <QDebug>
@@ -9,9 +10,11 @@
 // ---------------------------------------------------------------------
 Font::Font(string s)
 {
-
   if (s=="fixfont") {
     font=config.Font;
+    return;
+  } else if (s=="profont") {
+    font=QApplication::font();
     return;
   }
   angle=0;
