@@ -64,7 +64,7 @@ static void toymd(int v, int *y, int *m, int *d);
 DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="DateEdit";
-  QDateEdit *w=new QDateEdit(p);
+  QDateEdit *w=new QDateEdit;
   QString qn=s2q(n);
   widget=(QWidget*) w;
   w->setObjectName(qn);

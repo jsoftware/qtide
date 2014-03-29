@@ -12,7 +12,7 @@
 Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="button";
-  QPushButton *w=new QPushButton(p);
+  QPushButton *w=new QPushButton;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

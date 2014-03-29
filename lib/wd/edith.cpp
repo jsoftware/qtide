@@ -13,7 +13,7 @@
 Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edith";
-  QTextEdit *w=new QTextEdit(p);
+  QTextEdit *w=new QTextEdit;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

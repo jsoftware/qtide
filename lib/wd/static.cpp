@@ -12,7 +12,7 @@
 Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="static";
-  QLabel *w=new QLabel(p);
+  QLabel *w=new QLabel;
   widget=(QWidget *) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

@@ -11,7 +11,7 @@
 ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="ProgressBar";
-  QProgressBar *w=new QProgressBar(p);
+  QProgressBar *w=new QProgressBar;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

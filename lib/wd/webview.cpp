@@ -16,7 +16,7 @@
 Webview::Webview(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="webview";
-  QWebView *w=new QWebView(p);
+  QWebView *w=new QWebView;
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

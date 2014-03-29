@@ -12,7 +12,7 @@
 StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="StatusBar";
-  QStatusBar *w=new QStatusBar(p);
+  QStatusBar *w=new QStatusBar;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

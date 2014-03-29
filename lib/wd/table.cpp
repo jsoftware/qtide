@@ -27,7 +27,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   row1=col1=0;
   row2=col2=-1;
 
-  QTableWidget *w=new QTableWidget(p);
+  QTableWidget *w=new QTableWidget;
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);

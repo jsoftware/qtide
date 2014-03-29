@@ -21,7 +21,7 @@ static void totime(double v, int *h, int *m, int *se, int *mi);
 TimeEdit::TimeEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="TimeEdit";
-  QTimeEdit *w=new QTimeEdit(p);
+  QTimeEdit *w=new QTimeEdit;
   QString qn=s2q(n);
   widget=(QWidget*) w;
   w->setObjectName(qn);

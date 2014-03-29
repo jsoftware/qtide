@@ -20,7 +20,7 @@
 Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="Slider";
-  QSlider *w=new QSlider(Qt::Horizontal,p);
+  QSlider *w=new QSlider(Qt::Horizontal);
   QString qn=s2q(n);
   widget=(QWidget*) w;
   w->setObjectName(qn);

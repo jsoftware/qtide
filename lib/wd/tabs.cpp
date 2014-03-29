@@ -15,7 +15,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="tabs";
   index=0;
 
-  TabWidget *w=new TabWidget(p);
+  TabWidget *w=new TabWidget;
   widget=(TabWidget*) w;
 
   form->tabs.append(this);

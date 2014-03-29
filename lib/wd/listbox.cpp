@@ -13,7 +13,7 @@ extern int rc;
 ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="listbox";
-  QListWidget *w=new QListWidget(p);
+  QListWidget *w=new QListWidget;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

@@ -11,7 +11,7 @@
 Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edit";
-  QLineEdit *w=new QLineEdit(p);
+  QLineEdit *w=new QLineEdit;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
