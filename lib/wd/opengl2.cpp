@@ -30,9 +30,9 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 
-  setAttribute(Qt::WA_PaintOnScreen);
+//  setAttribute(Qt::WA_PaintOnScreen);
   setAttribute(Qt::WA_NoSystemBackground);
-  setAutoBufferSwap (false);
+//  setAutoBufferSwap (false);
 }
 
 // ---------------------------------------------------------------------
