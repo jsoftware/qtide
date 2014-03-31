@@ -13,6 +13,7 @@ extern Opengl *opengl;
 // ---------------------------------------------------------------------
 Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget( format)
 {
+  Q_UNUSED(parent);
   pchild = c;
   active=false;
   nopaint=false;

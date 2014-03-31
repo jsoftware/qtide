@@ -13,6 +13,7 @@ extern Isigraph *isigraph;
 // ---------------------------------------------------------------------
 Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 {
+  Q_UNUSED(parent);
   pchild = c;
   active=false;
   nopaint=false;

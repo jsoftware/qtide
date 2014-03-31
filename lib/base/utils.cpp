@@ -471,3 +471,21 @@ void xdiff(QString s,QString t)
   QProcess p;
   p.startDetached(config.XDiff,a);
 }
+
+// ---------------------------------------------------------------------
+QList<int> winpos_get(QWidget *w)
+{
+  QList<int> d;
+  QPoint p=w->pos();
+  QSize z=w->size();
+  d << p.rx() << p.ry() << z.width() << z.height();
+  return d;
+}
+
+// ---------------------------------------------------------------------
+void winpos_set(QWidget *w,QList<int>p)
+{
+  if (p[0] >= 0)
+    w->move(p[0],p[1]);
+  w->resize(p[2],p[3]);
+}

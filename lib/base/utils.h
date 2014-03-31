@@ -37,6 +37,8 @@ void showide(bool);
 QString tofoldername(QString s);
 QString toprojectname(QString s);
 void utils_init();
+QList<int> winpos_get(QWidget *w);
+void winpos_set(QWidget *w,QList<int>p);
 void xdiff(QString s,QString t);
 
 extern bool ShowIde;

@@ -61,6 +61,7 @@ void Nedit::keyPressEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
-Nedit::~Nedit() {
+Nedit::~Nedit()
+{
   delete file;
 }

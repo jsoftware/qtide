@@ -159,7 +159,6 @@ void Config::winpos_init()
   WinPos["Fif"]=DefPos;
   WinPos["Fiw"]=DefPos;
   WinPos["Picm"]=DefPos;
-  WinPos["Psel"]=DefPos;
   WinPos["View"]=DefPos;
 
   QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
@@ -187,11 +186,7 @@ QList<int> Config::winpos_read(QString id)
 void Config::winpos_save(QWidget *w,QString id)
 {
   QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
-  QList<int> d;
-  QPoint p=w->pos();
-  QSize z=w->size();
-  d << p.rx() << p.ry() << z.width() << z.height();
-  winpos_save1(d,id);
+  winpos_save1(winpos_get(w),id);
 }
 
 // ---------------------------------------------------------------------

@@ -16,6 +16,8 @@
 
 // !!! allow for empty folders/recent - so projbrowse ...
 
+QList<int> Pxywh;
+
 using namespace std;
 
 Psel::Psel()
@@ -48,11 +50,15 @@ Psel::Psel()
 
   setLayout (v);
   setWindowTitle("Open Project");
+
+  if (Pxywh.isEmpty())
+    Pxywh << -1 << -1 << 600 << 600;
+
 #ifdef SMALL_SCREEN
   move(0,0);
   resize(term->width(),term->height());
 #else
-  resize(600,600);
+  winpos_set(this,Pxywh);
 #endif
 
   init();
@@ -264,7 +270,7 @@ void Psel::psel_changed(int row)
 // ---------------------------------------------------------------------
 void Psel::reject()
 {
-  config.winpos_save(this,"Psel");
+  Pxywh=winpos_get(this);
   QDialog::reject();
 }
 
