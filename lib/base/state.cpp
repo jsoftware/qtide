@@ -14,6 +14,8 @@
 #include <QSyntaxHighlighter>
 #include <QTemporaryFile>
 
+#include <locale.h>
+
 #include "base.h"
 #include "state.h"
 #include "dialog.h"

@@ -325,7 +325,7 @@ void Table::set(string p, string v)
   else if (p=="data")
     setdata(v);
   else if (p=="font")
-    setfont(v);
+    setfontstr(v);
   else if (p=="foreground")
     setbackforeground(1,v);
   else if (p=="hdr")
@@ -709,7 +709,7 @@ void Table::setdata(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setfont(string s)
+void Table::setfontstr(string s)
 {
   int c,r;
   QTableWidget *w=(QTableWidget*) widget;

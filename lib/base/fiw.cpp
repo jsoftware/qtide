@@ -352,8 +352,8 @@ int Fiw::search1(int d)
   txt=Text;
 
   if (!Matchcase) {
-    s.toLower();
-    txt.toLower();
+    s=s.toLower();
+    txt=txt.toLower();
   }
 
   if (d<0) {

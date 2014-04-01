@@ -47,7 +47,7 @@ private:
   void setcell(string v);
   void setcolwidth(string v);
   void setdata(string s);
-  void setfont(string s);
+  void setfontstr(string s);
   void sethdr(string v);
   void sethdralign(string v);
   void setlab(string v);

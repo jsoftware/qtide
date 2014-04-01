@@ -494,7 +494,7 @@ int matchparens(QChar mode, QString p)
 // ---------------------------------------------------------------------
 void noevents(int n)
 {
-  NoEvents=qMax(0,NoEvents + (n==0) ? -1 : 1);
+  NoEvents=qMax(0,NoEvents + ((n==0) ? -1 : 1));
 }
 
 // ---------------------------------------------------------------------
