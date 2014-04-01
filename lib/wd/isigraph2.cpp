@@ -27,12 +27,12 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
   setAttribute(Qt::WA_DeleteOnClose);
 //  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 //  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
-  updateGeometry();
+// !!!  updateGeometry();
   setMouseTracking (true);         // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 // work around initial display problem
 //  QTimer::singleShot(0, this, SLOT(update()));
-  QTimer::singleShot(0, this, SLOT(resetSize()));
+// !!!  QTimer::singleShot(0, this, SLOT(resetSize()));
 }
 
 // ---------------------------------------------------------------------
@@ -100,7 +100,7 @@ void Isigraph2::resizeEvent ( QResizeEvent *event )
   if (initialdisplay) {
 //    qDebug() << "isigraph2 resizeEvent initial display";
     initialdisplay=false;
-    setGeometry(0,0,event->size().width(),event->size().height());
+// !!!    setGeometry(0,0,event->size().width(),event->size().height());
   }
 //  qDebug() << "isigraph2 resizeEvent exit";
 }
