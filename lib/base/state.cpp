@@ -36,6 +36,14 @@ extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 QString AndroidPackage;
 extern "C" void android_getdisplaymetrics(double * dmetrics);
 #endif
+#if !(defined(QT_NO_QUICKVIEW)&&defined(QT_NO_QUICKWIDGET))
+#ifdef QT50
+extern void regQmlJE();
+#else
+#include "qmlje.h"
+QmlJE qmlje;
+#endif
+#endif
 
 extern bool FHS;
 
@@ -434,6 +442,11 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_appname();
   term = new Term;
   if (!state_init(argc,argv)) return 1;
+#if !(defined(QT_NO_QUICKVIEW)&&defined(QT_NO_QUICKWIDGET))
+#ifdef QT50
+  regQmlJE();
+#endif
+#endif
 #ifdef QT_OS_ANDROID
   if (AndroidPackage=="com.jsoftware.android.qtide")
     showide(true);

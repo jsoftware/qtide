@@ -953,11 +953,13 @@ void wdquickview()
     quickview->show();
 #endif
     quickview->raise();
+#ifdef QT50
     quickview->requestActivate();
+#endif
 #ifdef QT_OS_ANDROID
+    showide(false);
     if (Forms.size()>0)
       (Forms.at(Forms.size()-1))->setVisible(false);
-    showide(false);
 #endif
   }
 }
