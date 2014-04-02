@@ -716,7 +716,7 @@ void wdpsel()
   void *n=(void *) c_strtol(p);
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
-    if (n==f || p==f->id) {
+    if ((!f->closed) && (n==f || p==f->id)) {
       form=f;
       return;
     }
