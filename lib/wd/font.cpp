@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------
 Font::Font(string s)
 {
+  angle=0;
   if (s=="fixfont") {
     font=config.Font;
     return;
@@ -17,7 +18,6 @@ Font::Font(string s)
     font=QApplication::font();
     return;
   }
-  angle=0;
   QString face, sizestyle;
   int bold=0,italic=0,strikeout=0,underline=0;
   float size=0;
