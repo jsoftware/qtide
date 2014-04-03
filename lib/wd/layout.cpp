@@ -79,3 +79,9 @@ void Layout::addStretch(int n)
 {
   if (type!='g') ((QBoxLayout *) bin)->addStretch(n);
 }
+
+// ---------------------------------------------------------------------
+void Layout::removeWidget(QWidget *b)
+{
+  ((QBoxLayout *) bin)->removeWidget(b);
+}

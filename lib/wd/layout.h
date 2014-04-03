@@ -23,6 +23,7 @@ public:
   void addLayout(Layout *b);
   void addSpacing(int n);
   void addStretch(int n);
+  void removeWidget(QWidget *b);
 
   Pane *ppane;
   QLayout * bin;

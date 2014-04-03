@@ -164,7 +164,7 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/quickview.h wd/quickwidget.h base/qmlje.h
+ wd/webview.h wd/quickview.h wd/quickwidget.h base/qmlje.h wd/scrollarea.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
@@ -201,7 +201,7 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp  wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/quickview.cpp wd/quickwidget.cpp base/qmlje.cpp
+ wd/webview.cpp wd/quickview.cpp wd/quickwidget.cpp base/qmlje.cpp wd/scrollarea.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp

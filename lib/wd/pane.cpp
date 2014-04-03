@@ -34,6 +34,7 @@
 #endif
 #include "progressbar.h"
 #include "radiobutton.h"
+#include "scrollarea.h"
 #include "slider.h"
 #include "spinbox.h"
 #include "static.h"
@@ -106,6 +107,8 @@ bool Pane::addchild(string n,string c,string p)
 #endif
   else if (c=="radiobutton")
     child=(Child *) new RadioButton(n,p,pform,this);
+  else if (c=="scrollarea")
+    child=(Child *) new ScrollArea(n,p,pform,this);
   else if (c=="slider")
     child=(Child *) new Slider(n,p,pform,this);
   else if (c=="spinbox")

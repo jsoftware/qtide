@@ -35,7 +35,7 @@ QuickView::QuickView(string n, string s, int resizemode) : QDeclarativeView()
 #else
   rootContext()->setContextProperty("QmlJE", &qmlje);
   setResizeMode((QDeclarativeView::ResizeMode)(this->resizeMode=resizemode));
-  setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+// !!! removed to compile...  setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 #endif
   QString t = s2q(s);
   if (t.contains("://"))
