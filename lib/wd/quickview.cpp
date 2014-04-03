@@ -35,8 +35,8 @@ QuickView::QuickView(string n, string s, int resizemode) : QDeclarativeView()
 #else
   rootContext()->setContextProperty("QmlJE", &qmlje);
   setResizeMode((QDeclarativeView::ResizeMode)(this->resizeMode=resizemode));
-// !!! removed to compile...  setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 #endif
+  QObject::connect((QObject*)this->engine(), SIGNAL(quit()), this, SLOT(close()));
   QString t = s2q(s);
   if (t.contains("://"))
     sourceUrl = QUrl(t);
@@ -111,7 +111,8 @@ void QuickView::statusChanged(QDeclarativeView::Status status)
 // ---------------------------------------------------------------------
 void QuickView::sceneResized (QSize size)
 {
-  qDebug() << size;
+  Q_UNUSED(size);
+//  qDebug() << size;
 }
 
 #endif
