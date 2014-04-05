@@ -108,6 +108,7 @@ public:
   QString Terminal;
   int TermPos[4];
   bool TermSyntaxHighlight;
+  bool TrimTrailingWS;
   QString User;
   QDir UserPath;
   QStringList UserFolderKeys;

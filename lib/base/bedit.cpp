@@ -203,6 +203,13 @@ void Bedit::selectline(int p)
   if (0>p) return;
   QTextCursor c = textCursor();
   int d = p-c.blockNumber();
+
+  int t=qMax(0,firstVisibleBlock().blockNumber());
+  QPoint bottom(0,viewport()->height()-1);
+  int b = cursorForPosition(bottom).blockNumber();
+  if (p < t || p>b)
+    settop(qMax(0,p-(b-t)/2));
+
   if (d<0)
     c.movePosition(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor,-d);
   else if (d>0)

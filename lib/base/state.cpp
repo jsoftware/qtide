@@ -220,6 +220,7 @@ void Config::initide()
   Snapshots = s->value("Session/Snapshots",true).toInt();
   Snapshotx = s->value("Session/Snapshotx","").toString();
   TermSyntaxHighlight = s->value("Session/TermSyntaxHighlight",false).toBool();
+  TrimTrailingWS = s->value("Session/TrimTrailingWS",false).toBool();
 
   FifExt = s->value("FindinFiles/Extensions","").toStringList();
   Terminal = s->value("Run/Terminal","").toString();
@@ -229,7 +230,7 @@ void Config::initide()
   t = s->value("Position/Term","0 0 500 600").toString();
   q2p(t,TermPos);
 
-  if (s->allKeys().contains("Session/TermSyntaxHighlight")) return;
+  if (s->allKeys().contains("Session/TrimTrailingWS")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -252,6 +253,7 @@ void Config::initide()
   s->setValue("Session/Snapshots",Snapshots);
   s->setValue("Session/Snapshotx",Snapshotx);
   s->setValue("Session/TermSyntaxHighlight",TermSyntaxHighlight);
+  s->setValue("Session/TrimTrailingWS",TrimTrailingWS);
   s->setValue("FindinFiles/Extensions",FifExt);
   s->setValue("Position/Edit",p2q(EditPos));
   s->setValue("Position/Term",p2q(TermPos));
@@ -282,6 +284,7 @@ void Config::initide()
     "# Term=0 0 500 600             initial term position\n"
     "# Terminal=mate-terminal       show in terminal command\n"
     "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
+    "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
     ;
   cfwrite(f,h + "\n" + t);
 }

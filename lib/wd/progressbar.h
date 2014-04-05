@@ -3,7 +3,6 @@
 
 #include "child.h"
 
-class QLabel;
 class Form;
 class Pane;
 

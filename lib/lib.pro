@@ -148,8 +148,9 @@ contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES -= QT_NO_QUICKWIDGET
 HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
  base/fif.h base/fiw.h base/jsvr.h base/menu.h \
- base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h base/plaintextedit.h base/pcombobox.h \
- base/pnew.h base/proj.h base/psel.h base/recent.h base/rsel.h \
+ base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h \
+ base/plaintextedit.h base/pcombobox.h \
+ base/pnew.h base/proj.h base/psel.h base/qmlje.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
  base/tedit.h base/term.h base/util.h base/utils.h \
  base/view.h base/widget.h high/high.h high/highj.h \
@@ -164,7 +165,8 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/quickview.h wd/quickwidget.h base/qmlje.h wd/scrollarea.h
+ wd/webview.h wd/quickview.h wd/quickwidget.h \
+ wd/qwidget.h wd/scrollarea.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
@@ -184,8 +186,9 @@ SOURCES += \
  base/dirm.cpp base/dirmx.cpp base/dlog.cpp \
  base/fif.cpp base/fifx.cpp base/fiw.cpp base/jsvr.cpp \
  base/menu.cpp base/menuhelp.cpp \
- base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp base/plaintextedit.cpp base/pcombobox.cpp \
- base/pnew.cpp base/proj.cpp base/psel.cpp base/recent.cpp base/rsel.cpp \
+ base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
+ base/plaintextedit.cpp base/pcombobox.cpp \
+ base/pnew.cpp base/proj.cpp base/psel.cpp  base/qmlje.cpp base/recent.cpp base/rsel.cpp \
  base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
  base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp \
@@ -201,7 +204,8 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp  wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/quickview.cpp wd/quickwidget.cpp base/qmlje.cpp wd/scrollarea.cpp
+ wd/webview.cpp wd/quickview.cpp wd/quickwidget.cpp \
+ wd/qwidget.cpp wd/scrollarea.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp

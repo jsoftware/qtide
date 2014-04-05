@@ -40,6 +40,7 @@ bool createdir(QDir d);
 QString detab(QString s);
 QString dlb(QString s);
 QString dtb(QString s);
+QString dtbs(QString s);
 QString dtLF(QString s);
 QStringList getfilters(QString s);
 void helpabout();

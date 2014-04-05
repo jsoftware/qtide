@@ -332,6 +332,16 @@ QString dtb(QString s)
 }
 
 // ---------------------------------------------------------------------
+// delete trailing blanks on each line
+QString dtbs(QString s)
+{
+  QStringList r=s.split('\n');
+  for (int i=0; i<r.size(); i++)
+    r[i]=dtb(r.at(i));
+  return r.join("\n");
+}
+
+// ---------------------------------------------------------------------
 // delete a trailing LF
 QString dtLF(QString s)
 {

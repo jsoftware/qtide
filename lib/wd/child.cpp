@@ -127,9 +127,7 @@ void Child::setminwhv(string p)
   } else {
     int w=c_strtoi(q2s(n.at(0)));
     int h=c_strtoi(q2s(n.at(1)));
-    widget->resize(w,h);
-    widget->setMinimumSize(w,h);
-    widget->updateGeometry();
+    setminwh(w,h);
   }
 }
 
@@ -137,7 +135,6 @@ void Child::setminwhv(string p)
 void Child::setminwh(int w, int h)
 {
   if (widget && w && h) {
-    widget->resize(w,h);
     widget->setMinimumSize(w,h);
     widget->updateGeometry();
   }

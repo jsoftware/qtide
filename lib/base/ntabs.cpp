@@ -243,7 +243,6 @@ int Ntabs::tabopen1(QString s,int line)
   e->saved=false;
   e->sname = toprojectname(s);
   e->text = cfread(e->file);
-  //e->appendPlainText(e->text);
   e->setPlainText(e->text);
   if (line>=0) {
     e->moveCursor(QTextCursor::Start);
@@ -268,6 +267,35 @@ int Ntabs::tabopen1(QString s,int line)
   return n;
 }
 
+#ifndef QT_NO_PRINTER
+// ---------------------------------------------------------------------
+bool Ntabs::tabprint(int index)
+{
+  if (index<0) return true;
+  Nedit *e=(Nedit *)widget(index);
+#ifdef QT50
+  e->print((QPagedPaintDevice *)config.Printer);
+#else
+  e->print(config.Printer);
+#endif
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool Ntabs::tabprintall()
+{
+  bool r=true;
+  noevents(1);
+  for(int i=0; i<count(); i++) {
+    r=tabprint(i);
+    if (!r) break;
+  }
+  noevents(0);
+  pnote->siderefresh();
+  return r;
+}
+#endif
+
 // ---------------------------------------------------------------------
 void Ntabs::tabrestore(int index)
 {
@@ -286,6 +314,8 @@ bool Ntabs::tabsave(int index)
   Nedit *e=(Nedit *)widget(index);
   config.filepos_set(e->fname,e->readtop());
   QString t = e->toPlainText();
+  if (config.TrimTrailingWS)
+    t=dtbs(t);
   if (t==e->text) {
     setmodified(index,false);
     return true;
@@ -305,21 +335,6 @@ bool Ntabs::tabsave(int index)
   return true;
 }
 
-#ifndef QT_NO_PRINTER
-// ---------------------------------------------------------------------
-bool Ntabs::tabprint(int index)
-{
-  if (index<0) return true;
-  Nedit *e=(Nedit *)widget(index);
-#ifdef QT50
-  e->print((QPagedPaintDevice *)config.Printer);
-#else
-  e->print(config.Printer);
-#endif
-  return true;
-}
-#endif
-
 // ---------------------------------------------------------------------
 bool Ntabs::tabsaveall()
 {
@@ -333,22 +348,6 @@ bool Ntabs::tabsaveall()
   pnote->siderefresh();
   return r;
 }
-
-#ifndef QT_NO_PRINTER
-// ---------------------------------------------------------------------
-bool Ntabs::tabprintall()
-{
-  bool r=true;
-  noevents(1);
-  for(int i=0; i<count(); i++) {
-    r=tabprint(i);
-    if (!r) break;
-  }
-  noevents(0);
-  pnote->siderefresh();
-  return r;
-}
-#endif
 
 // ---------------------------------------------------------------------
 void Ntabs::tabsaveas(int index)

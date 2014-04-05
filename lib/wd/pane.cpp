@@ -29,10 +29,11 @@
 #ifndef QT_NO_OPENGL
 #include "opengl.h"
 #endif
+#include "progressbar.h"
 #ifndef QT_NO_QUICKWIDGET
 #include "quickwidget.h"
 #endif
-#include "progressbar.h"
+#include "qwidget.h"
 #include "radiobutton.h"
 #include "scrollarea.h"
 #include "slider.h"
@@ -105,6 +106,8 @@ bool Pane::addchild(string n,string c,string p)
   else if (c=="quickwidget")
     child=(Child *) new QuickWidget(n,p,pform,this);
 #endif
+  else if (c=="qwidget")
+    child=(Child *) new QWidgex(n,p,pform,this);
   else if (c=="radiobutton")
     child=(Child *) new RadioButton(n,p,pform,this);
   else if (c=="scrollarea")
