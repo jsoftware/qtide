@@ -27,7 +27,7 @@ else  {   TEMPLATE = lib
           QT += webkit
           QT += opengl
           TARGET = jqt }
-contains(DEFINES,QT47) {!contains(DEFINES,QT50): QT += declarative}
+contains(DEFINES,QT47): !contains(DEFINES,QT50): QT += declarative
 contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
 contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
 
