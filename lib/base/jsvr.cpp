@@ -314,6 +314,12 @@ int jefirst(int type,char* arg)
   }
   qDebug() << "install path: " << s2q(install);
 
+  if (QFile("assets:/jconsole").exists() && !QFile(appcurrentpath+"/bin/jconsole").exists() ) {
+    if(!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+    QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
+    QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
+  }
+
   QDir::setCurrent(install);
   qDebug() << "current path: " << QDir::currentPath();
 // assume cwd is .../files
@@ -340,7 +346,7 @@ int jefirst(int type,char* arg)
     QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
     QFile("assets:/tar0.ijs").copy("tar0.ijs");
     QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);  // for busybox tar
-    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6640);
+    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6644);
 // for testing, display script
 //    int e=jedo((char *)"script0=: [: 3 : '0!:1 y [ 4!:55<''y''' ]&.:>");
     int e=jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
@@ -356,13 +362,13 @@ int jefirst(int type,char* arg)
     QFile("tar0.ijs").remove();
     QFile("assets_version.txt").remove();
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
-    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6640);
+    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6644);
   }
 
   if (QFile("assets:/welcome.ijs").exists()) {
     QFile("welcome.ijs").remove();
     QFile("assets:/welcome.ijs").copy("welcome.ijs");
-    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6640);
+    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6644);
   }
 
   QDir::setCurrent(homepath);
@@ -427,6 +433,9 @@ int jefirst(int type,char* arg)
   strcat(input,"'");
   strcat(input,"[AndroidPackage_z_=:'");
   strcat(input,AndroidPackage.toUtf8().constData());
+  strcat(input,"'");
+  strcat(input,"[EXEBINPATH_z_=:'");
+  strcat(input,(appcurrentpath+"/bin").toUtf8().constData());
   strcat(input,"'");
 #else
   p=path;
