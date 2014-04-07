@@ -904,13 +904,16 @@ void wdqueries(string s)
       error("command failed: " + s);
   } else if (s=="qchildxywh") {
     Child *cc;
-    if ((cc=form->id2child(p))) {
-      if (!cc->widget) error("command failed: " + s);
-      else {
-        QPoint pos=cc->widget->mapTo(form,cc->widget->pos());
-        QSize size=cc->widget->size();
-        result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
+    if ((cc=form->id2child(p)) && cc->widget) {
+      QWidget *p0, *p1;
+      p0=p1=cc->widget;
+      while (p1) {
+        p0=p1;
+        p1=p0->parentWidget();
       }
+      QPoint pos=cc->widget->mapTo(p0,cc->widget->pos());
+      QSize size=cc->widget->size();
+      result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
     } else error("command failed: " + s);
   } else if (s=="qpid") {
     SI m, n = c_strtoi(p);
