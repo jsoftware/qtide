@@ -33,6 +33,7 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 // work around initial display problem
 //  QTimer::singleShot(0, this, SLOT(update()));
 // !!!  QTimer::singleShot(0, this, SLOT(resetSize()));
+   setMinimumSize(1,1);  // another attempt to fix initial display problem
 }
 
 // ---------------------------------------------------------------------
