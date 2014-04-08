@@ -289,6 +289,8 @@ int jefirst(int type,char* arg)
   }
   homepath=getenv("HOME");
   qDebug() << "homepath: " << s2q(homepath);
+  QString appcurrentpath = QDir::currentPath();
+  qDebug() << "application current path: " << appcurrentpath;
 // if(!getenv("TMP"))
 //   setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
   if(!QFile(appcurrentpath+"/tmp").exists()) mkdir((appcurrentpath+"/tmp").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
@@ -297,8 +299,6 @@ int jefirst(int type,char* arg)
 
   qDebug() << "TMP: " << QString::fromUtf8(getenv("TMP"));
 
-  QString appcurrentpath = QDir::currentPath();
-  qDebug() << "application current path: " << appcurrentpath;
   char install[PLEN];
   if (sdcardok) {
     strcpy(install, sdcard);
@@ -361,12 +361,12 @@ int jefirst(int type,char* arg)
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6644);
 
-    if (QFile("assets:/jconsole").exists() {
-    if(!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+    if (QFile("assets:/jconsole").exists()) {
+      if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
       QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
       QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
       QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
-      qDebug() << "jconsole: " << copy(appcurrentpath+"/bin/jconsole";
+      qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
     }
   }
 
@@ -407,9 +407,8 @@ int jefirst(int type,char* arg)
 #if defined(_WIN32)
       strcat(input,"(3 : '0!:0 y')<BINPATH,'");
 #elif  defined(ANDROID)
-// for testing, display script
-//      strcat(input,"(3 : '0!:1 y')<BINPATH,'");
-      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+//      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+      strcat(input,"(3 : '0!:0 y')<INSTALLROOT,'/bin");
 #else
       if (!FHS)
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
@@ -429,8 +428,7 @@ int jefirst(int type,char* arg)
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
 #ifdef QT_OS_ANDROID
-//  strcat(input,appcurrentpath.toUtf8().constData());
-  strcat(input,install);
+  strcat(input,appcurrentpath.toUtf8().constData());
   strcat(input,"/bin'");
   strcat(input,"[UNAME_z_=:'Android'");
   strcat(input,"[INSTALLROOT_z_=:'");
@@ -438,9 +436,6 @@ int jefirst(int type,char* arg)
   strcat(input,"'");
   strcat(input,"[AndroidPackage_z_=:'");
   strcat(input,AndroidPackage.toUtf8().constData());
-  strcat(input,"'");
-  strcat(input,"[EXEBINPATH_z_=:'");
-  strcat(input,(appcurrentpath+"/bin").toUtf8().constData());
   strcat(input,"'");
 #else
   p=path;
