@@ -289,8 +289,11 @@ int jefirst(int type,char* arg)
   }
   homepath=getenv("HOME");
   qDebug() << "homepath: " << s2q(homepath);
-  if(!getenv("TMP"))
-    setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
+// if(!getenv("TMP"))
+//   setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
+  if(!QFile(appcurrentpath+"/tmp").exists()) mkdir((appcurrentpath+"/tmp").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+  QFile::setPermissions(appcurrentpath+"/tmp",(QFile::Permission)0x7777);
+  setenv("TMP",(appcurrentpath+"/tmp").toUtf8().constData(),1);
 
   qDebug() << "TMP: " << QString::fromUtf8(getenv("TMP"));
 
@@ -313,13 +316,6 @@ int jefirst(int type,char* arg)
     strcpy(install, appcurrentpath.toUtf8().constData());
   }
   qDebug() << "install path: " << s2q(install);
-
-  if (QFile("assets:/jconsole").exists() && !QFile(appcurrentpath+"/bin/jconsole").exists() ) {
-    if(!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-    QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
-    QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
-    QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
-  }
 
   QDir::setCurrent(install);
   qDebug() << "current path: " << QDir::currentPath();
@@ -364,6 +360,14 @@ int jefirst(int type,char* arg)
     QFile("assets_version.txt").remove();
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6644);
+
+    if (QFile("assets:/jconsole").exists() {
+    if(!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+      QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
+      QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
+      QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
+      qDebug() << "jconsole: " << copy(appcurrentpath+"/bin/jconsole";
+    }
   }
 
   if (QFile("assets:/welcome.ijs").exists()) {
