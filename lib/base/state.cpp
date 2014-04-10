@@ -420,17 +420,7 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   QChar p1=AndroidPackage.at(AndroidPackage.size()-2);
   if (p1=='-') AndroidPackage = AndroidPackage.left(AndroidPackage.size()-2);
   qDebug() << "AndroidPackage" << AndroidPackage;
-  if (LibName.left(8)=="/system/") {
-    QString f1;
-    for (int i=1; i<10; i++) {
-      f1="/mnt/asec/" + AndroidPackage + "-" + QString::number(i) + "/lib/libjqt.so";
-      if (QFile::exists(f1)) {
-        LibName=f1;
-        break;
-      }
-    }
-    qDebug() << "LibName changed to" << LibName;
-  }
+  LibName="/data/data/" + AndroidPackage + "/lib/libjqt.so";
   android_getdisplaymetrics(0);
 #endif
 #ifdef QTWEBSOCKET

@@ -364,6 +364,7 @@ int jefirst(int type,char* arg)
     if (QFile("assets:/jconsole").exists()) {
       if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
       QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
+      QFile(appcurrentpath+"/bin/jconsole").remove();
       QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
       QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
       qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
