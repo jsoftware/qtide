@@ -32,8 +32,11 @@
 #include "../base/wssvr.h"
 #include "../base/wscln.h"
 #endif
-#ifndef QT_NO_QUICKVIEW
-#include "quickview.h"
+#ifndef QT_NO_QUICKVIEW1
+#include "quickview1.h"
+#endif
+#ifndef QT_NO_QUICKVIEW2
+#include "quickview2.h"
 #endif
 #include "../base/term.h"
 #include "../base/state.h"
@@ -85,9 +88,13 @@ void wdpstylesheet();
 void wdptop();
 void wdq();
 void wdqueries(string);
-#ifndef QT_NO_QUICKVIEW
-void wdquickview();
-QuickView *quickview;
+#ifndef QT_NO_QUICKVIEW1
+void wdquickview1();
+QuickView1 *quickview1;
+#endif
+#ifndef QT_NO_QUICKVIEW2
+void wdquickview2();
+QuickView2 *quickview2;
 #endif
 void wdrem();
 void wdreset();
@@ -199,9 +206,13 @@ void wd1()
       wdopenj();
     else if (c[0]=='p')
       wdp(c);
-#ifndef QT_NO_QUICKVIEW
-    else if (c=="quickview")
-      wdquickview();
+#ifndef QT_NO_QUICKVIEW1
+    else if (c=="quickview1")
+      wdquickview1();
+#endif
+#ifndef QT_NO_QUICKVIEW2
+    else if (c=="quickview2")
+      wdquickview2();
 #endif
     else if (c[0]=='q')
       wdqueries(c);
@@ -926,38 +937,77 @@ void wdqueries(string s)
     error("command not found");
 }
 
-#ifndef QT_NO_QUICKVIEW
+#ifndef QT_NO_QUICKVIEW1
 // ---------------------------------------------------------------------
-void wdquickview()
+void wdquickview1()
 {
   string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   int mode=1;
   if (n.size()==0) {
-    if (quickview) {
-      quickview->close();
-      quickview=0;
+    if (quickview1) {
+      quickview1->close();
+      quickview1=0;
     }
   } else if (n.size()<2)
-    error("quickview requires at least 2 parameters: " + p);
+    error("quickview1 requires at least 2 parameters: " + p);
   else {
     string t=remquotes(q2s(n.at(0)));
     string f=remquotes(q2s(n.at(1)));
     if (!QFile(s2q(f)).exists()) {
-      error("quickview file error: " + p);
+      error("quickview1 file error: " + p);
       return;
     }
     if (n.size()>2) mode=!!c_strtoi(q2s(n.at(2)));
-    if (quickview) quickview->close();
-    quickview=new QuickView(t,f,mode);
+    if (quickview1) quickview1->close();
+    quickview1=new QuickView1(t,f,mode);
 #ifdef QT_OS_ANDROID
-    quickview->showFullScreen();
+    quickview1->showFullScreen();
 #else
-    quickview->show();
+    quickview1->show();
 #endif
-    quickview->raise();
+    quickview1->raise();
+#ifdef QT_OS_ANDROID
+    showide(false);
+    if (Forms.size()>0)
+      (Forms.at(Forms.size()-1))->setVisible(false);
+#endif
+  }
+}
+
+#endif
+#ifndef QT_NO_QUICKVIEW2
+// ---------------------------------------------------------------------
+void wdquickview2()
+{
+  string p=cmd.getparms();
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  int mode=1;
+  if (n.size()==0) {
+    if (quickview2) {
+      quickview2->close();
+      quickview2=0;
+    }
+  } else if (n.size()<2)
+    error("quickview2 requires at least 2 parameters: " + p);
+  else {
+    string t=remquotes(q2s(n.at(0)));
+    string f=remquotes(q2s(n.at(1)));
+    if (!QFile(s2q(f)).exists()) {
+      error("quickview2 file error: " + p);
+      return;
+    }
+    if (n.size()>2) mode=!!c_strtoi(q2s(n.at(2)));
+    if (quickview2) quickview2->close();
+    quickview2=new QuickView2(t,f,mode);
+#ifdef QT_OS_ANDROID
+    quickview2->showFullScreen();
+#else
+    quickview2->show();
+#endif
+    quickview2->raise();
 #ifdef QT50
-    quickview->requestActivate();
+    quickview2->requestActivate();
 #endif
 #ifdef QT_OS_ANDROID
     showide(false);
@@ -967,6 +1017,7 @@ void wdquickview()
   }
 }
 #endif
+
 
 // ---------------------------------------------------------------------
 void wdrem()
@@ -980,10 +1031,16 @@ void wdrem()
 void wdreset()
 {
   cmd.getparms();
-#ifndef QT_NO_QUICKVIEW
-  if (quickview) {
-    quickview->close();
-    quickview=0;
+#ifndef QT_NO_QUICKVIEW1
+  if (quickview1) {
+    quickview1->close();
+    quickview1=0;
+  }
+#endif
+#ifndef QT_NO_QUICKVIEW2
+  if (quickview2) {
+    quickview2->close();
+    quickview2=0;
   }
 #endif
   foreach (Form *f,Forms) {

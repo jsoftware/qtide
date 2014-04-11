@@ -1,30 +1,31 @@
-#ifndef QUICKVIEW_H
-#define QUICKVIEW_H
+#ifndef QUICKVIEW1_H
+#define QUICKVIEW1_H
 
 #include <QUrl>
-#ifdef QT50
-#include <QQuickView>
+#ifdef QTFALSE
+#include <QtDeclarative/QDeclarativeView>
+#include <QtDeclarative/QDeclarativeItem>
 #else
 #include <QDeclarativeView>
 #endif
 #include "form.h"
 
 // ---------------------------------------------------------------------
-#ifdef QT50
-class QuickView : public QQuickView
+#ifdef QTFALSE
+class QuickView1 : public QDeclarativeView
 #else
-class QuickView : public QDeclarativeView
+class QuickView1 : public QDeclarativeView
 #endif
 {
   Q_OBJECT
 
 public:
-  QuickView(string n, string s, int resizemode);
+  QuickView1(string n, string s, int resizemode);
 
   QUrl sourceUrl;
   int resizeMode;
 
-#ifdef QT50
+#ifdef QTFALSE
 protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
@@ -39,6 +40,7 @@ private slots:
   void statusChanged(QDeclarativeView::Status status);
   void sceneResized (QSize size);
 #endif
+  void closeview ();
 
 };
 

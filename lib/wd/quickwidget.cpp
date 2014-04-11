@@ -1,6 +1,7 @@
 
 #include <QDir>
 #include <QQmlError>
+#include <QSurfaceFormat>
 
 #include "wd.h"
 #include "quickwidget.h"
@@ -16,6 +17,11 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // enum ResizeMode { SizeViewToRootObject, SizeRootObjectToView }
   w->setResizeMode((QQuickWidget::ResizeMode)(resizeMode=1));
   w->setContentsMargins(0,0,0,0);
+#if 0
+  QSurfaceFormat format;
+  format.setRenderableType(QSurfaceFormat::OpenGLES);
+  setFormat(format);
+#endif
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

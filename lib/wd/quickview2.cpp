@@ -2,13 +2,14 @@
 #include <QDir>
 #ifdef QT50
 #include <QQmlError>
+#include <QSurfaceFormat>
 #else
 #include <QDeclarativeContext>
 #include <QDeclarativeError>
 #endif
 
 #include "wd.h"
-#include "quickview.h"
+#include "quickview2.h"
 #include "form.h"
 #include "cmd.h"
 #include "../base/utils.h"
@@ -17,13 +18,13 @@
 extern QmlJE qmlje;
 #endif
 
-extern QuickView * quickview;
+extern QuickView2 * quickview2;
 
 // ---------------------------------------------------------------------
 #ifdef QT50
-QuickView::QuickView(string n, string s, int resizemode) : QQuickView()
+QuickView2::QuickView2(string n, string s, int resizemode) : QQuickView()
 #else
-QuickView::QuickView(string n, string s, int resizemode) : QDeclarativeView()
+QuickView2::QuickView2(string n, string s, int resizemode) : QDeclarativeView()
 #endif
 {
   QString qn=s2q(n);
@@ -32,11 +33,16 @@ QuickView::QuickView(string n, string s, int resizemode) : QDeclarativeView()
 #ifdef QT50
   setTitle(qn);
   setResizeMode((QQuickView::ResizeMode)(this->resizeMode=resizemode));
+#if 0
+  QSurfaceFormat format;
+  format.setRenderableType(QSurfaceFormat::OpenGLES);
+  setFormat(format);
+#endif
 #else
   rootContext()->setContextProperty("QmlJE", &qmlje);
   setResizeMode((QDeclarativeView::ResizeMode)(this->resizeMode=resizemode));
 #endif
-  QObject::connect((QObject*)this->engine(), SIGNAL(quit()), this, SLOT(close()));
+  QObject::connect((QObject*)this->engine(), SIGNAL(quit()), this, SLOT(closeview()));
   QString t = s2q(s);
   if (t.contains("://"))
     sourceUrl = QUrl(t);
@@ -53,7 +59,7 @@ QuickView::QuickView(string n, string s, int resizemode) : QDeclarativeView()
 
 #ifdef QT50
 // ---------------------------------------------------------------------
-void QuickView::statusChanged(QQuickView::Status status)
+void QuickView2::statusChanged(QQuickView::Status status)
 {
   if (status == QQuickView::Error) {
     QStringList errors;
@@ -63,13 +69,13 @@ void QuickView::statusChanged(QQuickView::Status status)
 }
 
 // ---------------------------------------------------------------------
-void QuickView::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
+void QuickView2::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
 {
   qDebug() << message;
 }
 
 // ---------------------------------------------------------------------
-void QuickView::keyPressEvent(QKeyEvent *event)
+void QuickView2::keyPressEvent(QKeyEvent *event)
 {
 #ifdef QT_OS_ANDROID
   int key=event->key();
@@ -82,7 +88,7 @@ void QuickView::keyPressEvent(QKeyEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void QuickView::keyReleaseEvent(QKeyEvent *e)
+void QuickView2::keyReleaseEvent(QKeyEvent *e)
 {
 #ifdef QT_OS_ANDROID
   if (e->key()==Qt::Key_Back) {
@@ -99,7 +105,7 @@ void QuickView::keyReleaseEvent(QKeyEvent *e)
 #else
 
 // ---------------------------------------------------------------------
-void QuickView::statusChanged(QDeclarativeView::Status status)
+void QuickView2::statusChanged(QDeclarativeView::Status status)
 {
   if (status == QDeclarativeView::Error) {
     QStringList errors;
@@ -109,10 +115,22 @@ void QuickView::statusChanged(QDeclarativeView::Status status)
 }
 
 // ---------------------------------------------------------------------
-void QuickView::sceneResized (QSize size)
+void QuickView2::sceneResized (QSize size)
 {
   Q_UNUSED(size);
 //  qDebug() << size;
 }
 
 #endif
+
+// ---------------------------------------------------------------------
+void QuickView2::closeview ()
+{
+#ifdef QT_OS_ANDROID
+  showide(true);
+  if (Forms.size()>0)
+    (Forms.at(Forms.size()-1))->setVisible(true);
+#endif
+  close();
+}
+

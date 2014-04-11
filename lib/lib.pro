@@ -27,7 +27,7 @@ else  {   TEMPLATE = lib
           QT += webkit
           QT += opengl
           TARGET = jqt }
-contains(DEFINES,QT47): !contains(DEFINES,QT50): QT += declarative
+contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
 contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
 
@@ -37,14 +37,16 @@ contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
 # QT -= opengl
 
 # pre QT50
-# to exclude quickview, uncomment the following line
+# to exclude quickview1, uncomment the following line
 # QT -= declarative
 
 # QT5 or later
-# to exclude both quickview and quickview, uncomment the following line
-# QT -= quick qml quickwidgets
+# to exclude both quickview1 quickview2 and quickview, uncomment the following line
+# QT -= declarative quick qml quickwidgets
 # to exclude quickwidget only, uncomment the following line
 # QT -= quickwidgets
+# to exclude quickview1 only, uncomment the following line
+# QT -= declarative 
 
 CONFIG(debug, debug|release) {
 rel = debug
@@ -52,7 +54,7 @@ rel = debug
 rel = release
 }
 
-contains(DEFINES,QTWEBSOCKET): QT +=  network
+contains(DEFINES,QTWEBSOCKET): QT += network
 
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -111,27 +113,37 @@ contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
 }
 
 contains(DEFINES,QT50) {
+android: QT -= declarative
 
 # QT50 or later
 !contains(QT,quick) {
-!contains(DEFINES,QT_NO_QUICKVIEW): DEFINES += QT_NO_QUICKVIEW
-contains(DEFINES,QT_QUICKVIEW): DEFINES -= QT_QUICKVIEW
+!contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
+contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
 contains(QT,quickwidgets) QT -= quickwidgets
 } else {
-contains(DEFINES,QT_NO_QUICKVIEW): DEFINES -= QT_NO_QUICKVIEW
-!contains(DEFINES,QT_QUICKVIEW): DEFINES += QT_QUICKVIEW
+contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES -= QT_NO_QUICKVIEW2
+!contains(DEFINES,QT_QUICKVIEW2): DEFINES += QT_QUICKVIEW2
 QT += multimedia sensors
 }
 
+!contains(QT,declarative) {
+!contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
+contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
 } else {
+contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
+!contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
+}
 
+} else {
+!contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
+contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
 # pre QT50
 !contains(QT,declarative) {
-!contains(DEFINES,QT_NO_QUICKVIEW): DEFINES += QT_NO_QUICKVIEW
-contains(DEFINES,QT_QUICKVIEW): DEFINES -= QT_QUICKVIEW
+!contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
+contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
 } else {
-contains(DEFINES,QT_NO_QUICKVIEW): DEFINES -= QT_NO_QUICKVIEW
-!contains(DEFINES,QT_QUICKVIEW): DEFINES += QT_QUICKVIEW
+contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
+!contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
 }
 
 }
@@ -165,15 +177,18 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/quickview.h wd/quickwidget.h \
+ wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
 contains(DEFINES,QT50) {
-!contains(QT,quick): HEADERS -= wd/quickview.h base/qmlje.h
+!contains(QT,quick): HEADERS -= wd/quickview2.h
+!contains(QT,declarative): HEADERS -= wd/quickview1.h
+!contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.h
 } else {
-!contains(QT,declarative): HEADERS -= wd/quickview.h base/qmlje.h
+!contains(QT,declarative): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
+HEADERS -= wd/quickview2.h
 }
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
@@ -188,7 +203,7 @@ SOURCES += \
  base/menu.cpp base/menuhelp.cpp \
  base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
  base/plaintextedit.cpp base/pcombobox.cpp \
- base/pnew.cpp base/proj.cpp base/psel.cpp  base/qmlje.cpp base/recent.cpp base/rsel.cpp \
+ base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp base/recent.cpp base/rsel.cpp \
  base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
  base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp \
@@ -196,23 +211,26 @@ SOURCES += \
  wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
  wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dspinbox.cpp \
  wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
- wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \
+ wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp \
  wd/isigraph.cpp wd/isigraph2.cpp wd/layout.cpp wd/listbox.cpp wd/mb.cpp \
  wd/menus.cpp wd/pane.cpp \
  wd/progressbar.cpp wd/radiobutton.cpp \
  wd/slider.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
- wd/ogl2.cpp  wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/quickview.cpp wd/quickwidget.cpp \
+ wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
+ wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT50) {
-!contains(QT,quick): SOURCES -= wd/quickview.cpp base/qmlje.cpp
+!contains(QT,quick): SOURCES -= wd/quickview2.cpp
+!contains(QT,declarative): SOURCES -= wd/quickview1.cpp
+!contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.cpp
 } else {
-!contains(QT,declarative): SOURCES -= wd/quickview.cpp base/qmlje.cpp
+!contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
+SOURCES -= wd/quickview2.cpp
 }
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
