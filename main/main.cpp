@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
   QString s=QCoreApplication::applicationDirPath() + "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
-    s= "jqt";
+    s= "jqt.dll";
     fhs = true;
   }
 #else
@@ -45,7 +45,11 @@ int main(int argc, char *argv[])
 #else
   if(!(QFile(s.append(".so"))).exists()) {
 #endif
-    s= "libjqt";
+#if defined(__MACH__)
+    s= "libjqt.dylib";
+#else
+    s= "libjqt.so";
+#endif
     fhs = true;
   }
 #endif
