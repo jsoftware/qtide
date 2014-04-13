@@ -4,8 +4,16 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#ifdef QT53
+#include <QtWebSockets/QtWebSockets>
+#else
 #include "../QtWebsocket/QWsServer.h"
 #include "../QtWebsocket/QWsSocket.h"
+#define QWebSocket QtWebsocket::QWsSocket
+#define QWebSocketServer QtWebsocket::QWsServer
+#define sendTextMessage write
+#define sendBinaryMessage write
+#endif
 
 #include "jsvr.h"
 
@@ -14,7 +22,7 @@ class WsSvr : public QObject
   Q_OBJECT
 
 public:
-  WsSvr(int port = 80, int protocol = 1);
+  WsSvr(int port = 80, int secureMode = 1);  // 0=SecureMode 1=NonSecureMode
   ~WsSvr();
   void disconnect(void * client);
   I write(void * client, const char * msg, I len, bool binary);
@@ -22,18 +30,28 @@ public:
   std::string errstring;
   bool hasSocket(void * client);
 
-public slots:
-  void onOpen();
-  void onClose();
-  void onMessage(QString message);
-  void onMessage(QByteArray message);
-  void onPong(quint64 elapsedTime);
-  void onError(const QList<QSslError>& errors);
+#ifdef QT53
+Q_SIGNALS:
+  void closed();
+#endif
+
+private Q_SLOTS:
+  void onNewConnection();
+  void onDisconnected();
+  void onTextMessageReceived(QString message);
+  void onBinaryMessageReceived(QByteArray message);
+  void onError(QAbstractSocket::SocketError error);
+  void onSslErrors(const QList<QSslError>& errors);
+  void onStateChanged(QAbstractSocket::SocketState socketState);
+  void onPong(quint64 elapsedTime, const QByteArray & payload);
+#ifdef QT53
+  void onClosed();
+#endif
 
 private:
-  QtWebsocket::QWsServer* server;
-  QList<QtWebsocket::QWsSocket*> clients;
-  void frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary);
+  QWebSocketServer *server;
+  QList<QWebSocket *> clients;
+  void messageReceived(QWebSocket* socket, QByteArray ba, bool binary);
 };
 
 #endif

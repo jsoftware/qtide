@@ -54,7 +54,8 @@ rel = debug
 rel = release
 }
 
-contains(DEFINES,QTWEBSOCKET): QT += network
+contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
+contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): QT += network
 
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -192,7 +193,7 @@ HEADERS -= wd/quickview2.h
 }
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
-contains(DEFINES,QTWEBSOCKET): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
+contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
 android:HEADERS += base/androidextras.h base/qtjni.h
 
@@ -234,7 +235,7 @@ SOURCES -= wd/quickview2.cpp
 }
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
-contains(DEFINES,QTWEBSOCKET): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
+contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
 android:SOURCES += base/androidextras.cpp base/qtjni.cpp ../main/main.cpp
 

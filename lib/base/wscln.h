@@ -4,7 +4,15 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#ifdef QT53
+#include <QtWebSockets/QtWebSockets>
+#else
 #include "../QtWebsocket/QWsSocket.h"
+#define QWebSocket QtWebsocket::QWsSocket
+#define QWebSocketServer QtWebsocket::QWsServer
+#define sendTextMessage write
+#define sendBinaryMessage write
+#endif
 
 #include "jsvr.h"
 
@@ -15,23 +23,25 @@ class WsCln : public QObject
 public:
   WsCln();
   ~WsCln();
-  void * connect(QString ipaddr, int port = 80);
+  void * openurl(QString url);
   void disconnect(void * server);
   I write(void * server, const char * msg, I len, bool binary);
   std::string querySocket();
   bool hasSocket(void * server);
 
-public slots:
-  void onOpen();
-  void onClose();
-  void onMessage(QString message);
-  void onMessage(QByteArray message);
-  void onStateChange(QAbstractSocket::SocketState socketState);
-  void onError(const QList<QSslError>& errors);
+private Q_SLOTS:
+  void onConnected();
+  void onDisconnected();
+  void onTextMessageReceived(QString message);
+  void onBinaryMessageReceived(QByteArray message);
+  void onError(QAbstractSocket::SocketError error);
+  void onSslErrors(const QList<QSslError> &errors);
+  void onStateChanged(QAbstractSocket::SocketState socketState);
+  void onPong(quint64 elapsedTime, const QByteArray & payload);
 
 private:
-  QList<QtWebsocket::QWsSocket*> servers;
-  void frameReceived(QtWebsocket::QWsSocket* socket, QByteArray ba, bool binary);
+  QList<QWebSocket *> servers;
+  void messageReceived(QWebSocket* socket, QByteArray ba, bool binary);
 };
 
 #endif

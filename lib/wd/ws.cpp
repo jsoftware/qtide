@@ -50,30 +50,21 @@ string ws(string p)
 // ---------------------------------------------------------------------
 string wsconnect()
 {
-  int port=0, protocol=0;
   string q;
 
   if (arg.size()==1) {
     q=arg.at(0);
-  } else if (arg.size()==2) {
-    q=arg.at(0);
-    port=c_strtoi(arg.at(1));
   } else {
-    error("Need url [port]: "+argjoin);
+    error("Need url: "+argjoin);
     return "";
   }
-  if (q.substr(0,5)=="ws://") {
-    protocol=0;
-  } else if (q.substr(0,6)=="wss://") {
-    protocol=1;
-  } else {
-    error("url not ws:// or wss:// : "+argjoin);
+  if (!((q.substr(0,5)=="ws://")||(q.substr(0,6)=="wss://"))) {
+    error("bad url: "+argjoin);
     return "";
   }
-  if (!port) port = (0==protocol) ? 80 : 443;
   if (!wscln)
     wscln = new WsCln();
-  return p2s(wscln->connect(s2q(q),port));
+  return p2s(wscln->openurl(s2q(q)));
 }
 
 // ---------------------------------------------------------------------
