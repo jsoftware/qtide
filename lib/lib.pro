@@ -1,5 +1,5 @@
 
-VERSION = 1.0.26
+VERSION = 1.0.27
 JDLLVER = 8.0.1    # ignored if not FHS
 
 # DEFINES += BIGENDIAN # uncomment this line for ppc mac
