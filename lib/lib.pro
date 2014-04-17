@@ -31,6 +31,12 @@ contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
 contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
 
+android: QT -= declarative
+android: !contains(DEFINES,QT53) {
+  QT -= quick
+  QT -= quickwidgets
+}
+
 # to exclude QtWebKit, uncomment the following line
 # QT -= webkit
 # to exclude OpenGL, uncomment the following line
@@ -114,7 +120,6 @@ contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
 }
 
 contains(DEFINES,QT50) {
-android: QT -= declarative
 
 # QT50 or later
 !contains(QT,quick) {
@@ -228,7 +233,7 @@ SOURCES += \
 contains(DEFINES,QT50) {
 !contains(QT,quick): SOURCES -= wd/quickview2.cpp
 !contains(QT,declarative): SOURCES -= wd/quickview1.cpp
-!contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.cpp
+!contains(QT,quick): !contains(QT,declarative): SOURCES -= base/qmlje.cpp
 } else {
 !contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
 SOURCES -= wd/quickview2.cpp

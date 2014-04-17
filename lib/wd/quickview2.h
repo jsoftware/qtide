@@ -32,7 +32,9 @@ protected:
 private slots:
 
   void statusChanged(QQuickView::Status status);
+#ifdef QT53
   void sceneGraphError(QQuickWindow::SceneGraphError, const QString &message);
+#endif
 #else
 private slots:
 

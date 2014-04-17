@@ -50,7 +50,9 @@ QuickView2::QuickView2(string n, string s, int resizemode) : QDeclarativeView()
   setSource(sourceUrl);
 #ifdef QT50
   connect(this, SIGNAL(statusChanged(QQuickView::Status)), this, SLOT(statusChanged(QQuickView::Status)));
+#ifdef QT53
   connect(this, SIGNAL(sceneGraphError(QQuickWindow::SceneGraphError,QString)), this, SLOT(sceneGraphError(QQuickWindow::SceneGraphError,QString)));
+#endif
 #else
   connect(this, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged( QDeclarativeView::Status)));
   connect(this, SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
@@ -68,11 +70,13 @@ void QuickView2::statusChanged(QQuickView::Status status)
   }
 }
 
+#ifdef QT53
 // ---------------------------------------------------------------------
 void QuickView2::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
 {
   qDebug() << message;
 }
+#endif
 
 // ---------------------------------------------------------------------
 void QuickView2::keyPressEvent(QKeyEvent *event)

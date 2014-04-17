@@ -291,13 +291,13 @@ int jefirst(int type,char* arg)
   qDebug() << "homepath: " << s2q(homepath);
   QString appcurrentpath = QDir::currentPath();
   qDebug() << "application current path: " << appcurrentpath;
-// if(!getenv("TMP"))
-//   setenv("TMP",QDir::tempPath().toUtf8().constData(),1);
+// if(!getenv("TMPDIR"))
+//   setenv("TMPDIR",QDir::tempPath().toUtf8().constData(),1);
   if(!QFile(appcurrentpath+"/tmp").exists()) mkdir((appcurrentpath+"/tmp").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
   QFile::setPermissions(appcurrentpath+"/tmp",(QFile::Permission)0x7777);
-  setenv("TMP",(appcurrentpath+"/tmp").toUtf8().constData(),1);
+  setenv("TMPDIR",(appcurrentpath+"/tmp").toUtf8().constData(),1);
 
-  qDebug() << "TMP: " << QString::fromUtf8(getenv("TMP"));
+  qDebug() << "TMPDIR: " << QString::fromUtf8(getenv("TMPDIR"));
 
   char install[PLEN];
   if (sdcardok) {
