@@ -56,28 +56,20 @@ qtarcisi (const int *y, const int *y2, int *ang)
 // ---------------------------------------------------------------------
 int gl_paint()
 {
-  return 0;
-//  qDebug() << "gl_paint";
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
-  if (!w) return 1;
-  if (w->epaint) return 1;
-//  qDebug() << "gl_paint begin";
-  w->nopaint=true;
+  if (w->painter) return 1;
   w->paintgl();
-  w->nopaint=false;
-//  qDebug() << "gl_paint end";
   return 0;
 }
 
 // ---------------------------------------------------------------------
 int gl_paintx()
 {
-//  qDebug() << "gl_paintx";
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w) return 1;
-  if (w->jpaint) return 1;
+  if (w->painter) return 1;
   w->updateGL();
   return 0;
 }
@@ -109,7 +101,6 @@ int gl_qextent(char *s,int *wh)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(wh) = fm.width( QString::fromUtf8 (s));
   *(wh+1) = fm.height();
@@ -123,7 +114,6 @@ int gl_qextentw(char *s,int *wi)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   QStringList n=(QString::fromUtf8 (s)).split("\n",QString::KeepEmptyParts);
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   for (int i=0; i<n.size(); i++) {
@@ -138,14 +128,10 @@ int gl_qpixels(const int *p, int *pix)
   if (!p || !pix) return 1;
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
-  if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
-  QPixmap *pm = w->pixmap;
-  if (!pm || pm->isNull()) return 1;
-  if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm->width() || (p[1]+p[3])>pm->height()) return 1;
-// one-liner cause does not work ??
-//  const uchar *t = (pm->copy(p[0], p[1], p[2], p[3])).toImage().convertToFormat(QImage::Format_ARGB32).bits();
-  QPixmap a1 = (pm->copy(p[0], p[1], p[2], p[3]));
+  QPixmap pm=w->getpixmap();
+  if (!pm || pm.isNull()) return 1;
+  if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm.width() || (p[1]+p[3])>pm.height()) return 1;
+  QPixmap a1 = (pm.copy(p[0], p[1], p[2], p[3]));
   if (a1.isNull()) return 1;
   QImage a2 = a1.toImage();
   if (a2.isNull()) return 1;
@@ -165,7 +151,6 @@ int gl_qtextmetrics(int *tm)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(tm) = fm.height();
   *(tm+1) = fm.ascent();
@@ -255,7 +240,6 @@ int gl_arc (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   qtarcisi (p,  p + 4, dy);
   w->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
@@ -267,7 +251,6 @@ int gl_brush ()
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->brushcolor = QColor (w->color);
   w->brush = QBrush (w->brushcolor);
   w->painter->setBrush(w->brush);
@@ -281,7 +264,6 @@ int gl_brushnull ()
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->brushnull = 1;
   w->painter->setBrush(Qt::NoBrush);
   return 0;
@@ -300,7 +282,6 @@ int gl_caret (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   if (0 == *(p) || 0 == *(p + 1))
     return 0;
   QPen pen = w->painter->pen();
@@ -320,7 +301,6 @@ int gl_clear2 (void *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->color = QColor (0, 0, 0);
 
 // messed up here, but ProFont should be part of config...
@@ -365,7 +345,6 @@ int gl_clip (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->clipped = 1;
   w->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
   w->painter->setClipping (true);
@@ -378,7 +357,6 @@ int gl_clipreset ()
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   if (w->clipped) {
     w->painter->setClipping (false);
     w->clipped = 0;
@@ -399,7 +377,6 @@ int gl_ellipse (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
   return 0;
 }
@@ -419,7 +396,6 @@ static int gl_font0 (Opengl *opengl, char *s)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->font = new Font (string(s));
   w->painter->setFont ((w->font)->font);
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
@@ -440,7 +416,6 @@ int gl_font2 (const int *p, int len)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   size10 = *(p);
   bold = 1 & *(p + 1);
   italic = 2 & *(p + 1);
@@ -461,7 +436,6 @@ int gl_fontangle (int a)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->font->angle = a;
   return 0;
 }
@@ -472,7 +446,6 @@ int gl_lines (const int *p, int len)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
@@ -496,7 +469,6 @@ int gl_pen (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->pencolor = QColor (w->color);
   w->pen = QPen (w->pencolor, Max (0.5, *(p))); // TODO in user space
   w->painter->setPen(w->pen);
@@ -510,7 +482,6 @@ int gl_pie (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   qtarcisi (p, p + 4, dy);
   w->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
   return 0;
@@ -522,7 +493,6 @@ int gl_pixel (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->painter->drawPoint (*(p), *(p + 1));
   return 0;
 }
@@ -557,7 +527,6 @@ int gl_pixelsx (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
 #if defined(_WIN64)||defined(__LP64__)
   Q_UNUSED(p);
   return 1;
@@ -572,7 +541,6 @@ int gl_polygon (const int *p, int len)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   int c = len / 2;
   if (0 == c) return 0;
   QPoint *pt= new QPoint[c];
@@ -588,7 +556,6 @@ int gl_rect (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
@@ -626,7 +593,6 @@ int gl_text (char *ys)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   if (!w->font) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   QString qs = QString::fromUtf8 (ys);
@@ -651,7 +617,6 @@ int gl_textcolor ()
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->textcolor = QColor (w->color);
   w->textpen = QPen (w->painter->pen());
   w->textpen.setColor (w->textcolor);
@@ -674,7 +639,6 @@ int gl_windoworg (const int *p)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
   w->painter->translate (*(p), *(p + 1));
   w->orgx += *(p);
   w->orgy += *(p + 1);
@@ -693,7 +657,6 @@ glcmds (const int *ptr, int ncnt)
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w->painter) return 1;
-  if (!w->painter->isActive()) return 1;
 
   while (p < ncnt) {
     cnt = *(ptr + p);
@@ -837,7 +800,6 @@ int gl_updategl(void *g)
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
       if ((((Child *)g)->type == "opengl") && ((Child *)g)->widget) {
-//      qDebug() << "gl_updategl ok "+ s2q(f->child->id);
         ((Opengl2 *)(((Opengl *) g)->widget))->updateGL();
         return 0;
       }

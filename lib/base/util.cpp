@@ -416,7 +416,7 @@ int initialblanks(QString t)
 // is non-empty and all digit
 bool isint(const string s)
 {
-  int n=s.size();
+  int n=(int)s.size();
   if (n==0) return false;
   for(int i=0; i<n; i++)
     if(!isdigit(s[i])) return false;
@@ -480,13 +480,13 @@ int matchparens(QChar mode, QString p)
   Q_UNUSED(mode);
   string s=q2s(p);
   char c;
-  int n, len=s.size();
+  int n, len=(int)s.size();
   string t="";
   for(int i=0; i<len; i++) {
     if(s[i] == '(' || s[i] == '[' || s[i] == '{')
       t.push_back(s[i]);
     else if(s[i] == ')' || s[i] == ']' || s[i] == '}') {
-      n=t.size()-1;
+      n=(int)t.size()-1;
       if(n<0)
         return 2;
       else {

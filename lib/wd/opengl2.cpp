@@ -1,7 +1,7 @@
 
 #include <QPainter>
-#include <QPaintEngine>
-#include <math.h>
+//#include <QPaintEngine>
+//#include <math.h>
 
 #include "opengl.h"
 #include "opengl2.h"
@@ -11,44 +11,33 @@
 extern Opengl *opengl;
 
 // ---------------------------------------------------------------------
-Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget( format)
+Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(format)
 {
   Q_UNUSED(parent);
   pchild = c;
-  active=false;
-  nopaint=false;
-  jpaint=false;
-  epaint=false;
   initialized = false;
-  pixmap=0;
   painter=0;
   fontheight=0;
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
-//  this->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-//  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
-  updateGeometry();
-  setMouseTracking (true);         // for mmove event
+  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
+  setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
+}
 
-//  setAttribute(Qt::WA_PaintOnScreen);
-  setAttribute(Qt::WA_NoSystemBackground);
-//  setAutoBufferSwap (false);
+// ---------------------------------------------------------------------
+QPixmap Opengl2::getpixmap()
+{
+  return QPixmap::grabWidget(this, 0, 0, width(), height());
 }
 
 // ---------------------------------------------------------------------
 void Opengl2::initializeGL()
 {
-//  qDebug() << "opengl2 initializeGL";
-
   pchild->event="initialize";
   pchild->pform->signalevent(pchild);
-
-//  qDebug() << "opengl2 initializeGL exit";
   initialized = true;
-
 }
-
 
 // ---------------------------------------------------------------------
 void Opengl2::paintgl()
@@ -60,58 +49,34 @@ void Opengl2::paintgl()
 void Opengl2::paintGL()
 {
   if (!initialized) return;
-
-//  qDebug() << "opengl2 paintGL";
-
-  QPainter painter;
-  painter.begin(this);
-  painter.beginNativePainting();
-
-  epaint=true;
-  if (!nopaint) {
-    jpaint=true;
-    pchild->event="paint";
-    pchild->pform->signalevent(pchild);
-    jpaint=false;
-  }
-
-  painter.endNativePainting();
-
-  if (!nopaint) {
-    this->active=true;
-    this->painter=&painter;
-    jpaint=true;
-    pchild->event="paintz";
-    pchild->pform->signalevent(pchild);
-    jpaint=false;
-    this->painter=0;
-    this->active=false;
-  }
-
-  painter.end();
-  swapBuffers();
-  epaint=false;
-
-//  qDebug() << "opengl2 paintGL exit";
+  painter=new QPainter(this);
+  pchild->event="paint";
+  pchild->pform->signalevent(pchild);
+  paintend();
 }
 
 // ---------------------------------------------------------------------
-void Opengl2::resizeGL ( int width, int height )
+void Opengl2::paintend()
 {
-//  qDebug() << "opengl2 resizeGL";
-//  qDebug() << "opengl2 resizeGL new size " + QString::number(width) + " " + QString::number(height);
+  if (painter) {
+    painter->end();
+    delete painter;
+    painter=0;
+  }
+}
 
+// ---------------------------------------------------------------------
+void Opengl2::resizeGL(int width, int height)
+{
   Q_UNUSED(width);
   Q_UNUSED(height);
 
   pchild->event="resize";
   pchild->pform->signalevent(pchild);
-
-//  qDebug() << "opengl2 resizeGL exit";
 }
 
 // ---------------------------------------------------------------------
-void Opengl2::buttonEvent (QEvent::Type type, QMouseEvent *event)
+void Opengl2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
   opengl=(Opengl *)pchild;
 
@@ -151,9 +116,9 @@ void Opengl2::buttonEvent (QEvent::Type type, QMouseEvent *event)
   // sysmodifiers = shift+2*control
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysmodifiers[20];
-  sprintf (sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+  sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
   char sysdata[200];
-  sprintf (sysdata , "%d %d %d %d %d %d %d %d %d %d %d %d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+  sprintf(sysdata , "%d %d %d %d %d %d %d %d %d %d %d %d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
 
   pchild->event=evtname;
   pchild->sysmodifiers=string(sysmodifiers);
@@ -162,8 +127,9 @@ void Opengl2::buttonEvent (QEvent::Type type, QMouseEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void Opengl2::wheelEvent (QWheelEvent *event)
+void Opengl2::wheelEvent(QWheelEvent *event)
 {
+  qDebug() << "wheel event";
   opengl=(Opengl *)pchild;
 
   char deltasign = ' ';
@@ -176,9 +142,9 @@ void Opengl2::wheelEvent (QWheelEvent *event)
   // sysmodifiers = shift+2*control
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysmodifiers[20];
-  sprintf (sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+  sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
   char sysdata[200];
-  sprintf (sysdata , "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
+  sprintf(sysdata , "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 
   pchild->event=string("mwheel");
   pchild->sysmodifiers=string(sysmodifiers);
@@ -189,31 +155,31 @@ void Opengl2::wheelEvent (QWheelEvent *event)
 // ---------------------------------------------------------------------
 void Opengl2::mousePressEvent(QMouseEvent *event)
 {
-  buttonEvent (QEvent::MouseButtonPress, event);
+  buttonEvent(QEvent::MouseButtonPress, event);
 }
 
 // ---------------------------------------------------------------------
 void Opengl2::mouseMoveEvent(QMouseEvent *event)
 {
-  buttonEvent (QEvent::MouseMove, event);
+  buttonEvent(QEvent::MouseMove, event);
 }
 
 // ---------------------------------------------------------------------
 void Opengl2::mouseDoubleClickEvent(QMouseEvent *event)
 {
-  buttonEvent (QEvent::MouseButtonDblClick, event);
+  buttonEvent(QEvent::MouseButtonDblClick, event);
 }
 
 // ---------------------------------------------------------------------
 void Opengl2::mouseReleaseEvent(QMouseEvent *event)
 {
-  buttonEvent (QEvent::MouseButtonRelease, event);
+  buttonEvent(QEvent::MouseButtonRelease, event);
 }
 
 // ---------------------------------------------------------------------
 void Opengl2::mouseWheelEvent(QWheelEvent *event)
 {
-  wheelEvent (event);
+  wheelEvent(event);
 }
 
 // ---------------------------------------------------------------------
@@ -257,12 +223,12 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
     key1=(key & 0xff) | 0xf800;
   }
   char sysmodifiers[20];
-  sprintf (sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+  sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
   char sysdata[20];
   QString keyt = event->text();
   if (!key1)
-    sprintf (sysdata , "%s", event->text().toUtf8().constData());
-  else sprintf (sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
+    sprintf(sysdata , "%s", event->text().toUtf8().constData());
+  else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
 
   pchild->event=string("char");
   pchild->sysmodifiers=string(sysmodifiers);

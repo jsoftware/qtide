@@ -24,6 +24,7 @@
 #include "pane.h"
 #include "isigraph.h"
 #include "menus.h"
+#include "qtstate.h"
 #include "tabs.h"
 #ifdef QT_OS_ANDROID
 #include "../base/androidextras.h"
@@ -87,6 +88,7 @@ void wdpshow();
 void wdpstylesheet();
 void wdptop();
 void wdq();
+void wdqtstate(string p);
 void wdqueries(string);
 #ifndef QT_NO_QUICKVIEW1
 void wdquickview1();
@@ -132,7 +134,6 @@ int rc;
 string lasterror="";
 string result="";
 
-// TODO  for debug
 string cmdstr;
 string ccmd;
 
@@ -145,7 +146,9 @@ int wd(char *s,int slen,char *&res,int &len)
   wd1();
   len=result.size();
   res=(char *)result.c_str();
-  return rc;
+  int r=rc;
+  rc=0;
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -242,7 +245,6 @@ void wd1()
     else if (c=="ws")
       wdws();
 #endif
-// not yet implemented
     else if (0) {
       cmd.getparms();
       wdnotyet();
@@ -770,12 +772,24 @@ void wdq()
 }
 
 // ---------------------------------------------------------------------
+void wdqtstate(string p)
+{
+  rc=-2;
+  result=qtstate(p);
+}
+
+// ---------------------------------------------------------------------
 void wdqueries(string s)
 {
   string p=cmd.getparms();
 
   if (s=="qd") {
     wdstate(form,0);
+    return;
+  }
+
+  if (s=="qtstate") {
+    wdqtstate(p);
     return;
   }
 

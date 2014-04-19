@@ -194,10 +194,9 @@ void _stdcall Joutput(J jt,int type, char* s)
 
   if(MTYOEXIT==type) {
     exit((int)(intptr_t)s);
-    // term->filequit(true);
   }
 
-  int n=strlen(s);
+  int n=(int)strlen(s);
   if (n==0) return;
   if (s[n-1]=='\n') s[n-1]='\0';
   QString t=QString::fromUtf8(s);

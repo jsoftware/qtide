@@ -23,7 +23,9 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QFontDialog>
+#include <QInputDialog>
 #include <QMessageBox>
+#include <QStringList>
 #include <QTextDocument>
 
 #ifndef QT_NO_PRINTER
@@ -46,12 +48,12 @@ QString mb(string p);
 static QString mbcolor();
 static QString mbdir();
 static QString mbfont();
-// static QString mbinfo(QString);
-static QString mbprint(bool);
-static QString mbprintx(bool);
+static QString mbinput();
 static QString mbmsg();
 static QString mbopen();
 static QString mbopen1();
+static QString mbprint(bool);
+static QString mbprintx(bool);
 static QString mbsave();
 
 static QString fixsep(QString s);
@@ -81,6 +83,8 @@ QString mb(string p)
     return mbdir();
   if (type=="font")
     return mbfont();
+  if (type=="input")
+    return mbinput();
   if (type=="open")
     return mbopen();
   if (type=="open1")
@@ -199,13 +203,82 @@ QString mbfont()
   }
   font=QFontDialog::getFont(&ok,def,QApplication::focusWidget());
   if (!ok) return "";
+  return fontspec(font);
+}
+
+// ---------------------------------------------------------------------
+QString mbinput()
+{
+  QString type,title,label,text;
+  QWidget *w=QApplication::focusWidget();
   QString r;
-  r="\"" + font.family() + "\" " + QString::number(font.pointSize());
-  if (font.bold()) r+=" bold";
-  if (font.italic()) r+=" italic";
-  if (font.strikeOut()) r+=" strikeout";
-  if (font.underline()) r+=" underline";
-  return r;
+  bool ok=true;
+  int s=arg.size();
+  if (s<3) {
+    error("input needs at least: type title label");
+    return "";
+  }
+  type=arg.at(0);
+  title=arg.at(1);
+  label=arg.at(2);
+
+// mb input double title label value min max decimals
+  if (type=="double") {
+    if (s != 7) {
+      error("input double needs 6 parameters");
+      return "";
+    }
+    double dval=arg.at(3).toDouble();
+    double dmin=arg.at(4).toDouble();
+    double dmax=arg.at(5).toDouble();
+    int ddec=arg.at(6).toInt();
+    r= QString::number(QInputDialog::getDouble(w, title, label, dval, dmin, dmax, ddec,&ok));
+  }
+
+// mb input int title label value min max step
+  else if (type=="int") {
+    if (s != 7) {
+      error("input int needs 6 parameters");
+      return "";
+    }
+    int ival=arg.at(3).toInt();
+    int imin=arg.at(4).toInt();
+    int imax=arg.at(5).toInt();
+    int istep=arg.at(6).toInt();
+    r=QString::number(QInputDialog::getInt(w, title, label, ival,imin,imax,istep,&ok));
+  }
+
+//mb input item title label index ifeditable items
+  else if (type=="item") {
+    if (s != 6) {
+      error("input item needs 5 parameters");
+      return "";
+    }
+    int index=arg.at(3).toInt();
+    bool ifed=0 != arg.at(4).toInt();
+    QStringList items=rsplit(q2s(arg.at(5)));
+    r=QInputDialog::getItem(w, title, label, items, index, ifed, &ok);
+  }
+
+// mb input text title label value
+  else if (type=="text") {
+    if (s==3)
+      text="";
+    else  if (s==4)
+      text=arg.at(3);
+    else {
+      error("input text needs 3 o4 4 parameters");
+      return "";
+    }
+    r= QInputDialog::getText(w, title, label, QLineEdit::Normal, text,&ok);
+  }
+
+  else {
+    error(q2s("unsupported input type: " + type));
+    return "";
+  }
+
+  return ok ? r : "";
 }
 
 // ---------------------------------------------------------------------
@@ -420,13 +493,6 @@ QMessageBox::StandardButtons getotherbuttons()
   return r;
 }
 
-// ---------------------------------------------------------------------
-//QString mbinfo(QString s)
-//{
-//  info("Message Box",s);
-//  return "";
-//}
-//
 // ---------------------------------------------------------------------
 QString fixsep(QString s)
 {

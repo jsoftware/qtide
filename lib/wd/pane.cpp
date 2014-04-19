@@ -24,6 +24,7 @@
 #include "editm.h"
 #include "edith.h"
 #include "image.h"
+#include "isidraw.h"
 #include "isigraph.h"
 #include "listbox.h"
 #ifndef QT_NO_OPENGL
@@ -92,6 +93,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,p,pform,this);
   else if (c=="image")
     child=(Child *) new Image(n,p,pform,this);
+  else if (c=="isidraw")
+    child=(Child *) new Isidraw(n,p,pform,this);
   else if (c=="isigraph")
     child=(Child *) new Isigraph(n,p,pform,this);
   else if (c=="listbox")
@@ -407,7 +410,7 @@ bool Pane::line(string c, string s)
 // ---------------------------------------------------------------------
 void Pane::setstretch(Child *cc, string factor)
 {
-  if (layout->type!='g') ((QBoxLayout *)(layout->bin))->setStretchFactor(cc->widget,atoi(factor.c_str()));
+  if (layout->type!='g')((QBoxLayout *)(layout->bin))->setStretchFactor(cc->widget,atoi(factor.c_str()));
 }
 
 // ---------------------------------------------------------------------

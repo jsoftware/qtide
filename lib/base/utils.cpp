@@ -69,13 +69,6 @@ int fkeynum(int key,bool c,bool s)
 }
 
 // ---------------------------------------------------------------------
-void fontsetsize(int n)
-{
-  config.Font.setPointSize(n);
-  fontset(config.Font);
-}
-
-// ---------------------------------------------------------------------
 void fontdiff(int n)
 {
   config.Font.setPointSize(n+config.Font.pointSize());
@@ -96,12 +89,31 @@ void fontset(QFont font)
 }
 
 // ---------------------------------------------------------------------
+void fontsetsize(int n)
+{
+  config.Font.setPointSize(n);
+  fontset(config.Font);
+}
+
+// ---------------------------------------------------------------------
+QString fontspec(QFont font)
+{
+  QString r;
+  r="\"" + font.family() + "\" " + QString::number(font.pointSize());
+  if (font.bold()) r+=" bold";
+  if (font.italic()) r+=" italic";
+  if (font.strikeOut()) r+=" strikeout";
+  if (font.underline()) r+=" underline";
+  return r;
+}
+
+// ---------------------------------------------------------------------
 // get command string in form: mode)text
 QString getcmd(QString mode,QString t)
 {
   string v=q2s(t.trimmed());
   const char *c=v.c_str();
-  int i=0,p=0,s=v.size();
+  int i=0,p=0,s=(int)v.size();
   for (; i<s; i++) {
     if (c[i]==')') p=i;
     if (! (isalnum(c[i]) || c[i]==')' || c[i]=='.')) break;
@@ -111,6 +123,18 @@ QString getcmd(QString mode,QString t)
   if (b==string::npos) return t;
   v.erase(0,b+1);
   return s2q(v);
+}
+
+// ---------------------------------------------------------------------
+string getversion()
+{
+  string r;
+  r=APP_VERSION;
+#ifdef QT_NO_WEBKIT
+  r=r+"s";
+#endif
+  r=r+"/"+qVersion();
+  return r;
 }
 
 // ---------------------------------------------------------------------

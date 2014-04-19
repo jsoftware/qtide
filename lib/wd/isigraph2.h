@@ -2,16 +2,9 @@
 #define ISIGRAPH2_H
 
 #include <string>
-#include <QBrush>
 #include <QPainter>
-#include <QPainterPath>
-#include <QColor>
 #include <QPen>
 #include <QPixmap>
-#include <QRect>
-#include <QWidget>
-#include <QResizeEvent>
-#include <QEvent>
 
 #include "font.h"
 #include "child.h"
@@ -23,11 +16,18 @@ class Isigraph2 : public QWidget
 public:
   Isigraph2(Child *c, QWidget *parent);
   ~Isigraph2();
+  QPixmap getpixmap();
+  void newpixmap();
+
+  void paintend();
+  string type;
 
   QBrush brush;
   Font *font;
   QPen pen;
   QPen textpen;
+  QPixmap *pixmap;
+
   QColor color;
   QColor pencolor;
   QColor brushcolor;
@@ -36,24 +36,18 @@ public:
   QPainter *painter;
   QPainterPath path;
 
-  QPixmap *pixmap;
-
   int fontheight;
 
   bool antialiased;
+  bool ifpixmap;
   bool transformed;
-  bool active;
-  bool nopaint;
-  bool jpaint;
-  bool epaint;
-  bool initialdisplay;
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
 
 protected:
   void paintEvent(QPaintEvent *event);
-  void resizeEvent (QResizeEvent *event);
+  void resizeEvent(QResizeEvent *event);
   void mousePressEvent(QMouseEvent *event);
   void mouseReleaseEvent(QMouseEvent *event);
   void mouseDoubleClickEvent(QMouseEvent *event);
@@ -64,11 +58,12 @@ protected:
   void mouseWheelEvent(QWheelEvent *event);
 
 private slots:
-  void resetSize();
 
 private:
-  void buttonEvent (QEvent::Type type, QMouseEvent *event);
-  void wheelEvent (QWheelEvent *event);
+  void buttonEvent(QEvent::Type type, QMouseEvent *event);
+  void paintEvent_isidraw();
+  void paintEvent_isigraph();
+  void wheelEvent(QWheelEvent *event);
   Child *pchild;
 
 };

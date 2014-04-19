@@ -207,7 +207,7 @@ void Bedit::selectline(int p)
   int t=qMax(0,firstVisibleBlock().blockNumber());
   QPoint bottom(0,viewport()->height()-1);
   int b = cursorForPosition(bottom).blockNumber();
-  if (p < t || p>b)
+  if (p<t || p>b)
     settop(qMax(0,p-(b-t)/2));
 
   if (d<0)

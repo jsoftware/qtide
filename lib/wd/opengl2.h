@@ -2,7 +2,7 @@
 #define OPENGL2_H
 
 #include <QGLWidget>
-#include <QEvent>
+//#include <QEvent>
 #include <QPainter>
 
 #include "font.h"
@@ -19,7 +19,10 @@ class Opengl2 : public QGLWidget
 public:
   Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
   ~Opengl2();
-  void paintgl ();
+
+  QPixmap getpixmap();
+  void paintgl();
+  void paintend();
 
   QBrush brush;
   Font *font;
@@ -32,16 +35,10 @@ public:
 
   QPainter *painter;
 
-  QPixmap *pixmap;
-
   int fontheight;
 
   bool antialiased;
   bool transformed;
-  bool active;
-  bool nopaint;
-  bool jpaint;
-  bool epaint;
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
@@ -49,9 +46,9 @@ public:
 public slots:
 
 protected:
-  void paintGL ();
-  void resizeGL (int,int);
-  void initializeGL ();
+  void paintGL();
+  void resizeGL(int,int);
+  void initializeGL();
 
   void mousePressEvent(QMouseEvent *event);
   void mouseReleaseEvent(QMouseEvent *event);
@@ -65,8 +62,8 @@ protected:
 private slots:
 
 private:
-  void buttonEvent (QEvent::Type type, QMouseEvent *event);
-  void wheelEvent (QWheelEvent *event);
+  void buttonEvent(QEvent::Type type, QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
   Child *pchild;
   bool initialized;
 

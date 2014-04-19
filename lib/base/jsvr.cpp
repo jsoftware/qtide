@@ -527,7 +527,7 @@ void sets(QString name, string s)
   QByteArray nb=name.toUtf8();
   nlen=nb.size();
 
-  slen=s.size();
+  slen=(int)s.size();
   tlen=n*(1+slen/n);
 
 //  hdr[0]=(4==n) ? 225 : 227;
@@ -560,7 +560,7 @@ void jsetc(C* name, C* sb, I slen)
   n=sizeof(I);
   hlen=n*5;
 
-  nlen=strlen(name);
+  nlen=(int)strlen(name);
 
   tlen=n*(1+slen/n);
 

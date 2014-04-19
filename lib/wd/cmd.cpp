@@ -210,7 +210,7 @@ void Cmd::skiptows()
 QStringList bsplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str(),s.size());
+  c.init((char*)s.c_str(),(int)s.size());
   return c.bsplits();
 }
 
@@ -220,7 +220,7 @@ QStringList bsplit(string s)
 QStringList qsplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str(),s.size());
+  c.init((char*)s.c_str(),(int)s.size());
   return c.qsplits();
 }
 
@@ -239,7 +239,7 @@ QStringList rsplit(string s)
 vector<string> ssplit(string s)
 {
   Cmd c;
-  c.init((char*)s.c_str(),s.size());
+  c.init((char*)s.c_str(),(int)s.size());
   return c.ssplits();
 }
 

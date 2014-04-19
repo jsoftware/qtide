@@ -18,7 +18,6 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
 #endif
-
   Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
@@ -34,8 +33,3 @@ void Opengl::setform()
   opengl=this;
 }
 
-// ---------------------------------------------------------------------
-void Opengl::set(string p,string v)
-{
-  Child::set(p,v);
-}

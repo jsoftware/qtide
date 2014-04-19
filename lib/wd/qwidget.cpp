@@ -1,7 +1,5 @@
 // QWidget control
 
-#include <QWidget>
-
 #include "wd.h"
 #include "qwidget.h"
 #include "form.h"
