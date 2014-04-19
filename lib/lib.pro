@@ -31,11 +31,10 @@ contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
 contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
 
+# android limitation, cannot load too many libs
 android: QT -= declarative
-android: !contains(DEFINES,QT53) {
-  QT -= quick
-  QT -= quickwidgets
-}
+android: QT -= quickwidgets
+android: !contains(DEFINES,QT53) QT -= quick
 
 # to exclude QtWebKit, uncomment the following line
 # QT -= webkit
@@ -58,6 +57,12 @@ CONFIG(debug, debug|release) {
 rel = debug
 } else {
 rel = release
+}
+
+# qt5 quick depend on opengl
+contains(DEFINES,QT50) {
+contains(QT,quick) QT += opengl
+contains(QT,quickwidgets) QT += opengl
 }
 
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
@@ -129,7 +134,6 @@ contains(QT,quickwidgets) QT -= quickwidgets
 } else {
 contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES -= QT_NO_QUICKVIEW2
 !contains(DEFINES,QT_QUICKVIEW2): DEFINES += QT_QUICKVIEW2
-QT += multimedia sensors
 }
 
 !contains(QT,declarative) {
