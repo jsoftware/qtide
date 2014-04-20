@@ -165,14 +165,26 @@ J jeload(void* callbacks)
 // WIN arg is 0, Unix arg is argv[0]
 void jepath(char* arg)
 {
-#ifdef _WIN32
   Q_UNUSED(arg);
+#if !defined(QT_OS_ANDROID)
+  if (FHS) {
+    strcpy(pathdll,JDLLNAME);
+#if defined(_WIN32_)
+    *(strrchr(pathdll,'.')) = 0;
+    strcat(pathdll,"-" JDLLVER);
+    strcat(pathdll,".dll");
+#else
+    strcat(pathdll,"." JDLLVER);
+#endif
+    return;
+  }
+#endif
+#ifdef _WIN32
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
 #elif defined(QT_OS_ANDROID)
-  Q_UNUSED(arg);
   QFileInfo fileInfo(LibName);
   strcpy(path,fileInfo.canonicalPath().toUtf8().constData());
   qDebug() << "jepath " << s2q(path);
@@ -225,14 +237,9 @@ void jepath(char* arg)
   snk=path+strlen(path)-1;
   if('/'==*snk) *snk=0;
 #endif
-  if (!FHS) {
-    strcpy(pathdll,path);
-    strcat(pathdll,filesepx );
-    strcat(pathdll,JDLLNAME);
-  } else {
-    strcpy(pathdll,JDLLNAME);
-    strcat(pathdll,"." JDLLVER);
-  }
+  strcpy(pathdll,path);
+  strcat(pathdll,filesepx );
+  strcat(pathdll,JDLLNAME);
 // fprintf(stderr,"arg4 %s\n",path);
 }
 
@@ -405,16 +412,18 @@ int jefirst(int type,char* arg)
     }
   } else {
     if(0==type) {
-#if defined(_WIN32)
-      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
-#elif  defined(ANDROID)
-//      strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+#if defined(QT_OS_ANDROID)
       strcat(input,"(3 : '0!:0 y')<INSTALLROOT,'/bin");
 #else
-      if (!FHS)
+      if (!FHS) {
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
-      else
+      } else {
+#if defined(_WIN32)
+        strcat(input,"(3 : '0!:0 y')<(2!:5'ALLUSERSPROFILE')'\\j\\" JDLLVER);
+#else
         strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
+#endif
+      }
 #endif
       strcat(input,filesepx);
       strcat(input,"profile.ijs'");

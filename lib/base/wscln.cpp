@@ -45,7 +45,6 @@ WsCln::~WsCln()
 
 void * WsCln::openurl(QString url)
 {
-  int port=80;
   url.trimmed();
   if (url.isEmpty()) {
 #ifdef DEBUG_WEBSOCKET
@@ -58,11 +57,12 @@ void * WsCln::openurl(QString url)
 #endif
     return (void *) 0;
   }
-  if (url.startsWith("wss://", Qt::CaseInsensitive)) port=443;
 
 #ifdef QT53
   QWebSocket* socket = new QWebSocket();
 #else
+  int port=80;
+  if (url.startsWith("wss://", Qt::CaseInsensitive)) port=443;
   QWebSocket* socket = new QWebSocket(this, NULL, QtWebsocket::WS_V13);
 #endif
 

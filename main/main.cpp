@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 
   bool fhs = false;
 #ifdef QT_OS_ANDROID
+  fhs = true;
   return state_run(argc, argv, QCoreApplication::applicationFilePath(),fhs);
 #else
 #ifdef _WIN32
