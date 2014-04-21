@@ -19,19 +19,18 @@ public:
   Picm();
 
 private slots:
+  void on_sfile_currentIndexChanged();
   void on_times_currentRowChanged(int);
   void on_externaldiff_clicked();
   void on_restore_clicked();
   void on_view_clicked();
   void reject();
 
-
 private:
-
   void closeit();
   QWidget *createpanel();
   QWidget *createview();
-  void init();
+  void init(QString, bool);
   QStringList pic_files();
   void tcompare(int n);
   QString unstamp(QString);
@@ -39,7 +38,9 @@ private:
 
   PComboBox *sfile;
   QString File;
-  QString Path;
+  QString FilePath;
+  QString SnapPath;
+  QStringList PicFiles;
   QStringList Stamps;
   QStringList Temps;
   QString Text;

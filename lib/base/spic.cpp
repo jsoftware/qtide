@@ -27,14 +27,9 @@ QByteArray pp_stamp();
 // ---------------------------------------------------------------------
 Picm::Picm()
 {
-  QString f,s;
-  f=note->editFile();
-  s=note->editText();
-
-  Path=snapgetpath(cfpath(f)) + "/p" + ss_date();
-  File=cfsname(f);
-  Text=s;
-
+  QString f=note->editFile();
+  FilePath=cfpath(f);
+  SnapPath=snapgetpath(cfpath(f)) + "/p" + ss_date();
   Title="File Snapshots";
   QVBoxLayout *layout=new QVBoxLayout;
   layout->setContentsMargins(0,0,0,0);
@@ -53,7 +48,7 @@ Picm::Picm()
   setxywh(this,"Picm");
 #endif
   QMetaObject::connectSlotsByName(this);
-  init();
+  init(cfsname(f),true);
   show();
 }
 
@@ -116,23 +111,31 @@ QWidget *Picm::createview()
 }
 
 // ---------------------------------------------------------------------
-void Picm::init()
+void Picm::init(QString v,bool first)
 {
+  noevents(1);
+  File=v;
+  note->fileopen(FilePath+"/"+File);
+  Text=note->editText();
+
   int i;
   QList<QByteArray> t;
   QString m;
   QStringList s,f;
 
-  f=pic_files();
-  sfile->addItems(f);
-  sfile->setCurrentIndex(f.indexOf(File));
+  if (first) {
+    PicFiles=pic_files();
+    sfile->addItems(PicFiles);
+    sfile->setCurrentIndex(PicFiles.indexOf(File));
+  }
 
-  t=cfreadbin(Path + "/" + File).split(char(255));
+  t=cfreadbin(SnapPath + "/" + File).split(char(255));
   t.removeLast();
   if (t.isEmpty())
     t.append((Text+"000000").toUtf8());
   for (i=0; i<t.size(); i++)
     s.append(QString(t.at(i)));
+
   Stamps.clear();
   Texts.clear();
   for (i=s.size()-1; i>=0; i--) {
@@ -146,6 +149,7 @@ void Picm::init()
   times->addItems(Stamps);
   times->setCurrentRow(0);
   tcompare(0);
+  noevents(0);
 }
 
 // ---------------------------------------------------------------------
@@ -170,8 +174,30 @@ void Picm::on_restore_clicked()
 }
 
 // ---------------------------------------------------------------------
+void Picm::on_sfile_currentIndexChanged()
+{
+  if (NoEvents) return;
+  QString f=sfile->currentText();
+  QString p=FilePath+"/"+f;
+
+  if (!cfexist(p)) {
+    QString m="file " + f + " does not exist. OK to create?";
+    if (queryNY("File Restore",m))
+      cfwrite(p,QString(""));
+    else     {
+      f=File;
+      noevents(1);
+      sfile->setCurrentIndex(PicFiles.indexOf(f));
+      noevents(0);
+    }
+  }
+  init(f,false);
+}
+
+// ---------------------------------------------------------------------
 void Picm::on_times_currentRowChanged(int n)
 {
+  if (NoEvents) return;
   tcompare(n);
 }
 
@@ -189,7 +215,6 @@ void Picm::tcompare(int n)
   s="comparing:\n";
   s+=File + "  " + Stamps.at(n) + "  " + QString::number(t.size()) + "\n";
   s+=File + "  " + "current   " + QString::number(Text.size()) + "\n";
-
   s+=compare(t.split('\n'),Text.split('\n'));
   tview->setPlainText(s);
   tview->setFocus();
@@ -200,7 +225,7 @@ void Picm::tcompare(int n)
 // get pic file list in directory
 QStringList Picm::pic_files()
 {
-  return cflist(Path + "/p" + ss_date(),"");
+  return cflist(SnapPath,"");
 }
 
 // ---------------------------------------------------------------------

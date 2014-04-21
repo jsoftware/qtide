@@ -109,7 +109,7 @@ QString getprojectpath()
     r=cpath ("~Project");
   else if (config.UserFolderKeys.contains("User"))
     r=cpath ("~User");
-  else if  (!config.UserFolderKeys.isEmpty())
+  else if (!config.UserFolderKeys.isEmpty())
     r= config.UserFolderValues.at(0);
   else
     r=config.UserPath.absolutePath();
