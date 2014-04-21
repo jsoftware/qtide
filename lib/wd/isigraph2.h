@@ -16,9 +16,10 @@ class Isigraph2 : public QWidget
 public:
   Isigraph2(Child *c, QWidget *parent);
   ~Isigraph2();
+
+  void fill(const int *);
   QPixmap getpixmap();
   void newpixmap();
-
   void paintend();
   string type;
 

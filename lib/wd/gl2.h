@@ -13,6 +13,7 @@ extern "C" {
   Dllexport int glcmds (const int *, const int);
   Dllexport int glcursor (int a);
   Dllexport int glellipse (const int *p);
+  Dllexport int glfill (const int *p);
   Dllexport int glfont (char *face);
   Dllexport int glfont2 (const int *p, int len);
   Dllexport int glfontangle (int a);

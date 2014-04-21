@@ -454,6 +454,12 @@ void Note::setlinewrap(bool b)
 }
 
 // ---------------------------------------------------------------------
+void Note::setmodified(int n, bool b)
+{
+  tabs->setmodified(n,b);
+}
+
+// ---------------------------------------------------------------------
 // for new note or second note
 void Note::setpos()
 {

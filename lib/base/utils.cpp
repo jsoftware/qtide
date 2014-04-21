@@ -301,7 +301,14 @@ void openfile1(QString f)
 void openj(const char *s)
 {
   if (!ShowIde) return;
-  openfile1(QString(s));
+  QString f(s);
+  f=f.trimmed();
+  if (f.isEmpty()) return;
+  if(!cfexist(f)) {
+    info("Open","Not found: "+f);
+    return;
+  }
+  openfile1(f);
 }
 
 // ---------------------------------------------------------------------

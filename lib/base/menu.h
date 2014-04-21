@@ -159,6 +159,8 @@ private:
 #ifdef JQT
   QAction *helpconstantsAct;
   QAction *helpcontrolsAct;
+  QAction *helpdemoqtAct;
+  QAction *helpdemowdAct;
   QAction *helpdictionaryAct;
   QAction *helpforeignsAct;
   QAction *helpgeneralAct;

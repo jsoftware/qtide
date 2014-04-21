@@ -32,6 +32,8 @@ void Menu::createhelpActions()
   helpconstantsAct = makeact("helpconstantsAct","&Constants","");
   helpcontextAct = makeact("helpcontextAct","&Context Sensitive","Ctrl+F1");
   helpcontrolsAct = makeact("helpcontrolsAct","&Control Structures","");
+  helpdemoqtAct = makeact("helpdemoqtAct","&Qt Demos...","");
+  helpdemowdAct = makeact("helpdemowdAct","&wd Demos...","");
   helpdictionaryAct = makeact("helpdictionaryAct","&Dictionary","");
   helpforeignsAct = makeact("helpforeignsAct","&Foreign Conjunction","");
   helpgeneralAct = makeact("helpgeneralAct","&General Info","");
@@ -50,14 +52,12 @@ void Menu::createhelpMenu()
   helpMenu->addAction(helphelpAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpgeneralAct);
-//  helpMenu->addAction(helpreleaseAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpvocabAct);
   helpMenu->addAction(helpconstantsAct);
   helpMenu->addAction(helpcontrolsAct);
   helpMenu->addAction(helpforeignsAct);
   helpMenu->addSeparator();
-//  helpMenu->addAction(helprelnotesAct);
   helpMenu->addAction(helpdictionaryAct);
   helpMenu->addSeparator();
   QMenu *m = helpMenu->addMenu(tr("Studio"));
@@ -66,6 +66,9 @@ void Menu::createhelpMenu()
   m->addAction(helplabsadvanceAct);
   m->addAction(helplabschaptersAct);
   m->addSeparator();
+  m->addAction(helpdemoqtAct);
+  m->addSeparator();
+  m->addAction(helpdemowdAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
   helpMenu->addSeparator();
@@ -94,6 +97,18 @@ void Note::on_helpcontextAct_triggered()
 void Note::on_helpcontrolsAct_triggered()
 {
   term->on_helpcontrolsAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helpdemoqtAct_triggered()
+{
+  term->on_helpdemoqtAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helpdemowdAct_triggered()
+{
+  term->on_helpdemowdAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -178,6 +193,18 @@ void Term::on_helpconstantsAct_triggered()
 void Term::on_helpcontrolsAct_triggered()
 {
   htmlhelp("dictionary/ctrl");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helpdemoqtAct_triggered()
+{
+  tedit->docmds("demoqt_jqtide_$0", false);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helpdemowdAct_triggered()
+{
+  tedit->docmds("demowd_jqtide_$0", false);
 }
 
 // ---------------------------------------------------------------------

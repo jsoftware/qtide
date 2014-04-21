@@ -41,6 +41,7 @@ public:
   void setindex(int index);
   void setlinenos(bool);
   void setlinewrap(bool);
+  void setmodified(int, bool);
   void setpos();
   void settext(QString s);
   void settitle(QString name, bool mod);
@@ -104,6 +105,8 @@ public slots:
 #ifdef JQT
   void on_helpconstantsAct_triggered();
   void on_helpcontrolsAct_triggered();
+  void on_helpdemoqtAct_triggered();
+  void on_helpdemowdAct_triggered();
   void on_helpdictionaryAct_triggered();
   void on_helpforeignsAct_triggered();
   void on_helphelpAct_triggered();

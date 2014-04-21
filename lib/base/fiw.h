@@ -46,6 +46,7 @@ private:
   void readwin();
   void refresh();
   void reject();
+  void setmodified();
 
   void search(int dir);
   int search1(int dir);

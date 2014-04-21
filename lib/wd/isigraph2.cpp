@@ -28,6 +28,16 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 }
 
 // ---------------------------------------------------------------------
+void Isigraph2::fill(const int *p)
+{
+  QColor c(*(p), *(p + 1), *(p + 2));
+  if (pixmap)
+    pixmap->fill(c);
+  else
+    painter->fillRect(0,0,width(),height(),c);
+}
+
+// ---------------------------------------------------------------------
 QPixmap Isigraph2::getpixmap()
 {
   if (pixmap)
@@ -85,7 +95,6 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
     if (w > pixmap->width() || h > pixmap->height()) {
       if (painter) delete painter;
       QPixmap *p=new QPixmap(w+128,h+128);
-      p->fill();
       painter=new QPainter(p);
       painter->drawPixmap(QPoint(0,0),*pixmap);
       delete pixmap;
@@ -93,7 +102,6 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
     }
   } else {
     pixmap=new QPixmap(w,h);
-    pixmap->fill();
     painter=new QPainter(pixmap);
   }
   painter->setRenderHint(QPainter::Antialiasing, true);

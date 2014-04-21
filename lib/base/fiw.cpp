@@ -429,6 +429,7 @@ void Fiw::search_replace(int d)
 
   if (d==0) {
     Win->setPlainText(Text);
+    setmodified();
     if (0 <= (hit=search1(1))) {
       TextPos=hit;
       showhit();
@@ -446,6 +447,7 @@ void Fiw::search_replace(int d)
     int pos=Win->readcurpos();
     int top=Win->readtop();
     Win->setPlainText(Text);
+    setmodified();
     Win->settop(top);
     Win->setcurpos(pos);
 
@@ -468,6 +470,19 @@ QStringList Fiw::setlist(QString s, QStringList t)
 }
 
 // ---------------------------------------------------------------------
+void Fiw::setmodified()
+{
+  if (Parent)
+    note->setmodified(note->editIndex(),true);
+}
+
+// ---------------------------------------------------------------------
+void Fiw::setreplacelist(QString s)
+{
+  ReplaceList=setlist(s,ReplaceList);
+}
+
+// ---------------------------------------------------------------------
 void Fiw::setsearchdirection(int d)
 {
   d=qMax(-1,qMin(1,d));
@@ -481,12 +496,6 @@ void Fiw::setsearchdirection(int d)
 void Fiw::setsearchlist(QString s)
 {
   SearchList=setlist(s,SearchList);
-}
-
-// ---------------------------------------------------------------------
-void Fiw::setreplacelist(QString s)
-{
-  ReplaceList=setlist(s,ReplaceList);
 }
 
 // ---------------------------------------------------------------------

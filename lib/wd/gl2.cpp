@@ -311,9 +311,6 @@ int glclear2(void *p)
   w->painter->translate(-w->orgx, -w->orgy);
   w->orgx = 0;
   w->orgy = 0;
-
-// !!! default is true, maybe leave that way
-//  w->painter->setClipping (false);
   w->clipped = 0;
 
   w->painter->setPen(QPen(QColor(255, 255, 255),1));
@@ -379,6 +376,16 @@ int glellipse(const int *p)
   Isigraph2 *w = (Isigraph2 *)isigraph->widget;
   if (!w->painter) return 1;
   w->painter->drawEllipse(*(p), *(p + 1),  *(p + 2),  *(p + 3));
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glfill(const int *p)
+{
+  if (!isigraph) return 1;
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget;
+  if (!w->painter) return 1;
+  w->fill(p);
   return 0;
 }
 
