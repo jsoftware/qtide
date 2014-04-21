@@ -1,6 +1,7 @@
 #ifndef NTABS_H
 #define NTABS_H
 
+#include <QFileSystemWatcher>
 #include <QTabWidget>
 
 class Nedit;
@@ -41,16 +42,17 @@ public:
 
 private slots:
   void currentChanged(int index);
-
+  void fileChanged(const QString &);
   void modificationChanged(bool b);
   void tabCloseRequested(int index);
 
 private:
+  int getfileindex(QString f);
   void tabsetcolor(int index,bool ifmod);
   int tabopen1(QString s,int line);
 
   Note *pnote;
-
+  QFileSystemWatcher *watcher;
 };
 
 #endif

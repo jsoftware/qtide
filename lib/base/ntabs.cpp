@@ -17,6 +17,7 @@ using namespace std;
 Ntabs::Ntabs(Note *p)
 {
   pnote=p;
+  watcher=new QFileSystemWatcher(this);
   setDocumentMode(true);
   setObjectName("ntabs");
   setMovable(true);
@@ -26,6 +27,8 @@ Ntabs::Ntabs(Note *p)
           this, SLOT(tabCloseRequested(int)));
   connect(this, SIGNAL(currentChanged(int)),
           this, SLOT(currentChanged(int)));
+  connect(watcher, SIGNAL(fileChanged(const QString &)),
+          this, SLOT(fileChanged(const QString &)));
 }
 
 // ---------------------------------------------------------------------
@@ -41,6 +44,32 @@ void Ntabs::currentChanged(int index)
   pnote->settitle(e->fname,e->document()->isModified());
   pnote->siderefresh();
   pnote->projectsave();
+}
+
+// ---------------------------------------------------------------------
+void Ntabs::fileChanged(const QString &path)
+{
+  int index=getfileindex(path);
+  Nedit *e=(Nedit *)widget(index);
+  if (e->text==cfread(e->file)) return;
+  QString m="File contents changed on disk: " + e->sname;
+  m=m+"\n\n" + "Reload from disk?";
+  if (queryNY("File Changed",m)) {
+    e->text = cfread(e->file);
+    e->setPlainText(e->text);
+    setmodified(index,false);
+  }
+}
+
+// ---------------------------------------------------------------------
+int Ntabs::getfileindex(QString f)
+{
+  int r=-1;
+  int n=count();
+  for (int i=0; i<n; i++)
+    if (f==((Nedit *)widget(i))->fname)
+      r=i;
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -190,6 +219,7 @@ void Ntabs::tabclosefile(QString f)
   for (i=0; i<count(); i++)
     if (((Nedit *)widget(i))->fname==f) {
       tabclose(i);
+      watcher->removePath(f);
       break;
     }
   noevents(0);
@@ -264,6 +294,7 @@ int Ntabs::tabopen1(QString s,int line)
           this, SLOT(modificationChanged(bool)));
   if(note2)
     note2->fileclose(s);
+  watcher->addPath(s);
   return n;
 }
 
@@ -368,6 +399,7 @@ void Ntabs::tabsaveas(int index)
   setmodified(index,false);
   setTabText(index,e->sname);
   tabsetindex(index);
+  watcher->addPath(s);
 }
 
 // ---------------------------------------------------------------------
