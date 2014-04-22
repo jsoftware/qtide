@@ -1,5 +1,5 @@
 
-VERSION = 1.0.27
+VERSION = 1.1.1
 JDLLVER = 8.0.2    # ignored if not FHS
 
 # DEFINES += BIGENDIAN # uncomment this line for ppc mac
@@ -51,7 +51,7 @@ android: !contains(DEFINES,QT53) QT -= quick
 # to exclude quickwidget only, uncomment the following line
 # QT -= quickwidgets
 # to exclude quickview1 only, uncomment the following line
-# QT -= declarative 
+# QT -= declarative
 
 CONFIG(debug, debug|release) {
 rel = debug

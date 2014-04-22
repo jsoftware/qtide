@@ -1,4 +1,3 @@
-#include <QCryptographicHash>
 #include <QDate>
 
 #include "base.h"
@@ -12,19 +11,12 @@ using namespace std;
 
 QStringList SnapTrees;
 
-QString getsha1(QString);
 bool snapfcopy(QString from,QString to);
 bool snapshot1(bool,QString,QString);
 bool ss_erase(QString p,QString s);
 QStringList ss_files(QString d);
 bool ss_make(QString from,QString to);
 bool ss_match(QString p, QString q);
-
-// ---------------------------------------------------------------------
-QString getsha1(QString s)
-{
-  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Sha1).toHex();
-}
 
 // ---------------------------------------------------------------------
 bool snapfcopy(QString from,QString to)

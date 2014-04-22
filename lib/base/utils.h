@@ -14,6 +14,7 @@ void fontset(QFont font);
 extern "C" Dllexport void fontsetsize(int n);
 QString fontspec(QFont font);
 QString getcmd(QString,QString);
+QString getsha1(QString);
 std::string getversion();
 bool gitavailable();
 void gitgui(QString path);

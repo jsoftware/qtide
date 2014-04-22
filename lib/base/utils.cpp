@@ -1,5 +1,6 @@
 /* utils - app specific utils */
 
+#include <QCryptographicHash>
 #include <QDirIterator>
 #include <QFont>
 #include <QPoint>
@@ -18,11 +19,13 @@
 using namespace std;
 
 extern "C" {
+  Dllexport void getsha1(const char *, const char *&, int &);
   Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
 bool ShowIde=true;
+string sha1;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -123,6 +126,20 @@ QString getcmd(QString mode,QString t)
   if (b==string::npos) return t;
   v.erase(0,b+1);
   return s2q(v);
+}
+
+// ---------------------------------------------------------------------
+QString getsha1(QString s)
+{
+  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Sha1).toHex();
+}
+
+// ---------------------------------------------------------------------
+void getsha1(const char *s, const char *&res, int &len)
+{
+  sha1=q2s(getsha1(c2q(s)));
+  res=(char *)sha1.c_str();
+  len=sha1.size();
 }
 
 // ---------------------------------------------------------------------
