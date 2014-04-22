@@ -66,7 +66,7 @@ QWidget *Pnew::createfolderpanel()
   QPushButton *browse=makebutton("Browse");
   browse->setAutoDefault(false);
   browse->setText("");
-  browse->setIcon(QIcon("images/dir.png"));
+  browse->setIcon(QIcon(":images/dir.png"));
   h->addWidget(browse,0);
   w->setLayout(h);
   return w;

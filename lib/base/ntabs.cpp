@@ -194,6 +194,7 @@ void Ntabs::tabclose(int index)
 {
   noevents(1);
   if (tabsave(index)) {
+    watcher->removePath(((Nedit *)widget(index))->fname);
     removeTab(index);
   }
   pnote->scriptenable();
@@ -219,7 +220,6 @@ void Ntabs::tabclosefile(QString f)
   for (i=0; i<count(); i++)
     if (((Nedit *)widget(i))->fname==f) {
       tabclose(i);
-      watcher->removePath(f);
       break;
     }
   noevents(0);
