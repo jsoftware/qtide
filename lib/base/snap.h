@@ -4,6 +4,7 @@
 void snap_init();
 QString snapgetpath(QString);
 QString snappath(QString);
+bool snaprmdir(QString path);
 void snapshot(bool force, QString path);
 void snapshot_tree(QString folder);
 QString ss_date();

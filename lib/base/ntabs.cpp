@@ -49,6 +49,8 @@ void Ntabs::currentChanged(int index)
 // ---------------------------------------------------------------------
 void Ntabs::fileChanged(const QString &path)
 {
+  if (NoEvents) return;
+  noevents(1);
   int index=getfileindex(path);
   Nedit *e=(Nedit *)widget(index);
   if (e->text==cfread(e->file)) return;
@@ -59,6 +61,7 @@ void Ntabs::fileChanged(const QString &path)
     e->setPlainText(e->text);
     setmodified(index,false);
   }
+  noevents(0);
 }
 
 // ---------------------------------------------------------------------
@@ -346,7 +349,7 @@ bool Ntabs::tabsave(int index)
   config.filepos_set(e->fname,e->readtop());
   QString t = e->toPlainText();
   if (config.TrimTrailingWS)
-    t=dtbs(t);
+    t=trimtws(t);
   if (t==e->text) {
     setmodified(index,false);
     return true;

@@ -32,6 +32,7 @@ Note::Note()
 {
   if (!config.ProjInit)
     project.init();
+  setAttribute(Qt::WA_DeleteOnClose);
   setFocusPolicy(Qt::StrongFocus);
   sideBarShow=true;
   QVBoxLayout *layout=new QVBoxLayout;

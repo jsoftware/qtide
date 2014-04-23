@@ -251,6 +251,28 @@ QStringList cfreadx(QString s)
 }
 
 // ---------------------------------------------------------------------
+// remove directory (may be non-empty)
+// when used should first check OK to remove directory
+bool cfrmdir(const QString & d)
+{
+  bool r = true;
+  QDir dir(d);
+
+  if (dir.exists(d)) {
+    Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+      if (info.isDir())
+        r = cfrmdir(info.absoluteFilePath());
+      else
+        r = QFile::remove(info.absoluteFilePath());
+      if (!r)
+        return r;
+    }
+    r = dir.rmdir(d);
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 // get short name from filename
 QString cfsname(QString s)
 {
@@ -329,16 +351,6 @@ QString dtb(QString s)
     }
   }
   return "";
-}
-
-// ---------------------------------------------------------------------
-// delete trailing blanks on each line
-QString dtbs(QString s)
-{
-  QStringList r=s.split('\n');
-  for (int i=0; i<r.size(); i++)
-    r[i]=dtb(r.at(i));
-  return r.join("\n");
 }
 
 // ---------------------------------------------------------------------
@@ -741,6 +753,19 @@ QString toqlist(QStringList s)
     r.append(";\"" + s.at(i) + "\"");
   r.append(")");
   return r;
+}
+
+// ---------------------------------------------------------------------
+// trim trailing whitespace (for TrimTrailingWS)
+// trims WS on each line, and trim extra trailing LFs
+QString trimtws(QString s)
+{
+  QStringList r=s.split('\n');
+  for (int i=0; i<r.size(); i++)
+    r[i]=dtb(r.at(i));
+  while ((r.size()>1) && (r.at(r.size()-1).isEmpty()) && (r.at(r.size()-2).isEmpty()))
+    r.removeLast();
+  return r.join("\n");
 }
 
 // ---------------------------------------------------------------------

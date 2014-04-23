@@ -46,6 +46,13 @@ QString snappath(QString p)
 }
 
 // ---------------------------------------------------------------------
+bool snaprmdir(QString p)
+{
+  if (!matchhead(config.SnapPath.absolutePath(),p)) return false;
+  return cfrmdir(p);
+}
+
+// ---------------------------------------------------------------------
 void snapshot(bool force, QString path)
 {
   if (config.Snapshots==0) return;
@@ -94,7 +101,7 @@ bool snapshot1(bool force, QString today, QString path)
     ss_make (path,pfx + seq);
   }
 
-  for (int i=0; i<d.size()-(config.Snapshots+1); i++)
+  for (int i=0; i<d.size()-config.Snapshots; i++)
     ss_erase(p,d.at(i));
 
   return true;
@@ -122,9 +129,7 @@ QString ss_date()
 // ---------------------------------------------------------------------
 bool ss_erase(QString p,QString s)
 {
-  if (!matchhead(p,config.SnapPath.absolutePath())) return false;
-  cderase(p + s);
-  return true;
+  return snaprmdir(p + s);
 }
 
 // ---------------------------------------------------------------------
