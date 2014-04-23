@@ -1,4 +1,5 @@
 
+#include <QApplication>
 #include <QLabel>
 #include <QVBoxLayout>
 #include "plaintextedit.h"
@@ -9,8 +10,9 @@
 using namespace std;
 
 // ---------------------------------------------------------------------
-Eview::Eview()
+Eview::Eview(QWidget *parent)
 {
+  Q_UNUSED(parent);
   ensureCursorVisible();
   setLineWrapMode(PlainTextEdit::NoWrap);
   setFont(config.Font);
@@ -38,9 +40,9 @@ void Eview::highlightCurrentLine()
 // ---------------------------------------------------------------------
 TextView::TextView(QString t,QString c,QString s)
 {
-  Eview *e=new Eview();
-  e->document()->setPlainText(s);
-  e->moveCursor(QTextCursor::Start);
+  ev=new Eview(this);
+  ev->document()->setPlainText(s);
+  ev->moveCursor(QTextCursor::Start);
 
   QVBoxLayout *v=new QVBoxLayout();
 
@@ -50,7 +52,7 @@ TextView::TextView(QString t,QString c,QString s)
     QLabel *cap=new QLabel(c);
     v->addWidget(cap);
   }
-  v->addWidget(e);
+  v->addWidget(ev);
   setLayout(v);
   setWindowTitle(t);
 #ifdef SMALL_SCREEN
@@ -61,7 +63,7 @@ TextView::TextView(QString t,QString c,QString s)
 #endif
   activateWindow();
   show();
-  e->setFocus();
+  ev->setFocus();
 }
 
 // ---------------------------------------------------------------------
@@ -75,6 +77,16 @@ void TextView::reject()
 void TextView::savepos()
 {
   config.winpos_save(this,"View");
+}
+
+// ---------------------------------------------------------------------
+void TextView::keyPressEvent(QKeyEvent *event)
+{
+  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  bool ctrl = mod.testFlag(Qt::ControlModifier);
+  if (ctrl && event->key()==Qt::Key_W)
+    ev->setLineWrapMode((1==ev->lineWrapMode()) ? QPlainTextEdit::NoWrap : QPlainTextEdit::WidgetWidth);
+  else QDialog::keyPressEvent(event);
 }
 
 // ---------------------------------------------------------------------

@@ -78,7 +78,7 @@ void Menu::createhelpMenu()
 // ---------------------------------------------------------------------
 void Note::on_helpaboutAct_triggered()
 {
-  helpabout();
+  term->on_helpaboutAct_triggered();
 }
 
 // ---------------------------------------------------------------------

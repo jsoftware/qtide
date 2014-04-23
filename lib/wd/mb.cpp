@@ -3,6 +3,7 @@
 //   wd 'mb type buttons title message'
 //
 // type specifies the icon and default behaviour:
+//  about
 //  info      (default OK button)
 //  warn      (default OK button)
 //  critical  (default OK button)
@@ -45,6 +46,7 @@
 #include "../base/state.h"
 
 QString mb(string p);
+static QString mbabout();
 static QString mbcolor();
 static QString mbdir();
 static QString mbfont();
@@ -77,6 +79,8 @@ QString mb(string p)
 
   type=arg.first();
   arg.removeFirst();
+  if (type=="about")
+    return mbabout();
   if (type=="color")
     return mbcolor();
   if (type=="dir")
@@ -143,6 +147,18 @@ QString mbmsg()
   else if (type=="warn")
     QMessageBox::warning(QApplication::focusWidget(),t,m,buttons,button1);
   return "";
+}
+
+// ---------------------------------------------------------------------
+QString mbabout()
+{
+  if (arg.size()!=2) {
+    error("about needs title and text");
+    return "";
+  }
+  QMessageBox::about(QApplication::focusWidget(),arg.at(0),arg.at(1));
+  return"";
+
 }
 
 // ---------------------------------------------------------------------

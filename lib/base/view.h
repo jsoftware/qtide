@@ -10,7 +10,7 @@ class Eview : public PlainTextEdit
   Q_OBJECT
 
 public:
-  Eview();
+  Eview(QWidget *parent = 0);
 
 private slots:
   void highlightCurrentLine();
@@ -31,7 +31,10 @@ private slots:
 private:
   void reject();
   void savepos();
+  void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
+
+  Eview *ev;
 
 };
 
@@ -40,6 +43,7 @@ void textview(QString t,QStringList s);
 void textview(QString t,QString c,QString s);
 void textview(QString s);
 void textview(QStringList s);
+
 
 #endif
 

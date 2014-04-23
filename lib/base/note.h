@@ -96,7 +96,6 @@ public slots:
 #endif
   void on_filequitAct_triggered();
   void on_filerecentAct_triggered();
-  //void on_filereloadAct_triggered();
   void on_scriptrestoreAct_triggered();
   void on_filesaveAct_triggered();
   void on_helpaboutAct_triggered();
