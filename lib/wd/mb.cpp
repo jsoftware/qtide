@@ -157,7 +157,7 @@ QString mbabout()
     return "";
   }
   QMessageBox::about(QApplication::focusWidget(),arg.at(0),arg.at(1));
-  return"";
+  return "";
 
 }
 

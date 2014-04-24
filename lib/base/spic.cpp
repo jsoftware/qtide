@@ -277,28 +277,29 @@ void pic(QString f,QString s)
 // check dir is initialized
 bool pic_inidir(QString s)
 {
-  QDir d,h,p;
+  QDir d,h;
   QString m;
   QStringList e,f;
 
   d.setPath(s);
   if (d.exists()) return true;
   h.setPath(cfpath(s));
-  m=h.filePath("/plast");
-  p.setPath(m);
-  if (p.exists())
-    snaprmdir(m);
   f << "p*";
   e=h.entryList(f,QDir::Dirs|QDir::Readable);
+
+  QString p="plast"; // no longer used
+  if (e.contains(p)) {
+    snaprmdir(h.filePath(p));
+    e.removeOne(p);
+  }
+
   if(e.size()) {
     qSort(e);
-    h.rename(h.filePath(e.last()),h.filePath("plast"));
     e.removeLast();
     foreach (const QString m,e)
     snaprmdir(h.filePath(m));
   }
-  ss_mkdir(s);
-  return true;
+  return ss_mkdir(s);
 }
 
 // ---------------------------------------------------------------------

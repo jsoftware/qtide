@@ -50,10 +50,10 @@ void Ntabs::currentChanged(int index)
 void Ntabs::fileChanged(const QString &path)
 {
   if (NoEvents) return;
-  noevents(1);
   int index=getfileindex(path);
   Nedit *e=(Nedit *)widget(index);
   if (e->text==cfread(e->file)) return;
+  noevents(1);
   QString m="File contents changed on disk: " + e->sname;
   m=m+"\n\n" + "Reload from disk?";
   if (queryNY("File Changed",m)) {
@@ -119,9 +119,10 @@ void Ntabs::projectopen(bool openfiles)
     tabsetindex(-1);
     pnote->siderefresh();
     recent.ProjectOpen=false;
-    return;
   }
   noevents(0);
+
+  if (Id.isEmpty()) return;
 
   s=recent.projectget(Id);
   index=s.at(1).toInt();
