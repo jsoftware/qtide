@@ -266,6 +266,8 @@ int Ntabs::tabopen1(QString s,int line)
 {
   int n;
   s=cfcase(s);
+  if(note2)
+    note2->fileclose(s);
   QFile *f=new QFile(s);
   if (!f->exists()) {
     delete f;
@@ -296,8 +298,6 @@ int Ntabs::tabopen1(QString s,int line)
   setmodified(n,false);
   connect(e, SIGNAL(modificationChanged(bool)),
           this, SLOT(modificationChanged(bool)));
-  if(note2)
-    note2->fileclose(s);
   watcher->addPath(s);
   return n;
 }

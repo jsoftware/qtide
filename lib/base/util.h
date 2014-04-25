@@ -86,6 +86,7 @@ QStringList qslfcase(QStringList s);
 QStringList qslprependeach(QString p,QStringList s);
 QStringList qslreverse(QStringList s);
 QStringList qsltrim(QStringList p);
+QStringList qsltrimeach(QStringList p);
 
 extern int NoEvents;
 

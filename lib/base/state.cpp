@@ -221,7 +221,14 @@ void Config::initide()
   TermSyntaxHighlight = s->value("Session/TermSyntaxHighlight",false).toBool();
   TrimTrailingWS = s->value("Session/TrimTrailingWS",false).toBool();
 
-  FifExt = s->value("FindinFiles/Extensions","").toStringList();
+  QStringList fx;
+  fx = s->value("FindinFiles/Extensions","").toStringList();
+  fx=qsltrimeach(fx);
+  fx.removeAll("");
+  if (fx.isEmpty())
+    fx << "ijs ijt" << "c cfg cpp h ijs ijt jproj js sh txt" << "htm html" << "*";
+  FifExt=fx;
+
   Terminal = s->value("Run/Terminal","").toString();
 
   t = s->value("Position/Edit","600 100 750 750").toString();

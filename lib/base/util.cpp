@@ -682,6 +682,15 @@ QStringList qsltrim(QStringList p)
 }
 
 // ---------------------------------------------------------------------
+QStringList qsltrimeach(QStringList s)
+{
+  QStringList r;
+  for(int i=0; i<s.size(); i++)
+    r.append(s.at(i).simplified());
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void q2p(QString s,int *n)
 {
   QStringList t = s.split(" ",QString::SkipEmptyParts);

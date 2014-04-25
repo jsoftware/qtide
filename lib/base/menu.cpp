@@ -1127,6 +1127,7 @@ void Note::on_wintextAct_triggered()
 void Note::on_winthrowAct_triggered()
 {
   if (tabs->count()==0) return;
+  if (!tabs->tabsave(tabs->currentIndex())) return;
   QString f=editPage()->fname;
   on_winotherAct_triggered();
   note->fileopen(f);
