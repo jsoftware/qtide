@@ -187,16 +187,21 @@ void Config::initide()
   int fontsize=10;
   QFont::Weight fontweight=QFont::Normal;
 
+  QString terminal="gnome-terminal";
+
 #ifdef QT_OS_ANDROID
   font="Droid Sans Mono";
   fontsize=16;
+  terminal="";
 #endif
 #ifdef __MACH__
   font="Menlo";
   fontsize=14;
+  terminal="/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 #endif
 #ifdef _WIN32
   font="Lucida Console";
+  terminal="cmd.exe";
 #endif
 
 #ifdef QT_OS_ANDROID
@@ -229,7 +234,7 @@ void Config::initide()
     fx << "ijs ijt" << "c cfg cpp h ijs ijt jproj js sh txt" << "htm html" << "*";
   FifExt=fx;
 
-  Terminal = s->value("Run/Terminal","").toString();
+  Terminal = s->value("Run/Terminal",terminal).toString();
 
   t = s->value("Position/Edit","600 100 750 750").toString();
   q2p(t,EditPos);
@@ -288,7 +293,7 @@ void Config::initide()
     "# Snapshots=5                  number of project snapshots kept\n"
     "# Snapshotx=                   snapshots exclusion list\n"
     "# Term=0 0 500 600             initial term position\n"
-    "# Terminal=mate-terminal       show in terminal command\n"
+    "# Terminal=gnome-terminal      show in terminal command\n"
     "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
     "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
     ;

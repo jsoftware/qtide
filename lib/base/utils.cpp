@@ -379,6 +379,10 @@ QStringList project_tree1(QString b,QString s)
 // ---------------------------------------------------------------------
 void projectterminal()
 {
+  if (config.Terminal.isEmpty()) {
+    info("Terminal","The Terminal command should be defined in qtide.cfg.");
+    return;
+  }
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -389,6 +393,9 @@ void projectterminal()
     d=project.Path;
   QProcess p;
   QStringList a;
+#ifdef __MACH__
+  a << d;
+#endif
   p.startDetached(config.Terminal,a,d);
 }
 
