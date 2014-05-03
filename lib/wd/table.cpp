@@ -1,6 +1,7 @@
 
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QDateTime>
 #include <QHeaderView>
 #include <QTableWidget>
 #include <QPushButton>
@@ -19,6 +20,31 @@ static QVector<int>CellTypes;
 extern int rc;
 
 // -------------------------------------------------------------------
+QTableWidgex::QTableWidgex(Table *parent)
+{
+  p=parent;
+}
+
+// -------------------------------------------------------------------
+void QTableWidgex::mousePressEvent(QMouseEvent* event)
+{
+  switch (event->button()) {
+  case Qt::LeftButton:
+    p->lmr = "l";
+    break;
+  case Qt::MidButton:
+    p->lmr = "m";
+    break;
+  case Qt::RightButton:
+    p->lmr = "r";
+    break;
+  default:
+    ;
+  }
+  QTableWidget::mousePressEvent(event);
+}
+
+// -------------------------------------------------------------------
 Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="table";
@@ -26,8 +52,9 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   ifhdr=false;
   row1=col1=0;
   row2=col2=-1;
+  dblclick=0;
 
-  QTableWidget *w=new QTableWidget;
+  QTableWidgex *w=new QTableWidgex(this);
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
@@ -69,6 +96,10 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));
+  connect(w,SIGNAL(cellClicked(int,int)),
+          this,SLOT(on_cellClicked(int,int)));
+  connect(w,SIGNAL(cellDoubleClicked(int,int)),
+          this,SLOT(on_cellDoubleClicked(int,int)));
   connect(w,SIGNAL(currentCellChanged(int,int,int,int)),
           this,SLOT(on_currentCellChanged(int,int,int,int)));
 }
@@ -972,7 +1003,7 @@ string Table::state()
     r+=spair(id,readcell(row,col));
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
     r+=spair(id+"_value",readcellvalue(row,col));
-  } else if (event=="mark") {
+  } else if (event=="mark" || event.substr(0,2)=="mb") {
     r+=spair(id,i2s(row)+" "+i2s(col));
   } else if (event=="clicked") {
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
@@ -1015,6 +1046,44 @@ void Table::on_cellChanged (int r,int c)
 }
 
 // ---------------------------------------------------------------------
+// see on_cellDoubleClicked for event ignore code
+void Table::on_cellClicked (int r, int c)
+{
+  if (NoEvents) return;
+  qint64 ms = (QDateTime::currentDateTime()).toMSecsSinceEpoch()-dblclick;
+  if (ms<250) return;
+  row=r;
+  col=c;
+  event="mb" + lmr + "down";
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+// for button
+void Table::on_cellClicked_button ()
+{
+  if (NoEvents) return;
+  event="clicked";
+  int p=sender()->objectName().toInt();
+  row=p/cls;
+  col=p-row*cls;
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+// a cellClicked event is given immediately after this, and
+// ignored if within time used in on_cellClicked
+void Table::on_cellDoubleClicked (int r, int c)
+{
+  if (NoEvents) return;
+  row=r;
+  col=c;
+  event="mb" + lmr + "dbl";
+  dblclick=QDateTime::currentDateTime().toMSecsSinceEpoch();
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
 void Table::on_currentCellChanged (int r,int c, int pr, int pc)
 {
   if (NoEvents) return;
@@ -1046,15 +1115,4 @@ void Table::on_stateChanged (int n)
   pform->signalevent(this);
 }
 
-// ---------------------------------------------------------------------
-// for button
-void Table::on_cellClicked ()
-{
-  if (NoEvents) return;
-  event="clicked";
-  int p=sender()->objectName().toInt();
-  row=p/cls;
-  col=p-row*cls;
-  pform->signalevent(this);
-}
 

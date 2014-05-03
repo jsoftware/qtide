@@ -112,7 +112,6 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
 // ---------------------------------------------------------------------
 void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  //if (!active) return;
   isigraph=(Isigraph *)pchild;
 
   string lmr = "";

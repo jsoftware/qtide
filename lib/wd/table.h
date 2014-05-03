@@ -1,11 +1,27 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <QTableWidget>
+
 #include "child.h"
 
 class QTableWidgetItem;
 class Form;
 class Pane;
+class Table;
+
+// ---------------------------------------------------------------------
+class QTableWidgex : public QTableWidget
+{
+  Q_OBJECT
+
+public:
+  QTableWidgex(Table *parent);
+  Table *p;
+
+protected:
+  void mousePressEvent(QMouseEvent *event);
+};
 
 // ---------------------------------------------------------------------
 class Table : public Child
@@ -18,13 +34,17 @@ public:
   void set(string p, string v);
   string get(string p, string v);
   string state();
+  string lmr;
+  qint64 dblclick;
 
 private slots:
   void on_cellChanged(int,int);
   void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
   void on_headerClicked(int);
-  void on_cellClicked();
+  void on_cellClicked(int,int);
+  void on_cellDoubleClicked(int,int);
+  void on_cellClicked_button();
 
 private:
   void applyhdralign();

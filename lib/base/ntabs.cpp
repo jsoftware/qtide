@@ -50,7 +50,7 @@ void Ntabs::currentChanged(int index)
 void Ntabs::fileChanged(const QString &path)
 {
   if (NoEvents) return;
-   int index=getfileindex(path);
+  int index=getfileindex(path);
   Nedit *e=(Nedit *)widget(index);
   if (e->text==cfread(e->file)) return;
   noevents(1);
