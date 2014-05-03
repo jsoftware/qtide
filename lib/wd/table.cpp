@@ -1,7 +1,6 @@
 
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QDateTime>
 #include <QHeaderView>
 #include <QTableWidget>
 #include <QPushButton>
@@ -52,7 +51,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   ifhdr=false;
   row1=col1=0;
   row2=col2=-1;
-  dblclick=0;
+  dblclick=QDateTime::currentDateTime();
 
   QTableWidgex *w=new QTableWidgex(this);
   widget=(QWidget*) w;
@@ -1050,8 +1049,7 @@ void Table::on_cellChanged (int r,int c)
 void Table::on_cellClicked (int r, int c)
 {
   if (NoEvents) return;
-  qint64 ms = (QDateTime::currentDateTime()).toMSecsSinceEpoch()-dblclick;
-  if (ms<250) return;
+  if (QDateTime::currentDateTime() < dblclick) return;
   row=r;
   col=c;
   event="mb" + lmr + "down";
@@ -1072,14 +1070,14 @@ void Table::on_cellClicked_button ()
 
 // ---------------------------------------------------------------------
 // a cellClicked event is given immediately after this, and
-// ignored if within time used in on_cellClicked
+// ignored if within dblclick time
 void Table::on_cellDoubleClicked (int r, int c)
 {
   if (NoEvents) return;
   row=r;
   col=c;
   event="mb" + lmr + "dbl";
-  dblclick=QDateTime::currentDateTime().toMSecsSinceEpoch();
+  dblclick=QDateTime::currentDateTime().addMSecs(250);
   pform->signalevent(this);
 }
 

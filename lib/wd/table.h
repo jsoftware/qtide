@@ -1,6 +1,7 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <QDateTime>
 #include <QTableWidget>
 
 #include "child.h"
@@ -35,7 +36,7 @@ public:
   string get(string p, string v);
   string state();
   string lmr;
-  qint64 dblclick;
+  QDateTime dblclick;
 
 private slots:
   void on_cellChanged(int,int);
