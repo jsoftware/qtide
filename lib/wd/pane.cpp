@@ -374,10 +374,12 @@ bool Pane::groupbox(string c, string s)
     QVBoxLayout *vb=new QVBoxLayout;
     vb->addWidget(pform->addpane(0));
     groupboxw->setLayout(vb);
+    form->pane->bin("v");
     return true;
   }
 
   if (cmd=="groupboxend") {
+    bin("z");
     int n=pform->panes.size();
     if (n>1) {
       Pane *p=pform->panes.at(n-2);
