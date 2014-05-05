@@ -37,7 +37,8 @@ void QuickView1::statusChanged(QDeclarativeView::Status status)
   if (status == QDeclarativeView::Error) {
     QStringList errors;
     foreach (const QDeclarativeError &error, this->errors()) errors.append(error.toString());
-    qDebug() << errors.join(QString(", "));
+    info("QtQuick",errors.join(QString(", ")));
+//    qDebug() << errors.join(QString(", "));
   }
 }
 

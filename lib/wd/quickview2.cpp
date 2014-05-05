@@ -66,7 +66,8 @@ void QuickView2::statusChanged(QQuickView::Status status)
   if (status == QQuickView::Error) {
     QStringList errors;
     foreach (const QQmlError &error, this->errors()) errors.append(error.toString());
-    qDebug() << errors.join(QStringLiteral(", "));
+    info("QtQuick",errors.join(QStringLiteral(", ")));
+//    qDebug() << errors.join(QStringLiteral(", "));
   }
 }
 
@@ -74,7 +75,8 @@ void QuickView2::statusChanged(QQuickView::Status status)
 // ---------------------------------------------------------------------
 void QuickView2::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
 {
-  qDebug() << message;
+  info("QtQuick",message);
+//  qDebug() << message;
 }
 #endif
 
