@@ -183,7 +183,7 @@ int glsel(void *g)
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
-      if ((((Child *)g)->type == "isigraph") && ((Child *)g)->widget) {
+      if (((((Child *)g)->type == "isigraph")||(((Child *)g)->type == "isidraw")) && ((Child *)g)->widget) {
         isigraph = (Isigraph *) g;
         f->child = (Child *) g;
         form = f;
@@ -212,7 +212,7 @@ int glsel2(char *g)
   if (form) {
     f=form;
     if ((cc=f->id2child(g))) {
-      if ((cc->type == "isigraph") && (cc->widget)) {
+      if (((cc->type == "isigraph")||(cc->type == "isidraw")) && (cc->widget)) {
         isigraph = (Isigraph *) cc;
         f->child = cc;
         form=f;
@@ -223,7 +223,7 @@ int glsel2(char *g)
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if ((cc=f->id2child(g))) {
-      if ((cc->type == "isigraph") && (cc->widget)) {
+      if (((cc->type == "isigraph")||(cc->type == "isidraw")) && (cc->widget)) {
         isigraph = (Isigraph *) cc;
         f->child = cc;
         form=f;
