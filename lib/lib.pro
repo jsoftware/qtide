@@ -30,6 +30,7 @@ else  {   TEMPLATE = lib
 contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
 contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
+contains(DEFINES,QT50): !contains(DEFINES,QT53): QT -= declarative
 
 # android limitation, cannot load too many libs
 android: QT -= declarative
