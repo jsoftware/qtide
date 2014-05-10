@@ -9,6 +9,8 @@
 #include "font.h"
 #include "child.h"
 
+class QTimer;
+
 class Isigraph2 : public QWidget
 {
   Q_OBJECT
@@ -21,6 +23,7 @@ public:
   QPixmap getpixmap();
   void newpixmap();
   void paintend();
+  void setTimer(int);
   string type;
 
   QBrush brush;
@@ -45,6 +48,11 @@ public:
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
+
+  QTimer *timer;
+
+public slots:
+  void systimer();
 
 protected:
   void paintEvent(QPaintEvent *event);

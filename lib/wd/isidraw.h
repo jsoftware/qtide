@@ -15,6 +15,7 @@ class Isidraw : public Child
 
 public:
   Isidraw(string n, string s, Form *f, Pane *p);
+  void set(string p, string v);
   void setform();
 
 protected:
