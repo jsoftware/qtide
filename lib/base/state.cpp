@@ -206,6 +206,8 @@ void Config::initide()
 
 #ifdef QT_OS_ANDROID
   BackButtonClose = s->value("Session/BackButtonClose",false).toBool();
+  VfuncPos = s->value("Session/VfuncPos",2).toInt();
+  ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
 #endif
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
@@ -250,6 +252,8 @@ void Config::initide()
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/BackButtonClose",BackButtonClose);
+  s->setValue("Session/VfuncPos",VfuncPos);
+  s->setValue("Session/ScrollBarSize",ScrollBarSize);
 #endif
   s->setValue("Session/BoxForm",BoxForm);
   s->setValue("Session/ConfirmClose",ConfirmClose);
@@ -277,8 +281,10 @@ void Config::initide()
     "# \n"
 #ifdef QT_OS_ANDROID
     "# BackButtonClose=false        if Back Button will close the Term (Android only)\n"
+    "# VfuncPos=2                   Vfunc Key 0=disable 1=top 2=bottom (Android only)\n"
+    "# ScrollBarSize=25             width or height of scrollbar (Android only)\n"
 #endif
-    "# BoxForm                      0=linedraw 1=ascii (overrides base cfg)\n"
+    "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
     "# Edit=600 100 750 750         initial edit position\n"
@@ -303,6 +309,11 @@ void Config::initide()
 // ---------------------------------------------------------------------
 void Config::noprofile()
 {
+#ifdef QT_OS_ANDROID
+  BackButtonClose = false;
+  VfuncPos = 2;
+  ScrollBarSize = 25;
+#endif
   ConfirmClose = false;
   ConfirmSave = false;
   Font.setStyleHint(QFont::TypeWriter);
@@ -444,8 +455,9 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
+  bool rc = state_init(argc,argv);
   term = new Term;
-  if (!state_init(argc,argv)) return 1;
+  if (!rc) return 1;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
   regQmlJE();

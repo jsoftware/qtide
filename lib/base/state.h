@@ -50,6 +50,8 @@ public:
   bool Ascii;
 #ifdef QT_OS_ANDROID
   bool BackButtonClose;
+  int VfuncPos;
+  int ScrollBarSize;
 #endif
   QDir BinPath;
   int BoxForm;

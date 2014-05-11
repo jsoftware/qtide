@@ -1,5 +1,6 @@
 
 #include "../base/pcombobox.h"
+#include "../base/state.h"
 
 #include "wd.h"
 #include "combobox.h"
@@ -12,6 +13,9 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
   PComboBox *w=new PComboBox;
+#ifdef QT_OS_ANDROID
+  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   widget=(QWidget*) w;
   if (s.substr(0,4)=="edit")
     w->setEditable(true);

@@ -7,6 +7,7 @@
 
 #include "../base/pcombobox.h"
 #include "../base/plaintextedit.h"
+#include "../base/state.h"
 #include "wd.h"
 #include "table.h"
 #include "form.h"
@@ -54,6 +55,9 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   dblclick=QDateTime::currentDateTime();
 
   QTableWidgex *w=new QTableWidgex(this);
+#ifdef QT_OS_ANDROID
+  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);

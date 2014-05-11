@@ -9,6 +9,7 @@
 #endif
 
 #include <sstream>
+#include <math.h>
 #include "base.h"
 #include "term.h"
 #include "note.h"
@@ -807,3 +808,12 @@ double c_strtod(string s)
   if (p[0]=='_') p[0]='-';
   return strtod(p.c_str(),NULL);
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+QString scrollbarstyle(float n)
+{
+  QString st = "QScrollBar:vertical { width: 99; } QScrollBar:horizontal { height: 99; }";
+  return st.replace("99",QString::number((int)floor(n)));
+}
+#endif

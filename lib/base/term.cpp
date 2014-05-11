@@ -79,11 +79,6 @@ Term::Term()
   layout->setSpacing(0);
   menuBar = new Menu();
   tedit = new Tedit;
-  layout->addWidget(menuBar);
-  layout->addWidget(tedit);
-  setWindowTitle("Term");
-  menuBar->createActions();
-  menuBar->createMenus("term");
 #ifdef QT_OS_ANDROID
 #ifdef SMALL_SCREEN
 #define nfunc 6
@@ -91,16 +86,30 @@ Term::Term()
 #define nfunc 12
 #endif
   QPushButton *w[nfunc];
-  vfunc=new QHBoxLayout;
-  for(int i=0; i<nfunc; i++) {
-    w[i]=new QPushButton("F"+QString::number(i+1),this);
-    w[i]->setObjectName(QString::number(i+1));
-    w[i]->setFocusPolicy(Qt::NoFocus);
-    QObject::connect(w[i], SIGNAL(clicked()), this, SLOT(vfuncClicked()));
-    vfunc->addWidget(w[i]);
+  if ((1==config.VfuncPos)||(2==config.VfuncPos)) {
+    vfunc=new QHBoxLayout;
+    for(int i=0; i<nfunc; i++) {
+      w[i]=new QPushButton("F"+QString::number(i+1),this);
+      w[i]->setObjectName(QString::number(i+1));
+      w[i]->setFocusPolicy(Qt::NoFocus);
+      QObject::connect(w[i], SIGNAL(clicked()), this, SLOT(vfuncClicked()));
+      vfunc->addWidget(w[i]);
+    }
   }
-  layout->addLayout(vfunc);
 #endif
+  layout->addWidget(menuBar);
+#ifdef QT_OS_ANDROID
+  if (1==config.VfuncPos)
+    layout->addLayout(vfunc);
+#endif
+  layout->addWidget(tedit);
+#ifdef QT_OS_ANDROID
+  if (2==config.VfuncPos)
+    layout->addLayout(vfunc);
+#endif
+  setWindowTitle("Term");
+  menuBar->createActions();
+  menuBar->createMenus("term");
   setLayout(layout);
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
