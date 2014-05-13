@@ -68,6 +68,15 @@ android: !contains(DEFINES,QT53) QT -= quick
 # to exclude quickview1 only, uncomment the following line
 # QT -= declarative
 
+# export JQTSLIM before qmake
+JQTSLIM = $$(JQTSLIM)
+!isEmpty(JQTSLIM) {
+  message(building slim jqt)
+  QT -= declarative opengl quick qml quickwidgets webkit
+} else {
+  message(building full jqt)
+}
+
 CONFIG(debug, debug|release) {
   rel = debug
 } else {
