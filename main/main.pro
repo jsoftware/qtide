@@ -19,9 +19,9 @@ android {
 contains(DEFINES,QT50): QT += widgets
 
 CONFIG(debug, debug|release) {
-rel = debug
+  rel = debug
 } else {
-rel = release
+  rel = release
 }
 
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch

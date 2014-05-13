@@ -12,24 +12,38 @@ equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
 
 android  {
-          !contains(DEFINES,QT50): error(requires Qt5)
-          CONFIG += mobility
-          MOBILITY +=
-          QT += androidextras
-          QT -= webkit
-          contains(DEFINES,QT53) {QT += opengl} else {QT -= opengl}
-          DEFINES += QT_OS_ANDROID
-          DEFINES += QT_NO_PRINTER
-          DEFINES += SMALL_SCREEN
-          TEMPLATE = lib
-          TARGET = jqt }
-else  {   TEMPLATE = lib
-          QT += webkit
-          QT += opengl
-          TARGET = jqt }
+  !contains(DEFINES,QT50): error(requires Qt5)
+  CONFIG += mobility
+  MOBILITY +=
+  QT += androidextras
+  QT -= webkit
+  contains(DEFINES,QT53) {
+    QT += opengl
+  } else {
+    QT -= opengl
+  }
+  DEFINES += QT_OS_ANDROID
+  DEFINES += QT_NO_PRINTER
+  DEFINES += SMALL_SCREEN
+  TEMPLATE = lib
+  TARGET = jqt
+} else {
+  TEMPLATE = lib
+  QT += webkit
+  QT += opengl
+  TARGET = jqt
+}
 contains(DEFINES,QT47): QT += declarative
-contains(DEFINES,QT50) {QT += quick} else {QT -= quick}
-contains(DEFINES,QT53) {QT += quickwidgets} else {QT -= quickwidgets}
+contains(DEFINES,QT50) {
+  QT += quick
+} else {
+  QT -= quick
+}
+contains(DEFINES,QT53) {
+  QT += quickwidgets
+} else {
+  QT -= quickwidgets
+}
 contains(DEFINES,QT50): !contains(DEFINES,QT53): QT -= declarative
 
 # android limitation, cannot load too many libs
@@ -55,15 +69,15 @@ android: !contains(DEFINES,QT53) QT -= quick
 # QT -= declarative
 
 CONFIG(debug, debug|release) {
-rel = debug
+  rel = debug
 } else {
-rel = release
+  rel = release
 }
 
 # qt5 quick depend on opengl
 contains(DEFINES,QT50) {
-contains(QT,quick) QT += opengl
-contains(QT,quickwidgets) QT += opengl
+  contains(QT,quick) QT += opengl
+  contains(QT,quickwidgets) QT += opengl
 }
 
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
@@ -110,61 +124,61 @@ INCLUDEPATH += .
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
 !contains(QT,webkit) {
-DEFINES += QT_NO_WEBKIT
-DEFINES -= QT_WEBKIT
+  DEFINES += QT_NO_WEBKIT
+  DEFINES -= QT_WEBKIT
 } else {
-equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
-!contains(DEFINES,QT_WEBKIT): DEFINES += QT_WEBKIT
+  equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
+  !contains(DEFINES,QT_WEBKIT): DEFINES += QT_WEBKIT
 }
 !contains(QT,opengl) {
-!contains(DEFINES,QT_NO_OPENGL): DEFINES += QT_NO_OPENGL
-contains(DEFINES,QT_OPENGL): DEFINES -= QT_OPENGL
+  !contains(DEFINES,QT_NO_OPENGL): DEFINES += QT_NO_OPENGL
+  contains(DEFINES,QT_OPENGL): DEFINES -= QT_OPENGL
 } else {
-android: DEFINES += QT_OPENGL_ES_2
-contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
-!contains(DEFINES,QT_OPENGL): DEFINES += QT_OPENGL
+  android: DEFINES += QT_OPENGL_ES_2
+  contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
+  !contains(DEFINES,QT_OPENGL): DEFINES += QT_OPENGL
 }
 
 contains(DEFINES,QT50) {
 
 # QT50 or later
-!contains(QT,quick) {
-!contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
-contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
-contains(QT,quickwidgets) QT -= quickwidgets
-} else {
-contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES -= QT_NO_QUICKVIEW2
-!contains(DEFINES,QT_QUICKVIEW2): DEFINES += QT_QUICKVIEW2
-}
+  !contains(QT,quick) {
+    !contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
+    contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
+    contains(QT,quickwidgets) QT -= quickwidgets
+  } else {
+    contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES -= QT_NO_QUICKVIEW2
+    !contains(DEFINES,QT_QUICKVIEW2): DEFINES += QT_QUICKVIEW2
+  }
 
-!contains(QT,declarative) {
-!contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
-contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
-} else {
-contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
-!contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
-}
+  !contains(QT,declarative) {
+    !contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
+    contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
+  } else {
+    contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
+    !contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
+  }
 
 } else {
-!contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
-contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
+  !contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
+  contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
 # pre QT50
-!contains(QT,declarative) {
-!contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
-contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
-} else {
-contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
-!contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
-}
+  !contains(QT,declarative) {
+    !contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
+    contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
+  } else {
+    contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
+    !contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
+  }
 
 }
 
 !contains(QT,quickwidgets) {
-!contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES += QT_NO_QUICKWIDGET
-contains(DEFINES,QT_QUICKWIDGET): DEFINES -= QT_QUICKWIDGET
+  !contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES += QT_NO_QUICKWIDGET
+  contains(DEFINES,QT_QUICKWIDGET): DEFINES -= QT_QUICKWIDGET
 } else {
-contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES -= QT_NO_QUICKWIDGET
-!contains(DEFINES,QT_QUICKWIDGET): DEFINES += QT_QUICKWIDGET
+  contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES -= QT_NO_QUICKWIDGET
+  !contains(DEFINES,QT_QUICKWIDGET): DEFINES += QT_QUICKWIDGET
 }
 
 # Input
@@ -193,12 +207,12 @@ HEADERS += \
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
 contains(DEFINES,QT50) {
-!contains(QT,quick): HEADERS -= wd/quickview2.h
-!contains(QT,declarative): HEADERS -= wd/quickview1.h
-!contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.h
+  !contains(QT,quick): HEADERS -= wd/quickview2.h
+  !contains(QT,declarative): HEADERS -= wd/quickview1.h
+  !contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.h
 } else {
-!contains(QT,declarative): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
-HEADERS -= wd/quickview2.h
+  !contains(QT,declarative): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
+  HEADERS -= wd/quickview2.h
 }
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
@@ -235,12 +249,12 @@ SOURCES += \
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT50) {
-!contains(QT,quick): SOURCES -= wd/quickview2.cpp
-!contains(QT,declarative): SOURCES -= wd/quickview1.cpp
-!contains(QT,quick): !contains(QT,declarative): SOURCES -= base/qmlje.cpp
+  !contains(QT,quick): SOURCES -= wd/quickview2.cpp
+  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp
+  !contains(QT,quick): !contains(QT,declarative): SOURCES -= base/qmlje.cpp
 } else {
-!contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
-SOURCES -= wd/quickview2.cpp
+  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
+  SOURCES -= wd/quickview2.cpp
 }
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
