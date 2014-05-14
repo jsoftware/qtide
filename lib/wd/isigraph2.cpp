@@ -44,7 +44,10 @@ QPixmap Isigraph2::getpixmap()
 {
   if (pixmap)
     return pixmap->copy(0,0,width(),height());
-  return QPixmap::grabWidget(this, 0, 0, width(), height());
+  if (painter) return 0;
+  QPixmap p(size());
+  render(&p);
+  return p;
 }
 
 // ---------------------------------------------------------------------

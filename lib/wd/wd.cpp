@@ -144,7 +144,7 @@ int wd(char *s,int slen,char *&res,int &len)
   result.clear();
   cmd.init(s,slen);
   wd1();
-  len=result.size();
+  len=(int)result.size();
   res=(char *)result.c_str();
   int r=rc;
   rc=0;
@@ -828,6 +828,7 @@ void wdqueries(string s)
   } else if (s=="qosver") {
 #ifdef _WIN32
     QSysInfo qsi;
+    Q_UNUSED(qsi);
     if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8)  {
       result="6.2";
       return;
@@ -1262,7 +1263,7 @@ bool notab()
 // ---------------------------------------------------------------------
 string remquotes(string s)
 {
-  int len=s.size();
+  int len=(int)s.size();
   if (len==0) return s;
   if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
     s=s.substr(1,len-2);

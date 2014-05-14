@@ -31,7 +31,10 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
 // ---------------------------------------------------------------------
 QPixmap Opengl2::getpixmap()
 {
-  return QPixmap::grabWidget(this, 0, 0, width(), height());
+  if (painter) return 0;
+  QPixmap p(size());
+  render(&p);
+  return p;
 }
 
 // ---------------------------------------------------------------------

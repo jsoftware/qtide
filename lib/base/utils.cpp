@@ -139,7 +139,7 @@ void getsha1(const char *s, const char *&res, int &len)
 {
   sha1=q2s(getsha1(c2q(s)));
   res=(char *)sha1.c_str();
-  len=sha1.size();
+  len=(int)sha1.size();
 }
 
 // ---------------------------------------------------------------------
