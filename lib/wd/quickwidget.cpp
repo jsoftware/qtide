@@ -13,15 +13,35 @@
 QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="quickwidget";
-  QQuickWidget *w=new QQuickWidget;
-// enum ResizeMode { SizeViewToRootObject, SizeRootObjectToView }
-  w->setResizeMode((QQuickWidget::ResizeMode)(resizeMode=1));
-  w->setContentsMargins(0,0,0,0);
-#if 0
+
+  int mode=1;
+  QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+  if (m.size() && (m.at(0)=="0"||m.at(0)=="1")) mode=!!c_strtoi(q2s(m.at(0)));
   QSurfaceFormat format;
-  format.setRenderableType(QSurfaceFormat::OpenGLES);
-  setFormat(format);
-#endif
+  int l=m.indexOf("version");
+  if ((l!=-1) && (l<m.size()-1) && 0!=m.at(l+1).toDouble()) {
+    int ver1,ver2;
+    QString s=m.at(l+1);
+    int d=s.indexOf(".");
+    if (d==-1) {
+      ver1=s.toInt();
+      ver2=0;
+    } else {
+      ver1=s.mid(0,d).toInt();
+      ver2=s.mid(d+1).toInt();
+    }
+//    qDebug() << QString::number(ver1) << QString::number(ver2);
+    format.setVersion(ver1,ver2);
+  }
+  if (m.contains("compatibility")) format.setProfile(QSurfaceFormat::CompatibilityProfile);
+  else format.setProfile(QSurfaceFormat::CoreProfile);
+
+  QQuickWidget *w=new QQuickWidget;
+  w->setFormat(format);
+// enum ResizeMode { SizeViewToRootObject, SizeRootObjectToView }
+  w->setResizeMode((QQuickWidget::ResizeMode)(resizeMode=mode));
+  w->setContentsMargins(0,0,0,0);
+  w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

@@ -1,65 +1,54 @@
 
 #include <QDir>
-#ifdef QT50
 #include <QQmlError>
 #include <QSurfaceFormat>
-#else
-#include <QDeclarativeContext>
-#include <QDeclarativeError>
-#endif
 
 #include "wd.h"
 #include "quickview2.h"
 #include "form.h"
 #include "cmd.h"
 #include "../base/utils.h"
-#ifndef QT50
-#include "../base/qmlje.h"
-extern QmlJE qmlje;
-#endif
 
 extern QuickView2 * quickview2;
 
 // ---------------------------------------------------------------------
-#ifdef QT50
-QuickView2::QuickView2(string n, string s, int resizemode) : QQuickView()
-#else
-QuickView2::QuickView2(string n, string s, int resizemode) : QDeclarativeView()
-#endif
+QuickView2::QuickView2(string n, string s, int resizemode, string glver) : QQuickView()
 {
   QString qn=s2q(n);
   setObjectName(qn);
 // enum ResizeMode { SizeViewToRootObject, SizeRootObjectToView }
-#ifdef QT50
   setTitle(qn);
   setResizeMode((QQuickView::ResizeMode)(this->resizeMode=resizemode));
-#if 0
+
   QSurfaceFormat format;
-  format.setRenderableType(QSurfaceFormat::OpenGLES);
+  if (!glver.empty()) {
+    int ver1,ver2;
+    string::size_type d=glver.find(".",0);
+    if (d == string::npos) {
+      ver1=atoi(glver.c_str());
+      ver2=0;
+    } else {
+      ver1=atoi(glver.substr(0,d).c_str());
+      ver2=atoi(glver.substr(d+1).c_str());
+    }
+//    qDebug() << QString::number(ver1) << QString::number(ver2);
+    format.setVersion(ver1,ver2);
+  }
+  format.setProfile(QSurfaceFormat::CoreProfile);
   setFormat(format);
-#endif
-#else
-  rootContext()->setContextProperty("QmlJE", &qmlje);
-  setResizeMode((QDeclarativeView::ResizeMode)(this->resizeMode=resizemode));
-#endif
+
   QObject::connect((QObject*)this->engine(), SIGNAL(quit()), this, SLOT(closeview()));
   QString t = s2q(s);
   if (t.contains("://"))
     sourceUrl = QUrl(t);
   else sourceUrl = QUrl::fromLocalFile(t);
   setSource(sourceUrl);
-#ifdef QT50
   connect(this, SIGNAL(statusChanged(QQuickView::Status)), this, SLOT(statusChanged(QQuickView::Status)));
 #ifdef QT53
   connect(this, SIGNAL(sceneGraphError(QQuickWindow::SceneGraphError,QString)), this, SLOT(sceneGraphError(QQuickWindow::SceneGraphError,QString)));
 #endif
-#else
-  connect(this, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged( QDeclarativeView::Status)));
-  connect(this, SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
-#endif
 }
 
-#ifdef QT50
 // ---------------------------------------------------------------------
 void QuickView2::statusChanged(QQuickView::Status status)
 {
@@ -107,27 +96,6 @@ void QuickView2::keyReleaseEvent(QKeyEvent *e)
   QQuickView::keyReleaseEvent(e);
 #endif
 }
-
-#else
-
-// ---------------------------------------------------------------------
-void QuickView2::statusChanged(QDeclarativeView::Status status)
-{
-  if (status == QDeclarativeView::Error) {
-    QStringList errors;
-    foreach (const QDeclarativeError &error, this->errors()) errors.append(error.toString());
-    qDebug() << errors.join(QString(", "));
-  }
-}
-
-// ---------------------------------------------------------------------
-void QuickView2::sceneResized (QSize size)
-{
-  Q_UNUSED(size);
-//  qDebug() << size;
-}
-
-#endif
 
 // ---------------------------------------------------------------------
 void QuickView2::closeview ()

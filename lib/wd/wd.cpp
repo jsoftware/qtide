@@ -973,7 +973,7 @@ void wdquickview1()
       error("quickview1 file error: " + p);
       return;
     }
-    if (n.size()>2) mode=!!c_strtoi(q2s(n.at(2)));
+    if (n.size()>2 && (n.at(2)=="0"||n.at(2)=="1")) mode=!!c_strtoi(q2s(n.at(2)));
     if (quickview1) quickview1->close();
     quickview1=new QuickView1(t,f,mode);
 #ifdef QT_OS_ANDROID
@@ -1012,9 +1012,16 @@ void wdquickview2()
       error("quickview2 file error: " + p);
       return;
     }
-    if (n.size()>2) mode=!!c_strtoi(q2s(n.at(2)));
+    string glver="";
+    if (n.size()>2) {
+      if (n.at(2)=="0"||n.at(2)=="1") mode=!!c_strtoi(q2s(n.at(2)));
+      int l=n.indexOf("version");
+      if ((l!=-1) && (l<n.size()-1) && 0!=n.at(l+1).toDouble()) {
+        glver=q2s(n.at(l+1));
+      }
+    }
     if (quickview2) quickview2->close();
-    quickview2=new QuickView2(t,f,mode);
+    quickview2=new QuickView2(t,f,mode,glver);
 #ifdef QT_OS_ANDROID
     quickview2->showFullScreen();
 #else

@@ -48,6 +48,7 @@ contains(DEFINES,QT50): !contains(DEFINES,QT53): QT -= declarative
 
 # android limitation, cannot load too many libs
 android: QT -= declarative
+# android bug in Qt 5.3 RC
 android: QT -= quickwidgets
 android: !contains(DEFINES,QT53) QT -= quick
 
@@ -73,8 +74,6 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   message(building slim jqt)
   QT -= declarative opengl quick qml quickwidgets webkit
-} else {
-  message(building full jqt)
 }
 
 CONFIG(debug, debug|release) {
