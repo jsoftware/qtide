@@ -42,9 +42,10 @@ void Isigraph2::fill(const int *p)
 // ---------------------------------------------------------------------
 QPixmap Isigraph2::getpixmap()
 {
+  QPixmap m;
   if (pixmap)
     return pixmap->copy(0,0,width(),height());
-  if (painter) return 0;
+  if (painter) return m;
   QPixmap p(size());
   render(&p);
   return p;
