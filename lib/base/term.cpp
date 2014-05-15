@@ -281,7 +281,7 @@ void Term::vfuncClicked()
     if (!Forms.isEmpty()) {
       form=Forms.last();
       wdactivateform();
-    }
+    } else term->repaint();
     break;
   case Qt::Key_F6:
     tedit->docmds("labs_run_jqtide_ 0", false);

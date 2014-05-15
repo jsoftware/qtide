@@ -167,11 +167,14 @@ void Config::init()
   initide();
   initstyle();
 
+// android crash at 9!:7 here
+#ifndef QT_OS_ANDROID
   Ascii="+"==dors("{.9!:6$0");
   if (Ascii!=(BoxForm==1)) {
     var_cmd("boxdraw_j_ "+QString::number(BoxForm));
     Ascii=!Ascii;
   }
+#endif
 
 }
 
