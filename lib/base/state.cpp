@@ -458,8 +458,9 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
-  bool rc = state_init(argc,argv);
+//  bool rc = state_init(argc,argv);
   term = new Term;
+  bool rc = state_init(argc,argv);
   if (!rc) return 1;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
