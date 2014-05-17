@@ -1,8 +1,8 @@
 #ifndef WSSVR_H
 #define WSSVR_H
 
-#include <QtCore>
-#include <QtNetwork>
+// #include <QtCore>
+// #include <QtNetwork>
 
 #ifdef QT53
 #include <QtWebSockets/QtWebSockets>
