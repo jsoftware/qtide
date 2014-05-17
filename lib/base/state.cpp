@@ -167,14 +167,13 @@ void Config::init()
   initide();
   initstyle();
 
-// android crash at 9!:7 here
-#ifndef QT_OS_ANDROID
-  Ascii="+"==dors("{.9!:6$0");
+// workaround for windows and android crash
+//  Ascii="+"==dors("{.9!:6$0");
+  Ascii="1"==dors("\":'+'={.9!:6$0");
   if (Ascii!=(BoxForm==1)) {
     var_cmd("boxdraw_j_ "+QString::number(BoxForm));
     Ascii=!Ascii;
   }
-#endif
 
 }
 
@@ -458,13 +457,8 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
-#ifdef QT_OS_ANDROID
   bool rc = state_init(argc,argv);
-#endif
   term = new Term;
-#ifndef QT_OS_ANDROID
-  bool rc = state_init(argc,argv);
-#endif
   if (!rc) return 1;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
