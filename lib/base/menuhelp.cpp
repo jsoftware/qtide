@@ -300,14 +300,15 @@ void helplabschapters()
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
+  QString w="http://www.jsoftware.com/docs/help802/";
 #ifdef QT_OS_ANDROID
   if (QFile(t).exists())
     tedit->docmds("browse_j_ '" + t.prepend("file://") + "'", false);
-  else tedit->docmds("browse_j_ '" + s.prepend("http://www.jsoftware.com/help/").append(".htm") + "'", false);
+  else tedit->docmds("browse_j_ '" + s.prepend(w).append(".htm") + "'", false);
 #else
   if (QFile(t).exists())
     QDesktopServices::openUrl(QUrl::fromLocalFile(t));
-  else QDesktopServices::openUrl(QUrl(s.prepend("http://www.jsoftware.com/help/").append(".htm"),QUrl::TolerantMode));
+  else QDesktopServices::openUrl(QUrl(s.prepend(w).append(".htm"),QUrl::TolerantMode));
 #endif
 }
 
