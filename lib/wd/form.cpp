@@ -3,6 +3,7 @@
 #include <QBoxLayout>
 #include <QMenuBar>
 #include <QSignalMapper>
+#include <QTimer>
 
 #include <sstream>  //include this to use string streams
 
@@ -62,6 +63,8 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   signalMapper=new QSignalMapper(this);
   connect(signalMapper,SIGNAL(mapped(QWidget *)),
           this,SLOT(buttonClicked(QWidget *)));
+  timer=new QTimer;
+  connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
 }
 
 // ---------------------------------------------------------------------
@@ -90,6 +93,7 @@ Form::~Form()
     }
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
+  if (timer) delete timer;
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
 #ifdef QT_OS_ANDROID
@@ -307,6 +311,16 @@ void Form::setpicon(string p)
 }
 
 // ---------------------------------------------------------------------
+void Form::settimer(string p)
+{
+  int n=c_strtoi(p);
+  if (n)
+    timer->start(n);
+  else
+    timer->stop();
+}
+
+// ---------------------------------------------------------------------
 void Form::showit()
 {
 #ifdef QT_OS_ANDROID
@@ -401,4 +415,11 @@ void Form::status(string s)
   qDebug() << "form status: " << s2q(s);
   qDebug() << "current pane, panes: " << pane << panes;
   qDebug() << "current tab, tabs: " << tab << tabs;
+}
+
+// ---------------------------------------------------------------------
+void Form::systimer()
+{
+  event="timer";
+  signalevent(0);
 }

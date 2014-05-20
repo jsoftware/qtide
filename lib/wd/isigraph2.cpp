@@ -1,4 +1,3 @@
-#include <QTimer>
 #include <QPainter>
 #include <QtGui/qmatrix4x4.h>
 
@@ -25,8 +24,6 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
-  timer=new QTimer;
-  connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
 }
 
 // ---------------------------------------------------------------------
@@ -275,27 +272,8 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::setTimer(int n)
-{
-  if (n)
-    timer->start(n);
-  else
-    timer->stop();
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::systimer()
-{
-  pchild->event="timer";
-  pchild->sysmodifiers="";
-  pchild->sysdata="";
-  pchild->pform->signalevent(pchild);
-}
-
-// ---------------------------------------------------------------------
 Isigraph2::~Isigraph2()
 {
-  if (timer) delete timer;
   if (pchild==(Child *)isigraph) {
     isigraph=0;
     if (painter) delete painter;

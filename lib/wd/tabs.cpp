@@ -1,7 +1,4 @@
 
-//#include <QTabWidget>
-#include <QTimer>
-
 #include "tabwidget.h"
 #include "wd.h"
 #include "tabs.h"

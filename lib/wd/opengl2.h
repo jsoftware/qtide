@@ -8,7 +8,6 @@
 #include "font.h"
 #include "child.h"
 
-class QTimer;
 class Form;
 class Pane;
 
@@ -24,7 +23,6 @@ public:
   QPixmap getpixmap();
   void paintgl();
   void paintend();
-  void setTimer(int);
 
   QBrush brush;
   Font *font;
@@ -44,11 +42,6 @@ public:
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
-
-  QTimer *timer;
-
-public slots:
-  void systimer();
 
 protected:
   void paintGL();

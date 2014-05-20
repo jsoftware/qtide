@@ -1,8 +1,5 @@
 
 #include <QPainter>
-#include <QTimer>
-//#include <QPaintEngine>
-//#include <math.h>
 
 #include "opengl.h"
 #include "opengl2.h"
@@ -24,8 +21,6 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
-  timer=new QTimer;
-  connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
 }
 
 // ---------------------------------------------------------------------
@@ -245,30 +240,10 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void Opengl2::setTimer(int n)
-{
-  if (n)
-    timer->start(n);
-  else
-    timer->stop();
-}
-
-// ---------------------------------------------------------------------
-void Opengl2::systimer()
-{
-  pchild->event="timer";
-  pchild->sysmodifiers="";
-  pchild->sysdata="";
-  pchild->pform->signalevent(pchild);
-}
-
-// ---------------------------------------------------------------------
 Opengl2::~Opengl2()
 {
 //  qDebug() << "opengl2 deleted";
-  if (timer) delete timer;
   if (pchild==(Child *)opengl) {
     opengl=0;
-//    qDebug() << "opengl=0";
   }
 }

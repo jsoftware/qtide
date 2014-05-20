@@ -8,6 +8,7 @@
 class QMenuBar;
 class QSignalMapper;
 class QBoxLayout;
+class QTimer;
 
 class Child;
 class Menus;
@@ -41,6 +42,7 @@ public:
   void setpadding(int l,int t,int r,int b);
   void setpn(string p);
   void setpicon(string p);
+  void settimer(string p);
   void showit();
   void signalevent(Child *c, QKeyEvent *e = 0);
   string state(int evt);
@@ -62,6 +64,7 @@ public:
   Menus *menubar;
   Pane *pane;
   QList<Pane *>panes;
+  QTimer *timer;
   Tabs *tab;
   QList<Tabs *>tabs;
   QSignalMapper *signalMapper;
@@ -71,6 +74,7 @@ public slots:
   void buttonClicked(QWidget *);
   Child *id2child(string n);
   bool ischild(Child* n);
+  void systimer();
 
 protected:
   void closeEvent(QCloseEvent *);

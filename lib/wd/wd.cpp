@@ -74,8 +74,8 @@ void wdmenu(string);
 void wdmsgs();
 void wdnotyet();
 void wdopenj();
-void wdpactive();
 void wdp(string c);
+void wdpactive();
 void wdpas();
 void wdpc();
 void wdpcenter();
@@ -86,6 +86,7 @@ void wdpn();
 void wdpsel();
 void wdpshow();
 void wdpstylesheet();
+void wdptimer();
 void wdptop();
 void wdq();
 void wdqtstate(string p);
@@ -578,7 +579,9 @@ void wdopenj()
 // ---------------------------------------------------------------------
 void wdp(string c)
 {
-  if (c=="pas")
+  if (c=="pactive")
+    wdpactive();
+  else if (c=="pas")
     wdpas();
   else if (c=="pc")
     wdpc();
@@ -586,6 +589,8 @@ void wdp(string c)
     wdpclose();
   else if (c=="pcenter")
     wdpcenter();
+  else if (c=="picon")
+    wdpicon();
   else if (c=="pmove")
     wdpmove();
   else if (c=="pn")
@@ -596,12 +601,10 @@ void wdp(string c)
     wdpshow();
   else if (c=="pstylesheet")
     wdpstylesheet();
-  else if (c=="pactive")
-    wdpactive();
+  else if (c=="ptimer")
+    wdptimer();
   else if (c=="ptop")
     wdptop();
-  else if (c=="picon")
-    wdpicon();
   else if (c=="notyet") {
     cmd.getparms();
     wdnotyet();
@@ -751,6 +754,14 @@ void wdpstylesheet()
   string p=cmd.getparms();
   if (noform()) return;
   form->setStyleSheet(s2q(p));
+}
+
+// ---------------------------------------------------------------------
+void wdptimer()
+{
+  string p=cmd.getparms();
+  if (noform()) return;
+  form->settimer(p);
 }
 
 // ---------------------------------------------------------------------

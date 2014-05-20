@@ -42,25 +42,9 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Opengl::set(string p,string v)
-{
-  if (!widget) return;
-  Opengl2 *w=(Opengl2*) widget;
-  QStringList opt=qsplit(v);
-
-  if (p=="timer") {
-    if (opt.isEmpty()) {
-      error("set timer requires 1 number: " + p);
-      return;
-    }
-    w->setTimer(c_strtoi(q2s(opt.at(0))));
-  } else Child::set(p,v);
-}
-
-// ---------------------------------------------------------------------
 void Opengl::setform()
 {
   if (!widget) return;
-  if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print" || event=="timer")) form=pform;
+  if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) form=pform;
   opengl=this;
 }
