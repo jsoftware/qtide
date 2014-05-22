@@ -2,6 +2,8 @@ bin/
 build/
 config/
 jwd/
+libs/
+android-assets/
 
 cleancdb.sh
 makebill.sh
@@ -18,6 +20,7 @@ jqt.xcodeproj
 Info.plist
 jqt_resource.rc
 
+jconsole
 profile.ijs
 profilex.ijs
 
