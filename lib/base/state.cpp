@@ -457,8 +457,13 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
+#ifdef QT_OS_ANDROID
   bool rc = state_init(argc,argv);
+#endif
   term = new Term;
+#ifndef QT_OS_ANDROID
+  bool rc = state_init(argc,argv);
+#endif
   if (!rc) return 1;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
