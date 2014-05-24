@@ -28,6 +28,9 @@ public:
   I write(void * server, const char * msg, I len, bool binary);
   std::string querySocket();
   bool hasSocket(void * server);
+#ifdef QT53
+  std::string state(void * server);
+#endif
 
 private Q_SLOTS:
   void onConnected();

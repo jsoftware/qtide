@@ -284,6 +284,26 @@ string WsCln::querySocket()
   return s;
 }
 
+#ifdef QT53
+string WsCln::state(void * server)
+{
+  string s = "";
+  QWebSocket* socket = (QWebSocket*)server;
+  if (!hasSocket(socket)) return s;
+  s += spair("errorString", socket->errorString());
+  s += spair("isValid", socket->isValid()?(string)"1":(string)"0");
+  s += spair("localAddress", socket->localAddress().toString());
+  s += spair("localPort", QString::number(socket->localPort()));
+  s += spair("origin", socket->origin());
+  s += spair("peerAddress", socket->peerAddress().toString());
+  s += spair("peerName", socket->peerName());
+  s += spair("peerPort", QString::number(socket->peerPort()));
+  s += spair("requestUrl", socket->requestUrl().toDisplayString());
+  s += spair("resourceName", socket->resourceName());
+  return s;
+}
+#endif
+
 bool WsCln::hasSocket(void * server)
 {
   QWebSocket* socket = (QWebSocket*)server;

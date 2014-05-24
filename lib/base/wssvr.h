@@ -29,6 +29,9 @@ public:
   std::string querySocket();
   std::string errstring;
   bool hasSocket(void * client);
+#ifdef QT53
+  std::string state(void * client);
+#endif
 
 #ifdef QT53
 Q_SIGNALS:

@@ -740,6 +740,17 @@ string spair(string s,string t)
 }
 
 // ---------------------------------------------------------------------
+// pair strings with zero delimeter
+string spair(string s,QString t)
+{
+  string r=s;
+  r.push_back('\0');
+  r.append(q2s(t));
+  r.push_back('\0');
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QString termLF(QString s)
 {
   if (s.isEmpty()||s.endsWith("\n")) return s;

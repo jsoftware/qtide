@@ -51,8 +51,8 @@ string ComboBox::state()
   int n=w->currentIndex();
   string r;
   if (n<0) {
-    r+=spair(id,"");
-    r+=spair(id+"_select","");
+    r+=spair(id,(string)"");
+    r+=spair(id+"_select",(string)"");
   } else {
     r+=spair(id,q2s(w->currentText()));
     r+=spair(id+"_select",i2s(n));

@@ -34,7 +34,7 @@ void CheckBox::set(string p,string v)
 string CheckBox::state()
 {
   QCheckBox *w=(QCheckBox*) widget;
-  return spair(id,w->isChecked()?"1":"0");
+  return spair(id,w->isChecked()?(string)"1":(string)"0");
 }
 
 // ---------------------------------------------------------------------

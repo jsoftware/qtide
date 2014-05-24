@@ -398,7 +398,7 @@ string Form::state(int evt)
   r+=spair("syslocalep",locale);
   r+=spair("syshwndp",hsform());
   r+=spair("syshwndc",hschild());
-  r+=spair("syslastfocus","");
+  r+=spair("syslastfocus",(string)"");
   r+=spair("sysmodifiers",sysmodifiers);
   r+=spair("sysdata",sysdata);
 

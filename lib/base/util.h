@@ -70,6 +70,7 @@ QString remsep(QString);
 QString remtilde(QString);
 QString s2q(std::string);
 std::string spair(std::string s,std::string t);
+std::string spair(std::string s,QString t);
 QString termLF(QString s);
 QString termsep(QString);
 QString trimtws(QString s);

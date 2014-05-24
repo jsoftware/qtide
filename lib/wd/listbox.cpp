@@ -104,8 +104,8 @@ string ListBox::state()
   QList <QListWidgetItem*> list = w->selectedItems();
   string r;
   if (0==list.count()) {
-    r+=spair(id,"");
-    r+=spair(id+"_select","");
+    r+=spair(id,(string)"");
+    r+=spair(id+"_select",(string)"");
   } else {
     if ((w->selectionMode()) == QAbstractItemView::ExtendedSelection) {
       r+=spair(id,getselection());

@@ -51,7 +51,7 @@ void RadioButton::set(string p,string v)
 string RadioButton::state()
 {
   QRadioButton *w=(QRadioButton*) widget;
-  return spair(id,w->isChecked()?"1":"0");
+  return spair(id,w->isChecked()?(string)"1":(string)"0");
 }
 
 // ---------------------------------------------------------------------
