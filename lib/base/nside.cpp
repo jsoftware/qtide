@@ -73,6 +73,9 @@ QWidget *Nside::createdefs()
   layout->setSpacing(0);
   QToolBar *t= Nside::createdefsTB();
   dlw = new QListWidget();
+#ifdef QT_OS_ANDROID
+  dlw->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   connect(dlw,SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(defs_activated(QListWidgetItem*)));
   layout->addWidget(t,0,0);

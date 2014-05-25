@@ -32,6 +32,9 @@ Slog::Slog()
   resize(qMax(300,d[2]),qMax(300,d[3]));
 #endif
   QListWidget *s = new QListWidget();
+#ifdef QT_OS_ANDROID
+  s->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   s->addItems(makeitems());
   s->setCurrentRow(InputLog.size()-1);
 #ifdef QT_OS_ANDROID

@@ -5,6 +5,7 @@
 #include "base.h"
 #include "recent.h"
 #include "rsel.h"
+#include "state.h"
 #include "term.h"
 #include "view.h"
 
@@ -29,6 +30,9 @@ Rsel::Rsel()
   h->setContentsMargins(0,0,0,0);
 
   flist=new QListWidget();
+#ifdef QT_OS_ANDROID
+  flist->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   flist->setAlternatingRowColors(true);
   flist->addItems(s);
   flist->setCurrentRow(0);

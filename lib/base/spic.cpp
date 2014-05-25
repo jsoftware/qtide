@@ -92,6 +92,9 @@ QWidget *Picm::createview()
   v->setContentsMargins(0,0,0,0);
   QSplitter *s=new QSplitter();
   times = new QListWidget();
+#ifdef QT_OS_ANDROID
+  times->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   times->setFont(config.Font);
   times->setObjectName("times");
   tview = new Eview();
