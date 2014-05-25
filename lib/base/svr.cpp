@@ -158,7 +158,6 @@ void Jcon::set(QString s, QString t)
 //J calls for input (debug suspension and 1!:1[1) and we call for input
 char* Jcon::jinput(char* p)
 {
-  if (!tedit) return (char*) 0;
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;
@@ -173,7 +172,6 @@ char* _stdcall Jinput(J jt, char* p)
 {
   Q_UNUSED(jt);
 
-  if (!tedit) return (char*) 0;
   tedit->prompt=c2q(p);
   tedit->setprompt();
   inputready=false;
@@ -198,7 +196,6 @@ void _stdcall Joutput(J jt,int type, char* s)
     exit((int)(intptr_t)s);
   }
 
-  if (!tedit) return;
   int n=(int)strlen(s);
   if (n==0) return;
   if (s[n-1]=='\n') s[n-1]='\0';
