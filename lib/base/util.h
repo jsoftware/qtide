@@ -103,6 +103,7 @@ double c_strtod(std::string s);
 #ifdef QT_OS_ANDROID
 extern float DM_density;
 QString scrollbarstyle(float n);
+QString checkboxstyle(float n);
 #endif
 
 #endif

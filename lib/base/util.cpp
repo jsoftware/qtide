@@ -824,7 +824,14 @@ double c_strtod(string s)
 // ---------------------------------------------------------------------
 QString scrollbarstyle(float n)
 {
-  QString st = "QScrollBar:vertical { width: 99; } QScrollBar:horizontal { height: 99; }";
+  QString st = "QScrollBar:vertical { width: 99px; } QScrollBar:horizontal { height: 99px; }";
+  return st.replace("99",QString::number((int)floor(n)));
+}
+
+// ---------------------------------------------------------------------
+QString checkboxstyle(float n)
+{
+  QString st = "QCheckBox::indicator { width: 99px; height: 99px; }";
   return st.replace("99",QString::number((int)floor(n)));
 }
 #endif

@@ -11,9 +11,6 @@
 // ---------------------------------------------------------------------
 Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent)
 {
-#ifdef QT_OS_ANDROID
-  setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
 

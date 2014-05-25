@@ -10,7 +10,7 @@
 using namespace std;
 
 // ---------------------------------------------------------------------
-Eview::Eview(QWidget *parent)
+Eview::Eview(QWidget *parent) : PlainTextEdit(parent)
 {
   Q_UNUSED(parent);
   ensureCursorVisible();

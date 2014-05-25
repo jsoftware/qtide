@@ -23,6 +23,9 @@ extern int rc;
 QTableWidgex::QTableWidgex(Table *parent)
 {
   p=parent;
+#ifdef QT_OS_ANDROID
+  setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
 }
 
 // -------------------------------------------------------------------
@@ -55,9 +58,6 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   dblclick=QDateTime::currentDateTime();
 
   QTableWidgex *w=new QTableWidgex(this);
-#ifdef QT_OS_ANDROID
-  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
@@ -580,6 +580,9 @@ void Table::set_cell(int r,int c,QString v)
     if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       QCheckBox *cb=new QCheckBox();
+#ifdef QT_OS_ANDROID
+      cb->setStyleSheet(checkboxstyle(20*DM_density));
+#endif
       cb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) cb;
       QWidget *m=new QWidget();
