@@ -35,6 +35,8 @@ win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 android: QMAKE_TARGET.arch = arm
 linux-raspi: QMAKE_TARGET.arch = arm
 
+equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
+
 win32: arch = win-$$QMAKE_TARGET.arch
 android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch

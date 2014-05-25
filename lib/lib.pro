@@ -74,6 +74,14 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   message(building slim jqt)
   QT -= declarative opengl quick qml quickwidgets webkit
+  DEFINES -= QTWEBSOCKET
+}
+
+# export JQTRASPI before qmake
+JQTRASPI = $$(JQTRASPI)
+!isEmpty(JQTRASPI) {
+  message(building raspi jqt)
+  QT -= declarative opengl quick qml quickwidgets webkit
 }
 
 CONFIG(debug, debug|release) {
@@ -101,6 +109,8 @@ win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 android: QMAKE_TARGET.arch = arm
 linux-raspi: QMAKE_TARGET.arch = arm
+
+equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 
 win32: arch = win-$$QMAKE_TARGET.arch
 android: arch = android-$$QMAKE_TARGET.arch
