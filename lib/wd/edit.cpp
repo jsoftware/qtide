@@ -50,6 +50,15 @@ void Edit::set(string p,string v)
   if (p=="text") {
     w->setText(s2q(v));
     return;
+  } else if (p=="cursorposition") {
+    if (opt.isEmpty()) {
+      error("set cursorposition requires 1 number: " + p);
+      return;
+    }
+    int p=c_strtoi(q2s(opt.at(0)));
+    p=qMax(0,qMin(p,w->text().length()));
+    w->setCursorPosition(p);
+    return;
   } else if (p=="limit") {
     if (opt.isEmpty()) {
       error("set limit requires 1 number: " + p);
