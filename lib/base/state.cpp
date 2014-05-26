@@ -35,6 +35,7 @@
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 QString AndroidPackage;
 extern "C" void android_getdisplaymetrics(double * dmetrics);
+int androidVfuncPos=2;
 #endif
 #if !(defined(QT_NO_QUICKVIEW1)&&defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #include "qmlje.h"
@@ -206,7 +207,6 @@ void Config::initide()
 
 #ifdef QT_OS_ANDROID
   BackButtonClose = s->value("Session/BackButtonClose",false).toBool();
-  VfuncPos = s->value("Session/VfuncPos",2).toInt();
   ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
 #endif
   BoxForm = s->value("Session/BoxForm",0).toInt();
@@ -252,7 +252,6 @@ void Config::initide()
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/BackButtonClose",BackButtonClose);
-  s->setValue("Session/VfuncPos",VfuncPos);
   s->setValue("Session/ScrollBarSize",ScrollBarSize);
 #endif
   s->setValue("Session/BoxForm",BoxForm);
@@ -281,7 +280,6 @@ void Config::initide()
     "# \n"
 #ifdef QT_OS_ANDROID
     "# BackButtonClose=false        if Back Button will close the Term (Android only)\n"
-    "# VfuncPos=2                   Vfunc Key 0=disable 1=top 2=bottom (Android only)\n"
     "# ScrollBarSize=25             width or height of scrollbar (Android only)\n"
 #endif
     "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
@@ -311,7 +309,6 @@ void Config::noprofile()
 {
 #ifdef QT_OS_ANDROID
   BackButtonClose = false;
-  VfuncPos = 2;
   ScrollBarSize = 25;
 #endif
   ConfirmClose = false;
@@ -455,13 +452,8 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   state_init_resource();
   setlocale(LC_NUMERIC,"C");
   state_appname();
-#ifdef QT_OS_ANDROID
-  bool rc = state_init(argc,argv);
-#endif
   term = new Term;
-#ifndef QT_OS_ANDROID
   bool rc = state_init(argc,argv);
-#endif
   if (!rc) return 1;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50

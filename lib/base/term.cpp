@@ -86,7 +86,7 @@ Term::Term()
 #define nfunc 12
 #endif
   QPushButton *w[nfunc];
-  if ((1==config.VfuncPos)||(2==config.VfuncPos)) {
+  if ((1==androidVfuncPos)||(2==androidVfuncPos)) {
     vfunc=new QHBoxLayout;
     for(int i=0; i<nfunc; i++) {
       w[i]=new QPushButton("F"+QString::number(i+1),this);
@@ -99,12 +99,12 @@ Term::Term()
 #endif
   layout->addWidget(menuBar);
 #ifdef QT_OS_ANDROID
-  if (1==config.VfuncPos)
+  if (1==androidVfuncPos)
     layout->addLayout(vfunc);
 #endif
   layout->addWidget(tedit);
 #ifdef QT_OS_ANDROID
-  if (2==config.VfuncPos)
+  if (2==androidVfuncPos)
     layout->addLayout(vfunc);
 #endif
   setWindowTitle("Term");
@@ -169,6 +169,9 @@ void Term::fini()
   setWindowIcon(QIcon(":/images/jgreen.png"));
   if (config.TermSyntaxHighlight)
     highlight(tedit->document());
+#ifdef QT_OS_ANDROID
+  tedit->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   tedit->setprompt();
   if (config.SingleWin)
     new OneWin();

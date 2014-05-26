@@ -50,7 +50,6 @@ public:
   bool Ascii;
 #ifdef QT_OS_ANDROID
   bool BackButtonClose;
-  int VfuncPos;
   int ScrollBarSize;
 #endif
   QDir BinPath;
@@ -139,6 +138,9 @@ public:
 };
 
 extern Config config;
+#ifdef QT_OS_ANDROID
+extern int androidVfuncPos;
+#endif
 
 QSyntaxHighlighter *highlight(QTextDocument *);
 
