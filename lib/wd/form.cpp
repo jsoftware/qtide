@@ -421,5 +421,6 @@ void Form::status(string s)
 void Form::systimer()
 {
   event="timer";
+  fakeid="";
   signalevent(0);
 }
