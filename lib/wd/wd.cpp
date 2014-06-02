@@ -23,6 +23,7 @@
 #include "form.h"
 #include "pane.h"
 #include "isigraph.h"
+#include "opengl.h"
 #include "menus.h"
 #include "qtstate.h"
 #include "tabs.h"
@@ -1064,6 +1065,7 @@ void wdrem()
 void wdreset()
 {
   cmd.getparms();
+  if (timer) timer->stop();
 #ifndef QT_NO_QUICKVIEW1
   if (quickview1) {
     quickview1->close();
@@ -1081,6 +1083,8 @@ void wdreset()
     f->close();
   }
   form=0;
+  isigraph=0;
+  opengl=0;
   evtform=0;
   fontdef=0;
 }
