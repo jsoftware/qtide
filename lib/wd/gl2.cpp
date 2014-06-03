@@ -71,7 +71,7 @@ int glpaintx()
 {
   if (!isigraph) return 1;
   Isigraph2 *w = (Isigraph2 *)isigraph->widget;
-  if (w->type=="isigraph" && w->painter) return 1;
+  if (w->type=="isigraph") return 1;
   w->repaint();
   return 0;
 }
