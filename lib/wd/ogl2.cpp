@@ -59,16 +59,6 @@ int gl_paint()
 {
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
-  if (w->painter) return 1;
-  w->paintgl();
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-int gl_paintx()
-{
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
   if (!w) return 1;
   if (w->painter) return 1;
   w->updateGL();

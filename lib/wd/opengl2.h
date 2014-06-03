@@ -21,7 +21,6 @@ public:
   ~Opengl2();
 
   QPixmap getpixmap();
-  void paintgl();
   void paintend();
 
   QBrush brush;

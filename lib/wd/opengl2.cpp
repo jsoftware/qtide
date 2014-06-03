@@ -42,12 +42,6 @@ void Opengl2::initializeGL()
 }
 
 // ---------------------------------------------------------------------
-void Opengl2::paintgl()
-{
-  this->paintGL();
-}
-
-// ---------------------------------------------------------------------
 void Opengl2::paintGL()
 {
   if (!initialized) return;
