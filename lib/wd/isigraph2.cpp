@@ -62,8 +62,6 @@ void Isigraph2::paintEvent(QPaintEvent *event)
 void Isigraph2::paintEvent_isidraw()
 {
   if (!pixmap) return;
-  pchild->event="paint";
-  pchild->pform->signalevent(pchild);
   QPainter p(this);
   p.drawPixmap(0,0,*pixmap,0,0,width(),height());
 }
