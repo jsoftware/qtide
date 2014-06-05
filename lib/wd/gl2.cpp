@@ -656,7 +656,6 @@ glcmds(const int *ptr, int ncnt)
 {
   int cnt;
   int p = 0;
-  int errcnt = 0;
 
 //  if (!form) return 1;
   if (!isigraph) return 1;
@@ -665,6 +664,7 @@ glcmds(const int *ptr, int ncnt)
 
   while (p < ncnt) {
     cnt = *(ptr + p);
+    if (2>cnt) return 1;
     switch (*(ptr + p + 1)) {
 
     case 2001:		// glarc
@@ -780,14 +780,12 @@ glcmds(const int *ptr, int ncnt)
       break;
 
     default:
-      ++errcnt;
-      qDebug() << "glcmds" << p << cnt << (*(ptr + p + 1)) ;
-      return errcnt;
+      return 1;
       break;
     }
     p = p + cnt;
   }
-  return errcnt;
+  return 0;
 }
 
 // ---------------------------------------------------------------------
