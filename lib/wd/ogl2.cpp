@@ -767,6 +767,8 @@ glcmds (const int *ptr, int ncnt)
 
     default:
       ++errcnt;
+      qDebug() << "glcmds" << p << cnt << (*(ptr + p + 1)) ;
+      return errcnt;
       break;
     }
     p = p + cnt;
