@@ -45,6 +45,7 @@ Fif::Fif(QString s, bool ifname)
   filetypes = makecombobox("filetypes");
   lfiletypes->setBuddy(filetypes);
 
+  f->setContentsMargins(0,0,0,0);
   f->setVerticalSpacing(2);
   f->addRow(lsearchfor,searchfor);
   f->addRow(linfolder,infolder);
