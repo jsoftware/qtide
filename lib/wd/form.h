@@ -60,6 +60,7 @@ public:
 
   Child *child;
   Child *evtchild;
+  Child *isigraph;
   QList<Child *>children;
   Menus *menubar;
   Pane *pane;

@@ -31,6 +31,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   id=s;
   child=0;
   evtchild=0;
+  isigraph=0;
   locale=loc;
   menubar=0;
   tab=0;

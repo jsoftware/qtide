@@ -15,14 +15,7 @@ class Isigraph : public Child
 public:
   Isigraph(string n, string s, Form *f, Pane *p);
   void setform();
-
-protected:
-
-private:
-
 };
-
-extern Child *isigraph;
 
 #endif
 

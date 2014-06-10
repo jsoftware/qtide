@@ -1083,7 +1083,6 @@ void wdreset()
     f->close();
   }
   form=0;
-  isigraph=0;
   opengl=0;
   evtform=0;
   fontdef=0;

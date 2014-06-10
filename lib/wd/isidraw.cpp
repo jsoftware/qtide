@@ -14,7 +14,7 @@ Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->type=type;
   QString qn=s2q(n);
   w->setObjectName(qn);
-  isigraph = this;
+  f->isigraph=this;
 }
 
 // ---------------------------------------------------------------------
@@ -22,5 +22,5 @@ void Isidraw::setform()
 {
   if (!widget) return;
   if (!(event=="paint" || event=="print")) form=pform;
-  isigraph=(Child *)this;
+  form->isigraph=this;
 }

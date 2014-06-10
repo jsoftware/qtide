@@ -33,7 +33,6 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
         error("invalid icon width, height: "+q2s(t));
         return;
       }
-      qDebug() << "setting icon size" << sizes;
 #ifdef QT_OS_ANDROID
       w->setIconSize(QSize((int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(0))),(int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(1)))));
 #else

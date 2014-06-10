@@ -70,6 +70,8 @@ void Isigraph2::paintEvent_isidraw()
 void Isigraph2::paintEvent_isigraph()
 {
   if (painter) return;
+  form=pchild->pform;
+  form->isigraph=(Child *) this;
   painter=new QPainter(this);
   painter->setRenderHint(QPainter::Antialiasing, true);
   pchild->event="paint";
@@ -115,7 +117,7 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
 // ---------------------------------------------------------------------
 void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  isigraph=(Isigraph *)pchild;
+  pchild->pform->isigraph=pchild;
 
   string lmr = "";
   switch (event->button()) {
@@ -166,7 +168,7 @@ void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 // ---------------------------------------------------------------------
 void Isigraph2::wheelEvent(QWheelEvent *event)
 {
-  isigraph=(Isigraph *)pchild;
+  pchild->pform->isigraph=pchild;
 
   char deltasign = ' ';
   int delta = event->delta() / 8;  // degree
@@ -274,8 +276,8 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
 // ---------------------------------------------------------------------
 Isigraph2::~Isigraph2()
 {
-  if (pchild==(Child *)isigraph) {
-    isigraph=0;
+  if (pchild==pchild->pform->isigraph) {
+    pchild->pform->isigraph=0;
     if (painter) delete painter;
     if (pixmap) delete pixmap;
   }

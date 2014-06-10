@@ -5,8 +5,6 @@
 #include "pane.h"
 #include "cmd.h"
 
-Child *isigraph=0;
-
 // ---------------------------------------------------------------------
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
@@ -16,7 +14,7 @@ Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->type=type;
   QString qn=s2q(n);
   w->setObjectName(qn);
-  isigraph = this;
+  f->isigraph = this;
 }
 
 // ---------------------------------------------------------------------
@@ -24,6 +22,6 @@ void Isigraph::setform()
 {
   if (!widget) return;
   if (!(event=="paint" || event=="print")) form=pform;
-  isigraph=this;
+  form->isigraph=this;
 }
 
