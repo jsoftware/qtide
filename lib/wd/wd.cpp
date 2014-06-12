@@ -1083,7 +1083,9 @@ void wdreset()
     f->close();
   }
   form=0;
+#ifndef QT_NO_OPENGL
   opengl=0;
+#endif
   evtform=0;
   fontdef=0;
 }
