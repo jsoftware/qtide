@@ -2,7 +2,7 @@
 
 N=qtide
 A=armv5
-S=~/dev/apps/ide/jqt
+S=$(dirname "$0")
 
 cd $S
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-S=~/dev/apps/ide/jqt
+S=$(dirname "$0")
 
 rm -rf $S/bin/win-x86
 rm -rf $S/lib/build/win-x86

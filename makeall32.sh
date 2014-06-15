@@ -2,7 +2,7 @@
 #
 # run in jqt directory
 
-S=~/dev/apps/ide/jqt
+S=$(dirname "$0")
 
 ./clean.sh
 ./clean.l32

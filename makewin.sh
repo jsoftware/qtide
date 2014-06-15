@@ -1,6 +1,6 @@
 #!/bin/bash
 
-S=~/dev/apps/ide/jqt
+S=$(dirname "$0")
 
 cd $S
 
