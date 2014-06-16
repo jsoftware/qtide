@@ -51,6 +51,7 @@ private:
   void applyhdralign();
   Qt::Alignment getalign(int i);
   QVector<int> getcellvec(QVector<int>);
+  bool getrange(string,int&, int&, int&, int&);
   void initglobals();
 
   QTableWidgetItem * newitem(int r, int c,QString s);
@@ -74,7 +75,10 @@ private:
   void setlab(string v);
   void setprotect(string v);
   void setresizecol();
+  void setresizerow();
   void setrowheight(string v);
+  void setscroll(string v);
+  void setselect(string v);
   void setshape(QStringList);
   void setsort(string v);
   void settype(string v);
@@ -90,6 +94,8 @@ private:
   int row;
   int lastcol;
   int lastrow;
+  int markcol;
+  int markrow;
 
   int row1,row2,col1,col2;
   bool ifhdr;

@@ -55,6 +55,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   ifhdr=false;
   row1=col1=0;
   row2=col2=-1;
+  markrow=markcol=0;
   dblclick=QDateTime::currentDateTime();
 
   QTableWidgex *w=new QTableWidgex(this);
@@ -81,8 +82,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QFontMetrics fm(w->font());
   w->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
-  w->setSelectionMode(QAbstractItemView::SingleSelection);
-
+  w->setSelectionMode(QAbstractItemView::ContiguousSelection);
   w->setAlternatingRowColors(true);
 
   if (opt.contains("selectrows")) {
@@ -198,6 +198,33 @@ QVector<int> Table::getcellvec(QVector<int> v)
     for(int j=0; j<cls; j++)
       r[j+i*cls]=v[j];
   return r;
+}
+
+// ---------------------------------------------------------------------
+bool Table::getrange(string v,int &r1, int &r2, int &c1, int &c2)
+{
+  QStringList arg=qsplit(v);
+  int n=arg.size();
+  if (0==n) {
+    r1= c1= 0;
+    r2= c2= -1;
+  } else if (2==n) {
+    r1= r2= c_strtoi(q2s(arg.at(0)));
+    c1= c2= c_strtoi(q2s(arg.at(1)));
+  } else if (4==n) {
+    r1= c_strtoi(q2s(arg.at(0)));
+    r2= c_strtoi(q2s(arg.at(1)));
+    c1= c_strtoi(q2s(arg.at(2)));
+    c2= c_strtoi(q2s(arg.at(3)));
+  } else {
+    error("set range incorrect length: " + q2s(arg.join(" ")));
+    return false;
+  }
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
+    error("set range row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
+    return false;
+  }
+  return true;
 }
 
 // ---------------------------------------------------------------------
@@ -372,8 +399,14 @@ void Table::set(string p, string v)
     setprotect(v);
   else if (p=="resizecol")
     setresizecol();
+  else if (p=="resizerow")
+    setresizerow();
   else if (p=="rowheight")
     setrowheight(v);
+  else if (p=="scroll")
+    setscroll(v);
+  else if (p=="select")
+    setselect(v);
   else if (p=="shape")
     setshape(qsplit(v));
   else if (p=="type")
@@ -383,37 +416,6 @@ void Table::set(string p, string v)
   else if (p=="sort")
     setsort(v);
   else Child::set(p,v);
-}
-
-// ---------------------------------------------------------------------
-void Table::setblock(string v)
-{
-  int r1,r2,c1,c2;
-  QStringList arg=qsplit(v);
-  int n=arg.size();
-  if (0==n) {
-    r1= c1= 0;
-    r2= c2= -1;
-  } else if (2==n) {
-    r1= r2= c_strtoi(q2s(arg.at(0)));
-    c1= c2= c_strtoi(q2s(arg.at(1)));
-  } else if (4==n) {
-    r1= c_strtoi(q2s(arg.at(0)));
-    r2= c_strtoi(q2s(arg.at(1)));
-    c1= c_strtoi(q2s(arg.at(2)));
-    c2= c_strtoi(q2s(arg.at(3)));
-  } else {
-    error("set block incorrect length: " + q2s(arg.join(" ")));
-    return;
-  }
-  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2))) {
-    error("set block row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
-    return;
-  }
-  row1= r1;
-  row2= r2;
-  col1= c1;
-  col2= c2;
 }
 
 // ---------------------------------------------------------------------
@@ -533,6 +535,17 @@ void Table::setbackforeground(int colortype, string s)
       }
     }
   }
+}
+
+// ---------------------------------------------------------------------
+void Table::setblock(string v)
+{
+  int r1,r2,c1,c2;
+  if (!getrange(v,r1,r2,c1,c2)) return;
+  row1=r1;
+  row2=r2;
+  col1=c1;
+  col2=c2;
 }
 
 // ---------------------------------------------------------------------
@@ -885,6 +898,13 @@ void Table::setresizecol()
 }
 
 // ---------------------------------------------------------------------
+void Table::setresizerow()
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  w->resizeRowsToContents();
+}
+
+// ---------------------------------------------------------------------
 void Table::setrowheight(string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
@@ -913,6 +933,46 @@ void Table::setrowheight(string s)
     if (!eqht) i++;
   }
   return;
+}
+
+// ---------------------------------------------------------------------
+void Table::setscroll(string v)
+{
+  QStringList opt;
+  QTableWidget *w=(QTableWidget*) widget;
+
+  opt=qsplit(v);
+  if (!(opt.size()==2)) {
+    error("scroll must specify row and column: " + q2s(opt.join(" ")));
+    return;
+  }
+  int r=c_strtoi(q2s(opt.at(0)));
+  int c=c_strtoi(q2s(opt.at(1)));
+  if (!(((r>=0) && (r<rws)) && ((c>=0) && (c<cls)))) {
+    error("scroll index out of bounds: " + q2s(opt.join(" ")));
+    return;
+  }
+
+  QModelIndex index = w->currentIndex();
+  QModelIndex newIndex = w->model()->index(r,c);
+  w->scrollTo(newIndex, QAbstractItemView::PositionAtTop);
+  w->setFocus();
+}
+
+// ---------------------------------------------------------------------
+void Table::setselect(string v)
+{
+  int r1,r2,c1,c2;
+  if (!getrange(v,r1,r2,c1,c2)) return;
+  QTableWidget *w=(QTableWidget*) widget;
+  markrow=qMin(r1,r2);
+  markcol=qMin(c1,c2);
+  row=qMax(r1,r2);
+  col=qMax(c1,c2);
+  foreach(QTableWidgetSelectionRange r,w->selectedRanges())
+  w->setRangeSelected(r,false);
+  QTableWidgetSelectionRange r(r1,c1,r2,c2);
+  w->setRangeSelected(r,true);
 }
 
 // ---------------------------------------------------------------------
@@ -1011,6 +1071,11 @@ string Table::state()
     r+=spair(id+"_value",readcellvalue(row,col));
   } else if (event=="mark" || event.substr(0,2)=="mb") {
     r+=spair(id,i2s(row)+" "+i2s(col));
+    r+=spair(id+"_select",
+             i2s(qMin(row,markrow))+" "+
+             i2s(qMax(row,markrow))+" "+
+             i2s(qMin(col,markcol))+" "+
+             i2s(qMax(col,markcol)));
   } else if (event=="clicked") {
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
   }
@@ -1097,6 +1162,10 @@ void Table::on_currentCellChanged (int r,int c, int pr, int pc)
   col=c;
   lastrow=pr;
   lastcol=pc;
+  if (!ifshift()) {
+    markrow=r;
+    markcol=c;
+  }
   pform->signalevent(this);
 }
 
@@ -1119,5 +1188,3 @@ void Table::on_stateChanged (int n)
   col=p-row*cls;
   pform->signalevent(this);
 }
-
-
