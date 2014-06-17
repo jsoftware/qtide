@@ -19,6 +19,7 @@ extern "C" {
   Dllexport int gl_lines (const int *p, int len);
   Dllexport int gl_nodblbuf (int a);
   Dllexport int gl_paint ();
+  Dllexport int gl_paintx ();
   Dllexport int gl_pen (const int *p);
   Dllexport int gl_pie (const int *p);
   Dllexport int gl_pixel (const int *p);

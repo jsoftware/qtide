@@ -6,8 +6,6 @@
 #include "form.h"
 #include "pane.h"
 
-extern Opengl *opengl;
-
 // ---------------------------------------------------------------------
 Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(format)
 {
@@ -74,7 +72,7 @@ void Opengl2::resizeGL(int width, int height)
 // ---------------------------------------------------------------------
 void Opengl2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  opengl=(Opengl *)pchild;
+  pchild->pform->opengl=pchild;
 
   string lmr = "";
   switch (event->button()) {
@@ -125,8 +123,7 @@ void Opengl2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 // ---------------------------------------------------------------------
 void Opengl2::wheelEvent(QWheelEvent *event)
 {
-//  qDebug() << "wheel event";
-  opengl=(Opengl *)pchild;
+  pchild->pform->opengl=pchild;
 
   char deltasign = ' ';
   int delta = event->delta() / 8;  // degree
@@ -237,7 +234,6 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
 Opengl2::~Opengl2()
 {
 //  qDebug() << "opengl2 deleted";
-  if (pchild==(Child *)opengl) {
-    opengl=0;
-  }
+  if (pchild==pchild->pform->opengl)
+    pchild->pform->opengl=0;
 }

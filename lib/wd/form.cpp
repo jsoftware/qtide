@@ -34,6 +34,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   isigraph=0;
   locale=loc;
   menubar=0;
+  opengl=0;
   tab=0;
   closed=false;
   shown=false;

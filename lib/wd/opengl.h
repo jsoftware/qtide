@@ -19,6 +19,4 @@ private slots:
 
 };
 
-extern Opengl *opengl;
-
 #endif

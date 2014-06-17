@@ -21,7 +21,7 @@
 #include "../base/state.h"
 extern QList<Form *>Forms;
 
-static int gl_font0 (Opengl *opengl, char *s);
+static int gl_font0 (Child *opengl, char *s);
 
 // ---------------------------------------------------------------------
 // caller should free string
@@ -57,8 +57,8 @@ qtarcisi (const int *y, const int *y2, int *ang)
 // ---------------------------------------------------------------------
 int gl_paint()
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w) return 1;
   if (w->painter) return 1;
   w->updateGL();
@@ -66,13 +66,19 @@ int gl_paint()
 }
 
 // ---------------------------------------------------------------------
+int gl_paintx()
+{
+  return gl_paint();
+}
+
+// ---------------------------------------------------------------------
 int gl_qhandles(void **p)
 {
   if (!p) return 1;
-  if (!opengl) return 1;
-  *p = (void *)opengl;
+  if (!form->opengl) return 1;
+  *p = (void *)form->opengl;
 #ifdef _WIN32
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
 #ifndef QT50
   if (w) *(p+1) = (void *)w->getDC();
 #else
@@ -89,8 +95,8 @@ int gl_qhandles(void **p)
 int gl_qextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(wh) = fm.width( QString::fromUtf8 (s));
@@ -102,8 +108,8 @@ int gl_qextent(char *s,int *wh)
 int gl_qextentw(char *s,int *wi)
 {
   if (!s || !wi) return 1;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   QStringList n=(QString::fromUtf8 (s)).split("\n",QString::KeepEmptyParts);
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
@@ -117,8 +123,8 @@ int gl_qextentw(char *s,int *wi)
 int gl_qpixels(const int *p, int *pix)
 {
   if (!p || !pix) return 1;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   QPixmap pm=w->getpixmap();
   if (!pm || pm.isNull()) return 1;
   if (p[0]<0 || p[1]<0 || (p[0]+p[2])>pm.width() || (p[1]+p[3])>pm.height()) return 1;
@@ -139,8 +145,8 @@ int gl_qpixels(const int *p, int *pix)
 int gl_qtextmetrics(int *tm)
 {
   if (!tm) return 1;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
   *(tm) = fm.height();
@@ -157,8 +163,8 @@ int gl_qtextmetrics(int *tm)
 // ---------------------------------------------------------------------
 int gl_qwh(int *wh)
 {
-  if (!(wh && opengl && opengl->widget)) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!(wh && form->opengl && form->opengl->widget)) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   wh[0] = w->width();
   wh[1] = w->height();
   return 0;
@@ -169,13 +175,14 @@ int gl_sel(void *g)
 {
   if (!g) return 1;
   Form *f;
+  Child *c=(Child *)g;
   for (int i=0; i<Forms.size(); i++) {
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
-      if ((((Child *)g)->type == "opengl") && ((Child *)g)->widget) {
-        opengl = (Opengl *) g;
-        f->child = (Child *) g;
+      if ((c->type == "opengl") && c->widget) {
         form = f;
+        form->child = c;
+        form->opengl = c;
         return 0;
       }
     }
@@ -202,9 +209,9 @@ int gl_sel2(char *g)
     f=form;
     if ((cc=f->id2child(g))) {
       if ((cc->type == "opengl") && (cc->widget)) {
-        opengl = (Opengl *) cc;
-        f->child = cc;
         form=f;
+        form->child = cc;
+        form->opengl = cc;
         return 0;
       }
     }
@@ -213,9 +220,9 @@ int gl_sel2(char *g)
     f=Forms.at(i);
     if ((cc=f->id2child(g))) {
       if ((cc->type == "opengl") && (cc->widget)) {
-        opengl = (Opengl *) cc;
-        f->child = cc;
         form=f;
+        form->child = cc;
+        form->opengl = cc;
         return 0;
       }
     }
@@ -228,8 +235,8 @@ int gl_sel2(char *g)
 int gl_arc (const int *p)
 {
   int dy[2];
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   qtarcisi (p,  p + 4, dy);
   w->painter->drawArc (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
@@ -239,8 +246,8 @@ int gl_arc (const int *p)
 // ---------------------------------------------------------------------
 int gl_brush ()
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->brushcolor = QColor (w->color);
   w->brush = QBrush (w->brushcolor);
@@ -252,8 +259,8 @@ int gl_brush ()
 // ---------------------------------------------------------------------
 int gl_brushnull ()
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->brushnull = 1;
   w->painter->setBrush(Qt::NoBrush);
@@ -270,8 +277,8 @@ int gl_capture (int a)
 // ---------------------------------------------------------------------
 int gl_caret (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   if (0 == *(p) || 0 == *(p + 1))
     return 0;
@@ -296,7 +303,7 @@ int gl_clear2 (void *p)
 
 // messed up here, but ProFont should be part of config...
   string s=q2s(config.ProFont.family());
-  gl_font0(opengl,(char *)s.c_str());
+  gl_font0(form->opengl,(char *)s.c_str());
 
   w->painter->setWorldMatrixEnabled (true);
   w->painter->translate (-w->orgx, -w->orgy);
@@ -326,15 +333,15 @@ int gl_clear2 (void *p)
 // ---------------------------------------------------------------------
 int gl_clear ()
 {
-  if (!opengl) return 1;
-  return gl_clear2 (opengl);
+  if (!form->opengl) return 1;
+  return gl_clear2 (form->opengl);
 }
 
 // ---------------------------------------------------------------------
 int gl_clip (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->clipped = 1;
   w->painter->setClipRect (*(p), *(p + 1), *(p + 2), *(p + 3));
@@ -345,8 +352,8 @@ int gl_clip (const int *p)
 // ---------------------------------------------------------------------
 int gl_clipreset ()
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   if (w->clipped) {
     w->painter->setClipping (false);
@@ -365,8 +372,8 @@ int gl_cursor (int a)
 // ---------------------------------------------------------------------
 int gl_ellipse (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
   return 0;
@@ -382,7 +389,7 @@ static int gl_font_i (const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-static int gl_font0 (Opengl *opengl, char *s)
+static int gl_font0 (Child *opengl, char *s)
 {
   if (!opengl) return 1;
   Opengl2 *w = (Opengl2 *)opengl->widget;
@@ -397,15 +404,15 @@ static int gl_font0 (Opengl *opengl, char *s)
 // ---------------------------------------------------------------------
 int gl_font (char *s)
 {
-  return gl_font0 (opengl, s);
+  return gl_font0 (form->opengl, s);
 }
 
 // ---------------------------------------------------------------------
 int gl_font2 (const int *p, int len)
 {
   int size10, degree10, bold, italic, strikeout, underline;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   size10 = *(p);
   bold = 1 & *(p + 1);
@@ -424,8 +431,8 @@ int gl_font2 (const int *p, int len)
 // ---------------------------------------------------------------------
 int gl_fontangle (int a)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->font->angle = a;
   return 0;
@@ -434,8 +441,8 @@ int gl_fontangle (int a)
 // ---------------------------------------------------------------------
 int gl_lines (const int *p, int len)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   int c = len / 2;
   if (0 == c) return 0;
@@ -457,8 +464,8 @@ int gl_nodblbuf (int a)
 // ---------------------------------------------------------------------
 int gl_pen (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->pencolor = QColor (w->color);
   w->pen = QPen (w->pencolor, Max (0.5, *(p))); // TODO in user space
@@ -470,8 +477,8 @@ int gl_pen (const int *p)
 int gl_pie (const int *p)
 {
   int dy[2];
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   qtarcisi (p, p + 4, dy);
   w->painter->drawPie (*(p), *(p + 1), *(p + 2), *(p + 3), dy[0], dy[1]);
@@ -481,8 +488,8 @@ int gl_pie (const int *p)
 // ---------------------------------------------------------------------
 int gl_pixel (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->painter->drawPoint (*(p), *(p + 1));
   return 0;
@@ -492,7 +499,7 @@ int gl_pixel (const int *p)
 static int glpixels2(int x,int y,int wi,int h,const uchar *p)
 {
   if (!wi || !h || !p) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   QImage image = QImage(wi,h,QImage::Format_ARGB32);
   const uchar *t=image.bits();
   memcpy((uchar *)t,p,4*wi*h);
@@ -506,8 +513,8 @@ static int glpixels2(int x,int y,int wi,int h,const uchar *p)
 int gl_pixels(const int *p, int len)
 {
   Q_UNUSED(len);
-  if (!opengl) return 1;
-//  if (!((Opengl2*)opengl->widget)->painter->isActive()) return 1;
+  if (!form->opengl) return 1;
+//  if (!((Opengl2*)form->opengl->widget)->painter->isActive()) return 1;
 
   return glpixels2 (*(p), *(p + 1), *(p + 2), *(p + 3), (uchar *)(p + 4));
 }
@@ -515,8 +522,8 @@ int gl_pixels(const int *p, int len)
 // ---------------------------------------------------------------------
 int gl_pixelsx (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
 #if defined(_WIN64)||defined(__LP64__)
   Q_UNUSED(p);
@@ -529,8 +536,8 @@ int gl_pixelsx (const int *p)
 // ---------------------------------------------------------------------
 int gl_polygon (const int *p, int len)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   int c = len / 2;
   if (0 == c) return 0;
@@ -544,8 +551,8 @@ int gl_polygon (const int *p, int len)
 // ---------------------------------------------------------------------
 int gl_rect (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->painter->drawRect (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
@@ -554,8 +561,8 @@ int gl_rect (const int *p)
 // ---------------------------------------------------------------------
 int gl_rgb (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   w->color = QColor (*(p), *(p + 1), *(p + 2));
   return 0;
 }
@@ -563,8 +570,8 @@ int gl_rgb (const int *p)
 // ---------------------------------------------------------------------
 int gl_rgba (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   w->color = QColor (*(p), *(p + 1), *(p + 2), *(p + 3));
   return 0;
 }
@@ -581,8 +588,8 @@ static int gl_text_i (const int *p, int len)
 // ---------------------------------------------------------------------
 int gl_text (char *ys)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   if (!w->font) return 1;
   QFontMetrics fm = QFontMetrics ( (w->font)->font );
@@ -605,8 +612,8 @@ int gl_text (char *ys)
 // ---------------------------------------------------------------------
 int gl_textcolor ()
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->textcolor = QColor (w->color);
   w->textpen = QPen (w->painter->pen());
@@ -617,8 +624,8 @@ int gl_textcolor ()
 // ---------------------------------------------------------------------
 int gl_textxy (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   w->textx = *(p);
   w->texty = *(p + 1);
   return 0;
@@ -627,8 +634,8 @@ int gl_textxy (const int *p)
 // ---------------------------------------------------------------------
 int gl_windoworg (const int *p)
 {
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->painter->translate (*(p), *(p + 1));
   w->orgx += *(p);
@@ -644,8 +651,8 @@ glcmds (const int *ptr, int ncnt)
   int p = 0;
 
 //  if (!form) return 1;
-  if (!opengl) return 1;
-  Opengl2 *w = (Opengl2 *)opengl->widget;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
 
   while (p < ncnt) {
@@ -777,8 +784,8 @@ glcmds (const int *ptr, int ncnt)
 // ---------------------------------------------------------------------
 int gl_setlocale (char *c)
 {
-  if (!opengl) return 1;
-  opengl->locale = string(c);
+  if (!form->opengl) return 1;
+  form->opengl->locale = string(c);
   return 0;
 }
 

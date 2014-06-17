@@ -5,8 +5,6 @@
 #include "pane.h"
 #include "cmd.h"
 
-Opengl *opengl=0;
-
 // ---------------------------------------------------------------------
 Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
@@ -38,7 +36,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
-  opengl = this;
+  f->opengl = this;
 }
 
 // ---------------------------------------------------------------------
@@ -46,5 +44,5 @@ void Opengl::setform()
 {
   if (!widget) return;
   if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) form=pform;
-  opengl=this;
+  form->opengl=this;
 }
