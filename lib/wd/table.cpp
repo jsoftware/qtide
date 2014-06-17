@@ -201,6 +201,8 @@ QVector<int> Table::getcellvec(QVector<int> v)
 }
 
 // ---------------------------------------------------------------------
+// get range for set block, set select
+// r1 [r2] c1 [c2] or empty for all
 bool Table::getrange(string v,int &r1, int &r2, int &c1, int &c2)
 {
   QStringList arg=qsplit(v);
@@ -954,8 +956,8 @@ void Table::setscroll(string v)
   }
 
   QModelIndex index = w->currentIndex();
-  QModelIndex newIndex = w->model()->index(r,c);
-  w->scrollTo(newIndex, QAbstractItemView::PositionAtTop);
+  w->scrollTo(w->model()->index(r,cls-1), QAbstractItemView::PositionAtTop);
+  w->scrollTo(w->model()->index(r,c), QAbstractItemView::PositionAtTop);
   w->setFocus();
 }
 
@@ -971,8 +973,10 @@ void Table::setselect(string v)
   col=qMax(c1,c2);
   foreach(QTableWidgetSelectionRange r,w->selectedRanges())
   w->setRangeSelected(r,false);
-  QTableWidgetSelectionRange r(r1,c1,r2,c2);
+  QTableWidgetSelectionRange r(markrow,markcol,row,col);
   w->setRangeSelected(r,true);
+  w->scrollToItem(w->item(markrow,markcol),QAbstractItemView::EnsureVisible);
+  w->scrollToItem(w->item(row,col),QAbstractItemView::EnsureVisible);
 }
 
 // ---------------------------------------------------------------------
