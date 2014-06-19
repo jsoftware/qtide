@@ -35,6 +35,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   locale=loc;
   menubar=0;
   opengl=0;
+  seq=FormSeq++;
   tab=0;
   closed=false;
   shown=false;
@@ -153,6 +154,14 @@ void Form::buttonClicked(QWidget *w)
   Child *child=(Child *) w;
   child->event="button";
   signalevent(child);
+}
+
+// ---------------------------------------------------------------------
+void Form::changeEvent(QEvent *e)
+{
+  if(e->type()==QEvent::ActivationChange && isActiveWindow() && seq < FormSeq-1)
+    seq=FormSeq++;
+  QWidget::changeEvent(e);
 }
 
 // ---------------------------------------------------------------------

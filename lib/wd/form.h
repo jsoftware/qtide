@@ -50,7 +50,7 @@ public:
 
   bool closed;
   bool shown;
-
+  int seq;
   string id;
   string event;
   string lasttype;
@@ -79,6 +79,7 @@ public slots:
   void systimer();
 
 protected:
+  void changeEvent(QEvent *);
   void closeEvent(QCloseEvent *);
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
@@ -93,6 +94,7 @@ private:
 
 extern Form *form;
 extern Form *evtform;
+extern int FormSeq;
 extern QList<Form *>Forms;
 
 #endif

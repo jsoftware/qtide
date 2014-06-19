@@ -132,6 +132,7 @@ Font *fontdef=0;
 
 QList<Form *>Forms;
 
+int FormSeq=0;
 int rc;
 string lasterror="";
 string result="";
@@ -904,8 +905,10 @@ void wdqueries(string s)
     if (!Forms.size()) result="";
     else {
       string q;
-      for (int i=0; i<Forms.size(); i++)
-        q = q + Forms.at(i)->id + "\t"  + p2s((void *)Forms.at(i)) + "\t"  + Forms.at(i)->locale + "\t\012";
+      for (int i=0; i<Forms.size(); i++) {
+        Form *f=Forms.at(i);
+        q = q + f->id + "\t" + p2s((void *)f) + "\t" + f->locale + "\t\t" + i2s(f->seq) + "\t\012";
+      }
       result=q;
     }
     return;
