@@ -453,6 +453,8 @@ void Table::setalign(string v)
     cellalign=QVector<int>(len,0);
   }
 
+  QTableWidget *w=(QTableWidget*) widget;
+  QTableWidgetItem *m;
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
@@ -460,6 +462,7 @@ void Table::setalign(string v)
       if (colmode && c==c1) q=0;
       defcellalign[p]=a.at(q);
       cellalign[p]=a.at(q);
+      if ((m=w->item(r,c))) m->setTextAlignment(getalign(cellalign[p]));
       if (n!=1) q++;
     }
   }
@@ -880,6 +883,9 @@ void Table::setprotect(string v)
     defcellprotect=QVector<int>(len,0);
     cellprotect=QVector<int>(len,0);
   }
+
+  QTableWidget *w=(QTableWidget*) widget;
+  QTableWidgetItem *m;
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
@@ -887,6 +893,15 @@ void Table::setprotect(string v)
       if (colmode && c==c1) q=0;
       defcellprotect[p]=a.at(q);
       cellprotect[p]=a.at(q);
+      if ((m=w->item(r,c))) {
+        Qt::ItemFlags fdef=m->flags();
+        Qt::ItemFlags fnoedit;
+        if (cellprotect[p])
+          fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
+        else
+          fnoedit=fdef | (Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
+        m->setFlags(fnoedit);
+      }
       if (n!=1) q++;
     }
   }
@@ -956,6 +971,7 @@ void Table::setscroll(string v)
   }
 
   QModelIndex index = w->currentIndex();
+  Q_UNUSED(index);
   w->scrollTo(w->model()->index(r,cls-1), QAbstractItemView::PositionAtTop);
   w->scrollTo(w->model()->index(r,c), QAbstractItemView::PositionAtTop);
   w->setFocus();
@@ -986,6 +1002,7 @@ void Table::setshape(QStringList opt)
     error("table shape must have rows and columns: " + q2s(opt.join(" ")));
     return;
   }
+  int len0=len;
   rws=c_strtoi(q2s(opt.at(0)));
   cls=c_strtoi(q2s(opt.at(1)));
   len=rws*cls;
@@ -994,9 +1011,17 @@ void Table::setshape(QStringList opt)
   w->setRowCount(rws);
   w->setColumnCount(cls);
 
+  cellalign.resize(len);
+  defcellalign.resize(len);
+  cellprotect.resize(len);
+  defcellprotect.resize(len);
+  celltype.resize(len);
+  defcelltype.resize(len);
+
   resetlen(&cellalign,defcellalign);
   resetlen(&cellprotect,defcellprotect);
   resetlen(&celltype,defcelltype);
+  if (len0>len) for (int i=len; i<len0; i++) delete cellwidget[i];
   cellwidget.resize(len);
 }
 
