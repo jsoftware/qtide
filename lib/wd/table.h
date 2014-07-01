@@ -85,6 +85,7 @@ private:
 
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);
+  QVector<int> vecreshape(QVector<int> vec,int rws,int cls,int rws0,int cls0);
 
   int cls;
   int len;

@@ -1002,7 +1002,7 @@ void Table::setshape(QStringList opt)
     error("table shape must have rows and columns: " + q2s(opt.join(" ")));
     return;
   }
-  int len0=len;
+  int rws0=rws, cls0=cls;
   rws=c_strtoi(q2s(opt.at(0)));
   cls=c_strtoi(q2s(opt.at(1)));
   len=rws*cls;
@@ -1011,18 +1011,23 @@ void Table::setshape(QStringList opt)
   w->setRowCount(rws);
   w->setColumnCount(cls);
 
-  cellalign.resize(len);
-  defcellalign.resize(len);
-  cellprotect.resize(len);
-  defcellprotect.resize(len);
-  celltype.resize(len);
-  defcelltype.resize(len);
+  cellalign=vecreshape(cellalign,rws,cls,rws0,cls0);
+  defcellalign=vecreshape(defcellalign,rws,cls,rws0,cls0);
+  cellprotect=vecreshape(cellprotect,rws,cls,rws0,cls0);
+  defcellprotect=vecreshape(defcellprotect,rws,cls,rws0,cls0);
+  celltype=vecreshape(celltype,rws,cls,rws0,cls0);
+  defcelltype=vecreshape(defcelltype,rws,cls,rws0,cls0);
 
-  resetlen(&cellalign,defcellalign);
-  resetlen(&cellprotect,defcellprotect);
-  resetlen(&celltype,defcelltype);
-  if (len0>len) for (int i=len; i<len0; i++) delete cellwidget[i];
-  cellwidget.resize(len);
+//  resetlen(&cellalign,defcellalign);
+//  resetlen(&cellprotect,defcellprotect);
+//  resetlen(&celltype,defcelltype);
+//  cellwidget.resize(len);
+  QVector<QWidget *> cw;
+  cw.fill(0,rws*cls);
+  for(int r=0; r<qMin(rws,rws0); r++)
+    for(int c=0; c<qMin(cls,cls0); c++)
+      cw[c + r*cls]=cellwidget[c + r*cls0];
+  cellwidget=cw;
 }
 
 // ---------------------------------------------------------------------
@@ -1131,6 +1136,17 @@ bool Table::vecisbool(QVector<int>vec,QString id)
       return false;
     }
   return true;
+}
+
+// ---------------------------------------------------------------------
+QVector<int> Table::vecreshape(QVector<int> vec,int rws, int cls, int rws0, int cls0)
+{
+  QVector<int> vec1;
+  vec1.fill(0,rws*cls);
+  for(int r=0; r<qMin(rws,rws0); r++)
+    for(int c=0; c<qMin(cls,cls0); c++)
+      vec1[c + r*cls]=vec[c + r*cls0];
+  return vec1;
 }
 
 // ---------------------------------------------------------------------
