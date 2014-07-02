@@ -303,6 +303,11 @@ void Menu::createfkeyMenu(QString s)
 #endif
   fkeyMenu->addAction(helpcontextAct);
   fkeyMenu->addSeparator();
+#ifdef JQT
+  fkeyMenu->addAction(helpvocabnuvocAct);
+  fkeyMenu->addAction(helpcontextnuvocAct);
+  fkeyMenu->addSeparator();
+#endif
   fkeyMenu->addAction(runtestAct);
   fkeyMenu->addSeparator();
   fkeyMenu->addAction(runclipAct);

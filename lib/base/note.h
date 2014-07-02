@@ -100,6 +100,7 @@ public slots:
   void on_filesaveAct_triggered();
   void on_helpaboutAct_triggered();
   void on_helpcontextAct_triggered();
+  void on_helpcontextnuvocAct_triggered();
 
 #ifdef JQT
   void on_helpconstantsAct_triggered();
@@ -116,6 +117,7 @@ public slots:
   void on_helpreleaseAct_triggered();
   void on_helprelnotesAct_triggered();
   void on_helpvocabAct_triggered();
+  void on_helpvocabnuvocAct_triggered();
 #else
   void on_helpbriefAct_triggered();
   void on_helpintercAct_triggered();

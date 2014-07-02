@@ -20,17 +20,19 @@ using namespace std;
 
 void helpabout();
 void helpcontext(int c,Bedit *);
-
+void helpcontextnuvoc(int c,Bedit *);
 void htmlhelp(QString s);
 void helplabs();
 void helplabsadvance();
 void helplabschapters();
+void wiki(QString s);
 
 void Menu::createhelpActions()
 {
   helpaboutAct = makeact("helpaboutAct","&About","");
   helpconstantsAct = makeact("helpconstantsAct","&Constants","");
   helpcontextAct = makeact("helpcontextAct","&Context Sensitive","Ctrl+F1");
+  helpcontextnuvocAct = makeact("helpcontextnuvocAct","&NuVoc Context Sensitive","Ctrl+Shift+F1");
   helpcontrolsAct = makeact("helpcontrolsAct","&Control Structures","");
   helpdemoqtAct = makeact("helpdemoqtAct","&Qt Demos...","");
   helpdemowdAct = makeact("helpdemowdAct","&wd Demos...","");
@@ -44,16 +46,18 @@ void Menu::createhelpActions()
   helpreleaseAct = makeact("helpreleaseAct","&Release Highlights","");
   helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
   helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
+  helpvocabnuvocAct = makeact("helpvocabnuvocAct","&NuVoc","Shift+F1");
 }
 
 void Menu::createhelpMenu()
 {
-  helpMenu = addMenu(tr("Help"));
+  helpMenu = addMenu(tr("&Help"));
   helpMenu->addAction(helphelpAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpgeneralAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpvocabAct);
+  helpMenu->addAction(helpvocabnuvocAct);
   helpMenu->addAction(helpconstantsAct);
   helpMenu->addAction(helpcontrolsAct);
   helpMenu->addAction(helpforeignsAct);
@@ -71,6 +75,7 @@ void Menu::createhelpMenu()
   m->addAction(helpdemowdAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
+  helpMenu->addAction(helpcontextnuvocAct);
 #ifndef __MACH__
   helpMenu->addSeparator();
 #endif
@@ -93,6 +98,12 @@ void Note::on_helpconstantsAct_triggered()
 void Note::on_helpcontextAct_triggered()
 {
   helpcontext(1,(Bedit *)editPage());
+}
+
+// ---------------------------------------------------------------------
+void Note::on_helpcontextnuvocAct_triggered()
+{
+  helpcontextnuvoc(1,(Bedit *)editPage());
 }
 
 // ---------------------------------------------------------------------
@@ -174,6 +185,12 @@ void Note::on_helpvocabAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_helpvocabnuvocAct_triggered()
+{
+  term->on_helpvocabnuvocAct_triggered();
+}
+
+// ---------------------------------------------------------------------
 void Term::on_helpaboutAct_triggered()
 {
   helpabout();
@@ -183,6 +200,12 @@ void Term::on_helpaboutAct_triggered()
 void Term::on_helpcontextAct_triggered()
 {
   helpcontext(0,(Bedit *)tedit);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helpcontextnuvocAct_triggered()
+{
+  helpcontextnuvoc(0,(Bedit *)tedit);
 }
 
 // ---------------------------------------------------------------------
@@ -270,12 +293,27 @@ void Term::on_helpvocabAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Term::on_helpvocabnuvocAct_triggered()
+{
+  wiki("NuVoc");
+}
+
+// ---------------------------------------------------------------------
 void helpcontext(int c,Bedit *e)
 {
   var_set("arg_jqtide_",e->readhelptext(c));
   QString s=var_cmdr("helpcontext0_jqtide_ arg_jqtide_");
   if (s.size())
     htmlhelp(s);
+}
+
+// ---------------------------------------------------------------------
+void helpcontextnuvoc(int c,Bedit *e)
+{
+  var_set("arg_jqtide_",e->readhelptext(c));
+  QString s=var_cmdr("helpcontext1_jqtide_ arg_jqtide_");
+  if (s.size())
+    wiki("Vocabulary/" + s);
 }
 
 // ---------------------------------------------------------------------
@@ -312,3 +350,13 @@ void htmlhelp(QString s)
 #endif
 }
 
+// ---------------------------------------------------------------------
+void wiki(QString s)
+{
+  QString w="http://www.jsoftware.com/jwiki/";
+#ifdef QT_OS_ANDROID
+  tedit->docmds("browse_j_ '" + s.prepend(w) + "'", false);
+#else
+  QDesktopServices::openUrl(QUrl(s.prepend(w),QUrl::TolerantMode));
+#endif
+}
