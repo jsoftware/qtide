@@ -53,6 +53,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="table";
   initglobals();
   ifhdr=false;
+  rws=cls=len=0;
   row1=col1=0;
   row2=col2=-1;
   markrow=markcol=0;
@@ -1006,6 +1007,7 @@ void Table::setshape(QStringList opt)
   rws=c_strtoi(q2s(opt.at(0)));
   cls=c_strtoi(q2s(opt.at(1)));
   len=rws*cls;
+  if (rws==rws0 && cls==cls0) return;
 
   QTableWidget *w=(QTableWidget*) widget;
   w->setRowCount(rws);
