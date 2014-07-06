@@ -32,8 +32,8 @@ copyaddon ide qt
 find $S/$A/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.exe' -o -name '*.so' -o -name '*.dylib' -o -name 'd3.v3.min.js' -o -name 'baselibtags' -o -name '.*' \) -delete
 find $S/$A/addons/demos/wd -type f ! -name 'coins.ijs' -delete
 
-rm -f $S/jqtdata.tgz
-cd $S/$A
-tar czf $S/jqtdata.tgz *
-cd $S
+rm -f jqtdata.tgz
+cd $A
+tar czf ../jqtdata.tgz *
+cd ..
 mv jqtdata.tgz android_coins/assets/.

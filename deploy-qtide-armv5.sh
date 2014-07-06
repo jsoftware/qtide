@@ -7,7 +7,7 @@ S=$(dirname "$0")
 cd $S
 
 QMAKE_TARGET=libjqt.so
-INSTALL_ROOT=$S/android-build
+INSTALL_ROOT=android-build
 ANDROID_PLATFORM=android-10
 PLATFORM_ID=14  # 14 -> api 10,  22-> api 12
 

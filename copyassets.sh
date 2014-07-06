@@ -1,6 +1,7 @@
 #!/bin/bash
 
 S=$(dirname "$0")
+
 A=android-assets
 P=~/jalgit/addons
 
@@ -54,10 +55,10 @@ copyaddon ide qt
 # copyaddon math misc
 # copyaddon stats base
 
-find $S/$A/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.exe' -o -name '*.so' -o -name '*.dylib' -o -name 'd3.v3.min.js' -o -name 'baselibtags' -o -name '.*' \) -delete
+find $A/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.exe' -o -name '*.so' -o -name '*.dylib' -o -name 'd3.v3.min.js' -o -name 'baselibtags' -o -name '.*' \) -delete
 
-rm -f $S/jqtdata.tgz
-cd $S/$A
-tar czf $S/jqtdata.tgz *
-cd $S
+rm -f jqtdata.tgz
+cd $A
+tar czf ../jqtdata.tgz *
+cd ..
 mv jqtdata.tgz android_qtide/assets/.
