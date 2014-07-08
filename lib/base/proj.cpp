@@ -25,7 +25,8 @@ bool Project::closeOK()
 // ---------------------------------------------------------------------
 void Project::close()
 {
-  Id="";
+  Id.clear();
+  Path.clear();
   recent.ProjectOpen=false;
 }
 
