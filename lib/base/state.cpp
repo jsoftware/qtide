@@ -58,7 +58,7 @@ void Config::config_init()
 {
   QStringList c;
   QString s,t;
-  c << "dirmatch.cfg" << "launch.cfg";
+  c << "dirmatch.cfg" << "launch.cfg" << "stdlib.txt";
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
   if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
