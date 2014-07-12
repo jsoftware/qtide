@@ -134,13 +134,13 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       enter();
       break;
     default:
-      PlainTextEdit::keyPressEvent(e);
+      Bedit::keyPressEvent(e);
     }
     return;
   }
 
   if (shift>ctrl) {
-    PlainTextEdit::keyPressEvent(e);
+    Bedit::keyPressEvent(e);
     return;
   }
 
@@ -153,7 +153,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       promptreplace(dlog_scroll (1));
       break;
     default:
-      PlainTextEdit::keyPressEvent(e);
+      Bedit::keyPressEvent(e);
     }
     return;
   }
@@ -172,7 +172,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
     break;
 
   default:
-    PlainTextEdit::keyPressEvent(e);
+    Bedit::keyPressEvent(e);
   }
 }
 

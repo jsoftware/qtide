@@ -57,7 +57,7 @@ void Nedit::keyPressEvent(QKeyEvent *e)
   if (key==Qt::Key_Home && (ctrl==false) && shift==false)
     home();
   else
-    PlainTextEdit::keyPressEvent(e);
+    Bedit::keyPressEvent(e);
 }
 
 // ---------------------------------------------------------------------

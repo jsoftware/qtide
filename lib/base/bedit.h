@@ -3,6 +3,7 @@
 
 #include "plaintextedit.h"
 
+class QCompleter;
 class QPaintEvent;
 class QResizeEvent;
 class QScrollBar;
@@ -18,6 +19,7 @@ class Bedit : public PlainTextEdit
 
 public:
   Bedit(QWidget *parent = 0);
+  ~Bedit();
 
   void home();
   void lineNumberAreaPaintEvent(QPaintEvent *event);
@@ -33,19 +35,26 @@ public:
   void setselect(int p, int len);
   void setcurpos(int pos);
   void settop(int p);
+  void setCompleter(QCompleter *c);
+  QCompleter *completer() const;
 
   int type;
 
 protected:
   void resizeEvent(QResizeEvent *event);
+  void keyPressEvent(QKeyEvent *e);
+  void focusInEvent(QFocusEvent *e);
 
 private slots:
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &, int);
+  void insertCompletion(const QString &completion);
 
 private:
   QWidget *lineNumberArea;
+  QString textUnderCursor() const;
+  QCompleter *c;
 };
 
 // ---------------------------------------------------------------------

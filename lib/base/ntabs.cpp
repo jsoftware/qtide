@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCompleter>
 
 #include "base.h"
 #include "ntabs.h"
@@ -10,6 +11,8 @@
 #include "spic.h"
 #include "state.h"
 #include "recent.h"
+
+extern QCompleter *completer;
 
 using namespace std;
 
@@ -299,6 +302,11 @@ int Ntabs::tabopen1(QString s,int line)
   connect(e, SIGNAL(modificationChanged(bool)),
           this, SLOT(modificationChanged(bool)));
   watcher->addPath(s);
+  Q_ASSERT(completer);
+  if (config.Completion)
+    e->setCompleter(completer);
+  else
+    e->setCompleter(0);
   return n;
 }
 

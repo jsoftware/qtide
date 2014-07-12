@@ -6,6 +6,8 @@
 #include <QPoint>
 #include <QProcess>
 #include <QWidget>
+#include <QStringListModel>
+#include <QCompleter>
 
 #include "base.h"
 #include "dialog.h"
@@ -126,6 +128,24 @@ QString getcmd(QString mode,QString t)
   if (b==string::npos) return t;
   v.erase(0,b+1);
   return s2q(v);
+}
+
+// ---------------------------------------------------------------------
+QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileName)
+{
+  QFile file(fileName);
+  if (!file.open(QFile::ReadOnly))
+    return new QStringListModel(completer);
+
+  QStringList words;
+
+  while (!file.atEnd()) {
+    QByteArray line = file.readLine();
+    if (!line.isEmpty())
+      words << line.trimmed();
+  }
+
+  return new QStringListModel(words, completer);
 }
 
 // ---------------------------------------------------------------------

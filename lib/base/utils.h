@@ -3,6 +3,8 @@
 
 class QFont;
 class Note;
+class QAbstractItemModel;
+class QCompleter;
 
 QString cpath(QString);
 QString defext(QString s);
@@ -14,6 +16,7 @@ void fontset(QFont font);
 extern "C" Dllexport void fontsetsize(int n);
 QString fontspec(QFont font);
 QString getcmd(QString,QString);
+QAbstractItemModel *getcompletermodel(QCompleter *,const QString&);
 QString getsha1(QString);
 std::string getversion();
 bool gitavailable();

@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QTime>
 #include <QTimer>
+#include <QCompleter>
 
 #include "base.h"
 #include "dialog.h"
@@ -30,6 +31,7 @@ Tedit *tedit;
 QString LastLaunch;
 QTime LastLaunchTime;
 QTimer *timer=0;
+QCompleter *completer=0;
 
 extern "C" Dllexport void smact();
 
@@ -172,6 +174,16 @@ void Term::fini()
 #ifdef QT_OS_ANDROID
   tedit->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
 #endif
+  completer = new QCompleter(this);
+  completer->setModel(getcompletermodel(completer,config.ConfigPath.filePath(config.CompletionFile)));
+  completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+  completer->setCaseSensitivity(Qt::CaseInsensitive);
+  completer->setWrapAround(false);
+  if (config.Completion)
+    tedit->setCompleter(completer);
+  else
+    tedit->setCompleter(0);
+
   tedit->setprompt();
   if (config.SingleWin)
     new OneWin();
