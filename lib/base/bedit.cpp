@@ -2,11 +2,13 @@
 #include <QPainter>
 #include <QTextBlock>
 #include <QScrollBar>
+#ifdef TABCOMPLETION
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QAbstractItemView>
 #include <QModelIndex>
 #include <QAbstractItemModel>
+#endif
 
 #include "plaintextedit.h"
 #include "base.h"
@@ -14,8 +16,11 @@
 #include "bedit.h"
 
 // ---------------------------------------------------------------------
-Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent), c(0)
+Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent)
 {
+#ifdef TABCOMPLETION
+  c= 0 ;
+#endif
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
 
@@ -280,6 +285,7 @@ void Bedit::updateLineNumberArea(const QRect &rect, int dy)
     updateLineNumberAreaWidth(0);
 }
 
+#ifdef TABCOMPLETION
 // ---------------------------------------------------------------------
 void Bedit::setCompleter(QCompleter *completer)
 {
@@ -369,3 +375,4 @@ void Bedit::keyPressEvent(QKeyEvent *e)
   cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
   c->complete(cr); // popup it up!
 }
+#endif

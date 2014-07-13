@@ -58,7 +58,10 @@ void Config::config_init()
 {
   QStringList c;
   QString s,t;
-  c << "dirmatch.cfg" << "launch.cfg" << "stdlib.txt";
+  c << "dirmatch.cfg" << "launch.cfg";
+#ifdef TABCOMPLETION
+  c << "stdlib.txt";
+#endif
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
   if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
@@ -209,8 +212,10 @@ void Config::initide()
   BackButtonClose = s->value("Session/BackButtonClose",false).toBool();
   ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
 #endif
+#ifdef TABCOMPLETION
   Completion = s->value("Session/Completion",false).toBool();
   CompletionFile = s->value("Session/CompletionFile","stdlib.txt").toString();
+#endif
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
   ConfirmSave = s->value("Session/ConfirmSave",false).toBool();
@@ -256,8 +261,10 @@ void Config::initide()
   s->setValue("Session/BackButtonClose",BackButtonClose);
   s->setValue("Session/ScrollBarSize",ScrollBarSize);
 #endif
+#ifdef TABCOMPLETION
   s->setValue("Session/Completion",Completion);
   s->setValue("Session/CompletionFile",CompletionFile);
+#endif
   s->setValue("Session/BoxForm",BoxForm);
   s->setValue("Session/ConfirmClose",ConfirmClose);
   s->setValue("Session/ConfirmSave",ConfirmSave);
@@ -287,8 +294,10 @@ void Config::initide()
     "# ScrollBarSize=25             width or height of scrollbar (Android only)\n"
 #endif
     "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
+#ifdef TABCOMPLETION
     "# Completion=false             if enable tab completion\n"
     "# CompletionFile=stdlib.txt    tab completion word list\n"
+#endif
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
     "# Edit=600 100 750 750         initial edit position\n"
@@ -317,8 +326,10 @@ void Config::noprofile()
   BackButtonClose = false;
   ScrollBarSize = 25;
 #endif
+#ifdef TABCOMPLETION
   Completion = false;
   CompletionFile = "stdlib.txt";
+#endif
   ConfirmClose = false;
   ConfirmSave = false;
   Font.setStyleHint(QFont::TypeWriter);

@@ -13,7 +13,9 @@ class Menu;
 class Tedit;
 class Note;
 class QHBoxLayout;
+#ifdef TABCOMPLETION
 class QCompleter;
+#endif
 
 // ---------------------------------------------------------------------
 class OneWin : public QWidget
@@ -162,6 +164,8 @@ private:
 
 extern Term *term;
 extern QTimer *timer;
+#ifdef TABCOMPLETION
 extern QCompleter *completer;
+#endif
 
 #endif

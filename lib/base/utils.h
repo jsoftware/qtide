@@ -3,8 +3,10 @@
 
 class QFont;
 class Note;
+#ifdef TABCOMPLETION
 class QAbstractItemModel;
 class QCompleter;
+#endif
 
 QString cpath(QString);
 QString defext(QString s);
@@ -16,7 +18,9 @@ void fontset(QFont font);
 extern "C" Dllexport void fontsetsize(int n);
 QString fontspec(QFont font);
 QString getcmd(QString,QString);
+#ifdef TABCOMPLETION
 QAbstractItemModel *getcompletermodel(QCompleter *,const QString&);
+#endif
 QString getsha1(QString);
 std::string getversion();
 bool gitavailable();

@@ -3,12 +3,14 @@
 
 #include "plaintextedit.h"
 
-class QCompleter;
 class QPaintEvent;
 class QResizeEvent;
 class QScrollBar;
 class QSize;
 class QWidget;
+#ifdef TABCOMPLETION
+class QCompleter;
+#endif
 
 class LineNumberArea;
 
@@ -35,15 +37,19 @@ public:
   void setselect(int p, int len);
   void setcurpos(int pos);
   void settop(int p);
+#ifdef TABCOMPLETION
   void setCompleter(QCompleter *c);
   QCompleter *completer() const;
+#endif
 
   int type;
 
 protected:
   void resizeEvent(QResizeEvent *event);
+#ifdef TABCOMPLETION
   void keyPressEvent(QKeyEvent *e);
   void focusInEvent(QFocusEvent *e);
+#endif
 
 private slots:
   void updateLineNumberAreaWidth(int newBlockCount);
@@ -53,8 +59,10 @@ private slots:
 
 private:
   QWidget *lineNumberArea;
+#ifdef TABCOMPLETION
   QString textUnderCursor() const;
   QCompleter *c;
+#endif
 };
 
 // ---------------------------------------------------------------------

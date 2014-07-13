@@ -54,8 +54,10 @@ public:
 #endif
   QDir BinPath;
   int BoxForm;
+#ifdef TABCOMPLETION
   bool Completion;
   QString CompletionFile;
+#endif
   QDir ConfigPath;
   bool ConfirmClose;
   bool ConfirmSave;

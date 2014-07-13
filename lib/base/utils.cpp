@@ -6,8 +6,10 @@
 #include <QPoint>
 #include <QProcess>
 #include <QWidget>
+#ifdef TABCOMPLETION
 #include <QStringListModel>
 #include <QCompleter>
+#endif
 
 #include "base.h"
 #include "dialog.h"
@@ -130,6 +132,7 @@ QString getcmd(QString mode,QString t)
   return s2q(v);
 }
 
+#ifdef TABCOMPLETION
 // ---------------------------------------------------------------------
 QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileName)
 {
@@ -147,6 +150,7 @@ QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileN
 
   return new QStringListModel(words, completer);
 }
+#endif
 
 // ---------------------------------------------------------------------
 QString getsha1(QString s)

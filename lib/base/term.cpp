@@ -4,7 +4,10 @@
 #include <QPushButton>
 #include <QTime>
 #include <QTimer>
+#ifdef TABCOMPLETION
 #include <QCompleter>
+QCompleter *completer=0;
+#endif
 
 #include "base.h"
 #include "dialog.h"
@@ -31,7 +34,6 @@ Tedit *tedit;
 QString LastLaunch;
 QTime LastLaunchTime;
 QTimer *timer=0;
-QCompleter *completer=0;
 
 extern "C" Dllexport void smact();
 
@@ -174,6 +176,7 @@ void Term::fini()
 #ifdef QT_OS_ANDROID
   tedit->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
 #endif
+#ifdef TABCOMPLETION
   completer = new QCompleter(this);
   completer->setModel(getcompletermodel(completer,config.ConfigPath.filePath(config.CompletionFile)));
   completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
@@ -183,7 +186,7 @@ void Term::fini()
     tedit->setCompleter(completer);
   else
     tedit->setCompleter(0);
-
+#endif
   tedit->setprompt();
   if (config.SingleWin)
     new OneWin();
