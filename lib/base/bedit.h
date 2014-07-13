@@ -55,7 +55,9 @@ private slots:
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &, int);
+#ifdef TABCOMPLETION
   void insertCompletion(const QString &completion);
+#endif
 
 private:
   QWidget *lineNumberArea;
