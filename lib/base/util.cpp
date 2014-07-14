@@ -79,7 +79,7 @@ int cfappend (QFile *file, QByteArray b)
 // ---------------------------------------------------------------------
 QString cfcase(QString s)
 {
-#if defined Q_WS_WIN || defined Q_WS_MAC
+#if defined Q_WS_WIN || defined Q_OS_MAC
   s=s.toLower();
 #endif
   return s;
