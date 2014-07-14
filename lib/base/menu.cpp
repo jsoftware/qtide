@@ -921,7 +921,7 @@ void Note::on_scriptformatAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_scriptglobalsAct_triggered()
 {
-  notyet("scriptglobalsAct");
+  note->scriptglobals();
 }
 
 // ---------------------------------------------------------------------

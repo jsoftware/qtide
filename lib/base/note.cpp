@@ -17,6 +17,7 @@
 #include "state.h"
 #include "term.h"
 #include "tedit.h"
+#include "view.h"
 
 #ifdef QT_OS_ANDROID
 extern "C" void android_exec_host(char*,char*,char*,int);
@@ -311,6 +312,17 @@ void Note::scriptenable()
   foreach(QAction *s, menuBar->ScriptEnable)
   s->setEnabled(b);
   mainBar->runallAct->setEnabled(b);
+}
+
+// ---------------------------------------------------------------------
+void Note::scriptglobals()
+{
+  savecurrent();
+  Nedit *e=editPage();
+  QString t=editText();
+  QString dext=cfext(e->fname);
+  QStringList n=globalassigns(t,dext);
+  textview("Script Globals","in script: " + e->sname,n.join("\n"));
 }
 
 // ---------------------------------------------------------------------

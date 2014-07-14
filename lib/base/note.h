@@ -37,6 +37,7 @@ public:
   bool saveall();
   void savecurrent();
   void scriptenable();
+  void scriptglobals();
   void setfont(QFont font);
   void setid();
   void setindex(int index);
