@@ -106,22 +106,8 @@ Form::~Form()
   }
 #endif
   if (Forms.isEmpty() && (!ShowIde)) {
-#ifdef QT_OS_ANDROID
     state_quit();
     QApplication::quit();
-#else
-    if (standAlone) {
-      state_quit();
-      QApplication::quit();
-    } else {
-      showide(true);
-      if (ShowIde) {
-        term->activateWindow();
-        term->raise();
-        term->repaint();
-      }
-    }
-#endif
   }
 }
 

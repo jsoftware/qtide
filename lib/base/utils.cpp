@@ -358,6 +358,7 @@ void projectclose()
   project.close();
   term->projectenable();
   if (note) {
+    note->Id="";
     note->setindex(note->editIndex());
     note->projectenable();
   }
@@ -474,9 +475,10 @@ QStringList shell(QString cmd, QString dir)
 // ---------------------------------------------------------------------
 void setnote(Note *n)
 {
-  if (note2==n) {
+  if (note!=n) {
     note2=note;
     note=n;
+    note->setid();
   }
 }
 

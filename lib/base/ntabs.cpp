@@ -114,21 +114,21 @@ void Ntabs::projectopen(bool openfiles)
   QString t;
   QStringList s,open;
 
-  if (project.Id == Id) return;
+  if (project.Id == pnote->Id) return;
 
   noevents(1);
   tabcloseall();
-  Id = project.Id;
-  if (Id.isEmpty()) {
+  pnote->Id = project.Id;
+  if (pnote->Id.isEmpty()) {
     tabsetindex(-1);
     pnote->siderefresh();
     recent.ProjectOpen=false;
   }
   noevents(0);
 
-  if (Id.isEmpty()) return;
+  if (pnote->Id.isEmpty()) return;
 
-  s=recent.projectget(Id);
+  s=recent.projectget(pnote->Id);
   index=s.at(1).toInt();
   for (i=2; i<s.size(); i++) {
     t = project.fullname(s.at(i));

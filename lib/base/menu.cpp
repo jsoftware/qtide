@@ -65,7 +65,7 @@ void Menu::createActions()
   editfifAct = makeact("editfifAct","F&ind in Files","Ctrl+Shift+F");
   editfiwAct = makeact("editfiwAct","&Find","Ctrl+F");
   editfontAct = makeact("editfontAct","&Session Font","");
-  editinputlogAct = makeact("editinputlogAct","Input &Log","");
+  editinputlogAct = makeact("editinputlogAct","Input &Log","Ctrl+D");
 #ifdef QT_OS_ANDROID
   editwdformAct = makeact("editwdformAct","wd form","");
 #endif
@@ -1078,10 +1078,7 @@ void Note::on_winotherAct_triggered()
   if (note2)
     setnote(note2);
   else {
-    note2=new Note();
-    setnote(note2);
-    if (recent.ProjectOpen)
-      note->projectopen(false);
+    setnote(new Note());
   }
   note->setFocus();
   note->show();
@@ -1094,7 +1091,7 @@ void Note::on_winprojAct_triggered()
   QString f=cfpath(tofoldername(editPage()->fname));
   if ("~"==f.at(0))
     f=f.mid(1);
-  if (f==tabs->Id) return;
+  if (f==Id) return;
   project.open(f);
   projectopen(true);
 }
@@ -1102,7 +1099,7 @@ void Note::on_winprojAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_winscriptsAct_triggered()
 {
-  QString p=cpath("~"+tabs->Id);
+  QString p=cpath("~"+Id);
   QStringList f=qslreverse(cflistfull(p,config.ScriptFilter));
   foreach (QString s,f)
   fileopen(s);
@@ -1111,7 +1108,7 @@ void Note::on_winscriptsAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_winsourceAct_triggered()
 {
-  QString p=cpath("~"+tabs->Id);
+  QString p=cpath("~"+Id);
   QString pf=p + "/" + cfsname(p) + config.ProjExt;
   QStringList f=qslreverse(cfreadx(pf));
   f=qslprependeach(p + "/",f);
@@ -1122,7 +1119,7 @@ void Note::on_winsourceAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_wintextAct_triggered()
 {
-  QString p=cpath("~"+tabs->Id);
+  QString p=cpath("~"+Id);
   QStringList f=qslreverse(cflisttext(p));
   foreach (QString s,f)
   fileopen(s);

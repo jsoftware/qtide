@@ -69,6 +69,7 @@ Note::Note()
 // ---------------------------------------------------------------------
 void Note::activate()
 {
+  setid();
   activateWindow();
   raise();
   int n=editIndex();
@@ -99,12 +100,11 @@ void Note::closeit()
 {
   if (!saveall()) return;
   projectsave();
+  note=0;
   if (note2) {
-    note=note2;
-    note2=0;
+    setnote(note2);
     note->setFocus();
-  } else
-    note=0;
+  }
   close();
 }
 
@@ -143,6 +143,7 @@ void Note::fileclose(QString f)
 // ---------------------------------------------------------------------
 bool Note::fileopen(QString s,int line)
 {
+  setid();
   return tabs->tabopen(s,line);
 }
 
@@ -276,7 +277,8 @@ void Note::projectopen(bool b)
 // ---------------------------------------------------------------------
 void Note::projectsave()
 {
-  if (tabs->Id.size())
+  setid();
+  if (Id.size())
     project.save(tabs->gettablist());
 }
 
@@ -432,6 +434,14 @@ void Note::select_text(QString s)
 void Note::setfont(QFont font)
 {
   tabs->setfont(font);
+}
+
+// ---------------------------------------------------------------------
+// ensure current project matches Note
+void Note::setid()
+{
+  if (Id.size() && Id != project.Id)
+    project.open(Id);
 }
 
 // ---------------------------------------------------------------------

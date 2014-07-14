@@ -38,6 +38,7 @@ public:
   void savecurrent();
   void scriptenable();
   void setfont(QFont font);
+  void setid();
   void setindex(int index);
   void setlinenos(bool);
   void setlinewrap(bool);
@@ -48,6 +49,7 @@ public:
   void siderefresh();
   void tabclose(int index);
 
+  QString Id;
   Nmain *mainBar;
   Menu *menuBar;
   Nside *sideBar;
@@ -196,7 +198,6 @@ private:
 
   void changeEvent(QEvent *event);
   void closeEvent(QCloseEvent *event);
-
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   bool maybeSave();

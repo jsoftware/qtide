@@ -49,39 +49,33 @@ void Recent::init()
 // ---------------------------------------------------------------------
 QStringList Recent::projectget(QString id)
 {
-  int i, n;
   QStringList s;
-  n=Projects.size();
-
-  for (i=0; i<n; i++) {
+  s.append(id);
+  s.append("-1");
+  int n=Projects.size();
+  for (int i=0; i<n; i++) {
     if (id == Projects.at(i).first()) {
       s=Projects.at(i);
-      Projects.removeAt(i);
       break;
     }
   }
-
-  if (i==n) {
-    s.append(id);
-    s.append("-1");
-  }
-
-  Projects.prepend(s);
-  Projects=Projects.mid(0,config.MaxRecent);
-  save_project();
-  return Projects.at(0);
+  projectset(s);
+  return s;
 }
 
 // ---------------------------------------------------------------------
 void Recent::projectset(QStringList s)
 {
-  QString t;
-  if (s.size()) {
-    if (Projects.size())
-      Projects.replace(0,s);
-    else
-      Projects.append(s);
-  }
+  QString id, t;
+  id=s.first();
+  int n=Projects.size();
+  for (int i=0; i<n; i++)
+    if (id == Projects.at(i).first()) {
+      Projects.removeAt(i);
+      break;
+    }
+  Projects.prepend(s);
+  Projects=Projects.mid(0,config.MaxRecent);
   save_project();
 }
 

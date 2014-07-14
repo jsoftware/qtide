@@ -38,8 +38,6 @@ public:
   void tabsetindex(int index);
   void tabsettext(QString s);
 
-  QString Id;
-
 private slots:
   void currentChanged(int index);
   void fileChanged(const QString &);
