@@ -105,8 +105,8 @@ QString getprojectpath()
   if (!project.Id.isEmpty())
     return project.Path;
   QString r;
-  if (config.UserFolderKeys.contains("Project"))
-    r=cpath ("~Project");
+  if (config.UserFolderKeys.contains("Projects"))
+    r=cpath ("~Projects");
   else if (config.UserFolderKeys.contains("User"))
     r=cpath ("~User");
   else if (!config.UserFolderKeys.isEmpty())

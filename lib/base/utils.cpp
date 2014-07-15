@@ -23,13 +23,14 @@
 using namespace std;
 
 extern "C" {
+  Dllexport void getmd5(const char *, const char *&, int &);
   Dllexport void getsha1(const char *, const char *&, int &);
   Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
 bool ShowIde=true;
-string sha1;
+string hash;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -153,6 +154,20 @@ QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileN
 #endif
 
 // ---------------------------------------------------------------------
+QString getmd5(QString s)
+{
+  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Md5).toHex();
+}
+
+// ---------------------------------------------------------------------
+void getmd5(const char *s, const char *&res, int &len)
+{
+  hash=q2s(getmd5(c2q(s)));
+  res=(char *)hash.c_str();
+  len=(int)hash.size();
+}
+
+// ---------------------------------------------------------------------
 QString getsha1(QString s)
 {
   return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Sha1).toHex();
@@ -161,9 +176,9 @@ QString getsha1(QString s)
 // ---------------------------------------------------------------------
 void getsha1(const char *s, const char *&res, int &len)
 {
-  sha1=q2s(getsha1(c2q(s)));
-  res=(char *)sha1.c_str();
-  len=(int)sha1.size();
+  hash=q2s(getsha1(c2q(s)));
+  res=(char *)hash.c_str();
+  len=(int)hash.size();
 }
 
 // ---------------------------------------------------------------------
