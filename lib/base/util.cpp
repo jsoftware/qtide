@@ -79,7 +79,7 @@ int cfappend (QFile *file, QByteArray b)
 // ---------------------------------------------------------------------
 QString cfcase(QString s)
 {
-#if defined Q_WS_WIN || defined Q_OS_MAC
+#if defined(_WIN32) || defined(__MACH__)
   s=s.toLower();
 #endif
   return s;
@@ -439,7 +439,7 @@ bool isint(const string s)
 // ---------------------------------------------------------------------
 bool isroot(QString s)
 {
-#ifdef Q_WS_WIN
+#ifdef _WIN32
   return s.size()>1 && s.at(1) == ':';
 #else
   return s.size()>0 && s.at(0) == '/';
