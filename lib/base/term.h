@@ -97,9 +97,9 @@ public slots:
 
   void on_helpaboutAct_triggered();
   void on_helpcontextAct_triggered();
-  void on_helpcontextnuvocAct_triggered();
 
 #ifdef JQT
+  void on_helpcontextnuvocAct_triggered();
   void on_helpconstantsAct_triggered();
   void on_helpcontrolsAct_triggered();
   void on_helpdemoqtAct_triggered();
