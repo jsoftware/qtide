@@ -30,7 +30,6 @@ extern "C" {
 }
 
 bool ShowIde=true;
-string hash;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -162,6 +161,7 @@ QString getmd5(QString s)
 // ---------------------------------------------------------------------
 void getmd5(const char *s, const char *&res, int &len)
 {
+  string hash;
   hash=q2s(getmd5(c2q(s)));
   res=(char *)hash.c_str();
   len=(int)hash.size();
@@ -176,6 +176,7 @@ QString getsha1(QString s)
 // ---------------------------------------------------------------------
 void getsha1(const char *s, const char *&res, int &len)
 {
+  string hash;
   hash=q2s(getsha1(c2q(s)));
   res=(char *)hash.c_str();
   len=(int)hash.size();
