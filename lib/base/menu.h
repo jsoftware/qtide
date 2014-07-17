@@ -20,6 +20,8 @@ public:
 
   QAction *projectcloseAct;
   QAction *rundebugAct;
+  QAction *runlineadvanceshowAct;
+  QAction *runlineshowAct;
   QAction *runprojectAct;
   QAction *viewasciiAct;
   QAction *viewlinenosAct;
@@ -118,8 +120,6 @@ private:
   QAction *runclipAct;
   QAction *runlineAct;
   QAction *runlineadvanceAct;
-  QAction *runlineadvanceshowAct;
-  QAction *runlineshowAct;
   QAction *runscriptAct;
   QAction *runselectAct;
   QAction *runtestAct;

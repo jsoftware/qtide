@@ -378,15 +378,13 @@ void Menu::createrunMenu(QString s)
 {
   runMenu = addMenu("&Run");
   if (s == "note") {
-#ifdef JQT
     runMenu->addAction(runlineAct);
     runMenu->addAction(runlineadvanceAct);
-#else
-    runMenu->addAction(runlineAct);
-    runMenu->addAction(runlineshowAct);
-    runMenu->addAction(runlineadvanceAct);
-    runMenu->addAction(runlineadvanceshowAct);
-#endif
+    if (config.RunShow) {
+      runMenu->addSeparator();
+      runMenu->addAction(runlineshowAct);
+      runMenu->addAction(runlineadvanceshowAct);
+    }
     runMenu->addSeparator();
     runMenu->addAction(runselectAct);
     runMenu->addAction(runalllinesAct);

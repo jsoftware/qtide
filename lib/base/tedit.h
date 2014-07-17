@@ -24,7 +24,7 @@ public:
   QString prompt;
 
 public slots:
-  void docmdp(QString t, bool show);
+  void docmdp(QString t, bool show, bool same);
   void docmds(QString t, bool show);
   void docmdx(QString t);
   void itemActivated(QListWidgetItem *);

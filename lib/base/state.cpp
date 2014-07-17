@@ -103,15 +103,6 @@ void Config::folder_init()
   SystemPath.setPath(cpath("~install"));
   TempPath.setPath(cpath("~temp"));
   UserPath.setPath(cpath("~user"));
-
-// ??? should them be created for root user
-  /*
-    if (!NoProfile) {
-      createdir(SnapPath);
-      createdir(TempPath);
-      createdir(UserPath);
-    }
-  */
 }
 
 // ---------------------------------------------------------------------
@@ -176,7 +167,6 @@ void Config::init()
     var_cmd("boxdraw_j_ "+QString::number(BoxForm));
     Ascii=!Ascii;
   }
-
 }
 
 // ---------------------------------------------------------------------
@@ -230,6 +220,7 @@ void Config::initide()
   KeepInputLog = s->value("Session/KeepInputLog",true).toBool();
   MaxRecent = s->value("Session/MaxRecent",15).toInt();
   OpenTabAt=s->value("Session/OpenTabAt",0).toInt();
+  RunShow = s->value("Session/RunShow",false).toBool();
   Snapshots = s->value("Session/Snapshots",true).toInt();
   Snapshotx = s->value("Session/Snapshotx","").toString();
   TermSyntaxHighlight = s->value("Session/TermSyntaxHighlight",false).toBool();
@@ -275,6 +266,7 @@ void Config::initide()
   s->setValue("Session/KeepInputLog",KeepInputLog);
   s->setValue("Session/MaxRecent",MaxRecent);
   s->setValue("Session/OpenTabAt",OpenTabAt);
+  s->setValue("Session/RunShow",RunShow);
   s->setValue("Session/Snapshots",Snapshots);
   s->setValue("Session/Snapshotx",Snapshotx);
   s->setValue("Session/TermSyntaxHighlight",TermSyntaxHighlight);
@@ -309,6 +301,7 @@ void Config::initide()
     "# KeepInputLog=true            if inputlog is preserved\n"
     "# MaxRecent=15                 max number in recent files\n"
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
+    "# RunShow=false                enable run with show menu items\n"
     "# Snapshots=5                  number of project snapshots kept\n"
     "# Snapshotx=                   snapshots exclusion list\n"
     "# Term=0 0 500 600             initial term position\n"

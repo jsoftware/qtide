@@ -4,6 +4,7 @@
 #include <QDesktopWidget>
 
 #include "base.h"
+#include "jsvr.h"
 #include "nedit.h"
 #include "note.h"
 #include "nmain.h"
@@ -12,9 +13,9 @@
 #include "menu.h"
 #include "proj.h"
 #include "psel.h"
-#include "svr.h"
 #include "recent.h"
 #include "state.h"
+#include "svr.h"
 #include "term.h"
 #include "tedit.h"
 #include "view.h"
@@ -362,7 +363,8 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
   }
 
   if (s=="wrap") {
-    return mid;
+    sets("inputx_jrx_",q2s(mid.join("\n")));
+    return s2q(dors("70 foldtext inputx_jrx_")).split("\n");
   }
 
   comment=editPage()->getcomment();

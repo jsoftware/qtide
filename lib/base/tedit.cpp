@@ -55,11 +55,15 @@ void Tedit::docmd(QString t)
 }
 
 // ---------------------------------------------------------------------
-void Tedit::docmdp(QString t,bool show)
+void Tedit::docmdp(QString t,bool show,bool same)
 {
   if (show)
     promptreplace(getprompt() + t);
-  docmd(t);
+  if (same && t.size()>0) {
+    dlog_add(t);
+    var_run("[" + t);
+  } else
+    docmd(t);
 }
 
 // ---------------------------------------------------------------------
@@ -179,7 +183,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
 // ---------------------------------------------------------------------
 void Tedit::loadscript(QString s,bool show)
 {
-  tedit->docmdp(var_load(s,false),show);
+  tedit->docmdp(var_load(s,false),show, false);
 }
 
 // ---------------------------------------------------------------------
