@@ -23,12 +23,13 @@
 using namespace std;
 
 extern "C" {
-  Dllexport void gethash(const char *, const char *, int, char *&, int &);
+  Dllexport int gethash(const char *, const char *, const int, char *&, int &);
   Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
 bool ShowIde=true;
+string hash;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -152,21 +153,44 @@ QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileN
 #endif
 
 // ---------------------------------------------------------------------
-void gethash(const char *s, const char *t, int wid, char *&msg, int &len)
+int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
 {
+  int rc=0;
   QCryptographicHash::Algorithm a;
-  QString m=c2q(s);
-  if (m=="md5")
+  string m=c2s(s);
+  if (m=="md4")
+    a=QCryptographicHash::Md4;
+  else if (m=="md5")
     a=QCryptographicHash::Md5;
   else if (m=="sha1")
     a=QCryptographicHash::Sha1;
+#ifdef QT53
+  else if (m=="sha224")
+    a=QCryptographicHash::Sha224;
+  else if (m=="sha256")
+    a=QCryptographicHash::Sha256;
+  else if (m=="sha384")
+    a=QCryptographicHash::Sha384;
+  else if (m=="sha512")
+    a=QCryptographicHash::Sha512;
+  else if (m=="sha3_224")
+    a=QCryptographicHash::Sha3_224;
+  else if (m=="sha3_256")
+    a=QCryptographicHash::Sha3_256;
+  else if (m=="sha_384")
+    a=QCryptographicHash::Sha3_384;
+  else if (m=="sha3_512")
+    a=QCryptographicHash::Sha3_512;
+#endif
   else {
-    info("Cryptographic Hash","Hash type unknown: " + m);
-    return;
+    rc=1;
+    hash="Hash type unknown: " + m;
   }
-  string hash=q2s(QCryptographicHash::hash(QByteArray(t,wid),a).toHex());
+  if (rc==0)
+    hash=q2s(QCryptographicHash::hash(QByteArray(t,wid),a).toHex());
   msg=(char *)hash.c_str();
   len=(int)hash.size();
+  return rc;
 }
 
 // ---------------------------------------------------------------------
