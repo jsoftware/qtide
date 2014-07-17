@@ -23,13 +23,13 @@
 using namespace std;
 
 extern "C" {
-  Dllexport void getmd5(const char *, const char *&, int &);
-  Dllexport void getsha1(const char *, const char *&, int &);
+  Dllexport void gethash(const char *, const char *, int, char *&, int &);
   Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
 bool ShowIde=true;
+string hash;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -153,17 +153,20 @@ QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileN
 #endif
 
 // ---------------------------------------------------------------------
-QString getmd5(QString s)
+void gethash(const char *s, const char *t, int wid, char *&msg, int &len)
 {
-  return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Md5).toHex();
-}
-
-// ---------------------------------------------------------------------
-void getmd5(const char *s, const char *&res, int &len)
-{
-  string hash;
-  hash=q2s(getmd5(c2q(s)));
-  res=(char *)hash.c_str();
+  QCryptographicHash::Algorithm a;
+  QString m=c2q(s);
+  if (m=="md5")
+    a=QCryptographicHash::Md5;
+  else if (m=="sha1")
+    a=QCryptographicHash::Sha1;
+  else {
+    info("Cryptographic Hash","Hash type unknown: " + m);
+    return;
+  }
+  hash=q2s(QCryptographicHash::hash(QByteArray(t,wid),a).toHex());
+  msg=(char *)hash.c_str();
   len=(int)hash.size();
 }
 
@@ -171,15 +174,6 @@ void getmd5(const char *s, const char *&res, int &len)
 QString getsha1(QString s)
 {
   return QCryptographicHash::hash(s.toUtf8(),QCryptographicHash::Sha1).toHex();
-}
-
-// ---------------------------------------------------------------------
-void getsha1(const char *s, const char *&res, int &len)
-{
-  string hash;
-  hash=q2s(getsha1(c2q(s)));
-  res=(char *)hash.c_str();
-  len=(int)hash.size();
 }
 
 // ---------------------------------------------------------------------

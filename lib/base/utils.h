@@ -21,7 +21,6 @@ QString getcmd(QString,QString);
 #ifdef TABCOMPLETION
 QAbstractItemModel *getcompletermodel(QCompleter *,const QString&);
 #endif
-QString getmd5(QString);
 QString getsha1(QString);
 std::string getversion();
 bool gitavailable();
