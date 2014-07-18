@@ -390,9 +390,11 @@ void Menu::createrunMenu(QString s)
     runMenu->addAction(runclipAct);
     runMenu->addSeparator();
     runMenu->addAction(runscriptAct);
-  } else
+  } else {
+    runMenu->addAction(runselectAct);
+    runMenu->addSeparator();
     runMenu->addAction(runclipAct);
-
+  }
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
@@ -1399,7 +1401,7 @@ void Term::on_runprojectAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_runselectAct_triggered()
 {
-  notyet("runselectAct");
+  runlines();
 }
 
 // ---------------------------------------------------------------------

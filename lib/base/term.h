@@ -47,6 +47,7 @@ public:
   void pacman();
   void projectenable();
   void refresh();
+  void runlines();
   void vieweditor();
 
   Menu *menuBar;

@@ -5,6 +5,7 @@
 #include "nedit.h"
 #include "note.h"
 #include "tedit.h"
+#include "term.h"
 
 using namespace std;
 
@@ -47,4 +48,10 @@ void Note::runlines(bool all)
   else
     txt=e->readselected();
   tedit->docmds(txt, true);
+}
+
+// ---------------------------------------------------------------------
+void Term::runlines()
+{
+  tedit->docmds(tedit->readselected(), true);
 }
