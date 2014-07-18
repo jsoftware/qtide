@@ -37,9 +37,11 @@ static bool inputready=false;
 static QString inputx;
 static bool logged=false;
 static bool quitx=false;
+bool runshow=false;
 
 void logbin(const char*s,int n);
 void logcs(char *msg);
+QString runshowclean(QString s);
 Jcon *jcon=0;
 QEventLoop *evloop;
 int cnt=0;
@@ -204,6 +206,9 @@ void _stdcall Joutput(J jt,int type, char* s)
   if (s[n-1]=='\n') s[n-1]='\0';
   QString t=QString::fromUtf8(s);
 
+  if (MTYOER==type && runshow)
+    t=runshowclean(t);
+
   if (MTYOFILE==type && ifcmddo)
     tedit->append_smoutput(t);
   else if (MTYOLOG!=type)
@@ -216,6 +221,15 @@ void _stdcall Joutput(J jt,int type, char* s)
       tedit->append("");
     }
   }
+}
+
+// ---------------------------------------------------------------------
+QString runshowclean(QString s)
+{
+  int n=s.indexOf("output_jrx_=:");
+  if (n>0)
+    s.remove(n,13);
+  return(s);
 }
 
 // ---------------------------------------------------------------------

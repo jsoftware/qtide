@@ -380,11 +380,9 @@ void Menu::createrunMenu(QString s)
   if (s == "note") {
     runMenu->addAction(runlineAct);
     runMenu->addAction(runlineadvanceAct);
-    if (config.RunShow) {
-      runMenu->addSeparator();
-      runMenu->addAction(runlineshowAct);
-      runMenu->addAction(runlineadvanceshowAct);
-    }
+    runMenu->addSeparator();
+    runMenu->addAction(runlineshowAct);
+    runMenu->addAction(runlineadvanceshowAct);
     runMenu->addSeparator();
     runMenu->addAction(runselectAct);
     runMenu->addAction(runalllinesAct);

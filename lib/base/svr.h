@@ -23,7 +23,6 @@ public:
 
   QStringList Sentence;
 
-
 public slots:
   void input();
 

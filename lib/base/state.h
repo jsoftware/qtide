@@ -102,7 +102,6 @@ public:
   QFont ProFont;
   QString Rxnna;
   QString Rxnnz;
-  bool RunShow;
   QString RunQ;
   QString ScriptFilter;
   bool SingleWin;

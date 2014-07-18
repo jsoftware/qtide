@@ -14,7 +14,7 @@
 #include "svr.h"
 
 using namespace std;
-
+extern bool runshow;
 
 // ---------------------------------------------------------------------
 Tedit::Tedit()
@@ -50,6 +50,7 @@ void Tedit::append_smoutput(QString s)
 // ---------------------------------------------------------------------
 void Tedit::docmd(QString t)
 {
+  runshow=false;
   dlog_add(t);
   var_run(t);
 }
@@ -57,11 +58,14 @@ void Tedit::docmd(QString t)
 // ---------------------------------------------------------------------
 void Tedit::docmdp(QString t,bool show,bool same)
 {
+  runshow=same && t.size()>0;
   if (show)
     promptreplace(getprompt() + t);
-  if (same && t.size()>0) {
+  if (runshow) {
     dlog_add(t);
-    var_run("[" + t);
+    var_run("output_jrx_=:i.0 0");
+    var_run("output_jrx_=:"+t);
+    var_run("output_jrx_");
   } else
     docmd(t);
 }
@@ -69,6 +73,7 @@ void Tedit::docmdp(QString t,bool show,bool same)
 // ---------------------------------------------------------------------
 void Tedit::docmds(QString t, bool show)
 {
+  runshow=false;
   var_runs(t, show);
 }
 
