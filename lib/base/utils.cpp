@@ -29,7 +29,7 @@ extern "C" {
 }
 
 bool ShowIde=true;
-string hash;
+static string hashbuf;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -184,12 +184,12 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
 #endif
   else {
     rc=1;
-    hash="Hash type unknown: " + m;
+    hashbuf="Hash type unknown: " + m;
   }
   if (rc==0)
-    hash=q2s(QCryptographicHash::hash(QByteArray(t,wid),a).toHex());
-  msg=(char *)hash.c_str();
-  len=(int)hash.size();
+    hashbuf=q2s(QCryptographicHash::hash(QByteArray(t,wid),a).toHex());
+  msg=(char *)hashbuf.c_str();
+  len=(int)hashbuf.size();
   return rc;
 }
 
