@@ -40,6 +40,17 @@ Bedit::~Bedit()
 {
 }
 
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Bedit::copy()
+{
+  QTextCursor cu = textCursor();
+  selectAll();
+  PlainTextEdit::copy();
+  setTextCursor(cu);
+}
+#endif
+
 // ---------------------------------------------------------------------
 int Bedit::lineNumberAreaWidth()
 {

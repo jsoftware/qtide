@@ -44,6 +44,11 @@ public:
 
   int type;
 
+#ifdef QT_OS_ANDROID
+public slots:
+  void copy();
+#endif
+
 protected:
   void resizeEvent(QResizeEvent *event);
 #ifdef TABCOMPLETION
