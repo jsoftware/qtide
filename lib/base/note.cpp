@@ -4,7 +4,9 @@
 #include <QDesktopWidget>
 
 #include "base.h"
+#ifdef JQT
 #include "jsvr.h"
+#endif
 #include "nedit.h"
 #include "note.h"
 #include "nmain.h"
@@ -69,6 +71,18 @@ Note::Note()
 }
 
 // ---------------------------------------------------------------------
+Note::~Note()
+{
+  if (this==note2)
+    note2=0;
+  else {
+    note=0;
+    if (note2)
+      setnote(note2);
+  }
+}
+
+// ---------------------------------------------------------------------
 void Note::activate()
 {
   setid();
@@ -93,21 +107,16 @@ void Note::changeEvent(QEvent *event)
 // ---------------------------------------------------------------------
 void Note::closeEvent(QCloseEvent *event)
 {
-  Q_UNUSED(event);
-  closeit();
-}
-
-// ---------------------------------------------------------------------
-void Note::closeit()
-{
-  if (!saveall()) return;
+  if (!saveall()) {
+    event->ignore();
+    return;
+  }
   projectsave();
-  note=0;
   if (note2) {
     setnote(note2);
     note->setFocus();
   }
-  close();
+  QWidget::closeEvent(event);
 }
 
 // ---------------------------------------------------------------------
@@ -154,9 +163,8 @@ void Note::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
   case Qt::Key_Escape:
-    if (config.EscClose) {
-      closeit();
-    }
+    if (config.EscClose)
+      close();
   default:
     QWidget::keyPressEvent(event);
   }
@@ -363,8 +371,12 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
   }
 
   if (s=="wrap") {
+#ifdef JQT
     sets("inputx_jrx_",q2s(mid.join("\n")));
     return s2q(dors("70 foldtext inputx_jrx_")).split("\n");
+#else
+    return mid;
+#endif
   }
 
   comment=editPage()->getcomment();

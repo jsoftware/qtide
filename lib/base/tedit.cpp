@@ -58,7 +58,8 @@ void Tedit::docmd(QString t)
 // ---------------------------------------------------------------------
 void Tedit::docmdp(QString t,bool show,bool same)
 {
-  runshow=same && t.size()>0;
+  bool cmt="NB."==dlb(t).left(3);
+  runshow=same && t.size()>0 && !cmt;
   if (show)
     promptreplace(getprompt() + t);
   if (runshow) {

@@ -18,9 +18,9 @@ class Note : public QWidget
 
 public:
   Note();
+  ~Note();
 
   void activate();
-  void closeit();
   int editIndex();
   QString editFile();
   Nedit *editPage();
