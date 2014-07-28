@@ -162,8 +162,6 @@ bool Term::filequit(bool ignoreconfirm)
 void Term::fini()
 {
   menuBar->createMenus_fini("term");
-  move(config.TermPos[0],config.TermPos[1]);
-  resize(config.TermPos[2],config.TermPos[3]);
   tedit->setFont(config.Font);
   QPalette p = palette();
   p.setColor(QPalette::Active, QPalette::Base, config.TermBack.color);
@@ -192,6 +190,8 @@ void Term::fini()
     new OneWin();
   else if (ShowIde)
     show();
+  move(config.TermPos[0],config.TermPos[1]);
+  resize(config.TermPos[2],config.TermPos[3]);
 }
 
 // ---------------------------------------------------------------------
