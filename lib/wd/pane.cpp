@@ -178,7 +178,10 @@ void Pane::bin(string s)
     n=c_strtoi(q2s(m.mid(1)));
     if (c=='h'||c=='v'||c=='g')
       addlayout(new Layout(c,n,this));
-    else if (c=='p' && layout->type!='g')
+    else if (c=='m' && layout->type!='g') {
+      layout->bin->setContentsMargins(n,n,n,n);
+      layout->bin->setSpacing(n);
+    } else if (c=='p' && layout->type!='g')
       layout->addSpacing(n);
     else if (c=='s') {
       if ('g'==layout->type) {

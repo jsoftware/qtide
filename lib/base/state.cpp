@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QDate>
+#include <QDesktopWidget>
 #include <QFont>
 #ifndef QT_NO_PRINTER
 #ifdef QT50
@@ -139,6 +140,17 @@ void Config::init()
   LineWrap = false;
   ScriptFilter="*.ijs";
 
+#ifdef QT_OS_ANDROID
+  android_getdisplaymetrics(0);
+  ScreenWidth=DM_widthPixels;
+  ScreenHeight=DM_heightPixels;
+#else
+  QDesktopWidget* dw=QApplication::desktop();
+  QRect screenGeometry = dw->screenGeometry(-1);
+  ScreenWidth=screenGeometry.width();
+  ScreenHeight=screenGeometry.height();
+#endif
+
   Rxnna = "\\b";
   Rxnnz = "\\b";
 
@@ -235,12 +247,19 @@ void Config::initide()
 
   Terminal = s->value("Run/Terminal",terminal).toString();
 
-  t = s->value("Position/Edit","600 100 750 750").toString();
-  q2p(t,EditPos);
-  t = s->value("Position/Term","0 0 500 600").toString();
-  q2p(t,TermPos);
+  t = s->value("Position/Debug","-590 50 540 500").toString();
+  DebugPos=q2p(t);
+  DebugPosX=initposX(DebugPos);
 
-  if (s->allKeys().contains("Session/TrimTrailingWS")) return;
+  t = s->value("Position/Edit","600 100 750 750").toString();
+  EditPos=q2p(t);
+  EditPosX=initposX(EditPos);
+
+  t = s->value("Position/Term","0 0 500 600").toString();
+  TermPos=q2p(t);
+  TermPosX=initposX(TermPos);
+
+  if (s->allKeys().contains("Position/Debug")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -270,6 +289,7 @@ void Config::initide()
   s->setValue("Session/TermSyntaxHighlight",TermSyntaxHighlight);
   s->setValue("Session/TrimTrailingWS",TrimTrailingWS);
   s->setValue("FindinFiles/Extensions",FifExt);
+  s->setValue("Position/Debug",p2q(DebugPos));
   s->setValue("Position/Edit",p2q(EditPos));
   s->setValue("Position/Term",p2q(TermPos));
   s->setValue("Run/Terminal",Terminal);
@@ -290,7 +310,6 @@ void Config::initide()
 #endif
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
-    "# Edit=600 100 750 750         initial edit position\n"
     "# EscClose=false               if Esc will close a window\n"
     "# Extensions=ijs, c cfg...     FIF file extension lists\n"
     "# FontFamily=Menlo             term/edit font family\n"
@@ -301,12 +320,25 @@ void Config::initide()
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
     "# Snapshots=5                  number of project snapshots kept\n"
     "# Snapshotx=                   snapshots exclusion list\n"
-    "# Term=0 0 500 600             initial term position\n"
     "# Terminal=gnome-terminal      show in terminal command\n"
     "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
     "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
+    "#\n"
+    "# Initial xywh positions, with negative xy from opposite edge:\n"
+    "# Debug=-590 50 540 500        debug position\n"
+    "# Edit=600 100 750 750         edit position\n"
+    "# Term=0 0 500 600             term position\n"
     ;
   cfwrite(f,h + "\n" + t);
+}
+
+// ---------------------------------------------------------------------
+QList<int> Config::initposX(QList<int> p)
+{
+  QList<int> r=p;
+  r.replace(0,modpy(ScreenWidth,r.at(0)));
+  r.replace(1,modpy(ScreenHeight,r.at(1)));
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -334,7 +366,7 @@ void Config::noprofile()
   TermFore.color = QColor("black");
   TermHigh.color = QColor("gainsboro");
   EditHigh.color = QColor("gainsboro");
-  q2p("0 0 500 500",TermPos);
+  TermPos=q2p("0 0 500 500");
   term->menuBar->hide();
 }
 
@@ -364,9 +396,6 @@ QStringList state_about()
 {
   QStringList r;
   QString msg,ver,year;
-//  QString engine;
-//  engine=s2q(dors("9!:14''"));
-//  ver=qstaketo(engine,"/").toUpper();
   ver= "J" JDLLVER;
   year=QString::number(QDate::currentDate().year());
   msg=s2q(dors("JVERSION"));

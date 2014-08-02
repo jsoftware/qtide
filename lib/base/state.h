@@ -32,6 +32,7 @@ public:
   void launch_init();
   void init();
   void initide();
+  QList<int> initposX(QList<int>);
   void initstyle();
   bool initide1(QString f);
   void noprofile();
@@ -61,6 +62,8 @@ public:
   QDir ConfigPath;
   bool ConfirmClose;
   bool ConfirmSave;
+  QList<int> DebugPos;
+  QList<int> DebugPosX;
   QString DefCmt;
   QString DefCCmt;
   QString DefExt;
@@ -73,7 +76,8 @@ public:
   int DMTypeIndex;
   QStringList DMTypes;
   QStringList DMTypex;
-  int EditPos[4];
+  QList<int>EditPos;
+  QList<int>EditPosX;
   bool EscClose;
   QStringList FifExt;
   QMap<QString,int> FilePos;
@@ -103,6 +107,8 @@ public:
   QString Rxnna;
   QString Rxnnz;
   QString RunQ;
+  int ScreenHeight;
+  int ScreenWidth;
   QString ScriptFilter;
   bool SingleWin;
   QDir SnapPath;
@@ -111,7 +117,8 @@ public:
   QDir SystemPath;
   QDir TempPath;
   QString Terminal;
-  int TermPos[4];
+  QList<int> TermPos;
+  QList<int> TermPosX;
   bool TermSyntaxHighlight;
   bool TrimTrailingWS;
   QString User;

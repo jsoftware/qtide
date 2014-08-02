@@ -503,10 +503,10 @@ void Note::setpos()
   int x,y,w,h,wid;
 
   if (note==0) {
-    x=config.EditPos[0];
-    y=config.EditPos[1];
-    w=config.EditPos[2];
-    h=config.EditPos[3];
+    x=config.EditPosX[0];
+    y=config.EditPosX[1];
+    w=config.EditPosX[2];
+    h=config.EditPosX[3];
   } else {
     QDesktopWidget *d=qApp->desktop();
     QRect s=d->screenGeometry();

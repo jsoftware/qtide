@@ -30,9 +30,9 @@ string qtstate(string p)
   if (s.size()==0) return "";
   bool all="all"==s.at(0);
 
-  c="fixfont";
+  c="debugpos";
   if (all || s.contains(c))
-    r+=qpair(c,fontspec(config.Font));
+    r+=qpair(c,p2q(config.DebugPosX));
   c="profont";
   if (all || s.contains(c))
     r+=qpair(c,fontspec(QApplication::font()));

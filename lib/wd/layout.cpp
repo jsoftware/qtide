@@ -19,7 +19,6 @@ Layout::Layout(QChar type, int stretch, Pane *p)
   if ('h'==type) bin=(QLayout *) new QHBoxLayout;
   else if ('v'==type) bin=(QLayout *) new QVBoxLayout;
   else if ('g'==type) bin=(QLayout *) new QGridLayout;
-  else qDebug() << "layout type not h v g";
 }
 
 // ---------------------------------------------------------------------

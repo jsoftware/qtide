@@ -398,8 +398,8 @@ void Menu::createrunMenu(QString s)
   runMenu->addSeparator();
   runMenu->addAction(runtestAct);
   runMenu->addAction(runprojectAct);
-  // runMenu->addSeparator();
-  // runMenu->addAction(rundebugAct);
+  runMenu->addSeparator();
+  runMenu->addAction(rundebugAct);
 }
 
 // ---------------------------------------------------------------------
@@ -1369,7 +1369,7 @@ void Term::on_runclipAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_rundebugAct_triggered()
 {
-  tedit->docmds("dbjqt_jqtide_ 1", false);
+  tedit->docmds("dbg_jqtide_ 1", false);
 }
 
 // ---------------------------------------------------------------------

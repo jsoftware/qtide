@@ -40,6 +40,7 @@ void Nedit::init_comments()
 {
   Comments["ijs"]="NB.";
   Comments["ijt"]="NB.";
+  Comments["jproj"]="NB.";
   Comments["k"]="/";
   Comments["q"]="/";
   Comments["R"]="#";

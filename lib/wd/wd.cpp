@@ -222,7 +222,7 @@ void wd1()
 #endif
     else if (c[0]=='q')
       wdqueries(c);
-    else if (c=="rem")
+    else if (c=="rem" || c=="NB.")
       wdrem();
     else if (c=="reset")
       wdreset();
@@ -1060,8 +1060,6 @@ void wdquickview2()
 void wdrem()
 {
   cmd.getparms();
-// TODO getline infinite loop bug?
-//  cmd.getline();
 }
 
 // ---------------------------------------------------------------------
@@ -1179,16 +1177,16 @@ void wdtextview()
   QString p, title,header,text;
   QChar d;
   int n;
-  p=s2q(cmd.getparms());
+  p=boxj2utf8(cmd.getparms());
   if (p.isEmpty()) return;
-  d= p[0];
-  p= p.mid(1);
-  n= p.indexOf(d);
-  title= p.left(n);
-  p= p.mid(n+1);
-  n= p.indexOf(d);
-  header= p.left(n);
-  text= p.mid(n+1);
+  d=p[0];
+  p=p.mid(1);
+  n=p.indexOf(d);
+  title=p.left(n);
+  p=p.mid(n+1);
+  n=p.indexOf(d);
+  header=p.left(n);
+  text=p.mid(n+1);
   textview(title,header,text);
 }
 

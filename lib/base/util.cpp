@@ -25,6 +25,25 @@ void about(QString t,QString s)
 }
 
 // ---------------------------------------------------------------------
+// converts J 16-26 box chars to utf8
+QString boxj2utf8(string s)
+{
+  QByteArray b(s.c_str());
+  b.replace('\20',"\342\224\214");
+  b.replace('\21',"\342\224\254");
+  b.replace('\22',"\342\224\220");
+  b.replace('\23',"\342\224\234");
+  b.replace('\24',"\342\224\274");
+  b.replace('\25',"\342\224\244");
+  b.replace('\26',"\342\224\224");
+  b.replace('\27',"\342\224\264");
+  b.replace('\30',"\342\224\230");
+  b.replace('\31',"\342\224\202");
+  b.replace('\32',"\342\224\200");
+  return QString::fromUtf8(b);
+}
+
+// ---------------------------------------------------------------------
 QString c2q(const char *c)
 {
   return QString::fromUtf8(c);
@@ -515,6 +534,12 @@ int matchparens(QChar mode, QString p)
 }
 
 // ---------------------------------------------------------------------
+int modpy(int p, int y)
+{
+  return (p+y)%p;
+}
+
+// ---------------------------------------------------------------------
 void noevents(int n)
 {
   NoEvents=qMax(0,NoEvents + ((n==0) ? -1 : 1));
@@ -527,7 +552,7 @@ void notyet(QString s)
 }
 
 // ---------------------------------------------------------------------
-QString p2q(int *n)
+QString p2q(QList<int> n)
 {
   QString s("");
   s.append(QString("%1").arg(n[0]));
@@ -692,11 +717,13 @@ QStringList qsltrimeach(QStringList s)
 }
 
 // ---------------------------------------------------------------------
-void q2p(QString s,int *n)
+QList<int> q2p(QString s)
 {
   QStringList t = s.split(" ",QString::SkipEmptyParts);
+  QList<int> r;
   for (int i=0; i<4; i++)
-    n[i] = t.at(i).toInt();
+    r.append(t.at(i).toInt());
+  return r;
 }
 
 // ---------------------------------------------------------------------
