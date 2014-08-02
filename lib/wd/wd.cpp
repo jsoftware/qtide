@@ -73,6 +73,7 @@ void wdline(string);
 void wdmb();
 void wdmenu(string);
 void wdmsgs();
+void wdnb();
 void wdnotyet();
 void wdopenj();
 void wdp(string c);
@@ -210,6 +211,8 @@ void wd1()
       wdmsgs();
     else if (c=="openj")
       wdopenj();
+    else if (c=="NB.")
+      wdnb();
     else if (c[0]=='p')
       wdp(c);
 #ifndef QT_NO_QUICKVIEW1
@@ -222,7 +225,7 @@ void wd1()
 #endif
     else if (c[0]=='q')
       wdqueries(c);
-    else if (c=="rem" || c=="NB.")
+    else if (c=="rem")
       wdrem();
     else if (c=="reset")
       wdreset();
@@ -562,6 +565,12 @@ void wdmsgs()
 {
   cmd.getparms();
   QApplication::processEvents(QEventLoop::AllEvents);
+}
+
+// ---------------------------------------------------------------------
+void wdnb()
+{
+  cmd.getline();
 }
 
 // ---------------------------------------------------------------------
@@ -1054,7 +1063,6 @@ void wdquickview2()
   }
 }
 #endif
-
 
 // ---------------------------------------------------------------------
 void wdrem()
