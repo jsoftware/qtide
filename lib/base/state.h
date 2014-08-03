@@ -50,7 +50,6 @@ public:
   QString AppName;
   bool Ascii;
 #ifdef QT_OS_ANDROID
-  bool BackButtonClose;
   int ScrollBarSize;
 #endif
   QDir BinPath;

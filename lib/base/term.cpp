@@ -142,7 +142,7 @@ bool Term::filequit(bool ignoreconfirm)
   if (note2 && (!note2->saveall())) return false;
 #ifdef QT_OS_ANDROID
 // QMessageBox not work inside keypress event
-  if (ignoreconfirm||config.BackButtonClose) {
+  if (ignoreconfirm) {
 #else
   Q_UNUSED(ignoreconfirm);
   if ((!config.ConfirmClose) ||
@@ -197,12 +197,6 @@ void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
 #ifdef JQT
-#ifdef QT_OS_ANDROID
-  case Qt::Key_Back:
-    if (!filequit(false))
-      event->accept();
-    break;
-#endif
   case Qt::Key_Escape:
     if (config.EscClose) {
       if (!filequit(false))

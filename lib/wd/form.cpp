@@ -39,6 +39,9 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   tab=0;
   closed=false;
   shown=false;
+#ifdef QT_OS_ANDROID
+  backButtonPressed=false;
+#endif
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   escclose=m.contains("escclose");
@@ -133,6 +136,19 @@ Pane *Form::addpane(int n)
   panes.append(pane);
   return pane;
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Form::backButtonTimer()
+{
+  backButtonPressed=false;
+  if (2>Forms.size()) return;
+  Forms.removeOne(this);
+  Forms.prepend(this);
+  form=Forms.last();
+  wdactivateform();
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Form::buttonClicked(QWidget *w)
@@ -264,15 +280,20 @@ void Form::keyReleaseEvent(QKeyEvent *e)
 {
 #ifdef QT_OS_ANDROID
   if (e->key()==Qt::Key_Back) {
-    if (closed) return;
-    if (closeok) {
-      closed=true;
-      close();
+    if (!(backButtonPressed||(Qt::NonModal!=windowModality()))) {
+      backButtonPressed=true;
+      QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
     } else {
-      event="close";
-      fakeid="";
-      form=this;
-      signalevent(0);
+      if (closed) return;
+      if (closeok) {
+        closed=true;
+        close();
+      } else {
+        event="close";
+        fakeid="";
+        form=this;
+        signalevent(0);
+      }
     }
   } else QWidget::keyReleaseEvent(e);
 #else

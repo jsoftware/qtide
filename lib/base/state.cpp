@@ -213,7 +213,6 @@ void Config::initide()
 #endif
 
 #ifdef QT_OS_ANDROID
-  BackButtonClose = s->value("Session/BackButtonClose",false).toBool();
   ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
 #endif
 #ifdef TABCOMPLETION
@@ -269,7 +268,6 @@ void Config::initide()
   temp.open();
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
-  s->setValue("Session/BackButtonClose",BackButtonClose);
   s->setValue("Session/ScrollBarSize",ScrollBarSize);
 #endif
 #ifdef TABCOMPLETION
@@ -302,7 +300,6 @@ void Config::initide()
     "# Make changes in the same format as the original.\n"
     "# \n"
 #ifdef QT_OS_ANDROID
-    "# BackButtonClose=false        if Back Button will close the Term (Android only)\n"
     "# ScrollBarSize=25             width or height of scrollbar (Android only)\n"
 #endif
     "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
@@ -347,7 +344,6 @@ QList<int> Config::initposX(QList<int> p)
 void Config::noprofile()
 {
 #ifdef QT_OS_ANDROID
-  BackButtonClose = false;
   ScrollBarSize = 25;
 #endif
 #ifdef TABCOMPLETION

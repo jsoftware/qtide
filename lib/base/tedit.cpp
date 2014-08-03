@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include <QScrollBar>
 #include <QTextBlock>
+#include <QTimer>
 
 #include "base.h"
 #include "tedit.h"
@@ -21,6 +22,9 @@ Tedit::Tedit()
 {
   type=0;
   ifResized=Tw=Th=0;
+#ifdef QT_OS_ANDROID
+  backButtonPressed=0;
+#endif
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
   setLineWrapMode(PlainTextEdit::NoWrap);
@@ -46,6 +50,14 @@ void Tedit::append_smoutput(QString s)
   }
   appendPlainText(s + "\n" + getprompt());
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void Tedit::backButtonTimer()
+{
+  backButtonPressed=0;
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Tedit::docmd(QString t)
@@ -183,6 +195,26 @@ void Tedit::keyPressEvent(QKeyEvent *e)
 
   default:
     Bedit::keyPressEvent(e);
+  }
+}
+
+// ---------------------------------------------------------------------
+void Tedit::keyReleaseEvent(QKeyEvent *event)
+{
+  switch (event->key()) {
+#ifdef QT_OS_ANDROID
+  case Qt::Key_Back:
+    if (2>backButtonPressed) {
+      if (0==backButtonPressed) QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
+      backButtonPressed++;
+    } else {
+      if (!term->filequit(true))
+        event->accept();
+    }
+    break;
+#endif
+  default:
+    Bedit::keyReleaseEvent(event);
   }
 }
 

@@ -84,8 +84,16 @@ protected:
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
 
+private slots:
+#ifdef QT_OS_ANDROID
+  void backButtonTimer();
+#endif
+
 private:
   string getsysmodifiers();
+#ifdef QT_OS_ANDROID
+  bool backButtonPressed;
+#endif
   bool closeok;
   bool escclose;
   string fakeid;

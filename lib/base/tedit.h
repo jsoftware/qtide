@@ -30,10 +30,19 @@ public slots:
   void itemActivated(QListWidgetItem *);
   void loadscript(QString s,bool show);
 
+private slots:
+#ifdef QT_OS_ANDROID
+  void backButtonTimer();
+#endif
+
 private:
   void docmd(QString t);
   void keyPressEvent(QKeyEvent *);
+  void keyReleaseEvent(QKeyEvent *);
   void enter();
+#ifdef QT_OS_ANDROID
+  int backButtonPressed;
+#endif
   void togglemode();
 };
 
