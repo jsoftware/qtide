@@ -51,7 +51,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   if (m.contains("minbutton")) flags|=Qt::WindowMinimizeButtonHint;
   if (m.contains("maxbutton")) flags|=Qt::WindowMaximizeButtonHint;
   if (m.contains("closebutton")) flags|=Qt::WindowCloseButtonHint;
-  if (m.contains("ptop")) flags=Qt::WindowStaysOnTopHint;
+  if (m.contains("ptop")) flags|=Qt::WindowStaysOnTopHint;
   if (m.contains("owner")) {
     flags|=Qt::Window;
     setWindowModality(Qt::WindowModal);

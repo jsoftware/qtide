@@ -48,6 +48,8 @@ public:
   void projectenable();
   void refresh();
   void runlines();
+  void smact();
+  void smprompt(QString s);
   void vieweditor();
 
   Menu *menuBar;

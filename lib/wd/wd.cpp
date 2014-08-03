@@ -47,7 +47,6 @@ extern char* jegetlocale();
 extern Term * term;
 extern "C" Dllexport void dirmatch(const char *s,const char *t);
 extern "C" Dllexport void openj(const char *s);
-extern "C" Dllexport void smact();
 
 #include "math.h"
 
@@ -106,6 +105,7 @@ void wdreset();
 void wdset();
 void wdsetx(string);
 void wdset1(string n,string p,string v);
+void wdsm();
 void wdsmact();
 void wdsplit(string c);
 void wdstate(Form *,int);
@@ -233,6 +233,8 @@ void wd1()
       wdset();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
+    else if (c=="sm")
+      wdsm();
     else if (c=="smact")
       wdsmact();
     else if (c.substr(0,5)=="split")
@@ -778,12 +780,18 @@ void wdptimer()
 // ---------------------------------------------------------------------
 void wdptop()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
   if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
 #endif
-  form->raise();
+  Qt::WindowFlags f=form->windowFlags();
+  if (p=="1")
+    f|=Qt::WindowStaysOnTopHint;
+  else
+    f=f&~Qt::WindowStaysOnTopHint;
+  form->setWindowFlags(f);
+  form->show();
 }
 
 // ---------------------------------------------------------------------
@@ -1141,10 +1149,21 @@ void wdset1(string n,string p,string v)
 }
 
 // ---------------------------------------------------------------------
+void wdsm()
+{
+  string c=cmd.getid();
+  string p=cmd.getparms();
+  if (c=="act")
+    term->smact();
+  else if (c=="prompt")
+    term->smprompt(s2q(p));
+}
+
+// ---------------------------------------------------------------------
 void wdsmact()
 {
   cmd.getparms();
-  smact();
+  term->smact();
 }
 
 // ---------------------------------------------------------------------

@@ -1369,7 +1369,7 @@ void Term::on_runclipAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_rundebugAct_triggered()
 {
-  tedit->docmds("dbg_jqtide_ 1", false);
+  tedit->docmds("dbg_z_ 1", false);
 }
 
 // ---------------------------------------------------------------------

@@ -35,8 +35,6 @@ QString LastLaunch;
 QTime LastLaunchTime;
 QTimer *timer=0;
 
-extern "C" Dllexport void smact();
-
 // ---------------------------------------------------------------------
 OneWin::OneWin()
 {
@@ -270,6 +268,21 @@ void Term::resizeEvent(QResizeEvent *event)
 }
 
 // ---------------------------------------------------------------------
+void Term::smact()
+{
+  if (!term->isVisible()) return;
+  term->activateWindow();
+  term->raise();
+  term->repaint();
+}
+
+// ---------------------------------------------------------------------
+void Term::smprompt(QString s)
+{
+  tedit->promptreplace(s);
+}
+
+// ---------------------------------------------------------------------
 void Term::systimer()
 {
   var_cmd("(i.0 0)\"_ sys_timer_z_$0");
@@ -311,11 +324,3 @@ void Term::vfuncClicked()
 }
 #endif
 
-// ---------------------------------------------------------------------
-void smact()
-{
-  if (!term->isVisible()) return;
-  term->activateWindow();
-  term->raise();
-  term->repaint();
-}
