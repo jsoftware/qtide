@@ -36,6 +36,8 @@
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 QString AndroidPackage;
 extern "C" void android_getdisplaymetrics(double * dmetrics);
+extern int DM_heightPixels;
+extern int DM_widthPixels;
 int androidVfuncPos=2;
 #endif
 #if !(defined(QT_NO_QUICKVIEW1)&&defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
