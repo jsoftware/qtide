@@ -14,7 +14,7 @@ cp -r $HOME/jalgit/base8/release/install/system $S/$A/.
 mkdir -p $S/$A/bin
 cp $HOME/jalgit/base8/main/config/profile.ijs $S/$A/bin/.
 cp $HOME/jalgit/base8/main/config/profilex_template.ijs $S/$A/bin/.
-echo "j802 install" > $S/$A/bin/installer.txt
+echo "j803 install" > $S/$A/bin/installer.txt
 
 function copyaddon() {
 rm -rf $S/$A/addons/$1/$2
