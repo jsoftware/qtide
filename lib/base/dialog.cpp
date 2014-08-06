@@ -52,6 +52,10 @@ QString dialogfileopen(QWidget *w,QString t)
   QString d;
   if (t=="open")
     d=getfilepath();
+  else if (t=="addons")
+    d=config.AddonsPath.absolutePath();
+  else if (t=="system")
+    d=config.SystemPath.absolutePath();
   else if (t=="temp")
     d=config.TempPath.absolutePath();
   else if (t=="user")

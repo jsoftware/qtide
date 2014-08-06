@@ -91,6 +91,7 @@ private:
   QAction *filenewAct;
   QAction *filenewtempAct;
   QAction *fileopenAct;
+  QAction *fileopenaddonsAct;
   QAction *fileopenallAct;
   QAction *fileopensystemAct;
   QAction *fileopentempAct;

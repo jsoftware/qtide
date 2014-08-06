@@ -45,6 +45,7 @@ public:
   void winpos_save(QWidget *w,QString id);
   void winpos_save1(QList<int>d,QString id);
 
+  QDir AddonsPath;
   QStringList AllFolderKeys;
   QStringList AllFolderValues;
   QString AppName;

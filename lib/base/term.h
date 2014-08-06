@@ -87,6 +87,7 @@ public slots:
   void on_filedeleteAct_triggered();
   void on_filenewtempAct_triggered();
   void on_fileopenAct_triggered();
+  void on_fileopenaddonsAct_triggered();
   void on_fileopenallAct_triggered();
   void on_fileopensystemAct_triggered();
   void on_fileopentempAct_triggered();

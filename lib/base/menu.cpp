@@ -80,6 +80,7 @@ void Menu::createActions()
   filenewAct = makeact("filenewAct","&New","");
   filenewtempAct = makeact("filenewtempAct","&New temp","Ctrl+N");
   fileopenAct = makeact("fileopenAct","&Open","");
+  fileopenaddonsAct = makeact("fileopenaddonsAct","&Open addons","");
   fileopenallAct = makeact("fileopenallAct","&Open All","");
   fileopentempAct = makeact("fileopentempAct","&Open temp","Ctrl+O");
   fileopenuserAct = makeact("fileopenuserAct","&Open user","");
@@ -278,6 +279,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addSeparator();
     fileMenu->addAction(fileopentempAct);
     fileMenu->addAction(fileopenuserAct);
+    fileMenu->addAction(fileopenaddonsAct);
     fileMenu->addAction(fileopensystemAct);
     fileMenu->addSeparator();
     fileMenu->addAction(filerecentAct);
@@ -1291,9 +1293,21 @@ void Term::on_fileopenAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Term::on_fileopenaddonsAct_triggered()
+{
+  openfile(this,"addons");
+}
+
+// ---------------------------------------------------------------------
 void Term::on_fileopenallAct_triggered()
 {
   notyet("fileopenallAct");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_fileopensystemAct_triggered()
+{
+  openfile(this,"system");
 }
 
 // ---------------------------------------------------------------------
@@ -1306,12 +1320,6 @@ void Term::on_fileopentempAct_triggered()
 void Term::on_fileopenuserAct_triggered()
 {
   openfile(this,"user");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_fileopensystemAct_triggered()
-{
-  openfile(this,"system");
 }
 
 #ifndef QT_NO_PRINTER
