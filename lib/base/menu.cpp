@@ -80,11 +80,11 @@ void Menu::createActions()
   filenewAct = makeact("filenewAct","&New","");
   filenewtempAct = makeact("filenewtempAct","&New temp","Ctrl+N");
   fileopenAct = makeact("fileopenAct","&Open","");
-  fileopenaddonsAct = makeact("fileopenaddonsAct","&Open addons","");
+  fileopenaddonsAct = makeact("fileopenaddonsAct","Open &addons","");
   fileopenallAct = makeact("fileopenallAct","&Open All","");
-  fileopentempAct = makeact("fileopentempAct","&Open temp","Ctrl+O");
-  fileopenuserAct = makeact("fileopenuserAct","&Open user","");
-  fileopensystemAct = makeact("fileopensystemAct","&Open system","");
+  fileopentempAct = makeact("fileopentempAct","Open &temp","Ctrl+O");
+  fileopenuserAct = makeact("fileopenuserAct","Open &user","");
+  fileopensystemAct = makeact("fileopensystemAct","Open &system","");
 #ifndef QT_NO_PRINTER
   fileprintAct = makeact("fileprintAct","&Print","");
   fileprintallAct = makeact("fileprintallAct","Print all","");
