@@ -64,6 +64,7 @@ void wddirmatch();
 void wdend();
 void wdfontdef();
 void wdget();
+void *wdgetparentid(void *s);
 void wdgrid();
 void wdgroupbox(string c);
 void wdide();
@@ -280,18 +281,6 @@ void wdactivateform()
 }
 
 // ---------------------------------------------------------------------
-void *wdgetparentid(void *s)
-{
-  Form *f;
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
-    if (f->ischild((Child *) s))
-      return (void *)(f->id).c_str();
-  }
-  return 0;
-}
-
-// ---------------------------------------------------------------------
 void wdbin()
 {
   string p=cmd.getparms();
@@ -471,6 +460,18 @@ void wdget()
     result=cc->get(p,v);
   else
     error("bad child id");
+}
+
+// ---------------------------------------------------------------------
+void *wdgetparentid(void *s)
+{
+  Form *f;
+  for (int i=0; i<Forms.size(); i++) {
+    f=Forms.at(i);
+    if (f->ischild((Child *) s))
+      return (void *)(f->id).c_str();
+  }
+  return 0;
 }
 
 // ---------------------------------------------------------------------

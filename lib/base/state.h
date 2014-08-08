@@ -30,6 +30,7 @@ public:
   void fkeys_init();
   void folder_init();
   void launch_init();
+  void ini0();
   void init();
   void initide();
   QList<int> initposX(QList<int>);

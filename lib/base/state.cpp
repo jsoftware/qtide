@@ -110,6 +110,22 @@ void Config::folder_init()
 }
 
 // ---------------------------------------------------------------------
+// run before svr init
+void Config::ini0()
+{
+#ifdef QT_OS_ANDROID
+  android_getdisplaymetrics(0);
+  ScreenWidth=DM_widthPixels;
+  ScreenHeight=DM_heightPixels;
+#else
+  QDesktopWidget* dw=QApplication::desktop();
+  QRect screenGeometry = dw->screenGeometry(-1);
+  ScreenWidth=screenGeometry.width();
+  ScreenHeight=screenGeometry.height();
+#endif
+}
+
+// ---------------------------------------------------------------------
 void Config::init()
 {
   Q_ASSERT(jcon);
@@ -142,17 +158,6 @@ void Config::init()
   LineNos = false;
   LineWrap = false;
   ScriptFilter="*.ijs";
-
-#ifdef QT_OS_ANDROID
-  android_getdisplaymetrics(0);
-  ScreenWidth=DM_widthPixels;
-  ScreenHeight=DM_heightPixels;
-#else
-  QDesktopWidget* dw=QApplication::desktop();
-  QRect screenGeometry = dw->screenGeometry(-1);
-  ScreenWidth=screenGeometry.width();
-  ScreenHeight=screenGeometry.height();
-#endif
 
   Rxnna = "\\b";
   Rxnnz = "\\b";
@@ -422,6 +427,7 @@ int state_fini()
 bool state_init(int argc, char *argv[])
 {
   state_init_args(&argc,argv);
+  config.ini0();
   svr_init(argc,argv);
   config.init();
   dlog_init();

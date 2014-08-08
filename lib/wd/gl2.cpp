@@ -24,6 +24,7 @@
 extern QList<Form *>Forms;
 
 static int glfont0(Child *isigraph, char *s);
+static int glclear2(void *);
 
 // ---------------------------------------------------------------------
 // caller should free string

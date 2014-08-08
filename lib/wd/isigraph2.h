@@ -19,7 +19,6 @@ public:
 
   void fill(const int *);
   QPixmap getpixmap();
-  void newpixmap();
   void paintend();
   string type;
 

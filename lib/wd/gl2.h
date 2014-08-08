@@ -42,8 +42,6 @@ extern "C" {
   Dllexport int gltextcolor ();
   Dllexport int gltextxy (const int *p);
   Dllexport int glwindoworg (const int *p);
-
-  Dllexport int glclear2 (void *);
   Dllexport int glsetlocale (char *loc);
 }
 

@@ -8,12 +8,11 @@ using namespace std;
 
 extern "C" {
   Dllexport int wd(char *s,int slen,char *&r,int &len);
-  Dllexport void wdactivateform();
-  Dllexport void *wdgetparentid(void *s);
 }
 
 void error(string s);
 string remquotes(string s);
 QString mb(string p);
+void wdactivateform();
 
 #endif

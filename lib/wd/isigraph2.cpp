@@ -6,7 +6,6 @@
 #include "form.h"
 #include "pane.h"
 
-extern "C" Dllexport int glclear2(void *);
 extern Child *isigraph;
 
 // ---------------------------------------------------------------------
