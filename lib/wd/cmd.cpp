@@ -2,8 +2,10 @@
 #include "wd.h"
 #include "cmd.h"
 
-string WS=" \f\n\r\t\v";
 char DEL='\177';
+char LF='\n';
+string WN=" \f\r\t\v";
+string WS=WN+LF;
 
 // ---------------------------------------------------------------------
 bool Cmd::contains(string s,char c)
@@ -23,7 +25,7 @@ void Cmd::init(char *s,int slen)
   str=string(s,slen);
   len=str.size();
   while (len>0) {
-    if (!contains(WS,str[len-1])) break;
+    if (!contains(WN,str[len-1])) break;
     len--;
   }
   str=str.substr(0,len);
@@ -69,10 +71,10 @@ string Cmd::getline()
 {
   string r;
   if (pos==len) return "";
-  if (str[pos]=='\n') pos++;
+  if (str[pos]==LF) pos++;
   if (pos==len) return "";
   bgn=pos;
-  pos=str.find_first_of('\n',pos);
+  pos=str.find_first_of(LF,pos);
   if (pos==string::npos)
     pos=str.size();
   else
@@ -121,50 +123,58 @@ bool Cmd::more()
 }
 
 // ---------------------------------------------------------------------
-// split on WS, or paired "" or DEL (=ascii 127)
+// split on LF, or WS, or paired "" or DEL
 QStringList Cmd::qsplits()
 {
   char c;
   QStringList r;
   while (pos<len) {
-    skips(WS);
+    skips(WN);
     bgn=pos;
     c=str[pos++];
     if (c=='*') {
       r.append(s2q(str.substr(pos)));
       break;
     }
-    if (c=='"' || c==DEL) {
+    if (c==LF)
+      r.append("");
+    else  if (c=='"' || c==DEL) {
       skippast(c);
       r.append(s2q(str.substr(bgn+1,pos-bgn-2)));
     } else {
       skiptows();
       r.append(s2q(str.substr(bgn,pos-bgn)));
+      if (pos<len && str[pos]==LF)
+        pos++;
     }
   }
   return r;
 }
 
 // ---------------------------------------------------------------------
-// split on WS, or paired "" or DEL (=ascii 127)
+// split on LF, or WS, or paired "" or DEL
 vector<string> Cmd::ssplits()
 {
   char c;
   vector<string> r;
   while (pos<len) {
-    skips(WS);
+    skips(WN);
     bgn=pos;
     c=str[pos++];
     if (c=='*') {
       r.push_back(str.substr(pos));
       break;
     }
-    if (c=='"' || c==DEL) {
+    if (c==LF)
+      r.push_back("");
+    else if (c=='"' || c==DEL) {
       skippast(c);
       r.push_back(str.substr(bgn+1,pos-bgn-2));
     } else {
       skiptows();
       r.push_back(str.substr(bgn,pos-bgn));
+      if (pos<len && str[pos]==LF)
+        pos++;
     }
   }
   return r;
@@ -226,11 +236,17 @@ QStringList qsplit(string s)
 
 // ---------------------------------------------------------------------
 // split on LF if present, otherwise do qsplit
+// this is for list and comboboxes that would not have LF in items
 QStringList rsplit(string s)
 {
-  if (string::npos==s.find('\n'))
+  int n=s.size();
+  if (n==0)
+    return QStringList();
+  if (string::npos==s.find(LF))
     return qsplit(s);
-  return s2q(s).split('\n',QString::SkipEmptyParts);
+  if (s[n-1]==LF)
+    s=s.substr(0,n-1);
+  return s2q(s).split(LF);
 }
 
 // ---------------------------------------------------------------------

@@ -35,7 +35,7 @@ void Menu::createhelpActions()
   helpcontextnuvocAct = makeact("helpcontextnuvocAct","&NuVoc Context Sensitive","Ctrl+Shift+F1");
   helpcontrolsAct = makeact("helpcontrolsAct","&Control Structures","");
   helpdemoqtAct = makeact("helpdemoqtAct","&Qt Demos...","");
-  helpdemowdAct = makeact("helpdemowdAct","&wd Demos...","");
+  helpdemowdAct = makeact("helpdemowdAct","&Showcase...","");
   helpdictionaryAct = makeact("helpdictionaryAct","&Dictionary","");
   helpforeignsAct = makeact("helpforeignsAct","&Foreign Conjunction","");
   helpgeneralAct = makeact("helpgeneralAct","&General Info","");
