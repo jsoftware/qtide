@@ -272,7 +272,7 @@ QString mbinput()
     }
     int index=arg.at(3).toInt();
     bool ifed=0 != arg.at(4).toInt();
-    QStringList items=rsplit(q2s(arg.at(5)));
+    QStringList items=qsplit(q2s(arg.at(5)));
     r=QInputDialog::getItem(w, title, label, items, index, ifed, &ok);
   }
 

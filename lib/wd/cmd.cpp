@@ -4,14 +4,13 @@
 
 char DEL='\177';
 char LF='\n';
-string WN=" \f\r\t\v";
-string WS=WN+LF;
+string WS=" \f\r\t\v";
+string WSLF=WS+LF;
 
-// ---------------------------------------------------------------------
-bool Cmd::contains(string s,char c)
-{
-  return string::npos != s.find_first_of(c);
-}
+bool contains(string s,char c);
+QStringList qsplitLF(string s);
+vector<string> ssplitLF(string s);
+string toLF(string s);
 
 // ---------------------------------------------------------------------
 void Cmd::end()
@@ -23,9 +22,10 @@ void Cmd::end()
 void Cmd::init(char *s,int slen)
 {
   str=string(s,slen);
+  str=toLF(str);
   len=str.size();
   while (len>0) {
-    if (!contains(WN,str[len-1])) break;
+    if (!contains(WS,str[len-1])) break;
     len--;
   }
   str=str.substr(0,len);
@@ -52,14 +52,28 @@ QStringList Cmd::bsplits()
 }
 
 // ---------------------------------------------------------------------
+bool Cmd::delimLF(string s)
+{
+  char c;
+  int n=s.size();
+  for (int i=0; i<n; i++) {
+    c=s[i];
+    if (c==LF) return true;
+    if (c=='"' || c==DEL)
+      while (s[++i]!=c);
+  }
+  return false;
+}
+
+// ---------------------------------------------------------------------
 string Cmd::getid()
 {
   char c;
-  skips(WS+';');
+  skips(WSLF+';');
   bgn=pos;
   while (pos<len) {
     c=str[pos];
-    if (contains(WS,c) || c==';') break;
+    if (contains(WSLF,c) || c==';') break;
     pos++;
   }
   return remquotes(str.substr(bgn,pos-bgn));
@@ -95,7 +109,7 @@ string Cmd::getparms()
     return "";
   }
 
-  skips(WS);
+  skips(WSLF);
   if (pos==len)
     return "";
   if (str[pos]=='*') {
@@ -123,22 +137,25 @@ bool Cmd::more()
 }
 
 // ---------------------------------------------------------------------
-// split on LF, or WS, or paired "" or DEL
+// split parameters
+// if has LF not in paired delimiters, split on LF
+// otherwise split on WS, or paired "" or DEL
 QStringList Cmd::qsplits()
 {
+  skips(WS);
+  if (delimLF(str))
+    return qsplitLF(str);
   char c;
   QStringList r;
   while (pos<len) {
-    skips(WN);
+    skips(WS);
     bgn=pos;
     c=str[pos++];
     if (c=='*') {
       r.append(s2q(str.substr(pos)));
       break;
     }
-    if (c==LF)
-      r.append("");
-    else  if (c=='"' || c==DEL) {
+    if (c=='"' || c==DEL) {
       skippast(c);
       r.append(s2q(str.substr(bgn+1,pos-bgn-2)));
     } else {
@@ -152,22 +169,23 @@ QStringList Cmd::qsplits()
 }
 
 // ---------------------------------------------------------------------
-// split on LF, or WS, or paired "" or DEL
+// split as qsplits, but returning vector of string
 vector<string> Cmd::ssplits()
 {
+  skips(WS);
+  if (delimLF(str))
+    return ssplitLF(str);
   char c;
   vector<string> r;
   while (pos<len) {
-    skips(WN);
+    skips(WS);
     bgn=pos;
     c=str[pos++];
     if (c=='*') {
       r.push_back(str.substr(pos));
       break;
     }
-    if (c==LF)
-      r.push_back("");
-    else if (c=='"' || c==DEL) {
+    if (c=='"' || c==DEL) {
       skippast(c);
       r.push_back(str.substr(bgn+1,pos-bgn-2));
     } else {
@@ -185,7 +203,7 @@ string Cmd::remws(const string s)
 {
   string r;
   for (size_t i=0; i<s.size(); i++)
-    if (!contains(WS,s[i]))
+    if (!contains(WSLF,s[i]))
       r.push_back(s[i]);
   return r;
 }
@@ -225,8 +243,47 @@ QStringList bsplit(string s)
 }
 
 // ---------------------------------------------------------------------
-// split on blank (except in quotes) and LF
-// *indicates rest is a single string
+bool contains(string s,char c)
+{
+  return string::npos != s.find_first_of(c);
+}
+
+// ---------------------------------------------------------------------
+// split on LF
+QStringList qsplitLF(string s)
+{
+  int n=s.size();
+  if (n==0)
+    return QStringList();
+  if (s[n-1]==LF)
+    s=s.substr(0,n-1);
+  return s2q(s).split(LF);
+}
+
+// ---------------------------------------------------------------------
+// split on LF
+vector<string> ssplitLF(string s)
+{
+  int i,p;
+  vector<string> r;
+  int n=s.size();
+  if (n==0) return r;
+  if (s[n-1]==LF)
+    s=s.substr(0,--n);
+  for (i=p=0; i<n; i++)
+    if (s[i]==LF) {
+      r.push_back(s.substr(p,i-p));
+      p=i+1;
+    }
+  if (p==n)
+    r.push_back("");
+  else
+    r.push_back(s.substr(p,n-p));
+  return r;
+}
+
+// ---------------------------------------------------------------------
+// split parameters
 QStringList qsplit(string s)
 {
   Cmd c;
@@ -235,28 +292,31 @@ QStringList qsplit(string s)
 }
 
 // ---------------------------------------------------------------------
-// split on LF if present, otherwise do qsplit
-// this is for list and comboboxes that would not have LF in items
-QStringList rsplit(string s)
-{
-  int n=s.size();
-  if (n==0)
-    return QStringList();
-  if (string::npos==s.find(LF))
-    return qsplit(s);
-  if (s[n-1]==LF)
-    s=s.substr(0,n-1);
-  return s2q(s).split(LF);
-}
-
-// ---------------------------------------------------------------------
-// split on blank (except in quotes) and LF
-// *indicates rest is a single string
+// as qsplit but returning vector of string
 vector<string> ssplit(string s)
 {
   Cmd c;
   c.init((char*)s.c_str(),(int)s.size());
   return c.ssplits();
+}
+
+// ---------------------------------------------------------------------
+// convert CRLF to LF
+string toLF(string s)
+{
+  if (!contains(s,'\r'))
+    return s;
+  int n=s.size();
+  int p=0;
+  size_t t;
+  string r;
+  while (string::npos != (t=s.find("\r\n",p))) {
+    r.append(s.substr(p,t-p));
+    p=t+1;
+  }
+  if (p<n)
+    r.append(s.substr(p,n-p));
+  return r;
 }
 
 // ---------------------------------------------------------------------

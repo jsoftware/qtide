@@ -8,6 +8,7 @@ class Cmd
 {
 public:
   void end();
+  bool delimLF(string);
   string getid();
   string getline();
   string getparms();
@@ -22,7 +23,6 @@ public:
   vector<string> ssplits();
 
 private:
-  bool contains(string s,char c);
   void skippast(char c);
   void skips(string s);
   void skiptows();
@@ -35,7 +35,6 @@ private:
 
 QStringList bsplit(string s);
 QStringList qsplit(string s);
-QStringList rsplit(string s);
 vector<string> ssplit(string s);
 
 #endif
