@@ -58,6 +58,8 @@ void Child::set(string p, string v)
     widget->setVisible(remquotes(v)!="0");
   else if (p=="stylesheet")
     setstylesheet(v);
+  else if (p=="tooltip")
+    settooltip(v);
   else if (p=="wh")
     setwh(v);
   else if (p=="minwh")
@@ -96,6 +98,12 @@ void Child::setform()
 void Child::setstylesheet(string p)
 {
   widget->setStyleSheet(s2q(p));
+}
+
+// ---------------------------------------------------------------------
+void Child::settooltip(string p)
+{
+  widget->setToolTip(s2q(p));
 }
 
 // ---------------------------------------------------------------------
