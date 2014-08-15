@@ -73,6 +73,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
 
   w->resizeColumnsToContents();
+  w->resizeRowsToContents();
   w->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
   w->horizontalHeader()->setHighlightSections(false);
   w->horizontalHeader()->setStretchLastSection(true);
@@ -760,6 +761,7 @@ void Table::setdata(string s)
   }
   w->setVisible(false);
   w->resizeColumnsToContents();
+  w->resizeRowsToContents();
   w->setVisible(true);
   w->horizontalHeader()->setStretchLastSection(true);
 }

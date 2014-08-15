@@ -31,6 +31,7 @@ extern "C" {
   Dllexport int glqextentw (char *s,int *w);
   Dllexport int glqhandles (void **p);
   Dllexport int glqpixels (const int *p,int *pix);
+  Dllexport int glqpixelm (const int *p,int *shape,int *pix);
   Dllexport int glqtextmetrics (int *tm);
   Dllexport int glqwh (int *wh);
   Dllexport int glrect (const int *p);

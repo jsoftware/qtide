@@ -1,3 +1,5 @@
+
+#include <QApplication>
 #include <QPainter>
 #include <QtGui/qmatrix4x4.h>
 
@@ -17,7 +19,8 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
   orgy=0;
   painter=0;
   pixmap=0;
-  fontheight=0;
+  font=new Font("profont");
+  fontheight=(QFontMetrics(font->font)).height();
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
