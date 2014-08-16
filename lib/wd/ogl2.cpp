@@ -120,6 +120,37 @@ int gl_qextentw(char *s,int *wi)
 }
 
 // ---------------------------------------------------------------------
+int gl_qpixelm(const int *p, int *shape, int *pix)
+{
+  if (!p || !shape || !pix) return 1;
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
+  QPixmap pm=w->getpixmap();
+  if (!pm || pm.isNull()) return 1;
+  int x=p[0];
+  int y=p[1];
+  int r=p[2];
+  int s=p[3];
+  if (x<0 || x>=pm.width() || y<0 || y>=pm.height()) return 1;
+  if (r==-1) r=pm.width()-x;
+  if (s==-1) s=pm.height()-y;
+  r=qMin(r,pm.width()-x);
+  s=qMin(s,pm.height()-y);
+  QPixmap a1 = (pm.copy(x, y, r, s));
+  if (a1.isNull()) return 1;
+  QImage a2 = a1.toImage();
+  if (a2.isNull()) return 1;
+  QImage a3 = a2.convertToFormat(QImage::Format_ARGB32);
+  if (a3.isNull()) return 1;
+  const uchar *t = a3.bits();
+  if (!t) return 1;
+  shape[0]=s;
+  shape[1]=r;
+  memcpy((uchar *)pix,t,4*r*s);
+  return 0;
+}
+
+// ---------------------------------------------------------------------
 int gl_qpixels(const int *p, int *pix)
 {
   if (!p || !pix) return 1;
@@ -376,6 +407,16 @@ int gl_ellipse (const int *p)
   Opengl2 *w = (Opengl2 *)form->opengl->widget;
   if (!w->painter) return 1;
   w->painter->drawEllipse (*(p), *(p + 1),  *(p + 2),  *(p + 3));
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int gl_fill(const int *p)
+{
+  if (!form->opengl) return 1;
+  Opengl2 *w = (Opengl2 *)form->opengl->widget;
+  if (!w->painter) return 1;
+  w->fill(p);
   return 0;
 }
 
@@ -698,6 +739,10 @@ glcmds (const int *ptr, int ncnt)
 
     case 2008:		// gl_ellipse
       gl_ellipse (ptr + p + 2);
+      break;
+
+    case 2093:		// gl_fill
+      gl_fill(ptr + p + 2);
       break;
 
     case 2012:		// gl_font

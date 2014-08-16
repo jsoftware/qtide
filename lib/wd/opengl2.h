@@ -20,6 +20,7 @@ public:
   Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
   ~Opengl2();
 
+  void fill(const int *);
   QPixmap getpixmap();
   void paintend();
 

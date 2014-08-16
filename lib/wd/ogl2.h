@@ -13,6 +13,7 @@ extern "C" {
   Dllexport int gl_cmds (const int *, const int);
   Dllexport int gl_cursor (int a);
   Dllexport int gl_ellipse (const int *p);
+  Dllexport int gl_fill (const int *p);
   Dllexport int gl_font (char *face);
   Dllexport int gl_font2 (const int *p, int len);
   Dllexport int gl_fontangle (int a);
@@ -30,6 +31,7 @@ extern "C" {
   Dllexport int gl_qextentw (char *s,int *w);
   Dllexport int gl_qhandles (void **p);
   Dllexport int gl_qpixels (const int *p,int *pix);
+  Dllexport int gl_qpixelm (const int *p,int *shape,int *pix);
   Dllexport int gl_qtextmetrics (int *tm);
   Dllexport int gl_qwh (int *wh);
   Dllexport int gl_rect (const int *p);

@@ -22,6 +22,14 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
 }
 
 // ---------------------------------------------------------------------
+void Opengl2::fill(const int *p)
+{
+  QColor c(*(p), *(p + 1), *(p + 2));
+  if (painter)
+    painter->fillRect(0,0,width(),height(),c);
+}
+
+// ---------------------------------------------------------------------
 QPixmap Opengl2::getpixmap()
 {
   QPixmap m;

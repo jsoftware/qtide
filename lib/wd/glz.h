@@ -10,6 +10,7 @@ extern "C" {
   Dllexport int glzclipreset ();
   Dllexport int glzcmds (const int *, const int);
   Dllexport int glzellipse (const int *p);
+  Dllexport int glzfill (const int *p);
   Dllexport int glzfont (char *face);
   Dllexport int glzfont2 (const int *p, int len);
   Dllexport int glzfontangle (int a);

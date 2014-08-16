@@ -258,6 +258,18 @@ int glzellipse (const int *p)
 }
 
 // ---------------------------------------------------------------------
+int glzfill(const int *p)
+{
+  if ((!Printer) || !Printer->isValid()) return 1;
+  if ((!prtobj) || !prtobj->painter) return 1;
+  if (!prtobj->painter->isActive()) return 1;
+  QColor c(*(p), *(p + 1), *(p + 2));
+  QRectF rect = Printer->pageRect(QPrinter::DevicePixel);
+  prtobj->painter->fillRect(rect,c);
+  return 0;
+}
+
+// ---------------------------------------------------------------------
 static int glzfont_i (const int *p, int len)
 {
   char *face = int2utf8 (p, len);
@@ -557,6 +569,10 @@ int glzcmds (const int *ptr, int ncnt)
 
     case 2008:		// glellipse
       glzellipse (ptr + p + 2);
+      break;
+
+    case 2093:		// glfill
+      glzfill(ptr + p + 2);
       break;
 
     case 2012:		// glfont
