@@ -533,7 +533,7 @@ int glzcmds (const int *ptr, int ncnt)
 {
   int cnt;
   int p = 0;
-  int errcnt = 0;
+  int rc = 0;
 
   if ((!Printer) || !Printer->isValid()) return 1;
   if ((!prtobj) || !prtobj->painter) return 1;
@@ -544,15 +544,15 @@ int glzcmds (const int *ptr, int ncnt)
     switch (*(ptr + p + 1)) {
 
     case 2001:		// glarc
-      glzarc (ptr + p + 2);
+      rc = glzarc (ptr + p + 2);
       break;
 
     case 2004:		// glbrush
-      glzbrush ();
+      rc = glzbrush ();
       break;
 
     case 2005:		// glbrushnull
-      glzbrushnull ();
+      rc = glzbrushnull ();
       break;
 
     case 2007:		//glclear
@@ -560,100 +560,101 @@ int glzcmds (const int *ptr, int ncnt)
       break;
 
     case 2078:		//glclip
-      glzclip (ptr + p + 2);
+      rc = glzclip (ptr + p + 2);
       break;
 
     case 2079:		//glclipreset
-      glzclipreset ();
+      rc = glzclipreset ();
       break;
 
     case 2008:		// glellipse
-      glzellipse (ptr + p + 2);
+      rc = glzellipse (ptr + p + 2);
       break;
 
     case 2093:		// glfill
-      glzfill(ptr + p + 2);
+      rc = glzfill(ptr + p + 2);
       break;
 
     case 2012:		// glfont
-      glzfont_i ((ptr + p + 2), cnt-2);
+      rc = glzfont_i ((ptr + p + 2), cnt-2);
       break;
 
     case 2312:		// glfont2
-      glzfont2 ((ptr + p + 2), cnt-2);
+      rc = glzfont2 ((ptr + p + 2), cnt-2);
       break;
 
     case 2342:		//glfontangle
-      glzfontangle (*(ptr + p + 2));
+      rc = glzfontangle (*(ptr + p + 2));
       break;
 
     case 2015:		// gllines
-      glzlines ((ptr + p + 2), cnt-2);
+      rc = glzlines ((ptr + p + 2), cnt-2);
       break;
 
     case 2070:		// glnodblbuf
-      glznodblbuf (*(ptr + p + 2));
+      rc = glznodblbuf (*(ptr + p + 2));
       break;
 
     case 2022:		// glpen
-      glzpen (ptr + p + 2);
+      rc = glzpen (ptr + p + 2);
       break;
 
     case 2023:		// glpie
-      glzpie (ptr + p + 2);
+      rc = glzpie (ptr + p + 2);
       break;
 
     case 2024:		// glpixel
-      glzpixel (ptr + p + 2);
+      rc = glzpixel (ptr + p + 2);
       break;
 
     case 2076:		// glpixels
-      glzpixels ((ptr + p + 2), cnt-2);
+      rc = glzpixels ((ptr + p + 2), cnt-2);
       break;
 
     case 2075:		// glpixelsx
-      glzpixelsx (ptr + p + 2);
+      rc = glzpixelsx (ptr + p + 2);
       break;
 
     case 2029:		// glpolygon
-      glzpolygon ((ptr + p + 2), cnt-2);
+      rc = glzpolygon ((ptr + p + 2), cnt-2);
       break;
 
     case 2031:		// glrect
-      glzrect (ptr + p + 2);
+      rc = glzrect (ptr + p + 2);
       break;
 
     case 2032:		// glrgb
-      glzrgb (ptr + p + 2);
+      rc = glzrgb (ptr + p + 2);
       break;
 
     case 2343:		// glrgba
-      glzrgba (ptr + p + 2);
+      rc = glzrgba (ptr + p + 2);
       break;
 
     case 2038:		// gltext
-      glztext_i (ptr + p + 2, cnt-2);
+      rc = glztext_i (ptr + p + 2, cnt-2);
       break;
 
     case 2040:		// gltextcolor
-      glztextcolor ();
+      rc = glztextcolor ();
       break;
 
     case 2056:		// gltextxy
-      glztextxy (ptr + p + 2);
+      rc = glztextxy (ptr + p + 2);
       break;
 
     case 2045:		//glwindoworg
-      glzwindoworg (ptr + p + 2);
+      rc = glzwindoworg (ptr + p + 2);
       break;
 
     default:
-      ++errcnt;
+      return 1;
       break;
     }
+    if (rc) return rc;
     p = p + cnt;
   }
-  return errcnt;
+  return 0;
 }
 
 // ---------------------------------------------------------------------
