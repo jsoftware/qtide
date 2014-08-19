@@ -17,6 +17,7 @@ extern "C" {
   Dllexport int glfont (char *face);
   Dllexport int glfont2 (const int *p, int len);
   Dllexport int glfontangle (int a);
+  Dllexport int glfontextent (char *face);
   Dllexport int gllines (const int *p, int len);
   Dllexport int glnodblbuf (int a);
   Dllexport int glpaint ();

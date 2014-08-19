@@ -21,4 +21,6 @@ private:
 
 };
 
+extern string fontextent;
+
 #endif

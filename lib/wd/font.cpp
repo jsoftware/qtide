@@ -7,6 +7,8 @@
 #include "font.h"
 #include "../base/state.h"
 
+string fontextent;
+
 // ---------------------------------------------------------------------
 Font::Font(string s)
 {
