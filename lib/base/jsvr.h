@@ -66,6 +66,7 @@ extern char **adadbreak;
 extern J jt;
 
 A dora(std::string s);
+bool doriv(std::string s,I** v,I* len);
 std::string dors(std::string s);
 void dumpA(A a);
 void dumpAREP(AREP a);

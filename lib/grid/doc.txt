@@ -1,0 +1,27 @@
+Gxywh       grid drawing area
+Hxywh       header area
+Lxywh       label area
+Cxywh       cell area
+
+Mxywh       cell margins (Mx,My offsets, Mw, Mh padding)
+
+Hrws, Lcls  header rows, label cols
+Crws, Ccls  cell rows, cols
+Grws, Gcls  grid rows, cols
+Vrws, Vcls  visible rows, cols
+Srws, Scls  scrolled rows, cols
+
+Dws, Dhs    extents for data widths, heights
+Hws, Hhs    same for headers
+Lws, Lhs    same for labels
+Dwx, Dhx    combined and maxed over values
+
+Following includes margins:
+Gws, Ghs    grid widths, heights
+Gwp, Ghp    grid line positions
+Cws, Chs    cells only widths, heights
+Cwp, Chp    cells only line positions
+
+Vws, Vhs    visible cells widths, heights
+Vwp, Vhp    visible cells line positions
+Vw, Vh      cell visible width, height

@@ -8,6 +8,7 @@ android-assets/
 cleancdb.sh
 makebill.sh
 makecdb.sh
+makegrid.sh
 Makefile*
 makeosx.
 makewincdb.sh

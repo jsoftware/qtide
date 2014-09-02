@@ -445,6 +445,18 @@ int initialblanks(QString t)
 }
 
 // ---------------------------------------------------------------------
+QString intlist2qs(QList<int> p)
+{
+  QString s("");
+  int n=p.size();
+  for(int i=0; i<n; i++) {
+    if (i>0) s.append(" ");
+    s.append(QString::number(p[i]));
+  }
+  return s;
+}
+
+// ---------------------------------------------------------------------
 // is non-empty and all digit
 bool isint(const string s)
 {
@@ -605,8 +617,14 @@ bool queryRETRY(QString t,QString s)
 // ---------------------------------------------------------------------
 QList<int> qs2intlist(QString c)
 {
-  QList<int> r;
   QStringList s=c.split(' ',QString::SkipEmptyParts);
+  return qsl2intlist(s);
+}
+
+// ---------------------------------------------------------------------
+QList<int> qsl2intlist(QStringList s)
+{
+  QList<int> r;
   for (int i=0; i<s.size(); i++)
     r.append(s.at(i).toInt());
   return r;

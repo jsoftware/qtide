@@ -50,6 +50,7 @@ std::string d2s(double d);
 bool ifshift();
 void info(QString t,QString s);
 int initialblanks(QString t);
+QString intlist2qs(QList<int>);
 bool isint(std::string s);
 bool isroot(QString name);
 bool isutf8(QByteArray b);
@@ -79,6 +80,7 @@ QString trimtws(QString s);
 QString toqlist(QStringList);
 
 QList<int> qs2intlist(QString c);
+QList<int> qsl2intlist(QStringList s);
 QString qstaketo(QString s,QString c);
 QVector<int> qs2intvector(QString c);
 

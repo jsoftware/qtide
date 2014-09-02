@@ -18,6 +18,7 @@
 #include "checkbox.h"
 #include "combobox.h"
 #include "dateedit.h"
+#include "isigrid.h"
 #include "dspinbox.h"
 #include "dummy.h"
 #include "edit.h"
@@ -77,6 +78,10 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Button(n,p,pform,this);
   else if (c=="checkbox")
     child=(Child *) new CheckBox(n,p,pform,this);
+  else if (c=="combobox")
+    child=(Child *) new ComboBox(n,"edit " + p,pform,this);
+  else if (c=="combolist")
+    child=(Child *) new ComboBox(n,p,pform,this);
   else if (c=="dateedit")
     child=(Child *) new DateEdit(n,p,pform,this);
   else if (c=="dspinbox")
@@ -87,16 +92,14 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Editm(n,p,pform,this);
   else if (c=="edith")
     child=(Child *) new Edith(n,p,pform,this);
-  else if (c=="combobox")
-    child=(Child *) new ComboBox(n,"edit " + p,pform,this);
-  else if (c=="combolist")
-    child=(Child *) new ComboBox(n,p,pform,this);
   else if (c=="image")
     child=(Child *) new Image(n,p,pform,this);
   else if (c=="isidraw")
     child=(Child *) new Isidraw(n,p,pform,this);
   else if (c=="isigraph")
     child=(Child *) new Isigraph(n,p,pform,this);
+  else if (c=="isigrid")
+    child=(Child *) new IsiGrid(n,p,pform,this);
   else if (c=="listbox")
     child=(Child *) new ListBox(n,p,pform,this);
 #ifndef QT_NO_OPENGL
