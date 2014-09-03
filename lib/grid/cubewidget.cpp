@@ -1,5 +1,7 @@
 
 #include <QAction>
+#include <QDrag>
+#include <QMimeData>
 #include <QTimer>
 #include <QToolButton>
 
