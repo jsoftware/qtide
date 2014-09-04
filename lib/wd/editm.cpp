@@ -87,6 +87,8 @@ void Editm::set(string p,string v)
     }
   } else if (p=="wrap") {
     w->setLineWrapMode((remquotes(v)!="0")?PlainTextEdit::WidgetWidth:PlainTextEdit::NoWrap);
+  } else if (p=="find") {
+      w->find(opt.at(0));
   } else Child::set(p,v);
 }
 
