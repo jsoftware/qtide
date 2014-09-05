@@ -17,6 +17,7 @@ public:
   void createhelpActions();
   void createMenus(QString);
   void createMenus_fini(QString s);
+  void createuserkeyMenu();
 
   QAction *projectcloseAct;
   QAction *rundebugAct;
@@ -34,6 +35,9 @@ public:
   QList<QAction *> ProjectEnable;
   QList<QAction *> ScriptEnable;
 
+private slots:
+  void on_userAct_triggered();
+
 private:
   void createcfgMenu();
   void createeditMenu(QString s);
@@ -50,6 +54,7 @@ private:
   void createwindowMenu(QString s);
 
   QAction *makeact(QString id, QString text, QString shortcut);
+  QAction *makeuseract(QString text, QString shortcut);
 
   QMenu *cfgMenu;
   QMenu *editMenu;
@@ -61,6 +66,7 @@ private:
   QMenu *runMenu;
   QMenu *scriptMenu;
   QMenu *toolsMenu;
+  QMenu *userkeyMenu;
   QMenu *winMenu;
 
   QAction *cfgbaseAct;
@@ -70,6 +76,7 @@ private:
   QAction *cfgopenallAct;
   QAction *cfgqtideAct;
   QAction *cfgstartupAct;
+  QAction *cfguserkeysAct;
   QAction *cfgstyleAct;
   QAction *cleartermAct;
   QAction *clipcopyAct;

@@ -37,12 +37,23 @@ extern Fiw *fiw;
 
 using namespace std;
 
+// ---------------------------------------------------------------------
 QAction *Menu::makeact(QString id, QString text, QString shortcut)
 {
   QAction *r = new QAction(text,this);
   r->setObjectName(id);
   if (shortcut.size())
     r->setShortcut(shortcut);
+  return r;
+}
+
+// ---------------------------------------------------------------------
+QAction *Menu::makeuseract(QString text, QString shortcut)
+{
+  QAction *r = new QAction(text,this);
+  r->setObjectName(shortcut);
+  r->setShortcut(shortcut);
+  connect(r, SIGNAL(triggered()), this, SLOT(on_userAct_triggered()));
   return r;
 }
 
@@ -58,6 +69,7 @@ void Menu::createActions()
   cfgqtideAct = makeact("cfgqtideAct","Qt Ide","");
   cfgstartupAct = makeact("cfgstartupAct","Startup Script","");
   cfgstyleAct = makeact("cfgstyleAct","Styles","");
+  cfguserkeysAct = makeact("cfguserkeysAct","User Keys","");
   cleartermAct = makeact("cleartermAct","&Clear Terminal","Ctrl+Shift+T");
   clipcopyAct = makeact("clipcopyAct","&Copy","Ctrl+C");
   clipcutAct = makeact("clipcutAct","Cu&t","Ctrl+X");
@@ -212,6 +224,7 @@ void Menu::createcfgMenu()
     cfgMenu->addAction(cfgqtideAct);
 
   cfgMenu->addAction(cfgstyleAct);
+  cfgMenu->addAction(cfguserkeysAct);
   if (config.AppName=="jqt") {
     cfgMenu->addSeparator();
     cfgMenu->addAction(cfgstartupAct);
@@ -447,8 +460,18 @@ void Menu::createtoolsMenu(QString s)
 #ifndef QT_OS_ANDROID
   toolsMenu->addSeparator();
   fkeyMenu = toolsMenu->addMenu("Function Keys");
+  toolsMenu->addSeparator();
+  userkeyMenu = toolsMenu->addMenu("User Defined Keys");
   createfkeyMenu(s);
+  createuserkeyMenu();
 #endif
+}
+
+// ---------------------------------------------------------------------
+void Menu::createuserkeyMenu()
+{
+  foreach (QStringList f, config.UserKeys)
+  userkeyMenu->addAction(makeuseract(f[2],f[0]));
 }
 
 // ---------------------------------------------------------------------
@@ -500,6 +523,21 @@ void Menu::createwindowMenu(QString s)
 }
 
 // ---------------------------------------------------------------------
+void Menu::on_userAct_triggered()
+{
+  int i;
+  QString n=sender()->objectName();
+  for (i=0; i<config.UserKeys.size(); i++)
+    if (config.UserKeys[i][0]==n) break;
+  QString mode=config.UserKeys[i][1];
+  QString jcmd=config.UserKeys[i][3];
+  if (mode=="2")
+    tedit->append("   "+jcmd);
+  else
+    var_runs(jcmd,mode=="1");
+}
+
+// ---------------------------------------------------------------------
 void Note::on_cfgbaseAct_triggered()
 {
   term->on_cfgbaseAct_triggered();
@@ -547,6 +585,12 @@ void Note::on_cfgstartupAct_triggered()
 void Note::on_cfgstyleAct_triggered()
 {
   term->on_cfgstyleAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_cfguserkeysAct_triggered()
+{
+  term->on_cfguserkeysAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1009,6 +1053,12 @@ void Note::on_toselviewlinewrapAct_triggered()
   select_line("wrap");
 }
 
+//// ---------------------------------------------------------------------
+//void Note::userAct_triggered()
+//{
+//term->userAct_triggered();
+//}
+
 // ---------------------------------------------------------------------
 void Note::on_viewasciiAct_triggered()
 {
@@ -1196,6 +1246,12 @@ void Term::on_cfgstartupAct_triggered()
 void Term::on_cfgstyleAct_triggered()
 {
   openconfig ("style.cfg");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_cfguserkeysAct_triggered()
+{
+  openconfig ("userkeys.cfg");
 }
 
 // ---------------------------------------------------------------------
@@ -1525,3 +1581,4 @@ void Term::on_viewsidebarAct_triggered()
 {
   notyet("viewsidebarAct");
 }
+

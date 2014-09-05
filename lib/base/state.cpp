@@ -61,7 +61,7 @@ void Config::config_init()
 {
   QStringList c;
   QString s,t;
-  c << "dirmatch.cfg" << "launch.cfg";
+  c << "dirmatch.cfg" << "launch.cfg" << "userkeys.cfg";
 #ifdef TABCOMPLETION
   c << "stdlib.txt";
 #endif
@@ -171,6 +171,7 @@ void Config::init()
   folder_init();
   config_init();
   launch_init();
+  userkeys_init();
   winpos_init();
 
   if ("0"==dors("\":4!:0 <'XDiff_j_'"))
@@ -187,6 +188,7 @@ void Config::init()
     var_cmd("boxdraw_j_ "+QString::number(BoxForm));
     Ascii=!Ascii;
   }
+
 }
 
 // ---------------------------------------------------------------------

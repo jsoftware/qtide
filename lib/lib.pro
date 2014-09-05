@@ -248,14 +248,15 @@ SOURCES += \
  base/menu.cpp base/menuhelp.cpp \
  base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
  base/plaintextedit.cpp base/pcombobox.cpp \
- base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp base/recent.cpp base/rsel.cpp \
- base/run.cpp base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
+ base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp \
+ base/recent.cpp base/rsel.cpp base/run.cpp \
+ base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
- base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp grid/cell.cpp \
- grid/cubedata.cpp grid/cubedraw.cpp grid/cubewidget.cpp grid/defs.cpp \
- grid/draw.cpp grid/header.cpp grid/hierdraw.cpp grid/hierwidget.cpp \
- grid/label.cpp grid/qgrid.cpp grid/qutil.cpp grid/sizes.cpp \
- grid/top.cpp grid/wgrid.cpp high/highj.cpp \
+ base/userkeys.cpp base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp \
+ grid/cell.cpp grid/cubedata.cpp grid/cubedraw.cpp grid/cubewidget.cpp \
+ grid/defs.cpp grid/draw.cpp grid/header.cpp grid/hierdraw.cpp \
+ grid/hierwidget.cpp grid/label.cpp grid/qgrid.cpp grid/qutil.cpp \
+ grid/sizes.cpp grid/top.cpp grid/wgrid.cpp high/highj.cpp \
  wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
  wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dspinbox.cpp \
  wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \

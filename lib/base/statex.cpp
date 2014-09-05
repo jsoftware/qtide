@@ -4,6 +4,7 @@
 
 #include "base.h"
 #include "state.h"
+#include "menu.h"
 #include "note.h"
 #include "term.h"
 
@@ -92,23 +93,6 @@ void Config::filepos_set(QString f, int p)
 }
 
 // ---------------------------------------------------------------------
-void Config::fkeys_init()
-{
-  int n;
-  QString p,s;
-  QStringList t,v;
-  t=cfreadx(ConfigPath.filePath("fkeys.cfg"));
-  foreach (QString f,t) {
-    v=f.split("|",QString::SkipEmptyParts);
-    p=s=v.at(0);
-    p=p.remove("c").remove("s");
-    n=fkeynum(p.toInt(),s.contains("c"),s.contains("s"));
-    config.FKeyKeys.append(n);
-    config.FKeyValues.append(v.mid(1));
-  }
-}
-
-// ---------------------------------------------------------------------
 void Config::launch_init()
 {
   int i;
@@ -146,6 +130,36 @@ void Config::togglelinewrap()
   note->setlinewrap(LineWrap);
   if(note2)
     note2->setlinewrap(LineWrap);
+}
+
+// ---------------------------------------------------------------------
+void Config::userkeys_init()
+{
+  QStringList err,t;
+  QStringList v=getuserkeys();
+  t=cfreadx(ConfigPath.filePath("userkeys.cfg"));
+  foreach (QString f,t)
+  UserKeys.append(userkeys_split(f));
+  foreach (QStringList f,UserKeys) {
+    if (!v.contains(f.first())) {
+      err+="User key not available: "+f.first();
+      UserKeys.removeOne(f);
+    }
+  }
+  if (err.size()>0)
+    info("User Keys",err.join("\n"));
+  term->menuBar->createuserkeyMenu();
+}
+
+// ---------------------------------------------------------------------
+QStringList Config::userkeys_split(QString s)
+{
+  QChar c;
+  for (int i=0; i<s.length(); i++) {
+    c=s.at(i);
+    if (!(c.isLetter() || c.isDigit() || c=='+')) break;
+  }
+  return s.split(c);
 }
 
 // ---------------------------------------------------------------------

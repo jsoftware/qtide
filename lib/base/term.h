@@ -70,6 +70,7 @@ public slots:
   void on_cfgopenallAct_triggered();
   void on_cfgstartupAct_triggered();
   void on_cfgstyleAct_triggered();
+  void on_cfguserkeysAct_triggered();
 
   void on_cleartermAct_triggered();
   void on_clipcopyAct_triggered();
@@ -146,6 +147,7 @@ public slots:
   void on_toseltoggleAct_triggered();
   void on_toselupperAct_triggered();
   void on_toselviewlinewrapAct_triggered();
+
 
   void on_viewasciiAct_triggered();
   void on_vieweditorAct_triggered();

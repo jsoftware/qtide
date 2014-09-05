@@ -29,18 +29,21 @@ public:
   void filepos_set(QString f, int p);
   void fkeys_init();
   void folder_init();
-  void launch_init();
+  QStringList getuserkeys();
   void ini0();
   void init();
   void initide();
   QList<int> initposX(QList<int>);
-  void initstyle();
   bool initide1(QString f);
+  void initstyle();
+  void launch_init();
   void noprofile();
   void setfolders();
   void toggleascii();
   void togglelinenos();
   void togglelinewrap();
+  void userkeys_init();
+  QStringList userkeys_split(QString s);
   void winpos_init();
   QList<int> winpos_read(QString id);
   void winpos_save(QWidget *w,QString id);
@@ -126,6 +129,7 @@ public:
   QDir UserPath;
   QStringList UserFolderKeys;
   QStringList UserFolderValues;
+  QList<QStringList> UserKeys;
   QMap<QString,QList<int> >WinPos;
   QString XDiff;
 
