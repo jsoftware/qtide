@@ -238,7 +238,11 @@ void Config::initide()
   if (w=="bold") fontweight=QFont::Bold;
   Font.setWeight(fontweight);
 
-  KeepInputLog = s->value("Session/KeepInputLog",true).toBool();
+  int len=s->value("Session/MaxInputLog",-1).toInt();
+  if (len<0)
+    len=(s->value("Session/KeepInputLog",true).toBool()) ? 100 : 0;
+  MaxInputLog=len;
+
   MaxRecent = s->value("Session/MaxRecent",15).toInt();
   OpenTabAt=s->value("Session/OpenTabAt",0).toInt();
   Snapshots = s->value("Session/Snapshots",true).toInt();
@@ -268,7 +272,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Position/Debug")) return;
+  if (s->allKeys().contains("Session/MaxInputLog")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -289,7 +293,7 @@ void Config::initide()
   s->setValue("Session/FontFamily",Font.family());
   s->setValue("Session/FontSize",Font.pointSize());
   s->setValue("Session/FontWeight",w);
-  s->setValue("Session/KeepInputLog",KeepInputLog);
+  s->setValue("Session/MaxInputLog",MaxInputLog);
   s->setValue("Session/MaxRecent",MaxRecent);
   s->setValue("Session/OpenTabAt",OpenTabAt);
   s->setValue("Session/Snapshots",Snapshots);
@@ -322,7 +326,7 @@ void Config::initide()
     "# FontFamily=Menlo             term/edit font family\n"
     "# FontSize=10                  font size\n"
     "# FontWeight=normal            font weight: normal or bold\n"
-    "# KeepInputLog=true            if inputlog is preserved\n"
+    "# MaxInputLog=100              max number in input log, 0 for none\n"
     "# MaxRecent=15                 max number in recent files\n"
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
     "# Snapshots=5                  number of project snapshots kept\n"

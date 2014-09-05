@@ -90,13 +90,13 @@ public:
   QFont Font;
   QString Host;
   bool ifGit;
-  bool KeepInputLog;
   QString Lang;
   QStringList LaunchPadKeys;
   QStringList LaunchPadValues;
   QString LaunchPadPrefix;
   bool LineNos;
   bool LineWrap;
+  int MaxInputLog;
   int MaxRecent;
   bool NoProfile;
   int OpenTabAt;
