@@ -168,8 +168,12 @@ void Pnew::on_create_clicked()
   QString id=tofoldername(s);
   if ("~"==id.at(0))
     id=id.mid(1);
+
+  if (note == 0)
+    term->vieweditor();
+  else
+    note->projectsave();
   project.open(id);
-  term->vieweditor();
   note->projectopen(true);
 
   accept();

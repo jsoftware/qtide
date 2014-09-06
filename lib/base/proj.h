@@ -20,6 +20,7 @@ public:
 
   void close();
   bool closeOK();
+  QString id2qproj(QString);
   void init();
   void open(QString id);
   void save(QStringList);
@@ -30,7 +31,6 @@ public:
   QString projectname(QString s);
 
 private:
-  QString id2qproj(QString);
   QString projectname1(QString s,QStringList k,QStringList v);
 
 };

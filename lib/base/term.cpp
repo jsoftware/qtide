@@ -128,6 +128,21 @@ void Term::activate()
 }
 
 // ---------------------------------------------------------------------
+void Term::cleantemp()
+{
+  QRegExp re("\\d*");
+  QDir d=QDir(cpath("~temp"));
+  d.setFilter(QDir::Files|QDir::Writable);
+  QStringList t=d.entryList(QStringList() << "*.ijs");
+  foreach (QString e,t)
+  if (re.exactMatch(e.left(e.size()-4))) {
+    QFile f(d.filePath(e));
+    if (f.size()==0)
+      f.remove();
+  }
+}
+
+// ---------------------------------------------------------------------
 void Term::closeEvent(QCloseEvent *event)
 {
   filequit(false);
@@ -148,6 +163,7 @@ bool Term::filequit(bool ignoreconfirm)
   if ((!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
 #endif
+    cleantemp();
     state_quit();
     QApplication::quit();
     return true;

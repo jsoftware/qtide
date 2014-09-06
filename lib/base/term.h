@@ -40,6 +40,7 @@ public:
   Term();
 
   void activate();
+  void cleantemp();
   bool filequit(bool ignoreconfirm);
   void fini();
   void load(QString s, bool display);

@@ -42,8 +42,12 @@ void Recent::init()
   ProjectOpen = s.value("Recent/ProjectOpen", "true").toBool();
 
   QStringList t = cfreadx(ProjectFile);
-  for (int i=0; i<t.size(); i++)
-    Projects.append(t.at(i).split('|',QString::SkipEmptyParts));
+  QStringList p;
+  for (int i=0; i<t.size(); i++) {
+    p=t.at(i).split('|',QString::SkipEmptyParts);
+    if (cfexist(project.id2qproj(p[0])))
+      Projects.append(p);
+  }
 }
 
 // ---------------------------------------------------------------------

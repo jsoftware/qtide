@@ -231,6 +231,7 @@ void Ntabs::tabclosefile(QString f)
       tabclose(i);
       break;
     }
+  tabsetindex(currentIndex());
   noevents(0);
 }
 
