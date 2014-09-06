@@ -47,6 +47,7 @@ Fiw::Fiw(int p, QString s)
   QFormLayout *f = new QFormLayout;
   lsearchfor = new QLabel("&Search for:");
   searchfor = makecombobox("searchfor");
+  searchfor->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
   searchfor->installEventFilter(this);
   lsearchfor->setBuddy(searchfor);
   lreplaceby = new QLabel("&Replace by:");

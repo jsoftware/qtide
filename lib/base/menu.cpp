@@ -910,8 +910,7 @@ void Note::on_rundebugAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_runlineAct_triggered()
 {
-  runline(false,false)
-  ;
+  runline(false,false);
 }
 
 // ---------------------------------------------------------------------

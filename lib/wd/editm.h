@@ -2,8 +2,8 @@
 #define EDITM_H
 
 #include "child.h"
+#include "../base/plaintextedit.h"
 
-class PlainTextEdit;
 class Form;
 class Pane;
 
@@ -22,6 +22,22 @@ private slots:
 
 private:
   void setselect(PlainTextEdit *w, int bgn, int end);
+
+};
+
+// ---------------------------------------------------------------------
+class EditmPTE : public PlainTextEdit
+{
+  Q_OBJECT
+
+public:
+  EditmPTE(QWidget *parent=0);
+
+  Child *pchild;
+
+protected:
+  void keyPressEvent(QKeyEvent *event);
+
 
 };
 

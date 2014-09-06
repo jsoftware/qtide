@@ -13,7 +13,8 @@
 Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="editm";
-  PlainTextEdit *w=new PlainTextEdit;
+  EditmPTE *w=new EditmPTE;
+  w->pchild=this;
 #ifdef QT_OS_ANDROID
   w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
 #endif
@@ -115,4 +116,20 @@ string Editm::state()
   r+=spair(id+"_select",i2s(b)+" "+i2s(e));
   r+=spair(id+"_scroll",i2s(v->value()));
   return r;
+}
+
+// ---------------------------------------------------------------------
+EditmPTE::EditmPTE(QWidget *parent) : PlainTextEdit(parent) {}
+
+// ---------------------------------------------------------------------
+void EditmPTE::keyPressEvent(QKeyEvent *event)
+{
+  if ((isReadOnly() && event->key()==Qt::Key_Return)) {
+    char sysmodifiers[20];
+    sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+    pchild->event=string("button");
+    pchild->sysmodifiers=string(sysmodifiers);
+    pchild->pform->signalevent(pchild);
+  }
+  PlainTextEdit::keyPressEvent(event);
 }

@@ -137,8 +137,7 @@ void Picm::init(QString v,bool first)
   if (t.isEmpty())
     t.append((Text+"000000").toUtf8());
   for (i=0; i<t.size(); i++)
-    s.append(QString(t.at(i)));
-
+    s.append(QString::fromUtf8(t.at(i)));
   Stamps.clear();
   Texts.clear();
   for (i=s.size()-1; i>=0; i--) {

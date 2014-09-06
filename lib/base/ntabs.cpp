@@ -223,10 +223,11 @@ void Ntabs::tabcloseall()
 // close any tab with file
 void Ntabs::tabclosefile(QString f)
 {
+  QString s=cfcase(f);
   noevents(1);
   int i;
   for (i=0; i<count(); i++)
-    if (((Nedit *)widget(i))->fname==f) {
+    if (((Nedit *)widget(i))->fname==s) {
       tabclose(i);
       break;
     }
@@ -247,9 +248,10 @@ bool Ntabs::tabopen(QString s,int line)
 {
   int i,n;
   Nedit *e;
+  QString t=cfcase(s);
   for (i=0; i<count(); i++) {
     e=(Nedit *)widget(i);
-    if (e->fname==s) {
+    if (e->fname==t) {
       setCurrentIndex(i);
       e->selectline(line);
       return true;
