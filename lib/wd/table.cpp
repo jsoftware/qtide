@@ -1064,6 +1064,7 @@ void Table::settype(string v)
   r2=row2;
   c1=col1;
   c2=col2;
+  row=col=-1;
   if (!((r1>=0 && r1<rws && c1>=0 && c1<cls && r2>=-1 && r2<rws && c2>=-1 && c2<cls && (-1==r2 || r1<=r2) && (-1==c2 || c1<=c2)) || (0==rws && ((((c2==-1)?(cls-1):c2)-c1+1)==n || 1==n || 0==n)))) {
     error("set type row1 row2 col1 col2 out of bound: " + q2s(QString::number(r1)) + " " + q2s(QString::number(r2)) + " " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
     return;
@@ -1100,20 +1101,31 @@ void Table::settype(string v)
 // ---------------------------------------------------------------------
 string Table::state()
 {
-  if (this!=pform->evtchild) return "";
   string r;
 
-  if (event=="change") {
+  if (this!=pform->evtchild || event=="mark" || event.substr(0,2)=="mb") {
+    r+=spair(id,i2s(row)+" "+i2s(col));
+    QTableWidgex *w=(QTableWidgex*) widget;
+    QModelIndexList ml=w->selectionModel()->selectedIndexes();
+    string mark="";
+    if (!ml.isEmpty()) {
+      int r0,r1,c0,c1;
+      r0=rws;
+      c0=cls;
+      r1=c1=-1;
+      foreach (QModelIndex m,ml) {
+        r0=qMin(r0,m.row());
+        r1=qMax(r1,m.row());
+        c0=qMin(c0,m.column());
+        c1=qMax(c1,m.column());
+      }
+      mark=i2s(r0)+" "+i2s(r1)+" "+i2s(c0)+" "+i2s(c1);
+    }
+    r+=spair(id+"_select",mark);
+  } else  if (event=="change") {
     r+=spair(id,readcell(row,col));
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
     r+=spair(id+"_value",readcellvalue(row,col));
-  } else if (event=="mark" || event.substr(0,2)=="mb") {
-    r+=spair(id,i2s(row)+" "+i2s(col));
-    r+=spair(id+"_select",
-             i2s(qMin(row,markrow))+" "+
-             i2s(qMax(row,markrow))+" "+
-             i2s(qMin(col,markcol))+" "+
-             i2s(qMax(col,markcol)));
   } else if (event=="clicked") {
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
   }
