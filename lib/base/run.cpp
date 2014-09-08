@@ -22,6 +22,8 @@ void Note::runline(bool advance, bool show)
 // advance to next line, or if blank, to before next entry
   if (advance) {
     c.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,1);
+    c.movePosition(QTextCursor::StartOfBlock,QTextCursor::MoveAnchor,1);
+    e->setTextCursor(c);
     if(c.block().text().trimmed().isEmpty()) {
       QTextCursor cnext=c;
       while (len>++row) {
