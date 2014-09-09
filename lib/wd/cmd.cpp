@@ -98,7 +98,8 @@ string Cmd::getline()
 }
 // ---------------------------------------------------------------------
 // to next ; else return rest of string
-string Cmd::getparms()
+// if star, preserve leading *
+string Cmd::getparms(bool star)
 {
   char c;
 
@@ -114,7 +115,7 @@ string Cmd::getparms()
   if (pos==len)
     return "";
   if (str[pos]=='*') {
-    string r=str.substr(pos+1);
+    string r=str.substr(pos+(star?0:1));
     pos=len;
     return r;
   }
@@ -256,8 +257,14 @@ bool contains(string s,char c)
 
 // ---------------------------------------------------------------------
 // split parameters
-QStringList qsplit(string s)
+// if star and first non WS is *, then return rest as single parameter
+QStringList qsplit(string s,bool star)
 {
+  if (star) {
+    size_t p=s.find_first_not_of(WS);
+    if (p!=string::npos && s[p]=='*')
+      return QStringList(s2q(s.substr(p+1)));
+  }
   Cmd c;
   c.init((char*)s.c_str(),(int)s.size());
   return c.qsplits();

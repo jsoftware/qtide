@@ -11,7 +11,7 @@ public:
   bool delimLF(string);
   string getid();
   string getline();
-  string getparms();
+  string getparms(bool s=false);
   void init(char *,int);
   bool more();
 
@@ -34,7 +34,7 @@ private:
 };
 
 QStringList bsplit(string s);
-QStringList qsplit(string s);
+QStringList qsplit(string s,bool p=false);
 vector<string> ssplit(string s);
 
 #endif

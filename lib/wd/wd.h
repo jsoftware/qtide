@@ -12,7 +12,7 @@ extern "C" {
 
 void error(string s);
 string remquotes(string s);
-QString mb(string p);
+QString mb(string c,string p);
 void wdactivateform();
 
 #endif

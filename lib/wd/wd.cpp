@@ -526,7 +526,9 @@ void wdline(string c)
 // ---------------------------------------------------------------------
 void wdmb()
 {
-  result=q2s(mb(cmd.getparms()));
+  string c=cmd.getid();
+  string p=cmd.getparms(true);
+  result=q2s(mb(c,p));
   if (1==rc)
     result="";
   else

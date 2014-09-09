@@ -45,7 +45,7 @@
 #include "../base/dialog.h"
 #include "../base/state.h"
 
-QString mb(string p);
+QString mb(string,string);
 static QString mbabout();
 static QString mbcolor();
 static QString mbdir();
@@ -60,7 +60,7 @@ static QString mbsave();
 
 static QString fixsep(QString s);
 
-static QString type;
+static string type;
 static QStringList arg;
 
 static QMessageBox::StandardButton getdefaultbutton();
@@ -69,16 +69,17 @@ static QMessageBox::StandardButtons getotherbuttons();
 static QString getname(int);
 
 // ---------------------------------------------------------------------
-QString mb(string p)
+// c is type, p is parameter, possibly preceded by *
+QString mb(string c,string p)
 {
-  arg=qsplit(p);
-  if (arg.size()<1) {
+  type=c;
+  if (type.size()==0) {
     error("missing mb type");
     return "";
   }
 
-  type=arg.first();
-  arg.removeFirst();
+  arg=qsplit(p,true);
+
   if (type=="about")
     return mbabout();
   if (type=="color")
@@ -94,18 +95,18 @@ QString mb(string p)
   if (type=="open1")
     return mbopen1();
   if (type=="print") {
-    QString s=dlb(s2q(p.substr(5)));
+    QString s=dlb(s2q(p));
     return mbprint('*'==s.at(0));
   }
   if (type=="printx") {
-    QString s=dlb(s2q(p.substr(6)));
+    QString s=dlb(s2q(p));
     return mbprintx('*'==s.at(0));
   }
   if (type=="save")
     return mbsave();
   if (type=="info"||type=="query"||type=="warn"||type=="critical")
     return mbmsg();
-  error("invalid mb type: " + q2s(type));
+  error("invalid mb type: " + type);
   return "";
 }
 
