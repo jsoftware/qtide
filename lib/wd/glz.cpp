@@ -732,7 +732,7 @@ int glzresolution (int n)
 {
   if ((!Printer) || !Printer->isValid()) return 0;
   Printer->setResolution(n);
-  return Printer->resolution();
+  return 0;
 }
 
 // ---------------------------------------------------------------------

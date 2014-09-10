@@ -53,6 +53,7 @@ QStringList Cmd::bsplits()
 }
 
 // ---------------------------------------------------------------------
+// if string delimited by LF
 bool Cmd::delimLF(string s)
 {
   char c;
@@ -60,6 +61,7 @@ bool Cmd::delimLF(string s)
   for (int i=0; i<n; i++) {
     c=s[i];
     if (c==LF) return true;
+    if (c=='*' || c==SOH) return false;
     if (c=='"' || c==DEL)
       while (s[++i]!=c);
   }
