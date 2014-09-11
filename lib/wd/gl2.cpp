@@ -679,6 +679,7 @@ int gltextcolor()
   w->textcolor = QColor(w->color);
   w->textpen = QPen(w->painter->pen());
   w->textpen.setColor(w->textcolor);
+  w->textpen.setStyle(Qt::SolidLine);
   return 0;
 }
 
