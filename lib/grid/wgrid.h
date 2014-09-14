@@ -19,11 +19,16 @@ class WGrid : public QWidget
   Q_OBJECT
 
 public:
-  WGrid(Child *,QWidget *,Wasa *);
+  WGrid(Child *,QGrid*,QWidget *,Wasa *);
+
+  int axislength(QList<int> a);
+  QVector<int> axismerge(QList<int> a);
+  QStringList axisrep(QStringList a,int p);
+  QVector<int> axisreps(QList<int> a);
 
   void defs();
   void draw();
-  void getgrid();
+  bool getgrid();
   void maxscrollc(int);
   void maxscrollr(int);
   void set(string,string);
@@ -32,6 +37,7 @@ public:
   bool WGridInit;
   Child *pchild;
   Form *pform;
+  QGrid *p;
   int row,col;
 
 protected:

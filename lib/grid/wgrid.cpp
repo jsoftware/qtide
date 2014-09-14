@@ -6,9 +6,10 @@
 #include "../wd/wd.h"
 
 // ---------------------------------------------------------------------
-WGrid::WGrid(Child *c,QWidget *p,Wasa *s) : QWidget(p)
+WGrid::WGrid(Child *c,QGrid *qgrid,QWidget *parent,Wasa *s) : QWidget(parent)
 {
   pchild=c;
+  p=qgrid;
   sa=s;
   setAttribute(Qt::WA_DeleteOnClose);
   setContentsMargins(0,0,0,0);
@@ -102,15 +103,17 @@ void WGrid::paintEvent(QPaintEvent *e)
   noevents(1);
   Q_UNUSED(e);
   draw();
-  QPainter p(this);
-  p.drawPixmap(0,0,*pmall);
-  p.drawPixmap(Lw,Hh,*pmcell);
-  if (Hh>0)
-    p.drawPixmap(Lw,0,*pmhdr);
-  if (Lw>0)
-    p.drawPixmap(0,Hh,*pmlab);
-  if (Hh>0 && Lw>0)
-    p.drawPixmap(0,0,*pmtop);
+  if (pmall) {
+    QPainter p(this);
+    p.drawPixmap(0,0,*pmall);
+    p.drawPixmap(Lw,Hh,*pmcell);
+    if (Hh>0)
+      p.drawPixmap(Lw,0,*pmhdr);
+    if (Lw>0)
+      p.drawPixmap(0,Hh,*pmlab);
+    if (Hh>0 && Lw>0)
+      p.drawPixmap(0,0,*pmtop);
+  }
   noevents(0);
 }
 

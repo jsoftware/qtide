@@ -25,7 +25,7 @@ public:
   QGrid(QString,Child *,QWidget *);
   ~QGrid();
 
-  void drawcube();
+  bool drawcube();
   void set(string,string);
   string state(string);
 
@@ -35,6 +35,16 @@ public:
   QVBoxLayout *vbmain;
   CubeMargin *mcols, *mrows, *mslice;
   QString style;
+
+  QStringList AxisNames;
+  QList<QStringList> AxisLabels;
+  QList<int> AxisRows;
+  QList<int> AxisCols;
+  QStringList AxisOrder;
+  QList<int> AxisSlice;
+  QVector<int> AxisIndex;
+  QList<int> AxisShape;
+  QStringList CellData;
 
 public slots:
   void redraw();
@@ -122,14 +132,5 @@ protected:
 };
 
 // ---------------------------------------------------------------------
-
-extern QStringList AxisNames;
-extern QList<QStringList> AxisLabels;
-extern QList<int> AxisRows;
-extern QList<int> AxisCols;
-extern QList<int> AxisSlice;
-extern QVector<int> AxisIndex;
-extern QList<int> AxisShape;
-extern QStringList CellData;
 
 #endif

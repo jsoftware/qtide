@@ -201,8 +201,9 @@ void Tedit::keyPressEvent(QKeyEvent *e)
 // ---------------------------------------------------------------------
 void Tedit::keyReleaseEvent(QKeyEvent *event)
 {
-  switch (event->key()) {
+// separate ANDROID code avoids compiler warnings
 #ifdef QT_OS_ANDROID
+  switch (event->key()) {
   case Qt::Key_Back:
     if (2>backButtonPressed) {
       if (0==backButtonPressed) QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
@@ -212,10 +213,12 @@ void Tedit::keyReleaseEvent(QKeyEvent *event)
         event->accept();
     }
     break;
-#endif
   default:
     Bedit::keyReleaseEvent(event);
   }
+#else
+  Bedit::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------

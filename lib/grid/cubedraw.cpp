@@ -16,13 +16,12 @@ void QGrid::drawbuttons(QBoxLayout *layout,QList<int> axis)
 }
 
 // ---------------------------------------------------------------------
-void QGrid::drawcube()
+bool QGrid::drawcube()
 {
-  if (GGridInit) return;
+  if (GGridInit) return true;
+  if (!sa->g->getgrid()) return false;
+
   bool drawn=mslice != 0;
-
-  sa->g->getgrid();
-
   if (drawn) {
     hbmain->removeWidget(mcols);
     vbmain->removeWidget(mslice);
@@ -50,7 +49,7 @@ void QGrid::drawcube()
     vbmain->insertWidget(0,mslice);
     vbmain->insertWidget(-1,mrows);
   }
-  GGridInit=true;
+  return GGridInit=true;
 }
 
 // ---------------------------------------------------------------------

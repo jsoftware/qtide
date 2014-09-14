@@ -4,15 +4,6 @@
 #include "../wd/wd.h"
 #include "../wd/cmd.h"
 
-QStringList AxisNames;
-QList<QStringList> AxisLabels;
-QList<int> AxisRows;
-QList<int> AxisCols;
-QList<int> AxisSlice;
-QVector<int> AxisIndex;
-QList<int> AxisShape;
-QStringList CellData;
-
 // ---------------------------------------------------------------------
 QGrid::QGrid(QString s,Child *c,QWidget *p) : QWidget(p)
 {
@@ -86,6 +77,7 @@ void QGrid::setaxislabels(QStringList s)
 // ---------------------------------------------------------------------
 void QGrid::setaxisorder(QStringList s)
 {
+  AxisOrder=s;
   AxisRows=qs2intlist(s[0]);
   AxisCols=qs2intlist(s[1]);
   AxisSlice=qs2intlist(s[2]);
@@ -106,7 +98,7 @@ Wasa::Wasa(QString s,Child *c, QWidget *parent) : QAbstractScrollArea(parent)
   style=s;
   p=(QGrid*) parent;
   v=new QWidget(p);
-  g=new WGrid(c,v,this);
+  g=new WGrid(c,p,v,this);
   g->resize(400,300);
   setViewport(v);
 

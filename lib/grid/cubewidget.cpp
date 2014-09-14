@@ -50,7 +50,7 @@ void CubeCombo::indexChanged(int n)
 {
   if (NoEvents) return;
   QString id=QObject::sender()->objectName();
-  AxisIndex.replace(AxisNames.indexOf(id),n);
+  p->AxisIndex.replace(p->AxisNames.indexOf(id),n);
   p->redraw();
 }
 
@@ -77,27 +77,27 @@ void CubeMargin::dropEvent(QDropEvent *e)
 {
   int c,n,r,s;
 
-  n=AxisNames.indexOf(e->mimeData()->text());
+  n=p->AxisNames.indexOf(e->mimeData()->text());
 
-  c=itemremove(AxisCols,n);
-  r=itemremove(AxisRows,n);
-  s=itemremove(AxisSlice,n);
+  c=itemremove(p->AxisCols,n);
+  r=itemremove(p->AxisRows,n);
+  s=itemremove(p->AxisSlice,n);
   Q_UNUSED(s);
 
   if (this==p->mcols) {
     if (r==0)
-      itemmovelast(AxisCols,AxisRows);
-    itemadd(AxisCols,n);
+      itemmovelast(p->AxisCols,p->AxisRows);
+    itemadd(p->AxisCols,n);
   } else if (this==p->mrows) {
     if (c==0)
-      itemmovelast(AxisRows,AxisCols);
-    itemadd(AxisRows,n);
+      itemmovelast(p->AxisRows,p->AxisCols);
+    itemadd(p->AxisRows,n);
   } else {
     if (c==0)
-      itemmovelast(AxisSlice,AxisCols);
+      itemmovelast(p->AxisSlice,p->AxisCols);
     else if (r==0)
-      itemmovelast(AxisSlice,AxisRows);
-    itemadd(AxisSlice,n);
+      itemmovelast(p->AxisSlice,p->AxisRows);
+    itemadd(p->AxisSlice,n);
   }
 
   QTimer *timer = new QTimer(this);
@@ -121,12 +121,12 @@ void CubeMargin::dragEnterEvent(QDragEnterEvent *e)
 // ---------------------------------------------------------------------
 void CubeMargin::itemadd(QList<int> v, int n)
 {
-  if (v==AxisCols)
-    AxisCols.append(n);
-  else if (v==AxisRows)
-    AxisRows.append(n);
+  if (v==p->AxisCols)
+    p->AxisCols.append(n);
+  else if (v==p->AxisRows)
+    p->AxisRows.append(n);
   else
-    AxisSlice.append(n);
+    p->AxisSlice.append(n);
 }
 
 // ---------------------------------------------------------------------
@@ -135,25 +135,25 @@ void CubeMargin::itemmovelast(QList<int> v, QList<int> w)
   int n;
   if (v.isEmpty()) {
     if (w.isEmpty())
-      itemmovelast(AxisRows.isEmpty() ? AxisCols : AxisRows,w);
+      itemmovelast(p->AxisRows.isEmpty() ? p->AxisCols : p->AxisRows,w);
     return;
   }
-  if (v==AxisCols) {
-    n=AxisCols.last();
-    AxisCols.removeLast();
-  } else if (v==AxisRows) {
-    n=AxisRows.last();
-    AxisRows.removeLast();
+  if (v==p->AxisCols) {
+    n=p->AxisCols.last();
+    p->AxisCols.removeLast();
+  } else if (v==p->AxisRows) {
+    n=p->AxisRows.last();
+    p->AxisRows.removeLast();
   } else {
-    n=AxisSlice.last();
-    AxisSlice.removeLast();
+    n=p->AxisSlice.last();
+    p->AxisSlice.removeLast();
   }
-  if (w==AxisCols)
-    AxisCols.append(n);
-  else if (w==AxisRows)
-    AxisRows.append(n);
+  if (w==p->AxisCols)
+    p->AxisCols.append(n);
+  else if (w==p->AxisRows)
+    p->AxisRows.append(n);
   else {
-    AxisSlice.append(n);
+    p->AxisSlice.append(n);
   }
 }
 
@@ -161,15 +161,15 @@ void CubeMargin::itemmovelast(QList<int> v, QList<int> w)
 int CubeMargin::itemremove(QList<int> v, int n)
 {
   int r;
-  if (v==AxisCols) {
-    AxisCols.removeOne(n);
-    r=AxisCols.size();
-  } else if (v==AxisRows) {
-    AxisRows.removeOne(n);
-    r=AxisRows.size();
+  if (v==p->AxisCols) {
+    p->AxisCols.removeOne(n);
+    r=p->AxisCols.size();
+  } else if (v==p->AxisRows) {
+    p->AxisRows.removeOne(n);
+    r=p->AxisRows.size();
   } else {
-    AxisSlice.removeOne(n);
-    r=AxisSlice.size();
+    p->AxisSlice.removeOne(n);
+    r=p->AxisSlice.size();
   }
   return r;
 }

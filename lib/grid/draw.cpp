@@ -26,9 +26,7 @@ void WGrid::draw()
     WGridInit=true;
   }
 
-//timex("");
   drawsizes(Scls,Srws,w,h);
-//timex("draw sizes");
   drawview();
   drawpixmaps();
   drawtop();
@@ -43,7 +41,7 @@ bool WGrid::drawinit()
   if (WGridInit) return true;
 
   if (sa->style=="cube") {
-    sa->p->drawcube();
+    if (!sa->p->drawcube()) return false;
   }
 
   if (!validmerge(Ccls,HdrMerge))

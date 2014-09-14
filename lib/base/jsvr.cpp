@@ -516,7 +516,6 @@ bool doriv(string s,I**v,I*len)
   A r=dora(s);
   if (!r) return false;
   AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
-  //qDebug() << p << p->t << p->r << p->c;
   assert(p->t==4);
   assert(p->r<2);
   if (p->r==0) {
@@ -526,8 +525,6 @@ bool doriv(string s,I**v,I*len)
     *len = p->c;
     *v=(I*)(sizeof(AREP_RECORD)+(char*)p);
   }
-  //for (int i=0;i<p->c;i++)
-  //qDebug() << i << *v[i];
   return true;
 }
 

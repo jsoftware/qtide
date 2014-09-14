@@ -57,7 +57,7 @@ QStringList Cmd::bsplits()
 bool Cmd::delimLF(string s)
 {
   char c;
-  int n=s.size();
+  int n=(int)s.size();
   for (int i=0; i<n; i++) {
     c=s[i];
     if (c==LF) return true;
@@ -276,7 +276,7 @@ QStringList qsplit(string s,bool star)
 // split on character
 QStringList qsplitby(string s,char c)
 {
-  int n=s.size();
+  int n=(int)s.size();
   if (n==0)
     return QStringList();
   if (s[n-1]==c)
@@ -299,7 +299,7 @@ vector<string> ssplitby(string s,char c)
 {
   int i,p;
   vector<string> r;
-  int n=s.size();
+  int n=(int)s.size();
   if (n==0) return r;
   if (s[n-1]==c)
     s=s.substr(0,--n);
@@ -321,11 +321,11 @@ string toLF(string s)
 {
   if (!contains(s,'\r'))
     return s;
-  int n=s.size();
+  int n=(int)s.size();
   int p=0;
-  size_t t;
+  int t;
   string r;
-  while (string::npos != (t=s.find("\r\n",p))) {
+  while (string::npos != (t=(int)s.find("\r\n",p))) {
     r.append(s.substr(p,t-p));
     p=t+1;
   }
