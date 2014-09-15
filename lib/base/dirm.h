@@ -22,12 +22,14 @@ class hPushButton : public QPushButton
   Q_OBJECT
 
 public:
-  hPushButton(QString s) {
+  hPushButton(QString s)
+  {
     setText(s);
     installEventFilter(this);
     update();
   }
-  bool eventFilter(QObject * obj,QEvent * ev) {
+  bool eventFilter(QObject * obj,QEvent * ev)
+  {
     return (obj != 0) && ev->type() == QEvent::Paint;
   }
 };
