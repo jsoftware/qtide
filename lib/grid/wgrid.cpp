@@ -1,6 +1,7 @@
 
 #include "wgrid.h"
 #include "qgrid.h"
+#include "../base/state.h"
 #include "../wd/cmd.h"
 #include "../wd/form.h"
 #include "../wd/wd.h"
@@ -18,6 +19,9 @@ WGrid::WGrid(Child *c,QGrid *qgrid,QWidget *parent,Wasa *s) : QWidget(parent)
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   pmall=pmtop=pmhdr=pmlab=pmcell=0;
   QFontMetrics fm=QFontMetrics(font);
+#ifdef QT_OS_ANDROID
+  setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
   defs();
 }
 

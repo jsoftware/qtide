@@ -55,6 +55,7 @@ public:
   QString AppName;
   bool Ascii;
 #ifdef QT_OS_ANDROID
+  QString FontFile;
   int ScrollBarSize;
 #endif
   QDir BinPath;

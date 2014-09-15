@@ -13,6 +13,9 @@
 #include <QPrinterInfo>
 #endif
 #endif
+#ifdef QT_OS_ANDROID
+#include <QFontDatabase>
+#endif
 
 #include "wd.h"
 #include "bitmap.h"
@@ -63,6 +66,9 @@ void wddefprint();
 void wddirmatch();
 void wdend();
 void wdfontdef();
+#ifdef QT_OS_ANDROID
+void wdfontfile();
+#endif
 void wdget();
 void *wdgetparentid(void *s);
 void wdgrid();
@@ -192,6 +198,10 @@ void wd1()
       wdend();
     else if (c=="fontdef")
       wdfontdef();
+#ifdef QT_OS_ANDROID
+    else if (c=="fontfile")
+      wdfontfile();
+#endif
     else if (c=="get")
       wdget();
     else if (c=="grid")
@@ -448,6 +458,17 @@ void wdfontdef()
   string p=cmd.getparms();
   fontdef = new Font(p);
 }
+
+#ifdef QT_OS_ANDROID
+// ---------------------------------------------------------------------
+void wdfontfile()
+{
+  string p=cmd.getparms();
+  int id=QFontDatabase::addApplicationFont(s2q(p));
+  result=i2s(id);
+  rc=-1;
+}
+#endif
 
 // ---------------------------------------------------------------------
 void wdget()
