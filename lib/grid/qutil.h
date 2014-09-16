@@ -1,13 +1,22 @@
 #ifndef QUTIL_H
 #define QUTIL_H
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 #include <QElapsedTimer>
+#else
+#include <QTime>
+#endif
+
 #include <QStringList>
 
 using namespace std;
 
 extern qint64 TimeX;
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 extern QElapsedTimer Timer;
+#else
+extern QTime Timer;
+#endif
 
 int getcellcount(int,int,QVector<int>);
 int getindexof(int w, QVector<int> p);

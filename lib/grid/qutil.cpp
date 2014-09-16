@@ -9,7 +9,12 @@
 
 static QVector<int> Vone (QVector<int>() << 1);
 qint64 TimeX;
+extern qint64 TimeX;
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 QElapsedTimer Timer;
+#else
+QTime Timer;
+#endif
 
 // ---------------------------------------------------------------------
 int getcellcount(int w, int off, QVector<int> len)
@@ -180,7 +185,11 @@ void timex(QString id)
     TimeX=0;
     Timer.start();
   } else  {
-    qint64 r=Timer.nsecsElapsed();
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
+      qint64 r=Timer.nsecsElapsed();
+#else
+      qint64 r=1000000*Timer.elapsed();
+#endif
     qDebug() << id << (r-TimeX) / 1e9;
     TimeX=r;
   }
