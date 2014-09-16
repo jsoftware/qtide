@@ -27,6 +27,7 @@ QAction *Menus::makeact(string id, string p)
   QAction *r = new QAction(text,widget);
   QString name=s2q(id);
   r->setObjectName(name);
+  r->setMenuRole(QAction::NoRole);
   if (shortcut.size())
     r->setShortcut(shortcut);
   items[name]=r;
@@ -52,6 +53,7 @@ int Menus::menupop(string c)
             this,SLOT(menu_triggered(QAction *)));
   } else
     curMenu=curMenu->addMenu(s);
+  curMenu->menuAction()->setMenuRole(QAction::NoRole);
   menus.append(curMenu);
   return 0;
 }
