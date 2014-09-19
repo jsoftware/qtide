@@ -38,7 +38,6 @@ void Nmain::createActions()
   openprojectAct = makeact("openprojectAct","folder.png","Open Project");
   runallAct = makeact("runallAct","run.png","Run All Lines");
   xeditAct = makeact("xeditAct","regular.png","External editor");
-  reloadfileAct = makeact("reloadfileAct","refresh.png","Reload file");
 #else
   openprojectAct = makeact("openprojectAct","folder.svg","Open Project");
   runallAct = makeact("runallAct","run.svg","Run All Lines");
@@ -59,8 +58,6 @@ void Nmain::createToolBar()
 #ifdef QT_OS_ANDROID
   toolBar->addSeparator();
   toolBar->addAction(xeditAct);
-  toolBar->addSeparator();
-  toolBar->addAction(reloadfileAct);
 #endif
 }
 

@@ -226,15 +226,6 @@ void Note::on_xeditAct_triggered()
   if (fn.isEmpty()) return;
   android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().data(),(char *)"text/plain",0);
 }
-
-// ---------------------------------------------------------------------
-void Note::on_reloadfileAct_triggered()
-{
-  Nedit *e=editPage();
-  if (!e) return;
-  e->text = cfread(e->file);
-  e->setPlainText(e->text);
-}
 #endif
 
 // ---------------------------------------------------------------------
