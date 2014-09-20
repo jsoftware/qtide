@@ -164,7 +164,7 @@ QSyntaxHighlighter *highlight(QTextDocument *);
 void state_appname();
 QStringList state_about();
 int state_fini();
-bool state_init(int argc, char *argv[]);
+bool state_init(int argc, char *argv[], void *jproc);
 void state_init_args(int *,char *argv[]);
 
 void state_init_resource();
@@ -180,7 +180,7 @@ void var_runs(QString s, bool show);
 void var_set(QString s, QString t);
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], QString lib, bool fhs);
+  Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs, void *jproc);
   Dllexport void immexj(const char *s);
 }
 

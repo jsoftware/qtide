@@ -57,6 +57,10 @@ using namespace std;
 
 Config config;
 QString LibName;
+void *jdllproc=0;
+#ifndef QT_OS_ANDROID
+QApplication *app=0;
+#endif
 
 // ---------------------------------------------------------------------
 // copy over configs if necessary
@@ -443,6 +447,7 @@ int state_fini()
 // ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
+  if (jdllproc) return true;
   state_init_args(&argc,argv);
   config.ini0();
   svr_init(argc,argv);
@@ -483,10 +488,15 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],QString lib,bool fhs)
+int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc)
 {
+#ifndef QT_OS_ANDROID
+  app = new QApplication(argc, argv);
+#endif
+  jdllproc=jproc;
+
   FHS=fhs;
-  LibName=lib;
+  LibName=QString::fromUtf8(lib);
 #ifdef QT_OS_ANDROID
 // assume LibName is in the following formats
 //      /data/data/com.jsoftware.android.qtide/lib/libjqt.so
@@ -520,6 +530,7 @@ int state_run(int argc, char *argv[],QString lib,bool fhs)
   regQmlJE();
 #endif
 #endif
+  if (jdllproc) return 0;
 #ifdef QT_OS_ANDROID
   if (AndroidPackage=="com.jsoftware.android.qtide")
     showide(true);

@@ -19,6 +19,7 @@
 #include <sys/stat.h>
 extern QString AndroidPackage;
 #endif
+extern void * jdllproc;
 
 using namespace std;
 
@@ -130,8 +131,12 @@ J jeload(void* callbacks)
 {
 #ifdef _WIN32
   WCHAR wpath[PLEN];
-  MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
-  hjdll=LoadLibraryW(wpath);
+  if (jdllproc) {
+    hjdll=jdllproc;
+  } else {
+    MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
+    hjdll=LoadLibraryW(wpath);
+  }
   if(!hjdll)return 0;
   jt=((JInitType)GETPROCADDRESS((HMODULE)hjdll,"JInit"))();
   if(!jt) return 0;
@@ -144,7 +149,7 @@ J jeload(void* callbacks)
   jseta=(JSetAType)GETPROCADDRESS((HMODULE)hjdll,"JSetA");
   return jt;
 #else
-  hjdll=dlopen(pathdll,RTLD_LAZY);
+  hjdll=jdllproc?jdllproc:dlopen(pathdll,RTLD_LAZY);
   if(!hjdll)return 0;
   jt=((JInitType)GETPROCADDRESS(hjdll,"JInit"))();
   if(!jt) return 0;

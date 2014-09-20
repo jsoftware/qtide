@@ -60,7 +60,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-SOURCES += main.cpp
+SOURCES += main.cpp jepath.cpp
 win32:config += console
 CONFIG+= release
 
