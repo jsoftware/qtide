@@ -2,6 +2,7 @@
 
 #include <QCryptographicHash>
 #include <QDirIterator>
+#include <QEventLoop>
 #include <QFont>
 #include <QPoint>
 #include <QProcess>
@@ -14,6 +15,7 @@
 #include "base.h"
 #include "dialog.h"
 #include "note.h"
+#include "jsvr.h"
 #include "proj.h"
 #include "recent.h"
 #include "state.h"
@@ -30,6 +32,7 @@ extern "C" {
 
 bool ShowIde=true;
 static string hashbuf;
+extern QEventLoop *evloop;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -67,6 +70,12 @@ QString defext(QString s)
 {
   if (s.isEmpty() || s.contains('.')) return s;
   return s + config.DefExt;
+}
+
+// ---------------------------------------------------------------------
+void evtloop()
+{
+  if (jdllproc) evloop->exec(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------

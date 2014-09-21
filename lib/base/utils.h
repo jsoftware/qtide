@@ -10,6 +10,7 @@ class QCompleter;
 
 QString cpath(QString);
 QString defext(QString s);
+extern "C" Dllexport void evtloop();
 int fkeynum(int key,bool c,bool s);
 QStringList folder_tree(QString b,QString f,bool subdir);
 QStringList folder_tree1(QString b,QString s,QStringList f);

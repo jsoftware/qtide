@@ -180,7 +180,7 @@ void var_runs(QString s, bool show);
 void var_set(QString s, QString t);
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs, void *jproc);
+  Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs, void *jproc, void *jt);
   Dllexport void immexj(const char *s);
 }
 

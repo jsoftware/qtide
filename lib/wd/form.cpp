@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include <QBoxLayout>
+#include <QEventLoop>
 #include <QMenuBar>
 #include <QSignalMapper>
 #include <QTimer>
@@ -19,10 +20,12 @@
 #ifndef QT_NO_OPENGL
 #include "opengl2.h"
 #endif
+#include "../base/jsvr.h"
 #include "../base/state.h"
 #include "../base/term.h"
 
 extern bool standAlone;
+extern QEventLoop *evloop;
 
 // ---------------------------------------------------------------------
 Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
@@ -109,8 +112,11 @@ Form::~Form()
   }
 #endif
   if (Forms.isEmpty() && (!ShowIde)) {
-    state_quit();
-    QApplication::quit();
+    if (jdllproc) evloop->exit();
+    else {
+      state_quit();
+      QApplication::quit();
+    }
   }
 }
 
@@ -355,6 +361,7 @@ void Form::showit()
   show();
 
   shown=true;
+  if (jdllproc && 1==Forms.size()) evloop->exec(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------

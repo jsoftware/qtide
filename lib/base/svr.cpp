@@ -69,6 +69,8 @@ void Jcon::cmddo(QString s)
 int Jcon::exec()
 {
   QString s;
+  Q_UNUSED(s);
+  if (jdllproc) return 0;
 
   while(1) {
     cnt++;
@@ -95,14 +97,18 @@ int Jcon::init(int argc, char* argv[])
 
   evloop=new QEventLoop();
 
-  jepath(argv[0]);     // get path to JFE folder
+  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0]);     // get path to JFE folder
   jt=jeload(callbacks);
-  if(!jt) {
+  if(!jt && (void *)-1==jdlljt) {
     char m[1000];
     jefail(m), fputs(m,stdout);
     exit(1);
   }
 
+  if (jdllproc || (void *)-1!=jdlljt) {
+    *inputline=0;
+    return 0;
+  }
   adadbreak=(char**)jt; // first address in jt is address of breakdata
   signal(SIGINT,sigint);
 

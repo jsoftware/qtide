@@ -57,7 +57,6 @@ using namespace std;
 
 Config config;
 QString LibName;
-void *jdllproc=0;
 #ifndef QT_OS_ANDROID
 QApplication *app=0;
 #endif
@@ -447,13 +446,18 @@ int state_fini()
 // ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
-  if (jdllproc) return true;
-  state_init_args(&argc,argv);
-  config.ini0();
-  svr_init(argc,argv);
-  config.init();
-  dlog_init();
-  recent.init();
+
+  if (!jdllproc && (void*)-1==jdlljt) {
+    state_init_args(&argc,argv);
+    config.ini0();
+    svr_init(argc,argv);
+    config.init();
+    dlog_init();
+    recent.init();
+  } else {
+    state_init_args(&argc,argv);
+    if ((void*)-1!=jdlljt) svr_init(argc,argv);
+  }
   return true;
 }
 
@@ -488,12 +492,13 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc)
+int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
 {
 #ifndef QT_OS_ANDROID
   app = new QApplication(argc, argv);
 #endif
   jdllproc=jproc;
+  jdlljt=jt;
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
@@ -530,14 +535,14 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc)
   regQmlJE();
 #endif
 #endif
-  if (jdllproc) return 0;
+  if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
 #ifdef QT_OS_ANDROID
   if (AndroidPackage=="com.jsoftware.android.qtide")
     showide(true);
   else
     showide(false);
 #else
-  if ((!ShowIde) && Forms.isEmpty()) return 0;
+  if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
 #endif
   term->fini();
   return state_fini();
