@@ -51,7 +51,7 @@ void* jehjdll();
 
 char **adadbreak;
 char inputline[BUFLEN+1];
-J jt;
+J jt=0;
 
 static char path[PLEN];
 static char pathdll[PLEN];

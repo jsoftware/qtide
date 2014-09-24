@@ -47,6 +47,7 @@
 #include "../base/state.h"
 #include "../base/view.h"
 extern char* jegetlocale();
+extern QApplication *app;
 extern Term * term;
 extern "C" Dllexport void dirmatch(const char *s,const char *t);
 extern "C" Dllexport void openj(const char *s);
@@ -281,6 +282,7 @@ void wdactivateform()
     form->raise();
     form->repaint();
   } else if (0==Forms.size()) {
+    if (!term) return;
     showide(true);
     if (ShowIde) {
       term->activateWindow();
@@ -317,6 +319,10 @@ void wdcc()
 void wdclipcopy()
 {
   string p=cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
   wdclipwrite((char *)p.c_str());
 }
 
@@ -325,6 +331,10 @@ void wdclipcopyx()
 {
   string n=cmd.getid();
   string p=cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
   if ("image"==n) {
     if (wdclipwriteimage((char *)p.c_str()))
       error("clipboard or filename error: " + n + " " + p);
@@ -336,6 +346,10 @@ void wdclipcopyx()
 void wdclippaste()
 {
   string p=cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
   int len=-1;
   char *m;
   if ((m=(char *)wdclipread(&len))) {
@@ -354,6 +368,10 @@ void wdclippastex()
 {
   string n=cmd.getid();
   string p=cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
   char *m;
   if ("image"==n) {
     if (!(m=(char *)wdclipreadimage((char *)p.c_str())))
@@ -520,6 +538,10 @@ void wdgroupbox(string c)
 void wdide()
 {
   string p=cmd.getparms();
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   if (p=="hide")
     showide(false);
   else if (p=="show")
@@ -549,6 +571,10 @@ void wdmb()
 {
   string c=cmd.getid();
   string p=cmd.getparms(true);
+  if (!QApplication::focusWidget()) {
+    error("command failed: no QApplication::focusWidget()");
+    return;
+  }
   result=q2s(mb(c,p));
   if (1==rc)
     result="";
@@ -590,6 +616,10 @@ void wdmenu(string s)
 void wdmsgs()
 {
   cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
   QApplication::processEvents(QEventLoop::AllEvents);
 }
 
@@ -685,6 +715,10 @@ void wdpas()
 void wdpc()
 {
   string c,p;
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   string tlocale=jegetlocale();
   c=cmd.getid();
   p=cmd.getparms();
@@ -857,6 +891,10 @@ void wdqueries(string s)
     error("command not found");
     return;
   } else if (s=="qscreen") {
+    if (!app) {
+      error("command failed: no QApplication");
+      return;
+    }
     QDesktopWidget* dw=QApplication::desktop();
 #ifdef QT_OS_ANDROID
     android_getdisplaymetrics(0);
@@ -927,6 +965,10 @@ void wdqueries(string s)
 #endif
 #endif
   } else if (s=="qprinters") {
+    if (!app) {
+      error("command failed: no QApplication");
+      return;
+    }
     string q="";
 #ifndef QT_NO_PRINTER
     QPrinterInfo pd=QPrinterInfo::defaultPrinter();
@@ -1014,6 +1056,10 @@ void wdquickview1()
 {
   string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   int mode=1;
   if (n.size()==0) {
     if (quickview1) {
@@ -1053,6 +1099,10 @@ void wdquickview2()
 {
   string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   int mode=1;
   if (n.size()==0) {
     if (quickview2) {
@@ -1177,6 +1227,7 @@ void wdsm()
 {
   string c=cmd.getid();
   string p=cmd.getparms();
+  if (!term) return;
   if (c=="act")
     term->smact();
   else if (c=="prompt")
@@ -1187,6 +1238,7 @@ void wdsm()
 void wdsmact()
 {
   cmd.getparms();
+  if (!term) return;
   term->smact();
 }
 
@@ -1246,6 +1298,10 @@ void wdtimer()
 {
   string p=cmd.getparms();
   int n=atoi(p.c_str());
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   if (n)
     timer->start(n);
   else
@@ -1257,6 +1313,10 @@ void wdtimer()
 void wdws()
 {
   result=ws(cmd.getparms());
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
   if (1==rc)
     result="";
   else

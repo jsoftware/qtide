@@ -383,6 +383,7 @@ void openfile1(QString f)
 // ---------------------------------------------------------------------
 void openj(const char *s)
 {
+  if (!term) return;
   if (!ShowIde) return;
   QString f(s);
   f=f.trimmed();
@@ -527,6 +528,7 @@ void setnote(Note *n)
 // ---------------------------------------------------------------------
 void showide(bool b)
 {
+  if (!term) return;
   if (note2)
     note2->setVisible(b);
   if (note)

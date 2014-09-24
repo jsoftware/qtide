@@ -28,8 +28,8 @@ static int fkeys[]= {Qt::Key_F1,Qt::Key_F2,Qt::Key_F3,Qt::Key_F4,Qt::Key_F5,Qt::
 
 using namespace std;
 
-Term *term;
-Tedit *tedit;
+Term *term=0;
+Tedit *tedit=0;
 
 QString LastLaunch;
 QTime LastLaunchTime;
