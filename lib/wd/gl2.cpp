@@ -365,8 +365,10 @@ int glclear2(void *p)
 // ---------------------------------------------------------------------
 int glclear()
 {
-  if (FontExtent) delete FontExtent;
-  FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  if (FontExtent) {
+    delete FontExtent;
+    FontExtent=0;
+  }
   if (!form->isigraph) return 1;
   return glclear2(form->isigraph);
 }
