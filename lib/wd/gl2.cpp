@@ -12,6 +12,7 @@
 #define Max(a, b) ((a) < (b) ? (b) : (a))
 #endif
 
+#include <QApplication>
 #include "wd.h"
 #include "font.h"
 #include "gl2.h"
@@ -101,16 +102,8 @@ int glqhandles(void **p)
 int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
-//  if (!form->isigraph) return 1;
-//  Isigraph2 *w = (Isigraph2 *)form->isigraph->widget;
-//  if (!w->painter) return 1;
-//  QFontMetrics fm = QFontMetrics((w->font)->font);
-  QFont f;
-  if (fontextent.size())
-    f = QFont((char *)fontextent.c_str());
-  else
-    f = QFont();
-  QFontMetrics fm = QFontMetrics(f);
+  if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  QFontMetrics fm = QFontMetrics(FontExtent->font);
   *(wh) = fm.width(QString::fromUtf8(s));
   *(wh+1) = fm.height();
   return 0;
@@ -120,17 +113,9 @@ int glqextent(char *s,int *wh)
 int glqextentw(char *s,int *wi)
 {
   if (!s || !wi) return 1;
-//  if (!form->isigraph) return 1;
-//  Isigraph2 *w = (Isigraph2 *)form->isigraph->widget;
-//  if (!w->painter) return 1;
   QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
-//  QFontMetrics fm = QFontMetrics((w->font)->font);
-  QFont f;
-  if (fontextent.size())
-    f = QFont((char *)fontextent.c_str());
-  else
-    f = QFont();
-  QFontMetrics fm = QFontMetrics(f);
+  if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  QFontMetrics fm = QFontMetrics(FontExtent->font);
   for (int i=0; i<n.size(); i++) {
     wi[i] = fm.width(n.at(i));
   }
@@ -350,7 +335,9 @@ int glclear2(void *p)
   if (!w->painter) return 1;
   w->color = QColor(0, 0, 0);
 
-  string s=q2s(config.ProFont.family());
+  string s=q2s(QApplication::font().family());
+  if (s.find(' ') != std::string::npos) s="\"" + s + "\"";
+  s=s+" "+q2s(QString::number(QApplication::font().pointSizeF()));
   glfont0(isigraph,(char *)s.c_str());
 
   w->painter->translate(-w->orgx, -w->orgy);
@@ -378,7 +365,8 @@ int glclear2(void *p)
 // ---------------------------------------------------------------------
 int glclear()
 {
-  fontextent = q2s(config.ProFont.family());
+  if (FontExtent) delete FontExtent;
+  FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
   if (!form->isigraph) return 1;
   return glclear2(form->isigraph);
 }
@@ -497,7 +485,8 @@ int glfontangle(int a)
 // ---------------------------------------------------------------------
 int glfontextent(char *s)
 {
-  fontextent = string(s);
+  if (FontExtent) delete FontExtent;
+  FontExtent = new Font(string(s));
   return 0;
 }
 

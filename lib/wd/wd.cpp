@@ -1176,6 +1176,7 @@ void wdreset()
   form=0;
   evtform=0;
   fontdef=0;
+  if (FontExtent) delete FontExtent;
 }
 
 // ---------------------------------------------------------------------

@@ -151,10 +151,11 @@ void Config::init()
   ProjInit = false;
 
 #ifdef _WIN32
-  ProFont.setFamily("\"MS Sans Serif\" 10");
+  ProFont.setFamily("MS Sans Serif");
 #else
-  ProFont.setFamily("SansSerif 10");
+  ProFont.setFamily("SansSerif");
 #endif
+  ProFont.setPointSize(10);
 
 #ifndef QT_NO_PRINTER
   Printer=new QPrinter(QPrinter::HighResolution);

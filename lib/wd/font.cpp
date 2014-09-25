@@ -7,10 +7,10 @@
 #include "font.h"
 #include "../base/state.h"
 
-string fontextent;
+Font *FontExtent=0;
 
 // ---------------------------------------------------------------------
-Font::Font(string s)
+Font::Font(string s, float pointsize)
 {
   angle=0;
   if (s=="fixfont") {
@@ -58,6 +58,7 @@ Font::Font(string s)
     }
   }
 
+  if (-1.0!=pointsize) size=pointsize;
 //  qDebug() << "font: " + face + ",size=" + QString::number(size) + ",bold=" + QString::number(bold) + ",italic=" + QString::number(italic) + ",strikeout=" + QString::number(strikeout) + ",underline=" + QString::number(underline) + ",angle=" + QString::number(angle) ;
   font = QFont (face);
   if (0.0!=size) font.setPointSizeF((size>0.0)?size:-size);
