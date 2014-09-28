@@ -1234,11 +1234,9 @@ void wdsm(string s)
   else
     c=s;
   p=cmd.getparms();
-  if (!QApplication::focusWidget()) {
-    error("command failed: no QApplication::focusWidget()");
-    return;
-  }
-  result=q2s(sm(c,p));
+  result=sm(c,p);
+  if (rc==1)
+    error(result);
 }
 
 // ---------------------------------------------------------------------
