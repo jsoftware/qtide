@@ -264,7 +264,7 @@ SOURCES += \
  wd/isidraw.cpp wd/isigraph.cpp wd/isigraph2.cpp wd/isigrid.cpp \
  wd/layout.cpp wd/listbox.cpp wd/mb.cpp \
  wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/qtstate.cpp wd/radiobutton.cpp \
- wd/slider.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
+ wd/slider.cpp wd/sm.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \

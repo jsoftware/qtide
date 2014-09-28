@@ -13,6 +13,7 @@ extern "C" {
 void error(string s);
 string remquotes(string s);
 QString mb(string c,string p);
+QString sm(string c,string p);
 void wdactivateform();
 
 #endif

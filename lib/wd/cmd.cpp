@@ -325,7 +325,7 @@ string toLF(string s)
   int p=0;
   int t;
   string r;
-  while (string::npos != (t=(int)s.find("\r\n",p))) {
+  while ((int)string::npos != (t=(int)s.find("\r\n",p))) {
     r.append(s.substr(p,t-p));
     p=t+1;
   }

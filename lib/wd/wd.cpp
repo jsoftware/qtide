@@ -113,8 +113,7 @@ void wdreset();
 void wdset();
 void wdsetx(string);
 void wdset1(string n,string p,string v);
-void wdsm();
-void wdsmact();
+void wdsm(string);
 void wdsplit(string c);
 void wdstate(Form *,int);
 void wdtab(string);
@@ -245,10 +244,8 @@ void wd1()
       wdset();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
-    else if (c=="sm")
-      wdsm();
-    else if (c=="smact")
-      wdsmact();
+    else if (c.substr(0,2)=="sm")
+      wdsm(c);
     else if (c.substr(0,5)=="split")
       wdsplit(c);
     else if (c.substr(0,3)=="tab")
@@ -1227,23 +1224,21 @@ void wdset1(string n,string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void wdsm()
+void wdsm(string s)
 {
-  string c=cmd.getid();
-  string p=cmd.getparms();
-  if (!term) return;
-  if (c=="act")
-    term->smact();
-  else if (c=="prompt")
-    term->smprompt(s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void wdsmact()
-{
-  cmd.getparms();
-  if (!term) return;
-  term->smact();
+  string c,p;
+  if (s=="sm")
+    c=cmd.getid();
+  else if (s=="smact")
+    c="act";
+  else
+    c=s;
+  p=cmd.getparms();
+  if (!QApplication::focusWidget()) {
+    error("command failed: no QApplication::focusWidget()");
+    return;
+  }
+  result=q2s(sm(c,p));
 }
 
 // ---------------------------------------------------------------------
