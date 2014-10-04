@@ -54,6 +54,7 @@ TextView::TextView(QString t,QString c,QString s)
   }
   v->addWidget(ev);
   setLayout(v);
+  setWindowFlags(Qt::Window);
   setWindowTitle(t);
 #ifdef SMALL_SCREEN
   move(0,0);

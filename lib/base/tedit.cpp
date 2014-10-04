@@ -240,6 +240,15 @@ void Tedit::promptreplace(QString t)
 }
 
 // ---------------------------------------------------------------------
+// run all script
+// implemented as loadd ...
+void Tedit::runall(QString s)
+{
+  runshow=false;
+  var_run(var_load(s,true));
+}
+
+// ---------------------------------------------------------------------
 void Tedit::setprompt()
 {
   append(getprompt());

@@ -29,6 +29,7 @@ public slots:
   void docmdx(QString t);
   void itemActivated(QListWidgetItem *);
   void loadscript(QString s,bool show);
+  void runall(QString s);
 
 private slots:
 #ifdef QT_OS_ANDROID

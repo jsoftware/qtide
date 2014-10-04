@@ -1166,10 +1166,12 @@ void wdreset()
     quickview2=0;
   }
 #endif
+
   foreach (Form *f,Forms) {
     f->closed=true;
     f->close();
   }
+  Forms.clear();
   form=0;
   evtform=0;
   fontdef=0;

@@ -45,11 +45,13 @@ void Note::runlines(bool all)
   note->saveall();
   QString txt;
   Nedit *e = editPage();
-  if (all)
-    txt=e->toPlainText();
-  else
+  if (all) {
+    if (note->saveall())
+      tedit->runall(e->fname);
+  } else {
     txt=e->readselected();
-  tedit->docmds(txt, true);
+    tedit->docmds(txt, true);
+  }
 }
 
 // ---------------------------------------------------------------------
