@@ -529,19 +529,15 @@ void Menu::on_userAct_triggered()
   QString n=sender()->objectName();
   for (i=0; i<config.UserKeys.size(); i++)
     if (config.UserKeys[i][0]==n) break;
-  QString mode=config.UserKeys[i][1];
-  QString jcmd=config.UserKeys[i][3];
-  if (mode=="2")
-    tedit->append("   "+jcmd);
-  else
-    var_runs(jcmd,mode=="1");
+  int mode=config.UserKeys[i][1].toInt();
+  QString cmd=config.UserKeys[i][3];
+  userkey(mode,cmd);
 }
 
 // ---------------------------------------------------------------------
 void Note::on_cfgbaseAct_triggered()
 {
   term->on_cfgbaseAct_triggered();
-
 }
 
 // ---------------------------------------------------------------------
@@ -555,7 +551,6 @@ void Note::on_cfgfoldersAct_triggered()
 {
   term->on_cfgfoldersAct_triggered();
 }
-
 
 // ---------------------------------------------------------------------
 void Note::on_cfglaunchpadAct_triggered()

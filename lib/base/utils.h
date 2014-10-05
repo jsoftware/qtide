@@ -47,6 +47,7 @@ void setnote(Note *);
 void showide(bool);
 QString tofoldername(QString s);
 QString toprojectname(QString s);
+void userkey(int mode, QString cmd);
 void utils_init();
 QList<int> winpos_get(QWidget *w);
 void winpos_set(QWidget *w,QList<int>p);

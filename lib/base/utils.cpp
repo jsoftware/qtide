@@ -1,5 +1,7 @@
 /* utils - app specific utils */
 
+#include <QApplication>
+#include <QCompleter>
 #include <QCryptographicHash>
 #include <QDirIterator>
 #include <QEventLoop>
@@ -9,7 +11,7 @@
 #include <QWidget>
 #ifdef TABCOMPLETION
 #include <QStringListModel>
-#include <QCompleter>
+#include <QTextCursor>
 #endif
 
 #include "base.h"
@@ -29,6 +31,9 @@ extern "C" {
   Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
+
+Bedit *getactiveedit();
+void writewinstate(Bedit *);
 
 bool ShowIde=true;
 static string hashbuf;
@@ -121,6 +126,17 @@ QString fontspec(QFont font)
   if (font.strikeOut()) r+=" strikeout";
   if (font.underline()) r+=" underline";
   return r;
+}
+
+// ---------------------------------------------------------------------
+// if editor is active, return the note edit control,
+// otherwise return the term edit control
+Bedit * getactiveedit()
+{
+  QWidget *w=QApplication::focusWidget();
+  if (note && w==(QWidget *)note->editPage())
+    return (Bedit *)note->editPage();
+  return tedit;
 }
 
 // ---------------------------------------------------------------------
@@ -585,6 +601,71 @@ QString toprojectname(QString f)
 }
 
 // ---------------------------------------------------------------------
+void userkey(int mode, QString s)
+{
+  Bedit *w=getactiveedit();
+
+  if (mode==0 || mode==1) {
+    writewinstate(w);
+    var_runs(s,mode==1);
+    return;
+  }
+
+  if (mode==2) {
+    if (w==tedit) s=tedit->getprompt()+s;
+    w->appendPlainText(s);
+    return;
+  }
+
+  if (mode==4)
+    w->moveCursor(QTextCursor::EndOfBlock, QTextCursor::MoveAnchor);
+  w->textCursor().insertText(s);
+}
+
+// ---------------------------------------------------------------------
+// get window position
+// subject to minimum/maximum size and fit on screen
+QList<int> winpos_get(QWidget *s)
+{
+  QList<int> d;
+  QPoint p=s->pos();
+  QSize z=s->size();
+  int x=p.rx();
+  int y=p.ry();
+  int w=z.width();
+  int h=z.height();
+
+  w=qMax(100,qMin(w,config.ScreenWidth));
+  h=qMax(50,qMin(h,config.ScreenHeight));
+  x=qMax(0,qMin(x,config.ScreenWidth-w));
+  y=qMax(0,qMin(y,config.ScreenHeight-h));
+
+  d << x << y << w << h;
+  return d;
+}
+
+// ---------------------------------------------------------------------
+void winpos_set(QWidget *w,QList<int>p)
+{
+  if (p[0] >= 0)
+    w->move(p[0],p[1]);
+  w->resize(p[2],p[3]);
+}
+
+// ---------------------------------------------------------------------
+void writewinstate(Bedit *w)
+{
+  QTextCursor c=w->textCursor();
+  int b=c.selectionStart();
+  int e=c.selectionEnd();
+  QString t=w->toPlainText();
+  QString s=QString::number(b)+" "+QString::number(e);
+  sets("WinText_jqtide_",q2s(t));
+  sets("inputx_jrx_",q2s(s));
+  var_cmd("WinSelect_jqtide_=: 0 \". inputx_jrx_");
+}
+
+// ---------------------------------------------------------------------
 void xdiff(QString s,QString t)
 {
   if (config.XDiff.size()==0) {
@@ -595,22 +676,4 @@ void xdiff(QString s,QString t)
   a << s << t;
   QProcess p;
   p.startDetached(config.XDiff,a);
-}
-
-// ---------------------------------------------------------------------
-QList<int> winpos_get(QWidget *w)
-{
-  QList<int> d;
-  QPoint p=w->pos();
-  QSize z=w->size();
-  d << p.rx() << p.ry() << z.width() << z.height();
-  return d;
-}
-
-// ---------------------------------------------------------------------
-void winpos_set(QWidget *w,QList<int>p)
-{
-  if (p[0] >= 0)
-    w->move(p[0],p[1]);
-  w->resize(p[2],p[3]);
 }

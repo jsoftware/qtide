@@ -135,7 +135,7 @@ QString Note::editFile()
 // ---------------------------------------------------------------------
 Nedit *Note::editPage()
 {
-  return (Nedit *) tabs->currentWidget();
+  return (Nedit *)tabs->currentWidget();
 }
 
 // ---------------------------------------------------------------------
