@@ -30,6 +30,7 @@
 #include "menus.h"
 #include "qtstate.h"
 #include "tabs.h"
+#include "../base/jsvr.h"
 #ifdef QT_OS_ANDROID
 #include "../base/androidextras.h"
 #endif
