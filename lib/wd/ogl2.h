@@ -8,6 +8,7 @@ extern "C" {
   Dllexport int gl_capture (int a);
   Dllexport int gl_caret (const int *p);
   Dllexport int gl_clear ();
+  Dllexport int gl_clear2 (void *,int);
   Dllexport int gl_clip (const int *);
   Dllexport int gl_clipreset ();
   Dllexport int gl_cmds (const int *, const int);
@@ -17,6 +18,7 @@ extern "C" {
   Dllexport int gl_font (char *face);
   Dllexport int gl_font2 (const int *p, int len);
   Dllexport int gl_fontangle (int a);
+  Dllexport int gl_fontextent (char *face);
   Dllexport int gl_lines (const int *p, int len);
   Dllexport int gl_nodblbuf (int a);
   Dllexport int gl_paint ();
@@ -39,13 +41,12 @@ extern "C" {
   Dllexport int gl_rgba (const int *p);
   Dllexport int gl_sel (void *g);
   Dllexport int gl_sel2 (char *id);
+  Dllexport int gl_setlocale (char *loc);
   Dllexport int gl_text (char *ys);
   Dllexport int gl_textcolor ();
   Dllexport int gl_textxy (const int *p);
   Dllexport int gl_windoworg (const int *p);
 
-  Dllexport int gl_clear2 (void *);
-  Dllexport int gl_setlocale (char *loc);
   Dllexport int gl_updategl(void *g);
 }
 

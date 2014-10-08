@@ -9,18 +9,17 @@
 #include "pane.h"
 
 extern Child *isigraph;
+extern "C" int glclear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
 Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 {
   Q_UNUSED(parent);
   pchild = c;
-  orgx=0;
-  orgy=0;
   painter=0;
+  font=0;
   pixmap=0;
-  font=new Font("profont");
-  fontheight=(QFontMetrics(font->font)).height();
+  glclear2(this,0);
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

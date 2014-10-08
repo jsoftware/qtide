@@ -36,8 +36,6 @@ public:
   QPainter *painter;
   QPainterPath path;
 
-  int fontheight;
-
   bool antialiased;
   bool ifpixmap;
   bool transformed;

@@ -33,6 +33,12 @@
 #include "term.h"
 #include "../high/high.h"
 #include "../wd/form.h"
+#include "../wd/drawobj.h"
+Drawobj *drawobj;
+#ifndef QT_NO_PRINTER
+#include "../wd/prtobj.h"
+Prtobj *prtobj;
+#endif
 
 #ifdef QT_OS_ANDROID
 #include <jni.h>
@@ -155,8 +161,11 @@ void Config::init()
 #endif
   ProFont.setPointSize(10);
 
+  drawobj=new Drawobj();
+
 #ifndef QT_NO_PRINTER
   Printer=new QPrinter(QPrinter::HighResolution);
+  prtobj=new Prtobj();
 #endif
 
   Lang = "J";

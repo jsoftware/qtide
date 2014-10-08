@@ -6,6 +6,8 @@
 #include "form.h"
 #include "pane.h"
 
+extern "C" int gl_clear2 (void *p,int clear);
+
 // ---------------------------------------------------------------------
 Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(format)
 {
@@ -13,7 +15,8 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   pchild = c;
   initialized = false;
   painter=0;
-  fontheight=0;
+  font=0;
+  gl_clear2(this,0);
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);

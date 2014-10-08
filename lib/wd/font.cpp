@@ -17,7 +17,7 @@ Font::Font(string s, float pointsize)
     font=config.Font;
     return;
   } else if (s=="profont") {
-    font=QApplication::font();
+    font=QFont("Helvetica");
     return;
   }
   QString face, sizestyle;

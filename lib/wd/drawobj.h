@@ -1,17 +1,17 @@
-#ifndef PRTOBJ_H
-#define PRTOBJ_H
+#ifndef DRAWOBJ_H
+#define DRAWOBJ_H
 
 #include <QPainter>
 
 #include "font.h"
 
 // ---------------------------------------------------------------------
-class Prtobj
+class Drawobj
 {
 
 public:
-  Prtobj();
-  ~Prtobj();
+  Drawobj();
+  ~Drawobj();
 
   QBrush brush;
   Font *font;
@@ -23,13 +23,24 @@ public:
   QColor textcolor;
 
   QPainter *painter;
+  QPixmap *pixmap;
 
   bool antialiased;
   bool transformed;
-  bool initialized;
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
+
+  int height();
+  int width();
+  void fill(const int *p);
+  QPixmap getpixmap();
+  void resize(int w, int h);
+  void freepixmap();
+
+private:
+  int m_height;
+  int m_width;
 
 };
 

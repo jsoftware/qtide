@@ -35,8 +35,6 @@ public:
 
   QPainter *painter;
 
-  int fontheight;
-
   bool antialiased;
   bool transformed;
 

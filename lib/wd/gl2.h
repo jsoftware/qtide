@@ -8,6 +8,7 @@ extern "C" {
   Dllexport int glcapture (int a);
   Dllexport int glcaret (const int *p);
   Dllexport int glclear ();
+  Dllexport int glclear2 (void *,int);
   Dllexport int glclip (const int *);
   Dllexport int glclipreset ();
   Dllexport int glcmds (const int *, const int);
@@ -40,11 +41,12 @@ extern "C" {
   Dllexport int glrgba (const int *p);
   Dllexport int glsel (void *g);
   Dllexport int glsel2 (char *id);
+  Dllexport int glsetlocale (char *loc);
   Dllexport int gltext (char *ys);
   Dllexport int gltextcolor ();
   Dllexport int gltextxy (const int *p);
   Dllexport int glwindoworg (const int *p);
-  Dllexport int glsetlocale (char *loc);
+
 }
 
 #endif

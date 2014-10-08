@@ -223,7 +223,7 @@ HEADERS += \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
- wd/qwidget.h wd/scrollarea.h
+ wd/qwidget.h wd/scrollarea.h wd/gl2class.h wd/drawobj.h  wd/glc.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
@@ -269,7 +269,7 @@ SOURCES += \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
- wd/qwidget.cpp wd/scrollarea.cpp
+ wd/qwidget.cpp wd/scrollarea.cpp wd/drawobj.cpp wd/glc.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp

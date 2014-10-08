@@ -1313,11 +1313,12 @@ void wdtimer()
 // ---------------------------------------------------------------------
 void wdws()
 {
-  result=ws(cmd.getparms());
+  string p=cmd.getparms();
   if (!jt) {
     error("command failed: no interpreter");
     return;
   }
+  result=ws(p);
   if (1==rc)
     result="";
   else

@@ -1,15 +1,15 @@
 
 #include "prtobj.h"
 
-extern "C" int glzclear2 (void *p);
+extern "C" int glzclear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
 Prtobj::Prtobj()
 {
-  painter=0;
-  fontheight=0;
   initialized=false;
-  glzclear2 (this);
+  painter=0;
+  font=0;
+  glzclear2 (this,0);
 }
 
 // ---------------------------------------------------------------------
@@ -20,4 +20,3 @@ Prtobj::~Prtobj()
     delete painter;
   }
 }
-
