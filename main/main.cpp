@@ -3,6 +3,7 @@
 #include <QSysInfo>
 #include <QFile>
 #include <QFont>
+#include <QLibrary>
 
 using namespace std;
 
@@ -10,12 +11,8 @@ using namespace std;
 #include <jni.h>
 extern "C" int state_run (int,char **,char *,bool,void *,void *);
 extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
-
 #else
-#include <QLibrary>
-
 typedef int (*Run)(int,char **,char *,bool,void *,void *);
-
 extern "C" char * jepath1(char* arg);
 #endif
 
@@ -29,16 +26,12 @@ int main(int argc, char *argv[])
   }
 #endif
 #ifdef QT_OS_ANDROID
-  QApplication app(argc, argv);
+  char path[1]= {'\0'};
 #else
   char *path=jepath1(argv[0]);     // get path to JFE folder
 #endif
 
   bool fhs = false;
-#ifdef QT_OS_ANDROID
-  fhs = true;
-  return state_run(argc, argv, QCoreApplication::applicationFilePath().toUtf8().data(),fhs,0,(void *)-1);
-#else
 #ifdef _WIN32
   QString s= QString::fromUtf8(path)+ "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
@@ -59,14 +52,19 @@ int main(int argc, char *argv[])
 #endif
     fhs = true;
   }
-#endif
+#ifdef QT_OS_ANDROID
+  return state_run(argc, argv, s.toUtf8().data(),fhs,0,(void *)-1);
+#else
   QLibrary *lib=new QLibrary(s);
   Run state_run=(Run) lib->resolve("state_run");
   if (state_run)
     return state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1);
+#endif
 
+#ifndef QT_OS_ANDROID
   qDebug() << lib->fileName();
   qDebug() << "could not resolve: state_run:\n\n" + lib->errorString();
+#endif
 
   return -1;
 #endif

@@ -57,9 +57,7 @@ using namespace std;
 
 Config config;
 QString LibName;
-#ifndef QT_OS_ANDROID
 QApplication *app=0;
-#endif
 
 // ---------------------------------------------------------------------
 // copy over configs if necessary
@@ -494,15 +492,14 @@ void state_reinit() {}
 // ---------------------------------------------------------------------
 int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
 {
-#ifndef QT_OS_ANDROID
   app = new QApplication(argc, argv);
-#endif
   jdllproc=jproc;
   jdlljt=jt;
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
 #ifdef QT_OS_ANDROID
+  LibName=QCoreApplication::applicationFilePath();
 // assume LibName is in the following formats
 //      /data/data/com.jsoftware.android.qtide/lib/libjqt.so
 //  4.3 /data/app-lib/com.jsoftware.android.qtide-1/libjqt.so
