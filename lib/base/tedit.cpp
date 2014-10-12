@@ -42,13 +42,11 @@ void Tedit::append(QString s)
 // append smoutput if called from jedo
 void Tedit::append_smoutput(QString s)
 {
-  moveCursor(QTextCursor::End);
-  QTextCursor c = textCursor();
-  if (c.block().text().trimmed().isEmpty()) {
-    c.select(QTextCursor::BlockUnderCursor);
-    c.removeSelectedText();
-  }
-  appendPlainText(s + "\n" + getprompt());
+  removeprompt();
+  if (s.size())
+    appendPlainText(s + "\n" + getprompt());
+  else
+    appendPlainText(getprompt());
 }
 
 #ifdef QT_OS_ANDROID
@@ -237,6 +235,17 @@ void Tedit::promptreplace(QString t)
   textCursor().removeSelectedText();
   append(t);
   moveCursor(QTextCursor::End);
+}
+
+// ---------------------------------------------------------------------
+void Tedit::removeprompt()
+{
+  moveCursor(QTextCursor::End);
+  QTextCursor c = textCursor();
+  if (c.block().text().trimmed().isEmpty()) {
+    c.select(QTextCursor::BlockUnderCursor);
+    c.removeSelectedText();
+  }
 }
 
 // ---------------------------------------------------------------------

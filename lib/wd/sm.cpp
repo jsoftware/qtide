@@ -11,6 +11,7 @@
 extern int rc;
 
 string smerror(string);
+string smfocus(string);
 string smget(string);
 string smgetactive();
 string smgetwin(string);
@@ -27,6 +28,8 @@ string smsetxywh(QWidget *,QStringList);
 string sm(string c,string p)
 {
   rc=0;
+  if (c=="focus")
+    return smfocus(p);
   if (c=="get")
     return smget(p);
   if (c=="set")
@@ -45,6 +48,24 @@ string smerror(string p)
 {
   rc=1;
   return p;
+}
+
+// ---------------------------------------------------------------------
+string smfocus(string p)
+{
+  if (p.size()==0)
+    return smerror("sm focus needs additional parameters");
+  if (p=="term")
+    term->smact();
+  else if (p=="edit") {
+    if (note==0 || note->editIndex()==-1)
+      return smerror("No active edit window");
+    note->activateWindow();
+    note->raise();
+    note->repaint();
+  } else
+    return smerror("unrecognized sm command: focus " + p);
+  return "";
 }
 
 // ---------------------------------------------------------------------

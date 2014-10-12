@@ -48,6 +48,7 @@ public:
   void pacman();
   void projectenable();
   void refresh();
+  void removeprompt();
   void runlines();
   void smact();
   void smprompt(QString s);

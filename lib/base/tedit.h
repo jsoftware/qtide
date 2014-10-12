@@ -15,6 +15,7 @@ public:
   void append_smoutput(QString s);
   QString getprompt();
   void insert(QString s);
+  void removeprompt();
   void setprompt();
   void setresized(int);
   void promptreplace(QString t);

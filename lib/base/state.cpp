@@ -196,7 +196,6 @@ void Config::init()
     Ascii=!Ascii;
   }
 
-
   term->cleantemp();
 
 }
@@ -597,6 +596,7 @@ void var_set(QString s, QString t)
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
+  term->removeprompt();
   sets("inputx_jrx_",string(s));
   jcon->immex("0!:100 inputx_jrx_");
 }

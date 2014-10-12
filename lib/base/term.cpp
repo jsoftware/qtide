@@ -271,6 +271,12 @@ void Term::refresh()
 }
 
 // ---------------------------------------------------------------------
+void Term::removeprompt()
+{
+  tedit->removeprompt();
+}
+
+// ---------------------------------------------------------------------
 void Term::resizeEvent(QResizeEvent *event)
 {
   tedit->setresized(0);
