@@ -312,7 +312,6 @@ int glqhandles(void **p)
   if (!form) return 1;
   *p = (void *)form->QTwidget;
 #ifdef _WIN32
-  QTWidget2 *w = (QTWidget2 *)form->QTwidget->widget;
 #ifndef QT50
   if (w) *(p+1) = (void *)w->getDC();
 #else
