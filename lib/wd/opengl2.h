@@ -1,7 +1,11 @@
 #ifndef OPENGL2_H
 #define OPENGL2_H
 
+#ifdef QT54
+#include <QOpenGLWidget>
+#else
 #include <QGLWidget>
+#endif
 //#include <QEvent>
 #include <QPainter>
 
@@ -12,12 +16,20 @@ class Form;
 class Pane;
 
 // ---------------------------------------------------------------------
+#ifdef QT54
+class Opengl2 : public QOpenGLWidget
+#else
 class Opengl2 : public QGLWidget
+#endif
 {
   Q_OBJECT
 
 public:
+#ifdef QT54
+  Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent);
+#else
   Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
+#endif
   ~Opengl2();
 
   void fill(const int *);

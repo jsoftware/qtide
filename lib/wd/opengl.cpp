@@ -11,8 +11,12 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type = "opengl";
 
   QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+#ifdef QT54
+  QSurfaceFormat qglFormat;
+#else
   QGLFormat qglFormat;
   qglFormat.setSampleBuffers(true);
+#endif
 #ifdef QT47
   int l=m.indexOf("version");
   if ((l!=-1) && (l<m.size()-1) && 0!=m.at(l+1).toDouble()) {
@@ -29,8 +33,13 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 //    qDebug() << QString::number(ver1) << QString::number(ver2);
     qglFormat.setVersion(ver1,ver2);
   }
+#ifdef QT54
+  if (m.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+  else qglFormat.setProfile(QSurfaceFormat::CoreProfile);
+#else
   if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
+#endif
 #endif
   Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;

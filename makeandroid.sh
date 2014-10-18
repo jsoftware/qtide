@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # QM=qmake
-QM=$HOME/Qt/5.3.0/5.3/android_armv5/bin/qmake
+QM=$HOME/Qt/5.4-android/5.4/android_armv5/bin/qmake
 LIBS=$ANDROID_TARGET_ARCH
 
 S=$(dirname "$0")
