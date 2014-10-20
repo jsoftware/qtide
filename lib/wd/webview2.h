@@ -1,19 +1,20 @@
-#ifndef WEBENGINE_H
-#define WEBENGINE_H
+#ifndef WEBVIEW2_H
+#define WEBVIEW2_H
 
 #include <QUrl>
 #include "child.h"
 
 class Form;
 class Pane;
+class Webengineview;
 
 // ---------------------------------------------------------------------
-class Webengine : public Child
+class Webview2 : public Child
 {
   Q_OBJECT
 
 public:
-  Webengine(string n, string s, Form *f, Pane *p);
+  Webview2(string n, string s, Form *f, Pane *p);
   void set(string p,string v);
   string state();
 

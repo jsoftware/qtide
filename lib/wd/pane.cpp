@@ -50,7 +50,7 @@
 #include "webview.h"
 #endif
 #ifndef QT_NO_WEBENGINE
-#include "webengine.h"
+#include "webview2.h"
 #endif
 
 extern Font *fontdef;
@@ -142,8 +142,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Webview(n,p,pform,this);
 #endif
 #ifndef QT_NO_WEBENGINE
-  else if (c=="webengine")
-    child=(Child *) new Webengine(n,p,pform,this);
+  else if (c=="webview2")
+    child=(Child *) new Webview2(n,p,pform,this);
 #endif
   else {
     sizew=sizeh=0;

@@ -1,25 +1,35 @@
 
-#include <QApplication>
-#include <QPainter>
-#include <QtGui/qmatrix4x4.h>
+#if defined(WEBKITVIEW)
 
-#include "isigraph.h"
-#include "isigraph2.h"
+#ifdef QT50
+#include <QtWebKitWidgets>
+#else
+#include <QtWebKit>
+#endif
+#include "webkitview.h"
+
+#define QTWEBVIEW QWebView
+#define QWEBVIEW Webkitview
+#define WEBVIEW Webview
+
+#elif defined(WEBENGINEVIEW)
+
+#include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include "webengineview.h"
+
+#define QTWEBVIEW QWebEngineView
+#define QWEBVIEW Webengineview
+#define WEBVIEW Webview2
+
+#endif
+
 #include "form.h"
-#include "pane.h"
-
-extern Child *isigraph;
-extern "C" int glclear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
-Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
+QWEBVIEW::QWEBVIEW(Child *c, QWidget *parent) : QTWEBVIEW()
 {
   Q_UNUSED(parent);
   pchild = c;
-  painter=0;
-  font=0;
-  pixmap=0;
-  glclear2(this,0);
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -28,98 +38,8 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::fill(const int *p)
+void QWEBVIEW::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  QColor c(*(p), *(p + 1), *(p + 2));
-  if (pixmap)
-    pixmap->fill(c);
-  else
-    painter->fillRect(0,0,width(),height(),c);
-}
-
-// ---------------------------------------------------------------------
-QPixmap Isigraph2::getpixmap()
-{
-  QPixmap m;
-  if (pixmap)
-    return pixmap->copy(0,0,width(),height());
-  if (painter) return m;
-  QPixmap p(size());
-  render(&p);
-  return p;
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::paintEvent(QPaintEvent *event)
-{
-  Q_UNUSED(event);
-  if (type=="isidraw")
-    paintEvent_isidraw();
-  else
-    paintEvent_isigraph();
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::paintEvent_isidraw()
-{
-  if (!pixmap) return;
-  QPainter p(this);
-  p.drawPixmap(0,0,*pixmap,0,0,width(),height());
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::paintEvent_isigraph()
-{
-  if (painter) return;
-  form=pchild->pform;
-  form->isigraph=(Child *) this;
-  painter=new QPainter(this);
-  painter->setRenderHint(QPainter::Antialiasing, true);
-  pchild->event="paint";
-  pchild->pform->signalevent(pchild);
-  paintend();
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::paintend()
-{
-  if (painter) {
-    painter->end();
-    delete painter;
-    painter=0;
-  }
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::resizeEvent(QResizeEvent *event)
-{
-  if (type=="isigraph") return;
-  QSize s=event->size();
-  int w=s.width();
-  int h=s.height();
-  if (pixmap) {
-    if (w > pixmap->width() || h > pixmap->height()) {
-      if (painter) delete painter;
-      QPixmap *p=new QPixmap(w+128,h+128);
-      painter=new QPainter(p);
-      painter->drawPixmap(QPoint(0,0),*pixmap);
-      delete pixmap;
-      pixmap=p;
-    }
-  } else {
-    pixmap=new QPixmap(w,h);
-    painter=new QPainter(pixmap);
-  }
-  painter->setRenderHint(QPainter::Antialiasing, true);
-  pchild->event="resize";
-  pchild->pform->signalevent(pchild);
-}
-
-// ---------------------------------------------------------------------
-void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
-{
-  pchild->pform->isigraph=pchild;
-
   string lmr = "";
   switch (event->button()) {
   case Qt::LeftButton:
@@ -167,10 +87,8 @@ void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::wheelEvent(QWheelEvent *event)
+void QWEBVIEW::wheelEvent(QWheelEvent *event)
 {
-  pchild->pform->isigraph=pchild;
-
   char deltasign = ' ';
   int delta = event->delta() / 8;  // degree
   if (delta<0) {
@@ -189,54 +107,61 @@ void Isigraph2::wheelEvent(QWheelEvent *event)
   pchild->sysmodifiers=string(sysmodifiers);
   pchild->sysdata=string(sysdata);
   pchild->pform->signalevent(pchild);
+  QTWEBVIEW::wheelEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::mousePressEvent(QMouseEvent *event)
+void QWEBVIEW::mousePressEvent(QMouseEvent *event)
 {
   buttonEvent(QEvent::MouseButtonPress, event);
+  QTWEBVIEW::mousePressEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::mouseMoveEvent(QMouseEvent *event)
+void QWEBVIEW::mouseMoveEvent(QMouseEvent *event)
 {
   buttonEvent(QEvent::MouseMove, event);
+  QTWEBVIEW::mouseMoveEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::mouseDoubleClickEvent(QMouseEvent *event)
+void QWEBVIEW::mouseDoubleClickEvent(QMouseEvent *event)
 {
   buttonEvent(QEvent::MouseButtonDblClick, event);
+  QTWEBVIEW::mouseDoubleClickEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::mouseReleaseEvent(QMouseEvent *event)
+void QWEBVIEW::mouseReleaseEvent(QMouseEvent *event)
 {
   buttonEvent(QEvent::MouseButtonRelease, event);
+  QTWEBVIEW::mouseReleaseEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::focusInEvent(QFocusEvent *event)
+void QWEBVIEW::focusInEvent(QFocusEvent *event)
 {
   Q_UNUSED(event);
   pchild->event="focus";
   pchild->sysmodifiers="";
   pchild->sysdata="";
   pchild->pform->signalevent(pchild);
+  QTWEBVIEW::focusInEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::focusOutEvent(QFocusEvent *event)
+void QWEBVIEW::focusOutEvent(QFocusEvent *event)
 {
   Q_UNUSED(event);
   pchild->event="focuslost";
   pchild->sysmodifiers="";
   pchild->sysdata="";
   pchild->pform->signalevent(pchild);
+  QTWEBVIEW::focusOutEvent(event);
 }
 
 // ---------------------------------------------------------------------
-void Isigraph2::keyPressEvent(QKeyEvent *event)
+void QWEBVIEW::keyPressEvent(QKeyEvent *event)
 {
   // sysmodifiers = shift+2*control
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,0
@@ -265,15 +190,5 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
   pchild->sysmodifiers=string(sysmodifiers);
   pchild->sysdata=string(sysdata);
   pchild->pform->signalevent(pchild);
-  QWidget::keyPressEvent(event);
-}
-
-// ---------------------------------------------------------------------
-Isigraph2::~Isigraph2()
-{
-  if (pchild==pchild->pform->isigraph) {
-    pchild->pform->isigraph=0;
-    if (painter) delete painter;
-    if (pixmap) delete pixmap;
-  }
+  QTWEBVIEW::keyPressEvent(event);
 }

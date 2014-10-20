@@ -232,12 +232,12 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webengine.h wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
- wd/qwidget.h wd/scrollarea.h wd/gl2class.h wd/drawobj.h  wd/glc.h
+ wd/webview.h wd/webview2.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
+ wd/qwidget.h wd/scrollarea.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-!contains(QT,webkit): HEADERS -= wd/webview.h
-!contains(QT,webengine): HEADERS -= wd/webengine.h
+!contains(QT,webkit): HEADERS -= wd/webview.h wd/webkitview.h
+!contains(QT,webengine): HEADERS -= wd/webview2.h wd/webengineview.h
 contains(DEFINES,QT50) {
   !contains(QT,quick): HEADERS -= wd/quickview2.h
   !contains(QT,declarative): HEADERS -= wd/quickview1.h
@@ -279,12 +279,12 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/webengine.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
+ wd/webview.cpp wd/webview2.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/drawobj.cpp wd/glc.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
-!contains(QT,webkit): SOURCES -= wd/webview.cpp
-!contains(QT,webengine): SOURCES -= wd/webengine.cpp
+!contains(QT,webkit): SOURCES -= wd/webview.cpp wd/webkitview.cpp
+!contains(QT,webengine): SOURCES -= wd/webview2.cpp wd/webengineview.cpp
 contains(DEFINES,QT50) {
   !contains(QT,quick): SOURCES -= wd/quickview2.cpp
   !contains(QT,declarative): SOURCES -= wd/quickview1.cpp

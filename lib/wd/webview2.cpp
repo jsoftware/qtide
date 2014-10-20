@@ -1,2 +1,2 @@
-#define WEBKITVIEW
+#define WEBENGINEVIEW
 #include "webviewclass.h"

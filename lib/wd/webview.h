@@ -6,6 +6,7 @@
 
 class Form;
 class Pane;
+class Webkitview;
 
 // ---------------------------------------------------------------------
 class Webview : public Child

@@ -53,7 +53,6 @@ protected:
   void focusInEvent(QFocusEvent *event);
   void focusOutEvent(QFocusEvent *event);
   void keyPressEvent(QKeyEvent *event);
-  void mouseWheelEvent(QWheelEvent *event);
 
 private slots:
 

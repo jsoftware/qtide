@@ -1,18 +1,44 @@
 
+#if defined(WEBKITVIEW)
+
+#ifdef QT50
+#include <QtWebKitWidgets>
+#else
+#include <QtWebKit>
+#endif
+#include "webview.h"
+#include "webkitview.h"
+
+#define QWEBVIEW Webkitview
+#define WEBVIEW Webview
+
+#elif defined(WEBENGINEVIEW)
+
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include "webview2.h"
+#include "webengineview.h"
+
+#define QWEBVIEW Webengineview
+#define WEBVIEW Webview2
+
+#endif
+
 #include <QDir>
 
 #include "wd.h"
-#include "webengine.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-Webengine::Webengine(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+WEBVIEW::WEBVIEW(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="webengine";
-  QWebEngineView *w=new QWebEngineView;
+#if defined(WEBKITVIEW)
+  type="webview";
+#else
+  type="webview2";
+#endif
+  QWEBVIEW *w=new QWEBVIEW(this, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
@@ -21,9 +47,9 @@ Webengine::Webengine(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Webengine::set(string p,string v)
+void WEBVIEW::set(string p,string v)
 {
-  QWebEngineView *w = (QWebEngineView *)widget;
+  QWEBVIEW *w = (QWEBVIEW *)widget;
   if (p=="baseurl") {
     QString t = s2q(v);
 #if defined(_WIN32) && !defined(QT50)
@@ -43,7 +69,7 @@ void Webengine::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Webengine::urlChanged(const QUrl & url)
+void WEBVIEW::urlChanged(const QUrl & url)
 {
   curl=url.toString();
   event="curl";
@@ -51,7 +77,7 @@ void Webengine::urlChanged(const QUrl & url)
 }
 
 // ---------------------------------------------------------------------
-string Webengine::state()
+string WEBVIEW::state()
 {
   return spair(id+"_curl",q2s(curl));
 }
