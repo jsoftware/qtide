@@ -21,10 +21,10 @@ protected:
   void focusInEvent(QFocusEvent *event);
   void focusOutEvent(QFocusEvent *event);
   void keyPressEvent(QKeyEvent *event);
+  void wheelEvent(QWheelEvent *event);
 
 private:
   void buttonEvent(QEvent::Type type, QMouseEvent *event);
-  void wheelEvent(QWheelEvent *event);
   Child *pchild;
 
 };
