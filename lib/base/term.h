@@ -159,6 +159,7 @@ public slots:
   void on_viewsidebarAct_triggered();
 
 private:
+  void changeEvent(QEvent *e);
   void keyPressEvent(QKeyEvent *e);
   void resizeEvent(QResizeEvent *event);
   void closeEvent(QCloseEvent *event);

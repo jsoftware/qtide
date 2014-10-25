@@ -218,6 +218,19 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
   return rc;
 }
 
+// --------------------------------------// ---------------------------------------------------------------------
+// get parent for message box
+QWidget *getmbparent()
+{
+  QWidget *w;
+  w=QApplication::focusWidget();
+  if (!w)
+    w=QApplication::activeWindow();
+  if (!w)
+    w=getactivewindow();
+  return w;
+}
+
 // ---------------------------------------------------------------------
 QString getsha1(QString s)
 {

@@ -73,6 +73,7 @@ Note::Note()
 // ---------------------------------------------------------------------
 Note::~Note()
 {
+  delactivewindow(this);
   if (this==note2)
     note2=0;
   else {
@@ -98,6 +99,7 @@ void Note::changeEvent(QEvent *event)
 {
   if (NoEvents) return;
   if (event->type()==QEvent::ActivationChange && isActiveWindow())  {
+    setactivewindow(this);
     setnote(this);
     projectenable();
     QWidget::changeEvent(event);

@@ -5,6 +5,7 @@
 #include "cmd.h"
 #include "../base/bedit.h"
 #include "../base/note.h"
+#include "../base/state.h"
 #include "../base/tedit.h"
 #include "../base/term.h"
 
@@ -86,9 +87,8 @@ string smget(string p)
 string smgetactive()
 {
   rc=-1;
-  QWidget *w=QApplication::focusWidget();
-  bool ifnote=note && w==(QWidget *)note->editPage();
-  return ifnote ? "edit" : "term";
+  return (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
+         ? "edit" : "term";
 }
 
 // ---------------------------------------------------------------------

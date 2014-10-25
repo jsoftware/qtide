@@ -128,6 +128,14 @@ void Term::activate()
 }
 
 // ---------------------------------------------------------------------
+void Term::changeEvent(QEvent *event)
+{
+  if (event->type()==QEvent::ActivationChange && isActiveWindow())
+    setactivewindow(this);
+  QWidget::changeEvent(event);
+}
+
+// ---------------------------------------------------------------------
 void Term::cleantemp()
 {
   QRegExp re("\\d*");

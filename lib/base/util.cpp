@@ -21,7 +21,7 @@ int NoEvents=0;
 // ---------------------------------------------------------------------
 void about(QString t,QString s)
 {
-  QMessageBox::about(QApplication::focusWidget(), t, s);
+  QMessageBox::about(getmbparent(), t, s);
 }
 
 // ---------------------------------------------------------------------
@@ -429,9 +429,9 @@ bool ifshift()
 void info(QString t,QString s)
 {
 #ifdef QT_OS_ANDROID
-  QMessageBox::about(QApplication::focusWidget(), t, s);
+  QMessageBox::about(getmbparent(), t, s);
 #else
-  QMessageBox::information(QApplication::focusWidget(), t, s);
+  QMessageBox::information(getmbparent(), t, s);
 #endif
 }
 
@@ -588,7 +588,7 @@ string p2s(const void *p)
 // 0=cancel, 1=no, 2=yes
 int queryCNY(QString t,QString s)
 {
-  int r=QMessageBox::question(QApplication::focusWidget(),t,s,QMessageBox::Cancel|QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
+  int r=QMessageBox::question(getmbparent(),t,s,QMessageBox::Cancel|QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
 
   return (r==QMessageBox::Cancel) ? 0 : ((r==QMessageBox::No) ? 1 : 2);
 }
@@ -596,21 +596,21 @@ int queryCNY(QString t,QString s)
 // ---------------------------------------------------------------------
 bool queryNY(QString t,QString s)
 {
-  int r=QMessageBox::question(QApplication::focusWidget(),t,s,QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
+  int r=QMessageBox::question(getmbparent(),t,s,QMessageBox::No|QMessageBox::Yes,QMessageBox::Yes);
   return r==QMessageBox::Yes;
 }
 
 // ---------------------------------------------------------------------
 bool queryOK(QString t,QString s)
 {
-  int r=QMessageBox::question(QApplication::focusWidget(),t,s,QMessageBox::Cancel|QMessageBox::Ok,QMessageBox::Ok);
+  int r=QMessageBox::question(getmbparent(),t,s,QMessageBox::Cancel|QMessageBox::Ok,QMessageBox::Ok);
   return r==QMessageBox::Ok;
 }
 
 // ---------------------------------------------------------------------
 bool queryRETRY(QString t,QString s)
 {
-  int r=QMessageBox::question(QApplication::focusWidget(),t,s,QMessageBox::Cancel|QMessageBox::Retry,QMessageBox::Retry);
+  int r=QMessageBox::question(getmbparent(),t,s,QMessageBox::Cancel|QMessageBox::Retry,QMessageBox::Retry);
   return r==QMessageBox::Retry;
 }
 

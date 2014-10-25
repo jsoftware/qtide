@@ -46,27 +46,27 @@
 #include "../base/state.h"
 
 QString mb(string,string);
-static QString mbabout();
-static QString mbcolor();
-static QString mbdir();
-static QString mbfont();
-static QString mbinput();
-static QString mbmsg();
-static QString mbopen();
-static QString mbopen1();
-static QString mbprint(bool);
-static QString mbprintx(bool);
-static QString mbsave();
+QString mbabout();
+QString mbcolor();
+QString mbdir();
+QString mbfont();
+QString mbinput();
+QString mbmsg();
+QString mbopen();
+QString mbopen1();
+QString mbprint(bool);
+QString mbprintx(bool);
+QString mbsave();
 
-static QString fixsep(QString s);
+QString fixsep(QString s);
+
+QMessageBox::StandardButton getdefaultbutton();
+QMessageBox::StandardButton getonebutton();
+QMessageBox::StandardButtons getotherbuttons();
+QString getname(int);
 
 static string type;
 static QStringList arg;
-
-static QMessageBox::StandardButton getdefaultbutton();
-static QMessageBox::StandardButton getonebutton();
-static QMessageBox::StandardButtons getotherbuttons();
-static QString getname(int);
 
 // ---------------------------------------------------------------------
 // c is type, p is parameter, possibly preceded by *
@@ -138,15 +138,15 @@ QString mbmsg()
   buttons|=button1;
 
   if (type=="query") {
-    r=QMessageBox::question(QApplication::focusWidget(),t,m,buttons,button1);
+    r=QMessageBox::question(getmbparent(),t,m,buttons,button1);
     return getname(r);
   }
   if (type=="critical")
-    QMessageBox::critical(QApplication::focusWidget(),t,m,buttons,button1);
+    QMessageBox::critical(getmbparent(),t,m,buttons,button1);
   else if (type=="info")
-    QMessageBox::information(QApplication::focusWidget(),t,m,buttons,button1);
+    QMessageBox::information(getmbparent(),t,m,buttons,button1);
   else if (type=="warn")
-    QMessageBox::warning(QApplication::focusWidget(),t,m,buttons,button1);
+    QMessageBox::warning(getmbparent(),t,m,buttons,button1);
   return "";
 }
 
@@ -157,7 +157,7 @@ QString mbabout()
     error("about needs title and text");
     return "";
   }
-  QMessageBox::about(QApplication::focusWidget(),arg.at(0),arg.at(1));
+  QMessageBox::about(getmbparent(),arg.at(0),arg.at(1));
   return "";
 
 }
@@ -175,7 +175,7 @@ QString mbcolor()
     c=QColor(r,g,b);
   } else
     c=Qt::white;
-  c=QColorDialog::getColor(c,QApplication::focusWidget());
+  c=QColorDialog::getColor(c,getmbparent());
   if (!c.isValid()) return "";
   return s2q(i2s(c.red()) + " " + i2s(c.green()) + " " + i2s(c.blue()));
 }
@@ -191,7 +191,7 @@ QString mbdir()
   title=arg.at(0);
   dir=arg.at(1);
   fl=QFileDialog::getExistingDirectory(
-       QApplication::focusWidget(),title,dir);
+       getmbparent(),title,dir);
   return fl;
 }
 
@@ -218,7 +218,7 @@ QString mbfont()
     if (s=="underline")
       def.setUnderline(true);
   }
-  font=QFontDialog::getFont(&ok,def,QApplication::focusWidget());
+  font=QFontDialog::getFont(&ok,def,getmbparent());
   if (!ok) return "";
   return fontspec(font);
 }
@@ -227,7 +227,7 @@ QString mbfont()
 QString mbinput()
 {
   QString type,title,label,text;
-  QWidget *w=QApplication::focusWidget();
+  QWidget *w=getmbparent();
   QString r;
   bool ok=true;
   int s=arg.size();
@@ -312,7 +312,7 @@ QString mbopen()
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getOpenFileNames(
-       QApplication::focusWidget(),title,dir,filter);
+       getmbparent(),title,dir,filter);
   if (fl.isEmpty())
     return "";
   else return fl.join("\012") + "\012";
@@ -331,7 +331,7 @@ QString mbopen1()
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getOpenFileName(
-       QApplication::focusWidget(),title,dir,filter);
+       getmbparent(),title,dir,filter);
   return fl;
 }
 
@@ -369,7 +369,7 @@ QString mbprint(bool iftext)
       return "";
     }
 #endif
-    dialogprint(QApplication::focusWidget(),d);
+    dialogprint(getmbparent(),d);
     delete d;
   } else {
 #ifdef __MACH__
@@ -444,8 +444,14 @@ QString mbsave()
   if (arg.size()==3)
     filter=fixsep(arg.at(2));
   fl=QFileDialog::getSaveFileName(
-       QApplication::focusWidget(),title,dir,filter);
+       getmbparent(),title,dir,filter);
   return fl;
+}
+
+// ---------------------------------------------------------------------
+QString fixsep(QString s)
+{
+  return s.replace("|",";;");
 }
 
 // ---------------------------------------------------------------------
@@ -510,8 +516,3 @@ QMessageBox::StandardButtons getotherbuttons()
   return r;
 }
 
-// ---------------------------------------------------------------------
-QString fixsep(QString s)
-{
-  return s.replace("|",";;");
-}

@@ -154,12 +154,17 @@ public:
   Style verbStyle;
 };
 
+extern QList<QWidget*> ActiveWindows;
 extern Config config;
 #ifdef QT_OS_ANDROID
 extern int androidVfuncPos;
 #endif
 
 QSyntaxHighlighter *highlight(QTextDocument *);
+
+void delactivewindow(QWidget*);
+QWidget* getactivewindow();
+void setactivewindow(QWidget*);
 
 void state_appname();
 QStringList state_about();

@@ -570,10 +570,6 @@ void wdmb()
 {
   string c=cmd.getid();
   string p=cmd.getparms(true);
-  if (!QApplication::focusWidget()) {
-    error("command failed: no QApplication::focusWidget()");
-    return;
-  }
   result=q2s(mb(c,p));
   if (1==rc)
     result="";

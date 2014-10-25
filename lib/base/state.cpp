@@ -61,6 +61,7 @@ extern bool FHS;
 
 using namespace std;
 
+QList<QWidget*> ActiveWindows;
 Config config;
 QString LibName;
 QApplication *app=0;
@@ -414,6 +415,25 @@ void Config::toggleascii()
   QString s="0 0$boxdraw_j_ ";
   s+=Ascii?"1":"0";
   jcon->cmd(s);
+}
+
+// ---------------------------------------------------------------------
+void delactivewindow(QWidget* w)
+{
+  ActiveWindows.removeOne(w);
+}
+
+// ---------------------------------------------------------------------
+QWidget* getactivewindow()
+{
+  return ActiveWindows.first();
+}
+
+// ---------------------------------------------------------------------
+void setactivewindow(QWidget* w)
+{
+  ActiveWindows.removeOne(w);
+  ActiveWindows.prepend(w);
 }
 
 // ---------------------------------------------------------------------
