@@ -765,7 +765,7 @@ void Note::on_fileprintallAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_filequitAct_triggered()
 {
-  term->filequit(false);
+  note->close();
 }
 
 // ---------------------------------------------------------------------
