@@ -102,7 +102,9 @@ string smgetwin(string p)
       return smerror("No active edit window");
     if (note->editIndex()==-1)
       return smgetwin1((Bedit *)0);
-    return smgetwin1((Bedit *)note->editPage());
+    string r=smgetwin1((Bedit *)note->editPage());
+    r+=spair("file",note->editFile());
+    return r;
   }
   if (note2==0)
     return smerror("No active edit2 window");
