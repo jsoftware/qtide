@@ -80,6 +80,7 @@ void Menu::createhelpMenu()
   helpMenu->addSeparator();
 #endif
   helpMenu->addAction(helpaboutAct);
+  helpMenu->menuAction()->setMenuRole(QAction::NoRole);
 }
 
 // ---------------------------------------------------------------------
