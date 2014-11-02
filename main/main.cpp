@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 #endif
     fhs = true;
   }
+#endif
 #ifdef QT_OS_ANDROID
   return state_run(argc, argv, s.toUtf8().data(),fhs,0,(void *)-1);
 #else
@@ -67,7 +68,6 @@ int main(int argc, char *argv[])
 #endif
 
   return -1;
-#endif
 }
 
 #ifdef QT_OS_ANDROID
