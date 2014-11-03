@@ -102,6 +102,7 @@ void Menu::createActions()
   fileprintallAct = makeact("fileprintallAct","Print all","");
 #endif
   filequitAct = makeact("filequitAct","&Quit","Ctrl+Q");
+  filequitAct->setMenuRole(QAction::NoRole);
   filerecentAct = makeact("filerecentAct","&Recent","Ctrl+G");
   filereloadAct = makeact("filereloadAct","Reload q server","");
   filesaveAct = makeact("filesaveAct","&Save","Ctrl+S");

@@ -26,10 +26,18 @@ void helplabs();
 void helplabsadvance();
 void helplabschapters();
 void wiki(QString s);
+QAction* Menu::sharedHelpAboutAct;
 
 void Menu::createhelpActions()
 {
+#ifdef Q_OS_MAC
+  if (sharedHelpAboutAct == NULL) { // QTBUG-17941
+    sharedHelpAboutAct = makeact("helpaboutAct","&About","");
+  }
+  helpaboutAct = sharedHelpAboutAct;
+#else
   helpaboutAct = makeact("helpaboutAct","&About","");
+#endif
   helpconstantsAct = makeact("helpconstantsAct","&Constants","");
   helpcontextAct = makeact("helpcontextAct","&Context Sensitive","Ctrl+F1");
   helpcontextnuvocAct = makeact("helpcontextnuvocAct","&NuVoc Context Sensitive","Ctrl+Shift+F1");

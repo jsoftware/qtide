@@ -161,6 +161,7 @@ private:
   QAction *wintextAct;
   QAction *winthrowAct;
 
+  static QAction *sharedHelpAboutAct; // QTBUG-17941
   QAction *helpaboutAct;
   QAction *helpcontextAct;
   QAction *helpcontextnuvocAct;
