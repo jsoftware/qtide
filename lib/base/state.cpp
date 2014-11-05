@@ -426,7 +426,10 @@ void delactivewindow(QWidget* w)
 // ---------------------------------------------------------------------
 QWidget* getactivewindow()
 {
-  return ActiveWindows.first();
+  if (ActiveWindows.size())
+    return ActiveWindows.first();
+  else
+    return term;
 }
 
 // ---------------------------------------------------------------------
@@ -473,7 +476,6 @@ int state_fini()
 // ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
-
   if (!jdllproc && (void*)-1==jdlljt) {
     state_init_args(&argc,argv);
     config.ini0();
