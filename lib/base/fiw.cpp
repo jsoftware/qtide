@@ -43,6 +43,7 @@ Fiw::Fiw(int p, QString s)
 
   QVBoxLayout *v=new QVBoxLayout();
   v->setSpacing(12);
+  v->setSpacing(12);
 
   QFormLayout *f = new QFormLayout;
   lsearchfor = new QLabel("&Search for:");
@@ -268,6 +269,7 @@ void Fiw::open_replace()
   replaceforward->setText("Replace For&ward");
   ifReplace=1;
   setsearchdirection(0);
+  showit();
 }
 
 // ---------------------------------------------------------------------
@@ -508,6 +510,8 @@ void Fiw::showhit()
 // ---------------------------------------------------------------------
 void Fiw::showit()
 {
+  if (ifReplace)
+    undolast->setEnabled(LastText.size()>0);
 }
 
 // ---------------------------------------------------------------------
