@@ -7,6 +7,7 @@
 
 #include "wssvr.h"
 #include "jsvr.h"
+#include "svr.h"
 #include "util.h"
 
 using namespace std;
@@ -88,7 +89,7 @@ void WsSvr::onNewConnection()
   clients << socket;
 
   string s = "wssvr_handler_z_ " + p2s((void *)ONOPEN) + " " + p2s((void *)socket);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 #ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Client 0x%1 connected: ").arg((quintptr)socket , QT_POINTER_SIZE * 2, 16, QChar('0'));
 #endif
@@ -105,7 +106,7 @@ void WsSvr::onDisconnected()
 #endif
 
   string s = "wssvr_handler_z_ " + p2s((void *)ONCLOSE) + " " + p2s((void *)socket);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 
   if (socket) {
     clients.removeAll(socket);
@@ -126,7 +127,7 @@ void WsSvr::messageReceived(QWebSocket* socket, QByteArray ba, bool binary)
   else
     jsetc((char *)"wss1_jrx_",(C*)"text", 4);
   string s = "wssvr_handler_z_ " + p2s((void *)ONMESSAGE) + " " + p2s((void *)socket);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 }
 
 void WsSvr::onTextMessageReceived(QString message)
@@ -162,7 +163,7 @@ void WsSvr::onError(QAbstractSocket::SocketError error)
   string er = q2s(socket->errorString()) + '\012';
   jsetc((char *)"wss0_jrx_",(C*)er.c_str(), er.size());
   jsetc((char *)"wss1_jrx_",(C*)"text", 4);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 }
 
 void WsSvr::onSslErrors(const QList<QSslError>& errors)
@@ -182,7 +183,7 @@ void WsSvr::onSslErrors(const QList<QSslError>& errors)
   }
   jsetc((char *)"wss0_jrx_",(C*)er.c_str(), er.size());
   jsetc((char *)"wss1_jrx_",(C*)"text", 4);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 }
 
 void WsSvr::onStateChanged(QAbstractSocket::SocketState socketState)
@@ -225,7 +226,7 @@ void WsSvr::onStateChanged(QAbstractSocket::SocketState socketState)
   string s = "wssvr_handler_z_ " + p2s((void *)ONSTATECHANGE) + " " + p2s((void *)socket);
   jsetc((char *)"wss0_jrx_",(C*)st.c_str(), st.size());
   jsetc((char *)"wss1_jrx_",(C*)"text", 4);
-  jedo((char *)s.c_str());
+  jcon->cmddo(s);
 }
 
 void WsSvr::onPong(quint64 elapsedTime, const QByteArray & payload)

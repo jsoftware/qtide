@@ -14,6 +14,7 @@ public:
   Jcon() {};
   void cmd(QString s);
   void cmddo(QString s);
+  void cmddo(std::string s);
   QString cmdr(QString s);
   int exec();
   void immex(QString s);
