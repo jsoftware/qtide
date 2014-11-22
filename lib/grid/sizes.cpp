@@ -8,7 +8,7 @@ void WGrid::drawsizes(int sx, int sy, int sw, int sh)
 
   int i,j,n,p;
 
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
 
   for (i=0; i<Hrws; i++) {
     p=sx+Ccls*i;

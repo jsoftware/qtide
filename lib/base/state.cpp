@@ -155,13 +155,6 @@ void Config::init()
   ProjExt = ".jproj";
   ProjInit = false;
 
-#ifdef _WIN32
-  ProFont.setFamily("MS Sans Serif");
-#else
-  ProFont.setFamily("SansSerif");
-#endif
-  ProFont.setPointSize(10);
-
   drawobj=new Drawobj();
 
 #ifndef QT_NO_PRINTER

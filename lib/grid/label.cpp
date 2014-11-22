@@ -46,7 +46,7 @@ void WGrid::drawlabellines()
 void WGrid::drawlabelmerge()
 {
   int c,h,i,n,p,r,s,t,w,x,y;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   int my=My+fm.ascent();
 
   painter->setBrush(QBrush(HdrBack));
@@ -93,7 +93,7 @@ void WGrid::drawlabelmerge()
 void WGrid::drawlabeltext()
 {
   int i,j,n,p;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   painter->setPen(QPen(CellText,1));
   int my=My+fm.ascent();
 

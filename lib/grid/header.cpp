@@ -48,7 +48,7 @@ void WGrid::drawheadermerge()
   if (HdrMerge==DefMerge) return;
 
   int c,h,i,n,p,r,t,x,w,y;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   int my=My+fm.ascent();
 
   painter->setBrush(QBrush(HdrBack));
@@ -94,7 +94,7 @@ void WGrid::drawheadermerge()
 void WGrid::drawheadertext()
 {
   int i,j,n,p;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   painter->setPen(QPen(CellText,1));
   int my=My+fm.ascent();
 

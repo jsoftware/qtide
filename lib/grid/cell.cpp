@@ -42,7 +42,7 @@ void WGrid::drawcelllines()
 void WGrid::drawcelltext()
 {
   int i,j,n,p;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   painter->setPen(QPen(CellText,1));
 
   int my=My+fm.ascent();

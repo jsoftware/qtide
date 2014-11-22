@@ -58,7 +58,7 @@ bool WGrid::drawinit()
     return griderror("Label length of " + QString::number(LabX.size())
                      + " does not match data rows of " + QString::number(Crws) );
 
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   minwidth=fm.width("XXX");
   minheight=fm.height();
 
@@ -139,7 +139,7 @@ void WGrid::hdrmergesizes()
   if (HdrMerge==DefMerge) return;
 
   int c,i,n;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   QVector<int> r(3);
 
   for (i=0; i<HdrMerge.size(); i++) {
@@ -160,7 +160,7 @@ void WGrid::labmergesizes()
   if (LabMerge==DefMerge) return;
 
   int c,i,n;
-  QFontMetrics fm=QFontMetrics(font);
+  QFontMetrics fm=QFontMetrics(font,0);
   QVector<int> r(3);
 
   for (i=0; i<LabMerge.size(); i++) {
