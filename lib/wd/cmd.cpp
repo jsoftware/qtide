@@ -25,11 +25,6 @@ void Cmd::init(char *s,int slen)
   str=string(s,slen);
   str=toLF(str);
   len=str.size();
-  while (len>0) {
-    if (!contains(WS,str[len-1])) break;
-    len--;
-  }
-  str=str.substr(0,len);
   bgn=pos=0;
 }
 

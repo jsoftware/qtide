@@ -23,6 +23,7 @@ public:
   QScrollBar *hScroll;
   int ifResized, Tw, Th;
   QString prompt;
+  QString smprompt;
 
 public slots:
   void docmdp(QString t, bool show, bool same);

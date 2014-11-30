@@ -20,6 +20,7 @@ extern bool runshow;
 // ---------------------------------------------------------------------
 Tedit::Tedit()
 {
+  smprompt="";
   type=0;
   ifResized=Tw=Th=0;
 #ifdef QT_OS_ANDROID
@@ -117,6 +118,10 @@ void Tedit::enter()
 // ---------------------------------------------------------------------
 QString Tedit::getprompt()
 {
+  if (smprompt.size()) {
+    prompt=smprompt;
+    smprompt="";
+  }
   return prompt;
 }
 
