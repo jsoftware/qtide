@@ -218,7 +218,11 @@ QString mbfont()
     if (s=="underline")
       def.setUnderline(true);
   }
+#ifdef __MACH__
+    font=QFontDialog::getFont(&ok,def,getmbparent(),QString(), QFontDialog::DontUseNativeDialog);
+#else
   font=QFontDialog::getFont(&ok,def,getmbparent());
+#endif
   if (!ok) return "";
   return fontspec(font);
 }
