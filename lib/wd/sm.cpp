@@ -19,9 +19,12 @@ string smgetwin(string);
 string smgetwin1(Bedit *);
 string smgetxywh();
 string smgetxywh1(QWidget *);
+string smsave(string);
+string smsaveactive();
+string smsaveall();
 string smset(string);
 string smsetselect(Bedit *,QStringList);
-string smsettext(Bedit *,QStringList);
+string smsettext(QString);
 string smsetxywh(QWidget *,QStringList);
 
 // ---------------------------------------------------------------------
@@ -33,6 +36,8 @@ string sm(string c,string p)
     return smfocus(p);
   if (c=="get")
     return smget(p);
+  if (c=="save")
+    return smsave(p);
   if (c=="set")
     return smset(p);
   if (c=="act")
@@ -149,8 +154,41 @@ string smgetxywh1(QWidget *w)
 {
   QPoint p=w->pos();
   QSize z=w->size();
-  return q2s(QString::number(p.rx())+" "+QString::number(p.ry())+
-             " "+QString::number(z.width())+" "+QString::number(z.height()));
+  return q2s(QString::number(p.rx())+" "+QString::number(p.ry())+" "+
+             QString::number(z.width())+" "+QString::number(z.height()));
+}
+
+// ---------------------------------------------------------------------
+string smsave(string arg)
+{
+  if (note==0)
+    return smerror("No active edit window");
+  QStringList opt=qsplit(arg);
+  if (opt.size()==0)
+    return smerror("sm save parameters not given");
+  if (opt.size()!=2)
+    return smerror("sm save parameters not recognized");
+  if (opt[0]!="edit")
+    return smerror("sm save " + q2s(opt[0]) + " not supported");
+  if (opt[1]=="active")
+    return smsaveactive();
+  if (opt[1]=="all")
+    return smsaveall();
+  return smerror("sm save edit parameter should be 'active' or 'all'");
+}
+
+// ---------------------------------------------------------------------
+string smsaveactive()
+{
+  note->savecurrent();
+  return "";
+}
+
+// ---------------------------------------------------------------------
+string smsaveall()
+{
+  note->saveall();
+  return "";
 }
 
 // ---------------------------------------------------------------------
@@ -165,7 +203,7 @@ string smset(string arg)
   if (opt.size()==0)
     return smerror("sm set parameters not given");
   if (opt.size()==1)
-    return smerror ("sm set " + q2s(opt[0]) + " parameters not given");
+    return smerror("sm set " + q2s(opt[0]) + " parameters not given");
   p=opt[0];
   q=opt[1];
   opt=opt.mid(2);
@@ -192,7 +230,7 @@ string smset(string arg)
   if (q=="select")
     return smsetselect(e,opt);
   if (q=="text")
-    return smsettext(e,opt);
+    return smsettext(opt[0]);
   if (q=="xywh")
     return smsetxywh(w,opt);
 
@@ -205,7 +243,7 @@ string smsetselect(Bedit *e,QStringList opt)
   QList<int> s=qsl2intlist(opt);
 
   if (s.size()!= 2)
-    return smerror ("sm set select should have begin and end parameters");
+    return smerror("sm set select should have begin and end parameters");
   int m=e->toPlainText().size();
   if (s[1]==-1) s[1]=m;
   s[1]=qMin(m,s[1]);
@@ -215,9 +253,9 @@ string smsetselect(Bedit *e,QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-string smsettext(Bedit *e,QStringList opt)
+string smsettext(QString s)
 {
-  e->setPlainText(opt[0]);
+  note->settext(s);
   return"";
 }
 

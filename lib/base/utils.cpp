@@ -133,8 +133,7 @@ QString fontspec(QFont font)
 // otherwise return the term edit control
 Bedit * getactiveedit()
 {
-  QWidget *w=QApplication::focusWidget();
-  if (note && w==(QWidget *)note->editPage())
+  if (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
     return (Bedit *)note->editPage();
   return tedit;
 }
@@ -624,6 +623,8 @@ void userkey(int mode, QString s)
     return;
   }
 
+  if (!w) return;
+
   if (mode==2) {
     if (w==tedit) s=tedit->getprompt()+s;
     w->appendPlainText(s);
@@ -668,6 +669,11 @@ void winpos_set(QWidget *w,QList<int>p)
 // ---------------------------------------------------------------------
 void writewinstate(Bedit *w)
 {
+  if (w==0) {
+    sets("WinText_jqtide_","");
+    var_cmd("WinSelect_jqtide_=: $0");
+    return;
+  }
   QTextCursor c=w->textCursor();
   int b=c.selectionStart();
   int e=c.selectionEnd();
