@@ -338,6 +338,9 @@ void Term::vfuncClicked()
       wdactivateform();
     } else term->repaint();
     break;
+  case Qt::Key_F2:
+    tedit->cu0 = tedit->textCursor();
+    break;
   case Qt::Key_F6:
     tedit->docmds("labs_run_jqtide_ 0", false);
     break;

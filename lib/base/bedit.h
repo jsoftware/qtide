@@ -7,6 +7,7 @@ class QPaintEvent;
 class QResizeEvent;
 class QScrollBar;
 class QSize;
+class QTextCursor;
 class QWidget;
 #ifdef TABCOMPLETION
 class QCompleter;
@@ -45,8 +46,10 @@ public:
   int type;
 
 #ifdef QT_OS_ANDROID
+  QTextCursor cu0;
 public slots:
   void copy();
+  void cut();
 #endif
 
 protected:
