@@ -38,6 +38,7 @@ void Nmain::createActions()
   openprojectAct = makeact("openprojectAct","folder.png","Open Project");
   runallAct = makeact("runallAct","run.png","Run All Lines");
   xeditAct = makeact("xeditAct","regular.png","External editor");
+  markCursorAct = makeact("markCursorAct","jump-to.png","Mark cursor");
 #else
   openprojectAct = makeact("openprojectAct","folder.svg","Open Project");
   runallAct = makeact("runallAct","run.svg","Run All Lines");
@@ -58,6 +59,7 @@ void Nmain::createToolBar()
 #ifdef QT_OS_ANDROID
   toolBar->addSeparator();
   toolBar->addAction(xeditAct);
+  toolBar->addAction(markCursorAct);
 #endif
 }
 

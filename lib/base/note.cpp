@@ -228,6 +228,14 @@ void Note::on_xeditAct_triggered()
   if (fn.isEmpty()) return;
   android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().data(),(char *)"text/plain",0);
 }
+
+// ---------------------------------------------------------------------
+void Note::on_markCursorAct_triggered()
+{
+  if (tabs->count()==0) return;
+  Nedit *ned=((Nedit *)tabs->currentWidget());
+  ned->cu0 = ned->textCursor();
+}
 #endif
 
 // ---------------------------------------------------------------------

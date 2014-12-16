@@ -191,6 +191,7 @@ public slots:
   void on_runallAct_triggered();
 #ifdef QT_OS_ANDROID
   void on_xeditAct_triggered();
+  void on_markCursorAct_triggered();
 #endif
 
 private:
