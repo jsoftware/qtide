@@ -5,9 +5,9 @@
    "ndk": "/home/bill/android/android-ndk-r10c",
    "toolchain-prefix": "arm-linux-androideabi",
    "tool-prefix": "arm-linux-androideabi",
-   "toolchain-version": "4.9",
+   "toolchain-version": "4.8",
    "ndk-host": "linux-x86_64",
    "target-architecture": "armeabi",
    "android-package-source-directory": "/home/bill/dev/apps/ide/jqt/android_qtide",
-   "application-binary": "/home/bill/dev/apps/ide/jqt/bin/android-arm/release/libjqt.so"
+   "application-binary": "/home/bill/dev/apps/ide/jqt/android-libs/armeabi/libjqt.so"
 }

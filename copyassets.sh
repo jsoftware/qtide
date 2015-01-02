@@ -27,6 +27,7 @@ copyaddon api expat
 # copyaddon api gles
 copyaddon api jni
 # copyaddon api sl4a
+# copyaddon arc zlib
 copyaddon convert json
 # copyaddon data jmf
 # copyaddon demos isigraph
@@ -41,10 +42,11 @@ copyaddon convert json
 # copyaddon graphics afm
 # copyaddon graphics bmp
 # copyaddon graphics color
-# copyaddon graphics gl2
+copyaddon graphics gl2
 # copyaddon graphics graph
 # copyaddon graphics grid
 # copyaddon graphics plot
+# copyaddon graphics png
 # copyaddon graphics print
 # copyaddon graphics viewmat
 copyaddon gui android
