@@ -1,1 +1,1 @@
-qtide,jqt,jqtdata.tgz,armv7
+qtide,jqt,jqtdata.tgz,,armv7
