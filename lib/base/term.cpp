@@ -166,6 +166,7 @@ bool Term::filequit(bool ignoreconfirm)
 #ifdef QT_OS_ANDROID
 // QMessageBox not work inside keypress event
   if (ignoreconfirm) {
+  var_cmddo("(i.0 0)\"_ (2!:55)0");
 #else
   Q_UNUSED(ignoreconfirm);
   if ((!config.ConfirmClose) ||

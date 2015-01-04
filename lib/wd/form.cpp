@@ -114,6 +114,9 @@ Form::~Form()
   if (Forms.isEmpty() && (!ShowIde)) {
     if (jdllproc) evloop->exit();
     else {
+#ifdef QT_OS_ANDROID
+      var_cmddo("(i.0 0)\"_ (2!:55)0");
+#endif
       state_quit();
       QApplication::quit();
     }
