@@ -62,5 +62,3 @@ find $A/addons \( -name '*.jproj' -o -name '*.dll' -o -name '*.exe' -o -name '*.
 rm -f jqtdata.tgz
 cd $A
 tar czf ../jqtdata.tgz *
-cd ..
-mv jqtdata.tgz android_qtide/assets/.

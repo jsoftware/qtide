@@ -335,22 +335,18 @@ int jefirst(int type,char* arg)
   qDebug() << "current path: " << QDir::currentPath();
 // assume cwd is .../files
 
-  int v1=0, v2=0;
+  QString v1, v2;
   QFile *f1 = new QFile("assets:/assets_version.txt");
   QFile *f2 = new QFile("assets_version.txt");
   if (f1->exists()) {
-    QString s= cfread(f1);
-    if (!(s.isNull() || s.isEmpty())) v1=strtol(s.toUtf8().constData(),NULL,0);
+    v1= cfread(f1);
   }
   if (f2->exists()) {
-    QString s= cfread(f2);
-    if (!(s.isNull() || s.isEmpty())) v2=strtol(s.toUtf8().constData(),NULL,0);
+    v2= cfread(f2);
   }
   delete f1;
   delete f2;
-// for testing, always decompress
-//  if ((1 || v1>v2) && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
-  if (v1>v2 && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
+  if (v1!=v2 && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
     qDebug() << "decompress assets";
     QFile("jqtdata.tgz").remove();
     QFile("tar0.ijs").remove();
