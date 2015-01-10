@@ -8,6 +8,10 @@
 #include <string.h>
 #include <math.h>
 
+#ifndef Abs
+#define Abs(a) ((a) < 0 ? (-a) : (a))
+#endif
+
 #ifndef Max
 #define Max(a, b) ((a) < (b) ? (b) : (a))
 #endif
@@ -808,7 +812,8 @@ int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p)
 // ---------------------------------------------------------------------
 int glpixels(const int *p, int len)
 {
-  Q_UNUSED(len);
+  if (len<4) return 1;
+  if (len!=4+p[2]*Abs(p[3])) return 1;
   CHKPAINTER
   return glpixels2(w, *(p), *(p + 1), *(p + 2), *(p + 3), (uchar *)(p + 4));
 }
