@@ -27,7 +27,7 @@ void CheckBox::set(string p,string v)
 {
   QCheckBox *w=(QCheckBox*) widget;
   if (p=="caption" || p=="text")
-    w->setText(s2q(v));
+    w->setText(s2q(remquotes(v)));
   else if (p=="value")
     w->setChecked(v=="1");
   else Child::set(p,v);

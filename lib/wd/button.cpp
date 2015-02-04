@@ -29,5 +29,7 @@ void Button::set(string p,string v)
 {
   if (p=="caption" || p=="text")
     ((QPushButton *)widget)->setText(s2q(remquotes(v)));
+  else if (p=="icon")
+    ((QPushButton *)widget)->setIcon(QIcon(s2q(remquotes(v))));
   else Child::set(p,v);
 }

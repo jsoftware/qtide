@@ -36,7 +36,7 @@ void Image::set(string p,string v)
 {
   if (p=="image") {
 
-    QString s=s2q(v);
+    QString s=s2q(remquotes(v));
     if (s.isEmpty()) {
       error("set image needs image filename");
       return;

@@ -19,6 +19,9 @@ public:
 private slots:
   void returnPressed();
 
+private:
+  bool focusSelect;
+
 };
 
 #endif

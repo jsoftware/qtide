@@ -42,6 +42,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   tab=0;
   closed=false;
   shown=false;
+  lastfocus="";
 #ifdef QT_OS_ANDROID
   backButtonPressed=false;
 #endif
@@ -426,7 +427,21 @@ string Form::state(int evt)
   r+=spair("syslocalep",locale);
   r+=spair("syshwndp",hsform());
   r+=spair("syshwndc",hschild());
-  r+=spair("syslastfocus",(string)"");
+  r+=spair("syslastfocus",lastfocus);
+  QWidget* fo=QApplication::focusWidget();
+  bool fnd=false;
+  if (fo) {
+    Child *n;
+    for (int i=0; i<children.size(); i++)
+      if (fo==(n=children.at(i))->widget) {
+        r+=spair("sysfocus",n->id);
+        lastfocus=n->id;
+        fnd=true;
+        break;
+      }
+  }
+  if (!fnd)
+    r+=spair("sysfocus",(string)"");
   r+=spair("sysmodifiers",sysmodifiers);
   r+=spair("sysdata",sysdata);
 

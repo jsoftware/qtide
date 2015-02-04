@@ -71,7 +71,7 @@ void Edith::set(string p,string v)
       }
     }
   } else if (p=="text") {
-    w->setHtml(s2q(v));
+    w->setHtml(s2q(remquotes(v)));
     w->setReadOnly(1);
   } else if (p=="select") {
     if (opt.isEmpty())

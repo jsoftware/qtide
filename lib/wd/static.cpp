@@ -42,7 +42,7 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 void Static::set(string p,string v)
 {
   if (p=="caption" || p=="text")
-    ((QLabel *)widget)->setText(s2q(v));
+    ((QLabel *)widget)->setText(s2q(remquotes(v)));
   else Child::set(p,v);
 }
 

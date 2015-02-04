@@ -15,7 +15,7 @@ QPrinter::DevicePixel  6
 int glzqwh(float *wh, int unit)
 {
   if (!wh) return 1;
-  CHKPAINTER
+  CHKPAINTER2
   QSizeF size = Printer->paperSize((QPrinter::Unit)unit);
   wh[0] = (float) size.width();
   wh[1] = (float) size.height();
@@ -26,7 +26,7 @@ int glzqwh(float *wh, int unit)
 int glzqmargins(float *ltrb, int unit)
 {
   if (!ltrb) return 1;
-  CHKPAINTER
+  CHKPAINTER2
   qreal l,t,r,b;
   Printer->getPageMargins(&l,&t,&r,&b,(QPrinter::Unit)unit);
   ltrb[0] = (float) l;
@@ -39,7 +39,7 @@ int glzqmargins(float *ltrb, int unit)
 // ---------------------------------------------------------------------
 int glzqresolution ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->resolution();
 }
 
@@ -60,56 +60,56 @@ enum PaperSource { Auto, Cassette, Envelope, EnvelopeManual, ..., SmallFormat }
 // ---------------------------------------------------------------------
 int glzqcolormode ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->colorMode();
 }
 
 // ---------------------------------------------------------------------
 int glzqduplexmode ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->duplex();
 }
 
 // ---------------------------------------------------------------------
 int glzqorientation ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->orientation();
 }
 
 // ---------------------------------------------------------------------
 int glzqoutputFormat ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->outputFormat();
 }
 
 // ---------------------------------------------------------------------
 int glzqpageorder ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->pageOrder();
 }
 
 // ---------------------------------------------------------------------
 int glzqpapersize ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->paperSize();
 }
 
 // ---------------------------------------------------------------------
 int glzqpapersource ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   return Printer->paperSource();
 }
 
 // ---------------------------------------------------------------------
 int glzresolution (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setResolution(n);
   return 0;
 }
@@ -117,7 +117,7 @@ int glzresolution (int n)
 // ---------------------------------------------------------------------
 int glzcolormode (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setColorMode((QPrinter::ColorMode)n);
   return 0;
 }
@@ -125,7 +125,7 @@ int glzcolormode (int n)
 // ---------------------------------------------------------------------
 int glzduplexmode (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setDuplex((QPrinter::DuplexMode)n);
   return 0;
 }
@@ -133,7 +133,7 @@ int glzduplexmode (int n)
 // ---------------------------------------------------------------------
 int glzorientation (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setOrientation((QPrinter::Orientation)n);
   return 0;
 }
@@ -141,7 +141,7 @@ int glzorientation (int n)
 // ---------------------------------------------------------------------
 int glzoutputFormat (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setOutputFormat((QPrinter::OutputFormat)n);
   return 0;
 }
@@ -149,7 +149,7 @@ int glzoutputFormat (int n)
 // ---------------------------------------------------------------------
 int glzpageorder (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setPageOrder((QPrinter::PageOrder)n);
   return 0;
 }
@@ -157,7 +157,7 @@ int glzpageorder (int n)
 // ---------------------------------------------------------------------
 int glzpapersize (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setPaperSize((QPrinter::PaperSize)n);
   return 0;
 }
@@ -165,7 +165,7 @@ int glzpapersize (int n)
 // ---------------------------------------------------------------------
 int glzpapersource (int n)
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->setPaperSource((QPrinter::PaperSource)n);
   return 0;
 }
@@ -181,12 +181,14 @@ int glzscale (float *xy)
 // ---------------------------------------------------------------------
 int glzabortdoc ()
 {
-  CHKPAINTER
+  CHKPAINTER2
   Printer->abort();
   if ((!prtobj) || !prtobj->painter) return 0;
-  prtobj->painter->end();
-  delete prtobj->painter;
-  prtobj->painter=0;
+  if (prtobj->painter) {
+    prtobj->painter->end();
+    delete prtobj->painter;
+    prtobj->painter=0;
+  }
   Printer->setDocName("");
   return 0;
 }
@@ -194,10 +196,13 @@ int glzabortdoc ()
 // ---------------------------------------------------------------------
 int glzenddoc ()
 {
-  CHKPAINTER
-  prtobj->painter->end();
-  delete prtobj->painter;
-  prtobj->painter=0;
+  CHKPAINTER2
+  if ((!prtobj) || !prtobj->painter) return 0;
+  if (prtobj->painter) {
+    prtobj->painter->end();
+    delete prtobj->painter;
+    prtobj->painter=0;
+  }
   Printer->setDocName("");
   return 0;
 }
@@ -206,14 +211,22 @@ int glzenddoc ()
 int glznewpage ()
 {
   CHKPAINTER
-  return !Printer->newPage();
+  if (Printer->newPage()) {
+    glzclear2 (prtobj,0);
+    return 0;
+  } else return 1;
 }
 
 // ---------------------------------------------------------------------
 int glzprinter (char *printername)
 {
   if (!printername) return 1;
-  CHKPAINTER
+  CHKPAINTER2
+  if (prtobj->painter) {
+    prtobj->painter->end();
+    delete prtobj->painter;
+    prtobj->painter=0;
+  }
   if (printername[0]!='_') {
     Printer->setPrinterName(s2q(printername));
     Printer->setOutputFormat(QPrinter::NativeFormat);
@@ -231,7 +244,7 @@ int glzprinter (char *printername)
 // ---------------------------------------------------------------------
 int glzstartdoc (char *jobname, char *filename)
 {
-  CHKPAINTER
+  CHKPAINTER2
   if (jobname) Printer->setDocName(s2q(jobname));
   if (filename) Printer->setOutputFileName(s2q(filename));
   if (prtobj->painter) delete prtobj->painter;
@@ -244,6 +257,6 @@ int glzstartdoc (char *jobname, char *filename)
 // ---------------------------------------------------------------------
 int glzinitprinter ()
 {
-  if (!Printer) Printer=new QPrinter(QPrinter::HighResolution);
-  return (!Printer);
+  Printer=new QPrinter(QPrinter::HighResolution);
+  return !Printer;
 }

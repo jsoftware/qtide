@@ -97,6 +97,7 @@ private:
   bool closeok;
   bool escclose;
   string fakeid;
+  string lastfocus;
 
 };
 

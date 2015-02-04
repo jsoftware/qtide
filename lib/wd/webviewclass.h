@@ -51,7 +51,7 @@ void WEBVIEW::set(string p,string v)
 {
   QWEBVIEW *w = (QWEBVIEW *)widget;
   if (p=="baseurl") {
-    QString t = s2q(v);
+    QString t = s2q(remquotes(v));
 #if defined(_WIN32) && !defined(QT50)
     baseUrl = QUrl(t);
 #else
@@ -60,10 +60,10 @@ void WEBVIEW::set(string p,string v)
     else baseUrl = QUrl::fromLocalFile(t);
 #endif
   } else if (p=="html") {
-    w->setHtml(s2q(v), baseUrl);
+    w->setHtml(s2q(remquotes(v)), baseUrl);
     w->show();
   } else if (p=="url") {
-    w->load(QUrl(s2q(v)));
+    w->load(QUrl(s2q(remquotes(v))));
     w->show();
   } else Child::set(p,v);
 }

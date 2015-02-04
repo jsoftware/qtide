@@ -17,6 +17,7 @@
 #endif
 
 #include <QApplication>
+#include <QPainter>
 #include "wd.h"
 #include "font.h"
 #include "isidraw.h"
@@ -128,7 +129,8 @@ extern Prtobj *prtobj;
 
 #define CHKPAINTER  if ((!Printer) || !Printer->isValid()) return 1; \
   Prtobj *w=prtobj; \
-  Q_UNUSED(w);
+  if (!w->painter) return 1; \
+  if (!w->painter->isActive()) return 1;
 #define CHKPAINTER2  if ((!Printer) || !Printer->isValid()) return 1; \
   Prtobj *w=prtobj; \
   Q_UNUSED(w);
@@ -339,7 +341,12 @@ int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
   if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+#if defined(GLPRINTER)
+  CHKPAINTER
+  QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
+#else
   QFontMetrics fm = QFontMetrics(FontExtent->font);
+#endif
   *(wh) = fm.width(QString::fromUtf8(s));
   *(wh+1) = fm.height();
   return 0;
@@ -351,7 +358,12 @@ int glqextentw(char *s,int *wi)
   if (!s || !wi) return 1;
   QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
   if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+#if defined(GLPRINTER)
+  CHKPAINTER
+  QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
+#else
   QFontMetrics fm = QFontMetrics(FontExtent->font);
+#endif
   for (int i=0; i<n.size(); i++) {
     wi[i] = fm.width(n.at(i));
   }

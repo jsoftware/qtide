@@ -1,5 +1,8 @@
 
 #include <QLineEdit>
+#include <QIntValidator>
+#include <QDoubleValidator>
+#include <QRegExpValidator>
 
 #include "wd.h"
 #include "edit.h"
@@ -16,6 +19,7 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  focusSelect=false;
 
   if (opt.contains("password"))
     w->setEchoMode(QLineEdit::Password);
@@ -48,8 +52,7 @@ void Edit::set(string p,string v)
   QStringList opt=qsplit(v);
 
   if (p=="text") {
-    w->setText(s2q(v));
-    return;
+    w->setText(s2q(remquotes(v)));
   } else if (p=="cursorposition") {
     if (opt.isEmpty()) {
       error("set cursorposition requires 1 number: " + p);
@@ -58,19 +61,74 @@ void Edit::set(string p,string v)
     int p=c_strtoi(q2s(opt.at(0)));
     p=qMax(0,qMin(p,w->text().length()));
     w->setCursorPosition(p);
-    return;
   } else if (p=="limit") {
     if (opt.isEmpty()) {
       error("set limit requires 1 number: " + p);
       return;
     }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
+  } else if (p=="focusselect") {
+    focusSelect=remquotes(v)!="0";
+  } else if (p=="focus") {
+    w->setFocus();
+    if (focusSelect) w->selectAll();
   } else if (p=="readonly") {
     w->setReadOnly(remquotes(v)!="0");
-    return;
   } else if (p=="select") {
     w->selectAll();
-    return;
+  } else if (p=="alignment") {
+    if (opt.isEmpty()) {
+      error("set alignment requires 1 argument: " + p);
+      return;
+    }
+    if (opt.at(0)=="left")
+      w->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+    else if (opt.at(0)=="right")
+      w->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+    else if (opt.at(0)=="center")
+      w->setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    else {
+      error("set alignment requires left, right or center: " + p);
+      return;
+    }
+  } else if (p=="inputmask") {
+// see http://qt-project.org/doc/qt-4.8/qlineedit.html#inputMask-prop
+    if (opt.isEmpty())
+      w->setInputMask("");
+    else
+      w->setInputMask(opt.at(0));
+  } else if (p=="intvalidator") {
+    if (opt.isEmpty())
+      w->setValidator(0);
+    else if (2>opt.size()) {
+      error("set intvalidator requires 2 numbers: " + p);
+      return;
+    } else {
+      w->setLocale(QLocale::C);
+      QIntValidator *validator=new QIntValidator(c_strtoi(q2s(opt.at(0))),c_strtoi(q2s(opt.at(1))),w);
+      validator->setLocale(QLocale::C);
+      w->setValidator(validator);
+    }
+  } else if (p=="doublevalidator") {
+    if (opt.isEmpty())
+      w->setValidator(0);
+    else if (3>opt.size()) {
+      error("set doublevalidator requires 3 numbers: " + p);
+      return;
+    } else {
+      w->setLocale(QLocale::C);
+      QDoubleValidator *validator=new QDoubleValidator(c_strtod(q2s(opt.at(0))),c_strtod(q2s(opt.at(1))),c_strtoi(q2s(opt.at(2))),w);
+      validator->setLocale(QLocale::C);
+      w->setValidator(validator);
+    }
+  } else if (p=="regexpvalidator") {
+// see http://qt-project.org/doc/qt-4.8/qregexp.html
+    if (opt.isEmpty())
+      w->setValidator(0);
+    else {
+      QRegExp rx(opt.at(0));
+      w->setValidator(new QRegExpValidator(rx,w));
+    }
   } else Child::set(p,v);
 }
 

@@ -70,6 +70,8 @@ DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(qn);
   QStringList opt=qsplit(s);
 
+  w->setCalendarPopup(true);
+
   int i=0;
   int v,y,m,d;
   if (i<opt.size()) {
@@ -86,8 +88,10 @@ DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
   if (i<opt.size()) {
     v=c_strtoi(q2s(opt.at(i)));
-    toymd(v, &y, &m, &d);
-    w->setDate(QDate(y,m,d));
+    if (v) {
+      toymd(v, &y, &m, &d);
+      w->setDate(QDate(y,m,d));
+    } else w->setDate(QDate());
     i++;
   }
   connect(w,SIGNAL(dateChanged(QDate)),
@@ -125,9 +129,12 @@ void DateEdit::set(string p,string v)
   } else if (p=="readonly") {
     w->setReadOnly(remquotes(v)!="0");
   } else if (cmd=="value") {
+// TODO actually null date does not work because of input mask
     i=c_strtoi(q2s(arg.at(0)));
-    toymd(i, &y, &m, &d);
-    w->setDate(QDate(y,m,d));
+    if (i) {
+      toymd(i, &y, &m, &d);
+      w->setDate(QDate(y,m,d));
+    } else w->setDate(QDate());
   } else Child::set(p,v);
 }
 
@@ -136,7 +143,9 @@ string DateEdit::state()
 {
   QDateEdit *w=(QDateEdit*) widget;
   QDate v=w->date();
-  return spair(id,i2s((10000*v.year())+(100*v.month())+v.day()));
+  if (v.isNull())
+    return spair(id,i2s(0));
+  else return spair(id,i2s((10000*v.year())+(100*v.month())+v.day()));
 }
 
 // ---------------------------------------------------------------------

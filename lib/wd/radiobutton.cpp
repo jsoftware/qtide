@@ -41,7 +41,7 @@ void RadioButton::set(string p,string v)
 {
   QRadioButton *w=(QRadioButton*) widget;
   if (p=="caption" || p=="text")
-    w->setText(s2q(v));
+    w->setText(s2q(remquotes(v)));
   else if (p=="value")
     w->setChecked(v=="1");
   else Child::set(p,v);

@@ -1427,7 +1427,7 @@ bool notab()
 string remquotes(string s)
 {
   int len=(int)s.size();
-  if (len==0) return s;
+  if (len<2) return s;
   if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
     s=s.substr(1,len-2);
   return s;

@@ -65,7 +65,7 @@ void Editm::set(string p,string v)
   } else if (p=="readonly")
     w->setReadOnly(remquotes(v)!="0");
   else if (p=="text")
-    w->setPlainText(s2q(v));
+    w->setPlainText(s2q(remquotes(v)));
   else if (p=="select") {
     if (opt.isEmpty())
       w->selectAll();
