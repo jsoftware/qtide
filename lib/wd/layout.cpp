@@ -24,23 +24,25 @@ Layout::Layout(QChar type, int stretch, Pane *p)
 // ---------------------------------------------------------------------
 void Layout::addWidget(QWidget *b)
 {
-  if (type!='g')
-    ((QBoxLayout *) bin)->addWidget(b);
-  else {
+  if (type!='g') {
+    if (b) ((QBoxLayout *) bin)->addWidget(b);
+  } else {
     if (razed) {
-      if (r>=rmax || c>=cmax) {
+      if ((0<=rmax && r>=rmax) || c>=cmax) {
         error ("grid size exceeded");
         return;
       }
-      ((QGridLayout *)bin)->addWidget(b, r, c, (Qt::Alignment) alignment);
+      if (b) ((QGridLayout *)bin)->addWidget(b, r, c, (Qt::Alignment) alignment);
       c=c+1;
       if (c==cmax) {
         c=0;
         r=r+1;
       }
     } else {
-      if (rs==1 && cs==1) ((QGridLayout *)bin)->addWidget(b, r, c, (Qt::Alignment) alignment);
-      else ((QGridLayout *)bin)->addWidget(b, r, c, rs, cs, (Qt::Alignment) alignment);
+      if (b) {
+        if (rs==1 && cs==1) ((QGridLayout *)bin)->addWidget(b, r, c, (Qt::Alignment) alignment);
+        else ((QGridLayout *)bin)->addWidget(b, r, c, rs, cs, (Qt::Alignment) alignment);
+      }
     }
   }
 }

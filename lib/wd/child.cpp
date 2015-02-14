@@ -77,6 +77,7 @@ void Child::setfont(QFont f)
 // ---------------------------------------------------------------------
 void Child::setfocuspolicy(string p)
 {
+  if (!widget) return;
   if (p=="tab")
     widget->setFocusPolicy(Qt::TabFocus);
   else if (p=="click")
@@ -97,13 +98,13 @@ void Child::setform()
 // ---------------------------------------------------------------------
 void Child::setstylesheet(string p)
 {
-  widget->setStyleSheet(s2q(p));
+  if (widget) widget->setStyleSheet(s2q(p));
 }
 
 // ---------------------------------------------------------------------
 void Child::settooltip(string p)
 {
-  widget->setToolTip(s2q(p));
+  if (widget) widget->setToolTip(s2q(p));
 }
 
 // ---------------------------------------------------------------------
@@ -115,6 +116,7 @@ void Child::setwh(string p)
   } else {
     int w=c_strtoi(q2s(n.at(0)));
     int h=c_strtoi(q2s(n.at(1)));
+    if (!widget) return;
     if (w!=-1 || h!=-1) {
       if (w==-1)
         widget->setFixedHeight(h);

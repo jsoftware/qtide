@@ -151,15 +151,13 @@ bool Pane::addchild(string n,string c,string p)
     return false;
   }
   if (fontdef) child->setfont(fontdef->font);
-  if (child->widget) {
-    layout->addWidget(child->widget);
-    child->setminwh(sizew,sizeh);
-    lasttype=child->type;
-    QStringList opt=qsplit(p);
-    if (opt.contains("flush")) {
-      layout->bin->setContentsMargins(0,0,0,0);
-      layout->bin->setSpacing(0);
-    }
+  layout->addWidget(child->widget);
+  child->setminwh(sizew,sizeh);
+  lasttype=child->type;
+  QStringList opt=qsplit(p);
+  if (opt.contains("flush")) {
+    layout->bin->setContentsMargins(0,0,0,0);
+    layout->bin->setSpacing(0);
   }
   sizew=sizeh=0;
   pform->addchild(child);
@@ -223,11 +221,12 @@ void Pane::fini()
 // ---------------------------------------------------------------------
 void Pane::grid(string c, string s)
 {
-  if (c=="size") {
-    int rmax,cmax;
+// decommit the name size in the next release
+  if (c=="shape"||c=="size") {
+    int rmax=0,cmax=0;
     QStringList opt=qsplit(s);
     int n=opt.size();
-    if (2>n) {
+    if (1>n) {
       error("missing grid size row_size or column_size");
       return;
     }
@@ -235,11 +234,20 @@ void Pane::grid(string c, string s)
       bin("v");
     if ('g'!=layout->type)
       bin("g");
-    rmax=c_strtoi(q2s(opt.at(0)));
-    cmax=c_strtoi(q2s(opt.at(1)));
-    if ((rmax<=0)||(cmax<=0)) {
-      error("grid size row_size and column_size must be positive");
-      return;
+    if (1==n) {
+      rmax=-1;
+      cmax=c_strtoi(q2s(opt.at(0)));
+      if (cmax<=0) {
+        error("grid size column_size must be positive");
+        return;
+      }
+    } else {
+      rmax=c_strtoi(q2s(opt.at(0)));
+      cmax=c_strtoi(q2s(opt.at(1)));
+      if ((rmax<=0)||(cmax<=0)) {
+        error("grid size row_size and column_size must be positive");
+        return;
+      }
     }
     layout->rmax=rmax;
     layout->cmax=cmax;
@@ -293,78 +301,86 @@ void Pane::grid(string c, string s)
     QStringList opt=qsplit(s);
     int c,w=0;
     int n=opt.size();
-    if (2>n) {
+    if ((2>n) || (n&1)) {
       error("grid colwidth must specify column and width");
       return;
     }
-    c=c_strtoi(q2s(opt.at(0)));
-    w=c_strtoi(q2s(opt.at(1)));
-    if ((c<0)||(w<0)) {
-      error("grid colwidth column and width must be non-negative");
-      return;
+    for (int i=0; i<n ; i+=2) {
+      c=c_strtoi(q2s(opt.at(i)));
+      w=c_strtoi(q2s(opt.at(i+1)));
+      if ((c<0)||(w<0)) {
+        error("grid colwidth column and width must be non-negative");
+        return;
+      }
+      if (layout->razed && (layout->cmax<=c)) {
+        error("grid colwidth invalid column");
+        return;
+      }
+      ((QGridLayout *)(layout->bin))->setColumnMinimumWidth(c,w);
     }
-    if (layout->razed && (layout->cmax<=c)) {
-      error("grid colwidth invalid column");
-      return;
-    }
-    ((QGridLayout *)(layout->bin))->setColumnMinimumWidth(c,w);
   } else if (c=="colstretch") {
     QStringList opt=qsplit(s);
     int c,s=0;
     int n=opt.size();
-    if (2>n) {
+    if ((2>n) || (n&1)) {
       error("grid colstretch must specify column and stretch");
       return;
     }
-    c=c_strtoi(q2s(opt.at(0)));
-    s=c_strtoi(q2s(opt.at(1)));
-    if ((c<0)||(s<0)) {
-      error("grid colstretch column and stretch must be non-negative");
-      return;
+    for (int i=0; i<n ; i+=2) {
+      c=c_strtoi(q2s(opt.at(i)));
+      s=c_strtoi(q2s(opt.at(i+1)));
+      if ((c<0)||(s<0)) {
+        error("grid colstretch column and stretch must be non-negative");
+        return;
+      }
+      if (layout->razed && (layout->cmax<=c)) {
+        error("grid colstretch invalid column");
+        return;
+      }
+      ((QGridLayout *)(layout->bin))->setColumnStretch(c,s);
     }
-    if (layout->razed && (layout->cmax<=c)) {
-      error("grid colstretch invalid column");
-      return;
-    }
-    ((QGridLayout *)(layout->bin))->setColumnStretch(c,s);
   } else if (c=="rowheight") {
     QStringList opt=qsplit(s);
     int r,h=0;
     int n=opt.size();
-    if (2>n) {
+    if ((2>n) || (n&1)) {
       error("grid row height must specify row and height");
       return;
     }
-    r=c_strtoi(q2s(opt.at(0)));
-    h=c_strtoi(q2s(opt.at(1)));
-    if ((r<0)||(h<0)) {
-      error("grid rowheight row and height must be non-negative");
-      return;
+    for (int i=0; i<n ; i+=2) {
+      r=c_strtoi(q2s(opt.at(i)));
+      h=c_strtoi(q2s(opt.at(i+1)));
+      if ((r<0)||(h<0)) {
+        error("grid rowheight row and height must be non-negative");
+        return;
+      }
+      if (layout->razed && (layout->rmax>=0) && (layout->rmax<=r)) {
+        error("grid rowheight invalid row");
+        return;
+      }
+      ((QGridLayout *)(layout->bin))->setRowMinimumHeight(r,h);
     }
-    if (layout->razed && (layout->rmax<=r)) {
-      error("grid rowheight invalid row");
-      return;
-    }
-    ((QGridLayout *)(layout->bin))->setRowMinimumHeight(r,h);
   } else if (c=="rowstretch") {
     QStringList opt=qsplit(s);
     int r,s=0;
     int n=opt.size();
-    if (2>n) {
+    if ((2>n) || (n&1)) {
       error("grid row stretch must specify row and height");
       return;
     }
-    r=c_strtoi(q2s(opt.at(0)));
-    s=c_strtoi(q2s(opt.at(1)));
-    if ((r<0)||(s<0)) {
-      error("grid rowstretch row and stretch must be non-negative");
-      return;
+    for (int i=0; i<n ; i+=2) {
+      r=c_strtoi(q2s(opt.at(i)));
+      s=c_strtoi(q2s(opt.at(i+1)));
+      if ((r<0)||(s<0)) {
+        error("grid rowstretch row and stretch must be non-negative");
+        return;
+      }
+      if (layout->razed && (layout->rmax>=0) && (layout->rmax<=r)) {
+        error("grid rowstretch invalid row");
+        return;
+      }
+      ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
     }
-    if (layout->razed && (layout->rmax<=r)) {
-      error("grid rowstretch invalid row");
-      return;
-    }
-    ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
   } else
     error("bad grid command");
 }
