@@ -36,7 +36,8 @@
 #define CHKPAINTER  if (!form) return 1; \
   if (!form->isigraph) return 1; \
   Isigraph2 *w = (Isigraph2 *)form->isigraph->widget; \
-  if (!w->painter) return 1;
+  if (!w->painter) return 1; \
+  if (!w->painter->isActive()) return 1;
 #define CHKPAINTER2 if (!form) return 1; \
   if (!form->isigraph) return 1; \
   Isigraph2 *w = (Isigraph2 *)form->isigraph->widget; \
@@ -595,19 +596,19 @@ int glclear2(void *p,int clear)
   w->orgy = 0;
   w->clipped = 0;
 
-  if (w->painter) w->painter->setPen(QPen(QColor(255, 255, 255),1));
-  if (w->painter) w->painter->setBrush(QBrush(QColor(255, 255, 255)));
+  if (w->painter && w->painter->isActive()) w->painter->setPen(QPen(QColor(255, 255, 255),1));
+  if (w->painter && w->painter->isActive()) w->painter->setBrush(QBrush(QColor(255, 255, 255)));
 #ifndef GLPRINTER
-  if (clear && w->painter) w->painter->drawRect(0, 0, w->width(), w->height());
+  if (clear && w->painter && w->painter->isActive()) w->painter->drawRect(0, 0, w->width(), w->height());
 #endif
 
   w->pen = QPen(w->color, 1);  // TODO in user space
   w->textpen = QPen(w->pen);
-  if (w->painter) w->painter->setPen(w->pen);
+  if (w->painter && w->painter->isActive()) w->painter->setPen(w->pen);
   w->brushcolor = QColor(255, 255, 255);
   w->brush = QBrush(w->brushcolor);
   w->brushnull = 1;
-  if (w->painter) w->painter->setBrush(Qt::NoBrush);
+  if (w->painter && w->painter->isActive()) w->painter->setBrush(Qt::NoBrush);
   w->textx = 0;
   w->texty = 0;
   w->textcolor = QColor(w->color);

@@ -64,7 +64,7 @@ void Drawobj::resize(int w, int h)
     pixmap=new QPixmap(w,h);
     painter=new QPainter(pixmap);
   }
-  painter->setRenderHint(QPainter::Antialiasing, true);
+  if (painter->isActive()) painter->setRenderHint(QPainter::Antialiasing, true);
   m_width=w;
   m_height=h;
 }

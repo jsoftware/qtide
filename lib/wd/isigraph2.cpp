@@ -16,6 +16,7 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 {
   Q_UNUSED(parent);
   pchild = c;
+  type=pchild->type;
   painter=0;
   font=0;
   pixmap=0;
@@ -30,7 +31,7 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
 // ---------------------------------------------------------------------
 void Isigraph2::fill(const int *p)
 {
-  QColor c(*(p), *(p + 1), *(p + 2));
+  QColor c(*(p), *(p + 1), *(p + 2), *(p + 3));
   if (pixmap)
     pixmap->fill(c);
   else
@@ -41,7 +42,7 @@ void Isigraph2::fill(const int *p)
 QPixmap Isigraph2::getpixmap()
 {
   QPixmap m;
-  if (pixmap)
+  if (pixmap && !pixmap->isNull())
     return pixmap->copy(0,0,width(),height());
   if (painter) return m;
   QPixmap p(size());
@@ -62,7 +63,7 @@ void Isigraph2::paintEvent(QPaintEvent *event)
 // ---------------------------------------------------------------------
 void Isigraph2::paintEvent_isidraw()
 {
-  if (!pixmap) return;
+  if (!pixmap || pixmap->isNull()) return;
   QPainter p(this);
   p.drawPixmap(0,0,*pixmap,0,0,width(),height());
 }
@@ -74,7 +75,7 @@ void Isigraph2::paintEvent_isigraph()
   form=pchild->pform;
   form->isigraph=(Child *) this;
   painter=new QPainter(this);
-  painter->setRenderHint(QPainter::Antialiasing, true);
+  if (painter->isActive()) painter->setRenderHint(QPainter::Antialiasing, true);
   pchild->event="paint";
   pchild->pform->signalevent(pchild);
   paintend();
@@ -84,7 +85,7 @@ void Isigraph2::paintEvent_isigraph()
 void Isigraph2::paintend()
 {
   if (painter) {
-    painter->end();
+    if (painter->isActive()) painter->end();
     delete painter;
     painter=0;
   }
@@ -101,16 +102,18 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
     if (w > pixmap->width() || h > pixmap->height()) {
       if (painter) delete painter;
       QPixmap *p=new QPixmap(w+128,h+128);
+      p->fill(QColor(0,0,0,0));
       painter=new QPainter(p);
       painter->drawPixmap(QPoint(0,0),*pixmap);
       delete pixmap;
       pixmap=p;
     }
   } else {
-    pixmap=new QPixmap(w,h);
+    pixmap=new QPixmap(w+128,h+128);
+    pixmap->fill(QColor(0,0,0,0));
     painter=new QPainter(pixmap);
   }
-  painter->setRenderHint(QPainter::Antialiasing, true);
+  if (painter->isActive()) painter->setRenderHint(QPainter::Antialiasing, true);
   pchild->event="resize";
   pchild->pform->signalevent(pchild);
 }

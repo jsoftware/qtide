@@ -11,7 +11,6 @@ Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type = "isidraw";
   Isigraph2 *w= new Isigraph2(this, p);
   widget=(QWidget *) w;
-  w->type=type;
   QString qn=s2q(n);
   w->setObjectName(qn);
   f->isigraph=this;
