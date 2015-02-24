@@ -12,13 +12,25 @@
 // if one button, there is no result,
 // otherwise the result is the button name (ok, cancel, ...)
 //
-// buttons are from the set:
+// buttons are from the set, a button starts with = is the default:
 //  mb_ok
-//  mb_cancel
-//  mb_yes
-//  mb_no
+//  mb_open
 //  mb_save
+//  mb_cancel
+//  mb_close
 //  mb_discard
+//  mb_apply
+//  mb_reset
+//  mb_restoredefaults
+//  mb_help
+//  mb_saveall
+//  mb_yes
+//  mb_yestoall
+//  mb_no
+//  mb_notoall
+//  mb_abort
+//  mb_retry
+//  mb_ignore
 
 #include <QApplication>
 #include <QColorDialog>
@@ -67,6 +79,7 @@ static QString getname(int);
 
 static string type;
 static QStringList arg;
+static QMessageBox::StandardButton defbutton;
 
 // ---------------------------------------------------------------------
 // c is type, p is parameter, possibly preceded by *
@@ -117,6 +130,7 @@ QString mbmsg()
   QString t,m;
 
   QMessageBox::StandardButton button1=getdefaultbutton();
+  defbutton=button1;
   QMessageBox::StandardButtons buttons=getotherbuttons();
 
   if (arg.size()==1) {
@@ -138,7 +152,7 @@ QString mbmsg()
   buttons|=button1;
 
   if (type=="query") {
-    r=QMessageBox::question(getmbparent(),t,m,buttons,button1);
+    r=QMessageBox::question(getmbparent(),t,m,buttons,defbutton);
     return getname(r);
   }
   if (type=="critical")
@@ -463,43 +477,96 @@ QString getname(int b)
 {
   if (b==QMessageBox::Ok)
     return "ok";
-  if (b==QMessageBox::Cancel)
-    return "cancel";
-  if (b==QMessageBox::Yes)
-    return "yes";
-  if (b==QMessageBox::No)
-    return "no";
+  if (b==QMessageBox::Open)
+    return "open";
   if (b==QMessageBox::Save)
     return "save";
+  if (b==QMessageBox::Cancel)
+    return "cancel";
+  if (b==QMessageBox::Close)
+    return "close";
   if (b==QMessageBox::Discard)
     return "discard";
+  if (b==QMessageBox::Apply)
+    return "apply";
+  if (b==QMessageBox::Reset)
+    return "reset";
+  if (b==QMessageBox::RestoreDefaults)
+    return "restoredefaults";
+  if (b==QMessageBox::Help)
+    return "help";
+  if (b==QMessageBox::SaveAll)
+    return "saveall";
+  if (b==QMessageBox::Yes)
+    return "yes";
+  if (b==QMessageBox::YesToAll)
+    return "yestoall";
+  if (b==QMessageBox::No)
+    return "no";
+  if (b==QMessageBox::NoToAll)
+    return "notoall";
+  if (b==QMessageBox::Abort)
+    return "abort";
+  if (b==QMessageBox::Retry)
+    return "retry";
+  if (b==QMessageBox::Ignore)
+    return "ignore";
   return "unknown button";
 }
 
 // ---------------------------------------------------------------------
-QMessageBox::StandardButton getonebutton()
+QMessageBox::StandardButton getonebutton(bool *def)
 {
   if (arg.isEmpty()) return QMessageBox::NoButton;
   QString s=arg.first();
+  if (s.startsWith("=")) {
+    *def=true;
+    s=s.mid(1);
+  }
   if (s=="mb_ok")
     return QMessageBox::Ok;
-  if (s=="mb_cancel")
-    return QMessageBox::Cancel;
-  if (s=="mb_yes")
-    return QMessageBox::Yes;
-  if (s=="mb_no")
-    return QMessageBox::No;
+  if (s=="mb_open")
+    return QMessageBox::Open;
   if (s=="mb_save")
     return QMessageBox::Save;
+  if (s=="mb_cancel")
+    return QMessageBox::Cancel;
+  if (s=="mb_close")
+    return QMessageBox::Close;
   if (s=="mb_discard")
     return QMessageBox::Discard;
+  if (s=="mb_apply")
+    return QMessageBox::Apply;
+  if (s=="mb_reset")
+    return QMessageBox::Reset;
+  if (s=="mb_restoredefaults")
+    return QMessageBox::RestoreDefaults;
+  if (s=="mb_help")
+    return QMessageBox::Help;
+  if (s=="mb_saveall")
+    return QMessageBox::SaveAll;
+  if (s=="mb_yes")
+    return QMessageBox::Yes;
+  if (s=="mb_yestoall")
+    return QMessageBox::YesToAll;
+  if (s=="mb_no")
+    return QMessageBox::No;
+  if (s=="mb_notoall")
+    return QMessageBox::NoToAll;
+  if (s=="mb_abort")
+    return QMessageBox::Abort;
+  if (s=="mb_retry")
+    return QMessageBox::Retry;
+  if (s=="mb_ignore")
+    return QMessageBox::Ignore;
   return QMessageBox::NoButton;
 }
 
 // ---------------------------------------------------------------------
 QMessageBox::StandardButton getdefaultbutton()
 {
-  QMessageBox::StandardButton r=getonebutton();
+  bool def=false;
+  QMessageBox::StandardButton r=getonebutton(&def);
   if (r!=QMessageBox::NoButton)
     arg.removeFirst();
   return r;
@@ -510,11 +577,13 @@ QMessageBox::StandardButtons getotherbuttons()
 {
   QMessageBox::StandardButtons r=QMessageBox::NoButton;
   QMessageBox::StandardButton b;
+  bool def=false;
   while (arg.size()) {
-    b=getonebutton();
+    b=getonebutton(&def);
     if (b==QMessageBox::NoButton)
       return r;
     r|=b;
+    if (def) defbutton=b;
     arg.removeFirst();
   }
   return r;
