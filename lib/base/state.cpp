@@ -78,17 +78,17 @@ void Config::config_init()
 #endif
   s=cpath("~addons/ide/qt/config/");
   foreach (QString f,c)
-  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
-    t=cfread(s+f);
-    cfwrite(ConfigPath.filePath(f),t);
-  }
+    if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f))) {
+      t=cfread(s+f);
+      cfwrite(ConfigPath.filePath(f),t);
+    }
 
   c.empty();
   c << "base.cfg" << "folders.cfg";
   s=cpath("~system/config/");
   foreach (QString f,c)
-  if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
-    cfwrite(ConfigPath.filePath(f),cfread(s+f));
+    if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
+      cfwrite(ConfigPath.filePath(f),cfread(s+f));
 }
 
 // ---------------------------------------------------------------------

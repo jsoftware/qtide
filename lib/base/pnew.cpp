@@ -154,7 +154,7 @@ void Pnew::on_create_clicked()
     p.replace(i,defext(p.at(i)));
   p.removeDuplicates();
   foreach(QString m,p)
-  cfcreate(Dir->filePath(m));
+    cfcreate(Dir->filePath(m));
 
   t=config.DefCCmt;
   m=t+" project:\n"+t+"\n"+t+" defines list of source files.\n";

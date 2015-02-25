@@ -56,7 +56,7 @@ Picm::Picm()
 void Picm::closeit()
 {
   foreach (QString s,Temps)
-  cfdelete(s);
+    cfdelete(s);
   config.winpos_save(this,"Picm");
   close();
 }
@@ -299,7 +299,7 @@ bool pic_inidir(QString s)
     qSort(e);
     e.removeLast();
     foreach (const QString m,e)
-    snaprmdir(h.filePath(m));
+      snaprmdir(h.filePath(m));
   }
   return ss_mkdir(s);
 }

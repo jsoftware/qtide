@@ -1,5 +1,6 @@
 #include <QAction>
 #include <QApplication>
+#include <QClipboard>
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QTime>
@@ -143,11 +144,11 @@ void Term::cleantemp()
   d.setFilter(QDir::Files|QDir::Writable);
   QStringList t=d.entryList(QStringList() << "*.ijs");
   foreach (QString e,t)
-  if (re.exactMatch(e.left(e.size()-4))) {
-    QFile f(d.filePath(e));
-    if (f.size()==0)
-      f.remove();
-  }
+    if (re.exactMatch(e.left(e.size()-4))) {
+      QFile f(d.filePath(e));
+      if (f.size()==0)
+        f.remove();
+    }
 }
 
 // ---------------------------------------------------------------------
@@ -163,6 +164,12 @@ bool Term::filequit(bool ignoreconfirm)
   dlog_write();
   if (note && (!note->saveall())) return false;
   if (note2 && (!note2->saveall())) return false;
+
+// save clipboard
+  QClipboard *clipboard = QApplication::clipboard();
+  QEvent e=QEvent(QEvent::Clipboard);
+  QApplication::sendEvent(clipboard,&e);
+
 #ifdef QT_OS_ANDROID
 // QMessageBox not work inside keypress event
   if (ignoreconfirm) {

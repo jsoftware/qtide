@@ -100,7 +100,7 @@ void Dirm::copyfiles(QStringList s)
   QString m="OK to copy:\n\n" + s.join("\n");
   if (!queryNY(Title,m)) return;
   foreach (const QString f, s)
-  copys2t(f);
+    copys2t(f);
   match_refresh(true);
 }
 
@@ -234,31 +234,31 @@ void Dirm::match_fmt(bool done)
   Found.clear();
 
   foreach (const QString &s, NotInSource)
-  len=qMax(len,s.size());
+    len=qMax(len,s.size());
   foreach (const QString &s, NotInTarget)
-  len=qMax(len,s.size());
+    len=qMax(len,s.size());
   foreach (const QString &s, Diff)
-  len=qMax(len,s.size());
+    len=qMax(len,s.size());
   len+=2;
 
   if(NotInSource.size()) {
     Found.append("not in source:");
     foreach (const QString &s, NotInSource)
-    Found.append(match_fmt1(s,Target,len));
+      Found.append(match_fmt1(s,Target,len));
   }
 
   if(NotInTarget.size()) {
     if(Found.size()) Found.append("");
     Found.append("not in target:");
     foreach (const QString &s, NotInTarget)
-    Found.append(match_fmt1(s,Source,len));
+      Found.append(match_fmt1(s,Source,len));
   }
 
   if(Diff.size()) {
     if(Found.size()) Found.append("");
     Found.append("different contents - source,target:");
     foreach (const QString &s, Diff)
-    Found.append(match_fmt2(s,len));
+      Found.append(match_fmt2(s,len));
     Found.removeLast();
 
   }

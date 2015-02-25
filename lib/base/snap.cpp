@@ -142,8 +142,8 @@ QStringList ss_files(QString s)
   QStringList x=cflist(s,config.Snapshotx);
   QStringList r;
   foreach(QString s,y)
-  if(!x.contains(s))
-    r << s;
+    if(!x.contains(s))
+      r << s;
   return r;
 }
 

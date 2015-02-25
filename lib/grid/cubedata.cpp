@@ -27,7 +27,7 @@ bool WGrid::getgrid()
   QVector<int>clsreps=axisreps(p->AxisCols);
 
   foreach (i, p->AxisSlice)
-  ndx.append(p->AxisIndex[i]);
+    ndx.append(p->AxisIndex[i]);
   arg=intlist2qs(p->AxisRows)+ ";" +  intlist2qs(p->AxisCols) + ";";
   if (p->AxisSlice.isEmpty())
     arg+="'';'';";

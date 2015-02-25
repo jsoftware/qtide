@@ -991,7 +991,7 @@ void Table::setselect(string v)
   row=qMax(r1,r2);
   col=qMax(c1,c2);
   foreach(QTableWidgetSelectionRange r,w->selectedRanges())
-  w->setRangeSelected(r,false);
+    w->setRangeSelected(r,false);
   QTableWidgetSelectionRange r(markrow,markcol,row,col);
   w->setRangeSelected(r,true);
   w->scrollToItem(w->item(markrow,markcol),QAbstractItemView::EnsureVisible);

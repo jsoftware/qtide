@@ -680,8 +680,8 @@ QStringList qslexists(QStringList s)
 {
   QStringList r;
   foreach (QString f,s)
-  if (cfexist(f))
-    r.append(f);
+    if (cfexist(f))
+      r.append(f);
   return r;
 }
 

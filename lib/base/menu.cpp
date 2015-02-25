@@ -472,7 +472,7 @@ void Menu::createtoolsMenu(QString s)
 void Menu::createuserkeyMenu()
 {
   foreach (QStringList f, config.UserKeys)
-  userkeyMenu->addAction(makeuseract(f[2],f[0]));
+    userkeyMenu->addAction(makeuseract(f[2],f[0]));
 }
 
 // ---------------------------------------------------------------------
@@ -1147,7 +1147,7 @@ void Note::on_winscriptsAct_triggered()
   QString p=cpath("~"+Id);
   QStringList f=qslreverse(cflistfull(p,config.ScriptFilter));
   foreach (QString s,f)
-  fileopen(s);
+    fileopen(s);
 }
 
 // ---------------------------------------------------------------------
@@ -1158,7 +1158,7 @@ void Note::on_winsourceAct_triggered()
   QStringList f=qslreverse(cfreadx(pf));
   f=qslprependeach(p + "/",f);
   foreach (QString s,f)
-  fileopen(s);
+    fileopen(s);
 }
 
 // ---------------------------------------------------------------------
@@ -1167,7 +1167,7 @@ void Note::on_wintextAct_triggered()
   QString p=cpath("~"+Id);
   QStringList f=qslreverse(cflisttext(p));
   foreach (QString s,f)
-  fileopen(s);
+    fileopen(s);
 }
 
 // ---------------------------------------------------------------------

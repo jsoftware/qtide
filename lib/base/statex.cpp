@@ -139,7 +139,7 @@ void Config::userkeys_init()
   QStringList v=getuserkeys();
   t=cfreadx(ConfigPath.filePath("userkeys.cfg"));
   foreach (QString f,t)
-  UserKeys.append(userkeys_split(f));
+    UserKeys.append(userkeys_split(f));
   foreach (QStringList f,UserKeys) {
     if (!v.contains(f.first())) {
       err+="User key not available: "+f.first();
