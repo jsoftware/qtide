@@ -1,4 +1,5 @@
 
+#include <QIcon>
 #include "tabwidget.h"
 #include "wd.h"
 #include "tabs.h"
@@ -79,7 +80,16 @@ void Tabs::set(string p,string v)
     w->removeTab(ndx);
   else if (p=="label") {
     if (opt.size()<2) return;
-    w->setTabText(ndx,opt.at(1));
+    w->setTabText(ndx,s2q(remquotes(q2s(opt.at(1)))));
+  } else if (p=="tabenabled") {
+    if (opt.size()<2) w->setTabEnabled(ndx,true);
+    w->setTabEnabled(ndx,remquotes(q2s(opt.at(1)))!="0");
+  } else if (p=="icon") {
+    if (opt.size()<2) return;
+    w->setTabIcon(ndx,QIcon(s2q(remquotes(q2s(opt.at(1))))));
+  } else if (p=="tooltip") {
+    if (opt.size()<2) w->setTabToolTip(ndx,"");
+    w->setTabToolTip(ndx,s2q(remquotes(q2s(opt.at(1)))));
   } else Child::set(p,v);
 }
 
