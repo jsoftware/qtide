@@ -24,7 +24,9 @@ ScrollArea::ScrollArea(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #endif
   widget=(QWidget*) w;
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   view=f->children.last();
   w->setWidget(view->widget);
   w->setWidgetResizable(true);

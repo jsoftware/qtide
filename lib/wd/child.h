@@ -47,6 +47,8 @@ public:
   Pane *ppane;
   QWidget *widget;
 
+protected:
+  void childStyle(QStringList);
 };
 
 #endif

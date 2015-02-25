@@ -24,8 +24,9 @@ TimeEdit::TimeEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QTimeEdit *w=new QTimeEdit;
   QString qn=s2q(n);
   widget=(QWidget*) w;
-  w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  childStyle(opt);
 
   int i=0;
   double v;

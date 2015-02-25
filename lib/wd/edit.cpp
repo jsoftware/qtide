@@ -20,6 +20,7 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
   focusSelect=false;
+  childStyle(opt);
 
   if (opt.contains("password"))
     w->setEchoMode(QLineEdit::Password);

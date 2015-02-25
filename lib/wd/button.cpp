@@ -17,6 +17,7 @@ Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   w->setText(qn);
   if (opt.contains("default"))
     w->setAutoDefault(true);

@@ -20,8 +20,9 @@ SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QSpinBox *w=new QSpinBox;
   QString qn=s2q(n);
   widget=(QWidget*) w;
-  w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  childStyle(opt);
   w->setLocale(QLocale::C);
 
   int i=0;

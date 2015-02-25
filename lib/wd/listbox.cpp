@@ -22,6 +22,7 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   if (opt.contains("multiple"))
     w->setSelectionMode(QAbstractItemView::ExtendedSelection);
 

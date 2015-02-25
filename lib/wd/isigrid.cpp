@@ -11,12 +11,15 @@
 IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="isigrid";
+  QString qn=s2q(n);
   QStringList opt=qsplit(s);
   if (opt.size()==0)
     style="";
   else
     style=opt[0];
   widget=new QGrid(style,this,p);
+  widget->setObjectName(qn);
+  childStyle(opt);
 }
 
 // ---------------------------------------------------------------------

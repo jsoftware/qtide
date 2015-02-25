@@ -12,7 +12,9 @@ Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   Isigraph2 *w= new Isigraph2(this, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   f->isigraph=this;
 }
 

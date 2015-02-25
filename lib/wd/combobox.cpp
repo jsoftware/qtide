@@ -20,7 +20,9 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (s.substr(0,4)=="edit")
     w->setEditable(true);
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   connect(w,SIGNAL(activated(int)),
           this,SLOT(activated()));
 }

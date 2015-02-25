@@ -67,8 +67,9 @@ DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QDateEdit *w=new QDateEdit;
   QString qn=s2q(n);
   widget=(QWidget*) w;
-  w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  childStyle(opt);
 
   w->setCalendarPopup(true);
 

@@ -26,6 +26,7 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QScrollArea *w = new QScrollArea;
   widget=(QWidget *) w;
   w->setObjectName(qn);
+  childStyle(opt);
   w->setBackgroundRole(QPalette::Dark);
   w->setContentsMargins(0,0,0,0);
   w->setWidget(lab);

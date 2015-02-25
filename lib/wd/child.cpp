@@ -18,6 +18,12 @@ Child::Child(string n, string s, Form *f, Pane *p)
 }
 
 // ---------------------------------------------------------------------
+void Child::childStyle(QStringList opt)
+{
+  Q_UNUSED(opt);
+}
+
+// ---------------------------------------------------------------------
 void Child::cmd(string p, string v)
 {
   Q_UNUSED(p);
@@ -41,30 +47,31 @@ string Child::getsysdata()
 // ---------------------------------------------------------------------
 void Child::set(string p, string v)
 {
-  if (!widget) return;
-  if (p=="enable")
-    widget->setEnabled(remquotes(v)!="0");
-  else if (p=="locale")
+  if (p=="enable") {
+    if (widget) widget->setEnabled(remquotes(v)!="0");
+  } else if (p=="locale") {
     locale=remquotes(v);
-  else if (p=="focus")
-    widget->setFocus();
-  else if (p=="focuspolicy")
+  } else if (p=="focus") {
+    if (widget) widget->setFocus();
+  } else if (p=="focuspolicy") {
     setfocuspolicy(v);
-  else if (p=="font")
+  } else if (p=="font") {
     setfont((Font(v)).font);
-  else if (p=="invalid")
-    widget->update();
-  else if (p=="show")
-    widget->setVisible(remquotes(v)!="0");
-  else if (p=="stylesheet")
+  } else if (p=="invalid") {
+    if (widget) widget->update();
+  } else if (p=="nofocus") {
+    if (widget) widget->setFocusPolicy(Qt::NoFocus);
+  } else if (p=="show") {
+    if (widget) widget->setVisible(remquotes(v)!="0");
+  } else if (p=="stylesheet") {
     setstylesheet(v);
-  else if (p=="tooltip")
+  } else if (p=="tooltip") {
     settooltip(v);
-  else if (p=="wh")
+  } else if (p=="wh") {
     setwh(v);
-  else if (p=="minwh")
+  } else if (p=="minwh") {
     setminwhv(v);
-  else
+  } else
     error("set command not recognized: " + p);
 }
 
@@ -92,7 +99,7 @@ void Child::setfocuspolicy(string p)
 // ---------------------------------------------------------------------
 void Child::setform()
 {
-  if (widget) form=pform;
+  form=pform;
 }
 
 // ---------------------------------------------------------------------

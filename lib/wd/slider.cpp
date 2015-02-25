@@ -23,8 +23,9 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QSlider *w=new QSlider(Qt::Horizontal);
   QString qn=s2q(n);
   widget=(QWidget*) w;
-  w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  childStyle(opt);
 
   int i=0;
   if ((i<opt.size()) && (opt.at(i)=="v")) {

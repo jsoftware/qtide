@@ -5,6 +5,7 @@
 #include "checkbox.h"
 #include "form.h"
 #include "pane.h"
+#include "cmd.h"
 
 // ---------------------------------------------------------------------
 CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
@@ -16,7 +17,9 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #endif
   widget=(QWidget*) w;
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   w->setText(qn);
   connect(w,SIGNAL(stateChanged(int)),
           this,SLOT(stateChanged()));

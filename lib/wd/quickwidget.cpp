@@ -45,6 +45,7 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
+  childStyle(m);
   connect(w, SIGNAL(statusChanged( QQuickWidget::Status )), this, SLOT(statusChanged( QQuickWidget::Status)));
   connect(w, SIGNAL(sceneGraphError(QQuickWindow::SceneGraphError,QString)), this, SLOT(sceneGraphError(QQuickWindow::SceneGraphError,QString)));
 }

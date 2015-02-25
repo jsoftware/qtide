@@ -22,6 +22,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
 
   w->setObjectName(qn);
+  childStyle(opt);
   w->setUsesScrollButtons(true);
 
   if (opt.contains("documentmode"))

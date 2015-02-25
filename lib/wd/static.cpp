@@ -17,6 +17,7 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   w->setWordWrap(true);
   if (s.substr(0,9)!="staticbox")
     w->setText(qn);

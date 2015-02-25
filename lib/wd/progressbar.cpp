@@ -14,8 +14,9 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QProgressBar *w=new QProgressBar;
   widget=(QWidget*) w;
   QString qn=s2q(n);
-  w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setObjectName(qn);
+  childStyle(opt);
 
   int i=0;
   if ((i<opt.size()) && (opt.at(i)=="v")) {

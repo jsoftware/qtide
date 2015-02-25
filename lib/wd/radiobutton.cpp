@@ -7,6 +7,7 @@
 #include "form.h"
 #include "pane.h"
 #include "radiobutton.h"
+#include "cmd.h"
 
 // ---------------------------------------------------------------------
 RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
@@ -15,7 +16,9 @@ RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QRadioButton *w=new QRadioButton;
   widget=(QWidget*) w;
   QString qn=s2q(n);
+  QStringList opt=qsplit(s);
   w->setObjectName(qn);
+  childStyle(opt);
   w->setText(qn);
 
   if (s=="group" && ppane->lasttype=="radiobutton") {
