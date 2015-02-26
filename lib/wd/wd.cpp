@@ -45,6 +45,7 @@
 #ifndef QT_NO_QUICKVIEW2
 #include "quickview2.h"
 #endif
+#include "../base/tedit.h"
 #include "../base/term.h"
 #include "../base/state.h"
 #include "../base/view.h"
@@ -121,6 +122,7 @@ static void wdstate(Form *,int);
 static void wdtab(string);
 static void wdtextview();
 static void wdtimer();
+static void wdverbose();
 static void wdversion();
 static void wdwh();
 #ifdef QTWEBSOCKET
@@ -147,8 +149,10 @@ int rc;
 static string lasterror="";
 static string result="";
 
-string cmdstr;
-string ccmd;
+static string ccmd="";
+
+static int verbose=0;
+static string cmdstrparms="";
 
 // ---------------------------------------------------------------------
 int wd(char *s,int slen,char *&res,int &len)
@@ -168,12 +172,18 @@ int wd(char *s,int slen,char *&res,int &len)
 // subroutines may set int rc and wd1 returns if non-zero
 void wd1()
 {
-  string c,p;
+  string c;
   while ((rc==0) && cmd.more()) {
-    cmdstr=cmd.getcmdstr();
     c=cmd.getid();
-    ccmd=c;
     if (c.empty()) continue;
+    ccmd=c;
+    if (verbose && c!="qer") {
+      cmd.markpos();
+      cmdstrparms=c + " " + cmd.getparms();
+      cmd.rewindpos();
+      if (2==verbose && tedit && ShowIde) tedit->append_smoutput("wd command: " + s2q(cmdstrparms));
+      if (3==verbose) qDebug() << "wd command: " + s2q(cmdstrparms);
+    }
     if (c=="q")
       wdq();
     else if (c=="bin")
@@ -256,6 +266,8 @@ void wd1()
       wdtextview();
     else if (c=="timer")
       wdtimer();
+    else if (c=="verbose")
+      wdverbose();
     else if (c=="version")
       wdversion();
     else if (c=="minwh")
@@ -878,7 +890,11 @@ void wdqueries(string s)
 
   rc=-1;
   if (s=="qer") {
-    result=lasterror;
+    if (verbose)
+      result=lasterror + "\012" + cmdstrparms;
+    else result=lasterror;
+    if (2==verbose && tedit && ShowIde) tedit->append_smoutput("wd **error: " + s2q(lasterror));
+    if (3==verbose) qDebug() << "wd **error: " + s2q(lasterror);
     return;
   }
 // queries that form not needed
@@ -1177,6 +1193,10 @@ void wdreset()
     delete FontExtent;
     FontExtent=0;
   }
+  lasterror="";
+  result="";
+  verbose=0;
+  cmdstrparms="";
 }
 
 // ---------------------------------------------------------------------
@@ -1323,6 +1343,21 @@ void wdws()
 #endif
 
 // ---------------------------------------------------------------------
+void wdverbose()
+{
+  string p=cmd.getparms();
+  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  if (n.empty())
+    error("verbose requires 1 number: " + p);
+  else {
+    int i=c_strtoi(q2s(n.at(0)));
+    if (!(i>=0 && i<=3))
+      error("verbose should be 0,1,2 or 3: " + p);
+    else verbose=i;
+  }
+}
+
+// ---------------------------------------------------------------------
 void wdversion()
 {
   cmd.getparms();
@@ -1359,8 +1394,6 @@ void error(string s)
 bool nochild()
 {
   if (cc) return false;
-// TODO
-  qDebug() << "no child selected (nochild) " + s2q(cmdstr);
   error("no child selected");
   return true;
 }
@@ -1411,8 +1444,5 @@ int setchild(string id)
   if (cc) return 1;
   cc=form->setmenuid(id);
   if (cc) return 2;
-// TODO
-  qDebug() << "no child selected (setchild) " + s2q(cmdstr);
-//  nochild();
   return 0;
 }

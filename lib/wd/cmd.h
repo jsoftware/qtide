@@ -15,8 +15,9 @@ public:
   void init(char *,int);
   bool more();
 
-  string getcmdstr();
   string remws(string s);
+  void markpos();
+  void rewindpos();
 
   QStringList bsplits();
   QStringList qsplits();
@@ -30,6 +31,7 @@ private:
   size_t bgn;
   size_t len;
   size_t pos;
+  size_t pos0;
   string str;
 };
 

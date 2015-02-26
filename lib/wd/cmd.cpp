@@ -25,7 +25,7 @@ void Cmd::init(char *s,int slen)
   str=string(s,slen);
   str=toLF(str);
   len=str.size();
-  bgn=pos=0;
+  bgn=pos=pos0=0;
 }
 
 // ---------------------------------------------------------------------
@@ -330,7 +330,13 @@ string toLF(string s)
 }
 
 // ---------------------------------------------------------------------
-string Cmd::getcmdstr()
+void Cmd::markpos()
 {
-  return str.substr(pos);
+  pos0=pos;
+}
+
+// ---------------------------------------------------------------------
+void Cmd::rewindpos()
+{
+  pos=pos0;
 }
