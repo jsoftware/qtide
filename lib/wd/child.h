@@ -26,6 +26,7 @@ public:
   virtual void setfont(QFont);
   virtual void setform();
   virtual void setfocuspolicy(string p);
+  virtual void setsizepolicy(string p);
   virtual void setstylesheet(string p);
   virtual void settooltip(string p);
   virtual string state();
