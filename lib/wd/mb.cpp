@@ -46,24 +46,24 @@
 #include "../base/state.h"
 
 QString mb(string,string);
-QString mbabout();
-QString mbcolor();
-QString mbdir();
-QString mbfont();
-QString mbinput();
-QString mbmsg();
-QString mbopen();
-QString mbopen1();
-QString mbprint(bool);
-QString mbprintx(bool);
-QString mbsave();
+static QString mbabout();
+static QString mbcolor();
+static QString mbdir();
+static QString mbfont();
+static QString mbinput();
+static QString mbmsg();
+static QString mbopen();
+static QString mbopen1();
+static QString mbprint(bool);
+static QString mbprintx(bool);
+static QString mbsave();
 
-QString fixsep(QString s);
+static QString fixsep(QString s);
 
-QMessageBox::StandardButton getdefaultbutton();
-QMessageBox::StandardButton getonebutton();
-QMessageBox::StandardButtons getotherbuttons();
-QString getname(int);
+static QMessageBox::StandardButton getdefaultbutton();
+static QMessageBox::StandardButton getonebutton();
+static QMessageBox::StandardButtons getotherbuttons();
+static QString getname(int);
 
 static string type;
 static QStringList arg;

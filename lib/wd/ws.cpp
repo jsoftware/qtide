@@ -6,8 +6,8 @@
 
 using namespace std;
 
-WsSvr *wssvr;
-WsCln *wscln;
+static WsSvr *wssvr;
+static WsCln *wscln;
 
 string ws(string p);
 static string wsconnect();

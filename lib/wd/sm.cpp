@@ -11,21 +11,21 @@
 
 extern int rc;
 
-string smerror(string);
-string smfocus(string);
-string smget(string);
-string smgetactive();
-string smgetwin(string);
-string smgetwin1(Bedit *);
-string smgetxywh();
-string smgetxywh1(QWidget *);
-string smsave(string);
-string smsaveactive();
-string smsaveall();
-string smset(string);
-string smsetselect(Bedit *,QStringList);
-string smsettext(QString);
-string smsetxywh(QWidget *,QStringList);
+static string smerror(string);
+static string smfocus(string);
+static string smget(string);
+static string smgetactive();
+static string smgetwin(string);
+static string smgetwin1(Bedit *);
+static string smgetxywh();
+static string smgetxywh1(QWidget *);
+static string smsave(string);
+static string smsaveactive();
+static string smsaveall();
+static string smset(string);
+static string smsetselect(Bedit *,QStringList);
+static string smsettext(QString);
+static string smsetxywh(QWidget *,QStringList);
 
 // ---------------------------------------------------------------------
 // c is type, p is parameter

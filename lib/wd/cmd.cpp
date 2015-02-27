@@ -2,16 +2,16 @@
 #include "wd.h"
 #include "cmd.h"
 
-char DEL='\177';
-char LF='\n';
-char SOH='\001';
-string WS=" \f\r\t\v";
-string WSLF=WS+LF;
+static char DEL='\177';
+static char LF='\n';
+static char SOH='\001';
+static string WS=" \f\r\t\v";
+static string WSLF=WS+LF;
 
-bool contains(string s,char c);
-QStringList qsplitby(string s, char c);
-vector<string> ssplitby(string s, char c);
-string toLF(string s);
+static bool contains(string s,char c);
+static QStringList qsplitby(string s, char c);
+static vector<string> ssplitby(string s, char c);
+static string toLF(string s);
 
 // ---------------------------------------------------------------------
 void Cmd::end()
