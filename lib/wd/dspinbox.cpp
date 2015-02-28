@@ -23,6 +23,7 @@ DSpinBox::DSpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   w->setObjectName(qn);
   QStringList opt=qsplit(s);
+  w->setLocale(QLocale::C);
 
   int i=0;
   if (i<opt.size()) {
