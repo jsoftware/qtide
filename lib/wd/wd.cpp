@@ -135,6 +135,7 @@ static bool nochildset(string id);
 static bool noform();
 static bool notab();
 static int setchild(string id);
+static string formchildid();
 
 static Cmd cmd;
 static Child *cc=0;
@@ -898,10 +899,7 @@ void wdqueries(string s)
     return;
   }
 // queries that form not needed
-  if (s=="qm"||s=="qcolor") {
-    error("command not found");
-    return;
-  } else if (s=="qscreen") {
+  if (s=="qscreen") {
     if (!app) {
       error("command failed: no QApplication");
       return;
@@ -1034,11 +1032,13 @@ void wdqueries(string s)
     result=form->qform();
   else if (s=="qhwndc") {
     Child *cc;
+    if (p=="_") p=formchildid();
     if ((cc=form->id2child(p))) result=p2s(cc);
     else
       error("command failed: " + s);
   } else if (s=="qchildxywh") {
     Child *cc;
+    if (p=="_") p=formchildid();
     if ((cc=form->id2child(p)) && cc->widget) {
       QWidget *p0, *p1;
       p0=p1=cc->widget;
@@ -1221,6 +1221,7 @@ void wdsetx(string c)
 void wdset1(string n,string p,string v)
 {
   noevents(1);
+  if (n=="_") n=formchildid();
   int type=setchild(n);
   switch (type) {
   case 1 :
@@ -1445,4 +1446,13 @@ int setchild(string id)
   cc=form->setmenuid(id);
   if (cc) return 2;
   return 0;
+}
+
+// ---------------------------------------------------------------------
+// returns: id of current form child
+string formchildid()
+{
+  if (noform()) return "";
+  if (!form->child) return "";
+  return form->child->id;
 }
