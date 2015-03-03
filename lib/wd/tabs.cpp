@@ -20,6 +20,11 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   form->tab=this;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
+  QStringList unopt=qsless(qsless(opt,qsplit("documentmode movable closable east west south nobar")),defChildStyle);
+  if (unopt.size()) {
+    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    return;
+  }
 
   w->setObjectName(qn);
   childStyle(opt);

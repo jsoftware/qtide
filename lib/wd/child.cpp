@@ -14,7 +14,15 @@ Child::Child(string n, string s, Form *f, Pane *p)
   parms=s;
   pform=f;
   ppane=p;
+  widget=0;
   locale="";
+}
+
+// ---------------------------------------------------------------------
+Child::~Child()
+{
+  if (widget) delete widget;
+  widget=0;
 }
 
 // ---------------------------------------------------------------------

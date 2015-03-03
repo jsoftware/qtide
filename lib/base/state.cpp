@@ -58,6 +58,7 @@ extern void regQmlJE();
 #endif
 
 extern bool FHS;
+extern void wdreset();
 
 using namespace std;
 
@@ -507,6 +508,13 @@ void state_init_resource()
 // ---------------------------------------------------------------------
 void state_quit()
 {
+  wdreset();
+  if (drawobj) delete drawobj;
+#ifndef QT_NO_PRINTER
+  if (Printer) delete Printer;
+  if (prtobj) delete prtobj;
+#endif
+  if (term) delete term;
   jcon->quit();
 }
 

@@ -43,7 +43,7 @@ public:
   void setpn(string p);
   void setpicon(string p);
   void settimer(string p);
-  void showit();
+  void showit(string p);
   void signalevent(Child *c, QKeyEvent *e = 0);
   string state(int evt);
   void status(string);

@@ -15,7 +15,7 @@ class Isigraph2 : public QWidget
 
 public:
   Isigraph2(Child *c, QWidget *parent);
-  ~Isigraph2();
+  virtual ~Isigraph2();
 
   void fill(const int *);
   QPixmap getpixmap();

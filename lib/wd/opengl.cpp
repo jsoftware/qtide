@@ -10,7 +10,13 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type = "opengl";
 
-  QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+  QString qn=s2q(n);
+  QStringList opt=qsplit(s);
+  QStringList unopt=qsless(qsless(opt,qsplit("version compatibility")),defChildStyle);
+  if (unopt.size() && !qsnumeric(unopt)) {
+    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    return;
+  }
 #ifdef QT54
   QSurfaceFormat qglFormat;
 #else
@@ -18,10 +24,10 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   qglFormat.setSampleBuffers(true);
 #endif
 #ifdef QT47
-  int l=m.indexOf("version");
-  if ((l!=-1) && (l<m.size()-1) && 0!=m.at(l+1).toDouble()) {
+  int l=opt.indexOf("version");
+  if ((l!=-1) && (l<opt.size()-1) && 0!=opt.at(l+1).toDouble()) {
     int ver1,ver2;
-    QString s=m.at(l+1);
+    QString s=opt.at(l+1);
     int d=s.indexOf(".");
     if (d==-1) {
       ver1=s.toInt();
@@ -34,19 +40,25 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     qglFormat.setVersion(ver1,ver2);
   }
 #ifdef QT54
-  if (m.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+  if (opt.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
   else qglFormat.setProfile(QSurfaceFormat::CoreProfile);
 #else
-  if (m.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
+  if (opt.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
 #endif
 #endif
   Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;
-  QString qn=s2q(n);
   w->setObjectName(qn);
-  childStyle(m);
+  childStyle(opt);
   f->opengl = this;
+}
+
+// ---------------------------------------------------------------------
+Opengl::~Opengl()
+{
+  if (widget) delete (Opengl2 *)widget;
+  widget=0;
 }
 
 // ---------------------------------------------------------------------

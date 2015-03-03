@@ -54,6 +54,7 @@
 #endif
 
 extern Font *fontdef;
+extern int rc;
 
 // ---------------------------------------------------------------------
 Pane::Pane(int n,Form *f) : QWidget(f)
@@ -75,6 +76,7 @@ Pane::Pane(int n,Form *f) : QWidget(f)
 // return if child valid
 bool Pane::addchild(string n,string c,string p)
 {
+  Child *child=0;
   if (!layout)
     bin("v");
   if (c=="button")
@@ -82,7 +84,7 @@ bool Pane::addchild(string n,string c,string p)
   else if (c=="checkbox")
     child=(Child *) new CheckBox(n,p,pform,this);
   else if (c=="combobox")
-    child=(Child *) new ComboBox(n,"edit " + p,pform,this);
+    child=(Child *) new ComboBox(n,p.size()?("edit " + p):"edit",pform,this);
   else if (c=="combolist")
     child=(Child *) new ComboBox(n,p,pform,this);
   else if (c=="dateedit")
@@ -150,6 +152,11 @@ bool Pane::addchild(string n,string c,string p)
     error("child not supported " + c);
     return false;
   }
+  if (rc==1) {
+    delete child;
+    return false;
+  }
+  Q_ASSERT(child);
   if (fontdef) child->setfont(fontdef->font);
   layout->addWidget(child->widget);
   child->setminwh(sizew,sizeh);
@@ -160,6 +167,7 @@ bool Pane::addchild(string n,string c,string p)
     layout->bin->setSpacing(0);
   }
   sizew=sizeh=0;
+  this->child=child;
   pform->addchild(child);
   return true;
 }
@@ -179,7 +187,11 @@ void Pane::bin(string s)
   Layout *b;
   QString m;
   QStringList p=bsplit(s);
-
+  string s1=strless(s," 0123456789ghmpsvz");
+  if (s1.size()) {
+    error("unrecognized bin type: " + s1);
+    return;
+  }
   for (i=0; i<p.size(); i++) {
     m=p.at(i);
     c=m[0];
@@ -193,16 +205,18 @@ void Pane::bin(string s)
       layout->addSpacing(n);
     else if (c=='s') {
       if ('g'==layout->type) {
-        error("grid cannot contain bin s");
+        error("grid cannot contain bin s: " + s);
         return;
       }
       layout->addStretch(n);
-    } else if (c=='z' && layouts.size()>1) {
-      b=layout;
-      n=layouts.last()->stretch;
-      layouts.removeLast();
-      layout=layouts.last();
-      layout->addLayout(b);
+    } else if (c=='z') {
+      if (layouts.size()>1) {
+        b=layout;
+        n=layouts.last()->stretch;
+        layouts.removeLast();
+        layout=layouts.last();
+        layout->addLayout(b);
+      }
     }
   }
 }

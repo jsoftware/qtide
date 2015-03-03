@@ -16,4 +16,6 @@ QString mb(string c,string p);
 string sm(string c,string p);
 void wdactivateform();
 
+extern QStringList defChildStyle;
+
 #endif

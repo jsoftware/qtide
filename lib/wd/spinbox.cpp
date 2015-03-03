@@ -21,6 +21,11 @@ SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   widget=(QWidget*) w;
   QStringList opt=qsplit(s);
+  QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
+  if (unopt.size() && !qsnumeric(unopt)) {
+    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    return;
+  }
   w->setObjectName(qn);
   childStyle(opt);
   w->setLocale(QLocale::C);

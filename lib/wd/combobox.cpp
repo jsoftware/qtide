@@ -17,12 +17,17 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
 #endif
   widget=(QWidget*) w;
-  if (s.substr(0,4)=="edit")
-    w->setEditable(true);
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
+  QStringList unopt=qsless(qsless(opt,qsplit("edit")),defChildStyle);
+  if (unopt.size()) {
+    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    return;
+  }
   w->setObjectName(qn);
   childStyle(opt);
+  if (opt.contains("edit"))
+    w->setEditable(true);
   connect(w,SIGNAL(activated(int)),
           this,SLOT(activated()));
 }

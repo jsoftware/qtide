@@ -16,6 +16,7 @@ class Child : public QObject
 
 public:
   Child(string n, string s, Form *f, Pane *p);
+  virtual ~Child();
 
   virtual string getsysdata();
 

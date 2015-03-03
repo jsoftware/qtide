@@ -63,6 +63,11 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
+  QStringList unopt=qsless(qsless(opt,qsplit("selectrows sortable")),defChildStyle);
+  if (unopt.size() && !qsnumeric(unopt)) {
+    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    return;
+  }
   QStringList shape;
 
   if (opt.size()>=2) {

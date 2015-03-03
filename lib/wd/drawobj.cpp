@@ -34,7 +34,7 @@ int Drawobj::width()
 // ---------------------------------------------------------------------
 void Drawobj::fill(const int *p)
 {
-  QColor c(*(p), *(p + 1), *(p + 2));
+  QColor c(*(p), *(p + 1), *(p + 2), *(p + 3));
   if (pixmap)
     pixmap->fill(c);
   else

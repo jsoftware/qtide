@@ -73,7 +73,7 @@ static QString mbsave();
 static QString fixsep(QString s);
 
 static QMessageBox::StandardButton getdefaultbutton();
-static QMessageBox::StandardButton getonebutton();
+static QMessageBox::StandardButton getonebutton(bool *);
 static QMessageBox::StandardButtons getotherbuttons();
 static QString getname(int);
 

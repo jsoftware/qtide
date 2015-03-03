@@ -13,6 +13,7 @@ class Opengl : public Child
 
 public:
   Opengl(string n, string s, Form *f, Pane *p);
+  virtual ~Opengl();
   void setform();
 
 private slots:

@@ -29,7 +29,7 @@ void Cmd::init(char *s,int slen)
 }
 
 // ---------------------------------------------------------------------
-// split on h m p v s z and remove blanks
+// split on g h m p v s z and remove blanks
 QStringList Cmd::bsplits()
 {
   QStringList r;
@@ -37,7 +37,7 @@ QStringList Cmd::bsplits()
   len=str.size();
   while (pos<len) {
     bgn=pos++;
-    pos=str.find_first_of("hmpsvz",pos);
+    pos=str.find_first_of("ghmpsvz",pos);
     if (pos==string::npos) {
       r.append(s2q(str.substr(bgn)));
       break;

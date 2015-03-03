@@ -481,7 +481,7 @@ int glsel(void *g)
       }
     }
   }
-  qDebug() << "glsel failed " + QString::number((SI)g);
+//  qDebug() << "glsel failed " + QString::number((SI)g);
 #endif
   return 1;
 }
@@ -494,7 +494,7 @@ int glsel2(char *g)
   Child *cc;
   string p=string(g);
   if (p.size()==0) {
-    return 0;
+    return 1;
   }
   if ((p[0]=='_')||(p[0]=='-')||(p[0]=='0')||(p[0]=='1')||(p[0]=='2')||(p[0]=='3')||(p[0]=='4')||(p[0]=='5')||(p[0]=='6')||(p[0]=='7')||(p[0]=='8')||(p[0]=='9')) {
     return glsel((void *) c_strtol(p));
@@ -531,7 +531,7 @@ int glsel2(char *g)
       }
     }
   }
-  qDebug() << "glsel2 failed "+ s2q(string(g));
+//  qDebug() << "glsel2 failed "+ s2q(string(g));
 #endif
   return 1;
 }

@@ -14,6 +14,7 @@ class Isigraph : public Child
 
 public:
   Isigraph(string n, string s, Form *f, Pane *p);
+  virtual ~Isigraph();
   void setform();
 };
 

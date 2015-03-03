@@ -12,20 +12,39 @@ extern Child *isigraph;
 extern "C" int glclear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
-Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget()
+Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
 {
   Q_UNUSED(parent);
   pchild = c;
   type=pchild->type;
   painter=0;
   font=0;
-  pixmap=0;
+  if (type=="isigraph")
+    pixmap=0;
+  else {
+    pixmap=new QPixmap(1,1);
+    pixmap->fill(QColor(0,0,0,0));
+    painter=new QPainter(pixmap);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+  }
   glclear2(this,0);
   setContentsMargins(0,0,0,0);
   setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
+}
+
+// ---------------------------------------------------------------------
+Isigraph2::~Isigraph2()
+{
+  if (pchild==pchild->pform->isigraph)
+    pchild->pform->isigraph=0;
+  if (painter) {
+    painter->end();
+    delete painter;
+  }
+  if (pixmap) delete pixmap;
 }
 
 // ---------------------------------------------------------------------
@@ -269,14 +288,4 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
   pchild->sysdata=string(sysdata);
   pchild->pform->signalevent(pchild);
   QWidget::keyPressEvent(event);
-}
-
-// ---------------------------------------------------------------------
-Isigraph2::~Isigraph2()
-{
-  if (pchild==pchild->pform->isigraph) {
-    pchild->pform->isigraph=0;
-    if (painter) delete painter;
-    if (pixmap) delete pixmap;
-  }
 }

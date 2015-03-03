@@ -112,7 +112,7 @@ static void wdquickview2();
 static QuickView2 *quickview2;
 #endif
 static void wdrem();
-static void wdreset();
+void wdreset();
 static void wdset();
 static void wdsetx(string);
 static void wdset1(string n,string p,string v);
@@ -131,7 +131,7 @@ extern string ws(string p);
 #endif
 
 static bool nochild();
-static bool nochildset(string id);
+// static bool nochildset(string id);
 static bool noform();
 static bool notab();
 static int setchild(string id);
@@ -154,6 +154,7 @@ static string ccmd="";
 
 static int verbose=0;
 static string cmdstrparms="";
+QStringList defChildStyle=QStringList("flush");
 
 // ---------------------------------------------------------------------
 int wd(char *s,int slen,char *&res,int &len)
@@ -182,8 +183,12 @@ void wd1()
       cmd.markpos();
       cmdstrparms=c + " " + cmd.getparms();
       cmd.rewindpos();
-      if (2==verbose && tedit && ShowIde) tedit->append_smoutput("wd command: " + s2q(cmdstrparms));
-      if (3==verbose) qDebug() << "wd command: " + s2q(cmdstrparms);
+      if (2==verbose || 3==verbose) {
+        string indent="";
+        if (form && form->pane) indent.append(2*max(0,form->pane->layouts.size()-1),' ');
+        if (2==verbose && tedit && ShowIde) tedit->append_smoutput("wd command: " + s2q(indent+cmdstrparms));
+        if (3==verbose) qDebug() << "wd command: " + s2q(indent+cmdstrparms);
+      }
     }
     if (c=="q")
       wdq();
@@ -278,7 +283,6 @@ void wd1()
       wdws();
 #endif
     else if (0) {
-      cmd.getparms();
       wdnotyet();
     } else
       error("command not found");
@@ -323,8 +327,7 @@ void wdcc()
   n=cmd.getid();
   c=cmd.getid();
   p=cmd.getparms();
-  if (form->pane->addchild(n,c,p)) return;
-  error ("child not supported: " + c);
+  form->pane->addchild(n,c,p);
 }
 
 // ---------------------------------------------------------------------
@@ -486,7 +489,9 @@ void wdend()
 void wdfontdef()
 {
   string p=cmd.getparms();
-  fontdef = new Font(p);
+  if (fontdef) delete fontdef;
+  fontdef=0;
+  if (p.size()) fontdef = new Font(p);
 }
 
 #ifdef QT_OS_ANDROID
@@ -623,7 +628,11 @@ void wdmenu(string s)
 // ---------------------------------------------------------------------
 void wdmsgs()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (!app) {
     error("command failed: no QApplication");
     return;
@@ -681,7 +690,6 @@ void wdp(string c)
   else if (c=="ptop")
     wdptop();
   else if (c=="notyet") {
-    cmd.getparms();
     wdnotyet();
   } else
     error("parent command not found: " + c);
@@ -690,7 +698,11 @@ void wdp(string c)
 // ---------------------------------------------------------------------
 void wdpactive()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
@@ -732,15 +744,23 @@ void wdpc()
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
-  form=new Form(c,p,tlocale,m.contains("owner")?form:0);
-  evtform=form;
+  Form *f=new Form(c,p,tlocale,m.contains("owner")?form:0);
+  if (rc==1) {
+    delete f;
+    return;
+  }
+  evtform=form=f;
   Forms.append(form);
 }
 
 // ---------------------------------------------------------------------
 void wdpcenter()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (noform()) return;
 #ifndef QT_OS_ANDROID
   QDesktopWidget* dw=QApplication::desktop();
@@ -758,7 +778,11 @@ void wdpcenter()
 // ---------------------------------------------------------------------
 void wdpclose()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (noform()) return;
   if (form->closed) return;
   form->closed=true;
@@ -822,9 +846,9 @@ void wdpsel()
 // ---------------------------------------------------------------------
 void wdpshow()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
   if (noform()) return;
-  form->showit();
+  form->showit(p);
 }
 
 // ---------------------------------------------------------------------
@@ -863,7 +887,11 @@ void wdptop()
 // ---------------------------------------------------------------------
 void wdq()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   wdstate(evtform,1);
 }
 
@@ -930,7 +958,7 @@ void wdqueries(string s)
 #ifdef _WIN32
     QSysInfo qsi;
     Q_UNUSED(qsi);
-    if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8)  {
+    if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8) {
       result="6.2";
       return;
     } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS7) {
@@ -950,7 +978,7 @@ void wdqueries(string s)
       return;
     }
 #else
-#ifdef  __MACH__
+#ifdef __MACH__
     QSysInfo qsi;
     if (qsi.MacintoshVersion > QSysInfo::MV_10_8) {
       result="10.9";
@@ -1036,6 +1064,7 @@ void wdqueries(string s)
     if ((cc=form->id2child(p))) result=p2s(cc);
     else
       error("command failed: " + s);
+    if (rc!=1) form->child=cc;
   } else if (s=="qchildxywh") {
     Child *cc;
     if (p=="_") p=formchildid();
@@ -1050,6 +1079,7 @@ void wdqueries(string s)
       QSize size=cc->widget->size();
       result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
     } else error("command failed: " + s);
+    if (rc!=1) form->child=cc;
   } else if (s=="qpid") {
     SI m, n = c_strtoi(p);
     if ((m=(SI)wdgetparentid((void *)n))) {
@@ -1166,7 +1196,11 @@ void wdrem()
 // ---------------------------------------------------------------------
 void wdreset()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (timer) timer->stop();
 #ifndef QT_NO_QUICKVIEW1
   if (quickview1) {
@@ -1188,6 +1222,7 @@ void wdreset()
   Forms.clear();
   form=0;
   evtform=0;
+  if (fontdef) delete fontdef;
   fontdef=0;
   if (FontExtent) {
     delete FontExtent;
@@ -1241,6 +1276,7 @@ void wdset1(string n,string p,string v)
   default :
     error("bad child id");
   }
+  if (rc!=1) form->child=cc;
   noevents(0);
 }
 
@@ -1361,7 +1397,11 @@ void wdverbose()
 // ---------------------------------------------------------------------
 void wdversion()
 {
-  cmd.getparms();
+  string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   result=APP_VERSION;
 #ifdef QT_NO_WEBKIT
   result=result+"s";
@@ -1400,12 +1440,12 @@ bool nochild()
 }
 
 // ---------------------------------------------------------------------
-bool nochildset(string id)
-{
-  if (noform()) return true;
-  cc=form->id2child(id);
-  return nochild();
-}
+// bool nochildset(string id)
+// {
+// if (noform()) return true;
+// cc=form->id2child(id);
+// return nochild();
+// }
 
 // ---------------------------------------------------------------------
 bool noform()
@@ -1437,7 +1477,7 @@ string remquotes(string s)
 // ---------------------------------------------------------------------
 // returns: 0=id not found
 //          1=child id (cc=child)
-//          2=menu id  (cc=menubar)
+//          2=menu  id (cc=menubar)
 int setchild(string id)
 {
   if (noform()) return 0;

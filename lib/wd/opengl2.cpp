@@ -10,9 +10,9 @@ extern "C" int gl_clear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
 #ifdef QT54
-Opengl2::Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent) : QOpenGLWidget()
+Opengl2::Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent) : QOpenGLWidget(parent)
 #else
-Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(format)
+Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(parent,format)
 #endif
 {
   Q_UNUSED(parent);
@@ -32,9 +32,20 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
 }
 
 // ---------------------------------------------------------------------
+Opengl2::~Opengl2()
+{
+  if (pchild==pchild->pform->opengl)
+    pchild->pform->opengl=0;
+  if (painter) {
+    painter->end();
+    delete painter;
+  }
+}
+
+// ---------------------------------------------------------------------
 void Opengl2::fill(const int *p)
 {
-  QColor c(*(p), *(p + 1), *(p + 2));
+  QColor c(*(p), *(p + 1), *(p + 2), *(p + 3));
   if (painter)
     painter->fillRect(0,0,width(),height(),c);
 }
@@ -246,12 +257,4 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
   pchild->sysdata=string(sysdata);
   pchild->pform->signalevent(pchild);
   QWidget::keyPressEvent(event);
-}
-
-// ---------------------------------------------------------------------
-Opengl2::~Opengl2()
-{
-//  qDebug() << "opengl2 deleted";
-  if (pchild==pchild->pform->opengl)
-    pchild->pform->opengl=0;
 }

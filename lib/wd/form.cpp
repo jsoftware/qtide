@@ -11,6 +11,7 @@
 #include "wd.h"
 #include "font.h"
 #include "cmd.h"
+#include "font.h"
 #include "form.h"
 #include "pane.h"
 #include "tabs.h"
@@ -24,6 +25,7 @@
 #include "../base/state.h"
 #include "../base/term.h"
 
+extern Font *fontdef;
 extern bool standAlone;
 extern QEventLoop *evloop;
 
@@ -48,6 +50,11 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 #endif
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
+  QStringList unopt=qsless(m,(qsplit("escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")));
+  if (unopt.size()) {
+    error("unrecognized form style: " + q2s(unopt.join(" ")));
+    return;
+  }
   escclose=m.contains("escclose");
   closeok=m.contains("closeok");
   setpn(s);
@@ -63,6 +70,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
     flags|=Qt::Window;
     setWindowModality(Qt::WindowModal);
   }
+  if (fontdef) setFont(fontdef->font);
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
@@ -80,27 +88,8 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 // ---------------------------------------------------------------------
 Form::~Form()
 {
-  Child *n;
   for (int i=0; i<children.size(); i++)
-    if ("isigraph0"==(n=children.at(i))->type) {
-      if ((Isigraph2*)n->widget) {
-        if (((Isigraph2*)n->widget)->painter) {
-          ((Isigraph2*)n->widget)->painter->end();
-          delete ((Isigraph2*)n->widget)->painter;
-          ((Isigraph2*)n->widget)->painter=0;
-        }
-      }
-#ifndef QT_NO_OPENGL
-    } else if ("opengl"==(n=children.at(i))->type) {
-      if ((Opengl2*)n->widget) {
-        if (((Opengl2*)n->widget)->painter) {
-          ((Opengl2*)n->widget)->painter->end();
-          delete ((Opengl2*)n->widget)->painter;
-          ((Opengl2*)n->widget)->painter=0;
-        }
-      }
-#endif
-    }
+    delete children.at(i);
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
   if (timer) delete timer;
@@ -115,9 +104,7 @@ Form::~Form()
   if (Forms.isEmpty() && (!ShowIde)) {
     if (jdllproc) evloop->exit();
     else {
-#ifdef QT_OS_ANDROID
       var_cmddo("(i.0 0)\"_ (2!:55)0");
-#endif
       state_quit();
       QApplication::quit();
     }
@@ -349,23 +336,34 @@ void Form::settimer(string p)
 }
 
 // ---------------------------------------------------------------------
-void Form::showit()
+void Form::showit(string p)
 {
+  if (!shown) {
 #ifdef QT_OS_ANDROID
 // showide(false);
-  if (Forms.size()>1)
-    (Forms.at(Forms.size()-2))->setVisible(false);
+    if (Forms.size()>1)
+      (Forms.at(Forms.size()-2))->setVisible(false);
 #endif
-  for (int i=tabs.size()-1; i>=0; i--)
-    tabs.last()->tabend();
-  for (int i=panes.size()-1; i>=0; i--)
-    panes.last()->fini();
-  layout->addWidget(pane);
-  setLayout(layout);
-  show();
+    for (int i=tabs.size()-1; i>=0; i--)
+      tabs.last()->tabend();
+    for (int i=panes.size()-1; i>=0; i--)
+      panes.last()->fini();
+    layout->addWidget(pane);
+    setLayout(layout);
+    show();
 
-  shown=true;
-  if (jdllproc && 1==Forms.size()) evloop->exec(QEventLoop::AllEvents);
+    shown=true;
+    if (jdllproc && 1==Forms.size()) evloop->exec(QEventLoop::AllEvents);
+  }
+#ifndef QT_OS_ANDROID
+  if (p=="") {
+    if (!isVisible()) setVisible(true);
+  } else if (p=="hide") {
+    if (isVisible()) setVisible(false);
+  } else {
+    error("unrecognized style: " + p);
+  }
+#endif
 }
 
 // ---------------------------------------------------------------------

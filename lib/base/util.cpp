@@ -735,6 +735,34 @@ QStringList qsltrimeach(QStringList s)
 }
 
 // ---------------------------------------------------------------------
+// dyadic -. for QStringList
+QStringList qsless(QStringList a,QStringList w)
+{
+  foreach(QString s, w)
+    if (a.contains(s)) a.removeAll(s);
+  return a;
+}
+
+// ---------------------------------------------------------------------
+// return true if all items are numbers
+bool qsnumeric(QStringList a)
+{
+  foreach(QString s,a)
+    if (s.size() && s.at(0)!='_' && s.at(0)!='-' && s.at(0)!='0' && s.at(0)!='1' && s.at(0)!='2' && s.at(0)!='3' && s.at(0)!='4' && s.at(0)!='5' && s.at(0)!='6' && s.at(0)!='7' && s.at(0)!='8' && s.at(0)!='9') return false;
+  return true;
+}
+
+// ---------------------------------------------------------------------
+string strless(string a,string w)
+{
+  string r="";
+  for (size_t i=0; i<a.size(); i++) {
+    if (string::npos == w.find_first_of(a[i])) r+=a[i];
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QList<int> q2p(QString s)
 {
   QStringList t = s.split(" ",QString::SkipEmptyParts);
