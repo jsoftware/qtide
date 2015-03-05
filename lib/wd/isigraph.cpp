@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type = "isigraph";
+  type="isigraph";
   Isigraph2 *w= new Isigraph2(this, p);
   widget=(QWidget *) w;
   QString qn=s2q(n);

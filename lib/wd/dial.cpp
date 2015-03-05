@@ -1,15 +1,15 @@
 
-#include <QSlider>
+#include <QDial>
 
 #include "wd.h"
-#include "slider.h"
+#include "dial.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
 
 // optional parms are:
-// "v" - vertical
-// tick placement
+// "v" - notchesvisible
+// "w" - wrapping
 // minimum
 // single step
 // page step
@@ -17,14 +17,14 @@
 // position
 
 // ---------------------------------------------------------------------
-Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Dial::Dial(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="slider";
-  QSlider *w=new QSlider(Qt::Horizontal);
+  type="dial";
+  QDial *w=new QDial();
   QString qn=s2q(n);
   widget=(QWidget*) w;
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("v")),defChildStyle);
+  QStringList unopt=qsless(qsless(opt,qsplit("v w")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
     error("unrecognized child style: " + q2s(unopt.join(" ")));
     return;
@@ -33,12 +33,18 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   childStyle(opt);
 
   int i=0;
-  if ((i<opt.size()) && (opt.at(i)=="v")) {
-    w->setOrientation(Qt::Vertical);
+  if ((i<opt.size()) && (opt.at(i)=="w"||opt.at(i)=="v")) {
+    if (opt.at(i)=="w")
+      w->setWrapping(true);
+    else
+      w->setNotchesVisible(true);
     i++;
   }
-  if (i<opt.size()) {
-    w->setTickPosition((QSlider::TickPosition)c_strtoi(q2s(opt.at(i))));
+  if ((i<opt.size()) && (opt.at(i)=="w"||opt.at(i)=="v")) {
+    if (opt.at(i)=="w")
+      w->setWrapping(true);
+    else
+      w->setNotchesVisible(true);
     i++;
   }
   if (i<opt.size()) {
@@ -66,16 +72,16 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Slider::valueChanged()
+void Dial::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------
-void Slider::set(string p,string v)
+void Dial::set(string p,string v)
 {
-  QSlider *w=(QSlider*) widget;
+  QDial *w=(QDial*) widget;
   QString cmd=s2q(p);
   QStringList arg=qsplit(v);
   if (arg.isEmpty()) {
@@ -86,8 +92,10 @@ void Slider::set(string p,string v)
     w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtoi(q2s(arg.at(0))));
-  else if (cmd=="tic")
-    w->setTickPosition((QSlider::TickPosition)(c_strtoi(q2s(arg.at(0)))));
+  else if (cmd=="wrap")
+    w->setWrapping(arg.at(0)!="0");
+  else if (cmd=="notchesvisible")
+    w->setNotchesVisible(arg.at(0)!="0");
   else if (cmd=="step")
     w->setSingleStep(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="page")
@@ -98,8 +106,8 @@ void Slider::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Slider::state()
+string Dial::state()
 {
-  QSlider *w=(QSlider*) widget;
+  QDial *w=(QDial*) widget;
   return spair(id,i2s(w->sliderPosition()));
 }

@@ -222,7 +222,7 @@ HEADERS += \
  base/view.h base/widget.h high/high.h high/highj.h \
  grid/qgrid.h grid/qutil.h grid/wgrid.h \
  wd/bitmap.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h \
- wd/checkbox.h wd/combobox.h wd/dateedit.h wd/dspinbox.h wd/dummy.h \
+ wd/checkbox.h wd/combobox.h wd/dateedit.h wd/dial.h wd/dspinbox.h wd/dummy.h \
  wd/edit.h wd/editm.h wd/edith.h wd/font.h wd/form.h \
  wd/gl2.h wd/glz.h wd/prtobj.h wd/image.h \
  wd/isidraw.h wd/isigraph.h wd/isigraph2.h wd/isigrid.h \
@@ -233,7 +233,7 @@ HEADERS += \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webview.h wd/webview2.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
- wd/qwidget.h wd/scrollarea.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h
+ wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h wd/webkitview.h
@@ -269,7 +269,7 @@ SOURCES += \
  grid/hierwidget.cpp grid/label.cpp grid/qgrid.cpp grid/qutil.cpp \
  grid/sizes.cpp grid/top.cpp grid/wgrid.cpp high/highj.cpp \
  wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
- wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dspinbox.cpp \
+ wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dial.cpp wd/dspinbox.cpp \
  wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
  wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \
  wd/isidraw.cpp wd/isigraph.cpp wd/isigraph2.cpp wd/isigrid.cpp \
@@ -280,7 +280,7 @@ SOURCES += \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webview.cpp wd/webview2.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
- wd/qwidget.cpp wd/scrollarea.cpp wd/drawobj.cpp wd/glc.cpp
+ wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp wd/webkitview.cpp

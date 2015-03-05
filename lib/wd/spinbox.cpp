@@ -16,7 +16,7 @@
 // ---------------------------------------------------------------------
 SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="SpinBox";
+  type="spinbox";
   QSpinBox *w=new QSpinBox;
   QString qn=s2q(n);
   widget=(QWidget*) w;

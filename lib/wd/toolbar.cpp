@@ -15,7 +15,7 @@ extern float DM_density;
 // ---------------------------------------------------------------------
 ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="ToolBar";
+  type="toolbar";
 
   QToolBar *w=new QToolBar;
   widget=(QWidget*) w;

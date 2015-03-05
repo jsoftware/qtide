@@ -1,15 +1,15 @@
 
-#include <QSlider>
+#include <QScrollBar>
 
+#include "../base/state.h"
 #include "wd.h"
-#include "slider.h"
+#include "scrollbar.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
 
 // optional parms are:
 // "v" - vertical
-// tick placement
 // minimum
 // single step
 // page step
@@ -17,10 +17,10 @@
 // position
 
 // ---------------------------------------------------------------------
-Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ScrollBar::ScrollBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="slider";
-  QSlider *w=new QSlider(Qt::Horizontal);
+  type="scrollbar";
+  QScrollBar *w=new QScrollBar(Qt::Horizontal);
   QString qn=s2q(n);
   widget=(QWidget*) w;
   QStringList opt=qsplit(s);
@@ -31,14 +31,13 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
   w->setObjectName(qn);
   childStyle(opt);
+#ifdef QT_OS_ANDROID
+  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
+#endif
 
   int i=0;
   if ((i<opt.size()) && (opt.at(i)=="v")) {
     w->setOrientation(Qt::Vertical);
-    i++;
-  }
-  if (i<opt.size()) {
-    w->setTickPosition((QSlider::TickPosition)c_strtoi(q2s(opt.at(i))));
     i++;
   }
   if (i<opt.size()) {
@@ -66,16 +65,16 @@ Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Slider::valueChanged()
+void ScrollBar::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------
-void Slider::set(string p,string v)
+void ScrollBar::set(string p,string v)
 {
-  QSlider *w=(QSlider*) widget;
+  QScrollBar *w=(QScrollBar*) widget;
   QString cmd=s2q(p);
   QStringList arg=qsplit(v);
   if (arg.isEmpty()) {
@@ -86,8 +85,6 @@ void Slider::set(string p,string v)
     w->setMinimum(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="max")
     w->setMaximum(c_strtoi(q2s(arg.at(0))));
-  else if (cmd=="tic")
-    w->setTickPosition((QSlider::TickPosition)(c_strtoi(q2s(arg.at(0)))));
   else if (cmd=="step")
     w->setSingleStep(c_strtoi(q2s(arg.at(0))));
   else if (cmd=="page")
@@ -98,8 +95,8 @@ void Slider::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Slider::state()
+string ScrollBar::state()
 {
-  QSlider *w=(QSlider*) widget;
+  QScrollBar *w=(QScrollBar*) widget;
   return spair(id,i2s(w->sliderPosition()));
 }

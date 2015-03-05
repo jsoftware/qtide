@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------
 ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type="ProgressBar";
+  type="progressbar";
   QProgressBar *w=new QProgressBar;
   widget=(QWidget*) w;
   QString qn=s2q(n);

@@ -18,15 +18,16 @@
 #include "checkbox.h"
 #include "combobox.h"
 #include "dateedit.h"
-#include "isigrid.h"
+#include "dial.h"
 #include "dspinbox.h"
 #include "dummy.h"
 #include "edit.h"
-#include "editm.h"
 #include "edith.h"
+#include "editm.h"
 #include "image.h"
 #include "isidraw.h"
 #include "isigraph.h"
+#include "isigrid.h"
 #include "listbox.h"
 #ifndef QT_NO_OPENGL
 #include "opengl.h"
@@ -38,6 +39,7 @@
 #include "qwidget.h"
 #include "radiobutton.h"
 #include "scrollarea.h"
+#include "scrollbar.h"
 #include "slider.h"
 #include "spinbox.h"
 #include "static.h"
@@ -89,6 +91,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new ComboBox(n,p,pform,this);
   else if (c=="dateedit")
     child=(Child *) new DateEdit(n,p,pform,this);
+  else if (c=="dial")
+    child=(Child *) new Dial(n,p,pform,this);
   else if (c=="dspinbox")
     child=(Child *) new DSpinBox(n,p,pform,this);
   else if (c=="edit")
@@ -123,6 +127,8 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new RadioButton(n,p,pform,this);
   else if (c=="scrollarea")
     child=(Child *) new ScrollArea(n,p,pform,this);
+  else if (c=="scrollbar")
+    child=(Child *) new ScrollBar(n,p,pform,this);
   else if (c=="slider")
     child=(Child *) new Slider(n,p,pform,this);
   else if (c=="spinbox")

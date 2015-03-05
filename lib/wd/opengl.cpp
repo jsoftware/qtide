@@ -8,8 +8,7 @@
 // ---------------------------------------------------------------------
 Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
-  type = "opengl";
-
+  type="opengl";
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("version compatibility")),defChildStyle);
