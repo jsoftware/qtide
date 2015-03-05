@@ -226,7 +226,7 @@ HEADERS += \
  wd/edit.h wd/editm.h wd/edith.h wd/font.h wd/form.h \
  wd/gl2.h wd/glz.h wd/prtobj.h wd/image.h \
  wd/isidraw.h wd/isigraph.h wd/isigraph2.h wd/isigrid.h \
- wd/layout.h wd/listbox.h \
+ wd/layout.h wd/lineedit.h wd/listbox.h \
  wd/menus.h wd/pane.h wd/progressbar.h wd/qtstate.h wd/radiobutton.h \
  wd/slider.h wd/spinbox.h wd/static.h wd/statusbar.h wd/table.h \
  wd/tabs.h wd/tabwidget.h \
@@ -269,11 +269,11 @@ SOURCES += \
  grid/hierwidget.cpp grid/label.cpp grid/qgrid.cpp grid/qutil.cpp \
  grid/sizes.cpp grid/top.cpp grid/wgrid.cpp high/highj.cpp \
  wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
- wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dial.cpp wd/dspinbox.cpp \
- wd/dummy.cpp wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
+ wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dial.cpp wd/dspinbox.cpp wd/dummy.cpp \
+ wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
  wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \
  wd/isidraw.cpp wd/isigraph.cpp wd/isigraph2.cpp wd/isigrid.cpp \
- wd/layout.cpp wd/listbox.cpp wd/mb.cpp \
+ wd/layout.cpp wd/lineedit.cpp wd/listbox.cpp wd/mb.cpp \
  wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/qtstate.cpp wd/radiobutton.cpp \
  wd/slider.cpp wd/sm.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \

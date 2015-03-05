@@ -6,6 +6,7 @@
 
 #include "wd.h"
 #include "edit.h"
+#include "lineedit.h"
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
@@ -14,7 +15,7 @@
 Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edit";
-  QLineEdit *w=new QLineEdit;
+  LineEdit *w=new LineEdit(this, p);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
@@ -28,7 +29,7 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   childStyle(opt);
 
   if (opt.contains("password"))
-    w->setEchoMode(QLineEdit::Password);
+    w->setEchoMode(LineEdit::Password);
 
   if (opt.contains("readonly"))
     w->setReadOnly(true);
@@ -54,7 +55,7 @@ void Edit::returnPressed()
 // ---------------------------------------------------------------------
 void Edit::set(string p,string v)
 {
-  QLineEdit *w = (QLineEdit *)widget;
+  LineEdit *w = (LineEdit *)widget;
   QStringList opt=qsplit(v);
 
   if (p=="text") {
@@ -141,7 +142,7 @@ void Edit::set(string p,string v)
 // ---------------------------------------------------------------------
 string Edit::state()
 {
-  QLineEdit *w=(QLineEdit*) widget;
+  LineEdit *w=(LineEdit*) widget;
   int b,e;
   b=w->selectionStart();
   if (b<0)

@@ -15,6 +15,7 @@ string remquotes(string s);
 QString mb(string c,string p);
 string sm(string c,string p);
 void wdactivateform();
+int translateqkey(int);
 
 extern QStringList defChildStyle;
 

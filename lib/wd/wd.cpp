@@ -1496,3 +1496,10 @@ string formchildid()
   if (!form->child) return "";
   return form->child->id;
 }
+
+// ---------------------------------------------------------------------
+// translate event.keyboard key to Private Use Area
+int translateqkey(int key)
+{
+  return (key>=0x1000000) ? ((key & 0xff) | 0xf800) : key;
+}

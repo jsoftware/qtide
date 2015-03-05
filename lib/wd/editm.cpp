@@ -133,12 +133,34 @@ EditmPTE::EditmPTE(QWidget *parent) : PlainTextEdit(parent) {}
 // ---------------------------------------------------------------------
 void EditmPTE::keyPressEvent(QKeyEvent *event)
 {
-  if ((isReadOnly() && event->key()==Qt::Key_Return)) {
-    char sysmodifiers[20];
-    sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
-    pchild->event=string("button");
-    pchild->sysmodifiers=string(sysmodifiers);
-    pchild->pform->signalevent(pchild);
+  if ((event->key()==Qt::Key_Enter || event->key()==Qt::Key_Return) && !(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
+    if (isReadOnly()) {
+      char sysmodifiers[20];
+      sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+      pchild->event=string("button");
+      pchild->sysmodifiers=string(sysmodifiers);
+      pchild->pform->signalevent(pchild);
+    }
+    PlainTextEdit::keyPressEvent(event);
+    return;
   }
+  int key1=0;
+  int key=event->key();
+  if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
+    PlainTextEdit::keyPressEvent(event);
+    return;
+  } else
+    key1=translateqkey(key);
+  char sysmodifiers[20];
+  sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
+  char sysdata[20];
+  if (key==key1)
+    sprintf(sysdata , "%s", event->text().toUtf8().constData());
+  else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
+
+  pchild->event=string("char");
+  pchild->sysmodifiers=string(sysmodifiers);
+  pchild->sysdata=string(sysdata);
+  pchild->pform->signalevent(pchild);
   PlainTextEdit::keyPressEvent(event);
 }
