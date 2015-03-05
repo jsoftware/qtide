@@ -26,7 +26,7 @@ ScrollBar::ScrollBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("v")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -69,6 +69,29 @@ void ScrollBar::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+string ScrollBar::get(string p,string v)
+{
+  QScrollBar *w=(QScrollBar*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("max")+"\012"+ "min"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "value"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="min")
+    r=i2s(w->minimum());
+  else if (p=="max")
+    r=i2s(w->maximum());
+  else if (p=="step")
+    r=i2s(w->singleStep());
+  else if (p=="page")
+    r=i2s(w->pageStep());
+  else if (p=="pos"|| p=="value")
+    r=i2s(w->sliderPosition());
+  else
+    r=Child::get(p,v);
+  return r;
 }
 
 // ---------------------------------------------------------------------

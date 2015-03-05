@@ -24,7 +24,7 @@ DSpinBox::DSpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -61,6 +61,31 @@ void DSpinBox::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+string DSpinBox::get(string p,string v)
+{
+  QDoubleSpinBox *w=(QDoubleSpinBox*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("decimals")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "step"+"\012"+ "value"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="min")
+    r=i2s(w->minimum());
+  else if (p=="max")
+    r=i2s(w->maximum());
+  else if (p=="step")
+    r=i2s(w->singleStep());
+  else if (p=="decimals")
+    r=i2s(w->decimals());
+  else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="value")
+    r=d2s(w->value());
+  else
+    r=Child::get(p,v);
+  return r;
 }
 
 // ---------------------------------------------------------------------

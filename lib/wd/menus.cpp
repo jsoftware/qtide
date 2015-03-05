@@ -88,7 +88,13 @@ void Menus::menu_triggered(QAction *a)
 }
 
 // ---------------------------------------------------------------------
-void Menus::set(string p, string v)
+string Menus::get(string p,string v)
+{
+  return Child::get(p,v);
+}
+
+// ---------------------------------------------------------------------
+void Menus::set(string p,string v)
 {
   QString id,m,parm,t;
   QStringList sel,opt;
@@ -117,3 +123,10 @@ void Menus::set(string p, string v)
   } else
     Child::set(p,v);
 }
+
+// ---------------------------------------------------------------------
+string Menus::state()
+{
+  return "";
+}
+

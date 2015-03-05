@@ -70,7 +70,7 @@ DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -112,6 +112,38 @@ void DateEdit::valueChanged()
 }
 
 // ---------------------------------------------------------------------
+string DateEdit::get(string p,string v)
+{
+  QDateEdit *w=(QDateEdit*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="format")
+    r=q2s(w->displayFormat());
+  else if (p=="max") {
+    QDate q=w->maximumDate();
+    if (q.isNull())
+      r=string("0");
+    else r=i2s((10000*q.year())+(100*q.month())+q.day());
+  } else if (p=="min") {
+    QDate q=w->minimumDate();
+    if (q.isNull())
+      r=string("0");
+    else r=i2s((10000*q.year())+(100*q.month())+q.day());
+  } else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="value") {
+    QDate q=w->date();
+    if (q.isNull())
+      r=string("0");
+    else r=i2s((10000*q.year())+(100*q.month())+q.day());
+  } else
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void DateEdit::set(string p,string v)
 {
   QDateEdit *w=(QDateEdit*) widget;
@@ -148,10 +180,10 @@ void DateEdit::set(string p,string v)
 string DateEdit::state()
 {
   QDateEdit *w=(QDateEdit*) widget;
-  QDate v=w->date();
-  if (v.isNull())
+  QDate q=w->date();
+  if (q.isNull())
     return spair(id,i2s(0));
-  else return spair(id,i2s((10000*v.year())+(100*v.month())+v.day()));
+  else return spair(id,i2s((10000*q.year())+(100*q.month())+q.day()));
 }
 
 // ---------------------------------------------------------------------

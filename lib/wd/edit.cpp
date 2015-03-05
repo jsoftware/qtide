@@ -21,7 +21,7 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("password readonly left right center")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -53,16 +53,49 @@ void Edit::returnPressed()
 }
 
 // ---------------------------------------------------------------------
+string Edit::get(string p,string v)
+{
+  LineEdit *w=(LineEdit*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("alignment")+"\012"+ "focusselect"+"\012"+ "inputmask"+"\012"+ "limit"+"\012"+ "readonly"+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="alignment")
+    r=i2s(w->alignment());
+  else if (p=="focusselect")
+    r=i2s(focusSelect);
+  else if (p=="inputmask")
+    r=q2s(w->inputMask());
+  else if (p=="limit")
+    r=i2s(w->maxLength());
+  else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="text")
+    r=q2s(w->text());
+  else if (p=="select") {
+    int b,e;
+    b=w->selectionStart();
+    if (b<0)
+      b=e=w->cursorPosition();
+    else
+      e=b+w->selectedText().size();
+    r=i2s(b)+" "+i2s(e);
+  } else
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void Edit::set(string p,string v)
 {
   LineEdit *w = (LineEdit *)widget;
   QStringList opt=qsplit(v);
 
-  if (p=="text") {
+  if (p=="text")
     w->setText(s2q(remquotes(v)));
-  } else if (p=="cursorposition") {
+  else if (p=="cursorposition") {
     if (opt.isEmpty()) {
-      error("set cursorposition requires 1 number: " + p);
+      error("set cursorposition requires 1 number: " + id + " " + p);
       return;
     }
     int p=c_strtoi(q2s(opt.at(0)));
@@ -70,7 +103,7 @@ void Edit::set(string p,string v)
     w->setCursorPosition(p);
   } else if (p=="limit") {
     if (opt.isEmpty()) {
-      error("set limit requires 1 number: " + p);
+      error("set limit requires 1 number: " + id + " " + p);
       return;
     }
     w->setMaxLength(c_strtoi(q2s(opt.at(0))));
@@ -85,7 +118,7 @@ void Edit::set(string p,string v)
     w->selectAll();
   } else if (p=="alignment") {
     if (opt.isEmpty()) {
-      error("set alignment requires 1 argument: " + p);
+      error("set alignment requires 1 argument: " + id + " " + p);
       return;
     }
     if (opt.at(0)=="left")
@@ -95,7 +128,7 @@ void Edit::set(string p,string v)
     else if (opt.at(0)=="center")
       w->setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
     else {
-      error("set alignment requires left, right or center: " + p);
+      error("set alignment requires left, right or center: " + id + " " + p);
       return;
     }
   } else if (p=="inputmask") {
@@ -108,7 +141,7 @@ void Edit::set(string p,string v)
     if (opt.isEmpty())
       w->setValidator(0);
     else if (2>opt.size()) {
-      error("set intvalidator requires 2 numbers: " + p);
+      error("set intvalidator requires 2 numbers: " + id + " " + p);
       return;
     } else {
       w->setLocale(QLocale::C);
@@ -120,7 +153,7 @@ void Edit::set(string p,string v)
     if (opt.isEmpty())
       w->setValidator(0);
     else if (3>opt.size()) {
-      error("set doublevalidator requires 3 numbers: " + p);
+      error("set doublevalidator requires 3 numbers: " + id + " " + p);
       return;
     } else {
       w->setLocale(QLocale::C);

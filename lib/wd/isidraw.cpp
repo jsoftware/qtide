@@ -15,7 +15,7 @@ Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -36,4 +36,22 @@ void Isidraw::setform()
   if (!widget) return;
   if (!(event=="paint" || event=="print")) form=pform;
   form->isigraph=this;
+}
+
+// ---------------------------------------------------------------------
+string Isidraw::get(string p,string v)
+{
+  return Child::get(p,v);
+}
+
+// ---------------------------------------------------------------------
+void Isidraw::set(string p,string v)
+{
+  Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+string Isidraw::state()
+{
+  return "";
 }

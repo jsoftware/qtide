@@ -53,8 +53,10 @@ public:
   string locale;
   string sysdata;
   string sysmodifiers;
-  int sizew;
-  int sizeh;
+  int maxsizew;
+  int maxsizeh;
+  int minsizew;
+  int minsizeh;
 
   QButtonGroup *buttongroup;
   Child *child;

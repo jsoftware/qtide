@@ -14,6 +14,7 @@ class SpinBox : public Child
 
 public:
   SpinBox(string n, string s, Form *f, Pane *p);
+  string get(string p,string v);
   void set(string p,string v);
   string state();
 

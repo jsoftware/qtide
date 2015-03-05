@@ -15,7 +15,7 @@ IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("cube")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   if (opt.size()==0)
@@ -25,6 +25,12 @@ IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=new QGrid(style,this,p);
   widget->setObjectName(qn);
   childStyle(opt);
+}
+
+// ---------------------------------------------------------------------
+string IsiGrid::get(string p,string v)
+{
+  return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------

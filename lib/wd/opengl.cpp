@@ -13,7 +13,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("version compatibility")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
 #ifdef QT54
@@ -66,4 +66,22 @@ void Opengl::setform()
   if (!widget) return;
   if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) form=pform;
   form->opengl=this;
+}
+
+// ---------------------------------------------------------------------
+string Opengl::get(string p,string v)
+{
+  return Child::get(p,v);
+}
+
+// ---------------------------------------------------------------------
+void Opengl::set(string p,string v)
+{
+  Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+string Opengl::state()
+{
+  return "";
 }

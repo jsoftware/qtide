@@ -16,6 +16,9 @@ QString mb(string c,string p);
 string sm(string c,string p);
 void wdactivateform();
 int translateqkey(int);
+void wdsetfocuspolicy(QWidget *widget,string p);
+void wdsetsizepolicy(QWidget *widget,string p);
+void wdsetwh(QWidget *widget,string p);
 
 extern QStringList defChildStyle;
 

@@ -23,7 +23,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("readonly selectable")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -38,7 +38,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // ---------------------------------------------------------------------
 void Editm::cmd(string p,string v)
 {
-  PlainTextEdit *w=(PlainTextEdit*) widget;
+  EditmPTE *w=(EditmPTE*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef QT_NO_PRINTER
@@ -54,9 +54,41 @@ void Editm::cmd(string p,string v)
 }
 
 // ---------------------------------------------------------------------
+string Editm::get(string p,string v)
+{
+  EditmPTE *w=(EditmPTE*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("limit")+"\012"+ "readonly"+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="text")
+    r=q2s(w->toPlainText());
+  else if (p=="select"||p=="scroll") {
+    QTextCursor c=w->textCursor();
+    int b,e;
+    b=c.selectionStart();
+    e=c.selectionEnd();
+    QScrollBar *vb=w->verticalScrollBar();
+    if (p=="select")
+      r=i2s(b)+" "+i2s(e);
+    else
+      r=i2s(vb->value());
+  } else if (p=="limit")
+    r=i2s(w->maximumBlockCount());
+  else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="wrap")
+    r=i2s(w->lineWrapMode());
+  else
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void Editm::set(string p,string v)
 {
-  PlainTextEdit *w=(PlainTextEdit*) widget;
+  EditmPTE *w=(EditmPTE*) widget;
+  string r;
   QStringList opt=qsplit(v);
   QScrollBar *sb;
 
@@ -64,7 +96,7 @@ void Editm::set(string p,string v)
 
   if (p=="limit") {
     if (opt.isEmpty()) {
-      error("set limit requires 1 number: " + p);
+      error("set limit requires 1 number: " + id + " " + p);
       return;
     }
     w->setMaximumBlockCount(c_strtoi(q2s(opt.at(0))));
@@ -92,7 +124,7 @@ void Editm::set(string p,string v)
         pos=c_strtoi(q2s(opt.at(0)));
       sb->setValue(pos);
     } else {
-      error("set scroll requires additional parameters: " + p);
+      error("set scroll requires additional parameters: " + id + " " + p);
       return;
     }
   } else if (p=="wrap") {
@@ -114,7 +146,7 @@ void Editm::setselect(PlainTextEdit *w, int bgn, int end)
 // ---------------------------------------------------------------------
 string Editm::state()
 {
-  PlainTextEdit *w=(PlainTextEdit*) widget;
+  EditmPTE *w=(EditmPTE*) widget;
   QTextCursor c=w->textCursor();
   int b,e;
   b=c.selectionStart();

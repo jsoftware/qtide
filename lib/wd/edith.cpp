@@ -22,7 +22,7 @@ Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -46,6 +46,35 @@ void Edith::cmd(string p,string v)
     Q_UNUSED(w);
 #endif
   } else Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+string Edith::get(string p,string v)
+{
+  QTextEdit *w=(QTextEdit*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("readonly")+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="text")
+    r=q2s(w->toHtml());
+  else if (p=="select"||p=="scroll") {
+    QTextCursor c=w->textCursor();
+    int b,e;
+    b=c.selectionStart();
+    e=c.selectionEnd();
+    QScrollBar *vb=w->verticalScrollBar();
+    if (p=="select")
+      r=i2s(b)+" "+i2s(e);
+    else
+      r=i2s(vb->value());
+  } else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="wrap")
+    r=i2s(w->lineWrapMode());
+  else
+    r=Child::get(p,v);
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -99,7 +128,7 @@ void Edith::set(string p,string v)
         pos=c_strtoi(q2s(opt.at(0)));
       sb->setValue(pos);
     } else {
-      error("set scroll requires additional parameters: " + p);
+      error("set scroll requires additional parameters: " + id + " " + p);
       return;
     }
   } else if (p=="wrap") {

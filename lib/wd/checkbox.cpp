@@ -20,7 +20,7 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -28,6 +28,23 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setText(qn);
   connect(w,SIGNAL(stateChanged(int)),
           this,SLOT(stateChanged()));
+}
+
+// ---------------------------------------------------------------------
+string CheckBox::get(string p,string v)
+{
+  QCheckBox *w=(QCheckBox*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("caption")+"\012"+ "text"+"\012"+ "value"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="caption"||p=="text")
+    r=q2s(w->text());
+  else if (p=="value")
+    r=w->isChecked()?(string)"1":(string)"0";
+  else
+    r=Child::get(p,v);
+  return r;
 }
 
 // ---------------------------------------------------------------------

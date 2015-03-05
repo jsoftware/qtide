@@ -120,7 +120,7 @@ void fontsetsize(int n)
 QString fontspec(QFont font)
 {
   QString r;
-  r="\"" + font.family() + "\" " + QString::number(font.pointSize());
+  r="\"" + font.family() + "\" " + QString::number(font.pointSizeF());
   if (font.bold()) r+=" bold";
   if (font.italic()) r+=" italic";
   if (font.strikeOut()) r+=" strikeout";

@@ -15,7 +15,8 @@ class Editm : public Child
 public:
   Editm(string n, string s, Form *f, Pane *p);
   void cmd(string p, string v);
-  void set(string p, string v);
+  string get(string p,string v);
+  void set(string p,string v);
   string state();
 
 private slots:
@@ -37,7 +38,6 @@ public:
 
 protected:
   void keyPressEvent(QKeyEvent *event);
-
 
 };
 

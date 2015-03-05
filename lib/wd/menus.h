@@ -19,7 +19,9 @@ public:
   int menupop(string c);
   int menupopz();
   int menusep();
+  string get(string p,string v);
   void set(string p,string v);
+  string state();
 
   QHash<QString,QAction*> items;
 

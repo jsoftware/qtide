@@ -39,11 +39,84 @@ void Child::cmd(string p, string v)
 }
 
 // ---------------------------------------------------------------------
-string Child::get(string p, string v)
+string Child::get(string p,string v)
 {
-  Q_UNUSED(p);
-  Q_UNUSED(v);
-  return"";
+  string r="";
+  if (v.size() && p!="extent") {
+    error("extra parameters: " + id + " " + p + " " + v);
+    return "";
+  }
+  if (p=="property") {
+    r+=string("parent")+"\012"+ "type"+"\012";
+    r+=string("enable")+"\012"+ "extent"+"\012";
+    r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
+    r+=string("id")+"\012"+ "locale"+"\012";
+    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
+    r+=string("stylesheet")+"\012";
+    r+=string("tooltip")+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
+  } else if (p=="enable") {
+    if (widget) r=i2s(widget->isEnabled());
+  } else if (p=="extent") {
+    if (widget) {
+      QFontMetrics fm = QFontMetrics(widget->font());
+      r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+    }
+  } else if (p=="focuspolicy") {
+    if (widget) r=i2s(widget->focusPolicy());
+  } else if (p=="font") {
+    if (widget) r=q2s(fontspec(widget->font()));
+  } else if (p=="hasfocus") {
+    if (widget) r=i2s(widget->hasFocus());
+  } else if (p=="hwnd") {
+    r=p2s(this);
+  } else if (p=="id") {
+    r=id;
+  } else if (p=="locale") {
+    r=(locale!="")?locale:pform->locale;
+  } else if (p=="maxwh") {
+    if (widget) {
+      QSize size=widget->maximumSize();
+      r=i2s(size.width())+" "+i2s(size.height());
+    }
+  } else if (p=="minwh") {
+    if (widget) {
+      QSize size=widget->minimumSize();
+      r=i2s(size.width())+" "+i2s(size.height());
+    }
+  } else if (p=="parent") {
+    r=pform->id;
+  } else if (p=="sizepolicy") {
+    if (widget) r=i2s(widget->sizePolicy().horizontalPolicy())+" "+i2s(widget->sizePolicy().verticalPolicy());
+  } else if (p=="state") {
+    r=state();
+  } else if (p=="stylesheet") {
+    if (widget) r=q2s(widget->styleSheet());
+  } else if (p=="tooltip") {
+    if (widget) r=q2s(widget->toolTip());
+  } else if (p=="type") {
+    r=type;
+  } else if (p=="visible") {
+    if (widget) r=i2s(widget->isVisible());
+  } else if (p=="wh") {
+    if (widget) {
+      QSize size=widget->size();
+      r=i2s(size.width())+" "+i2s(size.height());
+    }
+  } else if (p=="xywh") {
+    if (widget) {
+      QWidget *p0, *p1;
+      p0=p1=widget;
+      while (p1) {
+        p0=p1;
+        p1=p0->parentWidget();
+      }
+      QPoint pos=widget->mapTo(p0,widget->pos());
+      QSize size=widget->size();
+      r=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
+    }
+  } else
+    error("get command not recognized: " + id + " " + p + " " + v);
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -53,7 +126,7 @@ string Child::getsysdata()
 }
 
 // ---------------------------------------------------------------------
-void Child::set(string p, string v)
+void Child::set(string p,string v)
 {
   if (p=="enable") {
     if (widget) widget->setEnabled(remquotes(v)!="0");
@@ -64,7 +137,7 @@ void Child::set(string p, string v)
   } else if (p=="focuspolicy") {
     setfocuspolicy(v);
   } else if (p=="font") {
-    setfont((Font(v)).font);
+    if (widget) widget->setFont((Font(v)).font);
   } else if (p=="invalid") {
     if (widget) widget->update();
   } else if (p=="nofocus") {
@@ -74,36 +147,23 @@ void Child::set(string p, string v)
   } else if (p=="sizepolicy") {
     setsizepolicy(v);
   } else if (p=="stylesheet") {
-    setstylesheet(v);
+    if (widget) widget->setStyleSheet(s2q(v));
   } else if (p=="tooltip") {
-    settooltip(v);
+    if (widget) widget->setToolTip(s2q(v));
   } else if (p=="wh") {
     setwh(v);
+  } else if (p=="maxwh") {
+    setmaxwhv(v);
   } else if (p=="minwh") {
     setminwhv(v);
   } else
-    error("set command not recognized: " + p);
-}
-
-// ---------------------------------------------------------------------
-void Child::setfont(QFont f)
-{
-  if (widget) widget->setFont(f);
+    error("set command not recognized: " + id + " " + p + " " + v);
 }
 
 // ---------------------------------------------------------------------
 void Child::setfocuspolicy(string p)
 {
-  if (!widget) return;
-  if (p=="tab")
-    widget->setFocusPolicy(Qt::TabFocus);
-  else if (p=="click")
-    widget->setFocusPolicy(Qt::ClickFocus);
-  else if (p=="strong")
-    widget->setFocusPolicy(Qt::StrongFocus);
-  else if (p=="no")
-    widget->setFocusPolicy(Qt::NoFocus);
-  else error("set focuspolicy requires option to be tab,click,strong or no: " + p);
+  if (widget) wdsetfocuspolicy(widget,p);
 }
 
 // ---------------------------------------------------------------------
@@ -112,130 +172,37 @@ void Child::setform()
   form=pform;
 }
 
-// enum QSizePolicy::Policy
-//
-// This enum describes the various per-dimension sizing types used when constructing a QSizePolicy.
-//
-//           Constant                Value                                   Description
-//                                             The QWidget::sizeHint() is the only acceptable alternative, so the
-// QSizePolicy::Fixed            0             widget can never grow or shrink (e.g. the vertical direction of a push
-//                                             button).
-//                                             The sizeHint() is minimal, and sufficient. The widget can be expanded,
-// QSizePolicy::Minimum          GrowFlag      but there is no advantage to it being larger (e.g. the horizontal
-//                                             direction of a push button). It cannot be smaller than the size
-//                                             provided by sizeHint().
-//                                             The sizeHint() is a maximum. The widget can be shrunk any amount
-// QSizePolicy::Maximum          ShrinkFlag    without detriment if other widgets need the space (e.g. a separator
-//                                             line). It cannot be larger than the size provided by sizeHint().
-//                               GrowFlag |    The sizeHint() is best, but the widget can be shrunk and still be
-// QSizePolicy::Preferred        ShrinkFlag    useful. The widget can be expanded, but there is no advantage to it
-//                                             being larger than sizeHint() (the default QWidget policy).
-//                               GrowFlag |    The sizeHint() is a sensible size, but the widget can be shrunk and
-// QSizePolicy::Expanding        ShrinkFlag |  still be useful. The widget can make use of extra space, so it should
-//                               ExpandFlag    get as much space as possible (e.g. the horizontal direction of a
-//                                             horizontal slider).
-//                               GrowFlag |    The sizeHint() is minimal, and sufficient. The widget can make use of
-// QSizePolicy::MinimumExpanding ExpandFlag    extra space, so it should get as much space as possible (e.g. the
-//                                             horizontal direction of a horizontal slider).
-//                               ShrinkFlag |  The sizeHint() is ignored. The widget will get as much space as
-// QSizePolicy::Ignored          GrowFlag |    possible.
-//                               IgnoreFlag
-//
-// enum QSizePolicy::PolicyFlag
-//
-// These flags are combined together to form the various Policy values:
-//
-//        Constant         Value                                    Description
-// QSizePolicy::GrowFlag   1     The widget can grow beyond its size hint if necessary.
-// QSizePolicy::ExpandFlag 2     The widget should get as much space as possible.
-// QSizePolicy::ShrinkFlag 4     The widget can shrink below its size hint if necessary.
-// QSizePolicy::IgnoreFlag 8     The widget's size hint is ignored. The widget will get as much space as possible.
-
 // ---------------------------------------------------------------------
 void Child::setsizepolicy(string p)
 {
-  QString h,v;
-  int hoz,ver;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
-  if (n.empty()) {
-    error("set sizepolicy requires 1 or 2 options: " + p);
-    return;
-  }
-  if (n.size()==1)
-    h=v=n.at(0);
-  else {
-    h=n.at(0);
-    v=n.at(1);
-  }
-  if (h=="fixed")
-    hoz=QSizePolicy::Fixed;
-  else if (h=="minimum")
-    hoz=QSizePolicy::Minimum;
-  else if (h=="maximum")
-    hoz=QSizePolicy::Maximum;
-  else if (h=="preferred")
-    hoz=QSizePolicy::Preferred;
-  else if (h=="expanding")
-    hoz=QSizePolicy::Expanding;
-  else if (h=="minimumexpanding")
-    hoz=QSizePolicy::MinimumExpanding;
-  else if (h=="ignored")
-    hoz=QSizePolicy::Ignored;
-  else {
-    error("set sizepolicy requires options to be fixed,minimum,maximum,preferred,expanding,minimumexpanding or ignored: " + p);
-    return;
-  }
-  if (v=="fixed")
-    ver=QSizePolicy::Fixed;
-  else if (v=="minimum")
-    ver=QSizePolicy::Minimum;
-  else if (v=="maximum")
-    ver=QSizePolicy::Maximum;
-  else if (v=="preferred")
-    ver=QSizePolicy::Preferred;
-  else if (v=="expanding")
-    ver=QSizePolicy::Expanding;
-  else if (v=="minimumexpanding")
-    ver=QSizePolicy::MinimumExpanding;
-  else if (v=="ignored")
-    ver=QSizePolicy::Ignored;
-  else {
-    error("set sizepolicy requires options to be fixed,minimum,maximum,preferred,expanding,minimumexpanding or ignored: " + p);
-    return;
-  }
-  if (widget) widget->setSizePolicy((QSizePolicy::Policy)hoz,(QSizePolicy::Policy)ver);
-}
-
-// ---------------------------------------------------------------------
-void Child::setstylesheet(string p)
-{
-  if (widget) widget->setStyleSheet(s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void Child::settooltip(string p)
-{
-  if (widget) widget->setToolTip(s2q(p));
+  if (widget) wdsetsizepolicy(widget,p);
 }
 
 // ---------------------------------------------------------------------
 void Child::setwh(string p)
 {
+  if (widget) wdsetwh(widget,p);
+}
+
+// ---------------------------------------------------------------------
+void Child::setmaxwhv(string p)
+{
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=2) {
-    error("set wh requires 2 numbers: " + p);
+    error("set maxwh requires 2 numbers: " + id + " " + p);
   } else {
     int w=c_strtoi(q2s(n.at(0)));
     int h=c_strtoi(q2s(n.at(1)));
-    if (!widget) return;
-    if (w!=-1 || h!=-1) {
-      if (w==-1)
-        widget->setFixedHeight(h);
-      else if (h==-1)
-        widget->setFixedWidth(w);
-      else
-        widget->setFixedSize(w,h);
-    }
+    setmaxwh(w,h);
+  }
+}
+
+// ---------------------------------------------------------------------
+void Child::setmaxwh(int w, int h)
+{
+  if (widget && w && h) {
+    widget->setMaximumSize(w,h);
+    widget->updateGeometry();
   }
 }
 
@@ -244,7 +211,7 @@ void Child::setminwhv(string p)
 {
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=2) {
-    error("set minwh requires 2 numbers: " + p);
+    error("set minwh requires 2 numbers: " + id + " " + p);
   } else {
     int w=c_strtoi(q2s(n.at(0)));
     int h=c_strtoi(q2s(n.at(1)));
@@ -259,10 +226,4 @@ void Child::setminwh(int w, int h)
     widget->setMinimumSize(w,h);
     widget->updateGeometry();
   }
-}
-
-// ---------------------------------------------------------------------
-string Child::state()
-{
-  return"";
 }

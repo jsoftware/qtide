@@ -18,11 +18,17 @@ StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
   childStyle(opt);
+}
+
+// ---------------------------------------------------------------------
+string StatusBar::get(string p,string v)
+{
+  return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
@@ -57,14 +63,20 @@ void StatusBar::set(string p,string v)
     w->addPermanentWidget(lab,0);
   } else if (p=="setlabel") {
     if (n<2) {
-      error("setlabel needs label id and text");
+      error("setlabel needs label id and text: " + id + " " + p + " " + v);
       return;
     }
     m=labels.indexOf(s);
     if (m<0) {
-      error("label not found: " + q2s(s));
+      error("label not found: " + id + " " + p + " " + v);
       return;
     }
     labelw.at(m)->setText(arg.at(1));
   } else Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+string StatusBar::state()
+{
+  return "";
 }

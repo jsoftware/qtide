@@ -65,7 +65,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("selectrows sortable")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   QStringList shape;
@@ -128,12 +128,17 @@ void Table::applyhdralign()
 }
 
 // ---------------------------------------------------------------------
-string Table::get(string p, string v)
+string Table::get(string p,string v)
 {
   QStringList opt;
   int r,c;
 
-  if (p=="cell") {
+  if (p=="property") {
+    string r;
+    r+=string("cell")+"\012"+ "col"+"\012"+ "row"+"\012"+ "table"+"\012";
+    r+=Child::get(p,v);
+    return r;
+  } else if (p=="cell") {
     opt=qsplit(v);
     if (!(opt.size()==2)) {
       error("get cell must specify row, column: " + q2s(opt.join(" ")));
@@ -175,9 +180,8 @@ string Table::get(string p, string v)
     return (readcolvalue(c));
   } else if (p=="table") {
     return(readtable(v));
-  } else {
+  } else
     return Child::get(p,v);
-  }
 }
 
 // ---------------------------------------------------------------------
@@ -380,7 +384,7 @@ void Table::resetlen(QVector<int> *v, QVector<int> def)
 }
 
 // ---------------------------------------------------------------------
-void Table::set(string p, string v)
+void Table::set(string p,string v)
 {
   if (p=="align")
     setalign(v);

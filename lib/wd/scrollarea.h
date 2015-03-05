@@ -14,7 +14,8 @@ class ScrollArea : public Child
 
 public:
   ScrollArea(string n, string s, Form *f, Pane *p);
-  void set(string p, string v);
+  string get(string p,string v);
+  void set(string p,string v);
   string state();
 
 protected:

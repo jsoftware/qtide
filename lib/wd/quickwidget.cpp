@@ -51,6 +51,12 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
+string QuickWidget::get(string p,string v)
+{
+  return Child::get(p,v);
+}
+
+// ---------------------------------------------------------------------
 void QuickWidget::set(string p,string v)
 {
   QQuickWidget *w = (QQuickWidget *)widget;
@@ -86,3 +92,8 @@ void QuickWidget::sceneGraphError(QQuickWindow::SceneGraphError, const QString &
 //  qDebug() << message;
 }
 
+// ---------------------------------------------------------------------
+string QuickWidget::state()
+{
+  return "";
+}

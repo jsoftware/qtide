@@ -22,7 +22,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("documentmode movable closable east west south nobar")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
 
@@ -74,6 +74,30 @@ void Tabs::tabCloseRequested(int ndx)
 }
 
 // ---------------------------------------------------------------------
+string Tabs::get(string p,string v)
+{
+  QTabWidget *w = (QTabWidget *)widget;
+  string r;
+  if (p=="property") {
+    r+=string("label")+"\012"+ "select"+"\012";
+    r+=Child::get(p,v);
+  }
+  if (p=="label"||p=="select") {
+    int n=w->currentIndex();
+    string s,t;
+    for (int i=0; i<w->count(); i++)
+      s+=q2s(w->tabText(i)) + '\377';
+    t=(n>=0)?i2s(n):string("_1");
+    if (p=="label")
+      r=s;
+    else
+      r=t;
+  } else
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void Tabs::set(string p,string v)
 {
   QTabWidget *w = (QTabWidget *)widget;
@@ -111,7 +135,7 @@ string Tabs::state()
   string r,s,t;
   for (int i=0; i<w->count(); i++)
     s+=q2s(w->tabText(i)) + '\377';
-  if (n>=0) t=i2s(n);
+  t=(n>=0)?i2s(n):string("_1");
   r+=spair(id,s);
   r+=spair(id+"_select",t);
   return r;

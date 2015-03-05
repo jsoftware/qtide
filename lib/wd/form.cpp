@@ -52,7 +52,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   QStringList unopt=qsless(m,(qsplit("escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")));
   if (unopt.size()) {
-    error("unrecognized form style: " + q2s(unopt.join(" ")));
+    error("unrecognized form style: " + id + " " + q2s(unopt.join(" ")));
     return;
   }
   escclose=m.contains("escclose");
@@ -88,7 +88,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 // ---------------------------------------------------------------------
 Form::~Form()
 {
-  for (int i=0; i<children.size(); i++)
+  for (int i=children.size()-1; 0<=i; i--)
     delete children.at(i);
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
@@ -187,6 +187,75 @@ void Form::closepane()
   if (panes.size()<=1) return;
   panes.removeLast();
   pane=panes.last();
+}
+
+// ---------------------------------------------------------------------
+string Form::get(string p,string v)
+{
+  string r="";
+  if (v.size() && p!="extent") {
+    error("extra parameters: " + id + p + " " + v);
+    return "";
+  }
+  if (p=="property") {
+    r+=string("caption")+"\012"+ "children"+"\012"+ "enable"+"\012"+ "extent"+"\012";
+    r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
+    r+=string("id")+"\012"+ "lastfocus"+"\012"+ "locale"+"\012";
+    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
+    r+=string("stylesheet")+"\012"+ "sysdata"+"\012"+ "sysmodifiers"+"\012";
+    r+=string("tooltip")+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
+  } else if (p=="caption") {
+    r=q2s(this->windowTitle());
+  } else if (p=="children") {
+    for (int i=0; children.size()>i; i++)
+      r+=children.at(i)->id+"\012";
+  } else if (p=="enable") {
+    r=i2s(this->isEnabled());
+  } else if (p=="extent") {
+    QFontMetrics fm = QFontMetrics(this->font());
+    r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+  } else if (p=="focuspolicy") {
+    r=i2s(this->focusPolicy());
+  } else if (p=="font") {
+    r=q2s(fontspec(this->font()));
+  } else if (p=="hasfocus") {
+    r=i2s(this->hasFocus());
+  } else if (p=="hwnd") {
+    r=this->hsform();
+  } else if (p=="id") {
+    r=id;
+  } else if (p=="lastfocus") {
+    r=lastfocus;
+  } else if (p=="locale") {
+    r=locale;
+  } else if (p=="maxwh") {
+    QSize size=this->maximumSize();
+    r=i2s(size.width())+" "+i2s(size.height());
+  } else if (p=="minwh") {
+    QSize size=this->minimumSize();
+    r=i2s(size.width())+" "+i2s(size.height());
+  } else if (p=="sizepolicy") {
+    r=i2s(this->sizePolicy().horizontalPolicy())+" "+i2s(this->sizePolicy().verticalPolicy());
+  } else if (p=="state") {
+    r=this->state(0);
+  } else if (p=="stylesheet") {
+    r=q2s(this->styleSheet());
+  } else if (p=="sysdata") {
+    r=sysdata;
+  } else if (p=="sysmodifiers") {
+    r=getsysmodifiers();
+  } else if (p=="tooltip") {
+    r=q2s(this->toolTip());
+  } else if (p=="visible") {
+    r=i2s(this->isVisible());
+  } else if (p=="wh") {
+    QSize size=this->size();
+    r=i2s(size.width())+" "+i2s(size.height());
+  } else if (p=="xywh") {
+    r=i2s(pos().x())+" "+i2s(pos().y())+" "+i2s(size().width())+" "+i2s(size().height());
+  } else
+    error("get command not recognized: " + id + " " + p + " " + v);
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -299,6 +368,27 @@ void Form::keyReleaseEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
+void Form::set(string p,string v)
+{
+  if (p=="enable") {
+    setEnabled(remquotes(v)!="0");
+  } else if (p=="font") {
+    setFont((Font(v)).font);
+  } else if (p=="invalid") {
+    update();
+  } else if (p=="show") {
+    setVisible(remquotes(v)!="0");
+  } else if (p=="stylesheet") {
+    setStyleSheet(s2q(v));
+  } else if (p=="tooltip") {
+    setToolTip(s2q(v));
+  } else if (p=="wh") {
+    wdsetwh(this,v);
+  } else
+    error("set command not recognized: " + id + " " + p + " " + v);
+}
+
+// ---------------------------------------------------------------------
 Child *Form::setmenuid(string id)
 {
   if (menubar && menubar->items.contains(s2q(id)))
@@ -361,7 +451,7 @@ void Form::showit(string p)
   } else if (p=="hide") {
     if (isVisible()) setVisible(false);
   } else {
-    error("unrecognized style: " + p);
+    error("unrecognized style: " + id + " " + p);
   }
 #endif
 }

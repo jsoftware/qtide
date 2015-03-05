@@ -24,15 +24,14 @@ public:
   virtual string get(string p,string v);
   virtual void set(string p,string v);
 
-  virtual void setfont(QFont);
   virtual void setform();
   virtual void setfocuspolicy(string p);
   virtual void setsizepolicy(string p);
-  virtual void setstylesheet(string p);
-  virtual void settooltip(string p);
-  virtual string state();
+  virtual string state()=0;
 
   virtual void setwh(string);
+  virtual void setmaxwhv(string);
+  virtual void setmaxwh(int,int);
   virtual void setminwhv(string);
   virtual void setminwh(int,int);
 

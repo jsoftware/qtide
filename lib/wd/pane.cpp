@@ -66,7 +66,8 @@ Pane::Pane(int n,Form *f) : QWidget(f)
   child=0;
   groupboxw=0;
   layout=0;
-  sizew=sizeh=0;
+  maxsizew=maxsizeh=0;
+  minsizew=minsizeh=0;
   if (n==1) {
     bin("v");
     layout->bin->setContentsMargins(0,0,0,0);
@@ -154,8 +155,9 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Webview2(n,p,pform,this);
 #endif
   else {
-    sizew=sizeh=0;
-    error("child not supported " + c);
+    maxsizew=maxsizeh=0;
+    minsizew=minsizeh=0;
+    error("child not supported: " + c + " " + p);
     return false;
   }
   if (rc==1) {
@@ -163,16 +165,18 @@ bool Pane::addchild(string n,string c,string p)
     return false;
   }
   Q_ASSERT(child);
-  if (fontdef) child->setfont(fontdef->font);
+  if (fontdef && child->widget) child->widget->setFont(fontdef->font);
   layout->addWidget(child->widget);
-  child->setminwh(sizew,sizeh);
+  child->setmaxwh(maxsizew,maxsizeh);
+  child->setminwh(minsizew,minsizeh);
   lasttype=child->type;
   QStringList opt=qsplit(p);
   if (opt.contains("flush")) {
     layout->bin->setContentsMargins(0,0,0,0);
     layout->bin->setSpacing(0);
   }
-  sizew=sizeh=0;
+  maxsizew=maxsizeh=0;
+  minsizew=minsizeh=0;
   this->child=child;
   pform->addchild(child);
   return true;
@@ -239,15 +243,15 @@ void Pane::fini()
 }
 
 // ---------------------------------------------------------------------
-void Pane::grid(string c, string s)
+void Pane::grid(string p, string v)
 {
 // decommit the name size in the next release
-  if (c=="shape"||c=="size") {
+  if (p=="shape"||p=="size") {
     int rmax=0,cmax=0;
-    QStringList opt=qsplit(s);
+    QStringList opt=qsplit(v);
     int n=opt.size();
     if (1>n) {
-      error("missing grid size row_size or column_size");
+      error("missing grid size row_size or column_size: " + p + " " + v);
       return;
     }
     if (!layout)
@@ -258,26 +262,26 @@ void Pane::grid(string c, string s)
       rmax=-1;
       cmax=c_strtoi(q2s(opt.at(0)));
       if (cmax<=0) {
-        error("grid size column_size must be positive");
+        error("grid size column_size must be positive: " + p + " " + v);
         return;
       }
     } else {
       rmax=c_strtoi(q2s(opt.at(0)));
       cmax=c_strtoi(q2s(opt.at(1)));
       if ((rmax<=0)||(cmax<=0)) {
-        error("grid size row_size and column_size must be positive");
+        error("grid size row_size and column_size must be positive: " + p + " " + v);
         return;
       }
     }
     layout->rmax=rmax;
     layout->cmax=cmax;
     layout->razed=true;
-  } else if (c=="cell") {
+  } else if (p=="cell") {
     int r,c,rs,cs,alignment=0;
-    QStringList opt=qsplit(s);
+    QStringList opt=qsplit(v);
     int n=opt.size();
     if (!(2==n || 3==n || 4==n || 5==n)) {
-      error("not grid cell row, column [,row_span, column_span] [,alignment] ");
+      error("not grid cell row, column [,row_span, column_span] [,alignment]: " + p + " " + v);
       return;
     }
     if (!layout)
@@ -285,7 +289,7 @@ void Pane::grid(string c, string s)
     if ('g'!=layout->type)
       bin("g");
     if (layout->razed) {
-      error("grid is razed");
+      error("grid is raze: " + p + " " + v);
       return;
     }
     if (4>n) {
@@ -301,15 +305,15 @@ void Pane::grid(string c, string s)
       if (5==n) alignment=c_strtoi(q2s(opt.at(4)));
     }
     if ((r<0)||(c<0)) {
-      error("grid cell row and column must be non-negative");
+      error("grid cell row and column must be non-negative: " + p + " " + v);
       return;
     }
     if ((rs<=0)||(cs<=0)) {
-      error("grid cell row_span and column_span must be positive");
+      error("grid cell row_span and column_span must be positiv: " + p + " " + v);
       return;
     }
     if (alignment<0) {
-      error("grid cell alignment must be non-negative");
+      error("grid cell alignment must be non-negativ: " + p + " " + v);
       return;
     }
     layout->r=r;
@@ -317,92 +321,92 @@ void Pane::grid(string c, string s)
     layout->rs=rs;
     layout->cs=cs;
     layout->alignment=alignment;
-  } else if (c=="colwidth") {
-    QStringList opt=qsplit(s);
+  } else if (p=="colwidth") {
+    QStringList opt=qsplit(v);
     int c,w=0;
     int n=opt.size();
     if ((2>n) || (n&1)) {
-      error("grid colwidth must specify column and width");
+      error("grid colwidth must specify column and width: " + p + " " + v);
       return;
     }
     for (int i=0; i<n ; i+=2) {
       c=c_strtoi(q2s(opt.at(i)));
       w=c_strtoi(q2s(opt.at(i+1)));
       if ((c<0)||(w<0)) {
-        error("grid colwidth column and width must be non-negative");
+        error("grid colwidth column and width must be non-negative: " + p + " " + v);
         return;
       }
       if (layout->razed && (layout->cmax<=c)) {
-        error("grid colwidth invalid column");
+        error("grid colwidth invalid colum: " + p + " " + v);
         return;
       }
       ((QGridLayout *)(layout->bin))->setColumnMinimumWidth(c,w);
     }
-  } else if (c=="colstretch") {
-    QStringList opt=qsplit(s);
+  } else if (p=="colstretch") {
+    QStringList opt=qsplit(v);
     int c,s=0;
     int n=opt.size();
     if ((2>n) || (n&1)) {
-      error("grid colstretch must specify column and stretch");
+      error("grid colstretch must specify column and stretch: " + p + " " + v);
       return;
     }
     for (int i=0; i<n ; i+=2) {
       c=c_strtoi(q2s(opt.at(i)));
       s=c_strtoi(q2s(opt.at(i+1)));
       if ((c<0)||(s<0)) {
-        error("grid colstretch column and stretch must be non-negative");
+        error("grid colstretch column and stretch must be non-negative: " + p + " " + v);
         return;
       }
       if (layout->razed && (layout->cmax<=c)) {
-        error("grid colstretch invalid column");
+        error("grid colstretch invalid column: " + p + " " + v);
         return;
       }
       ((QGridLayout *)(layout->bin))->setColumnStretch(c,s);
     }
-  } else if (c=="rowheight") {
-    QStringList opt=qsplit(s);
+  } else if (p=="rowheight") {
+    QStringList opt=qsplit(v);
     int r,h=0;
     int n=opt.size();
     if ((2>n) || (n&1)) {
-      error("grid row height must specify row and height");
+      error("grid row height must specify row and height: " + p + " " + v);
       return;
     }
     for (int i=0; i<n ; i+=2) {
       r=c_strtoi(q2s(opt.at(i)));
       h=c_strtoi(q2s(opt.at(i+1)));
       if ((r<0)||(h<0)) {
-        error("grid rowheight row and height must be non-negative");
+        error("grid rowheight row and height must be non-negative: " + p + " " + v);
         return;
       }
       if (layout->razed && (layout->rmax>=0) && (layout->rmax<=r)) {
-        error("grid rowheight invalid row");
+        error("grid rowheight invalid row: " + p + " " + v);
         return;
       }
       ((QGridLayout *)(layout->bin))->setRowMinimumHeight(r,h);
     }
-  } else if (c=="rowstretch") {
-    QStringList opt=qsplit(s);
+  } else if (p=="rowstretch") {
+    QStringList opt=qsplit(v);
     int r,s=0;
     int n=opt.size();
     if ((2>n) || (n&1)) {
-      error("grid row stretch must specify row and height");
+      error("grid row stretch must specify row and height: " + p + " " + v);
       return;
     }
     for (int i=0; i<n ; i+=2) {
       r=c_strtoi(q2s(opt.at(i)));
       s=c_strtoi(q2s(opt.at(i+1)));
       if ((r<0)||(s<0)) {
-        error("grid rowstretch row and stretch must be non-negative");
+        error("grid rowstretch row and stretch must be non-negative: " + p + " " + v);
         return;
       }
       if (layout->razed && (layout->rmax>=0) && (layout->rmax<=r)) {
-        error("grid rowstretch invalid row");
+        error("grid rowstretch invalid row: " + p + " " + v);
         return;
       }
       ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
     }
   } else
-    error("bad grid command");
+    error("bad grid command: " + p + " " + v);
 }
 
 // ---------------------------------------------------------------------
@@ -437,7 +441,7 @@ bool Pane::groupbox(string c, string s)
         p->groupboxw=0;
         return true;
       }
-      error("No groupbox to end");
+      error("no groupbox to end: " + c + " " + s);
       return false;
     }
   }
@@ -445,10 +449,10 @@ bool Pane::groupbox(string c, string s)
 }
 
 // ---------------------------------------------------------------------
-bool Pane::line(string c, string s)
+bool Pane::line(string p, string s)
 {
   Q_UNUSED(s);
-  QString cmd=s2q(c);
+  QString cmd=s2q(p);
   if (!(cmd=="line" || cmd=="lineh" || cmd=="linev"))
     return false;
   QFrame *f=new QFrame();
@@ -465,23 +469,23 @@ void Pane::setstretch(Child *cc, string factor)
 }
 
 // ---------------------------------------------------------------------
-bool Pane::split(string c, string s)
+bool Pane::split(string p, string s)
 {
-  if (c=="splith" || c=="splitv") {
+  if (p=="splith" || p=="splitv") {
     if (!layout)
       bin("v");
-    qsplitter=new QSplitter((c=="splith")?Qt::Horizontal : Qt::Vertical);
+    qsplitter=new QSplitter((p=="splith")?Qt::Horizontal : Qt::Vertical);
     qsplitter->addWidget(pform->addpane(1));
     qsplitterp=qs2intlist(s2q(s));
     return true;
   }
 
-  if (!(c=="splitend" || c=="splitsep")) return false;
+  if (!(p=="splitend" || p=="splitsep")) return false;
 
   fini();
   Pane *sp=pform->pane;
 
-  if (c=="splitend")
+  if (p=="splitend")
     sp->splitend();
   else
     sp->qsplitter->addWidget(pform->addpane(1));

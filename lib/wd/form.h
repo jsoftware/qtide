@@ -37,6 +37,8 @@ public:
   string hsform();
   string qform();
   bool nochild();
+  string get(string p,string v);
+  void set(string p,string v);
   void setstretch(Child *cc, string factor);
   Child *setmenuid(string id);
   void setpadding(int l,int t,int r,int b);
@@ -47,6 +49,7 @@ public:
   void signalevent(Child *c, QKeyEvent *e = 0);
   string state(int evt);
   void status(string);
+  string getsysmodifiers();
 
   bool closed;
   bool shown;
@@ -90,7 +93,6 @@ private slots:
 #endif
 
 private:
-  string getsysmodifiers();
 #ifdef QT_OS_ANDROID
   bool backButtonPressed;
 #endif

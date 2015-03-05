@@ -23,7 +23,7 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("multiple")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -38,14 +38,52 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string ListBox::get(string p, string v)
+string ListBox::get(string p,string v)
 {
-
-  if (p=="items") {
-    rc=-1;
-    return(getselection());
+  QListWidget *w=(QListWidget*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("items")+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="items")
+    r=getitems();
+  else if (p=="text"||p=="select") {
+    QList <QListWidgetItem*> list = w->selectedItems();
+    if (0==list.count()) {
+      if (p=="text")
+        r="";
+      else
+        r=i2s(-1);
+    } else {
+      if ((w->selectionMode()) == QAbstractItemView::ExtendedSelection) {
+        if (p=="text")
+          r=getselection();
+        else
+          r=getselectionindex();
+      } else {
+        int n=w->currentRow();
+        if (p=="text")
+          r=q2s(w->item(n)->text());
+        else
+          r=i2s(n);
+      }
+    }
   } else
-    return Child::get(p,v);
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
+string ListBox::getitems()
+{
+  QListWidget *w=(QListWidget*) widget;
+  string s="";
+
+  for (int i=0; i<w->count(); i++) {
+    s += q2s(w->item(i)->text());
+    s += "\012";
+  }
+  return(s);
 }
 
 // ---------------------------------------------------------------------
@@ -91,7 +129,7 @@ void ListBox::itemSelectionChanged()
 }
 
 // ---------------------------------------------------------------------
-void ListBox::set(string p, string v)
+void ListBox::set(string p,string v)
 {
   QListWidget *w=(QListWidget*) widget;
   if (p=="items") {
@@ -111,7 +149,7 @@ string ListBox::state()
   string r;
   if (0==list.count()) {
     r+=spair(id,(string)"");
-    r+=spair(id+"_select",(string)"");
+    r+=spair(id+"_select",(string)"_1");
   } else {
     if ((w->selectionMode()) == QAbstractItemView::ExtendedSelection) {
       r+=spair(id,getselection());

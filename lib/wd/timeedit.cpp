@@ -27,7 +27,7 @@ TimeEdit::TimeEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -63,6 +63,32 @@ void TimeEdit::valueChanged()
 {
   event="changed";
   pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+string TimeEdit::get(string p,string v)
+{
+  QTimeEdit *w=(QTimeEdit*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="format")
+    r=q2s(w->displayFormat());
+  else if (p=="max") {
+    QTime q=w->maximumTime();
+    r=d2s((10000*q.hour())+(100*q.minute())+q.second()+(((double)q.msec())/1000.0));
+  } else if (p=="min") {
+    QTime q=w->minimumTime();
+    r=d2s((10000*q.hour())+(100*q.minute())+q.second()+(((double)q.msec())/1000.0));
+  } else if (p=="readonly")
+    r=i2s(w->isReadOnly());
+  else if (p=="value") {
+    QTime q=w->time();
+    r=d2s((10000*q.hour())+(100*q.minute())+q.second()+(((double)q.msec())/1000.0));
+  } else
+    r=Child::get(p,v);
+  return r;
 }
 
 // ---------------------------------------------------------------------

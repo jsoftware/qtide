@@ -21,7 +21,7 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("edit")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -37,6 +37,47 @@ void ComboBox::activated()
 {
   event="select";
   pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+string ComboBox::get(string p,string v)
+{
+  PComboBox *w=(PComboBox*) widget;
+  string r;
+  if (p=="property") {
+    r+=string("items")+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=Child::get(p,v);
+  } else if (p=="items") {
+    r=getitems();
+  } else if (p=="text"||p=="select") {
+    int n=w->currentIndex();
+    if (n<0) {
+      if (p=="text")
+        r="";
+      else
+        r=i2s(-1);
+    } else {
+      if (p=="text")
+        r=q2s(w->currentText());
+      else
+        r=i2s(n);
+    }
+  } else
+    r=Child::get(p,v);
+  return r;
+}
+
+// ---------------------------------------------------------------------
+string ComboBox::getitems()
+{
+  PComboBox *w=(PComboBox*) widget;
+  string s="";
+
+  for (int i=0; i<w->count(); i++) {
+    s += q2s(w->itemText(i));
+    s += "\012";
+  }
+  return(s);
 }
 
 // ---------------------------------------------------------------------
@@ -59,7 +100,7 @@ string ComboBox::state()
   string r;
   if (n<0) {
     r+=spair(id,(string)"");
-    r+=spair(id+"_select",(string)"");
+    r+=spair(id+"_select",(string)"_1");
   } else {
     r+=spair(id,q2s(w->currentText()));
     r+=spair(id+"_select",i2s(n));
@@ -68,9 +109,20 @@ string ComboBox::state()
 }
 
 // ---------------------------------------------------------------------
+void ComboBox::setmaxwh(int w, int h)
+{
+  Q_UNUSED(h);
+  if (widget && w) {
+    widget->setMaximumSize(w,0);
+    widget->updateGeometry();
+  }
+}
+
+// ---------------------------------------------------------------------
 void ComboBox::setminwh(int w, int h)
 {
-  if (widget && w && h) {
+  Q_UNUSED(h);
+  if (widget && w) {
     widget->setMinimumSize(w,0);
     widget->updateGeometry();
   }

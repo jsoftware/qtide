@@ -23,7 +23,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("vertical")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -36,7 +36,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     if (qshasonly(t,"0123456789x")) {
       QStringList sizes=t.split('x');
       if (sizes.size()<2) {
-        error("invalid icon width, height: "+q2s(t));
+        error("invalid icon width, height: " + q2s(t));
         return;
       }
 #ifdef QT_OS_ANDROID
@@ -63,7 +63,7 @@ void ToolBar::actionTriggered(QAction *a)
 void ToolBar::makeact(QStringList opt)
 {
   if (opt.size()<3) {
-    error("toolbar add needs id, text, image");
+    error("toolbar add needs id, text, image: " + id);
     return;
   }
   QToolBar *w=(QToolBar *)widget;
@@ -77,6 +77,12 @@ void ToolBar::makeact(QStringList opt)
   QAction *a=w->addAction(image,text);
   a->setObjectName(id);
   acts.append(a);
+}
+
+// ---------------------------------------------------------------------
+string ToolBar::get(string p,string v)
+{
+  return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
@@ -134,4 +140,10 @@ void ToolBar::setbutton(string p, QStringList opt)
     error("set toolbar attribute error: " + p);
     return;
   }
+}
+
+// ---------------------------------------------------------------------
+string ToolBar::state()
+{
+  return "";
 }

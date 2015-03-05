@@ -47,6 +47,12 @@ WEBVIEW::WEBVIEW(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
+string WEBVIEW::get(string p,string v)
+{
+  return Child::get(p,v);
+}
+
+// ---------------------------------------------------------------------
 void WEBVIEW::set(string p,string v)
 {
   QWEBVIEW *w = (QWEBVIEW *)widget;
