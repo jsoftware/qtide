@@ -10,6 +10,8 @@ f() {
   --indent=spaces=2 \
   --suffix=none \
   --quiet \
+  --exclude=lib/build \
+  --exclude=main/build \
   --recursive \
   "$1"
 }
