@@ -16,6 +16,7 @@ public:
   Font(string s,int size10, bool bold, bool italic, bool strikeout, bool underline, int angle10);
   QFont font;
   int angle;
+  bool error;
 
 private:
 

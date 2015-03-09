@@ -341,6 +341,11 @@ int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
   if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  if (FontExtent->error) {
+    delete FontExtent;
+    FontExtent=0;
+    return 1;
+  }
 #if defined(GLPRINTER)
   CHKPAINTER
   QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
@@ -358,6 +363,11 @@ int glqextentw(char *s,int *wi)
   if (!s || !wi) return 1;
   QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
   if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  if (FontExtent->error) {
+    delete FontExtent;
+    FontExtent=0;
+    return 1;
+  }
 #if defined(GLPRINTER)
   CHKPAINTER
   QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
@@ -710,7 +720,12 @@ int glfont0(void *wid, char *s)
   QTWidget2 *w = (QTWidget2 *)wid;
 #endif
   if (!w) return 1;
-  w->font = new Font(string(s));
+  Font *fnt = new Font(string(s));
+  if (fnt->error) {
+    delete fnt;
+    return 1;
+  }
+  w->font = fnt;
   return 0;
 }
 
@@ -733,7 +748,12 @@ int glfont2(const int *p, int len)
   strikeout = 8 & *(p + 1);
   degree10 = *(p + 2);
   char *face = int2utf8(p + 3, len - 3);
-  w->font = new Font(string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  Font *fnt = new Font(string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  if (fnt->error) {
+    delete fnt;
+    return 1;
+  }
+  w->font = fnt;
   QFontMetrics fm = QFontMetrics((w->font)->font);
   return 0;
 }
@@ -751,6 +771,11 @@ int glfontextent(char *s)
 {
   if (FontExtent) delete FontExtent;
   FontExtent = new Font(string(s));
+  if (FontExtent->error) {
+    delete FontExtent;
+    FontExtent=0;
+    return 1;
+  }
   return 0;
 }
 

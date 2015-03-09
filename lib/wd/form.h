@@ -50,6 +50,7 @@ public:
   string state(int evt);
   void status(string);
   string getsysmodifiers();
+  string getfocus();
 
   bool closed;
   bool shown;

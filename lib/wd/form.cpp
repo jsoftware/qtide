@@ -198,7 +198,7 @@ string Form::get(string p,string v)
     return "";
   }
   if (p=="property") {
-    r+=string("caption")+"\012"+ "children"+"\012"+ "enable"+"\012"+ "extent"+"\012";
+    r+=string("caption")+"\012"+ "children"+"\012"+ "enable"+"\012"+ "extent"+"\012"+ "focus"+"\012";
     r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
     r+=string("id")+"\012"+ "lastfocus"+"\012"+ "locale"+"\012";
     r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
@@ -214,6 +214,8 @@ string Form::get(string p,string v)
   } else if (p=="extent") {
     QFontMetrics fm = QFontMetrics(this->font());
     r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+  } else if (p=="focus") {
+    r=this->getfocus();
   } else if (p=="focuspolicy") {
     r=i2s(this->focusPolicy());
   } else if (p=="font") {
@@ -264,6 +266,19 @@ string Form::getsysmodifiers()
   Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
   return i2s((mod.testFlag(Qt::ShiftModifier) ? 1 : 0) +
              (mod.testFlag(Qt::ControlModifier)? 2 : 0));
+}
+
+// ---------------------------------------------------------------------
+string Form::getfocus()
+{
+  QWidget *w=QApplication::focusWidget();
+  if (!w || !this->children.size()) return "";
+  for (int i=this->children.size()-1; 0<=i; i--) {
+    QWidget *c;
+    if ((c=this->children.at(i)->widget) && (w==c || c->isAncestorOf(w)))
+      return this->children.at(i)->id;
+  }
+  return "";
 }
 
 // ---------------------------------------------------------------------
@@ -484,6 +499,8 @@ void Form::signalevent(Child *c, QKeyEvent *e)
       }
     }
   }
+  string fc=getfocus();
+  if (fc.size()) lastfocus=fc;
   var_cmddo("(i.0 0)\"_ wdhandler_" + s2q(loc) + "_$0");
 }
 
@@ -516,20 +533,7 @@ string Form::state(int evt)
   r+=spair("syshwndp",hsform());
   r+=spair("syshwndc",hschild());
   r+=spair("syslastfocus",lastfocus);
-  QWidget* fo=QApplication::focusWidget();
-  bool fnd=false;
-  if (fo) {
-    Child *n;
-    for (int i=0; i<children.size(); i++)
-      if (fo==(n=children.at(i))->widget) {
-        r+=spair("sysfocus",n->id);
-        lastfocus=n->id;
-        fnd=true;
-        break;
-      }
-  }
-  if (!fnd)
-    r+=spair("sysfocus",(string)"");
+  r+=spair("sysfocus",getfocus());
   r+=spair("sysmodifiers",sysmodifiers);
   r+=spair("sysdata",sysdata);
 

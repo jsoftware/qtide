@@ -493,9 +493,17 @@ void wdend()
 void wdfontdef()
 {
   string p=cmd.getparms();
-  if (fontdef) delete fontdef;
-  fontdef=0;
-  if (p.size()) fontdef = new Font(p);
+  if (!p.size()) {
+    if (fontdef) delete fontdef;
+    fontdef=0;
+  } else {
+    Font *fnt = new Font(p);
+    if (fnt->error) {
+      delete fnt;
+      error("fonddef command failed: "+ p);
+    } else
+      fontdef=fnt;
+  }
 }
 
 #ifdef QT_OS_ANDROID

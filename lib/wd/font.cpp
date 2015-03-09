@@ -12,6 +12,7 @@ Font *FontExtent=0;
 // ---------------------------------------------------------------------
 Font::Font(string s, float pointsize)
 {
+  error=false;
   angle=0;
   if (s=="fixfont") {
     font=config.Font;
@@ -37,7 +38,13 @@ Font::Font(string s, float pointsize)
           else if (ss1[j]=="underline") underline = 1;
           else if (ss1[j]=="strikeout") strikeout = 1;
           else if (ss1[j].mid(0,5)=="angle") angle = c_strtoi(q2s(ss1[j].mid(5)));
-          else size = (float) c_strtod(q2s(ss1[j]));
+          else {
+            size = (float) c_strtod(q2s(ss1[j]));
+            if (0==size) {
+              error=true;
+              break;
+            };
+          }
         }
       }
     }
@@ -52,12 +59,17 @@ Font::Font(string s, float pointsize)
           else if (ss[j]=="underline") underline = 1;
           else if (ss[j]=="strikeout") strikeout = 1;
           else if (ss[j].mid(0,5)=="angle") angle = c_strtoi(q2s(ss[j].mid(5)));
-          else size = (float) c_strtod(q2s(ss[j]));
+          else {
+            size = (float) c_strtod(q2s(ss[j]));
+            if (0==size) {
+              error=true;
+              break;
+            };
+          }
         }
       }
     }
   }
-
   if (-1.0!=pointsize) size=pointsize;
 //  qDebug() << "font: " + face + ",size=" + QString::number(size) + ",bold=" + QString::number(bold) + ",italic=" + QString::number(italic) + ",strikeout=" + QString::number(strikeout) + ",underline=" + QString::number(underline) + ",angle=" + QString::number(angle) ;
   font = QFont (face);
@@ -71,8 +83,9 @@ Font::Font(string s, float pointsize)
 // ---------------------------------------------------------------------
 Font::Font(string s,int size10, bool bold, bool italic, bool strikeout, bool underline, int angle10)
 {
+  error=false;
   angle=angle10;
-  QString face = QString::fromUtf8 (s.c_str());
+  QString face = QString::fromUtf8 (remquotes(s).c_str());
   font = QFont (face);
   font.setPointSizeF(size10/10);
   font.setBold(bold);
