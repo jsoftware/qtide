@@ -1233,10 +1233,8 @@ void wdreset()
   evtform=0;
   if (fontdef) delete fontdef;
   fontdef=0;
-  if (FontExtent) {
-    delete FontExtent;
-    FontExtent=0;
-  }
+  if (FontExtent) delete FontExtent;
+  FontExtent=0;
   lasterror="";
   result="";
   verbose=0;

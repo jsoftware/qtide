@@ -340,7 +340,7 @@ int glqhandles(void **p)
 int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
-  if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
   if (FontExtent->error) {
     delete FontExtent;
     FontExtent=0;
@@ -362,7 +362,7 @@ int glqextentw(char *s,int *wi)
 {
   if (!s || !wi) return 1;
   QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
-  if (!FontExtent) FontExtent= new Font(q2s(QApplication::font().family()),QApplication::font().pointSizeF());
+  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
   if (FontExtent->error) {
     delete FontExtent;
     FontExtent=0;
@@ -491,7 +491,6 @@ int glsel(void *g)
       }
     }
   }
-//  qDebug() << "glsel failed " + QString::number((SI)g);
 #endif
   return 1;
 }
@@ -541,7 +540,6 @@ int glsel2(char *g)
       }
     }
   }
-//  qDebug() << "glsel2 failed "+ s2q(string(g));
 #endif
   return 1;
 }
@@ -726,6 +724,9 @@ int glfont0(void *wid, char *s)
     return 1;
   }
   w->font = fnt;
+// also set glfontextent
+  if (FontExtent) delete FontExtent;
+  FontExtent=new Font(string(s));
   return 0;
 }
 
@@ -754,7 +755,9 @@ int glfont2(const int *p, int len)
     return 1;
   }
   w->font = fnt;
-  QFontMetrics fm = QFontMetrics((w->font)->font);
+// also set glfontextent
+  if (FontExtent) delete FontExtent;
+  FontExtent=new Font(string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
   return 0;
 }
 
@@ -769,12 +772,17 @@ int glfontangle(int a)
 // ---------------------------------------------------------------------
 int glfontextent(char *s)
 {
-  if (FontExtent) delete FontExtent;
-  FontExtent = new Font(string(s));
-  if (FontExtent->error) {
-    delete FontExtent;
+  if (!s) return 1;
+  if (!strlen(s)) {
+    if (FontExtent) delete FontExtent;
     FontExtent=0;
-    return 1;
+  } else {
+    Font *fnt = new Font(string(s));
+    if (fnt->error) {
+      delete fnt;
+      return 1;
+    }
+    FontExtent=fnt;
   }
   return 0;
 }
