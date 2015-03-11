@@ -1,6 +1,6 @@
 
 VERSION = 1.4.1
-JDLLVER = 8.0.3    # ignored if not FHS
+JDLLVER = 8.0.4    # ignored if not FHS
 
 # DEFINES += BIGENDIAN # uncomment this line for ppc mac
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion

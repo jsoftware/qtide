@@ -11,7 +11,7 @@ extern "C" int gl_clear2 (void *p,int clear);
 // ---------------------------------------------------------------------
 #ifdef QT54
 Opengl2::Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent) : QOpenGLWidget(parent)
-#elseif QT53
+#elif QT53
   Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(parent,format)
 #else
 Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(parent)

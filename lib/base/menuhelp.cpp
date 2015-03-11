@@ -347,7 +347,7 @@ void helplabschapters()
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
-  QString w="http://www.jsoftware.com/docs/help803/";
+  QString w="http://www.jsoftware.com/docs/help804/";
 #ifdef QT_OS_ANDROID
   if (QFile(t).exists())
     tedit->docmds("browse_j_ '" + t.prepend("file://") + "'", false);
