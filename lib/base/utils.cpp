@@ -78,12 +78,6 @@ QString defext(QString s)
 }
 
 // ---------------------------------------------------------------------
-void evtloop()
-{
-  if (jdllproc) evloop->exec(QEventLoop::AllEvents);
-}
-
-// ---------------------------------------------------------------------
 int fkeynum(int key,bool c,bool s)
 {
   return key + (c*100) + (s*100000);
