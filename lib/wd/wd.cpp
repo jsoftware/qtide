@@ -74,6 +74,7 @@ static void wdfontdef();
 static void wdfontfile();
 #endif
 static void wdget();
+static void wdgetp();
 static void wdgrid();
 static void wdgroupbox(string c);
 static void wdide();
@@ -113,6 +114,7 @@ static QuickView2 *quickview2;
 static void wdrem();
 void wdreset();
 static void wdset();
+static void wdsetp();
 static void wdsetx(string);
 static void wdset1(string n,string p,string v);
 static void wdsm(string);
@@ -222,6 +224,8 @@ void wd1()
 #endif
     else if (c=="get")
       wdget();
+    else if (c=="getp")
+      wdgetp();
     else if (c=="grid")
       wdgrid();
     else if (c.substr(0,8)=="groupbox")
@@ -260,6 +264,8 @@ void wd1()
       wdreset();
     else if (c=="set")
       wdset();
+    else if (c=="setp")
+      wdsetp();
     else if (c.substr(0,3)=="set")
       wdsetx(c);
     else if (c.substr(0,2)=="sm")
@@ -524,17 +530,23 @@ void wdget()
   string p=cmd.getid();
   string v=cmd.getparms();
   rc=-1;
-  if (n=="..") {
-    if (noform()) return;
-    result=form->get(p,v);
-    return;
-  }
   if (n=="_") n=formchildid();
   int type=setchild(n);
   if (type)
     result=cc->get(p,v);
   else
     error("bad child id: " + n);
+}
+
+// ---------------------------------------------------------------------
+void wdgetp()
+{
+  string p=cmd.getid();
+  string v=cmd.getparms();
+  rc=-1;
+  if (noform()) return;
+  result=form->get(p,v);
+  return;
 }
 
 // ---------------------------------------------------------------------
@@ -1251,6 +1263,18 @@ void wdset()
 }
 
 // ---------------------------------------------------------------------
+void wdsetp()
+{
+  string p=cmd.getid();
+  string v=cmd.getparms();
+  if (noform()) return;
+  noevents(1);
+  form->set(p,v);
+  noevents(0);
+  return;
+}
+
+// ---------------------------------------------------------------------
 void wdsetx(string c)
 {
   string n=cmd.getid();
@@ -1263,12 +1287,6 @@ void wdsetx(string c)
 void wdset1(string n,string p,string v)
 {
   if (noform()) return;
-  if (n=="..") {
-    noevents(1);
-    form->set(p,v);
-    noevents(0);
-    return;
-  }
   noevents(1);
   if (n=="_") n=formchildid();
   int type=setchild(n);
