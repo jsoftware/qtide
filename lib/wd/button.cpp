@@ -54,8 +54,32 @@ void Button::set(string p,string v)
   if (p=="caption" || p=="text")
     ((QPushButton *)widget)->setText(s2q(remquotes(v)));
   else if (p=="icon") {
-    iconFile=remquotes(v);
+    QStringList qs=qsplit(v);
+    QStringList sizes;
+    if (!qs.size()) {
+      error("missing parameters: " + p + " " + v);
+      return;
+    }
+    if (qs.size()==2) {
+      QString t=qs.at(1);
+      if (qshasonly(t,"0123456789x")) {
+        sizes=t.split('x');
+        if (sizes.size()<2) {
+          error("invalid icon width, height: " + p + " " + v);
+          return;
+        }
+      } else {
+        error("invalid icon width, height: " + p + " " + v);
+        return;
+      }
+    }  else if (qs.size()>2) {
+      error("extra parameters: " + p + " " + v);
+      return;
+    }
+    iconFile=remquotes(q2s(qs.at(0)));
     ((QPushButton *)widget)->setIcon(QIcon(s2q(iconFile)));
+    if (qs.size()==2)
+      ((QPushButton *)widget)->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
   } else Child::set(p,v);
 }
 

@@ -1,4 +1,6 @@
 
+#include <QApplication>
+
 #include "../base/pcombobox.h"
 #include "../base/state.h"
 
@@ -7,6 +9,8 @@
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
+
+extern Font *fontdef;
 
 // ---------------------------------------------------------------------
 ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
@@ -21,7 +25,7 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("edit")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -45,8 +49,10 @@ string ComboBox::get(string p,string v)
   PComboBox *w=(PComboBox*) widget;
   string r;
   if (p=="property") {
-    r+=string("items")+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=string("edit")+"\012"+ "items"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
+  } else if (p=="edit") {
+    r=i2s(w->isEditable());
   } else if (p=="items") {
     r=getitems();
   } else if (p=="text"||p=="select") {
@@ -106,24 +112,4 @@ string ComboBox::state()
     r+=spair(id+"_select",i2s(n));
   }
   return r;
-}
-
-// ---------------------------------------------------------------------
-void ComboBox::setmaxwh(int w, int h)
-{
-  Q_UNUSED(h);
-  if (widget && w) {
-    widget->setMaximumSize(w,0);
-    widget->updateGeometry();
-  }
-}
-
-// ---------------------------------------------------------------------
-void ComboBox::setminwh(int w, int h)
-{
-  Q_UNUSED(h);
-  if (widget && w) {
-    widget->setMinimumSize(w,0);
-    widget->updateGeometry();
-  }
 }

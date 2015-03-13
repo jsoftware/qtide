@@ -23,7 +23,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("vertical")),defChildStyle);
   if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
@@ -39,11 +39,7 @@ ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
         error("invalid icon width, height: " + q2s(t));
         return;
       }
-#ifdef QT_OS_ANDROID
-      w->setIconSize(QSize((int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(0))),(int)DM_density*(5.0/3)*c_strtoi(q2s(sizes.at(1)))));
-#else
       w->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
-#endif
     }
   }
 

@@ -2,5 +2,5 @@
 
 S=$(dirname "$0")
 
-rm -rf $S/bin/android-arm
-rm -rf $S/lib/build/android-arm
+rm -rf $S/bin/android-armeabi-v7a
+rm -rf $S/lib/build/android-armeabi-v7a

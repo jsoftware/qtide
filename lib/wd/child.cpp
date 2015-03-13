@@ -142,7 +142,7 @@ void Child::set(string p,string v)
     if (widget) widget->update();
   } else if (p=="nofocus") {
     if (widget) widget->setFocusPolicy(Qt::NoFocus);
-  } else if (p=="show") {
+  } else if (p=="show"||p=="visible") {
     if (widget) widget->setVisible(remquotes(v)!="0");
   } else if (p=="sizepolicy") {
     setsizepolicy(v);

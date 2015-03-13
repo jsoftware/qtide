@@ -8,7 +8,8 @@ S=$(dirname "$0")
 cd $S
 
 ./clean.sh
-./clean.and
+./clean.and5
 
 cd lib
-$QM -spec android-g++ && make && cp ../bin/android-arm/release/libjqt.so ../android-libs/armeabi/.
+mkdir -p ../android-libs/armeabi
+ABI=armeabi $QM -spec android-g++ && make && cp ../bin/android-armeabi/release/libjqt.so ../android-libs/armeabi/.

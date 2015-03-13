@@ -11,4 +11,5 @@ cd $S
 ./clean.and
 
 cd lib
-$QM -spec android-g++ && make && cp ../bin/android-arm/release/libjqt.so ../android-libs/armeabi-v7a/.
+mkdir -p ../android-libs/armeabi-v7a
+ABI=armeabi-v7a $QM -spec android-g++ && make && cp ../bin/android-armeabi-v7a/release/libjqt.so ../android-libs/armeabi-v7a/.

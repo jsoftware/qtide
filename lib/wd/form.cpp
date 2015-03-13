@@ -391,7 +391,7 @@ void Form::set(string p,string v)
     setFont((Font(v)).font);
   } else if (p=="invalid") {
     update();
-  } else if (p=="show") {
+  } else if (p=="show"||p=="visible") {
     setVisible(remquotes(v)!="0");
   } else if (p=="stylesheet") {
     setStyleSheet(s2q(v));
@@ -443,6 +443,7 @@ void Form::settimer(string p)
 // ---------------------------------------------------------------------
 void Form::showit(string p)
 {
+  Q_UNUSED(p);
   if (!shown) {
 #ifdef QT_OS_ANDROID
 // showide(false);

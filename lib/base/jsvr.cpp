@@ -274,15 +274,18 @@ int jefirst(int type,char* arg)
   Q_UNUSED(p);
   Q_UNUSED(q);
   char *homepath;
-  char *sdcard;
+  char *sdcard=0;
   char *SDCARD[] = {
-    (char *)"/storage/emulated/0",
-    (char *)"/storage/emulated/legacy",
-    (char *)"/mnt/sdcard"
+    (char *)"/sdcard",
+    (char *)"/mnt/sdcard",
+    (char *)"/storage/sdcard0",
+    (char *)"/storage/extSdCard",
   };
   struct stat st;
-  if (!(sdcard=getenv("EXTERNAL_STORAGE"))) {
-    for (int i=0; i < 3; i++) {
+// difficult to check true available external sdcard
+// just pick any emulated or external sdcard
+  if (1 || !(sdcard=getenv("EXTERNAL_STORAGE"))) {
+    for (int i=0; i < 4; i++) {
       if (!stat(SDCARD[i],&st)) {
         sdcard = SDCARD[i];
         break;
@@ -291,7 +294,7 @@ int jefirst(int type,char* arg)
   }
   int sdcardok = sdcard && !stat(sdcard,&st);
 //  sdcardok = 0;
-  if (sdcardok) setenv("EXTERNAL_STORAGE",sdcard,1);
+//  if (sdcardok) setenv("EXTERNAL_STORAGE",sdcard,1);
 
 // a dummy file signifying internal install for scripts
   if (QFile("assets:/internal_install.txt").exists()) sdcardok = 0;

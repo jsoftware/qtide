@@ -16,8 +16,6 @@ public:
   string get(string p,string v);
   void set(string p,string v);
   string state();
-  void setmaxwh(int,int);
-  void setminwh(int,int);
 
 private:
   string getitems();

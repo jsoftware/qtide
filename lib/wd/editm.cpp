@@ -23,7 +23,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   QStringList unopt=qsless(qsless(opt,qsplit("readonly selectable")),defChildStyle);
   if (unopt.size()) {
-    error("unrecognized child style: " + n + q2s(unopt.join(" ")));
+    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
   w->setObjectName(qn);
