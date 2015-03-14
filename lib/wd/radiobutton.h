@@ -16,6 +16,7 @@ public:
   string get(string p,string v);
   void set(string p,string v);
   string state();
+  string iconFile;
 
 private slots:
   void toggled(bool checked);

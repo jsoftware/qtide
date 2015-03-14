@@ -517,7 +517,7 @@ void wdfontdef()
 void wdfontfile()
 {
   string p=cmd.getparms();
-  int id=QFontDatabase::addApplicationFont(s2q(p));
+  int id=QFontDatabase::addApplicationFont(s2q(remquotes(p)));
   result=i2s(id);
   rc=-1;
 }

@@ -217,7 +217,17 @@ string Form::get(string p,string v)
   } else if (p=="focus") {
     r=this->getfocus();
   } else if (p=="focuspolicy") {
-    r=i2s(this->focusPolicy());
+    int f=this->focusPolicy();
+    if (f==Qt::TabFocus)
+      r="tab";
+    else if (f==Qt::ClickFocus)
+      r="click";
+    else if (f==Qt::StrongFocus)
+      r="strong";
+    else if (f==Qt::NoFocus)
+      r="no";
+    else
+      r="unknown";
   } else if (p=="font") {
     r=q2s(fontspec(this->font()));
   } else if (p=="hasfocus") {
@@ -237,7 +247,42 @@ string Form::get(string p,string v)
     QSize size=this->minimumSize();
     r=i2s(size.width())+" "+i2s(size.height());
   } else if (p=="sizepolicy") {
-    r=i2s(this->sizePolicy().horizontalPolicy())+" "+i2s(this->sizePolicy().verticalPolicy());
+    string h,vr;
+    int hoz=this->sizePolicy().horizontalPolicy();
+    if (hoz==QSizePolicy::Fixed)
+      h="fixed";
+    else if (hoz==QSizePolicy::Minimum)
+      h="minimum";
+    else if (hoz==QSizePolicy::Maximum)
+      h="maximum";
+    else if (hoz==QSizePolicy::Preferred)
+      h="preferred";
+    else if (hoz==QSizePolicy::Expanding)
+      h="expanding";
+    else if (hoz==QSizePolicy::MinimumExpanding)
+      h="minimumexpanding";
+    else if (hoz==QSizePolicy::Ignored)
+      h="ignored";
+    else
+      h="unknown";
+    int ver=this->sizePolicy().verticalPolicy();
+    if (ver==QSizePolicy::Fixed)
+      vr="fixed";
+    else if (ver==QSizePolicy::Minimum)
+      vr="minimum";
+    else if (ver==QSizePolicy::Maximum)
+      vr="maximum";
+    else if (ver==QSizePolicy::Preferred)
+      vr="preferred";
+    else if (ver==QSizePolicy::Expanding)
+      vr="expanding";
+    else if (ver==QSizePolicy::MinimumExpanding)
+      vr="minimumexpanding";
+    else if (ver==QSizePolicy::Ignored)
+      vr="ignored";
+    else
+      vr="unknown";
+    r=h + " " + vr;
   } else if (p=="state") {
     r=this->state(0);
   } else if (p=="stylesheet") {
@@ -395,6 +440,8 @@ void Form::set(string p,string v)
     setVisible(remquotes(v)!="0");
   } else if (p=="stylesheet") {
     setStyleSheet(s2q(v));
+  } else if (p=="taborder") {
+    settaborder(v);
   } else if (p=="tooltip") {
     setToolTip(s2q(v));
   } else if (p=="wh") {
@@ -428,6 +475,30 @@ void Form::setpicon(string p)
 {
   QString s=s2q(p);
   setWindowIcon(QIcon(s));
+}
+
+// ---------------------------------------------------------------------
+void Form::settaborder(string p)
+{
+  Child *c0,*c1;
+  QStringList cs=qsplit(p);
+  if (2>cs.size()) {
+    error("taborder requires at least 2 ids: " + p);
+    return;
+  }
+  for (int i=0; cs.size()-1>i; i++) {
+    c0=this->id2child(q2s(cs.at(i)));
+    if (!c0 || !c0->widget) {
+      error("taborder invalid id: " + q2s(cs.at(i)) + " in " + p);
+      return;
+    }
+    c1=this->id2child(q2s(cs.at(i+1)));
+    if (!c1 || !c1->widget) {
+      error("taborder invalid id: " + q2s(cs.at(i+1)) + " in " + p);
+      return;
+    }
+    QWidget::setTabOrder(c0->widget,c1->widget);
+  }
 }
 
 // ---------------------------------------------------------------------

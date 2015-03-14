@@ -279,14 +279,20 @@ int jefirst(int type,char* arg)
     (char *)"/sdcard",
     (char *)"/mnt/sdcard",
     (char *)"/storage/sdcard0",
+    (char *)"/storage/emulated/legacy",
+    (char *)"/storage/emulated/0",
     (char *)"/storage/extSdCard",
+    (char *)"/storage/MicroSD",
   };
   struct stat st;
-// difficult to check true available external sdcard
-// just pick any emulated or external sdcard
+// Android kitkat or newer restrict write access to external sdcard
+// prefer emulated to external sdcard
   if (1 || !(sdcard=getenv("EXTERNAL_STORAGE"))) {
-    for (int i=0; i < 4; i++) {
-      if (!stat(SDCARD[i],&st)) {
+    for (int i=0; i < 7; i++) {
+      char ts[50];
+      strcpy(ts, SDCARD[i]);
+      strcat(ts, "/Android/data");
+      if (!stat(ts,&st)) {
         sdcard = SDCARD[i];
         break;
       }

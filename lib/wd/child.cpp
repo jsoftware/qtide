@@ -62,7 +62,19 @@ string Child::get(string p,string v)
       r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
     }
   } else if (p=="focuspolicy") {
-    if (widget) r=i2s(widget->focusPolicy());
+    if (widget) {
+      int f=widget->focusPolicy();
+      if (f==Qt::TabFocus)
+        r="tab";
+      else if (f==Qt::ClickFocus)
+        r="click";
+      else if (f==Qt::StrongFocus)
+        r="strong";
+      else if (f==Qt::NoFocus)
+        r="no";
+      else
+        r="unknown";
+    }
   } else if (p=="font") {
     if (widget) r=q2s(fontspec(widget->font()));
   } else if (p=="hasfocus") {
@@ -86,7 +98,44 @@ string Child::get(string p,string v)
   } else if (p=="parent") {
     r=pform->id;
   } else if (p=="sizepolicy") {
-    if (widget) r=i2s(widget->sizePolicy().horizontalPolicy())+" "+i2s(widget->sizePolicy().verticalPolicy());
+    if (widget) {
+      string h,vr;
+      int hoz=widget->sizePolicy().horizontalPolicy();
+      if (hoz==QSizePolicy::Fixed)
+        h="fixed";
+      else if (hoz==QSizePolicy::Minimum)
+        h="minimum";
+      else if (hoz==QSizePolicy::Maximum)
+        h="maximum";
+      else if (hoz==QSizePolicy::Preferred)
+        h="preferred";
+      else if (hoz==QSizePolicy::Expanding)
+        h="expanding";
+      else if (hoz==QSizePolicy::MinimumExpanding)
+        h="minimumexpanding";
+      else if (hoz==QSizePolicy::Ignored)
+        h="ignored";
+      else
+        h="unknown";
+      int ver=widget->sizePolicy().verticalPolicy();
+      if (ver==QSizePolicy::Fixed)
+        vr="fixed";
+      else if (ver==QSizePolicy::Minimum)
+        vr="minimum";
+      else if (ver==QSizePolicy::Maximum)
+        vr="maximum";
+      else if (ver==QSizePolicy::Preferred)
+        vr="preferred";
+      else if (ver==QSizePolicy::Expanding)
+        vr="expanding";
+      else if (ver==QSizePolicy::MinimumExpanding)
+        vr="minimumexpanding";
+      else if (ver==QSizePolicy::Ignored)
+        vr="ignored";
+      else
+        vr="unknown";
+      r=h + " " + vr;
+    }
   } else if (p=="state") {
     r=state();
   } else if (p=="stylesheet") {
