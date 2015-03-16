@@ -540,9 +540,11 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
   QStringList p=LibName.split("/");
   qDebug()<<p;
   AndroidPackage = p.at(3);
-  QChar p1=AndroidPackage.at(AndroidPackage.size()-2);
-  if (p1=='-') AndroidPackage = AndroidPackage.left(AndroidPackage.size()-2);
+  int p1;
+  if (-1!=(p1=AndroidPackage.lastIndexOf("-")))
+    AndroidPackage=AndroidPackage.mid(0,p1);
   qDebug() << "AndroidPackage" << AndroidPackage;
+// symlink of libjqt.so under /data/data
   LibName="/data/data/" + AndroidPackage + "/lib/libjqt.so";
   android_getdisplaymetrics(0);
 #endif

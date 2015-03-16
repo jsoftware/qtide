@@ -273,7 +273,7 @@ int jefirst(int type,char* arg)
 #ifdef QT_OS_ANDROID
   Q_UNUSED(p);
   Q_UNUSED(q);
-  char *homepath;
+  char homepath[PLEN];
   char *sdcard=0;
   char *SDCARD[] = {
     (char *)"/sdcard",
@@ -310,7 +310,7 @@ int jefirst(int type,char* arg)
     if(!getenv("HOME"))
       setenv("HOME",QDir::currentPath().toUtf8().constData(),1);
   }
-  homepath=getenv("HOME");
+  strcpy(homepath,getenv("HOME"));
   qDebug() << "homepath: " << s2q(homepath);
   QString appcurrentpath = QDir::currentPath();
   qDebug() << "application current path: " << appcurrentpath;
@@ -342,6 +342,8 @@ int jefirst(int type,char* arg)
 
   QDir::setCurrent(install);
   qDebug() << "current path: " << QDir::currentPath();
+  strcpy(install, QDir::currentPath().toUtf8().constData());
+  qDebug() << "install path: " << s2q(install);
 // assume cwd is .../files
 
   QString v1, v2;
@@ -398,6 +400,9 @@ int jefirst(int type,char* arg)
 
   QDir::setCurrent(homepath);
   qDebug() << "current path :(home) " << QDir::currentPath();
+  strcpy(homepath, QDir::currentPath().toUtf8().constData());
+  setenv("HOME",homepath,1);
+  qDebug() << "homepath path: " << s2q(homepath);
 #endif
 
   *input=0;
