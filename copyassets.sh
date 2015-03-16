@@ -1,11 +1,20 @@
 #!/bin/bash
 
-S=$(dirname "$0")
+S=~/dev/apps/ide/jqt
+
+echo "updating repos"
+cd ~/jalgit/base8
+git svn rebase
+cd ~/jalgit/addons
+git svn rebase
 
 A=android-assets
 P=~/jalgit/addons
 
 cd $S
+
+echo "building base library"
+./buildbase.sh
 
 rm -rf $S/$A
 mkdir -p $S/$A
