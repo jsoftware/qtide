@@ -1,5 +1,6 @@
 
 #include <QCheckBox>
+#include <QStyle>
 
 #include "wd.h"
 #include "checkbox.h"
@@ -80,11 +81,15 @@ void CheckBox::set(string p,string v)
       return;
     }
     iconFile=remquotes(q2s(qs.at(0)));
-    w->setIcon(QIcon(s2q(iconFile)));
+    int spi;
+    if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
+      w->setIcon(w->style()->standardIcon((QStyle::StandardPixmap)spi));
+    else
+      w->setIcon(QIcon(s2q(iconFile)));
     if (qs.size()==2)
       w->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
   } else if (p=="value")
-    w->setChecked(v=="1");
+    w->setChecked(remquotes(v)!="0");
   else Child::set(p,v);
 }
 

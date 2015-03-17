@@ -1,5 +1,6 @@
 
 #include <QIcon>
+#include <QStyle>
 #include "tabwidget.h"
 #include "wd.h"
 #include "tabs.h"
@@ -116,7 +117,13 @@ void Tabs::set(string p,string v)
     w->setTabEnabled(ndx,remquotes(q2s(opt.at(1)))!="0");
   } else if (p=="icon") {
     if (opt.size()<2) return;
-    w->setTabIcon(ndx,QIcon(s2q(remquotes(q2s(opt.at(1))))));
+    string iconFile=remquotes(q2s(opt.at(1)));
+    QIcon image;
+    int spi;
+    if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
+      w->setTabIcon(ndx,w->style()->standardIcon((QStyle::StandardPixmap)spi));
+    else
+      w->setTabIcon(ndx,QIcon(s2q(iconFile)));
   } else if (p=="tooltip") {
     if (opt.size()<2) w->setTabToolTip(ndx,"");
     w->setTabToolTip(ndx,s2q(remquotes(q2s(opt.at(1)))));

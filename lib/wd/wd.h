@@ -19,6 +19,7 @@ int translateqkey(int);
 void wdsetfocuspolicy(QWidget *widget,string p);
 void wdsetsizepolicy(QWidget *widget,string p);
 void wdsetwh(QWidget *widget,string p);
+int wdstandardicon(string s);
 
 extern QStringList defChildStyle;
 

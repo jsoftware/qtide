@@ -196,9 +196,9 @@ void Child::set(string p,string v)
   } else if (p=="sizepolicy") {
     setsizepolicy(v);
   } else if (p=="stylesheet") {
-    if (widget) widget->setStyleSheet(s2q(v));
+    if (widget) widget->setStyleSheet(s2q(remquotes(v)));
   } else if (p=="tooltip") {
-    if (widget) widget->setToolTip(s2q(v));
+    if (widget) widget->setToolTip(s2q(remquotes(v)));
   } else if (p=="wh") {
     setwh(v);
   } else if (p=="maxwh") {

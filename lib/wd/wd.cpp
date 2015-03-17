@@ -1692,3 +1692,88 @@ void wdsetwh(QWidget *widget,string p)
     }
   }
 }
+
+// ---------------------------------------------------------------------
+static char *qstylesp[]= {
+  (char *)"qstyle::sp_titlebarmenubutton",               /* 0          Menu button on a title bar. */
+  (char *)"qstyle::sp_titlebarminbutton",                /* 1          Minimize button on title bars (e.g., in QMdiSubWindow). */
+  (char *)"qstyle::sp_titlebarmaxbutton",                /* 2          Maximize button on title bars. */
+  (char *)"qstyle::sp_titlebarclosebutton",              /* 3          Close button on title bars. */
+  (char *)"qstyle::sp_titlebarnormalbutton",             /* 4          Normal (restore) button on title bars. */
+  (char *)"qstyle::sp_titlebarshadebutton",              /* 5          Shade button on title bars. */
+  (char *)"qstyle::sp_titlebarunshadebutton",            /* 6          Unshade button on title bars. */
+  (char *)"qstyle::sp_titlebarcontexthelpbutton",        /* 7          The Context help button on title bars. */
+  (char *)"qstyle::sp_dockwidgetclosebutton",            /* 8          Close button on dock windows (see also QDockWidget). */
+  (char *)"qstyle::sp_messageboxinformation",            /* 9          The"information" icon. */
+  (char *)"qstyle::sp_messageboxwarning",                /* 10         The"warning" icon. */
+  (char *)"qstyle::sp_messageboxcritical",               /* 11         The"critical" icon. */
+  (char *)"qstyle::sp_messageboxquestion",               /* 12         The"question" icon. */
+  (char *)"qstyle::sp_desktopicon",                      /* 13         The"desktop" icon. */
+  (char *)"qstyle::sp_trashicon",                        /* 14         The"trash" icon. */
+  (char *)"qstyle::sp_computericon",                     /* 15         The"My computer" icon. */
+  (char *)"qstyle::sp_drivefdicon",                      /* 16         The floppy icon. */
+  (char *)"qstyle::sp_drivehdicon",                      /* 17         The harddrive icon. */
+  (char *)"qstyle::sp_drivecdicon",                      /* 18         The CD icon. */
+  (char *)"qstyle::sp_drivedvdicon",                     /* 19         The DVD icon. */
+  (char *)"qstyle::sp_driveneticon",                     /* 20         The network icon. */
+  (char *)"qstyle::sp_dirhomeicon",                      /* 56         The home directory icon. */
+  (char *)"qstyle::sp_diropenicon",                      /* 21         The open directory icon. */
+  (char *)"qstyle::sp_dirclosedicon",                    /* 22         The closed directory icon. */
+  (char *)"qstyle::sp_diricon",                          /* 38         The directory icon. */
+  (char *)"qstyle::sp_dirlinkicon",                      /* 23         The link to directory icon. */
+  (char *)"qstyle::sp_dirlinkopenicon",                  /* 24         The link to open directory icon. */
+  (char *)"qstyle::sp_fileicon",                         /* 25         The file icon. */
+  (char *)"qstyle::sp_filelinkicon",                     /* 26         The link to file icon. */
+  (char *)"qstyle::sp_filedialogstart",                  /* 29         The"start" icon in a file dialog. */
+  (char *)"qstyle::sp_filedialogend",                    /* 30         The"end" icon in a file dialog. */
+  (char *)"qstyle::sp_filedialogtoparent",               /* 31         The"parent directory" icon in a file dialog. */
+  (char *)"qstyle::sp_filedialognewfolder",              /* 32         The"create new folder" icon in a file dialog. */
+  (char *)"qstyle::sp_filedialogdetailedview",           /* 33         The detailed view icon in a file dialog. */
+  (char *)"qstyle::sp_filedialoginfoview",               /* 34         The file info icon in a file dialog. */
+  (char *)"qstyle::sp_filedialogcontentsview",           /* 35         The contents view icon in a file dialog. */
+  (char *)"qstyle::sp_filedialoglistview",               /* 36         The list view icon in a file dialog. */
+  (char *)"qstyle::sp_filedialogback",                   /* 37         The back arrow in a file dialog. */
+  (char *)"qstyle::sp_toolbarhorizontalextensionbutton", /* 27         Extension button for horizontal toolbars. */
+  (char *)"qstyle::sp_toolbarverticalextensionbutton",   /* 28         Extension button for vertical toolbars. */
+  (char *)"qstyle::sp_dialogokbutton",                   /* 39         Icon for a standard OK button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogcancelbutton",               /* 40         Icon for a standard Cancel button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialoghelpbutton",                 /* 41         Icon for a standard Help button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogopenbutton",                 /* 42         Icon for a standard Open button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogsavebutton",                 /* 43         Icon for a standard Save button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogclosebutton",                /* 44         Icon for a standard Close button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogapplybutton",                /* 45         Icon for a standard Apply button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogresetbutton",                /* 46         Icon for a standard Reset button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogdiscardbutton",              /* 47         Icon for a standard Discard button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialogyesbutton",                  /* 48         Icon for a standard Yes button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_dialognobutton",                   /* 49         Icon for a standard No button in a QDialogButtonBox. */
+  (char *)"qstyle::sp_arrowup",                          /* 50         Icon arrow pointing up. */
+  (char *)"qstyle::sp_arrowdown",                        /* 51         Icon arrow pointing down. */
+  (char *)"qstyle::sp_arrowleft",                        /* 52         Icon arrow pointing left. */
+  (char *)"qstyle::sp_arrowright",                       /* 53         Icon arrow pointing right. */
+  (char *)"qstyle::sp_arrowback",                        /* 54         Equivalent to SP_ArrowLeft when the current layout direction is Qt::LeftToRight, otherwise SP_ArrowRight. */
+  (char *)"qstyle::sp_arrowforward",                     /* 55         Equivalent to SP_ArrowRight when the current layout direction is Qt::LeftToRight, otherwise SP_ArrowLeft. */
+  (char *)"qstyle::sp_commandlink",                      /* 57         Icon used to indicate a Vista style command link glyph. */
+  (char *)"qstyle::sp_vistashield",                      /* 58         Icon used to indicate UAC prompts on Windows Vista. This will return a null pixmap or icon on all other platforms. */
+  (char *)"qstyle::sp_browserreload",                    /* 59         Icon indicating that the current page should be reloaded. */
+  (char *)"qstyle::sp_browserstop",                      /* 60         Icon indicating that the page loading should stop. */
+  (char *)"qstyle::sp_mediaplay",                        /* 61         Icon indicating that media should begin playback. */
+  (char *)"qstyle::sp_mediastop",                        /* 62         Icon indicating that media should stop playback. */
+  (char *)"qstyle::sp_mediapause",                       /* 63         Icon indicating that media should pause playback. */
+  (char *)"qstyle::sp_mediaskipforward",                 /* 64         Icon indicating that media should skip forward. */
+  (char *)"qstyle::sp_mediaskipbackward",                /* 65         Icon indicating that media should skip backward. */
+  (char *)"qstyle::sp_mediaseekforward",                 /* 66         Icon indicating that media should seek forward. */
+  (char *)"qstyle::sp_mediaseekbackward",                /* 67         Icon indicating that media should seek backward. */
+  (char *)"qstyle::sp_mediavolume",                      /* 68         Icon indicating a volume control. */
+  (char *)"qstyle::sp_mediavolumemuted",                 /* 69         Icon indicating a muted volume control. */
+  (char *)"qstyle::sp_lineeditclearbutton",              /* 70         Icon for a standard clear button in a QLineEdit. This enum value was added in Qt 5.2. */
+};
+
+// ---------------------------------------------------------------------
+// widget->style()->standardIcon(i);
+int wdstandardicon(string s)
+{
+  for (int i=0; i<71; i++) {
+    if (s==string(qstylesp[i])) return i;
+  }
+  return -1;
+}

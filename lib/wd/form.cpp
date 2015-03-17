@@ -52,7 +52,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
   QStringList unopt=qsless(m,(qsplit("escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")));
   if (unopt.size()) {
-    error("unrecognized form style: " + id + " " + q2s(unopt.join(" ")));
+    error("unrecognized form style: " + q2s(unopt.join(" ")));
     return;
   }
   escclose=m.contains("escclose");
@@ -194,7 +194,7 @@ string Form::get(string p,string v)
 {
   string r="";
   if (v.size() && p!="extent") {
-    error("extra parameters: " + id + p + " " + v);
+    error("extra parameters: " + p + " " + v);
     return "";
   }
   if (p=="property") {
@@ -301,7 +301,7 @@ string Form::get(string p,string v)
   } else if (p=="xywh") {
     r=i2s(pos().x())+" "+i2s(pos().y())+" "+i2s(size().width())+" "+i2s(size().height());
   } else
-    error("get command not recognized: " + id + " " + p + " " + v);
+    error("get command not recognized: " + p + " " + v);
   return r;
 }
 
@@ -439,15 +439,15 @@ void Form::set(string p,string v)
   } else if (p=="show"||p=="visible") {
     setVisible(remquotes(v)!="0");
   } else if (p=="stylesheet") {
-    setStyleSheet(s2q(v));
+    setStyleSheet(s2q(remquotes(v)));
   } else if (p=="taborder") {
     settaborder(v);
   } else if (p=="tooltip") {
-    setToolTip(s2q(v));
+    setToolTip(s2q(remquotes(v)));
   } else if (p=="wh") {
     wdsetwh(this,v);
   } else
-    error("set command not recognized: " + id + " " + p + " " + v);
+    error("set command not recognized: " + p + " " + v);
 }
 
 // ---------------------------------------------------------------------
@@ -473,8 +473,11 @@ void Form::setpn(string p)
 // ---------------------------------------------------------------------
 void Form::setpicon(string p)
 {
-  QString s=s2q(p);
-  setWindowIcon(QIcon(s));
+  int spi;
+  if (p.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(p)))
+    setWindowIcon(this->style()->standardIcon((QStyle::StandardPixmap)spi));
+  else
+    setWindowIcon(QIcon(s2q(p)));
 }
 
 // ---------------------------------------------------------------------
@@ -483,18 +486,18 @@ void Form::settaborder(string p)
   Child *c0,*c1;
   QStringList cs=qsplit(p);
   if (2>cs.size()) {
-    error("taborder requires at least 2 ids: " + p);
+    error("taborder requires at least 2 child ids: " + p);
     return;
   }
   for (int i=0; cs.size()-1>i; i++) {
     c0=this->id2child(q2s(cs.at(i)));
     if (!c0 || !c0->widget) {
-      error("taborder invalid id: " + q2s(cs.at(i)) + " in " + p);
+      error("taborder invalid child id: '" + q2s(cs.at(i)) + "' in " + p);
       return;
     }
     c1=this->id2child(q2s(cs.at(i+1)));
     if (!c1 || !c1->widget) {
-      error("taborder invalid id: " + q2s(cs.at(i+1)) + " in " + p);
+      error("taborder invalid child id: '" + q2s(cs.at(i+1)) + "' in " + p);
       return;
     }
     QWidget::setTabOrder(c0->widget,c1->widget);
@@ -538,7 +541,7 @@ void Form::showit(string p)
   } else if (p=="hide") {
     if (isVisible()) setVisible(false);
   } else {
-    error("unrecognized style: " + id + " " + p);
+    error("unrecognized style: " + p);
   }
 #endif
 }

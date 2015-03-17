@@ -1,6 +1,7 @@
 
 #include <QPushButton>
 #include <QSignalMapper>
+#include <QStyle>
 
 #include "wd.h"
 #include "button.h"
@@ -51,8 +52,9 @@ string Button::get(string p,string v)
 // ---------------------------------------------------------------------
 void Button::set(string p,string v)
 {
+  QPushButton *w=(QPushButton*) widget;
   if (p=="caption" || p=="text")
-    ((QPushButton *)widget)->setText(s2q(remquotes(v)));
+    w->setText(s2q(remquotes(v)));
   else if (p=="icon") {
     QStringList qs=qsplit(v);
     QStringList sizes;
@@ -77,9 +79,13 @@ void Button::set(string p,string v)
       return;
     }
     iconFile=remquotes(q2s(qs.at(0)));
-    ((QPushButton *)widget)->setIcon(QIcon(s2q(iconFile)));
+    int spi;
+    if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
+      w->setIcon(w->style()->standardIcon((QStyle::StandardPixmap)spi));
+    else
+      w->setIcon(QIcon(s2q(iconFile)));
     if (qs.size()==2)
-      ((QPushButton *)widget)->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
+      w->setIconSize(QSize(c_strtoi(q2s(sizes.at(0))),c_strtoi(q2s(sizes.at(1)))));
   } else Child::set(p,v);
 }
 

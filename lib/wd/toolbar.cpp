@@ -1,6 +1,7 @@
 
 #include <QAction>
 #include <QToolBar>
+#include <QStyle>
 
 #include "wd.h"
 #include "toolbar.h"
@@ -65,7 +66,13 @@ void ToolBar::makeact(QStringList opt)
   QToolBar *w=(QToolBar *)widget;
   QString id=opt.at(0);
   QString text=opt.at(1);
-  QIcon image=QIcon(opt.at(2));
+  string iconFile=remquotes(q2s(opt.at(2)));
+  QIcon image;
+  int spi;
+  if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
+    image=w->style()->standardIcon((QStyle::StandardPixmap)spi);
+  else
+    image=QIcon(s2q(iconFile));
   if (image.isNull()) {
     error("invalid icon image: " + q2s(opt.at(2)));
     return;
