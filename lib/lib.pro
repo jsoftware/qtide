@@ -78,11 +78,17 @@ android: !contains(DEFINES,QT53) QT -= quick
 # to exclude quickview1 only, uncomment the following line
 # QT -= declarative
 
+contains(DEFINES,QT50) {
+  QT +=  multimedia multimediawidgets
+} else {
+  QT -=  multimedia multimediawidgets
+}
+
 # export JQTSLIM before qmake
 JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   message(building slim jqt)
-  QT -= declarative opengl quick qml quickwidgets webkit webengine
+  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webengine
   DEFINES -= QTWEBSOCKET
 }
 
@@ -219,6 +225,14 @@ contains(DEFINES,QT50) {
   !contains(DEFINES,QT_QUICKWIDGET): DEFINES += QT_QUICKWIDGET
 }
 
+!contains(QT,multimediawidgets) {
+  !contains(DEFINES,QT_NO_MULTIMEDIA): DEFINES += QT_NO_MULTIMEDIA
+  contains(DEFINES,QT_MULTIMEDIA): DEFINES -= QT_MULTIMEDIA
+} else {
+  contains(DEFINES,QT_NO_MULTIMEDIA): DEFINES -= QT_NO_MULTIMEDIA
+  !contains(DEFINES,QT_MULTIMEDIA): DEFINES += QT_MULTIMEDIA
+}
+
 # Input
 HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
@@ -242,7 +256,8 @@ HEADERS += \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webview.h wd/webview2.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
- wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h
+ wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h \
+ wd/multimedia.h
 
 !contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h wd/webkitview.h
@@ -256,6 +271,7 @@ contains(DEFINES,QT50) {
   HEADERS -= wd/quickview2.h
 }
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
+contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
@@ -289,7 +305,8 @@ SOURCES += \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webview.cpp wd/webview2.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
- wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp
+ wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
+ wd/multimedia.cpp
 
 !contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp wd/webkitview.cpp
@@ -303,6 +320,7 @@ contains(DEFINES,QT50) {
   SOURCES -= wd/quickview2.cpp
 }
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
+contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp

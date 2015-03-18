@@ -48,6 +48,9 @@
 #include "tabs.h"
 #include "timeedit.h"
 #include "toolbar.h"
+#ifndef QT_NO_MULTIMEDIA
+#include "multimedia.h"
+#endif
 #ifndef QT_NO_WEBKIT
 #include "webview.h"
 #endif
@@ -112,6 +115,10 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new IsiGrid(n,p,pform,this);
   else if (c=="listbox")
     child=(Child *) new ListBox(n,p,pform,this);
+#ifndef QT_NO_MULTIMEDIA
+  else if (c=="multimedia")
+    child=(Child *) new Multimedia(n,p,pform,this);
+#endif
 #ifndef QT_NO_OPENGL
   else if (c=="opengl")
     child=(Child *) new Opengl(n,p,pform,this);
