@@ -1,7 +1,14 @@
 #ifndef OPENGL2_H
 #define OPENGL2_H
 
+// regression of Android QOpenGLWidget in Qt 5.4.1
 #ifdef QT54
+#ifndef QT_OS_ANDROID
+#define USE_QOpenGLWidget
+#endif
+#endif
+
+#ifdef USE_QOpenGLWidget
 #include <QOpenGLWidget>
 #else
 #include <QGLWidget>
@@ -16,7 +23,7 @@ class Form;
 class Pane;
 
 // ---------------------------------------------------------------------
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
 class Opengl2 : public QOpenGLWidget
 #else
 class Opengl2 : public QGLWidget
@@ -25,7 +32,7 @@ class Opengl2 : public QGLWidget
   Q_OBJECT
 
 public:
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
   Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent);
 #else
   Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
@@ -35,6 +42,9 @@ public:
   void fill(const int *);
   QPixmap getpixmap();
   void paintend();
+#ifdef USE_QOpenGLWidget
+  void updateGL();
+#endif
 
   QBrush brush;
   Font *font;

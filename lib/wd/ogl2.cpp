@@ -10,11 +10,7 @@ int gl_updategl(void *g)
     f=Forms.at(i);
     if (f->ischild((Child *)g)) {
       if ((((Child *)g)->type == "opengl") && ((Child *)g)->widget) {
-#ifdef QT54
-        ((Opengl2 *)(((Opengl *) g)->widget))->update();
-#else
         ((Opengl2 *)(((Opengl *) g)->widget))->updateGL();
-#endif
         return 0;
       }
     }

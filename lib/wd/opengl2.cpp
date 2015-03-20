@@ -9,17 +9,15 @@
 extern "C" int gl_clear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
 Opengl2::Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent) : QOpenGLWidget(parent)
-#elif QT53
-Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(parent,format)
 #else
-Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(parent)
+Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget(format,parent)
 #endif
 {
   Q_UNUSED(format);
   Q_UNUSED(parent);
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
   this->setFormat(format);
 #endif
   pchild = c;
@@ -44,6 +42,14 @@ Opengl2::~Opengl2()
     delete painter;
   }
 }
+
+#ifdef USE_QOpenGLWidget
+// ---------------------------------------------------------------------
+void Opengl2::updateGL()
+{
+  this->update();
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Opengl2::fill(const int *p)

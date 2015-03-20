@@ -16,7 +16,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
   QSurfaceFormat qglFormat;
 #else
   QGLFormat qglFormat;
@@ -38,7 +38,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 //    qDebug() << QString::number(ver1) << QString::number(ver2);
     qglFormat.setVersion(ver1,ver2);
   }
-#ifdef QT54
+#ifdef USE_QOpenGLWidget
   if (opt.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
   else qglFormat.setProfile(QSurfaceFormat::CoreProfile);
 #else
@@ -46,6 +46,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   else qglFormat.setProfile(QGLFormat::CoreProfile);
 #endif
 #endif
+
   Opengl2 *w= new Opengl2(this, qglFormat, p);
   widget=(QWidget *) w;
   w->setObjectName(qn);

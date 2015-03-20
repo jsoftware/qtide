@@ -290,11 +290,7 @@ int glpaint()
   w->update();
 #elif defined(GLOPENGL)
   if (w->painter) return 1;
-#ifdef QT54
-  w->update();
-#else
   w->updateGL();
-#endif
 #endif
   return 0;
 }
