@@ -16,6 +16,11 @@
 #ifdef QT_OS_ANDROID
 #include <QFontDatabase>
 #endif
+#ifndef QT_NO_OPENGL
+#ifdef QT53
+#include <QOpenGLContext>
+#endif
+#endif
 
 #include "wd.h"
 #include "bitmap.h"
@@ -25,8 +30,6 @@
 #include "font.h"
 #include "form.h"
 #include "pane.h"
-#include "isigraph.h"
-#include "opengl.h"
 #include "menus.h"
 #include "qtstate.h"
 #include "tabs.h"
@@ -931,7 +934,7 @@ void wdqueries(string s)
 {
   string p=cmd.getparms();
 
-  if (p.size() && (s=="qd" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qform")) {
+  if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qform")) {
     error("extra parameters: " + p);
     return;
   }
@@ -956,7 +959,21 @@ void wdqueries(string s)
     return;
   }
 // queries that form not needed
-  if (s=="qscreen") {
+  if (s=="qverbose") {
+    result=i2s(verbose);
+    return;
+#ifndef QT_NO_OPENGL
+#ifdef QT53
+  } else if (s=="qopenglmod") {
+    if (!app) {
+      error("command failed: no QApplication");
+      return;
+    }
+    result=i2s(QOpenGLContext::openGLModuleType());
+    return;
+#endif
+#endif
+  } else if (s=="qscreen") {
     if (!app) {
       error("command failed: no QApplication");
       return;
