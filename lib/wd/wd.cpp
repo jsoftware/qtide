@@ -319,7 +319,7 @@ void wdactivateform()
 // ---------------------------------------------------------------------
 void wdbin()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->pane->bin(p);
 }
@@ -516,8 +516,8 @@ void wdfontdef()
 // ---------------------------------------------------------------------
 void wdfontfile()
 {
-  string p=cmd.getparms();
-  int id=QFontDatabase::addApplicationFont(s2q(remquotes(p)));
+  string p=remquotes(cmd.getparms());
+  int id=QFontDatabase::addApplicationFont(s2q(p));
   result=i2s(id);
   rc=-1;
 }
@@ -573,7 +573,7 @@ void wdgroupbox(string c)
 // ---------------------------------------------------------------------
 void wdide()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (!jt) {
     error("command failed: no interpreter");
     return;
@@ -866,7 +866,7 @@ void wdpsel()
 // ---------------------------------------------------------------------
 void wdpshow()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->showit(p);
 }
@@ -874,7 +874,7 @@ void wdpshow()
 // ---------------------------------------------------------------------
 void wdpstylesheet()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->setStyleSheet(s2q(p));
 }
@@ -882,7 +882,7 @@ void wdpstylesheet()
 // ---------------------------------------------------------------------
 void wdptimer()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->settimer(p);
 }
@@ -891,6 +891,10 @@ void wdptimer()
 void wdptop()
 {
   string p=cmd.getparms();
+  if (p.size()) {
+    error("extra parameters: " + p);
+    return;
+  }
   if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
@@ -1096,13 +1100,7 @@ void wdqueries(string s)
     Child *cc;
     if (p=="_") p=formchildid();
     if ((cc=form->id2child(p)) && cc->widget) {
-      QWidget *p0, *p1;
-      p0=p1=cc->widget;
-      while (p1) {
-        p0=p1;
-        p1=p0->parentWidget();
-      }
-      QPoint pos=cc->widget->mapTo(p0,cc->widget->pos());
+      QPoint pos=cc->widget->mapTo(cc->widget->window(),cc->widget->pos());
       QSize size=cc->widget->size();
       result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
     } else
@@ -1382,7 +1380,7 @@ void wdtextview()
 // ---------------------------------------------------------------------
 void wdtimer()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   int n=atoi(p.c_str());
   if (!jt) {
     error("command failed: no interpreter");
@@ -1414,7 +1412,7 @@ void wdws()
 // ---------------------------------------------------------------------
 void wdverbose()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.empty())
     error("verbose requires 1 number: " + p);
@@ -1429,7 +1427,7 @@ void wdverbose()
 // ---------------------------------------------------------------------
 void wdversion()
 {
-  string p=cmd.getparms();
+  string p=remquotes(cmd.getparms());
   if (p.size()) {
     error("extra parameters: " + p);
     return;

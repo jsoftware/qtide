@@ -24,6 +24,8 @@ public:
   virtual string get(string p,string v);
   virtual void set(string p,string v);
 
+  virtual string getfocuschain(bool);
+
   virtual void setform();
   virtual void setfocuspolicy(string p);
   virtual void setsizepolicy(string p);

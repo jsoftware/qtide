@@ -533,9 +533,16 @@ void Form::showit(string p)
       panes.last()->fini();
     layout->addWidget(pane);
     setLayout(layout);
-    show();
-
-    shown=true;
+    if (p=="fullscreen")
+      showFullScreen();
+    else if (p=="maximized")
+      showMaximized();
+    else if (p=="minimized")
+      showMinimized();
+    else if (p=="normal")
+      showNormal();    // restore from maximized or minimized
+    else
+      show();          // show or hide
     if (jdllproc && 1==Forms.size()) evloop->exec(QEventLoop::AllEvents);
   }
 #ifndef QT_OS_ANDROID
@@ -543,9 +550,19 @@ void Form::showit(string p)
     if (!isVisible()) setVisible(true);
   } else if (p=="hide") {
     if (isVisible()) setVisible(false);
+  } else if (p=="fullscreen") {
+    if (shown) showFullScreen();
+  } else if (p=="maximized") {
+    if (shown) showMaximized();
+  } else if (p=="minimized") {
+    if (shown) showMinimized();
+  } else if (p=="normal") {
+    if (shown) showNormal();
   } else {
+    shown=true;
     error("unrecognized style: " + p);
   }
+  shown=true;
 #endif
 }
 

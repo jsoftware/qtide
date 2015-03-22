@@ -138,15 +138,15 @@ string Multimedia::get(string p,string v)
   string r;
   if (p=="property") {
     if (isVideo && w)
-      r+=string("aspectratio")+"\012"+ "brightness"+"\012"+ "contrast"+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "hue"+"\012"+ "muted"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "saturation"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+      r+=string("aspectratio")+"\012"+ "brightness"+"\012"+ "contrast"+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "hue"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "saturation"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
     else
-      r+=string("duration")+"\012"+ "error"+"\012"+ "muted"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+      r+=string("duration")+"\012"+ "error"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
     r+=Child::get(p,v);
   } else if (p=="duration")
     r=d2s(mediaPlayer.duration());
   else if (p=="error")
     r=string(errortab[mediaPlayer.error()]);
-  else if (p=="muted")
+  else if (p=="mute")
     r=i2s(mediaPlayer.isMuted());
   else if (p=="playstate")
     r=string(statetab[mediaPlayer.state()]);
@@ -192,7 +192,7 @@ void Multimedia::set(string p,string v)
       mediaPlayer.setMedia(QUrl(f));
     else
       mediaPlayer.setMedia(QUrl::fromLocalFile(f));
-  } else if (p=="muted")
+  } else if (p=="mute")
     mediaPlayer.setMuted(remquotes(v)!="0");
   else if (p=="pause")
     mediaPlayer.pause();

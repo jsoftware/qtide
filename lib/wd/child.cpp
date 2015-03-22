@@ -47,13 +47,12 @@ string Child::get(string p,string v)
     return "";
   }
   if (p=="property") {
-    r+=string("parent")+"\012"+ "type"+"\012";
     r+=string("enable")+"\012"+ "extent"+"\012";
     r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
     r+=string("id")+"\012"+ "locale"+"\012";
-    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
-    r+=string("stylesheet")+"\012";
-    r+=string("tooltip")+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
+    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "nextfocus"+"\012"+ "parent"+"\012"+ "prevfocus"+"\012";
+    r+=string("property")+"\012"+ "sizepolicy"+"\012"+ "state"+"\012"+ "stylesheet"+"\012";
+    r+=string("tooltip")+"\012"+ "type"+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
   } else if (p=="enable") {
     if (widget) r=i2s(widget->isEnabled());
   } else if (p=="extent") {
@@ -95,8 +94,16 @@ string Child::get(string p,string v)
       QSize size=widget->minimumSize();
       r=i2s(size.width())+" "+i2s(size.height());
     }
+  } else if (p=="nextfocus") {
+    if (widget) {
+      r=getfocuschain(false);
+    }
   } else if (p=="parent") {
     r=pform->id;
+  } else if (p=="prevfocus") {
+    if (widget) {
+      r=getfocuschain(true);
+    }
   } else if (p=="sizepolicy") {
     if (widget) {
       string h,vr;
@@ -153,19 +160,27 @@ string Child::get(string p,string v)
     }
   } else if (p=="xywh") {
     if (widget) {
-      QWidget *p0, *p1;
-      p0=p1=widget;
-      while (p1) {
-        p0=p1;
-        p1=p0->parentWidget();
-      }
-      QPoint pos=widget->mapTo(p0,widget->pos());
+      QPoint pos=widget->mapTo(widget->window(),widget->pos());
       QSize size=widget->size();
       r=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
     }
   } else
     error("get command not recognized: " + id + " " + p + " " + v);
   return r;
+}
+
+// ---------------------------------------------------------------------
+string Child::getfocuschain(bool prev)
+{
+  if (!widget) return "";
+  QWidget *w=(prev)?widget->previousInFocusChain():widget->nextInFocusChain();
+  if (!w) return "";
+  for (int i=pform->children.size()-1; 0<=i; i--) {
+    QWidget *c;
+    if ((c=pform->children.at(i)->widget) && (w==c || c->isAncestorOf(w)))
+      return pform->children.at(i)->id;
+  }
+  return"";
 }
 
 // ---------------------------------------------------------------------
@@ -219,6 +234,7 @@ void Child::setfocuspolicy(string p)
 void Child::setform()
 {
   form=pform;
+  form->child=this;
 }
 
 // ---------------------------------------------------------------------
