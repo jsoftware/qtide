@@ -71,6 +71,9 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
     setWindowModality(Qt::WindowModal);
   }
   if (fontdef) setFont(fontdef->font);
+#ifdef QT_OS_ANDROID
+  if (!fontdef) setFont(QApplication::font());
+#endif
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
