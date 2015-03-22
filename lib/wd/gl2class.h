@@ -671,6 +671,13 @@ int glclipreset()
 int glcursor(int a)
 {
   Q_UNUSED(a);
+  CHKPAINTER2
+#if defined(GLISIGRAPH)||defined(GLOPENGL)
+  if (-1==a)
+    w->unsetCursor();
+  else
+    w->setCursor((Qt::CursorShape)a);
+#endif
   return 0;
 }
 

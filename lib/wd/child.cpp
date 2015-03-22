@@ -192,7 +192,15 @@ string Child::getsysdata()
 // ---------------------------------------------------------------------
 void Child::set(string p,string v)
 {
-  if (p=="enable") {
+  if (p=="cursor") {
+    if (widget) {
+      int a=c_strtoi(v);
+      if (-1==a)
+        widget->unsetCursor();
+      else
+        widget->setCursor((Qt::CursorShape)a);
+    }
+  } else if (p=="enable") {
     if (widget) widget->setEnabled(remquotes(v)!="0");
   } else if (p=="locale") {
     locale=remquotes(v);
