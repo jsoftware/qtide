@@ -893,11 +893,7 @@ void wdptimer()
 // ---------------------------------------------------------------------
 void wdptop()
 {
-  string p=cmd.getparms();
-  if (p.size()) {
-    error("extra parameters: " + p);
-    return;
-  }
+  string p=remquotes(cmd.getparms());
   if (noform()) return;
 #ifdef QT_OS_ANDROID
   if(form!=Forms.last()) return;
