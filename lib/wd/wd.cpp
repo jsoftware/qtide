@@ -1004,7 +1004,10 @@ void wdqueries(string s)
 #ifdef _WIN32
     QSysInfo qsi;
     Q_UNUSED(qsi);
-    if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8) {
+    if (qsi.WindowsVersion >= QSysInfo::WV_WINDOWS8_1) {
+      result="6.3";
+      return;
+    } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8) {
       result="6.2";
       return;
     } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS7) {
@@ -1018,9 +1021,6 @@ void wdqueries(string s)
       return;
     } else if (qsi.WindowsVersion == QSysInfo::WV_XP) {
       result="5.1";
-      return;
-    } else {
-      result="5.0";
       return;
     }
 #else
