@@ -28,6 +28,7 @@ static char path[PLEN];
 extern "C" char * jepath1(char* arg)
 {
 #ifdef _WIN32
+  arg=arg;
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;

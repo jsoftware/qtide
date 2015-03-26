@@ -9,8 +9,8 @@
 #include "webkitview.h"
 
 #define QTWEBVIEW QWebView
-#define QWEBVIEW Webkitview
-#define WEBVIEW Webview
+#define QWEBVIEW WebKitView
+#define WEBVIEW WebView
 
 #elif defined(WEBENGINEVIEW)
 
@@ -18,8 +18,8 @@
 #include "webengineview.h"
 
 #define QTWEBVIEW QWebEngineView
-#define QWEBVIEW Webengineview
-#define WEBVIEW Webview2
+#define QWEBVIEW WebEngineView
+#define WEBVIEW WebEngine
 
 #endif
 

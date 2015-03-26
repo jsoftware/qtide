@@ -20,11 +20,7 @@ android  {
   QT += androidextras
   QT -= webkit
   QT -= webengine
-  contains(DEFINES,QT53) {
-    QT += opengl
-  } else {
-    QT -= opengl
-  }
+  QT += opengl
   DEFINES += QT_OS_ANDROID
   DEFINES += QT_NO_PRINTER
   DEFINES += SMALL_SCREEN
@@ -32,38 +28,34 @@ android  {
   TARGET = jqt
 } else {
   TEMPLATE = lib
-  QT += webkit
-  contains(DEFINES,QT54): QT += webengine
-  QT += opengl
+  contains(DEFINES,QT54) {
+    QT += webkit
+    QT += webengine
+    QT -= opengl
+  } else {
+    QT += webkit
+    QT -= webengine
+    QT += opengl
+  }
   TARGET = jqt
 }
 
 # not available in Qt 5.4 mingw
 win32-cross-32: QT -= webengine
-win32-cross: QT -= webengine
+# memory corruption bug in linux
+# QT -= webengine
 
 contains(DEFINES,QT47): QT += declarative
-contains(DEFINES,QT50) {
-  QT += quick
-} else {
-  QT -= quick
-}
+contains(DEFINES,QT50): QT -= declarative
 contains(DEFINES,QT53) {
-  QT += quickwidgets
+  QT += quick quickwidgets
 } else {
-  QT -= quickwidgets
+  QT -= quick quickwidgets
 }
-contains(DEFINES,QT50): !contains(DEFINES,QT53): QT -= declarative
 
-# android limitation, cannot load too many libs
-android: QT -= declarative
-# android bug in Qt 5.3 RC
-android: !contains(DEFINES,QT54) QT -= quickwidgets
-android: !contains(DEFINES,QT53) QT -= quick
-
-# to exclude QtWebKit, uncomment the following line
+# to exclude QtWebKit QtWebEngine, uncomment the following line
 # QT -= webkit webengine
-# to exclude OpenGL, uncomment the following line
+# (pre QT54) to exclude OpenGL, uncomment the following line
 # QT -= opengl
 
 # pre QT50
@@ -71,24 +63,20 @@ android: !contains(DEFINES,QT53) QT -= quick
 # QT -= declarative
 
 # QT5 or later
-# to exclude both quickview1 quickview2 and quickview, uncomment the following line
-# QT -= declarative quick qml quickwidgets
-# to exclude quickwidget only, uncomment the following line
-# QT -= quickwidgets
-# to exclude quickview1 only, uncomment the following line
-# QT -= declarative
+# to exclude quickview2 and quickview, uncomment the following line
+# QT -= quick quickwidgets
 
 contains(DEFINES,QT50) {
-  QT +=  multimedia multimediawidgets
+  QT +=  multimedia
 } else {
-  QT -=  multimedia multimediawidgets
+  QT -=  multimedia
 }
 
 # export JQTSLIM before qmake
 JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   message(building slim jqt)
-  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webengine
+  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
   DEFINES -= QTWEBSOCKET
 }
 
@@ -96,19 +84,13 @@ JQTSLIM = $$(JQTSLIM)
 JQTRASPI = $$(JQTRASPI)
 !isEmpty(JQTRASPI) {
   message(building raspi jqt)
-  QT -= declarative opengl quick qml quickwidgets webkit webengine
+  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
 }
 
 CONFIG(debug, debug|release) {
   rel = debug
 } else {
   rel = release
-}
-
-# qt5 quick depend on opengl
-contains(DEFINES,QT50) {
-  contains(QT,quick) QT += opengl
-  contains(QT,quickwidgets) QT += opengl
 }
 
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
@@ -160,77 +142,90 @@ INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += "JQT"
+
+contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
 !contains(QT,webkit) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
 } else {
   equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
-  !contains(DEFINES,QT_WEBKIT): DEFINES += QT_WEBKIT
+  DEFINES -= QT_NO_WEBKIT
+  DEFINES += QT_WEBKIT
 }
 !contains(QT,webengine) {
   DEFINES += QT_NO_WEBENGINE
   DEFINES -= QT_WEBENGINE
 } else {
   QT += webenginewidgets
-  !contains(DEFINES,QT_WEBENGINE): DEFINES += QT_WEBENGINE
+  DEFINES -= QT_NO_WEBENGINE
+  DEFINES += QT_WEBENGINE
 }
+
+contains(DEFINES,QT54) {
+  android: DEFINES += QT_OPENGL_ES_2
+  DEFINES -= QT_NO_OPENGL
+  DEFINES += QT_OPENGL
+} else {
 !contains(QT,opengl) {
-  !contains(DEFINES,QT_NO_OPENGL): DEFINES += QT_NO_OPENGL
-  contains(DEFINES,QT_OPENGL): DEFINES -= QT_OPENGL
+  DEFINES += QT_NO_OPENGL
+  DEFINES -= QT_OPENGL
 } else {
   android: DEFINES += QT_OPENGL_ES_2
-  contains(DEFINES,QT_NO_OPENGL): DEFINES -= QT_NO_OPENGL
-  !contains(DEFINES,QT_OPENGL): DEFINES += QT_OPENGL
+  DEFINES -= QT_NO_OPENGL
+  DEFINES += QT_OPENGL
+}
 }
 
 contains(DEFINES,QT50) {
 
 # QT50 or later
   !contains(QT,quick) {
-    !contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
-    contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
-    contains(QT,quickwidgets) QT -= quickwidgets
+    DEFINES += QT_NO_QUICKVIEW2
+    DEFINES -= QT_QUICKVIEW2
+    QT -= quickwidgets
   } else {
-    contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES -= QT_NO_QUICKVIEW2
-    !contains(DEFINES,QT_QUICKVIEW2): DEFINES += QT_QUICKVIEW2
+    DEFINES -= QT_NO_QUICKVIEW2
+    DEFINES += QT_QUICKVIEW2
   }
 
   !contains(QT,declarative) {
-    !contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
-    contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
+    DEFINES += QT_NO_QUICKVIEW1
+    DEFINES -= QT_QUICKVIEW1
   } else {
-    contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
-    !contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
+    DEFINES -= QT_NO_QUICKVIEW1
+    DEFINES += QT_QUICKVIEW1
   }
 
 } else {
-  !contains(DEFINES,QT_NO_QUICKVIEW2): DEFINES += QT_NO_QUICKVIEW2
-  contains(DEFINES,QT_QUICKVIEW2): DEFINES -= QT_QUICKVIEW2
+  DEFINES += QT_NO_QUICKVIEW2
+  DEFINES -= QT_QUICKVIEW2
 # pre QT50
   !contains(QT,declarative) {
-    !contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES += QT_NO_QUICKVIEW1
-    contains(DEFINES,QT_QUICKVIEW1): DEFINES -= QT_QUICKVIEW1
+    DEFINES += QT_NO_QUICKVIEW1
+    DEFINES -= QT_QUICKVIEW1
   } else {
-    contains(DEFINES,QT_NO_QUICKVIEW1): DEFINES -= QT_NO_QUICKVIEW1
-    !contains(DEFINES,QT_QUICKVIEW1): DEFINES += QT_QUICKVIEW1
+    DEFINES -= QT_NO_QUICKVIEW1
+    DEFINES += QT_QUICKVIEW1
   }
 
 }
 
 !contains(QT,quickwidgets) {
-  !contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES += QT_NO_QUICKWIDGET
-  contains(DEFINES,QT_QUICKWIDGET): DEFINES -= QT_QUICKWIDGET
+  DEFINES += QT_NO_QUICKWIDGET
+  DEFINES -= QT_QUICKWIDGET
 } else {
-  contains(DEFINES,QT_NO_QUICKWIDGET): DEFINES -= QT_NO_QUICKWIDGET
-  !contains(DEFINES,QT_QUICKWIDGET): DEFINES += QT_QUICKWIDGET
+  DEFINES -= QT_NO_QUICKWIDGET
+  DEFINES += QT_QUICKWIDGET
 }
 
-!contains(QT,multimediawidgets) {
-  !contains(DEFINES,QT_NO_MULTIMEDIA): DEFINES += QT_NO_MULTIMEDIA
-  contains(DEFINES,QT_MULTIMEDIA): DEFINES -= QT_MULTIMEDIA
+!contains(QT,multimedia) {
+  QT -=  multimediawidgets
+  DEFINES += QT_NO_MULTIMEDIA
+  DEFINES -= QT_MULTIMEDIA
 } else {
-  contains(DEFINES,QT_NO_MULTIMEDIA): DEFINES -= QT_NO_MULTIMEDIA
-  !contains(DEFINES,QT_MULTIMEDIA): DEFINES += QT_MULTIMEDIA
+  contains(DEFINES,QT54) QT +=  multimediawidgets
+  DEFINES -= QT_NO_MULTIMEDIA
+  DEFINES += QT_MULTIMEDIA
 }
 
 # Input
@@ -255,13 +250,13 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/webview2.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
+ wd/webview.h wd/webengine.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h \
  wd/multimedia.h
 
-!contains(QT,opengl): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
+contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h wd/webkitview.h
-!contains(QT,webengine): HEADERS -= wd/webview2.h wd/webengineview.h
+!contains(QT,webengine): HEADERS -= wd/webengine.h wd/webengineview.h
 contains(DEFINES,QT50) {
   !contains(QT,quick): HEADERS -= wd/quickview2.h
   !contains(QT,declarative): HEADERS -= wd/quickview1.h
@@ -304,13 +299,13 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/webview2.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
+ wd/webview.cpp wd/webengine.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
  wd/multimedia.cpp
 
-!contains(QT,opengl): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
+contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp wd/webkitview.cpp
-!contains(QT,webengine): SOURCES -= wd/webview2.cpp wd/webengineview.cpp
+!contains(QT,webengine): SOURCES -= wd/webengine.cpp wd/webengineview.cpp
 contains(DEFINES,QT50) {
   !contains(QT,quick): SOURCES -= wd/quickview2.cpp
   !contains(QT,declarative): SOURCES -= wd/quickview1.cpp

@@ -6,15 +6,16 @@
 
 class Form;
 class Pane;
-class Webkitview;
+class WebKitView;
 
 // ---------------------------------------------------------------------
-class Webview : public Child
+class WebView : public Child
 {
   Q_OBJECT
 
 public:
-  Webview(string n, string s, Form *f, Pane *p);
+  WebView(string n, string s, Form *f, Pane *p);
+  ~WebView();
   string get(string p,string v);
   void set(string p,string v);
   string state();

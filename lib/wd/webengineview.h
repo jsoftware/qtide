@@ -6,12 +6,12 @@
 #include "child.h"
 
 // ---------------------------------------------------------------------
-class Webengineview : public QWebEngineView
+class WebEngineView : public QWebEngineView
 {
   Q_OBJECT
 
 public:
-  Webengineview (Child *c, QWidget *parent);
+  WebEngineView (Child *c, QWidget *parent);
 
 protected:
   void mousePressEvent(QMouseEvent *event);

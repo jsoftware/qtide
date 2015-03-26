@@ -9,17 +9,17 @@
 #include "webview.h"
 #include "webkitview.h"
 
-#define QWEBVIEW Webkitview
-#define WEBVIEW Webview
+#define QWEBVIEW WebKitView
+#define WEBVIEW WebView
 
 #elif defined(WEBENGINEVIEW)
 
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
-#include "webview2.h"
+#include "webengine.h"
 #include "webengineview.h"
 
-#define QWEBVIEW Webengineview
-#define WEBVIEW Webview2
+#define QWEBVIEW WebEngineView
+#define WEBVIEW WebEngine
 
 #endif
 
@@ -36,7 +36,7 @@ WEBVIEW::WEBVIEW(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #if defined(WEBKITVIEW)
   type="webview";
 #else
-  type="webview2";
+  type="webengine";
 #endif
   QWEBVIEW *w=new QWEBVIEW(this, p);
   widget=(QWidget *) w;
@@ -44,6 +44,13 @@ WEBVIEW::WEBVIEW(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(qn);
   baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
   connect(w,SIGNAL(urlChanged( const QUrl & )), this,SLOT(urlChanged( const QUrl & )));
+}
+
+// ---------------------------------------------------------------------
+WEBVIEW::~WEBVIEW()
+{
+  if (widget) delete (QWEBVIEW *)widget;
+  widget=0;
 }
 
 // ---------------------------------------------------------------------

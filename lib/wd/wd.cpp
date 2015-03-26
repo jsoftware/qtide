@@ -1447,7 +1447,9 @@ void wdversion()
   }
   result=APP_VERSION;
 #ifdef QT_NO_WEBKIT
+#ifdef QT_NO_WEBENGINE
   result=result+"s";
+#endif
 #endif
   result=result+"/"+qVersion();
   rc=-1;

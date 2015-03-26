@@ -6,12 +6,12 @@
 #include "child.h"
 
 // ---------------------------------------------------------------------
-class Webkitview : public QWebView
+class WebKitView : public QWebView
 {
   Q_OBJECT
 
 public:
-  Webkitview (Child *c, QWidget *parent);
+  WebKitView (Child *c, QWidget *parent);
 
 protected:
   void mousePressEvent(QMouseEvent *event);
