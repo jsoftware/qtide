@@ -84,7 +84,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   signalMapper=new QSignalMapper(this);
   connect(signalMapper,SIGNAL(mapped(QWidget *)),
           this,SLOT(buttonClicked(QWidget *)));
-  timer=new QTimer;
+  timer=new QTimer(this);
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
 }
 
@@ -95,7 +95,7 @@ Form::~Form()
     delete children.at(i);
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
-  if (timer) delete timer;
+//  if (timer) delete timer;
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
 #ifdef QT_OS_ANDROID

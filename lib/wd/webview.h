@@ -15,7 +15,6 @@ class WebView : public Child
 
 public:
   WebView(string n, string s, Form *f, Pane *p);
-  ~WebView();
   string get(string p,string v);
   void set(string p,string v);
   string state();

@@ -11,7 +11,7 @@ class LineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-  LineEdit(Child *c, QWidget *parent);
+  LineEdit(Child *c, QWidget *parent = 0);
 
 protected:
   void keyPressEvent(QKeyEvent *event);

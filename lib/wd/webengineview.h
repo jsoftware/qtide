@@ -11,7 +11,7 @@ class WebEngineView : public QWebEngineView
   Q_OBJECT
 
 public:
-  WebEngineView (Child *c, QWidget *parent);
+  WebEngineView (Child *c, QWidget *parent = 0);
 
 protected:
   void mousePressEvent(QMouseEvent *event);

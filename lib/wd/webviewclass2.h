@@ -26,13 +26,10 @@
 #include "form.h"
 
 // ---------------------------------------------------------------------
-QWEBVIEW::QWEBVIEW(Child *c, QWidget *parent) : QTWEBVIEW()
+QWEBVIEW::QWEBVIEW(Child *c, QWidget *parent) : QTWEBVIEW(parent)
 {
   Q_UNUSED(parent);
   pchild = c;
-  setContentsMargins(0,0,0,0);
-  setAttribute(Qt::WA_DeleteOnClose);
-  this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 }

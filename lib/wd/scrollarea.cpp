@@ -39,6 +39,18 @@ ScrollArea::ScrollArea(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
+ScrollArea::~ScrollArea()
+{
+  if (view && view->widget) {
+    ((QScrollArea *)widget)->takeWidget();
+    delete view->widget;
+    view->widget=0;
+  }
+  if (widget) delete (QScrollArea *)widget;
+  widget=0;
+}
+
+// ---------------------------------------------------------------------
 string ScrollArea::get(string p,string v)
 {
   QScrollArea *w=(QScrollArea*) widget;

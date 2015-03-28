@@ -15,7 +15,6 @@ class Isidraw : public Child
 
 public:
   Isidraw(string n, string s, Form *f, Pane *p);
-  virtual ~Isidraw();
   void setform();
   string get(string p,string v);
   void set(string p,string v);

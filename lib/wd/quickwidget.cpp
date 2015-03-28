@@ -40,8 +40,6 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setFormat(format);
 // enum ResizeMode { SizeViewToRootObject, SizeRootObjectToView }
   w->setResizeMode((QQuickWidget::ResizeMode)(resizeMode=mode));
-  w->setContentsMargins(0,0,0,0);
-  w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);

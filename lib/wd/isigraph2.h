@@ -14,7 +14,7 @@ class Isigraph2 : public QWidget
   Q_OBJECT
 
 public:
-  Isigraph2(Child *c, QWidget *parent);
+  Isigraph2(Child *c, QWidget *parent = 0);
   virtual ~Isigraph2();
 
   void fill(const int *);

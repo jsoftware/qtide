@@ -25,9 +25,6 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   painter=0;
   font=0;
   gl_clear2(this,0);
-  setContentsMargins(0,0,0,0);
-  setAttribute(Qt::WA_DeleteOnClose);
-  this->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
 }
@@ -40,6 +37,7 @@ Opengl2::~Opengl2()
   if (painter) {
     painter->end();
     delete painter;
+    painter=0;
   }
 }
 

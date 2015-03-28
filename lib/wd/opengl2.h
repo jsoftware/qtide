@@ -33,9 +33,9 @@ class Opengl2 : public QGLWidget
 
 public:
 #ifdef USE_QOpenGLWidget
-  Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent);
+  Opengl2(Child *c, const QSurfaceFormat& format, QWidget *parent = 0);
 #else
-  Opengl2(Child *c, const QGLFormat& format, QWidget *parent);
+  Opengl2(Child *c, const QGLFormat& format, QWidget *parent = 0);
 #endif
   ~Opengl2();
 

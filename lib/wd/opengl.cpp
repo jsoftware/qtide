@@ -47,7 +47,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #endif
 #endif
 
-  Opengl2 *w= new Opengl2(this, qglFormat, p);
+  Opengl2 *w= new Opengl2(this, qglFormat);
   widget=(QWidget *) w;
   w->setObjectName(qn);
   childStyle(opt);

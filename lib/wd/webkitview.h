@@ -11,7 +11,7 @@ class WebKitView : public QWebView
   Q_OBJECT
 
 public:
-  WebKitView (Child *c, QWidget *parent);
+  WebKitView (Child *c, QWidget *parent = 0);
 
 protected:
   void mousePressEvent(QMouseEvent *event);

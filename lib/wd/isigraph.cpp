@@ -9,7 +9,7 @@
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="isigraph";
-  Isigraph2 *w= new Isigraph2(this, p);
+  Isigraph2 *w= new Isigraph2(this);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
@@ -21,13 +21,6 @@ Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(qn);
   childStyle(opt);
   f->isigraph = this;
-}
-
-// ---------------------------------------------------------------------
-Isigraph::~Isigraph()
-{
-  if (widget) delete (Isigraph2 *)widget;
-  widget=0;
 }
 
 // ---------------------------------------------------------------------

@@ -28,8 +28,6 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
     painter->setRenderHint(QPainter::Antialiasing, true);
   }
   glclear2(this,0);
-  setContentsMargins(0,0,0,0);
-  setAttribute(Qt::WA_DeleteOnClose);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
@@ -43,8 +41,10 @@ Isigraph2::~Isigraph2()
   if (painter) {
     painter->end();
     delete painter;
+    painter=0;
   }
   if (pixmap) delete pixmap;
+  pixmap=0;
 }
 
 // ---------------------------------------------------------------------

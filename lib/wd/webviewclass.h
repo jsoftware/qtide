@@ -38,19 +38,12 @@ WEBVIEW::WEBVIEW(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #else
   type="webengine";
 #endif
-  QWEBVIEW *w=new QWEBVIEW(this, p);
+  QWEBVIEW *w=new QWEBVIEW(this);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
   baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
   connect(w,SIGNAL(urlChanged( const QUrl & )), this,SLOT(urlChanged( const QUrl & )));
-}
-
-// ---------------------------------------------------------------------
-WEBVIEW::~WEBVIEW()
-{
-  if (widget) delete (QWEBVIEW *)widget;
-  widget=0;
 }
 
 // ---------------------------------------------------------------------

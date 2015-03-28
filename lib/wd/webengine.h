@@ -15,7 +15,6 @@ class WebEngine : public Child
 
 public:
   WebEngine(string n, string s, Form *f, Pane *p);
-  ~WebEngine();
   string get(string p,string v);
   void set(string p,string v);
   string state();
