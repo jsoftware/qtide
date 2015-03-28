@@ -41,9 +41,10 @@ android  {
 }
 
 # not available in Qt 5.4 mingw
-win32-cross-32: QT -= webengine
-# memory corruption bug in linux
-# QT -= webengine
+win32-cross* {
+  QT += webkit
+  QT -= webengine
+}
 
 contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50): QT -= declarative

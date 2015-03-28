@@ -3,6 +3,7 @@ greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
+!lessThan(QT_VERSION,5.4.0): DEFINES += QT54
 
 android {
   CONFIG += mobility
@@ -16,7 +17,7 @@ android {
   TARGET = jqt
 }
 
-contains(DEFINES,QT50): QT += widgets
+# contains(DEFINES,QT50): QT += widgets
 
 CONFIG(debug, debug|release) {
   rel = debug
@@ -70,4 +71,5 @@ CONFIG+= release
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
+macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 win32:RC_FILE = jqt.rc
