@@ -30,7 +30,7 @@ android  {
   TEMPLATE = lib
   contains(DEFINES,QT54) {
     QT += webkit
-    QT += webengine
+    QT -= webengine
     QT -= opengl
   } else {
     QT += webkit
@@ -38,12 +38,6 @@ android  {
     QT += opengl
   }
   TARGET = jqt
-}
-
-# not available in Qt 5.4 mingw
-win32-cross* {
-  QT += webkit
-  QT -= webengine
 }
 
 contains(DEFINES,QT47): QT += declarative
