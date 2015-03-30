@@ -18,8 +18,6 @@ android  {
   CONFIG += mobility
   MOBILITY +=
   QT += androidextras
-  QT -= webkit
-  QT -= webengine
   QT += opengl
   DEFINES += QT_OS_ANDROID
   DEFINES += QT_NO_PRINTER
@@ -30,11 +28,8 @@ android  {
   TEMPLATE = lib
   contains(DEFINES,QT54) {
     QT += webkit
-    QT -= webengine
-    QT -= opengl
   } else {
     QT += webkit
-    QT -= webengine
     QT += opengl
   }
   TARGET = jqt
