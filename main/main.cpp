@@ -1,4 +1,3 @@
-#include <QApplication>
 #include <QDebug>
 #include <QSysInfo>
 #include <QFile>
