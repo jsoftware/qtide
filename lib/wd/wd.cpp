@@ -14,6 +14,7 @@
 #endif
 #endif
 #ifdef QT_OS_ANDROID
+#include <QtAndroid>
 #include <QFontDatabase>
 #endif
 #ifndef QT_NO_OPENGL
@@ -997,7 +998,7 @@ void wdqueries(string s)
     result="jqt";
     return;
   } else if (s=="qosver") {
-#ifdef _WIN32
+#if defined(_WIN32)
     QSysInfo qsi;
     Q_UNUSED(qsi);
     if (qsi.WindowsVersion >= QSysInfo::WV_WINDOWS8_1) {
@@ -1019,8 +1020,7 @@ void wdqueries(string s)
       result="5.1";
       return;
     }
-#else
-#ifdef __MACH__
+#elif defined(__MACH__)
     QSysInfo qsi;
     if (qsi.MacintoshVersion > QSysInfo::MV_10_8) {
       result="10.9";
@@ -1038,10 +1038,12 @@ void wdqueries(string s)
       result="10.5";
       return;
     }
+#elif defined(QT_OS_ANDROID)
+    result=i2s(QtAndroid::androidSdkVersion());
+    return;
 #else
     result="";
     return;
-#endif
 #endif
   } else if (s=="qprinters") {
     if (!app) {
