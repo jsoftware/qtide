@@ -59,6 +59,7 @@ RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
 linux-raspi: DEFINES += RASPI
+macx:CONFIG += c++11
 
 win32-msvc*:TARGET = ../bin/jqt
 DEPENDPATH += .

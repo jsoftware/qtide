@@ -122,6 +122,7 @@ UI_DIR = $$BUILDROOT/ui
 linux-raspi: DEFINES += RASPI
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
+macx:CONFIG += c++11
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 equals(QT_MAJOR_VERSION, 5): QT += widgets
