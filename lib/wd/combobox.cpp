@@ -49,11 +49,11 @@ string ComboBox::get(string p,string v)
   PComboBox *w=(PComboBox*) widget;
   string r;
   if (p=="property") {
-    r+=string("edit")+"\012"+ "items"+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=string("edit")+"\012"+ "allitems"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="edit") {
     r=i2s(w->isEditable());
-  } else if (p=="items") {
+  } else if (p=="allitems") {
     r=getitems();
   } else if (p=="text"||p=="select") {
     int n=w->currentIndex();

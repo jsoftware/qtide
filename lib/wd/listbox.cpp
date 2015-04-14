@@ -43,10 +43,12 @@ string ListBox::get(string p,string v)
   QListWidget *w=(QListWidget*) widget;
   string r;
   if (p=="property") {
-    r+=string("items")+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=string("allitems")+"\012"+ "items"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
-  } else if (p=="items")
+  } else if (p=="allitems")
     r=getitems();
+  else if (p=="items")
+    r=getselection();
   else if (p=="text"||p=="select") {
     QList <QListWidgetItem*> list = w->selectedItems();
     if (0==list.count()) {
