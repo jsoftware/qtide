@@ -21,8 +21,8 @@ extern "C" {
   Dllexport int glzfontextent (char *face);
   Dllexport int glzlines (const int *p, int len);
   Dllexport int glznodblbuf (int a);
-  Dllexport int glpaint ();
-  Dllexport int glpaintx ();
+  Dllexport int glzpaint ();
+  Dllexport int glzpaintx ();
   Dllexport int glzpen (const int *p);
   Dllexport int glzpie (const int *p);
   Dllexport int glzpixel (const int *p);
