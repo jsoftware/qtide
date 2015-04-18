@@ -16,7 +16,6 @@
 #include <QTemporaryFile>
 #ifdef QT_OS_ANDROID
 #include <QFontDatabase>
-#include <QtAndroid>
 #endif
 
 #include <locale.h>
@@ -127,16 +126,9 @@ void Config::folder_init()
 void Config::ini0()
 {
 #ifdef QT_OS_ANDROID
-  if (21>QtAndroid::androidSdkVersion()) {
-    android_getdisplaymetrics(0);
-    ScreenWidth=DM_widthPixels;
-    ScreenHeight=DM_heightPixels;
-  } else {
-    QDesktopWidget* dw=QApplication::desktop();
-    QRect screenGeometry = dw->screenGeometry(-1);
-    ScreenWidth=screenGeometry.width();
-    ScreenHeight=screenGeometry.height();
-  }
+  android_getdisplaymetrics(0);
+  ScreenWidth=DM_widthPixels;
+  ScreenHeight=DM_heightPixels;
 #else
   QDesktopWidget* dw=QApplication::desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
@@ -554,8 +546,7 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
   qDebug() << "AndroidPackage" << AndroidPackage;
 // symlink of libjqt.so under /data/data
   LibName="/data/data/" + AndroidPackage + "/lib/libjqt.so";
-  if (21>QtAndroid::androidSdkVersion())
-    android_getdisplaymetrics(0);
+  android_getdisplaymetrics(0);
 #endif
 #ifdef QTWEBSOCKET
 #ifdef QT48

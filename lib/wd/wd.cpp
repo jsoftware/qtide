@@ -977,20 +977,11 @@ void wdqueries(string s)
     }
     QDesktopWidget* dw=QApplication::desktop();
 #ifdef QT_OS_ANDROID
-    int dpix, dpiy, w, h;
-    if (21>QtAndroid::androidSdkVersion()) {
-      android_getdisplaymetrics(0);
-      dpix=DM_xdpi;
-      dpiy=DM_ydpi;
-      w=DM_widthPixels;
-      h=DM_heightPixels;
-    } else {
-      QRect screenGeometry = dw->screenGeometry(-1);
-      dpix=dw->logicalDpiX();
-      dpiy=dw->logicalDpiY();
-      w=screenGeometry.width();
-      h=screenGeometry.height();
-    }
+    android_getdisplaymetrics(0);
+    int dpix=DM_xdpi;
+    int dpiy=DM_ydpi;
+    int w=DM_widthPixels;
+    int h=DM_heightPixels;
 #else
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
