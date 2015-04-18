@@ -24,6 +24,10 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
+  if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
+    error("conflicting child style: " + n + " " + q2s(unopt.join(" ")));
+    return;
+  }
   w->setObjectName(qn);
   focusSelect=false;
   childStyle(opt);
@@ -60,9 +64,14 @@ string Edit::get(string p,string v)
   if (p=="property") {
     r+=string("alignment")+"\012"+ "focusselect"+"\012"+ "inputmask"+"\012"+ "limit"+"\012"+ "readonly"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
-  } else if (p=="alignment")
-    r=i2s(w->alignment());
-  else if (p=="focusselect")
+  } else if (p=="alignment") {
+    if ((w->alignment())&Qt::AlignRight)
+      r=string("right");
+    else if ((w->alignment())&Qt::AlignHCenter)
+      r=string("center");
+    else
+      r=string("left");
+  } else if (p=="focusselect")
     r=i2s(focusSelect);
   else if (p=="inputmask")
     r=q2s(w->inputMask());
