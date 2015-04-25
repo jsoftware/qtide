@@ -16,7 +16,7 @@ res/values/strings.xml
 
   tar all files under your ~install folder to a file named jqtdata.tgz, 
 
-  executables and shared objects (jconsole, libj.so, libjpcre.so etc) should not be included.
+  executables and shared objects (jconsole, jconsole-nopie, libj.so, libjpcre.so etc) should not be included.
 
   copy and replace jqtdata.tgz in the template.
 

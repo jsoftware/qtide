@@ -390,6 +390,15 @@ int jefirst(int type,char* arg)
       QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
       qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
     }
+
+    if (QFile("assets:/jconsole-nopie").exists()) {
+      if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+      QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
+      QFile(appcurrentpath+"/bin/jconsole-nopie").remove();
+      QFile("assets:/jconsole-nopie").copy(appcurrentpath+"/bin/jconsole-nopie");
+      QFile::setPermissions(appcurrentpath+"/bin/jconsole-nopie",(QFile::Permission)0x7755);
+      qDebug() << "jconsole-nopie: " << (appcurrentpath+"/bin/jconsole-nopie");
+    }
   }
 
   if (QFile("assets:/welcome.ijs").exists()) {

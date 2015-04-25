@@ -27,6 +27,7 @@ Info.plist
 jqt_resource.rc
 
 jconsole
+jconsole-nopie
 profile.ijs
 profilex.ijs
 
