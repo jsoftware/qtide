@@ -752,7 +752,7 @@ void Note::on_fileopentempAct_triggered()
 void Note::on_fileprintAct_triggered()
 {
   if(editIndex()>=0)
-    dialogprint(note,editPage()->document());
+    dialogprint(note,(QTextEdit *)editPage());
 }
 
 // ---------------------------------------------------------------------
@@ -1377,7 +1377,7 @@ void Term::on_fileopenuserAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_fileprintAct_triggered()
 {
-  dialogprint(term,tedit->document());
+  dialogprint(term,(QTextEdit *)tedit);
 }
 #endif
 

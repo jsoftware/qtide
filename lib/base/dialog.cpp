@@ -86,6 +86,25 @@ void dialogprint(QWidget *w,QTextDocument *d)
   if (d) d->print(config.Printer);
   delete dlg;
 }
+
+// ---------------------------------------------------------------------
+void dialogprint(QWidget *w,QTextEdit *d)
+{
+  QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
+  dlg->setOptions(
+#ifdef QT48
+    QAbstractPrintDialog::PrintCurrentPage|
+#endif
+    QAbstractPrintDialog::PrintSelection|
+    QAbstractPrintDialog::PrintPageRange|
+    QAbstractPrintDialog::PrintShowPageSize|
+    QAbstractPrintDialog::PrintCollateCopies);
+  dlg->setWindowTitle("Print Document");
+  if (dlg->exec() != QDialog::Accepted)
+    return;
+  if (d) d->print(config.Printer);
+  delete dlg;
+}
 #endif
 
 // ---------------------------------------------------------------------
