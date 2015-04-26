@@ -44,17 +44,6 @@
             -->
             <!-- Splash screen -->
         </activity>
-
-        <service android:name="org.dykman.j.android.SoftKeyboard"
-            android:permission="android.permission.BIND_INPUT_METHOD"
-            android:exported="true"
-            android:enabled="true"
-            android:label="JQT Keyboard">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method" />
-        </service>
     </application>
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
@@ -65,11 +54,6 @@
     <!-- %%INSERT_PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-    <uses-permission android:name="android.permission.PERSISTENT_ACTIVITY"/>
-    <uses-permission android:name="android.permission.BIND_INPUT_METHOD"/>
-    <uses-permission android:name="android.permission.READ_INPUT_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
 
     <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
          Remove the comment if you do not require these default features. -->

@@ -5,4 +5,12 @@
     <string name="ministro_not_found_msg">Can\'t find Ministro service.\nThe application can\'t start.</string>
     <string name="ministro_needed_msg">This application requires Ministro service. Would you like to install it?</string>
     <string name="fatal_error_msg">Your application encountered a fatal error and cannot continue.</string>
+
+    <!-- Symbols that are commonly considered word separators in this language -->
+    <string name="word_separators">\u0020.,;:!?\n()[]*&amp;@{}/&lt;&gt;_+=|&quot;</string>
+
+    <string name="label_go_key">Go</string>
+    <string name="label_send_key">Send</string>
+    <string name="label_next_key">Next</string>
+
 </resources>
