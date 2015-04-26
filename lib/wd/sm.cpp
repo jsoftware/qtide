@@ -3,6 +3,7 @@
 
 #include "wd.h"
 #include "cmd.h"
+#include "font.h"
 #include "../base/bedit.h"
 #include "../base/note.h"
 #include "../base/state.h"
@@ -13,6 +14,7 @@ extern int rc;
 
 static string smerror(string);
 static string smfocus(string);
+static string smfont(string);
 static string smget(string);
 static string smgetactive();
 static string smgetwin(string);
@@ -34,6 +36,8 @@ string sm(string c,string p)
   rc=0;
   if (c=="focus")
     return smfocus(p);
+  if (c=="font")
+    return smfont(p);
   if (c=="get")
     return smget(p);
   if (c=="save")
@@ -71,6 +75,23 @@ string smfocus(string p)
     note->repaint();
   } else
     return smerror("unrecognized sm command: focus " + p);
+  return "";
+}
+
+// ---------------------------------------------------------------------
+string smfont(string p)
+{
+  if (p.size()!=0) {
+    Font *fnt = new Font(p);
+    if (fnt->error) {
+      delete fnt;
+      return smerror("unrecognized sm command: font " + p);
+    } else {
+      config.Font=fnt->font;
+      delete fnt;
+    }
+  }
+  fontset(config.Font);
   return "";
 }
 

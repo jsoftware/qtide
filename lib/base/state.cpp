@@ -15,6 +15,7 @@
 #include <QSyntaxHighlighter>
 #include <QTemporaryFile>
 #ifdef QT_OS_ANDROID
+#include <QDirIterator>
 #include <QFontDatabase>
 #endif
 
@@ -232,6 +233,11 @@ void Config::initide()
 #endif
 
 #ifdef QT_OS_ANDROID
+  QDirIterator dir("assets:/fonts", QDir::Files, QDirIterator::Subdirectories);
+  while(dir.hasNext()) {
+    dir.next();
+    QFontDatabase::addApplicationFont(dir.fileInfo().absoluteFilePath());
+  }
   QStringList ff = s->value("Session/FontFile",FontFile).toString().split(":",QString::SkipEmptyParts);
   foreach (QString f,ff) QFontDatabase::addApplicationFont(ConfigPath.filePath(f));
   ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
