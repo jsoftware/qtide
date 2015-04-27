@@ -10,10 +10,28 @@ int DM_heightPixels=160;
 int DM_rotation;
 int DM_widthPixels=160;
 
+static QAndroidJniObject getMainActivity()
+{
+  return QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+}
+
+void * getqtactivity()
+{
+  return getMainActivity().object<jobject>();
+}
+
 void android_exec_host(char* action, char* uri, char* mime, int flag)
 {
   QAndroidJniEnvironment env;
   QAndroidJniObject intent("android/content/Intent", "(Ljava/lang/String;)V", QAndroidJniObject::fromString(QString::fromUtf8(action)).object<jstring>());
+  if (env->ExceptionCheck()) {
+    // Handle exception here.
+    env->ExceptionDescribe();
+    qDebug() << "androidextras jni error";
+    env->ExceptionClear();
+    return;
+  }
+  if (!intent.isValid()) return;
   if (uri && strlen(uri)) {
     QAndroidJniObject objuri = QAndroidJniObject::callStaticObjectMethod("android/net/Uri", "parse", "(Ljava/lang/String;)Landroid/net/Uri;", QAndroidJniObject::fromString(QString::fromUtf8(uri)).object<jstring>());
     if (mime && strlen(mime))
@@ -23,13 +41,13 @@ void android_exec_host(char* action, char* uri, char* mime, int flag)
     intent.callObjectMethod("setType", "(Ljava/lang/String;)Landroid/content/Intent;", QAndroidJniObject::fromString(QString::fromUtf8(mime)).object<jstring>());
   if (flag)
     intent.callObjectMethod("setFlags", "(I)Landroid/content/Intent;", flag);
-  QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
-  activity.callObjectMethod("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
+  QtAndroid::startActivity(intent,0);
   if (env->ExceptionCheck()) {
     // Handle exception here.
     env->ExceptionDescribe();
     qDebug() << "androidextras jni error";
     env->ExceptionClear();
+    return;
   }
 }
 
@@ -37,7 +55,15 @@ void android_exec_host(char* action, char* uri, char* mime, int flag)
 void android_getdisplaymetrics(double * dmetrics)
 {
   QAndroidJniEnvironment env;
-  QAndroidJniObject act = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+  QAndroidJniObject act = getMainActivity();
+  if (env->ExceptionCheck()) {
+    // Handle exception here.
+    env->ExceptionDescribe();
+    qDebug() << "androidextras jni error";
+    env->ExceptionClear();
+    return;
+  }
+  if (!act.isValid()) return;
   QAndroidJniObject wm = act.callObjectMethod("getWindowManager","()Landroid/view/WindowManager;");
   QAndroidJniObject ds = wm.callObjectMethod("getDefaultDisplay", "()Landroid/view/Display;");
   QAndroidJniObject dm("android/util/DisplayMetrics");
