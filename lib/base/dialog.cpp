@@ -85,6 +85,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
     return;
   if (d) d->print(config.Printer);
   delete dlg;
+  config.Printer->setPrintRange(QPrinter::AllPages);
 }
 
 // ---------------------------------------------------------------------
@@ -104,6 +105,7 @@ void dialogprint(QWidget *w,QTextEdit *d)
     return;
   if (d) d->print(config.Printer);
   delete dlg;
+  config.Printer->setPrintRange(QPrinter::AllPages);
 }
 #endif
 
