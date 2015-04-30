@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QDebug>
+#ifdef QT_OS_ANDROID
+#include <QtAndroid>
+#endif
 #include "qtjni.h"
 #include "base.h"
 static JavaVM *m_javaVM=0;
@@ -20,6 +23,7 @@ void javaOnLoad(JavaVM * vm, JNIEnv * env)
   m_javaVM=vm;
   jnienv=env;
   jclass ap,ac;
+  if (QtAndroid::androidSdkVersion()>=21) return;
   qDebug() << "JNI_OnLoad vm " << QString::number((long)vm);
   qDebug() << "JNI_OnLoad env " << QString::number((long)jnienv);
   ap=jnienv->FindClass("org/qtproject/qt5/android/bindings/QtApplication");
