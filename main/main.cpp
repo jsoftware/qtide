@@ -9,7 +9,6 @@ using namespace std;
 #ifdef QT_OS_ANDROID
 #include <jni.h>
 extern "C" int state_run (int,char **,char *,bool,void *,void *);
-extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
 #else
 typedef int (*Run)(int,char **,char *,bool,void *,void *);
 extern "C" char * jepath1(char* arg);
@@ -70,6 +69,8 @@ int main(int argc, char *argv[])
 }
 
 #ifdef QT_OS_ANDROID
+// Qt5.2 has its own JNI_OnLoad
+/*
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
 {
   JNIEnv *jnienv;
@@ -81,4 +82,5 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
 
   return JNI_VERSION_1_6;
 }
+*/
 #endif

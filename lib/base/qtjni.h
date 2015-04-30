@@ -4,7 +4,6 @@
 #include <jni.h>
 
 extern "C" {
-  void javaOnLoad(JavaVM * vm, JNIEnv * env);
   int GetJavaVMENV(JavaVM ** pvm, JNIEnv ** penv);
   jclass GetClassID(int id);
 
