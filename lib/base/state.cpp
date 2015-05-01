@@ -128,7 +128,7 @@ void Config::folder_init()
 void Config::ini0()
 {
 #ifdef QT_OS_ANDROID
-  if (QtAndroid::androidSdkVersion()>=21) {
+  if (QtAndroid::androidSdkVersion()>=10021) {
     QDesktopWidget* dw=QApplication::desktop();
     QRect screenGeometry = dw->screenGeometry(-1);
     ScreenWidth=screenGeometry.width();
@@ -560,7 +560,7 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
   qDebug() << "AndroidPackage" << AndroidPackage;
 // symlink of libjqt.so under /data/data
   LibName="/data/data/" + AndroidPackage + "/lib/libjqt.so";
-  if (QtAndroid::androidSdkVersion()<21)
+  if (QtAndroid::androidSdkVersion()<10021)
     android_getdisplaymetrics(0);
 #endif
 #ifdef QTWEBSOCKET

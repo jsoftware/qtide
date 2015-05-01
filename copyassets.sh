@@ -34,7 +34,7 @@ cp -r $P/$1/$2 $S/$A/addons/$1
 # copyaddon api android
 copyaddon api expat
 # copyaddon api gles
-copyaddon api jni
+# copyaddon api jni
 # copyaddon api sl4a
 # copyaddon arc zlib
 copyaddon convert json
@@ -58,7 +58,7 @@ copyaddon graphics gl2
 # copyaddon graphics png
 # copyaddon graphics print
 # copyaddon graphics viewmat
-copyaddon gui android
+# copyaddon gui android
 copyaddon ide jhs
 copyaddon ide qt
 # copyaddon labs labs
