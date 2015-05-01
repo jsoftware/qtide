@@ -5,9 +5,6 @@
 // ---------------------------------------------------------------------
 PlainTextEdit::PlainTextEdit(QWidget *parent) : QPlainTextEdit(parent)
 {
-#ifdef QT_OS_ANDROID
-  setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   acceptKeyBack=false;
 }
 

@@ -10,9 +10,6 @@ QGrid::QGrid(QString s,Child *c,QWidget *p) : QWidget(p)
 {
   style=s;
   sa=new Wasa(s,c,this);
-#ifdef QT_OS_ANDROID
-  sa->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   vbmain=new QVBoxLayout();
   if (style.isEmpty()) {
     GGridInit=true;

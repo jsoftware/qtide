@@ -201,9 +201,6 @@ void Term::fini()
   setWindowIcon(QIcon(":/images/jgreen.png"));
   if (config.TermSyntaxHighlight)
     highlight(tedit->document());
-#ifdef QT_OS_ANDROID
-  tedit->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
 #ifdef TABCOMPLETION
   completer = new QCompleter(this);
   completer->setModel(getcompletermodel(completer,config.ConfigPath.filePath(config.CompletionFile)));

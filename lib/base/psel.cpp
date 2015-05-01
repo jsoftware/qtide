@@ -236,9 +236,6 @@ void Psel::itemActivated()
 QListWidget *Psel::panel(QString s)
 {
   QListWidget *f = new QListWidget();
-#ifdef QT_OS_ANDROID
-  f->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   QLabel *a=new QLabel(s);
   QWidget *w=new QWidget();
   QVBoxLayout *v=new QVBoxLayout();

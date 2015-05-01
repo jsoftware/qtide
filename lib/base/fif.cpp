@@ -100,9 +100,6 @@ Fif::Fif(QString s, bool ifname)
 
   QVBoxLayout *g=new QVBoxLayout();
   found=new QListWidget();
-#ifdef QT_OS_ANDROID
-  found->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   found->setObjectName("found");
   found->setAlternatingRowColors(true);
   found->hide();

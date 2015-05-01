@@ -150,9 +150,6 @@ QWidget *Dirm::createview()
   QHBoxLayout *h=new QHBoxLayout();
   h->setContentsMargins(0,0,11,0);
   found=new QListWidget;
-#ifdef QT_OS_ANDROID
-  found->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   found->setAlternatingRowColors(true);
   found->setFont(config.Font);
   h->addWidget(found,1);

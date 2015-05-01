@@ -248,7 +248,6 @@ void Config::initide()
   }
   QStringList ff = s->value("Session/FontFile",FontFile).toString().split(":",QString::SkipEmptyParts);
   foreach (QString f,ff) QFontDatabase::addApplicationFont(ConfigPath.filePath(f));
-  ScrollBarSize = s->value("Session/ScrollBarSize",25).toInt();
 #endif
 #ifdef TABCOMPLETION
   Completion = s->value("Session/Completion",false).toBool();
@@ -308,7 +307,6 @@ void Config::initide()
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/FontFile",FontFile);
-  s->setValue("Session/ScrollBarSize",ScrollBarSize);
 #endif
 #ifdef TABCOMPLETION
   s->setValue("Session/Completion",Completion);
@@ -341,7 +339,6 @@ void Config::initide()
     "# \n"
 #ifdef QT_OS_ANDROID
     "# FontFile=                    preload font file(Android only)\n"
-    "# ScrollBarSize=25             width or height of scrollbar (Android only)\n"
 #endif
     "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
 #ifdef TABCOMPLETION
@@ -386,7 +383,6 @@ void Config::noprofile()
 {
 #ifdef QT_OS_ANDROID
   FontFile = "";
-  ScrollBarSize = 25;
 #endif
 #ifdef TABCOMPLETION
   Completion = false;

@@ -56,7 +56,6 @@ public:
   bool Ascii;
 #ifdef QT_OS_ANDROID
   QString FontFile;
-  int ScrollBarSize;
 #endif
   QDir BinPath;
   int BoxForm;

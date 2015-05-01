@@ -15,9 +15,6 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="editm";
   EditmPTE *w=new EditmPTE;
   w->pchild=this;
-#ifdef QT_OS_ANDROID
-  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

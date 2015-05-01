@@ -31,9 +31,6 @@ ScrollBar::ScrollBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
   w->setObjectName(qn);
   childStyle(opt);
-#ifdef QT_OS_ANDROID
-  w->setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
 
   int i=0;
   if ((i<opt.size()) && (opt.at(i)=="v")) {

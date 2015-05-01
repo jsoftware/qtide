@@ -23,9 +23,6 @@ extern int rc;
 QTableWidgex::QTableWidgex(Table *parent)
 {
   p=parent;
-#ifdef QT_OS_ANDROID
-  setStyleSheet(scrollbarstyle(config.ScrollBarSize*DM_density));
-#endif
 }
 
 // -------------------------------------------------------------------

@@ -8,11 +8,7 @@ void WGrid::defs()
 {
   font=QApplication::font();
 
-#ifdef QT_OS_ANDROID
-  sbx=config.ScrollBarSize*DM_density;
-#else
   sbx=QApplication::style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-#endif
 
   CellText=QColor(0,0,0);
   CellBack=QColor(255,255,255);
