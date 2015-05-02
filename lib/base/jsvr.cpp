@@ -15,6 +15,7 @@
 #include "util.h"
 
 #ifdef QT_OS_ANDROID
+#include <QtAndroid>
 #include <QDir>
 #include <sys/stat.h>
 extern QString AndroidPackage;
@@ -382,22 +383,24 @@ int jefirst(int type,char* arg)
     QFile("assets:/assets_version.txt").copy("assets_version.txt");
     QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6644);
 
-    if (QFile("assets:/jconsole").exists()) {
-      if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-      QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
-      QFile(appcurrentpath+"/bin/jconsole").remove();
-      QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
-      QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
-      qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
-    }
-
-    if (QFile("assets:/jconsole-nopie").exists()) {
-      if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-      QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
-      QFile(appcurrentpath+"/bin/jconsole-nopie").remove();
-      QFile("assets:/jconsole-nopie").copy(appcurrentpath+"/bin/jconsole-nopie");
-      QFile::setPermissions(appcurrentpath+"/bin/jconsole-nopie",(QFile::Permission)0x7755);
-      qDebug() << "jconsole-nopie: " << (appcurrentpath+"/bin/jconsole-nopie");
+    if (QtAndroid::androidSdkVersion()>=21) {
+      if (QFile("assets:/jconsole").exists()) {
+        if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+        QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
+        QFile(appcurrentpath+"/bin/jconsole").remove();
+        QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
+        QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
+        qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
+      }
+    } else {
+      if (QFile("assets:/jconsole-nopie").exists()) {
+        if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+        QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
+        QFile(appcurrentpath+"/bin/jconsole").remove();
+        QFile("assets:/jconsole-nopie").copy(appcurrentpath+"/bin/jconsole");
+        QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
+        qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
+      }
     }
   }
 
