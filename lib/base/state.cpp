@@ -170,6 +170,7 @@ void Config::init()
 #ifndef QT_NO_PRINTER
   Printer=new QPrinter(QPrinter::HighResolution);
   prtobj=new Prtobj();
+  Printer->setFullPage(true);
   Printer->setPageMargins(10.0, 10.0, 10.0, 10.0, QPrinter::Millimeter);
 #endif
 
