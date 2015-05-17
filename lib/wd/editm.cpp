@@ -8,6 +8,15 @@
 #include "form.h"
 #include "pane.h"
 #include "cmd.h"
+#ifndef QT_NO_PRINTER
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrinterInfo>
+#else
+#include <QPrinter>
+#include <QPrinterInfo>
+#endif
+#endif
 
 // ---------------------------------------------------------------------
 Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
@@ -40,7 +49,12 @@ void Editm::cmd(string p,string v)
   if (p=="print") {
 #ifndef QT_NO_PRINTER
 #ifdef QT50
-    w->print((QPagedPaintDevice *)config.Printer);
+    QTextDocument *d;
+	d=w->document()->clone();
+	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+    d->print((QPagedPaintDevice *)config.Printer);
+	delete d;
 #else
     w->print(config.Printer);
 #endif
