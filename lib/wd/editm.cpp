@@ -55,7 +55,6 @@ void Editm::cmd(string p,string v)
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
     d->print((QPagedPaintDevice *)config.Printer);
 #else
-//    w->print(config.Printer);
 	d->documentLayout()->setPaintDevice(config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
     d->print(config.Printer);

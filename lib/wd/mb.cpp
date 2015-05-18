@@ -40,6 +40,7 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 
 #ifndef QT_NO_PRINTER
 #ifdef QT50
@@ -373,6 +374,13 @@ QString mbprint(bool iftext)
     }
     d=new QTextDocument(s);
     d->setDefaultFont(config.Font);
+#ifdef QT50
+	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+#else
+	d->documentLayout()->setPaintDevice(config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+#endif
 
 #ifdef __MACH__
     QSysInfo qsi;
@@ -444,7 +452,16 @@ QString mbprintx(bool iftext)
     error("Invalid printer: " + q2s(config.Printer->printerName()));
     return "";
   }
-  d->print(config.Printer);
+#ifdef QT50
+	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+    d->print((QPagedPaintDevice *)config.Printer);
+#else
+	d->documentLayout()->setPaintDevice(config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+    d->print(config.Printer);
+#endif
+  delete d;
 #endif
   return "";
 }

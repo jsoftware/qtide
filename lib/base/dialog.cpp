@@ -83,7 +83,13 @@ void dialogprint(QWidget *w,QTextDocument *d)
   dlg->setWindowTitle("Print Document");
   if (dlg->exec() != QDialog::Accepted)
     return;
-  if (d) d->print(config.Printer);
+  if (d) {
+#ifdef QT50
+    d->print((QPagedPaintDevice *)config.Printer);
+#else
+    d->print(config.Printer);
+#endif
+  }
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
 }
