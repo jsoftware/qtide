@@ -43,16 +43,18 @@ void Edith::cmd(string p,string v)
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef QT_NO_PRINTER
-#ifdef QT50
     QTextDocument *d;
 	d=w->document()->clone();
+#ifdef QT50
 	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
     d->print((QPagedPaintDevice *)config.Printer);
-	delete d;
 #else
-    w->print(config.Printer);
+	d->documentLayout()->setPaintDevice(config.Printer);
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+    d->print(config.Printer);
 #endif
+	delete d;
 #else
     Q_UNUSED(w);
 #endif
