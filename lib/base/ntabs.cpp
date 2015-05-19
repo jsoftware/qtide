@@ -4,6 +4,16 @@
 extern QCompleter *completer;
 #endif
 
+#ifndef QT_NO_PRINTER
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrinterInfo>
+#else
+#include <QPrinter>
+#include <QPrinterInfo>
+#endif
+#endif
+
 #include "base.h"
 #include "ntabs.h"
 #include "dialog.h"
@@ -322,11 +332,18 @@ bool Ntabs::tabprint(int index)
 {
   if (index<0) return true;
   Nedit *e=(Nedit *)widget(index);
+  QTextDocument *d;
+  d=e->document()->clone();
 #ifdef QT50
-  e->print((QPagedPaintDevice *)config.Printer);
+  d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+  d->print((QPagedPaintDevice *)config.Printer);
 #else
-  e->print(config.Printer);
+  d->documentLayout()->setPaintDevice(config.Printer);
+  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+  d->print(config.Printer);
 #endif
+  delete d;
   return true;
 }
 
