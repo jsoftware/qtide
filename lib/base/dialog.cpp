@@ -97,7 +97,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
 }
 
 // ---------------------------------------------------------------------
-void dialogprint(QWidget *w,PlainTextEdit  *d)
+void dialogprint(QWidget *w,PlainTextEdit *d)
 {
   QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
