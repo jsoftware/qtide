@@ -4,6 +4,8 @@
 #include <QPlainTextEdit>
 #include <QKeyEvent>
 
+class QPrinter;
+
 // ---------------------------------------------------------------------
 class PlainTextEdit : public QPlainTextEdit
 {
@@ -15,6 +17,11 @@ public:
 
 protected:
   void keyReleaseEvent(QKeyEvent *event);
+
+#ifndef QT_NO_PRINTER
+public slots:
+  void print(QPrinter * printer);
+#endif
 
 };
 

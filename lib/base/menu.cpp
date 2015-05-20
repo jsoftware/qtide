@@ -99,6 +99,7 @@ void Menu::createActions()
   fileopensystemAct = makeact("fileopensystemAct","Open &system","");
 #ifndef QT_NO_PRINTER
   fileprintAct = makeact("fileprintAct","&Print","");
+  fileprintpreviewAct = makeact("fileprintpreviewAct","Print preview","");
   fileprintallAct = makeact("fileprintallAct","Print all","");
 #endif
   filequitAct = makeact("filequitAct","&Quit","Ctrl+Q");
@@ -182,7 +183,7 @@ void Menu::createActions()
                << editfiwAct << filecloseAct << filecloseallAct << filecloseotherAct
                << filedeleteAct
 #ifndef QT_NO_PRINTER
-               << fileprintAct << fileprintallAct
+               << fileprintAct << fileprintpreviewAct << fileprintallAct
 #endif
                << filesaveAct << filesaveallAct
                << filesaveasAct << runalllinesAct << runalllines1Act
@@ -280,6 +281,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addSeparator();
 #ifndef QT_NO_PRINTER
     fileMenu->addAction(fileprintAct);
+    fileMenu->addAction(fileprintpreviewAct);
     fileMenu->addAction(fileprintallAct);
 #endif
     fileMenu->addSeparator();
@@ -304,6 +306,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addSeparator();
 #ifndef QT_NO_PRINTER
     fileMenu->addAction(fileprintAct);
+    fileMenu->addAction(fileprintpreviewAct);
 #endif
   }
 
@@ -752,7 +755,13 @@ void Note::on_fileopentempAct_triggered()
 void Note::on_fileprintAct_triggered()
 {
   if(editIndex()>=0)
-    dialogprint(note,(QTextEdit *)editPage());
+    dialogprint(note,editPage());
+}
+// ---------------------------------------------------------------------
+void Note::on_fileprintpreviewAct_triggered()
+{
+  if(editIndex()>=0)
+    dialogprintpreview(note,editPage());
 }
 
 // ---------------------------------------------------------------------
@@ -1377,7 +1386,12 @@ void Term::on_fileopenuserAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_fileprintAct_triggered()
 {
-  dialogprint(term,(QTextEdit *)tedit);
+  dialogprint(term,tedit);
+}
+// ---------------------------------------------------------------------
+void Term::on_fileprintpreviewAct_triggered()
+{
+  dialogprintpreview(term,tedit);
 }
 #endif
 

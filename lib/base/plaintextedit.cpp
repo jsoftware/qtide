@@ -1,4 +1,8 @@
 
+#ifndef QT_NO_PRINTER
+#include <QtPrintSupport/QPrinter>
+#endif
+
 #include "plaintextedit.h"
 #include "state.h"
 
@@ -21,3 +25,11 @@ void PlainTextEdit::keyReleaseEvent(QKeyEvent *event)
   QPlainTextEdit::keyReleaseEvent(event);
 #endif
 }
+
+#ifndef QT_NO_PRINTER
+// ---------------------------------------------------------------------
+void PlainTextEdit::print(QPrinter * printer)
+{
+  QPlainTextEdit::print(printer);
+}
+#endif

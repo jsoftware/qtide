@@ -49,17 +49,17 @@ void Editm::cmd(string p,string v)
   if (p=="print") {
 #ifndef QT_NO_PRINTER
     QTextDocument *d;
-	d=w->document()->clone();
+    d=w->document()->clone();
 #ifdef QT50
-	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
     d->print((QPagedPaintDevice *)config.Printer);
 #else
-	d->documentLayout()->setPaintDevice(config.Printer);
+    d->documentLayout()->setPaintDevice(config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
     d->print(config.Printer);
 #endif
-	delete d;
+    delete d;
 #else
     Q_UNUSED(w);
 #endif

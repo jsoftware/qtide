@@ -375,10 +375,10 @@ QString mbprint(bool iftext)
     d=new QTextDocument(s);
     d->setDefaultFont(config.Font);
 #ifdef QT50
-	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
 #else
-	d->documentLayout()->setPaintDevice(config.Printer);
+    d->documentLayout()->setPaintDevice(config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
 #endif
 
@@ -453,13 +453,13 @@ QString mbprintx(bool iftext)
     return "";
   }
 #ifdef QT50
-	d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print((QPagedPaintDevice *)config.Printer);
+  d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+  d->print((QPagedPaintDevice *)config.Printer);
 #else
-	d->documentLayout()->setPaintDevice(config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print(config.Printer);
+  d->documentLayout()->setPaintDevice(config.Printer);
+  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+  d->print(config.Printer);
 #endif
   delete d;
 #endif

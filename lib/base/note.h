@@ -96,6 +96,7 @@ public slots:
   void on_fileopentempAct_triggered();
 #ifndef QT_NO_PRINTER
   void on_fileprintAct_triggered();
+  void on_fileprintpreviewAct_triggered();
   void on_fileprintallAct_triggered();
 #endif
   void on_filequitAct_triggered();

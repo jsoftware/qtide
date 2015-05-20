@@ -105,6 +105,7 @@ private:
   QAction *fileopenuserAct;
 #ifndef QT_NO_PRINTER
   QAction *fileprintAct;
+  QAction *fileprintpreviewAct;
   QAction *fileprintallAct;
 #endif
   QAction *filequitAct;

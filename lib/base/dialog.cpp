@@ -6,9 +6,11 @@
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrintPreviewDialog>
 #else
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QPrintPreviewDialog>
 #endif
 #endif
 #include <QTextDocument>
@@ -16,9 +18,9 @@
 #include "base.h"
 #include "dialog.h"
 #include "note.h"
+#include "plaintextedit.h"
 #include "proj.h"
 #include "state.h"
-#include "tedit.h"
 
 #ifndef QT_NO_PRINTER
 QPrinter *Printer;
@@ -95,7 +97,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
 }
 
 // ---------------------------------------------------------------------
-void dialogprint(QWidget *w,QTextEdit *d)
+void dialogprint(QWidget *w,PlainTextEdit  *d)
 {
   QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
@@ -111,18 +113,29 @@ void dialogprint(QWidget *w,QTextEdit *d)
     return;
   if (d) {
     QTextDocument *dd;
-	dd=d->document()->clone();
+    dd=d->document()->clone();
 #ifdef QT50
-	dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
+    dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
     dd->setPageSize(QSizeF(config.Printer->pageRect().size()));
     dd->print((QPagedPaintDevice *)config.Printer);
 #else
-	dd->documentLayout()->setPaintDevice(config.Printer);
+    dd->documentLayout()->setPaintDevice(config.Printer);
     dd->setPageSize(QSizeF(config.Printer->pageRect().size()));
     dd->print(config.Printer);
 #endif
-	delete dd;
+    delete dd;
   }
+  delete dlg;
+  config.Printer->setPrintRange(QPrinter::AllPages);
+}
+// ---------------------------------------------------------------------
+void dialogprintpreview(QWidget *w,PlainTextEdit *d)
+{
+  if (!d) return;
+  QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, w);
+  dlg->setWindowTitle("Preview Document");
+  QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),d,SLOT(print(QPrinter *)));
+  dlg->exec();
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
 }
