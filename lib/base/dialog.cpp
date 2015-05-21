@@ -115,18 +115,7 @@ void dialogprint(QWidget *w,PlainTextEdit *d)
     if(config.Printer->printRange()==(QPrinter::Selection)) {
       d->print(config.Printer);
     } else {
-      QTextDocument *dd;
-      dd=d->document()->clone();
-#ifdef QT50
-      dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-      dd->setPageSize(QSizeF(config.Printer->pageRect().size()));
-      dd->print((QPagedPaintDevice *)config.Printer);
-#else
-      dd->documentLayout()->setPaintDevice(config.Printer);
-      dd->setPageSize(QSizeF(config.Printer->pageRect().size()));
-      dd->print(config.Printer);
-#endif
-      delete dd;
+      d->printPreview(config.Printer);
     }
   }
   delete dlg;
