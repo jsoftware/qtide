@@ -20,7 +20,7 @@ protected:
 
 #ifndef QT_NO_PRINTER
 public slots:
-  void print(QPrinter * printer);
+  void printPreview(QPrinter * printer);
 #endif
 
 };

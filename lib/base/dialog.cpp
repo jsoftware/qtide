@@ -114,8 +114,7 @@ void dialogprint(QWidget *w,PlainTextEdit *d)
   if (d) {
     if(config.Printer->printRange()==(QPrinter::Selection)) {
       d->print(config.Printer);
-    }
-    else {
+    } else {
       QTextDocument *dd;
       dd=d->document()->clone();
 #ifdef QT50
@@ -127,7 +126,7 @@ void dialogprint(QWidget *w,PlainTextEdit *d)
       dd->setPageSize(QSizeF(config.Printer->pageRect().size()));
       dd->print(config.Printer);
 #endif
-    delete dd;
+      delete dd;
     }
   }
   delete dlg;
@@ -139,7 +138,7 @@ void dialogprintpreview(QWidget *w,PlainTextEdit *d)
   if (!d) return;
   QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, w);
   dlg->setWindowTitle("Preview Document");
-  QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),d,SLOT(print(QPrinter *)));
+  QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),d,SLOT(printPreview(QPrinter *)));
   dlg->exec();
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
