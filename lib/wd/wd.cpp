@@ -62,6 +62,7 @@ extern "C" Dllexport void openj(const char *s);
 #include "math.h"
 
 static void wd1();
+static void wdbeep();
 static void wdbin();
 static void wdcc();
 static void wdclipcopy();
@@ -198,6 +199,8 @@ void wd1()
     }
     if (c=="q")
       wdq();
+    else if (c=="beep")
+      wdbeep();
     else if (c=="bin")
       wdbin();
     else if (c=="cc")
@@ -318,6 +321,17 @@ void wdactivateform()
       term->repaint();
     }
   }
+}
+
+// ---------------------------------------------------------------------
+void wdbeep()
+{
+  cmd.getparms();
+  if (!app) {
+    error("command failed: no QApplication");
+    return;
+  }
+  QApplication::beep();
 }
 
 // ---------------------------------------------------------------------
