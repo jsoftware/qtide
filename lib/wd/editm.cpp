@@ -12,9 +12,11 @@
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrinterInfo>
+#include <QtPrintSupport/QPrintPreviewDialog>
 #else
 #include <QPrinter>
 #include <QPrinterInfo>
+#include <QPrintPreviewDialog>
 #endif
 #endif
 
@@ -44,24 +46,19 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // ---------------------------------------------------------------------
 void Editm::cmd(string p,string v)
 {
-  EditmPTE *w=(EditmPTE*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef QT_NO_PRINTER
-    QTextDocument *d;
-    d=w->document()->clone();
-#ifdef QT50
-    d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print((QPagedPaintDevice *)config.Printer);
-#else
-    d->documentLayout()->setPaintDevice(config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print(config.Printer);
+    ((EditmPTE*) widget)->printPreview(config.Printer);
 #endif
-    delete d;
-#else
-    Q_UNUSED(w);
+  } else if (p=="printpreview") {
+#ifndef QT_NO_PRINTER
+    QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, pform);
+    dlg->setWindowTitle("Preview Document");
+    QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),((EditmPTE*) widget),SLOT(printPreview(QPrinter *)));
+    dlg->exec();
+    delete dlg;
+    config.Printer->setPrintRange(QPrinter::AllPages);
 #endif
   } else Child::set(p,v);
 }

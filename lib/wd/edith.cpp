@@ -13,9 +13,11 @@
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrinterInfo>
+#include <QtPrintSupport/QPrintPreviewDialog>
 #else
 #include <QPrinter>
 #include <QPrinterInfo>
+#include <QPrintPreviewDialog>
 #endif
 #endif
 // ---------------------------------------------------------------------
@@ -39,24 +41,19 @@ Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 // ---------------------------------------------------------------------
 void Edith::cmd(string p,string v)
 {
-  QTextEdit *w=(QTextEdit*) widget;
   QStringList opt=qsplit(v);
   if (p=="print") {
 #ifndef QT_NO_PRINTER
-    QTextDocument *d;
-    d=w->document()->clone();
-#ifdef QT50
-    d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print((QPagedPaintDevice *)config.Printer);
-#else
-    d->documentLayout()->setPaintDevice(config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
-    d->print(config.Printer);
+    printPreview(config.Printer);
 #endif
-    delete d;
-#else
-    Q_UNUSED(w);
+  } else if (p=="printpreview") {
+#ifndef QT_NO_PRINTER
+    QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, pform);
+    dlg->setWindowTitle("Preview Document");
+    QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),this,SLOT(printPreview(QPrinter *)));
+    dlg->exec();
+    delete dlg;
+    config.Printer->setPrintRange(QPrinter::AllPages);
 #endif
   } else Child::set(p,v);
 }
@@ -175,3 +172,22 @@ string Edith::state()
   r+=spair(id+"_scroll",i2s(v->value()));
   return r;
 }
+
+#ifndef QT_NO_PRINTER
+// ---------------------------------------------------------------------
+void Edith::printPreview(QPrinter * printer)
+{
+  QTextEdit *w=(QTextEdit*) widget;
+  QTextDocument *d=w->document()->clone();
+#ifdef QT50
+  d->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
+  d->setPageSize(QSizeF(printer->pageRect().size()));
+  d->print((QPagedPaintDevice *)printer);
+#else
+  d->documentLayout()->setPaintDevice(printer);
+  d->setPageSize(QSizeF(printer->pageRect().size()));
+  d->print(printer);
+#endif
+  delete d;
+}
+#endif

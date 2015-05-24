@@ -3,6 +3,7 @@
 
 #include "child.h"
 
+class QPrinter;
 class QTextEdit;
 class Form;
 class Pane;
@@ -18,6 +19,11 @@ public:
   string get(string p,string v);
   void set(string p,string v);
   string state();
+
+#ifndef QT_NO_PRINTER
+public slots:
+  void printPreview(QPrinter * printer);
+#endif
 
 private slots:
 
