@@ -16,7 +16,7 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
+  QStringList unopt=qsless(qsless(opt,qsplit("noframe transparent")),defChildStyle);
   if (unopt.size()) {
     error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
@@ -33,7 +33,12 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   w->setObjectName(qn);
   childStyle(opt);
-  w->setBackgroundRole(QPalette::Dark);
+  if (opt.contains("noframe")||opt.contains("transparent"))
+    w->setFrameShape(QFrame::NoFrame);
+  if (opt.contains("transparent"))
+    w->setAttribute(Qt::WA_TranslucentBackground);
+  else
+    w->setBackgroundRole(QPalette::Dark);
   w->setContentsMargins(0,0,0,0);
   w->setWidget(lab);
 }
