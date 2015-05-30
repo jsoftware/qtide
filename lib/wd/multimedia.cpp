@@ -131,7 +131,7 @@ void Multimedia::volumeChanged(int volume)
 static char * artab[]= {
   (char *)"ignore",
   (char *)"keep",
-  (char *)"expanding",
+  (char *)"expand",
 };
 
 // ---------------------------------------------------------------------
@@ -227,7 +227,7 @@ void Multimedia::set(string p,string v)
         w->setAspectRatioMode(Qt::IgnoreAspectRatio);
       else if (v=="keep")
         w->setAspectRatioMode(Qt::KeepAspectRatio);
-      else if (v=="expanding")
+      else if (v=="expand")
         w->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
       else {
         error("invalid option: " + p + " " + v);
