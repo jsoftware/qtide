@@ -1,6 +1,6 @@
 
-#include <QLabel>
 #include <QImage>
+#include <QPainter>
 #include <QScrollArea>
 
 #include "wd.h"
@@ -16,31 +16,47 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("noframe transparent")),defChildStyle);
+  QStringList unopt=qsless(qsless(opt,qsplit("transparent keep expand")),defChildStyle);
   if (unopt.size()) {
     error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
   }
 
-  lab=new QLabel();
-  lab->setBackgroundRole(QPalette::Base);
-  lab->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-  //lab->setScaledContents(true);
-  lab->setContentsMargins(0,0,0,0);
+  lab=new Image2();
   imageFile="";
 
-  QScrollArea *w = new QScrollArea;
-  widget=(QWidget *) w;
-  w->setObjectName(qn);
+  if (opt.contains("keep")) aspectRatio=1;
+  else if (opt.contains("expand")) aspectRatio=2;
+  else aspectRatio=0; // ignore
+  lab->aspectRatio=aspectRatio;
+  lab->setContentsMargins(0,0,0,0);
+
+  if (0==aspectRatio) {
+    lab->setBackgroundRole(QPalette::Base);
+    lab->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    QScrollArea *w = new QScrollArea;
+    widget=(QWidget *) w;
+    w->setObjectName(qn);
+    if (opt.contains("transparent")) {
+      w->setFrameShape(QFrame::NoFrame);
+      w->setAttribute(Qt::WA_TranslucentBackground);
+    } else
+      w->setBackgroundRole(QPalette::Dark);
+    w->setContentsMargins(0,0,0,0);
+    w->setWidget(lab);
+  } else {
+    lab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    widget=(QWidget *) lab;
+    lab->setObjectName(qn);
+    if (opt.contains("transparent")) {
+      lab->transparent=true;
+      lab->setAttribute(Qt::WA_TranslucentBackground);
+    } else {
+      lab->transparent=false;
+      lab->setBackgroundRole(QPalette::Dark);
+    }
+  }
   childStyle(opt);
-  if (opt.contains("noframe")||opt.contains("transparent"))
-    w->setFrameShape(QFrame::NoFrame);
-  if (opt.contains("transparent"))
-    w->setAttribute(Qt::WA_TranslucentBackground);
-  else
-    w->setBackgroundRole(QPalette::Dark);
-  w->setContentsMargins(0,0,0,0);
-  w->setWidget(lab);
 }
 
 // ---------------------------------------------------------------------
@@ -73,8 +89,10 @@ void Image::set(string p,string v)
       return;
     }
     imageFile=q2s(s);
-    lab->setPixmap(QPixmap::fromImage(image));
-    lab->adjustSize();
+    QPixmap pix=QPixmap::fromImage(image);
+    if (0==aspectRatio) lab->resize(pix.size());
+    lab->setPixmap(pix);
+    lab->update();
   } else Child::set(p,v);
 }
 
@@ -83,3 +101,42 @@ string Image::state()
 {
   return "";
 }
+
+// ---------------------------------------------------------------------
+Image2::Image2(QWidget *parent) :
+  QWidget(parent)
+{
+}
+
+// ---------------------------------------------------------------------
+void Image2::paintEvent(QPaintEvent *event)
+{
+  QWidget::paintEvent(event);
+  if (pix.isNull()) return;
+
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+  if (aspectRatio) {
+    QSize pixSize = pix.size();
+    pixSize.scale(event->rect().size(), (Qt::AspectRatioMode)aspectRatio);
+    QPixmap scaledPix = pix.scaled(pixSize, (Qt::AspectRatioMode)aspectRatio, Qt::SmoothTransformation );
+    if (!transparent) painter.fillRect(rect(), QPalette::Dark);
+    painter.drawPixmap(QPoint(0,0), scaledPix);
+  } else {
+    if (!transparent) painter.fillRect(rect(), QPalette::Dark);
+    painter.drawPixmap(QPoint(0,0), pix);
+  }
+}
+
+// ---------------------------------------------------------------------
+const QPixmap* Image2::pixmap() const
+{
+  return &pix;
+}
+
+// ---------------------------------------------------------------------
+void Image2::setPixmap (const QPixmap &pixmap)
+{
+  pix = pixmap;
+}
+

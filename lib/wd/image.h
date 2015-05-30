@@ -3,9 +3,11 @@
 
 #include "child.h"
 
-class QLabel;
+class QWidget;
+class QPixmap;
 class Form;
 class Pane;
+class Image2;
 
 // ---------------------------------------------------------------------
 class Image : public Child
@@ -19,9 +21,30 @@ public:
   string state();
 
 private:
-  QLabel *lab;
+  Image2 *lab;
   string imageFile;
+  int aspectRatio;
+};
 
+// ---------------------------------------------------------------------
+class Image2 : public QWidget
+{
+  Q_OBJECT
+
+public:
+  explicit Image2(QWidget *parent = 0);
+  const QPixmap* pixmap() const;
+  int aspectRatio;
+  bool transparent;
+
+public slots:
+  void setPixmap(const QPixmap&);
+
+protected:
+  void paintEvent(QPaintEvent *);
+
+private:
+  QPixmap pix;
 };
 
 #endif
