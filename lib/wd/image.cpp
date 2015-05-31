@@ -16,7 +16,7 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("transparent keep expand")),defChildStyle);
+  QStringList unopt=qsless(qsless(opt,qsplit("transparent ignore keep expand")),defChildStyle);
   if (unopt.size()) {
     error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
     return;
@@ -25,13 +25,14 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   lab=new Image2();
   imageFile="";
 
-  if (opt.contains("keep")) aspectRatio=1;
+  if (opt.contains("ignore")) aspectRatio=0;
+  else if (opt.contains("keep")) aspectRatio=1;
   else if (opt.contains("expand")) aspectRatio=2;
-  else aspectRatio=0; // ignore
+  else aspectRatio=-1; // notuse
   lab->aspectRatio=aspectRatio;
   lab->setContentsMargins(0,0,0,0);
 
-  if (0==aspectRatio) {
+  if (-1==aspectRatio) {
     lab->setBackgroundRole(QPalette::Base);
     lab->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     QScrollArea *w = new QScrollArea;
@@ -90,7 +91,7 @@ void Image::set(string p,string v)
     }
     imageFile=q2s(s);
     QPixmap pix=QPixmap::fromImage(image);
-    if (0==aspectRatio) lab->resize(pix.size());
+    if (-1==aspectRatio) lab->resize(pix.size());
     lab->setPixmap(pix);
     lab->update();
   } else Child::set(p,v);
@@ -116,7 +117,7 @@ void Image2::paintEvent(QPaintEvent *event)
 
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
-  if (aspectRatio) {
+  if (-1!=aspectRatio) {
     QSize pixSize = pix.size();
     pixSize.scale(event->rect().size(), (Qt::AspectRatioMode)aspectRatio);
     QPixmap scaledPix = pix.scaled(pixSize, (Qt::AspectRatioMode)aspectRatio, Qt::SmoothTransformation );
