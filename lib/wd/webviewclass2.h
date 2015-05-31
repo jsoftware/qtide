@@ -160,10 +160,9 @@ void QWEBVIEW::focusOutEvent(QFocusEvent *event)
 // ---------------------------------------------------------------------
 void QWEBVIEW::keyPressEvent(QKeyEvent *event)
 {
-  // sysmodifiers = shift+2*control
-  // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,0
   int key1=0;
   int key=event->key();
+  if (ismodifier(key)) return;
 #ifdef QT_OS_ANDROID
   if (key==Qt::Key_Back) {
     QWidget::keyPressEvent(event);

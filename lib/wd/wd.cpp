@@ -138,7 +138,6 @@ extern string ws(string p);
 #endif
 
 static bool nochild();
-// static bool nochildset(string id);
 static bool noform();
 static bool notab();
 static int setchild(string id);
@@ -1501,93 +1500,6 @@ void wdminwh()
 }
 
 // ---------------------------------------------------------------------
-void error(string s)
-{
-  lasterror=ccmd+" : "+s;
-  rc=1;
-}
-
-// ---------------------------------------------------------------------
-bool nochild()
-{
-  if (cc) return false;
-  error("no child selected");
-  return true;
-}
-
-// ---------------------------------------------------------------------
-// bool nochildset(string id)
-// {
-// if (noform()) return true;
-// cc=form->id2child(id);
-// return nochild();
-// }
-
-// ---------------------------------------------------------------------
-bool noform()
-{
-  if (form) return false;
-  error("no parent selected");
-  return true;
-}
-
-// ---------------------------------------------------------------------
-bool notab()
-{
-  if (noform()) return true;
-  if (form->tab) return false;
-  error("no tab definition");
-  return true;
-}
-
-// ---------------------------------------------------------------------
-string remquotes(string s)
-{
-  int len=(int)s.size();
-  if (len<2) return s;
-  if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
-    s=s.substr(1,len-2);
-  return s;
-}
-
-// ---------------------------------------------------------------------
-// returns: 0=id not found
-//          1=child id (cc=child)
-//          2=menu  id (cc=menubar)
-int setchild(string id)
-{
-  Child *c;
-  if (noform()) return 0;
-  c=form->id2child(id);
-  if (c) {
-    cc=c;
-    return 1;
-  }
-  c=form->setmenuid(id);
-  if (c) {
-    cc=c;
-    return 2;
-  }
-  return 0;
-}
-
-// ---------------------------------------------------------------------
-// returns: id of current form child
-string formchildid()
-{
-  if (noform()) return "";
-  if (!form->child) return "";
-  return form->child->id;
-}
-
-// ---------------------------------------------------------------------
-// translate event.keyboard key to Private Use Area
-int translateqkey(int key)
-{
-  return (key>=0x1000000) ? ((key & 0xff) | 0xf800) : key;
-}
-
-// ---------------------------------------------------------------------
 void wdsetfocuspolicy(QWidget *widget,string p)
 {
   if (!widget) return;
@@ -1806,4 +1718,101 @@ int wdstandardicon(string s)
     if (s==string(qstylesp[i])) return i;
   }
   return -1;
+}
+
+// ---------------------------------------------------------------------
+void error(string s)
+{
+  lasterror=ccmd+" : "+s;
+  rc=1;
+}
+
+// ---------------------------------------------------------------------
+// returns: id of current form child
+string formchildid()
+{
+  if (noform()) return "";
+  if (!form->child) return "";
+  return form->child->id;
+}
+
+// ---------------------------------------------------------------------
+bool invalidopt(string n,QStringList opt,string valid)
+{
+  QStringList unopt=qsless(opt,defChildStyle+qsplit(valid));
+  if (0==unopt.size()) return false;
+  error("unrecognized style for " + n + ": " + q2s(unopt.join(" ")));
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool invalidoptn(string n,QStringList opt,string valid)
+{
+  QStringList unopt=qsless(opt,defChildStyle+qsplit(valid));
+  if (0==unopt.size() || qsnumeric(unopt)) return false;
+  error("unrecognized style for " + n + ": " + q2s(unopt.join(" ")));
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool nochild()
+{
+  if (cc) return false;
+  error("no child selected");
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool noform()
+{
+  if (form) return false;
+  error("no parent selected");
+  return true;
+}
+
+// ---------------------------------------------------------------------
+bool notab()
+{
+  if (noform()) return true;
+  if (form->tab) return false;
+  error("no tab definition");
+  return true;
+}
+
+// ---------------------------------------------------------------------
+string remquotes(string s)
+{
+  int len=(int)s.size();
+  if (len<2) return s;
+  if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
+    s=s.substr(1,len-2);
+  return s;
+}
+
+// ---------------------------------------------------------------------
+// returns: 0=id not found
+//          1=child id (cc=child)
+//          2=menu  id (cc=menubar)
+int setchild(string id)
+{
+  Child *c;
+  if (noform()) return 0;
+  c=form->id2child(id);
+  if (c) {
+    cc=c;
+    return 1;
+  }
+  c=form->setmenuid(id);
+  if (c) {
+    cc=c;
+    return 2;
+  }
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+// translate event.keyboard key to Private Use Area
+int translateqkey(int key)
+{
+  return (key>=0x1000000) ? ((key & 0xff) | 0xf800) : key;
 }

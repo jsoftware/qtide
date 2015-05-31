@@ -16,11 +16,7 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("transparent ignore keep expand")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"transparent ignore keep expand")) return;
 
   lab=new Image2();
   imageFile="";

@@ -470,7 +470,6 @@ int state_fini()
   return jcon->exec();
 }
 
-
 // ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {

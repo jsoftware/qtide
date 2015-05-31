@@ -112,6 +112,20 @@ QStringList Ntabs::gettablist()
 }
 
 // ---------------------------------------------------------------------
+string Ntabs::gettabstate()
+{
+  string r;
+  Nedit *e;
+  int ndx= currentIndex();
+  int len=count();
+  for (int i=0; i<len; i++) {
+    e=(Nedit *)widget(i);
+    r+=spair((ndx==i) ? "1" : "0",e->fname);
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 void Ntabs::modificationChanged(bool b)
 {
   setmodified(currentIndex(),b);
@@ -350,6 +364,35 @@ bool Ntabs::tabprintall()
   return r;
 }
 #endif
+
+// ---------------------------------------------------------------------
+bool Ntabs::tabreplace(QString s,int line)
+{
+  int index=currentIndex();
+  tabsave(index);
+  Nedit *e=(Nedit *)widget(index);
+  s=cfcase(s);
+  if (e->fname==s) return true;
+  if (!cfexist(s)) return false;
+  watcher->removePath(e->fname);
+  tabclosefile(s);
+  e->file = new QFile(s);
+  e->fname = s;
+  e->saved=false;
+  e->sname = toprojectname(s);
+  e->text = cfread(e->file);
+  e->setPlainText(e->text);
+  if (line>=0) {
+    e->moveCursor(QTextCursor::Start);
+    e->selectline(line);
+  } else
+    e->settop(config.filepos_get(s));
+  setmodified(index,false);
+  tabsetindex(index);
+  setTabText(index,e->sname);
+  watcher->addPath(s);
+  return true;
+}
 
 // ---------------------------------------------------------------------
 void Ntabs::tabrestore(int index)

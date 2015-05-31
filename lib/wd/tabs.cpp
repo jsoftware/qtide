@@ -21,12 +21,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   form->tab=this;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("documentmode movable closable east west south nobar")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
-
+  if (invalidopt(n,opt,"documentmode movable closable east west south nobar")) return;
   w->setObjectName(qn);
   childStyle(opt);
   w->setUsesScrollButtons(true);
@@ -63,14 +58,6 @@ void Tabs::currentChanged(int ndx)
 {
   Q_UNUSED(ndx);
   event="select";
-  pform->signalevent(this);
-}
-
-// ---------------------------------------------------------------------
-void Tabs::tabCloseRequested(int ndx)
-{
-  index=ndx;
-  event="tabclose";
   pform->signalevent(this);
 }
 
@@ -146,6 +133,14 @@ string Tabs::state()
   r+=spair(id,s);
   r+=spair(id+"_select",t);
   return r;
+}
+
+// ---------------------------------------------------------------------
+void Tabs::tabCloseRequested(int ndx)
+{
+  index=ndx;
+  event="tabclose";
+  pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------

@@ -30,6 +30,7 @@ QString gitstatus(QString path);
 QStringList globalassigns(QString s,QString ext);
 int globalassign1(QString s,QString t,int p);
 void helpabout();
+bool ismodifier(int key);
 void newfile(QWidget*);
 QString newtempscript();
 void openfile(QWidget*,QString s);

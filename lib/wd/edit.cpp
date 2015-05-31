@@ -19,13 +19,9 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("password readonly left right center")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"password readonly left right center")) return;
   if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
-    error("conflicting child style: " + n + " " + q2s(unopt.join(" ")));
+    error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
   }
   w->setObjectName(qn);

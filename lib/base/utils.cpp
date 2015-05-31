@@ -38,6 +38,9 @@ void writewinstate(Bedit *);
 bool ShowIde=true;
 static string hashbuf;
 extern QEventLoop *evloop;
+static QList<int> Modifiers =
+  QList<int>() << Qt::Key_Alt << Qt::Key_AltGr
+  << Qt::Key_Control << Qt::Key_Meta << Qt::Key_Shift;
 
 // ---------------------------------------------------------------------
 // convert name to full path name
@@ -81,6 +84,38 @@ QString defext(QString s)
 int fkeynum(int key,bool c,bool s)
 {
   return key + (c*100) + (s*100000);
+}
+
+// ---------------------------------------------------------------------
+// b is base directory
+QStringList folder_tree(QString b,QString filters,bool subdir)
+{
+  if (!subdir)
+    return cflistfull(b,filters);
+  return folder_tree1(b,"",getfilters(filters));
+}
+
+// ---------------------------------------------------------------------
+// b is base directory, s is current subdirectory
+QStringList folder_tree1(QString b,QString s,QStringList f)
+{
+  QString n;
+  QString t=b + "/" + s;
+
+  QDir d(t);
+  d.setNameFilters(f);
+  QStringList r=d.entryList(QDir::Files|QDir::Readable);
+  for(int i=0; i<r.size(); i++)
+    r.replace(i,t+r.at(i));
+
+  QDirIterator p(t,QDir::Dirs|QDir::NoDotAndDotDot);
+  while (p.hasNext()) {
+    p.next();
+    if (!config.DirTreeX.contains(p.fileName()))
+      r=r+folder_tree1(b,s+p.fileName()+"/",f);
+  }
+
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -310,35 +345,9 @@ void helpabout()
 }
 
 // ---------------------------------------------------------------------
-// b is base directory
-QStringList folder_tree(QString b,QString filters,bool subdir)
+bool ismodifier(int key)
 {
-  if (!subdir)
-    return cflistfull(b,filters);
-  return folder_tree1(b,"",getfilters(filters));
-}
-
-// ---------------------------------------------------------------------
-// b is base directory, s is current subdirectory
-QStringList folder_tree1(QString b,QString s,QStringList f)
-{
-  QString n;
-  QString t=b + "/" + s;
-
-  QDir d(t);
-  d.setNameFilters(f);
-  QStringList r=d.entryList(QDir::Files|QDir::Readable);
-  for(int i=0; i<r.size(); i++)
-    r.replace(i,t+r.at(i));
-
-  QDirIterator p(t,QDir::Dirs|QDir::NoDotAndDotDot);
-  while (p.hasNext()) {
-    p.next();
-    if (!config.DirTreeX.contains(p.fileName()))
-      r=r+folder_tree1(b,s+p.fileName()+"/",f);
-  }
-
-  return r;
+  return Modifiers.contains(key);
 }
 
 // ---------------------------------------------------------------------

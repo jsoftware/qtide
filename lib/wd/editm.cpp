@@ -29,11 +29,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("readonly selectable")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"readonly selectable")) return;
   w->setObjectName(qn);
   childStyle(opt);
   if (opt.contains("readonly")) {
@@ -175,7 +171,9 @@ EditmPTE::EditmPTE(QWidget *parent) : PlainTextEdit(parent) {}
 // ---------------------------------------------------------------------
 void EditmPTE::keyPressEvent(QKeyEvent *event)
 {
-  if ((event->key()==Qt::Key_Enter || event->key()==Qt::Key_Return) && !(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
+  int key=event->key();
+  if (ismodifier(key)) return;
+  if ((key==Qt::Key_Enter || key==Qt::Key_Return) && !(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
     if (isReadOnly()) {
       char sysmodifiers[20];
       sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
@@ -187,7 +185,6 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
     return;
   }
   int key1=0;
-  int key=event->key();
   if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
     PlainTextEdit::keyPressEvent(event);
     return;

@@ -16,6 +16,7 @@ public:
   Ntabs(Note *);
   void projectopen(bool);
   QStringList gettablist();
+  std::string gettabstate();
   void setfont(QFont font);
   void setlinenos(bool b);
   void setlinewrap(bool b);
@@ -26,6 +27,7 @@ public:
   void tabclosefile(QString f);
 
   bool tabopen(QString s,int line);
+  bool tabreplace(QString s,int line);
   void tabrestore(int index);
   bool tabsave(int index);
   bool tabsaveall();

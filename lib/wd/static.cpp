@@ -16,17 +16,13 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("staticbox left right center sunken raised panel")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"staticbox left right center sunken raised panel")) return;
   if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
-    error("conflicting child style: " + n + " " + q2s(unopt.join(" ")));
+    error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
   }
   if (1<(opt.contains("sunken")?1:0) + (opt.contains("raised")?1:0) + (opt.contains("panel")?1:0)) {
-    error("conflicting child style: " + n + " " + q2s(unopt.join(" ")));
+    error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
   }
   w->setObjectName(qn);

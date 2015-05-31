@@ -15,11 +15,7 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("")),defChildStyle);
-  if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidoptn(n,opt,"")) return;
   w->setObjectName(qn);
   childStyle(opt);
 

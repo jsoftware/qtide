@@ -1,4 +1,4 @@
-/* Copyright 1990-2011, Jsoftware Inc.  All rights reserved. */
+/* Copyright 1990-2015, Jsoftware Inc.  All rights reserved. */
 #define PLEN 1000 // path length
 #ifdef _WIN32
 #include <windows.h>
@@ -60,7 +60,7 @@ extern "C" char * jepath1(char* arg)
   if('/'==*arg3)
     strcpy(path,arg3);
   else {
-    getcwd(path,sizeof(path));
+    snk=getcwd(path,sizeof(path));
     strcat(path,"/");
     strcat(path,arg3);
   }

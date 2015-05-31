@@ -11,11 +11,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="opengl";
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("version compatibility")),defChildStyle);
-  if (unopt.size() && !qsnumeric(unopt)) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidoptn(n,opt,"version compatibility")) return;
 #ifdef USE_QOpenGLWidget
   QSurfaceFormat qglFormat;
 #else

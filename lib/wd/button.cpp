@@ -17,17 +17,13 @@ Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("default")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"default")) return;
   w->setObjectName(qn);
   childStyle(opt);
   w->setText(qn);
   iconFile="";
   if (opt.contains("default"))
-    w->setAutoDefault(true);
+    w->setDefault(true);
   connect(w,SIGNAL(clicked()),f->signalMapper,SLOT(map()));
   f->signalMapper->setMapping(w,(QWidget*)this);
 }

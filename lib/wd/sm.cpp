@@ -5,6 +5,7 @@
 #include "cmd.h"
 #include "font.h"
 #include "../base/bedit.h"
+#include "../base/jsvr.h"
 #include "../base/note.h"
 #include "../base/state.h"
 #include "../base/tedit.h"
@@ -12,45 +13,74 @@
 
 extern int rc;
 
+static string smact(string);
 static string smerror(string);
 static string smfocus(string);
 static string smfont(string);
 static string smget(string);
 static string smgetactive();
+static string smgetscript(QString);
+static string smgettabs();
 static string smgetwin(string);
 static string smgetwin1(Bedit *);
 static string smgetxywh();
 static string smgetxywh1(QWidget *);
+static string smopen(string);
+static string smopen(string);
+static string smprompt(string);
+static string smreplace(string);
+static string smrun(string);
 static string smsave(string);
 static string smsaveactive();
 static string smsaveall();
 static string smset(string);
 static string smsetselect(Bedit *,QStringList);
-static string smsettext(QString);
+static string smsettext(Bedit *,QString);
 static string smsetxywh(QWidget *,QStringList);
+static string smtabindex(QString,string);
 
 // ---------------------------------------------------------------------
 // c is type, p is parameter
 string sm(string c,string p)
 {
   rc=0;
+  if (c=="act")
+    return smact(p);
+  if (c=="active")
+    return smtabindex("active",p);
+  if (c=="close")
+    return smtabindex("close",p);
   if (c=="focus")
     return smfocus(p);
   if (c=="font")
     return smfont(p);
   if (c=="get")
     return smget(p);
+  if (c=="new")
+    return smopen(p);
+  if (c=="open")
+    return smopen(p);
+  if (c=="replace")
+    return smreplace(p);
+  if (c=="run")
+    return smrun(p);
   if (c=="save")
     return smsave(p);
   if (c=="set")
     return smset(p);
-  if (c=="act")
-    term->smact();
   else if (c=="prompt")
-    term->smprompt(s2q(p));
+    return smprompt(p);
   else
     return smerror("unrecognized sm command: " + c);
   return "";
+}
+
+// ---------------------------------------------------------------------
+string smact(string p)
+{
+  Q_UNUSED(p);
+  term->smact();
+  return"";
 }
 
 // ---------------------------------------------------------------------
@@ -102,6 +132,8 @@ string smget(string p)
     return smerror("sm get needs additional parameters");
   if (p=="active")
     return smgetactive();
+  if (p=="tabs")
+    return smgettabs();
   if (p=="term" || p=="edit" || p=="edit2")
     return smgetwin(p);
   if (p=="xywh")
@@ -115,6 +147,19 @@ string smgetactive()
   rc=-1;
   return (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
          ? "edit" : "term";
+}
+
+// ---------------------------------------------------------------------
+string smgetscript(QString f)
+{
+  return dors(">{.getscripts_j_ '" + q2s(f) + "'");
+}
+
+// ---------------------------------------------------------------------
+string smgettabs()
+{
+  rc=-2;
+  return note->gettabstate();
 }
 
 // ---------------------------------------------------------------------
@@ -180,22 +225,69 @@ string smgetxywh1(QWidget *w)
 }
 
 // ---------------------------------------------------------------------
-string smsave(string arg)
+string smopen(string p)
+{
+  QStringList opt=qsplit(p);
+  if (opt[0]!="tab")
+    return smerror("unrecognized sm command: open " + p);
+  term->vieweditor();
+  if (opt.size()==1)
+    note->newtemp();
+  else {
+    QString f=s2q(smgetscript(opt[1]));
+    if (!cfexist(f))
+      return smerror("file not found: " + q2s(f));
+    note->fileopen(f);
+  }
+  rc=-1;
+  return i2s(note->editIndex());
+}
+
+// ---------------------------------------------------------------------
+string smprompt(string p)
+{
+  term->smprompt(s2q(p));
+  return"";
+}
+
+// ---------------------------------------------------------------------
+string smreplace(string p)
+{
+  if (note==0 || note->editIndex()<0)
+    return smerror ("No active edit window");
+  QStringList opt=qsplit(p);
+  if (opt[0]!="edit")
+    return smerror("unrecognized sm command: replace " + p);
+  if (2!=opt.size())
+    return smerror("replace needs 2 parameters: tab filename");
+  QString f=s2q(smgetscript(opt[1]));
+  if (!cfexist(f))
+    return smerror("file not found: " + q2s(f));
+  note->filereplace(f);
+  return"";
+}
+
+// ---------------------------------------------------------------------
+string smrun(string p)
+{
+  if (p!="edit")
+    return smerror("unrecognized sm command: run " + p);
+  if (note==0 || note->editIndex()<0)
+    return smerror("No active edit window");
+  note->runlines(true);
+  return"";
+}
+
+// ---------------------------------------------------------------------
+string smsave(string p)
 {
   if (note==0)
     return smerror("No active edit window");
-  QStringList opt=qsplit(arg);
-  if (opt.size()==0)
-    return smerror("sm save parameters not given");
-  if (opt.size()!=2)
-    return smerror("sm save parameters not recognized");
-  if (opt[0]!="edit")
-    return smerror("sm save " + q2s(opt[0]) + " not supported");
-  if (opt[1]=="active")
+  if (p=="edit")
     return smsaveactive();
-  if (opt[1]=="all")
+  if (p=="tabs")
     return smsaveall();
-  return smerror("sm save edit parameter should be 'active' or 'all'");
+  return smerror("sm save parameter should be 'edit' or 'tabs': " + p);
 }
 
 // ---------------------------------------------------------------------
@@ -251,7 +343,7 @@ string smset(string arg)
   if (q=="select")
     return smsetselect(e,opt);
   if (q=="text")
-    return smsettext(opt[0]);
+    return smsettext(e,opt[0]);
   if (q=="xywh")
     return smsetxywh(w,opt);
 
@@ -274,9 +366,12 @@ string smsetselect(Bedit *e,QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-string smsettext(QString s)
+string smsettext(Bedit *e,QString s)
 {
-  note->settext(s);
+  if (e==tedit)
+    e->setPlainText(s);
+  else
+    note->settext(s);
   return"";
 }
 
@@ -294,3 +389,22 @@ string smsetxywh(QWidget *w,QStringList opt)
   w->resize(s[2],s[3]);
   return"";
 }
+
+// ---------------------------------------------------------------------
+string smtabindex(QString cmd,string p)
+{
+  if (note==0 || note->editIndex()<0)
+    return smerror ("No active edit window");
+  QStringList opt=qsplit(p);
+  if (opt[0]!="tab")
+    return smerror ("unrecognized sm command parameters: " + p);
+  int ndx=opt[1].toInt();
+  if (ndx<0 || ndx>=note->count())
+    return smerror ("invalid tab index: " + p);
+  if (cmd=="active")
+    note->setindex(ndx);
+  else
+    note->tabclose(ndx);
+  return "";
+}
+

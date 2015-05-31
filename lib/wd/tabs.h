@@ -26,7 +26,6 @@ public:
 private slots:
   void currentChanged(int index);
   void tabCloseRequested(int index);
-//  void updateit();
 
 };
 

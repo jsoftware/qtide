@@ -50,11 +50,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
 #endif
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
-  QStringList unopt=qsless(m,(qsplit("escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")));
-  if (unopt.size()) {
-    error("unrecognized form style: " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(s,m,"escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")) return;
   escclose=m.contains("escclose");
   closeok=m.contains("closeok");
   setpn(s);
@@ -95,7 +91,6 @@ Form::~Form()
     delete children.at(i);
   if (this==form) form = 0;
   if (this==evtform) evtform = 0;
-//  if (timer) delete timer;
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
 #ifdef QT_OS_ANDROID
@@ -367,6 +362,7 @@ bool Form::ischild(Child *n)
 void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
+  if (ismodifier(k)) return;
 #ifdef QT_OS_ANDROID
   if (k==Qt::Key_Back) {
     QWidget::keyPressEvent(e);
@@ -596,7 +592,7 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   }
   string fc=getfocus();
   if (fc.size()) lastfocus=fc;
-  var_cmddo("(i.0 0)\"_ wdhandler_" + s2q(loc) + "_$0");
+  var_cmddo("wdhandler_" + s2q(loc) + "_$0");
 }
 
 // ---------------------------------------------------------------------

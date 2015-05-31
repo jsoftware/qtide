@@ -17,11 +17,7 @@ Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   isVideo=false;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("video")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"video")) return;
   childStyle(opt);
 #ifdef QT54
   if (opt.contains("video")) {

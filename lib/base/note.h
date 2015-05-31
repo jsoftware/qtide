@@ -21,12 +21,15 @@ public:
   ~Note();
 
   void activate();
+  int count();
   int editIndex();
   QString editFile();
   Nedit *editPage();
   QString editText();
   void fileclose(QString f);
   bool fileopen(QString,int n=-1);
+  bool filereplace(QString,int n=-1);
+  std::string gettabstate();
   void gitenable(bool b);
   void loadscript(QString s,bool show);
   void newtemp();
@@ -34,6 +37,7 @@ public:
   void projectenable();
   void projectopen(bool);
   void projectsave();
+  void runlines(bool all);
   bool saveall();
   void savecurrent();
   void scriptenable();
@@ -209,7 +213,6 @@ private:
   void replacetext(Nedit *e, QString txt);
 
   void runline(bool advance, bool show);
-  void runlines(bool all);
   void selectline(int linenum);
   void select_line(QString s);
   QStringList select_line1(QStringList mid,QString s,int *pos, int *len);

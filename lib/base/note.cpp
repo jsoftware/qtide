@@ -122,6 +122,12 @@ void Note::closeEvent(QCloseEvent *event)
 }
 
 // ---------------------------------------------------------------------
+int Note::count()
+{
+  return tabs->count();
+}
+
+// ---------------------------------------------------------------------
 int Note::editIndex()
 {
   return tabs->currentIndex();
@@ -158,6 +164,19 @@ bool Note::fileopen(QString s,int line)
 {
   setid();
   return tabs->tabopen(s,line);
+}
+
+// ---------------------------------------------------------------------
+bool Note::filereplace(QString s,int line)
+{
+  setid();
+  return tabs->tabreplace(s,line);
+}
+
+// ---------------------------------------------------------------------
+string Note::gettabstate()
+{
+  return tabs->gettabstate();
 }
 
 // ---------------------------------------------------------------------

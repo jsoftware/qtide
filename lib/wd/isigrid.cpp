@@ -13,11 +13,7 @@ IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="isigrid";
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  QStringList unopt=qsless(qsless(opt,qsplit("cube")),defChildStyle);
-  if (unopt.size()) {
-    error("unrecognized child style: " + n + " " + q2s(unopt.join(" ")));
-    return;
-  }
+  if (invalidopt(n,opt,"cube")) return;
   if (opt.size()==0)
     style="";
   else
