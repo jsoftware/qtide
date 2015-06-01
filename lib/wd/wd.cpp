@@ -143,7 +143,7 @@ static bool notab();
 static int setchild(string id);
 static string formchildid();
 
-static Cmd cmd;
+Cmd cmd;
 static Child *cc=0;
 Form *form=0;
 Form *evtform=0;
@@ -1349,8 +1349,7 @@ void wdsm(string s)
     c="act";
   else
     c=s;
-  p=cmd.getparms();
-  result=sm(c,p);
+  result=sm(c);
   if (rc==1)
     error(result);
 }
