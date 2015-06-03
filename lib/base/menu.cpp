@@ -1134,6 +1134,7 @@ void Note::on_winotherAct_triggered()
   else {
     setnote(new Note());
   }
+  note->activate();
   note->setFocus();
   note->show();
   noevents(0);

@@ -34,6 +34,7 @@ Note *note2=0;
 // ---------------------------------------------------------------------
 Note::Note()
 {
+  EditText="Edit";
   if (!config.ProjInit)
     project.init();
   setAttribute(Qt::WA_DeleteOnClose);
@@ -60,7 +61,7 @@ Note::Note()
   layout->addWidget(split);
   layout->setStretchFactor(split,1);
   setLayout(layout);
-  setWindowTitle("[*]edit");
+  setWindowTitle("[*]" + EditText);
   setpos();
   menuBar->createActions();
   menuBar->createMenus("note");
@@ -555,7 +556,7 @@ void Note::settitle(QString file, bool mod)
   QString f,n,s;
 
   if (file.isEmpty()) {
-    s="Edit";
+    s=EditText;
     if (project.Id.size())
       s="[" + project.Id + "] - " + s;
     setWindowTitle(s);
@@ -569,8 +570,23 @@ void Note::settitle(QString file, bool mod)
     f = s;
   else
     f = project.projectname(file);
-  setWindowTitle ("[*]" + f + " - " + n + "Edit");
+  setWindowTitle ("[*]" + f + " - " + n + EditText);
   setWindowModified(mod);
+}
+
+// ---------------------------------------------------------------------
+void Note::settitle2(bool edit2)
+{
+  QString t=windowTitle();
+  if (edit2) {
+    EditText="Edit2";
+    if ("2"!=t.right(1))
+      setWindowTitle(t+"2");
+  } else {
+    EditText="Edit";
+    if ("2"==t.right(1))
+      setWindowTitle(t.remove(t.size()-1,1));
+  }
 }
 
 // ---------------------------------------------------------------------

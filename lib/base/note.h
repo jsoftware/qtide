@@ -51,6 +51,7 @@ public:
   void setpos();
   void settext(QString s);
   void settitle(QString name, bool mod);
+  void settitle2(bool);
   void siderefresh();
   void tabclose(int index);
 
@@ -219,6 +220,7 @@ private:
   void select_text(QString s);
 
   bool sideBarShow;
+  QString EditText;
   QToolBar *editToolBar;
   QToolBar *fileToolBar;
   QSplitter *split;

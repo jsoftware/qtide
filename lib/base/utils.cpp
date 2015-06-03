@@ -551,7 +551,10 @@ void setnote(Note *n)
 {
   if (note!=n) {
     note2=note;
+    if (note2)
+      note2->settitle2(true);
     note=n;
+    note->settitle2(false);
     note->setid();
   }
 }
