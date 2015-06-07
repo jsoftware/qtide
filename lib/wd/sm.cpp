@@ -308,15 +308,15 @@ string smopen()
     return "";
   if (c!="tab") {
     return smerror("unrecognized sm command: open " + c);
-    term->vieweditor();
-    if (p.empty())
-      note->newtemp();
-    else {
-      QString f=s2q(smgetscript(p));
-      if (!cfexist(f))
-        return smerror("file not found: " + q2s(f));
-      note->fileopen(f);
-    }
+  }
+  term->vieweditor();
+  if (p.empty())
+    note->newtemp();
+  else {
+    QString f=s2q(smgetscript(p));
+    if (!cfexist(f))
+      return smerror("file not found: " + q2s(f));
+    note->fileopen(f);
   }
   rc=-1;
   return i2s(note->editIndex());
