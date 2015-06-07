@@ -360,7 +360,7 @@ string smrun()
     return smerror("unrecognized sm command: run " + p);
   if (note==0 || note->editIndex()<0)
     return smerror("No active edit window");
-  note->runlines(true);
+  note->runlines(false);
   return"";
 }
 
