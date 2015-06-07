@@ -189,8 +189,12 @@ string smget()
   if (p=="xywh")
     return smgetxywh();
   QStringList s=qsplit(p);
-  if (s[0]=="tabs")
-    return smgettabs(s[1]);
+  if (s[0]=="tabs") {
+    if(s.size()<=1)
+      return smerror("sm command requires another parameter: get tabs");
+    else
+      return smgettabs(s[1]);
+  }
   return smerror("unrecognized sm command: get " + p);
 }
 
