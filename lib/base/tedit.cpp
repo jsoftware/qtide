@@ -256,10 +256,10 @@ void Tedit::removeprompt()
 // ---------------------------------------------------------------------
 // run all script
 // implemented as loadd ...
-void Tedit::runall(QString s)
+void Tedit::runall(QString s, bool show)
 {
   runshow=false;
-  var_run(var_load(s,true));
+  var_run(var_load(s,show));
 }
 
 // ---------------------------------------------------------------------

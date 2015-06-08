@@ -37,7 +37,7 @@ public:
   void projectenable();
   void projectopen(bool);
   void projectsave();
-  void runlines(bool all);
+  void runlines(bool all, bool show=true);
   bool saveall();
   void savecurrent();
   void scriptenable();

@@ -40,17 +40,17 @@ void Note::runline(bool advance, bool show)
 }
 
 // ---------------------------------------------------------------------
-void Note::runlines(bool all)
+void Note::runlines(bool all, bool show)
 {
   note->saveall();
   QString txt;
   Nedit *e = editPage();
   if (all) {
     if (note->saveall())
-      tedit->runall(e->fname);
+      tedit->runall(e->fname, show);
   } else {
     txt=e->readselected();
-    tedit->docmds(txt, true);
+    tedit->docmds(txt, show);
   }
 }
 
