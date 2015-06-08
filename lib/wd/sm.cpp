@@ -64,8 +64,6 @@ string sm(string c)
     return smopen();
   if (c=="replace")
     return smreplace();
-  if (c=="run")
-    return smrun();
   if (c=="save")
     return smsave();
   if (c=="set")
@@ -353,17 +351,17 @@ string smreplace()
 }
 
 // ---------------------------------------------------------------------
-string smrun()
-{
-  string p=cmd.getparms();
-  if (p!="edit")
-    return smerror("unrecognized sm command: run " + p);
-  if (note==0 || note->editIndex()<0)
-    return smerror("No active edit window");
-  note->runlines(true,false);  // all lines, no display
-  return"";
-}
-
+// string smrun()
+// {
+//   string p=cmd.getparms();
+//   if (p!="edit")
+//     return smerror("unrecognized sm command: run " + p);
+//   if (note==0 || note->editIndex()<0)
+//     return smerror("No active edit window");
+//   note->runlines(true,false);  // all lines, no display
+//   return"";
+// }
+//
 // ---------------------------------------------------------------------
 string smsave()
 {
