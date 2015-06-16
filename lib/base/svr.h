@@ -27,9 +27,6 @@ public:
 public slots:
   void input();
 
-private:
-  char* jinput(char*);
-
 };
 
 bool svr_init(int argc, char* argv[]);

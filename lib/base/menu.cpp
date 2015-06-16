@@ -1057,12 +1057,6 @@ void Note::on_toselviewlinewrapAct_triggered()
   select_line("wrap");
 }
 
-//// ---------------------------------------------------------------------
-//void Note::userAct_triggered()
-//{
-//term->userAct_triggered();
-//}
-
 // ---------------------------------------------------------------------
 void Note::on_viewasciiAct_triggered()
 {

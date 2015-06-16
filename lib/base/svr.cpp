@@ -35,6 +35,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 static bool ifcmddo=false;
 static bool inputready=false;
 static QString inputx;
+static bool jecallback=false;
 static bool logged=false;
 static bool quitx=false;
 bool runshow=false;
@@ -44,7 +45,8 @@ void logcs(char *msg);
 QString runshowclean(QString s);
 Jcon *jcon=0;
 QEventLoop *evloop;
-int cnt=0;
+static QEventLoop *jevloop;
+static int cnt=0;
 
 // ---------------------------------------------------------------------
 void Jcon::cmd(QString s)
@@ -68,6 +70,10 @@ void Jcon::cmddo(QString s)
 void Jcon::cmddo(string s)
 {
   ifcmddo=true;
+  if (jecallback) {
+    Sentence.append(s2q(s));
+    jevloop->exit();
+  } else
   jedo((char *)s.c_str());
 }
 
@@ -80,7 +86,11 @@ int Jcon::exec()
 
   while(1) {
     cnt++;
-    jinput((char *)"   ");
+    tedit->prompt="   ";
+    tedit->setprompt();
+    inputready=false;
+    logged=true;
+    evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
     if (quitx) break;
     while(!Sentence.isEmpty()) {
       s=Sentence.at(0);
@@ -102,6 +112,7 @@ int Jcon::init(int argc, char* argv[])
   int type;
 
   evloop=new QEventLoop();
+  jevloop=new QEventLoop();
 
   if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0]);     // get path to JFE folder
   jt=jeload(callbacks);
@@ -152,6 +163,9 @@ void Jcon::immex(QString s)
 void Jcon::input()
 {
   ifcmddo=false;
+  if (jecallback)
+    jevloop->exit();
+  else
   evloop->exit();
 }
 
@@ -169,20 +183,7 @@ void Jcon::set(QString s, QString t)
 }
 
 // ---------------------------------------------------------------------
-//J calls for input (debug suspension and 1!:1[1) and we call for input
-char* Jcon::jinput(char* p)
-{
-  Q_ASSERT(tedit);
-  tedit->prompt=c2q(p);
-  tedit->setprompt();
-  inputready=false;
-  logged=true;
-  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-  return (char*) 0;
-}
-
-// ---------------------------------------------------------------------
-//J calls for input (debug suspension and 1!:1[1) and we call for input
+// J calls for input (debug suspension and 1!:1[1) and we call for input
 char* _stdcall Jinput(J jt, char* p)
 {
   Q_UNUSED(jt);
@@ -192,7 +193,9 @@ char* _stdcall Jinput(J jt, char* p)
   tedit->setprompt();
   inputready=false;
   logged=true;
-  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+  jecallback=true;
+  jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+  jecallback=false;
   QString s=jcon->Sentence.at(0);
   jcon->Sentence.removeFirst();
   if ((int)sizeof(inputline)<s.size()) exit(100);

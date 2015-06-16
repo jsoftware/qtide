@@ -37,7 +37,6 @@ void writewinstate(Bedit *);
 
 bool ShowIde=true;
 static string hashbuf;
-extern QEventLoop *evloop;
 static QList<int> Modifiers =
   QList<int>() << Qt::Key_Alt << Qt::Key_AltGr
   << Qt::Key_Control << Qt::Key_Meta << Qt::Key_Shift;
