@@ -74,7 +74,7 @@ void Jcon::cmddo(string s)
     Sentence.append(s2q(s));
     jevloop->exit();
   } else
-  jedo((char *)s.c_str());
+    jedo((char *)s.c_str());
 }
 
 // ---------------------------------------------------------------------
@@ -166,7 +166,7 @@ void Jcon::input()
   if (jecallback)
     jevloop->exit();
   else
-  evloop->exit();
+    evloop->exit();
 }
 
 // ---------------------------------------------------------------------
