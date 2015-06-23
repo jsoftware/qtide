@@ -296,8 +296,7 @@ void Config::initide()
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
-  QTemporaryFile temp;
-  temp.open();
+  QFile temp(ConfigPath.filePath("qtide.cfg.0"));
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/FontFile",FontFile);
@@ -326,7 +325,7 @@ void Config::initide()
   s->setValue("Position/Term",p2q(TermPos));
   s->setValue("Run/Terminal",Terminal);
   s->sync();
-  t=cfread(temp.fileName());
+  t=cfread(ConfigPath.filePath("qtide.cfg.0"));
   h="# Qt IDE config\n"
     "# This file is read and written by the Qt IDE.\n"
     "# Make changes in the same format as the original.\n"
