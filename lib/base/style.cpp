@@ -41,8 +41,9 @@ void Config::initstyle()
   QFile temp(ConfigPath.filePath("style.cfg.0"));
 #else
   QTemporaryFile temp;
-#endif
   temp.open();
+  temp.close();
+#endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
   s->setValue("Edit/fore",EditFore.read());
   s->setValue("Edit/back",EditBack.read());

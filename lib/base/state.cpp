@@ -300,8 +300,9 @@ void Config::initide()
   QFile temp(ConfigPath.filePath("qtide.cfg.0"));
 #else
   QTemporaryFile temp;
-#endif
   temp.open();
+  temp.close();
+#endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/FontFile",FontFile);
