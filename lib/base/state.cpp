@@ -301,6 +301,7 @@ void Config::initide()
 #else
   QTemporaryFile temp;
 #endif
+  temp.open();
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
 #ifdef QT_OS_ANDROID
   s->setValue("Session/FontFile",FontFile);
