@@ -37,7 +37,11 @@ void Config::initstyle()
   if (s->allKeys().contains("Edit/high")) return;
 
   delete s;
+#ifdef _WIN32
   QFile temp(ConfigPath.filePath("style.cfg.0"));
+#else
+  QTemporaryFile temp;
+#endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
   s->setValue("Edit/fore",EditFore.read());
   s->setValue("Edit/back",EditBack.read());
@@ -58,7 +62,11 @@ void Config::initstyle()
   s->setValue("Class/verb",verbStyle.read());
 
   s->sync();
+#ifdef _WIN32
   t=cfread(ConfigPath.filePath("style.cfg.0"));
+#else
+  t=cfread(temp.fileName());
+#endif
   h="# Qt Styles config\n"
     "# This file is read and written by the Qt IDE.\n"
     "# Make changes in the same format as the original.\n"
