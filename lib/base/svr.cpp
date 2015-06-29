@@ -35,7 +35,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 static bool ifcmddo=false;
 static bool inputready=false;
 static QString inputx;
-static bool jecallback=false;
+bool jecallback=false;
 static bool logged=false;
 static bool quitx=false;
 bool runshow=false;

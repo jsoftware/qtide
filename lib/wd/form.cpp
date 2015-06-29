@@ -23,6 +23,7 @@
 #endif
 #include "../base/jsvr.h"
 #include "../base/state.h"
+#include "../base/svr.h"
 #include "../base/term.h"
 
 extern Font *fontdef;
@@ -592,6 +593,11 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   }
   string fc=getfocus();
   if (fc.size()) lastfocus=fc;
+if (jecallback) {
+  term->removeprompt();
+  var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'");
+}
+else
   var_cmddo("wdhandler_" + s2q(loc) + "_$0");
 }
 
