@@ -980,8 +980,10 @@ void wdqueries(string s)
       return;
     }
     result=i2s(QOpenGLContext::openGLModuleType());
-    return;
+#else
+    result=i2s(0);
 #endif
+    return;
 #endif
   } else if (s=="qscreen") {
     if (!app) {
@@ -1116,6 +1118,7 @@ void wdqueries(string s)
     result=form->hsform();
   else if (s=="qform")
     result=form->qform();
+// queries expecting parameter
   else if (!p.size())
     error("missing parameters");
   else if (s=="qhwndc") {
