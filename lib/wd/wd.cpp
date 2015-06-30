@@ -972,17 +972,20 @@ void wdqueries(string s)
   if (s=="qverbose") {
     result=i2s(verbose);
     return;
-#ifndef QT_NO_OPENGL
-#ifdef QT53
   } else if (s=="qopenglmod") {
+#ifndef QT_NO_OPENGL
     if (!app) {
       error("command failed: no QApplication");
       return;
     }
+#ifdef QT53
     result=i2s(QOpenGLContext::openGLModuleType());
 #else
     result=i2s(0);
 #endif
+    return;
+#else
+    error("command not found");
     return;
 #endif
   } else if (s=="qscreen") {
