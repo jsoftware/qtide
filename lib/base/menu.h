@@ -40,6 +40,7 @@ private slots:
 
 private:
   void createcfgMenu();
+  void createdfmMenu();
   void createeditMenu(QString s);
   void createfileMenu(QString s);
   void createfkeyMenu(QString s);
@@ -57,6 +58,7 @@ private:
   QAction *makeuseract(QString text, QString shortcut);
 
   QMenu *cfgMenu;
+  QMenu *dfmMenu;
   QMenu *editMenu;
   QMenu *fileMenu;
   QMenu *fkeyMenu;
@@ -82,6 +84,10 @@ private:
   QAction *clipcopyAct;
   QAction *clipcutAct;
   QAction *clippasteAct;
+  QAction *dfm2Act;
+  QAction *dfm4Act;
+  QAction *dfm5Act;
+  QAction *dfm6Act;
   QAction *editfifAct;
   QAction *editfiwAct;
   QAction *editfontAct;

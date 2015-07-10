@@ -159,6 +159,12 @@ void Term::closeEvent(QCloseEvent *event)
 }
 
 // ---------------------------------------------------------------------
+void Term::displayform(int p)
+{
+  var_cmddo("0 0$9!:3[" + QString::number(p));
+}
+
+// ---------------------------------------------------------------------
 bool Term::filequit(bool ignoreconfirm)
 {
   dlog_write();

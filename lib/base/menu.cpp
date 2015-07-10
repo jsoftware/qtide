@@ -74,6 +74,12 @@ void Menu::createActions()
   clipcopyAct = makeact("clipcopyAct","&Copy","Ctrl+C");
   clipcutAct = makeact("clipcutAct","Cu&t","Ctrl+X");
   clippasteAct = makeact("clippasteAct","&Paste","Ctrl+V");
+
+  dfm2Act = makeact("dfm2Act","&Boxed","");
+  dfm4Act = makeact("dfm4Act","&Tree","");
+  dfm5Act = makeact("dfm5Act","&Linear","");
+  dfm6Act = makeact("dfm6Act","&Parens","");
+
   editfifAct = makeact("editfifAct","F&ind in Files","Ctrl+Shift+F");
   editfiwAct = makeact("editfiwAct","&Find","Ctrl+F");
   editfontAct = makeact("editfontAct","&Session Font","");
@@ -236,6 +242,15 @@ void Menu::createcfgMenu()
 }
 
 // ---------------------------------------------------------------------
+void Menu::createdfmMenu()
+{
+  dfmMenu->addAction(dfm5Act);
+  dfmMenu->addAction(dfm2Act);
+  dfmMenu->addAction(dfm6Act);
+  dfmMenu->addAction(dfm4Act);
+}
+
+// ---------------------------------------------------------------------
 void Menu::createeditMenu(QString s)
 {
   editMenu = addMenu("&Edit");
@@ -257,6 +272,10 @@ void Menu::createeditMenu(QString s)
   }
   editMenu->addSeparator();
   editMenu->addAction(editfontAct);
+  dfmMenu = editMenu->addMenu("Session Display Form");
+  dfmMenu->menuAction()->setMenuRole(QAction::NoRole);
+  createdfmMenu();
+  editMenu->addSeparator();
   cfgMenu = editMenu->addMenu("Configure");
   cfgMenu->menuAction()->setMenuRole(QAction::NoRole);
   createcfgMenu();
@@ -616,6 +635,29 @@ void Note::on_clippasteAct_triggered()
   editPage()->paste();
 }
 
+// ---------------------------------------------------------------------
+void Note::on_dfm2Act_triggered()
+{
+  term->on_dfm2Act_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_dfm4Act_triggered()
+{
+  term->on_dfm4Act_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_dfm5Act_triggered()
+{
+  term->on_dfm5Act_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_dfm6Act_triggered()
+{
+  term->on_dfm6Act_triggered();
+}
 // ---------------------------------------------------------------------
 void Note::on_editfifAct_triggered()
 {
@@ -1276,6 +1318,30 @@ void Term::on_clipcutAct_triggered()
 void Term::on_clippasteAct_triggered()
 {
   tedit->paste();
+}
+
+// ---------------------------------------------------------------------
+void Term::on_dfm2Act_triggered()
+{
+  term->displayform(2);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_dfm4Act_triggered()
+{
+  term->displayform(4);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_dfm5Act_triggered()
+{
+  term->displayform(5);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_dfm6Act_triggered()
+{
+  term->displayform(6);
 }
 
 // ---------------------------------------------------------------------

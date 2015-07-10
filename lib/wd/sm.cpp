@@ -33,7 +33,6 @@ static string smgetxywh1(QWidget *);
 static string smopen();
 static string smprompt();
 static string smreplace();
-static string smrun();
 static string smsave();
 static string smsaveactive();
 static string smsaveall();

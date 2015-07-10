@@ -41,6 +41,7 @@ public:
 
   void activate();
   void cleantemp();
+  void displayform(int p);
   bool filequit(bool ignoreconfirm);
   void fini();
   void load(QString s, bool display);
@@ -78,6 +79,10 @@ public slots:
   void on_clipcopyAct_triggered();
   void on_clipcutAct_triggered();
   void on_clippasteAct_triggered();
+    void on_dfm2Act_triggered();
+    void on_dfm4Act_triggered();
+    void on_dfm5Act_triggered();
+    void on_dfm6Act_triggered();
   void on_editfifAct_triggered();
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
