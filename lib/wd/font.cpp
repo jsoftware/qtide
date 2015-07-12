@@ -3,9 +3,9 @@
 #include <QString>
 #include <QDebug>
 
-#include "wd.h"
-#include "font.h"
 #include "cmd.h"
+#include "font.h"
+#include "wd.h"
 #include "../base/state.h"
 
 Font *FontExtent=0;

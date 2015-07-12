@@ -1,10 +1,10 @@
 #ifndef WD_H
 #define WD_H
 
-#include "../base/base.h"
-
 // for wd only:
 using namespace std;
+
+#include "../base/base.h"
 
 extern "C" {
   Dllexport int wd(char *s,int slen,char *&r,int &len);

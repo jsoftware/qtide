@@ -1,9 +1,9 @@
 
 #include <QPainter>
 
-#include "opengl.h"
-#include "opengl2.h"
 #include "form.h"
+#include "opengl2.h"
+#include "opengl.h"
 #include "pane.h"
 
 extern "C" int gl_clear2 (void *p,int clear);

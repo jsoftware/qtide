@@ -5,13 +5,13 @@
 #include <QUrl>
 
 #include "base.h"
-#include "menu.h"
 #include "dialog.h"
 #include "dirm.h"
 #include "dlog.h"
+#include "eview.h"
 #include "fif.h"
 #include "fiw.h"
-#include "note.h"
+#include "menu.h"
 #include "nedit.h"
 #include "nmain.h"
 #include "note.h"
@@ -27,7 +27,6 @@
 #include "state.h"
 #include "tedit.h"
 #include "term.h"
-#include "view.h"
 
 #ifdef QT_OS_ANDROID
 #include "../wd/form.h"

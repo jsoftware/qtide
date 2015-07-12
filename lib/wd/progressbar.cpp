@@ -1,11 +1,11 @@
 
 #include <QProgressBar>
 
-#include "wd.h"
-#include "progressbar.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "progressbar.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

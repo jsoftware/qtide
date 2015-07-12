@@ -1,6 +1,6 @@
 
-#include "wd.h"
 #include "cmd.h"
+#include "wd.h"
 
 static char DEL='\177';
 static char LF='\n';

@@ -1,9 +1,9 @@
 
-#include "wd.h"
 #include "child.h"
+#include "font.h"
 #include "form.h"
 #include "pane.h"
-#include "font.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Child::Child(string n, string s, Form *f, Pane *p)

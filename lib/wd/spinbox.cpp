@@ -1,11 +1,11 @@
 
 #include <QSpinBox>
 
-#include "wd.h"
-#include "spinbox.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "spinbox.h"
+#include "wd.h"
 
 // optional parms are:
 // minimum

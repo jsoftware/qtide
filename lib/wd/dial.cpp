@@ -1,11 +1,11 @@
 
 #include <QDial>
 
-#include "wd.h"
+#include "cmd.h"
 #include "dial.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
 
 // optional parms are:
 // "v" - notchesvisible

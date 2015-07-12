@@ -1,8 +1,8 @@
 
-#include "wd.h"
+#include "child.h"
 #include "layout.h"
 #include "pane.h"
-#include "child.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Layout::Layout(QChar type, int stretch, Pane *p)

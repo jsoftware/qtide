@@ -4,12 +4,12 @@
 #include <QDoubleValidator>
 #include <QRegExpValidator>
 
-#include "wd.h"
-#include "edit.h"
-#include "lineedit.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "edit.h"
+#include "form.h"
+#include "lineedit.h"
+#include "pane.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

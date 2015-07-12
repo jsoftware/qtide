@@ -1,6 +1,8 @@
 #ifndef GLZ_H
 #define GLZ_H
 
+#include "../base/base.h"
+
 extern "C" {
   Dllexport int glzarc (const int *p);
   Dllexport int glzbrush ();

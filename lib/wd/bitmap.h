@@ -1,6 +1,8 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
+#include "../base/base.h"
+
 extern "C" {
   Dllexport void *wdreadimg(char *s, int *wh);
   Dllexport void *wdgetimg(uchar *data, int len, int *wh);

@@ -1,5 +1,5 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef EVIEW_H
+#define EVIEW_H
 
 #include <QDialog>
 #include "plaintextedit.h"

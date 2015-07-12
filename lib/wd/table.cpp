@@ -5,15 +5,15 @@
 #include <QTableWidget>
 #include <QPushButton>
 
+#include "cmd.h"
+#include "font.h"
+#include "form.h"
+#include "pane.h"
+#include "table.h"
+#include "wd.h"
 #include "../base/pcombobox.h"
 #include "../base/plaintextedit.h"
 #include "../base/state.h"
-#include "wd.h"
-#include "table.h"
-#include "form.h"
-#include "pane.h"
-#include "cmd.h"
-#include "font.h"
 
 static QVector<int>CellAligns;
 static QVector<int>CellTypes;

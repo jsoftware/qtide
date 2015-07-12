@@ -3,11 +3,11 @@
 #include <QPushButton>
 
 #include "base.h"
+#include "eview.h"
 #include "recent.h"
 #include "rsel.h"
 #include "state.h"
 #include "term.h"
-#include "view.h"
 
 using namespace std;
 

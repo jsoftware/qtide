@@ -7,16 +7,10 @@
 #include <QSignalMapper>
 #include <QSplitter>
 
-#include "wd.h"
-#include "font.h"
-#include "cmd.h"
-#include "form.h"
-#include "pane.h"
-#include "child.h"
-#include "layout.h"
-
 #include "button.h"
 #include "checkbox.h"
+#include "child.h"
+#include "cmd.h"
 #include "combobox.h"
 #include "dateedit.h"
 #include "dial.h"
@@ -25,11 +19,15 @@
 #include "edit.h"
 #include "edith.h"
 #include "editm.h"
+#include "font.h"
+#include "form.h"
 #include "image.h"
 #include "isidraw.h"
 #include "isigraph.h"
 #include "isigrid.h"
+#include "layout.h"
 #include "listbox.h"
+#include "pane.h"
 #ifndef QT_NO_OPENGL
 #include "opengl.h"
 #endif
@@ -49,6 +47,7 @@
 #include "tabs.h"
 #include "timeedit.h"
 #include "toolbar.h"
+#include "wd.h"
 #ifndef QT_NO_MULTIMEDIA
 #include "multimedia.h"
 #endif

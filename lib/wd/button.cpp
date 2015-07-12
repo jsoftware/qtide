@@ -3,11 +3,11 @@
 #include <QSignalMapper>
 #include <QStyle>
 
-#include "wd.h"
 #include "button.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

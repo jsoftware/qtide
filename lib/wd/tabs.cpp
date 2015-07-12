@@ -1,12 +1,13 @@
 
 #include <QIcon>
 #include <QStyle>
-#include "tabwidget.h"
-#include "wd.h"
-#include "tabs.h"
+
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "tabs.h"
+#include "tabwidget.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

@@ -3,12 +3,12 @@
 #include <QScrollBar>
 #include <QAbstractTextDocumentLayout>
 
-#include "../base/state.h"
-#include "wd.h"
+#include "cmd.h"
 #include "edith.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
+#include "../base/state.h"
 #ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>

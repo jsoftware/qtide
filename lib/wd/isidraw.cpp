@@ -1,9 +1,9 @@
 
+#include "cmd.h"
+#include "form.h"
 #include "isidraw.h"
 #include "isigraph2.h"
-#include "form.h"
 #include "pane.h"
-#include "cmd.h"
 
 // ---------------------------------------------------------------------
 Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

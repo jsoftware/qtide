@@ -3,10 +3,10 @@
 #include <QFileInfo>
 
 #include "base.h"
-#include "dirm.h"
 #include "comp.h"
+#include "dirm.h"
+#include "eview.h"
 #include "state.h"
-#include "view.h"
 
 // ---------------------------------------------------------------------
 void Dirm::compareallfiles()

@@ -4,6 +4,8 @@
 #include <string>
 #include <QStringList>
 
+using namespace std;
+
 class Cmd
 {
 public:

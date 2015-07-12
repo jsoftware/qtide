@@ -2,11 +2,11 @@
 #include <QMenu>
 #include <QMenuBar>
 
-#include "wd.h"
-#include "menus.h"
 #include "cmd.h"
 #include "form.h"
+#include "menus.h"
 #include "pane.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Menus::Menus(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

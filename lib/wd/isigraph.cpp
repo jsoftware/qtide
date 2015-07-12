@@ -1,9 +1,9 @@
 
-#include "isigraph.h"
-#include "isigraph2.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "form.h"
+#include "isigraph2.h"
+#include "isigraph.h"
+#include "pane.h"
 
 // ---------------------------------------------------------------------
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

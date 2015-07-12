@@ -1,12 +1,12 @@
 
 #include <QScrollBar>
 
-#include "../base/state.h"
-#include "wd.h"
-#include "scrollbar.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "scrollbar.h"
+#include "wd.h"
+#include "../base/state.h"
 
 // optional parms are:
 // "v" - vertical

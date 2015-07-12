@@ -4,7 +4,7 @@
 #include <QVBoxLayout>
 #include "plaintextedit.h"
 #include "state.h"
-#include "view.h"
+#include "eview.h"
 #include "term.h"
 
 using namespace std;

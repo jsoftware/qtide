@@ -3,11 +3,11 @@
 #include <QToolBar>
 #include <QStyle>
 
-#include "wd.h"
-#include "toolbar.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "toolbar.h"
+#include "wd.h"
 
 #ifdef QT_OS_ANDROID
 extern float DM_density;

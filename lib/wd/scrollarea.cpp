@@ -2,12 +2,12 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
-#include "../base/state.h"
-#include "wd.h"
-#include "scrollarea.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "scrollarea.h"
+#include "wd.h"
+#include "../base/state.h"
 
 // the scrollbars are in pixels and vary as the form is resized
 // minimum is 0, single step is 1, page step is 10

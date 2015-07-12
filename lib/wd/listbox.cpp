@@ -1,12 +1,12 @@
 
 #include <QListWidget>
 
-#include "../base/state.h"
-#include "wd.h"
-#include "listbox.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "form.h"
+#include "listbox.h"
+#include "pane.h"
+#include "wd.h"
+#include "../base/state.h"
 
 extern int rc;
 

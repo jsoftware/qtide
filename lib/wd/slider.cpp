@@ -1,11 +1,11 @@
 
 #include <QSlider>
 
-#include "wd.h"
-#include "slider.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "slider.h"
+#include "wd.h"
 
 // optional parms are:
 // "v" - vertical

@@ -3,11 +3,11 @@
 #include <QPainter>
 #include <QScrollArea>
 
-#include "wd.h"
-#include "image.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "form.h"
+#include "image.h"
+#include "pane.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

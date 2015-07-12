@@ -23,17 +23,16 @@
 #endif
 #endif
 
-#include "wd.h"
 #include "bitmap.h"
 #include "child.h"
 #include "clipboard.h"
 #include "cmd.h"
 #include "font.h"
 #include "form.h"
-#include "pane.h"
 #include "menus.h"
-#include "qtstate.h"
+#include "pane.h"
 #include "tabs.h"
+#include "wd.h"
 #ifdef QT_OS_ANDROID
 #include "../base/androidextras.h"
 #endif
@@ -49,10 +48,11 @@
 #ifndef QT_NO_QUICKVIEW2
 #include "quickview2.h"
 #endif
+#include "../base/eview.h"
+#include "../base/qtstate.h"
+#include "../base/state.h"
 #include "../base/tedit.h"
 #include "../base/term.h"
-#include "../base/state.h"
-#include "../base/view.h"
 extern char* jegetlocale();
 extern QApplication *app;
 extern Term * term;
@@ -1782,16 +1782,6 @@ bool notab()
   if (form->tab) return false;
   error("no tab definition");
   return true;
-}
-
-// ---------------------------------------------------------------------
-string remquotes(string s)
-{
-  int len=(int)s.size();
-  if (len<2) return s;
-  if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
-    s=s.substr(1,len-2);
-  return s;
 }
 
 // ---------------------------------------------------------------------

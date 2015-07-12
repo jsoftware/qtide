@@ -1,8 +1,8 @@
 
-#include "wd.h"
 #include "cmd.h"
-#include "../base/wssvr.h"
+#include "wd.h"
 #include "../base/wscln.h"
+#include "../base/wssvr.h"
 
 using namespace std;
 

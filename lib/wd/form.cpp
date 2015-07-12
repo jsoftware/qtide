@@ -8,16 +8,16 @@
 
 #include <sstream>  //include this to use string streams
 
-#include "wd.h"
-#include "font.h"
+#include "child.h"
 #include "cmd.h"
 #include "font.h"
+#include "font.h"
 #include "form.h"
-#include "pane.h"
-#include "tabs.h"
-#include "child.h"
 #include "isigraph2.h"
 #include "menus.h"
+#include "pane.h"
+#include "tabs.h"
+#include "wd.h"
 #ifndef QT_NO_OPENGL
 #include "opengl2.h"
 #endif
@@ -394,7 +394,7 @@ void Form::keyPressEvent(QKeyEvent *e)
     form=this;
     signalevent(0,e);
   } else if ((e->modifiers() & Qt::ControlModifier) &&
-     ((k>=Qt::Key_A && k<=Qt::Key_Z) || (k>=Qt::Key_0 && k<=Qt::Key_9) || (k>=Qt::Key_Home && k<=Qt::Key_PageDown))){
+             ((k>=Qt::Key_A && k<=Qt::Key_Z) || (k>=Qt::Key_0 && k<=Qt::Key_9) || (k>=Qt::Key_Home && k<=Qt::Key_PageDown))) {
     event="fkey";
     form=this;
     signalevent(0,e);

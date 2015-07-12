@@ -1,6 +1,8 @@
 #ifndef GLC_H
 #define GLC_H
 
+#include "../base/base.h"
+
 extern "C" {
   Dllexport int glc_arc (const int *p);
   Dllexport int glc_brush ();

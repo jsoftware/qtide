@@ -4,11 +4,11 @@
 #include "../base/pcombobox.h"
 #include "../base/state.h"
 
-#include "wd.h"
+#include "cmd.h"
 #include "combobox.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
 
 extern Font *fontdef;
 

@@ -2,11 +2,11 @@
 #include <QCheckBox>
 #include <QStyle>
 
-#include "wd.h"
 #include "checkbox.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

@@ -4,23 +4,23 @@
 #include <QDesktopWidget>
 
 #include "base.h"
+#include "eview.h"
 #ifdef JQT
 #include "jsvr.h"
 #endif
+#include "menu.h"
 #include "nedit.h"
-#include "note.h"
 #include "nmain.h"
+#include "note.h"
 #include "nside.h"
 #include "ntabs.h"
-#include "menu.h"
 #include "proj.h"
 #include "psel.h"
 #include "recent.h"
 #include "state.h"
 #include "svr.h"
-#include "term.h"
 #include "tedit.h"
-#include "view.h"
+#include "term.h"
 
 #ifdef QT_OS_ANDROID
 extern "C" void android_exec_host(char*,char*,char*,int);

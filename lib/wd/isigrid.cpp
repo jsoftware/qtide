@@ -1,10 +1,10 @@
 // Grid control
 
-#include "wd.h"
-#include "isigrid.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "form.h"
+#include "isigrid.h"
+#include "pane.h"
+#include "wd.h"
 #include "../grid/qgrid.h"
 
 // ---------------------------------------------------------------------

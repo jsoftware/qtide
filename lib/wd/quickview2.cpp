@@ -3,10 +3,10 @@
 #include <QQmlError>
 #include <QSurfaceFormat>
 
-#include "wd.h"
-#include "quickview2.h"
-#include "form.h"
 #include "cmd.h"
+#include "form.h"
+#include "quickview2.h"
+#include "wd.h"
 #include "../base/utils.h"
 
 extern QuickView2 * quickview2;

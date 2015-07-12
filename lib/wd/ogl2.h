@@ -1,6 +1,8 @@
 #ifndef OGL2_H
 #define OGL2_H
 
+#include "../base/base.h"
+
 extern "C" {
   Dllexport int gl_arc (const int *p);
   Dllexport int gl_brush ();

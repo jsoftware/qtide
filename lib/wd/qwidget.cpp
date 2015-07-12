@@ -1,10 +1,10 @@
 // QWidget control
 
-#include "wd.h"
-#include "qwidget.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "qwidget.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 QWidgex::QWidgex(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

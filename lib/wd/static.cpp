@@ -2,11 +2,11 @@
 #include <QBoxLayout>
 #include <QLabel>
 
-#include "wd.h"
-#include "static.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "static.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

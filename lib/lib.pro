@@ -227,8 +227,8 @@ HEADERS += \
  base/plaintextedit.h base/pcombobox.h \
  base/pnew.h base/proj.h base/psel.h base/qmlje.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
- base/tedit.h base/term.h base/util.h base/utils.h \
- base/view.h base/widget.h high/high.h high/highj.h \
+ base/tedit.h base/term.h base/util.h base/utils.h base/qtstate.h \
+ base/eview.h base/widget.h high/high.h high/highj.h \
  grid/qgrid.h grid/qutil.h grid/wgrid.h \
  wd/bitmap.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h \
  wd/checkbox.h wd/combobox.h wd/dateedit.h wd/dial.h wd/dspinbox.h wd/dummy.h \
@@ -236,7 +236,7 @@ HEADERS += \
  wd/gl2.h wd/glz.h wd/prtobj.h wd/image.h \
  wd/isidraw.h wd/isigraph.h wd/isigraph2.h wd/isigrid.h \
  wd/layout.h wd/lineedit.h wd/listbox.h \
- wd/menus.h wd/pane.h wd/progressbar.h wd/qtstate.h wd/radiobutton.h \
+ wd/menus.h wd/pane.h wd/progressbar.h wd/radiobutton.h \
  wd/slider.h wd/spinbox.h wd/static.h wd/statusbar.h wd/table.h \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
@@ -274,7 +274,7 @@ SOURCES += \
  base/recent.cpp base/rsel.cpp base/run.cpp \
  base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
  base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
- base/userkeys.cpp base/util.cpp base/utils.cpp base/view.cpp base/widget.cpp \
+ base/userkeys.cpp base/util.cpp base/utils.cpp base/qtstate.cpp base/eview.cpp base/widget.cpp \
  grid/cell.cpp grid/cubedata.cpp grid/cubedraw.cpp grid/cubewidget.cpp \
  grid/defs.cpp grid/draw.cpp grid/header.cpp grid/hierdraw.cpp \
  grid/hierwidget.cpp grid/label.cpp grid/qgrid.cpp grid/qutil.cpp \
@@ -285,7 +285,7 @@ SOURCES += \
  wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \
  wd/isidraw.cpp wd/isigraph.cpp wd/isigraph2.cpp wd/isigrid.cpp \
  wd/layout.cpp wd/lineedit.cpp wd/listbox.cpp wd/mb.cpp \
- wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/qtstate.cpp wd/radiobutton.cpp \
+ wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/radiobutton.cpp \
  wd/slider.cpp wd/sm.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \

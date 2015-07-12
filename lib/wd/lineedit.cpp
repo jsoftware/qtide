@@ -1,7 +1,7 @@
 
 #include "edit.h"
-#include "lineedit.h"
 #include "form.h"
+#include "lineedit.h"
 #include "../base/utils.h"
 
 // ---------------------------------------------------------------------

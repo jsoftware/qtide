@@ -1,6 +1,8 @@
 #ifndef GL2_H
 #define GL2_H
 
+#include "../base/base.h"
+
 extern "C" {
   Dllexport int glarc (const int *p);
   Dllexport int glbrush ();

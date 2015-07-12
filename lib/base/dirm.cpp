@@ -10,17 +10,17 @@
 #include <QTableWidget>
 #include <QHeaderView>
 
-#include "pcombobox.h"
 #include "base.h"
-#include "widget.h"
 #include "dirm.h"
+#include "eview.h"
 #include "note.h"
+#include "pcombobox.h"
 #include "proj.h"
 #include "recent.h"
 #include "snap.h"
 #include "state.h"
 #include "term.h"
-#include "view.h"
+#include "widget.h"
 
 using namespace std;
 

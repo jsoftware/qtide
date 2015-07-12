@@ -1,11 +1,11 @@
 
 #include <QApplication>
 
-#include "../base/base.h"
-#include "../base/proj.h"
-#include "../base/recent.h"
-#include "../base/state.h"
-#include "wd.h"
+#include "base.h"
+#include "proj.h"
+#include "recent.h"
+#include "state.h"
+#include "../wd/wd.h"
 #include "qtstate.h"
 
 // ---------------------------------------------------------------------

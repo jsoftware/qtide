@@ -3,11 +3,11 @@
 #include <QQmlError>
 #include <QSurfaceFormat>
 
-#include "wd.h"
-#include "quickwidget.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "quickwidget.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

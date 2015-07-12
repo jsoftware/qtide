@@ -779,6 +779,16 @@ string q2s(QString s)
 }
 
 // ---------------------------------------------------------------------
+string remquotes(string s)
+{
+  int len=(int)s.size();
+  if (len<2) return s;
+  if ((s[0]=='"' && s[len-1]=='"')||(s[0]=='\177' && s[len-1]=='\177'))
+    s=s.substr(1,len-2);
+  return s;
+}
+
+// ---------------------------------------------------------------------
 QString remsep(QString s)
 {
   if (s.endsWith("/"))

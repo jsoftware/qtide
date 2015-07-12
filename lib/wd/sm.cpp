@@ -1,9 +1,9 @@
 
 #include <QApplication>
 
-#include "wd.h"
 #include "cmd.h"
 #include "font.h"
+#include "wd.h"
 #include "../base/bedit.h"
 #include "../base/jsvr.h"
 #include "../base/note.h"

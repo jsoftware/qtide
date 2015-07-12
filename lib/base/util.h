@@ -72,6 +72,7 @@ bool queryRETRY(QString t,QString s);
 QStringList qsless(QStringList,QStringList);
 bool qsnumeric(QStringList);
 std::string strless(std::string a,std::string w);
+std::string remquotes(std::string s);
 QString remsep(QString);
 QString remtilde(QString);
 QString s2q(std::string);

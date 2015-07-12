@@ -18,10 +18,10 @@
 
 #include <QApplication>
 #include <QPainter>
-#include "wd.h"
 #include "font.h"
-#include "isidraw.h"
 #include "form.h"
+#include "isidraw.h"
+#include "wd.h"
 #include "../base/state.h"
 
 #if defined(GLISIGRAPH)

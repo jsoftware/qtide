@@ -2,11 +2,11 @@
 #include <QLabel>
 #include <QStatusBar>
 
-#include "wd.h"
-#include "statusbar.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "statusbar.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

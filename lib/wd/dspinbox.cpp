@@ -1,11 +1,11 @@
 
 #include <QDoubleSpinBox>
 
-#include "wd.h"
+#include "cmd.h"
 #include "dspinbox.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "wd.h"
 
 // optional parms are:
 // decimal places

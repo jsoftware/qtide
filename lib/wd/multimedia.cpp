@@ -3,11 +3,11 @@
 #include <QVideoWidget>
 #endif
 
-#include "wd.h"
-#include "multimedia.h"
-#include "form.h"
-#include "pane.h"
 #include "cmd.h"
+#include "form.h"
+#include "multimedia.h"
+#include "pane.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

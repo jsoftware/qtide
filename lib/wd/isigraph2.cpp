@@ -3,9 +3,9 @@
 #include <QPainter>
 #include <QtGui/qmatrix4x4.h>
 
-#include "isigraph.h"
-#include "isigraph2.h"
 #include "form.h"
+#include "isigraph2.h"
+#include "isigraph.h"
 #include "pane.h"
 
 extern Child *isigraph;

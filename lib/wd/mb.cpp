@@ -52,9 +52,9 @@
 #endif
 #endif
 
-#include "wd.h"
 #include "cmd.h"
 #include "form.h"
+#include "wd.h"
 #include "../base/dialog.h"
 #include "../base/state.h"
 

@@ -6,18 +6,18 @@
 #include <QPushButton>
 #include <QSplitter>
 
+#include "base.h"
+#include "comp.h"
+#include "eview.h"
+#include "note.h"
 #include "pcombobox.h"
 #include "plaintextedit.h"
-#include "base.h"
-#include "spic.h"
-#include "comp.h"
-#include "note.h"
-#include "snap.h"
-#include "state.h"
 #include "recent.h"
-#include "view.h"
-#include "widget.h"
+#include "snap.h"
+#include "spic.h"
+#include "state.h"
 #include "term.h"
+#include "widget.h"
 
 using namespace std;
 

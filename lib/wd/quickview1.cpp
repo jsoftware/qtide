@@ -3,12 +3,12 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeError>
 
-#include "wd.h"
-#include "quickview1.h"
-#include "form.h"
 #include "cmd.h"
-#include "../base/utils.h"
+#include "form.h"
+#include "quickview1.h"
+#include "wd.h"
 #include "../base/qmlje.h"
+#include "../base/utils.h"
 extern QmlJE qmlje;
 
 extern QuickView1 * quickview1;

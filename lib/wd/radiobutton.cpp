@@ -3,12 +3,12 @@
 #include <QRadioButton>
 #include <QStyle>
 
-#include "wd.h"
 #include "checkbox.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
 #include "radiobutton.h"
-#include "cmd.h"
+#include "wd.h"
 
 // ---------------------------------------------------------------------
 RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)

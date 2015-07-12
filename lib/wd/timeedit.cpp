@@ -3,11 +3,11 @@
 
 #include <math.h>
 
-#include "wd.h"
-#include "timeedit.h"
+#include "cmd.h"
 #include "form.h"
 #include "pane.h"
-#include "cmd.h"
+#include "timeedit.h"
+#include "wd.h"
 
 // optional parms are:
 // minimum

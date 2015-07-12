@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 
+#include "../base/base.h"
 #include "wd.h"
 
 class Form;
