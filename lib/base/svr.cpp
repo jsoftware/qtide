@@ -36,6 +36,7 @@ static bool ifcmddo=false;
 static bool inputready=false;
 static QString inputx;
 bool jecallback=false;
+bool jeinput=false;
 static bool logged=false;
 static bool quitx=false;
 bool runshow=false;
@@ -91,6 +92,7 @@ int Jcon::exec()
     inputready=false;
     logged=true;
     evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+    jeinput=false;
     if (quitx) break;
     while(!Sentence.isEmpty()) {
       s=Sentence.at(0);
@@ -98,6 +100,7 @@ int Jcon::exec()
       if ((int)sizeof(inputline)<s.size()) exit(100);
       strcpy(inputline,q2s(s).c_str());
       jedo(inputline);
+      jeinput=false;
     }
   }
   jefree();
@@ -187,17 +190,25 @@ void Jcon::set(QString s, QString t)
 char* _stdcall Jinput(J jt, char* p)
 {
   Q_UNUSED(jt);
-
   Q_ASSERT(tedit);
-  tedit->prompt=c2q(p);
-  tedit->setprompt();
+  QString s;
   inputready=false;
   logged=true;
-  jecallback=true;
-  jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-  jecallback=false;
-  QString s=jcon->Sentence.at(0);
-  jcon->Sentence.removeFirst();
+  if (!jeinput) {
+    jcon->Sentence.clear();
+    jeinput=true;
+  }
+  if (jcon->Sentence.isEmpty()) {
+    tedit->prompt=c2q(p);
+    tedit->setprompt();
+    jecallback=true;
+    jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+    jecallback=false;
+  }
+  if (!jcon->Sentence.isEmpty()) {
+    s=jcon->Sentence.at(0);
+    jcon->Sentence.removeFirst();
+  }
   if ((int)sizeof(inputline)<s.size()) exit(100);
   strcpy(inputline,q2s(s).c_str());
   return inputline;
