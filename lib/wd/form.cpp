@@ -593,7 +593,7 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   }
   string fc=getfocus();
   if (fc.size()) lastfocus=fc;
-  if (jecallback) {
+  if (jeinput) {
     term->removeprompt();
     var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'");
   } else
