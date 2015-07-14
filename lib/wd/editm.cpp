@@ -180,8 +180,8 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
       pchild->event=string("button");
       pchild->sysmodifiers=string(sysmodifiers);
       pchild->pform->signalevent(pchild);
-    } else PlainTextEdit::keyPressEvent(event);
-    return;
+      return;
+    }
   }
   int key1=0;
   if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
@@ -202,5 +202,6 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  } else PlainTextEdit::keyPressEvent(event);
+  }
+  PlainTextEdit::keyPressEvent(event);
 }

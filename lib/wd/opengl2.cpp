@@ -262,5 +262,6 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  } else QWidget::keyPressEvent(event);
+  }
+  QWidget::keyPressEvent(event);
 }

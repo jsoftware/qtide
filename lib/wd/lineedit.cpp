@@ -52,5 +52,6 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  } else QLineEdit::keyPressEvent(event);
+  }
+  QLineEdit::keyPressEvent(event);
 }
