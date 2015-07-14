@@ -39,16 +39,18 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
     return;
   } else
     key1=translateqkey(key);
-  char sysmodifiers[20];
-  sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
-  char sysdata[20];
-  if (key==key1)
-    sprintf(sysdata , "%s", event->text().toUtf8().constData());
-  else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
+  int sysmod = (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT));
+  if (!(2 & sysmod)) {  // Ctrl+anything becomes (possibly) a _fkey event; others become _char
+    char sysmodifiers[20];
+    sprintf(sysmodifiers , "%d", sysmod);
+    char sysdata[20];
+    if (key==key1)
+      sprintf(sysdata , "%s", event->text().toUtf8().constData());
+    else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
 
-  pchild->event=string("char");
-  pchild->sysmodifiers=string(sysmodifiers);
-  pchild->sysdata=string(sysdata);
-  pchild->pform->signalevent(pchild);
-  QLineEdit::keyPressEvent(event);
+    pchild->event=string("char");
+    pchild->sysmodifiers=string(sysmodifiers);
+    pchild->sysdata=string(sysdata);
+    pchild->pform->signalevent(pchild);
+  } else QLineEdit::keyPressEvent(event);
 }
