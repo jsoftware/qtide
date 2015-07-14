@@ -202,6 +202,5 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  }
-  PlainTextEdit::keyPressEvent(event);
+  } else PlainTextEdit::keyPressEvent(event);
 }

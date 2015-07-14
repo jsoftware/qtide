@@ -187,6 +187,5 @@ void QWEBVIEW::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  }
-  QTWEBVIEW::keyPressEvent(event);
+  } else QTWEBVIEW::keyPressEvent(event);
 }

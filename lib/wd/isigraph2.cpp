@@ -287,6 +287,5 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  }
-  QWidget::keyPressEvent(event);
+  } else QWidget::keyPressEvent(event);
 }
