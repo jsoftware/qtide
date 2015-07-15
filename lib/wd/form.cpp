@@ -393,7 +393,8 @@ void Form::keyPressEvent(QKeyEvent *e)
     event="fkey";
     form=this;
     signalevent(0,e);
-  } else if (k>=Qt::Key_A && k<=Qt::Key_Z && (e->modifiers() & Qt::ControlModifier)) {
+  } else if ((e->modifiers() & Qt::ControlModifier) &&
+     ((k>=Qt::Key_A && k<=Qt::Key_Z) || (k>=Qt::Key_0 && k<=Qt::Key_9) || (k>=Qt::Key_Home && k<=Qt::Key_PageDown))){
     event="fkey";
     form=this;
     signalevent(0,e);
@@ -581,8 +582,15 @@ void Form::signalevent(Child *c, QKeyEvent *e)
     evtchild=0;
     if (event=="fkey") {
       int k=e->key();
-      if (k>=Qt::Key_A && k<=Qt::Key_Z && (e->modifiers() & Qt::ControlModifier)) {
+      if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_A && k<=Qt::Key_Z) {
         fakeid=(char)e->key()+32;  // lower case
+        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+      } else if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_0 && k<=Qt::Key_9) {
+        fakeid=(char)e->key();  // turn to string
+        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+      } else if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_Home && k<=Qt::Key_PageDown) {
+        string keynames[] = {"home", "end", "left", "up", "right", "down", "pgup", "pgdn"} ;
+        fakeid=keynames[e->key()-Qt::Key_Home];  // select event name
         fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
       } else if (k>=Qt::Key_F1 && k<=Qt::Key_F35) {
         ostringstream ostr;
