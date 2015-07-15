@@ -1,6 +1,7 @@
 #ifndef COMP_H
 #define COMP_H
 
+#include <QObject>
 #include <QStringList>
 #include <QVector>
 

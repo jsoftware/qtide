@@ -3,6 +3,7 @@
 
 #include <string>
 #include <QStringList>
+#include <vector>
 
 using namespace std;
 
