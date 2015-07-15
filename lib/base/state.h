@@ -175,7 +175,7 @@ void state_quit();
 void state_reinit();
 
 void var_cmd(QString s);
-void var_cmddo(QString s);
+void var_cmddo(QString s, bool forceexec = false);
 QString var_cmdr(QString s);
 QString var_load(QString s, bool d);
 void var_run(QString s);

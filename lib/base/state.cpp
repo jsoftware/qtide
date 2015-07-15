@@ -604,9 +604,9 @@ QString var_cmdr(QString s)
 }
 
 // ---------------------------------------------------------------------
-void var_cmddo(QString s)
+void var_cmddo(QString s, bool forceexec)
 {
-  jcon->cmddo(s);
+  jcon->cmddo(s, forceexec);
 }
 
 // ---------------------------------------------------------------------

@@ -62,16 +62,16 @@ QString Jcon::cmdr(QString s)
 }
 
 // ---------------------------------------------------------------------
-void Jcon::cmddo(QString s)
+void Jcon::cmddo(QString s, bool forceexec)
 {
-  cmddo(q2s(s));
+  cmddo(q2s(s), forceexec);
 }
 
 // ---------------------------------------------------------------------
-void Jcon::cmddo(string s)
+void Jcon::cmddo(string s, bool forceexec)
 {
   ifcmddo=true;
-  if (jecallback) {
+  if (jecallback && !forceexec) {
     Sentence.append(s2q(s));
     jevloop->exit();
   } else

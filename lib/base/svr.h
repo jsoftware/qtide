@@ -13,8 +13,8 @@ class Jcon : public QObject
 public:
   Jcon() {};
   void cmd(QString s);
-  void cmddo(QString s);
-  void cmddo(std::string s);
+  void cmddo(QString s, bool forceexec = false);
+  void cmddo(std::string s, bool forceexec = false);
   QString cmdr(QString s);
   int exec();
   void immex(QString s);

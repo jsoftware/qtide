@@ -103,7 +103,7 @@ Form::~Form()
   if (Forms.isEmpty() && (!ShowIde)) {
     if (jdllproc) evloop->exit();
     else {
-      var_cmddo("(i.0 0)\"_ (2!:55)0");
+      var_cmddo("(i.0 0)\"_ (2!:55)0", true);  // force into the engine even in suspension
       state_quit();
       QApplication::quit();
     }

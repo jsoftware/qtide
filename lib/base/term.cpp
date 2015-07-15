@@ -184,7 +184,7 @@ bool Term::filequit(bool ignoreconfirm)
   if ((!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
 #endif
-    var_cmddo("2!:55[0");
+    var_cmddo("2!:55[0", true);  // force into the engine even in suspension
     cleantemp();
     state_quit();
     QApplication::quit();
