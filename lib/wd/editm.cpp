@@ -181,27 +181,11 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
       pchild->sysmodifiers=string(sysmodifiers);
       pchild->pform->signalevent(pchild);
       return;
+      // note we don't fall through to handle keyPressEvent in the widget.
+      // it shouldn't do anything but move the cursor, and we have already jabbed the
+      // _button event, so don't let the widget override something the button calls for
     }
   }
-  int key1=0;
-  if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
-    PlainTextEdit::keyPressEvent(event);
-    return;
-  } else
-    key1=translateqkey(key);
-  char sysmodifiers[20];
-  int sysmod = (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT));
-  if (!(2 & sysmod)) {  // Ctrl+anything becomes (possibly) a _fkey event; others become _char
-    sprintf(sysmodifiers , "%d", sysmod);
-    char sysdata[20];
-    if (key==key1)
-      sprintf(sysdata , "%s", event->text().toUtf8().constData());
-    else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
-
-    pchild->event=string("char");
-    pchild->sysmodifiers=string(sysmodifiers);
-    pchild->sysdata=string(sysdata);
-    pchild->pform->signalevent(pchild);
-    PlainTextEdit::keyPressEvent(event);
-  }
+  // _char events not given from editm now, so just pass the event on
+  PlainTextEdit::keyPressEvent(event);
 }
