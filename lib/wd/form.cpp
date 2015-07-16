@@ -568,9 +568,11 @@ void Form::showit(string p)
 void Form::signalevent(Child *c, QKeyEvent *e)
 {
   if (NoEvents || closed) return;
+  string ctype="";
   string loc = locale;
   evtform=this;
   if (c) {
+    ctype=c->type;
     evtchild=c;
     c->setform();
     sysmodifiers=c->sysmodifiers;
@@ -601,9 +603,13 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   }
   string fc=getfocus();
   if (fc.size()) lastfocus=fc;
-  if (jeinput) {
-    term->removeprompt();
-    var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'");
+  if (jecallback) {
+    if (ctype=="isigraph")
+      var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'",true);
+    else {
+      term->removeprompt();
+      var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'");
+    }
   } else
     var_cmddo("wdhandler_" + s2q(loc) + "_$0");
 }
