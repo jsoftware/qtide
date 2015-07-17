@@ -34,7 +34,7 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
       break;
     }
   }
-  if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
+  if ((key==Qt::Key_unknown)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
     QLineEdit::keyPressEvent(event);
     return;
   } else

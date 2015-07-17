@@ -243,7 +243,7 @@ void Opengl2::keyPressEvent(QKeyEvent *event)
     return;
   }
 #endif
-  if ((key>0x10000ff)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
+  if ((key==Qt::Key_unknown)||((key>=Qt::Key_F1)&&(key<=Qt::Key_F35))) {
     QWidget::keyPressEvent(event);
     return;
   } else

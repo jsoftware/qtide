@@ -1806,8 +1806,18 @@ int setchild(string id)
 }
 
 // ---------------------------------------------------------------------
-// translate event.keyboard key to Private Use Area, or ASCII escape code
+// translate event.keyboard key to Private Use Area
+// invalid key values produce invalid results
 int translateqkey(int key)
 {
-  return (key>=0x1000000) ? ((key==Qt::Key_Escape) ? 27 : ((key & 0x7ff) | 0xf800)) : key;
+  // ASCII: pass through
+  if (key<0x01000000) return key;
+  // 0x01000yxx map to F800-F900 (y=0 or 1)
+  if (key<0x01000200) return 0xf800 | (key & 0x1ff);
+  // 0x010011xx and 0x010012xx to FAxx
+  // 0x010100xx to FBxx
+  // 0x010200xx to FCxx
+  if (key<0x01100000) return 0xfa00 + ((key & 0x00030000) >> 8) + (key & 0xff);
+  // 0x011000xx to FDxx
+  return 0xfd00 | (key & 0xff);
 }
