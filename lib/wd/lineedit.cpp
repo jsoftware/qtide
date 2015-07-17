@@ -52,5 +52,8 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  } else QLineEdit::keyPressEvent(event);
+    // for ESC key, abort further processing lest we generate a second J event.
+    if (key==Qt::Key_Escape) return;
+  }
+  QLineEdit::keyPressEvent(event);
 }

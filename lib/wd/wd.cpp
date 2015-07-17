@@ -1806,8 +1806,8 @@ int setchild(string id)
 }
 
 // ---------------------------------------------------------------------
-// translate event.keyboard key to Private Use Area
+// translate event.keyboard key to Private Use Area, or ASCII escape code
 int translateqkey(int key)
 {
-  return (key>=0x1000000) ? ((key & 0xff) | 0xf800) : key;
+  return (key>=0x1000000) ? ((key==Qt::Key_Escape) ? 27 : ((key & 0x7ff) | 0xf800)) : key;
 }

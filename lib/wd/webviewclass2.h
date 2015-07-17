@@ -187,5 +187,8 @@ void QWEBVIEW::keyPressEvent(QKeyEvent *event)
     pchild->sysmodifiers=string(sysmodifiers);
     pchild->sysdata=string(sysdata);
     pchild->pform->signalevent(pchild);
-  } else QTWEBVIEW::keyPressEvent(event);
+    // for ESC key, abort further processing lest we generate a second J event.
+    if (key==Qt::Key_Escape) return;
+  }
+  QTWEBVIEW::keyPressEvent(event);
 }
