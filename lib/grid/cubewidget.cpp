@@ -133,11 +133,15 @@ void CubeMargin::itemadd(QList<int> v, int n)
 void CubeMargin::itemmovelast(QList<int> v, QList<int> w)
 {
   int n;
+
+  int to=(w==p->AxisCols) ? 0 : (w==p->AxisRows) ? 1 : 2;
+
   if (v.isEmpty()) {
     if (w.isEmpty())
       itemmovelast(p->AxisRows.isEmpty() ? p->AxisCols : p->AxisRows,w);
     return;
   }
+
   if (v==p->AxisCols) {
     n=p->AxisCols.last();
     p->AxisCols.removeLast();
@@ -148,13 +152,12 @@ void CubeMargin::itemmovelast(QList<int> v, QList<int> w)
     n=p->AxisSlice.last();
     p->AxisSlice.removeLast();
   }
-  if (w==p->AxisCols)
+  if (to==0)
     p->AxisCols.append(n);
-  else if (w==p->AxisRows)
+  else if (to==1)
     p->AxisRows.append(n);
-  else {
+  else
     p->AxisSlice.append(n);
-  }
 }
 
 // ---------------------------------------------------------------------
