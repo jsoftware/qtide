@@ -18,8 +18,8 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   TabWidget *w=new TabWidget;
   widget=(TabWidget*) w;
 
-  form->tabs.append(this);
-  form->tab=this;
+  pform->tabs.append(this);
+  pform->tab=this;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   if (invalidopt(n,opt,"documentmode movable closable east west south nobar")) return;
@@ -150,11 +150,11 @@ void Tabs::tabend()
   QTabWidget *w=(QTabWidget *) widget;
   pform->pane->fini();
 
-  form->tabs.removeLast();
-  if (form->tabs.isEmpty())
-    form->tab=0;
+  pform->tabs.removeLast();
+  if (pform->tabs.isEmpty())
+    pform->tab=0;
   else
-    form->tab=form->tabs.last();
+    pform->tab=pform->tabs.last();
 
   if (index)
     w->setCurrentIndex(0);

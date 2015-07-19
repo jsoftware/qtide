@@ -105,7 +105,7 @@ private:
 
 };
 
-extern Form *form;
+// extern Form *form;
 extern Form *evtform;
 extern int FormSeq;
 extern QList<Form *>Forms;

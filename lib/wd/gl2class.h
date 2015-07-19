@@ -24,6 +24,8 @@
 #include "wd.h"
 #include "../base/state.h"
 
+extern Form *form;
+
 #if defined(GLISIGRAPH)
 
 #include "gl2.h"

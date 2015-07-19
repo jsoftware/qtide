@@ -5,6 +5,8 @@
 #include "pane.h"
 #include "wd.h"
 
+extern Form *form;
+
 // ---------------------------------------------------------------------
 Child::Child(string n, string s, Form *f, Pane *p)
 {

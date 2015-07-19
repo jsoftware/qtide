@@ -437,7 +437,7 @@ bool Pane::groupbox(string c, string s)
     QVBoxLayout *vb=new QVBoxLayout;
     vb->addWidget(pform->addpane(0));
     groupboxw->setLayout(vb);
-    form->pane->bin("v");
+    pform->pane->bin("v");
     return true;
   }
 

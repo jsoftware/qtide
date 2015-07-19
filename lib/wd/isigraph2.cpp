@@ -8,6 +8,7 @@
 #include "isigraph.h"
 #include "pane.h"
 
+extern Form *form;
 extern Child *isigraph;
 extern "C" int glclear2 (void *p,int clear);
 

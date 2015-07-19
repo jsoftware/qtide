@@ -5,6 +5,8 @@
 #include "opengl.h"
 #include "pane.h"
 
+extern Form *form;
+
 // ---------------------------------------------------------------------
 Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {

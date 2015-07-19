@@ -26,6 +26,7 @@
 #include "../base/svr.h"
 #include "../base/term.h"
 
+extern Form *form;
 extern Font *fontdef;
 extern bool standAlone;
 extern QEventLoop *evloop;
