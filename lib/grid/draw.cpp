@@ -23,6 +23,7 @@ void WGrid::draw()
       w=Ccls;
       h=Crws;
     }
+    Scls=Srws=0;
     WGridInit=true;
   }
 
