@@ -32,6 +32,7 @@
 #include "../wd/form.h"
 extern Fif *fif;
 extern Fiw *fiw;
+extern Form *form;
 #endif
 
 using namespace std;
