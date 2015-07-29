@@ -49,7 +49,7 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   w->setObjectName(qn);
   childStyle(opt);
-  f->opengl = this;
+  opengl = this;
 }
 
 // ---------------------------------------------------------------------
@@ -63,8 +63,8 @@ Opengl::~Opengl()
 void Opengl::setform()
 {
   if (!widget) return;
-  if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) form=pform;
-  form->opengl=this;
+  if (!(event=="paint" || event=="paintz" || event=="resize" || event=="initialize" || event=="print")) Child::setform();
+  opengl=this;
 }
 
 // ---------------------------------------------------------------------

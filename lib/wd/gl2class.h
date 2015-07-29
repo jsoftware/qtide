@@ -36,14 +36,14 @@ extern Form *form;
 #define QTWidget2 Isigraph2
 #define QTwidget2 isigraph2
 
-#define CHKPAINTER  if (!form) return 1; \
-  if (!form->isigraph) return 1; \
-  Isigraph2 *w = (Isigraph2 *)form->isigraph->widget; \
+#define CHKPAINTER  \
+  if (!isigraph) return 1; \
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget; \
   if (!w->painter) return 1; \
   if (!w->painter->isActive()) return 1;
-#define CHKPAINTER2 if (!form) return 1; \
-  if (!form->isigraph) return 1; \
-  Isigraph2 *w = (Isigraph2 *)form->isigraph->widget; \
+#define CHKPAINTER2 \
+  if (!isigraph) return 1; \
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget; \
   Q_UNUSED(w);
 
 #elif defined(GLOPENGL)
@@ -56,14 +56,14 @@ extern Form *form;
 #define QTwidget opengl
 #define QTwidget2 opengl2
 
-#define CHKPAINTER  if (!form) return 1; \
-  if (!form->opengl) return 1; \
-  Opengl2 *w = (Opengl2 *)form->opengl->widget; \
+#define CHKPAINTER  \
+  if (!opengl) return 1; \
+  Opengl2 *w = (Opengl2 *)opengl->widget; \
   if (!w->painter) return 1; \
   if (!w->painter->isActive()) return 1;
-#define CHKPAINTER2  if (!form) return 1; \
-  if (!form->opengl) return 1; \
-  Opengl2 *w = (Opengl2 *)form->opengl->widget; \
+#define CHKPAINTER2  \
+  if (!opengl) return 1; \
+  Opengl2 *w = (Opengl2 *)opengl->widget; \
   Q_UNUSED(w);
 
 #define glarc gl_arc
@@ -318,8 +318,7 @@ int glqhandles(void **p)
 #if defined(GLPRINTER) || defined(GLPAINTER)
   return 1;
 #else
-  if (!form) return 1;
-  *p = (void *)form->QTwidget;
+  *p = (void *)QTwidget;
 #ifdef _WIN32
 #ifndef QT50
   if (w) *(p+1) = (void *)w->getDC();
@@ -484,7 +483,7 @@ int glsel(void *g)
 #endif
         form = f;
         form->child = c;
-        form->QTwidget = c;
+        QTwidget = c;
         return 0;
       }
     }
@@ -518,7 +517,7 @@ int glsel2(char *g)
 #endif
         form=f;
         form->child = cc;
-        form->QTwidget = cc;
+        QTwidget = cc;
         return 0;
       }
     }
@@ -533,7 +532,7 @@ int glsel2(char *g)
 #endif
         form=f;
         form->child = cc;
-        form->QTwidget = cc;
+        QTwidget = cc;
         return 0;
       }
     }
@@ -987,7 +986,6 @@ int glcmds(const int *ptr, int ncnt)
   int p = 0;
   int rc = 0;
 
-//  if (!form) return 1;
   CHKPAINTER
 
   while (p < ncnt) {
@@ -1127,7 +1125,7 @@ int glsetlocale(char *c)
   CHKPAINTER2
   Q_UNUSED(c);
 #if (!(defined(GLPRINTER) || defined(GLPAINTER)))
-  form->QTwidget->locale = string(c);
+  QTwidget->locale = string(c);
 #endif
   return 0;
 }

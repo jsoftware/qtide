@@ -65,8 +65,6 @@ public:
 
   Child *child;
   Child *evtchild;
-  Child *isigraph;
-  Child *opengl;
   QList<Child *>children;
   Menus *menubar;
   Pane *pane;
@@ -105,7 +103,8 @@ private:
 
 };
 
-// extern Form *form;
+extern Child *isigraph;
+extern Child *opengl;
 extern Form *evtform;
 extern int FormSeq;
 extern QList<Form *>Forms;

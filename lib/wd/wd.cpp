@@ -148,6 +148,8 @@ static Child *cc=0;
 Form *form=0;
 Form *evtform=0;
 Font *fontdef=0;
+Child *isigraph=0;
+Child *opengl=0;
 
 QList<Form *>Forms;
 
@@ -1276,6 +1278,8 @@ void wdreset()
   Forms.clear();
   form=0;
   evtform=0;
+  isigraph=0;
+  opengl=0;
   if (fontdef) delete fontdef;
   fontdef=0;
   if (FontExtent) delete FontExtent;

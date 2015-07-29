@@ -18,15 +18,15 @@ Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (invalidopt(n,opt,"")) return;
   w->setObjectName(qn);
   childStyle(opt);
-  f->isigraph = this;
+  isigraph = this;
 }
 
 // ---------------------------------------------------------------------
 void Isigraph::setform()
 {
   if (!widget) return;
-  if (!(event=="paint" || event=="print")) form=pform;
-  form->isigraph=this;
+  if (!(event=="paint" || event=="resize" || event=="print")) Child::setform();
+  isigraph=this;
 }
 
 // ---------------------------------------------------------------------

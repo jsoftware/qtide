@@ -32,8 +32,8 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
 // ---------------------------------------------------------------------
 Opengl2::~Opengl2()
 {
-  if (pchild==pchild->pform->opengl)
-    pchild->pform->opengl=0;
+  if (pchild==opengl)
+    opengl=0;
   if (painter) {
     painter->end();
     delete painter;
@@ -108,7 +108,7 @@ void Opengl2::resizeGL(int width, int height)
 // ---------------------------------------------------------------------
 void Opengl2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  pchild->pform->opengl=pchild;
+  opengl=pchild;
 
   string lmr = "";
   switch (event->button()) {
@@ -159,7 +159,7 @@ void Opengl2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 // ---------------------------------------------------------------------
 void Opengl2::wheelEvent(QWheelEvent *event)
 {
-  pchild->pform->opengl=pchild;
+  opengl=pchild;
 
   char deltasign = ' ';
   int delta = event->delta() / 8;  // degree
