@@ -99,6 +99,7 @@ extern Form *form;
 #define glqpixels gl_qpixels
 #define glqpixelm gl_qpixelm
 #define glqtextmetrics gl_qtextmetrics
+#define glqtype gl_qtype
 #define glqwh gl_qwh
 #define glrect gl_rect
 #define glrgb gl_rgb
@@ -170,6 +171,7 @@ extern Prtobj *prtobj;
 #define glqpixels glzqpixels
 #define glqpixelm glzqpixelm
 #define glqtextmetrics glzqtextmetrics
+#define glqtype glzqtype
 // #define glqwh glzqwh
 #define glrect glzrect
 #define glrgb glzrgb
@@ -231,6 +233,7 @@ extern Drawobj *drawobj;
 #define glqpixels glc_qpixels
 #define glqpixelm glc_qpixelm
 #define glqtextmetrics glc_qtextmetrics
+#define glqtype glc_qtype
 #define glqwh glc_qwh
 #define glrect glc_rect
 #define glrgb glc_rgb
@@ -451,6 +454,25 @@ int glqtextmetrics(int *tm)
   *(tm+5) = fm.averageCharWidth();
   *(tm+6) = fm.maxWidth();
 
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glqtype(int *type)
+{
+  if (!type) return 1;
+  CHKPAINTER2
+#if defined(GLISIGRAPH)
+  type[0] = (w->type=="isigraph")?0:1;
+#elif defined(GLOPENGL)
+  type[0] = 2;
+#elif defined(GLPRINTER)
+  type[0] = 3;
+#elif defined(GLPAINTER)
+  type[0] = 4;
+#else
+  type[0] = 0;
+#endif
   return 0;
 }
 
