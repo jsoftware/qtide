@@ -506,24 +506,9 @@ int glsel2(char *g)
     return glsel((void *) c_strtol(p));
   }
   Form *f;
-// search current form first
+// search current form only
   if (form) {
     f=form;
-    if ((cc=f->id2child(g))) {
-#ifdef GLOPENGL
-      if ((cc->type == "opengl") && cc->widget) {
-#else
-      if (((cc->type == "isigraph")||(cc->type == "isidraw")) && cc->widget) {
-#endif
-        form=f;
-        form->child = cc;
-        QTwidget = cc;
-        return 0;
-      }
-    }
-  }
-  for (int i=0; i<Forms.size(); i++) {
-    f=Forms.at(i);
     if ((cc=f->id2child(g))) {
 #ifdef GLOPENGL
       if ((cc->type == "opengl") && cc->widget) {
