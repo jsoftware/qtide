@@ -90,11 +90,12 @@ void WGrid::drawmergesizes()
       for (j=s=0; j<n; j++)
         s+=Dwx[j];
       if (w>s)
-        for (j=0; j<n; j++)
+        for (j=0; j<n; j++) {
           if (s>0)
             Dwx[j]=1+(Dwx[j]*w)/s;
           else
             Dwx[j]=1+w/n;
+        }
     }
   }
 
@@ -107,11 +108,12 @@ void WGrid::drawmergesizes()
       for (j=s=0; j<n; j++)
         s+=Dhx[j];
       if (h>s)
-        for (j=0; j<n; j++)
+        for (j=0; j<n; j++) {
           if (s>0)
             Dhx[j]=1+(Dhx[j]*h)/s;
           else
             Dhx[j]=1+h/n;
+        }
     }
   }
 }

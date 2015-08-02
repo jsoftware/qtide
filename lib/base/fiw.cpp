@@ -41,11 +41,18 @@ Fiw::Fiw(int p, QString s)
   Parent=p;
   readwin();
 
+  int checkboxspacing;
+#ifdef __MACH__
+  checkboxspacing=4;
+#else
+  checkboxspacing=0;
+#endif
+
   QVBoxLayout *v=new QVBoxLayout();
-  v->setSpacing(12);
   v->setSpacing(12);
 
   QFormLayout *f = new QFormLayout;
+  f->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
   lsearchfor = new QLabel("&Search for:");
   searchfor = makecombobox("searchfor");
   searchfor->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
@@ -62,7 +69,7 @@ Fiw::Fiw(int p, QString s)
   QHBoxLayout *h=new QHBoxLayout();
   QVBoxLayout *c=new QVBoxLayout();
   c->setContentsMargins(0,0,0,0);
-  c->setSpacing(0);
+  c->setSpacing(checkboxspacing);
   matchcase=makecheckbox("&Match case");
   assigned=makecheckbox("&Assigned");
   nameonly=makecheckbox("&Name only");

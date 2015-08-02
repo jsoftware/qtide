@@ -27,14 +27,27 @@ using namespace std;
 Fif::Fif(QString s, bool ifname)
 {
   Title="Find in Files";
-  QVBoxLayout *a=new QVBoxLayout();
+
+  int layoutcmv,checkboxcmv,checkboxspacing;
+#ifdef __MACH__
+  layoutcmv=5;
+  checkboxcmv=2;
+  checkboxspacing=4;
+#else
+  layoutcmv=2;
+  checkboxcmv=0;
+  checkboxspacing=0;
+#endif
+
+                  QVBoxLayout *a=new QVBoxLayout();
   a->setContentsMargins(0,0,0,0);
 
   QVBoxLayout *v=new QVBoxLayout();
-  v->setContentsMargins(11,11,11,2);
+  v->setContentsMargins(11,11,11,layoutcmv);
   v->setSpacing(12);
 
   QFormLayout *f = new QFormLayout;
+  f->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
   QLabel *lsearchfor = new QLabel("&Search for:");
   searchfor = makecombobox("searchfor");
   lsearchfor->setBuddy(searchfor);
@@ -55,8 +68,8 @@ Fif::Fif(QString s, bool ifname)
   QHBoxLayout *h=new QHBoxLayout();
 
   QVBoxLayout *c=new QVBoxLayout();
-  c->setContentsMargins(0,0,0,0);
-  c->setSpacing(0);
+  c->setContentsMargins(0,0,0,checkboxcmv);
+  c->setSpacing(checkboxspacing);
   matchcase=makecheckbox("&Match case");
   subdir=makecheckbox("Search su&bfolders","subdir");
   fileonly=makecheckbox("Fil&enames only","fileonly");
@@ -68,8 +81,8 @@ Fif::Fif(QString s, bool ifname)
   h->addStretch(1);
 
   QVBoxLayout *d=new QVBoxLayout();
-  d->setContentsMargins(0,0,0,0);
-  d->setSpacing(0);
+  d->setContentsMargins(0,0,0,checkboxcmv);
+  d->setSpacing(checkboxspacing);
   assigned=makecheckbox("&Assigned");
   nameonly=makecheckbox("&Name only");
   regex=makecheckbox("&Regex");
