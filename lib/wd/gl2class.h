@@ -443,9 +443,14 @@ int glqpixels(const int *p, int *pix)
 int glqtextmetrics(int *tm)
 {
   if (!tm) return 1;
+  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
+#if defined(GLPRINTER)
+  CHKPAINTER
+  QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
+#else
   CHKPAINTER2
-  if (!w->font) return 1;
-  QFontMetrics fm = QFontMetrics((w->font)->font);
+  QFontMetrics fm = QFontMetrics(FontExtent->font);
+#endif
   *(tm) = fm.height();
   *(tm+1) = fm.ascent();
   *(tm+2) = fm.descent();

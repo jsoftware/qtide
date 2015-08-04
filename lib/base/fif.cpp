@@ -39,7 +39,7 @@ Fif::Fif(QString s, bool ifname)
   checkboxspacing=0;
 #endif
 
-                  QVBoxLayout *a=new QVBoxLayout();
+  QVBoxLayout *a=new QVBoxLayout();
   a->setContentsMargins(0,0,0,0);
 
   QVBoxLayout *v=new QVBoxLayout();
