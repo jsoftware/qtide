@@ -368,14 +368,14 @@ void Note::select_line(QString s)
   QString com,hdr,ftr,txt;
   QStringList mid;
   Nedit *e=editPage();
-  config.filepos_set(e->fname,e->readtop());
+  config.filetop_set(e->fname,e->readtop());
   txt=e->readselect_line(&pos,&len);
   hdr=txt.mid(0,pos);
   mid=txt.mid(pos,len).split('\n');
   ftr=txt.mid(pos+len);
   mid=select_line1(mid,s,&pos,&len);
   replacetext(e,hdr+mid.join("\n")+ftr);
-  e->settop(config.filepos_get(e->fname));
+  e->settop(config.filetop_get(e->fname));
   e->setselect(pos,len);
   siderefresh();
 }
@@ -449,7 +449,7 @@ void Note::select_text(QString s)
   int i,pos,len;
   QString hdr,mid,ftr,txt;
   Nedit *e=editPage();
-  config.filepos_set(e->fname,e->readtop());
+  config.filetop_set(e->fname,e->readtop());
   txt=e->readselect_text(&pos,&len);
   if (len==0) {
     info("Note","No text selected") ;
@@ -472,7 +472,7 @@ void Note::select_text(QString s)
       if(mid[i]==old[i]) mid[i]=lc[i];
   }
   replacetext(e,hdr+mid+ftr);
-  e->settop(config.filepos_get(e->fname));
+  e->settop(config.filetop_get(e->fname));
   e->setselect(pos,0);
   siderefresh();
 }

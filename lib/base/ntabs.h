@@ -23,6 +23,7 @@ public:
   void setmodified(int index,bool b);
 
   void tabclose(int index);
+  void tabclose1(int index);
   void tabcloseall();
   void tabclosefile(QString f);
 

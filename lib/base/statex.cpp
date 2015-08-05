@@ -81,15 +81,27 @@ void Config::dirmatch_init()
 }
 
 // ---------------------------------------------------------------------
-int Config::filepos_get(QString f)
+int Config::filecur_get(QString f)
 {
-  return FilePos.value(f,0);
+  return FileCur.value(f,0);
 }
 
 // ---------------------------------------------------------------------
-void Config::filepos_set(QString f, int p)
+void Config::filecur_set(QString f, int p)
 {
-  FilePos.insert(f,p);
+  FileCur.insert(f,p);
+}
+
+// ---------------------------------------------------------------------
+int Config::filetop_get(QString f)
+{
+  return FileTop.value(f,0);
+}
+
+// ---------------------------------------------------------------------
+void Config::filetop_set(QString f, int p)
+{
+  FileTop.insert(f,p);
 }
 
 // ---------------------------------------------------------------------

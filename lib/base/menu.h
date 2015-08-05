@@ -43,6 +43,7 @@ private:
   void createdfmMenu();
   void createeditMenu(QString s);
   void createfileMenu(QString s);
+  void createfopenMenu();
   void createfkeyMenu(QString s);
   void createhelpMenu();
   void createlaunchMenu(QString s);
@@ -62,6 +63,7 @@ private:
   QMenu *editMenu;
   QMenu *fileMenu;
   QMenu *fkeyMenu;
+  QMenu *fopenMenu;
   QMenu *helpMenu;
   QMenu *lpadMenu;
   QMenu *projMenu;
@@ -106,6 +108,9 @@ private:
   QAction *fileopenAct;
   QAction *fileopenaddonsAct;
   QAction *fileopenallAct;
+  QAction *fileopencurrentAct;
+  QAction *fileopenhomeAct;
+  QAction *fileopenlastAct;
   QAction *fileopensystemAct;
   QAction *fileopentempAct;
   QAction *fileopenuserAct;

@@ -56,7 +56,15 @@ QString dialogfileopen(QWidget *w,QString t)
     d=getfilepath();
   else if (t=="addons")
     d=config.AddonsPath.absolutePath();
-  else if (t=="system")
+  else if (t=="current")
+    d=var_cmdr("1!:43''");
+  else if (t=="home")
+    d=config.HomePath.absolutePath();
+  else if (t=="last") {
+    d=cfpath(config.LastFileOpen);
+    if (d.isEmpty())
+      d=config.TempPath.absolutePath();
+  } else if (t=="system")
     d=config.SystemPath.absolutePath();
   else if (t=="temp")
     d=config.TempPath.absolutePath();

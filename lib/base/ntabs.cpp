@@ -225,12 +225,19 @@ void Ntabs::setmodified(int index,bool b)
 void Ntabs::tabclose(int index)
 {
   noevents(1);
+  tabclose1(index);
+  tabsetindex(currentIndex());
+  pnote->scriptenable();
+  noevents(0);
+}
+
+// ---------------------------------------------------------------------
+void Ntabs::tabclose1(int index)
+{
   if (tabsave(index)) {
     watcher->removePath(((Nedit *)widget(index))->fname);
     removeTab(index);
   }
-  pnote->scriptenable();
-  noevents(0);
 }
 
 // ---------------------------------------------------------------------
@@ -239,7 +246,9 @@ void Ntabs::tabcloseall()
   noevents(1);
   int len=count();
   for (int i=0; i<len; i++)
-    tabclose(0);
+    tabclose1(0);
+  tabsetindex(currentIndex());
+  pnote->scriptenable();
   noevents(0);
 }
 
@@ -314,8 +323,10 @@ int Ntabs::tabopen1(QString s,int line)
   if (line>=0) {
     e->moveCursor(QTextCursor::Start);
     e->selectline(line);
-  } else
-    e->settop(config.filepos_get(s));
+  } else {
+    e->settop(config.filetop_get(s));
+    e->setselect(config.filecur_get(s),0);
+  }
   switch (config.OpenTabAt) {
   case 1 :
     n=insertTab(1+currentIndex(),e,e->sname);
@@ -337,6 +348,7 @@ int Ntabs::tabopen1(QString s,int line)
   else
     e->setCompleter(0);
 #endif
+  config.LastFileOpen=e->fname;
   return n;
 }
 
@@ -385,8 +397,10 @@ bool Ntabs::tabreplace(QString s,int line)
   if (line>=0) {
     e->moveCursor(QTextCursor::Start);
     e->selectline(line);
-  } else
-    e->settop(config.filepos_get(s));
+  } else {
+    e->settop(config.filetop_get(s));
+    e->setselect(config.filecur_get(s),0);
+  }
   setmodified(index,false);
   tabsetindex(index);
   setTabText(index,e->sname);
@@ -410,7 +424,8 @@ bool Ntabs::tabsave(int index)
 {
   if (index<0) return true;
   Nedit *e=(Nedit *)widget(index);
-  config.filepos_set(e->fname,e->readtop());
+  config.filecur_set(e->fname,e->readcurpos());
+  config.filetop_set(e->fname,e->readtop());
   QString t = e->toPlainText();
   if (config.TrimTrailingWS)
     t=trimtws(t);

@@ -117,6 +117,7 @@ void Config::folder_init()
   AddonsPath.setPath(cpath("~addons"));
   BinPath.setPath(cpath("~bin"));
   ConfigPath.setPath(cpath("~config"));
+  HomePath.setPath(cpath("~home"));
   SnapPath.setPath(cpath("~snap"));
   SystemPath.setPath(cpath("~install"));
   TempPath.setPath(cpath("~temp"));

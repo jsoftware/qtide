@@ -97,12 +97,17 @@ void Menu::createActions()
   filesaveasAct = makeact("filesaveasAct","Save &As","");
   filenewAct = makeact("filenewAct","&New","");
   filenewtempAct = makeact("filenewtempAct","&New temp","Ctrl+N");
+
   fileopenAct = makeact("fileopenAct","&Open","");
-  fileopenaddonsAct = makeact("fileopenaddonsAct","Open &addons","");
+  fileopenaddonsAct = makeact("fileopenaddonsAct","&addons","");
   fileopenallAct = makeact("fileopenallAct","&Open All","");
-  fileopentempAct = makeact("fileopentempAct","Open &temp","Ctrl+O");
-  fileopenuserAct = makeact("fileopenuserAct","Open &user","");
-  fileopensystemAct = makeact("fileopensystemAct","Open &system","");
+  fileopencurrentAct = makeact("fileopencurrentAct","&current","");
+  fileopenhomeAct = makeact("fileopenhomeAct","&home","");
+  fileopenlastAct = makeact("fileopenlastAct","&last used","");
+  fileopensystemAct = makeact("fileopensystemAct","&system","");
+  fileopentempAct = makeact("fileopentempAct","&temp","Ctrl+O");
+  fileopenuserAct = makeact("fileopenuserAct","&user","");
+
 #ifndef QT_NO_PRINTER
   fileprintAct = makeact("fileprintAct","&Print","");
   fileprintpreviewAct = makeact("fileprintpreviewAct","Print preview","");
@@ -290,7 +295,7 @@ void Menu::createfileMenu(QString s)
     fileMenu->addAction(fileopenAct);
     fileMenu->addSeparator();
     fileMenu->addAction(filenewtempAct);
-    fileMenu->addAction(fileopentempAct);
+    createfopenMenu();
     fileMenu->addSeparator();
     fileMenu->addAction(filerecentAct);
     fileMenu->addSeparator();
@@ -312,10 +317,7 @@ void Menu::createfileMenu(QString s)
   } else {
     fileMenu->addAction(filenewtempAct);
     fileMenu->addSeparator();
-    fileMenu->addAction(fileopentempAct);
-    fileMenu->addAction(fileopenuserAct);
-    fileMenu->addAction(fileopenaddonsAct);
-    fileMenu->addAction(fileopensystemAct);
+    createfopenMenu();
     fileMenu->addSeparator();
     fileMenu->addAction(filerecentAct);
     if (config.AppName!="jqt") {
@@ -360,6 +362,20 @@ void Menu::createfkeyMenu(QString s)
   fkeyMenu->addSeparator();
   fkeyMenu->addAction(viewfontplusAct);
   fkeyMenu->addAction(viewfontminusAct);
+}
+
+// ---------------------------------------------------------------------
+void Menu::createfopenMenu()
+{
+  fopenMenu = fileMenu->addMenu("Open in folder");
+  fopenMenu->menuAction()->setMenuRole(QAction::NoRole);
+  fopenMenu->addAction(fileopentempAct);
+  fopenMenu->addAction(fileopenaddonsAct);
+  fopenMenu->addAction(fileopencurrentAct);
+  fopenMenu->addAction(fileopenhomeAct);
+  fopenMenu->addAction(fileopenlastAct);
+  fopenMenu->addAction(fileopensystemAct);
+  fopenMenu->addAction(fileopenuserAct);
 }
 
 // ---------------------------------------------------------------------
@@ -781,9 +797,45 @@ void Note::on_fileopenAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_fileopenaddonsAct_triggered()
+{
+  openfile(this,"addons");
+}
+
+// ---------------------------------------------------------------------
 void Note::on_fileopenallAct_triggered()
 {
   notyet("fileopenallAct");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileopenuserAct_triggered()
+{
+  openfile(this,"user");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileopencurrentAct_triggered()
+{
+  openfile(this,"current");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileopenhomeAct_triggered()
+{
+  openfile(this,"home");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileopenlastAct_triggered()
+{
+  openfile(this,"last");
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileopensystemAct_triggered()
+{
+  openfile(this,"system");
 }
 
 // ---------------------------------------------------------------------
@@ -1423,6 +1475,24 @@ void Term::on_fileopenaddonsAct_triggered()
 void Term::on_fileopenallAct_triggered()
 {
   notyet("fileopenallAct");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_fileopencurrentAct_triggered()
+{
+  openfile(this,"current");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_fileopenhomeAct_triggered()
+{
+  openfile(this,"home");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_fileopenlastAct_triggered()
+{
+  openfile(this,"last");
 }
 
 // ---------------------------------------------------------------------

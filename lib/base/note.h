@@ -100,8 +100,14 @@ public slots:
   void on_filenewAct_triggered();
   void on_filenewtempAct_triggered();
   void on_fileopenAct_triggered();
+  void on_fileopenaddonsAct_triggered();
   void on_fileopenallAct_triggered();
+  void on_fileopencurrentAct_triggered();
+  void on_fileopenhomeAct_triggered();
+  void on_fileopenlastAct_triggered();
+  void on_fileopensystemAct_triggered();
   void on_fileopentempAct_triggered();
+  void on_fileopenuserAct_triggered();
 #ifndef QT_NO_PRINTER
   void on_fileprintAct_triggered();
   void on_fileprintpreviewAct_triggered();
