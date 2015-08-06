@@ -467,9 +467,10 @@ void Ntabs::tabsaveas(int index)
 {
   if (index<0) return;
   Nedit *e=(Nedit *)widget(index);
-  QString p=cfpath(e->fname);
+  QString old=e->fname;
+  QString p=cfpath(old);
   QString s = cfcase(dialogsaveas(this,"Save As", p));
-  if (s.isEmpty() || s==e->fname)  return;
+  if (s.isEmpty() || s==old)  return;
   if (!s.contains('.'))
     s+=config.DefExt;
   QFile *f=new QFile(s);
@@ -481,6 +482,9 @@ void Ntabs::tabsaveas(int index)
   setmodified(index,false);
   setTabText(index,e->sname);
   tabsetindex(index);
+  if (recent.Files.contains(old))
+    recent.filesadd (s);
+  watcher->removePath(old);
   watcher->addPath(s);
 }
 
