@@ -91,7 +91,7 @@ QToolBar *Nside::createdefsTB()
 #else
   t->setIconSize(QSize(18,18));
 #endif
-  refreshdefsAct = makeact("refresh.svg","Refresh");
+  refreshdefsAct = makeact("refresh.png","Refresh");
   t->addAction(refreshdefsAct);
   return t;
 }
@@ -176,7 +176,7 @@ QToolBar *Nside::createsourceTB()
 #else
   t->setIconSize(QSize(18,18));
 #endif
-  refreshsourceAct = makeact("refresh.svg", "Refresh");
+  refreshsourceAct = makeact("refresh.png", "Refresh");
   t->addAction(refreshsourceAct);
   return t;
 }
