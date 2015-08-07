@@ -448,7 +448,6 @@ int glqtextmetrics(int *tm)
   CHKPAINTER
   QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());
 #else
-  CHKPAINTER2
   QFontMetrics fm = QFontMetrics(FontExtent->font);
 #endif
   *(tm) = fm.height();
