@@ -582,7 +582,7 @@ void Note::on_cfgbaseAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_cfgdirmAct_triggered()
 {
-  new Dirm("std");
+  term->on_cfgdirmAct_triggered();
 }
 
 // ---------------------------------------------------------------------
