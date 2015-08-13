@@ -557,16 +557,16 @@ void Note::settitle(QString file, bool mod)
 
   if (file.isEmpty()) {
     s=EditText;
-    if (project.Id.size())
-      s="[" + project.Id + "] - " + s;
+    if (Id.size())
+      s="[" + Id + "] - " + s;
     setWindowTitle(s);
     return;
   }
 
   s=cfsname(file);
-  if (project.Id.size()) n="[" + project.Id + "] - ";
+  if (Id.size()) n="[" + Id + "] - ";
 
-  if (file == cpath("~" + project.Id + "/" + s))
+  if (file == cpath("~" + Id + "/" + s))
     f = s;
   else
     f = project.projectname(file);
