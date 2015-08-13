@@ -66,6 +66,16 @@ void Bedit::cut()
 #endif
 
 // ---------------------------------------------------------------------
+int Bedit::getpositioninblock(QTextCursor c)
+{
+#ifndef QT47
+  return c.position() - c.block().position();
+#else
+  return c.positionInBlock();
+#endif
+}
+
+// ---------------------------------------------------------------------
 int Bedit::lineNumberAreaWidth()
 {
   if (!config.LineNos) return 2;
@@ -103,11 +113,7 @@ void Bedit::home()
   QString ws=" \t";
   QTextCursor c = textCursor();
   QString txt = c.block().text();
-#ifndef QT47
-  int pos= c.position() - c.block().position();
-#else
-  int pos= c.positionInBlock();
-#endif
+  int pos=getpositioninblock(c);
   txt = txt.left(pos);
   int mov=0;
   for (int i=0; i<pos; i++)

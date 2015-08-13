@@ -24,6 +24,7 @@ public:
   Bedit(QWidget *parent = 0);
   ~Bedit();
 
+  int getpositioninblock(QTextCursor c);
   void home();
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();

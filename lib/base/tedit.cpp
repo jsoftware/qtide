@@ -105,12 +105,18 @@ void Tedit::enter()
   int len = blockCount();
   if (row < len - 1) {
     QString p=getprompt();
+    int pos;
+    if (config.KeepCursorPosOnRecall)
+      pos=getpositioninblock(c);
+    else
+      pos=-1;
     if (initialblanks(p) == p.length()) {
       int pad=qMax(0,p.length() - initialblanks(txt));
       QString hdr(pad,' ');
       txt=hdr + txt;
+      pos=pos + hdr.size();
     }
-    promptreplace(txt);
+    promptreplace(txt,pos);
   } else
     docmd(txt.trimmed());
 }
@@ -231,7 +237,7 @@ void Tedit::loadscript(QString s,bool show)
 }
 
 // ---------------------------------------------------------------------
-void Tedit::promptreplace(QString t)
+void Tedit::promptreplace(QString t,int pos)
 {
   if (t.size() == 0) return;
   moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
@@ -239,7 +245,10 @@ void Tedit::promptreplace(QString t)
   moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
   textCursor().removeSelectedText();
   append(t);
-  moveCursor(QTextCursor::End);
+  if (pos>-1) {
+    moveCursor(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
+    setcurpos(pos+readcurpos());
+  }
 }
 
 // ---------------------------------------------------------------------

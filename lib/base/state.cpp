@@ -259,6 +259,8 @@ void Config::initide()
   if (w=="bold") fontweight=QFont::Bold;
   Font.setWeight(fontweight);
 
+  KeepCursorPosOnRecall = s->value("Session/KeepCursorPosOnRecall",false).toBool();
+
   int len=s->value("Session/MaxInputLog",-1).toInt();
   if (len<0)
     len=(s->value("Session/KeepInputLog",true).toBool()) ? 100 : 0;
@@ -293,7 +295,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Session/MaxInputLog")) return;
+  if (s->allKeys().contains("Session/KeepCursorPosOnRecall")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -319,6 +321,7 @@ void Config::initide()
   s->setValue("Session/FontFamily",Font.family());
   s->setValue("Session/FontSize",Font.pointSize());
   s->setValue("Session/FontWeight",w);
+  s->setValue("Session/KeepCursorPosOnRecall",KeepCursorPosOnRecall);
   s->setValue("Session/MaxInputLog",MaxInputLog);
   s->setValue("Session/MaxRecent",MaxRecent);
   s->setValue("Session/OpenTabAt",OpenTabAt);
@@ -356,6 +359,7 @@ void Config::initide()
     "# FontFamily=Menlo             term/edit font family\n"
     "# FontSize=10                  font size\n"
     "# FontWeight=normal            font weight: normal or bold\n"
+    "# KeepCursorPosOnRecall=false  if keep cursor position on line recall\n"
     "# MaxInputLog=100              max number in input log, 0 for none\n"
     "# MaxRecent=15                 max number in recent files\n"
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"

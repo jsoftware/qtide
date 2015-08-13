@@ -94,6 +94,7 @@ public:
   QDir HomePath;
   QString Host;
   bool ifGit;
+  bool KeepCursorPosOnRecall;
   QString Lang;
   QString LastFileOpen;
   QStringList LaunchPadKeys;
