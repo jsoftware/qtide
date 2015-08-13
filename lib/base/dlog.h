@@ -21,8 +21,10 @@ private:
 };
 
 void dlog_add(QString);
+QString dlog_get();
 void dlog_init();
 QString dlog_scroll(int);
+void dlog_set(QString);
 void dlog_write();
 
 #endif

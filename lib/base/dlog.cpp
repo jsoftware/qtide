@@ -82,6 +82,12 @@ void dlog_add(QString s)
 }
 
 // ---------------------------------------------------------------------
+QString dlog_get(void)
+{
+  return InputLog.join("\n");
+}
+
+// ---------------------------------------------------------------------
 void dlog_init()
 {
   InputLogMax = qMax(config.MaxInputLog,100);
@@ -123,6 +129,13 @@ QString dlog_scroll(int m)
   else
     s = InputLog.at(InputLogPos);
   return config.DefIndent + s;
+}
+
+// ---------------------------------------------------------------------
+void dlog_set(QString s)
+{
+  InputLog=s.split('\n',QString::SkipEmptyParts);
+  dlog_write();
 }
 
 // ---------------------------------------------------------------------

@@ -5,6 +5,7 @@
 #include "font.h"
 #include "wd.h"
 #include "../base/bedit.h"
+#include "../base/dlog.h"
 #include "../base/jsvr.h"
 #include "../base/note.h"
 #include "../base/state.h"
@@ -23,6 +24,7 @@ static string smfocus();
 static string smfont();
 static string smget();
 static string smgetactive();
+static string smgetinputlog();
 static string smgetscript(string);
 static string smgettabs(QString);
 static string smgetwin(string);
@@ -37,6 +39,7 @@ static string smsave();
 static string smsaveactive();
 static string smsaveall();
 static string smset();
+static string smsetinputlog(string,string);
 static string smsetselect(Bedit *,string);
 static string smsettext(string,string);
 static string smsetxywh(string,string);
@@ -183,6 +186,8 @@ string smget()
     return smgetactive();
   if (p=="term" || p=="edit" || p=="edit2")
     return smgetwin(p);
+  if (p=="inputlog")
+    return smgetinputlog();
   if (p=="xywh")
     return smgetxywh();
   QStringList s=qsplit(p);
@@ -201,6 +206,13 @@ string smgetactive()
   rc=-1;
   return (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
          ? "edit" : "term";
+}
+
+// ---------------------------------------------------------------------
+string smgetinputlog()
+{
+  rc=-1;
+  return q2s(dlog_get());
 }
 
 // ---------------------------------------------------------------------
@@ -350,18 +362,6 @@ string smreplace()
 }
 
 // ---------------------------------------------------------------------
-// string smrun()
-// {
-//   string p=cmd.getparms();
-//   if (p!="edit")
-//     return smerror("unrecognized sm command: run " + p);
-//   if (note==0 || note->editIndex()<0)
-//     return smerror("No active edit window");
-//   note->runlines(true,false);  // all lines, no display
-//   return"";
-// }
-//
-// ---------------------------------------------------------------------
 string smsave()
 {
   string p=cmd.getparms();
@@ -396,6 +396,7 @@ string smset()
   string p=cmd.getid();
   if (p.empty())
     return smerror("sm set parameters not given");
+
   string c=cmd.getid();
   if (c.empty())
     return smerror("sm set " + p + " parameters not given");
@@ -412,7 +413,9 @@ string smset()
     if (note2==0)
       return smerror("No active edit2 window");
     e=(Bedit *)note2->editPage();
-  } else
+  } else if (p=="inputlog")
+    return smsetinputlog(c,q);
+  else
     return smerror("unrecognized sm command: set " + p);
 
   if (e==0 && (q=="select" || q=="text"))
@@ -426,6 +429,15 @@ string smset()
     return smsetxywh(p,q);
 
   return smerror("unrecognized sm command: set " + p + " " + q);
+}
+
+// ---------------------------------------------------------------------
+string smsetinputlog(string c,string q)
+{
+  if (c!="text")
+    return smerror("unrecognized sm command: set inputlog " + c + "..." );
+  dlog_set(s2q(q));
+  return "";
 }
 
 // ---------------------------------------------------------------------
