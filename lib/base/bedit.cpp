@@ -126,6 +126,24 @@ void Bedit::home()
 }
 
 // ---------------------------------------------------------------------
+void Bedit::homeshift()
+{
+  QString ws=" \t";
+  QTextCursor c = textCursor();
+  QString txt = c.block().text();
+  int pos=getpositioninblock(c);
+  txt = txt.left(pos);
+  int mov=0;
+  for (int i=0; i<pos; i++)
+    if (!ws.contains(txt.at(i))) {
+      mov=i;
+      break;
+    }
+  int cur=c.position();
+  setselect(cur-pos+mov,pos-mov);
+}
+
+// ---------------------------------------------------------------------
 void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   if (!config.LineNos) {

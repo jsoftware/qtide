@@ -26,6 +26,7 @@ public:
 
   int getpositioninblock(QTextCursor c);
   void home();
+  void homeshift();
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
   QString readhelptext(int);

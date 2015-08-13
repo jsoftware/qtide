@@ -171,7 +171,13 @@ void Tedit::keyPressEvent(QKeyEvent *e)
   }
 
   if (shift>ctrl) {
-    Bedit::keyPressEvent(e);
+    switch (key) {
+    case Qt::Key_Home:
+      homeshift();
+      break;
+    default:
+      Bedit::keyPressEvent(e);
+    }
     return;
   }
 
