@@ -51,6 +51,7 @@ public:
   void refresh();
   void removeprompt();
   void runlines();
+  void setlinenos(bool b);
   void smact();
   void smprompt(QString s);
   void vieweditor();

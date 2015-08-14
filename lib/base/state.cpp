@@ -168,7 +168,6 @@ void Config::init()
 #endif
 
   Lang = "J";
-  LineNos = false;
   LineWrap = false;
   ScriptFilter="*.ijs";
 
@@ -260,6 +259,8 @@ void Config::initide()
   Font.setWeight(fontweight);
 
   KeepCursorPosOnRecall = s->value("Session/KeepCursorPosOnRecall",false).toBool();
+  LineNos = s->value("Session/LineNumbers",false).toBool();
+  term->setlinenos(LineNos);
 
   int len=s->value("Session/MaxInputLog",-1).toInt();
   if (len<0)
@@ -295,7 +296,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Session/KeepCursorPosOnRecall")) return;
+  if (s->allKeys().contains("Session/LineNumbers")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -322,6 +323,7 @@ void Config::initide()
   s->setValue("Session/FontSize",Font.pointSize());
   s->setValue("Session/FontWeight",w);
   s->setValue("Session/KeepCursorPosOnRecall",KeepCursorPosOnRecall);
+  s->setValue("Session/LineNumbers",LineNos);
   s->setValue("Session/MaxInputLog",MaxInputLog);
   s->setValue("Session/MaxRecent",MaxRecent);
   s->setValue("Session/OpenTabAt",OpenTabAt);
@@ -360,6 +362,7 @@ void Config::initide()
     "# FontSize=10                  font size\n"
     "# FontWeight=normal            font weight: normal or bold\n"
     "# KeepCursorPosOnRecall=false  if keep cursor position on line recall\n"
+    "# LineNumbers=false            if show line numbers\n"
     "# MaxInputLog=100              max number in input log, 0 for none\n"
     "# MaxRecent=15                 max number in recent files\n"
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"

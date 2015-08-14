@@ -128,6 +128,7 @@ void Config::togglelinenos()
 {
   LineNos=!LineNos;
   term->refresh();
+  term->setlinenos(LineNos);
   if (note) {
     note->setlinenos(LineNos);
     if(note2)
