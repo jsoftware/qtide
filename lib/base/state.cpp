@@ -260,7 +260,6 @@ void Config::initide()
 
   KeepCursorPosOnRecall = s->value("Session/KeepCursorPosOnRecall",false).toBool();
   LineNos = s->value("Session/LineNumbers",false).toBool();
-  term->setlinenos(LineNos);
 
   int len=s->value("Session/MaxInputLog",-1).toInt();
   if (len<0)

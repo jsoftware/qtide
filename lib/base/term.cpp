@@ -304,12 +304,6 @@ void Term::resizeEvent(QResizeEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void Term::setlinenos(bool b)
-{
-  menuBar->viewlinenosAct->setChecked(b);
-}
-
-// ---------------------------------------------------------------------
 void Term::smact()
 {
   if (!term->isVisible()) return;

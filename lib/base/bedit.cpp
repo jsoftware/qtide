@@ -78,7 +78,7 @@ int Bedit::getpositioninblock(QTextCursor c)
 // ---------------------------------------------------------------------
 int Bedit::lineNumberAreaWidth()
 {
-  if (!config.LineNos) return 2;
+  if ((type==0) || !config.LineNos) return 2;
   int digits = 1;
   int max = qMax(1, blockCount());
   while (max >= 10) {
@@ -146,7 +146,7 @@ void Bedit::homeshift()
 // ---------------------------------------------------------------------
 void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-  if (!config.LineNos) {
+  if (((type==0) || !config.LineNos)) {
     QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), config.TermBack.color);
     return;
@@ -324,7 +324,7 @@ void Bedit::updateLineNumberAreaWidth(int newBlockCount)
 // ---------------------------------------------------------------------
 void Bedit::updateLineNumberArea(const QRect &rect, int dy)
 {
-  if (!config.LineNos) return;
+  if (((type==0) || !config.LineNos)) return;
   if (dy)
     lineNumberArea->scroll(0, dy);
   else
