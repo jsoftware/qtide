@@ -2,24 +2,50 @@
 #define DLOG_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QListWidget>
 
+// ---------------------------------------------------------------------
 class Slog : public QDialog
 {
   Q_OBJECT
 
 public:
   Slog();
+  void addfilter(QString);
+  void delfilter();
 
 public slots:
   void reject();
   void itemActivated();
 
 private:
+  bool hasuppercase(QString);
   void init();
+  void keyPressEvent(QKeyEvent *e);
   void savepos();
-  void keyReleaseEvent(QKeyEvent *e);
+  void showlist();
+
+  QString Filter;
+  QStringList LogList;
+  QListWidget *s;
+  QLabel *t;
 };
 
+// ---------------------------------------------------------------------
+class SlogList : public QListWidget
+{
+  Q_OBJECT
+
+public:
+  SlogList(Slog *);
+  Slog *pform;
+
+protected:
+  virtual void keyPressEvent(QKeyEvent *e);
+};
+
+// ---------------------------------------------------------------------
 void dlog_add(QString);
 QString dlog_get();
 void dlog_init();

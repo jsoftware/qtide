@@ -1,5 +1,4 @@
 
-#include <QDebug>
 #include <QVBoxLayout>
 
 #include "base.h"
@@ -20,9 +19,13 @@ void dlog_max();
 QStringList makeitems();
 QStringList qsreverse(const QStringList list);
 
+bool ischaracter(int);
+
 // ---------------------------------------------------------------------
 Slog::Slog()
 {
+  Filter="";
+  LogList=makeitems();
   setWindowTitle("Input Log");
   QList<int>d=config.winpos_read("Dlog");
 #ifdef SMALL_SCREEN
@@ -31,9 +34,7 @@ Slog::Slog()
 #else
   resize(qMax(300,d[2]),qMax(300,d[3]));
 #endif
-  QListWidget *s = new QListWidget();
-  s->addItems(makeitems());
-  s->setCurrentRow(InputLog.size()-1);
+  s = new SlogList(this);
 #ifdef QT_OS_ANDROID
   connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
           this,SLOT(itemActivated()));
@@ -45,11 +46,112 @@ Slog::Slog()
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           tedit,SLOT(itemActivated(QListWidgetItem*)));
 #endif
+  t=new QLabel();
+  t->hide();
   QVBoxLayout *b = new QVBoxLayout;
   b->setContentsMargins(0,0,0,0);
+  b->setSpacing(0);
   b->addWidget(s);
+  b->addWidget(t);
   setLayout(b);
+  showlist();
   exec();
+}
+
+// ---------------------------------------------------------------------
+void Slog::addfilter(QString s)
+{
+  Filter+=s;
+  showlist();
+}
+
+// ---------------------------------------------------------------------
+void Slog::delfilter()
+{
+  if (Filter.isEmpty()) return;
+  Filter.remove(Filter.size()-1,1);
+  showlist();
+}
+
+// ---------------------------------------------------------------------
+bool Slog::hasuppercase(QString s)
+{
+  QString t=s.toUpper();
+  for (int i=0; i<s.size(); i++)
+    if (s[i]==t[i]) return true;
+  return false;
+}
+
+// ---------------------------------------------------------------------
+void Slog::itemActivated()
+{
+  savepos();
+  close();
+}
+
+// ---------------------------------------------------------------------
+void Slog::keyPressEvent(QKeyEvent *event)
+{
+  int k=event->key();
+  if (ischaracter(k))
+    addfilter(event->text());
+  else
+    QDialog::keyPressEvent(event);
+}
+
+// ---------------------------------------------------------------------
+void Slog::reject()
+{
+  savepos();
+  QDialog::reject();
+}
+
+// ---------------------------------------------------------------------
+void Slog::savepos()
+{
+  config.winpos_save(this,"Dlog");
+}
+
+// ---------------------------------------------------------------------
+void Slog::showlist()
+{
+  QStringList p;
+  if (Filter.isEmpty())
+    p=LogList;
+  else {
+    bool b=hasuppercase(Filter);
+    p=LogList.filter(Filter,b ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    t->show();
+  }
+  t->setText(" " + Filter);
+  s->clear();
+  s->addItems(p);
+  s->setCurrentRow(p.size()-1);
+}
+
+// ---------------------------------------------------------------------
+SlogList::SlogList(Slog *p)
+{
+  pform=p;
+}
+
+// ---------------------------------------------------------------------
+void SlogList::keyPressEvent(QKeyEvent *event)
+{
+//#ifdef QT_OS_ANDROID
+  //if (event->key()==Qt::Key_Back) {
+  //reject();
+  //}
+//#endif
+  if (event->key()==Qt::Key_Backspace) {
+    event->accept();
+    pform->delfilter();
+    return;
+  }
+  if (event->key()==Qt::Key_Escape || ischaracter(event->key()))
+    event->ignore();
+  else
+    QListWidget::keyPressEvent(event);
 }
 
 // ---------------------------------------------------------------------
@@ -146,36 +248,11 @@ void dlog_write()
     cfwrite(InputLogFile,InputLog.join("\n")+"\n");
 }
 
-// ---------------------------------------------------------------------
-void Slog::reject()
-{
-  savepos();
-  QDialog::reject();
-}
 
 // ---------------------------------------------------------------------
-void Slog::itemActivated()
+bool ischaracter(int k)
 {
-  savepos();
-  close();
-}
-
-// ---------------------------------------------------------------------
-void Slog::savepos()
-{
-  config.winpos_save(this,"Dlog");
-}
-
-// ---------------------------------------------------------------------
-void Slog::keyReleaseEvent(QKeyEvent *event)
-{
-#ifdef QT_OS_ANDROID
-  if (event->key()==Qt::Key_Back) {
-    reject();
-  } else QDialog::keyReleaseEvent(event);
-#else
-  QDialog::keyReleaseEvent(event);
-#endif
+  return ((30<=k) && k<=255);
 }
 
 // ---------------------------------------------------------------------
