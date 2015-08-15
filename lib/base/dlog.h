@@ -13,7 +13,7 @@ class Slog : public QDialog
 public:
   Slog();
   void addfilter(QString);
-  void delfilter();
+  void delfilter(bool);
 
 public slots:
   void reject();
@@ -27,7 +27,7 @@ private:
   void showlist();
 
   QString Filter;
-  QStringList LogList;
+  QList<QStringList> LogList;
   QListWidget *s;
   QLabel *t;
 };

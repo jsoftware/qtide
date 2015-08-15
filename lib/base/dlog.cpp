@@ -25,7 +25,7 @@ bool ischaracter(int);
 Slog::Slog()
 {
   Filter="";
-  LogList=makeitems();
+  LogList.append(makeitems());
   setWindowTitle("Input Log");
   QList<int>d=config.winpos_read("Dlog");
 #ifdef SMALL_SCREEN
@@ -62,14 +62,24 @@ Slog::Slog()
 void Slog::addfilter(QString s)
 {
   Filter+=s;
+  bool b=hasuppercase(Filter);
+  LogList.append(LogList.last().filter(Filter,b ? Qt::CaseSensitive : Qt::CaseInsensitive));
+  t->show();
   showlist();
 }
 
 // ---------------------------------------------------------------------
-void Slog::delfilter()
+void Slog::delfilter(bool all)
 {
   if (Filter.isEmpty()) return;
-  Filter.remove(Filter.size()-1,1);
+  if (all) {
+    Filter="";
+    LogList=LogList.mid(0,1);
+    \
+  } else {
+    Filter.remove(Filter.size()-1,1);
+    LogList.removeLast();
+  }
   showlist();
 }
 
@@ -115,14 +125,7 @@ void Slog::savepos()
 // ---------------------------------------------------------------------
 void Slog::showlist()
 {
-  QStringList p;
-  if (Filter.isEmpty())
-    p=LogList;
-  else {
-    bool b=hasuppercase(Filter);
-    p=LogList.filter(Filter,b ? Qt::CaseSensitive : Qt::CaseInsensitive);
-    t->show();
-  }
+  QStringList p=LogList.last();
   t->setText(" " + Filter);
   s->clear();
   s->addItems(p);
@@ -144,8 +147,8 @@ void SlogList::keyPressEvent(QKeyEvent *event)
   //}
 //#endif
   if (event->key()==Qt::Key_Backspace) {
+    pform->delfilter(event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
     event->accept();
-    pform->delfilter();
     return;
   }
   if (event->key()==Qt::Key_Escape || ischaracter(event->key()))
@@ -247,7 +250,6 @@ void dlog_write()
   if (config.MaxInputLog>0)
     cfwrite(InputLogFile,InputLog.join("\n")+"\n");
 }
-
 
 // ---------------------------------------------------------------------
 bool ischaracter(int k)
