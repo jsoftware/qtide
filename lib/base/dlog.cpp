@@ -75,7 +75,6 @@ void Slog::delfilter(bool all)
   if (all) {
     Filter="";
     LogList=LogList.mid(0,1);
-    \
   } else {
     Filter.remove(Filter.size()-1,1);
     LogList.removeLast();

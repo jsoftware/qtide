@@ -105,17 +105,15 @@ void Tedit::enter()
   int len = blockCount();
   if (row < len - 1) {
     QString p=getprompt();
-    int pos;
-    if (config.KeepCursorPosOnRecall)
-      pos=getpositioninblock(c);
-    else
-      pos=-1;
+    int pad=0;
+    int pos=-1;
     if (initialblanks(p) == p.length()) {
-      int pad=qMax(0,p.length() - initialblanks(txt));
+      pad=qMax(0,p.length() - initialblanks(txt));
       QString hdr(pad,' ');
       txt=hdr + txt;
-      pos=pos + hdr.size();
     }
+    if (config.KeepCursorPosOnRecall)
+      pos=getpositioninblock(c) + pad;
     promptreplace(txt,pos);
   } else
     docmd(txt.trimmed());
