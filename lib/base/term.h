@@ -164,7 +164,6 @@ public slots:
   void on_vieweditorAct_triggered();
   void on_viewfontminusAct_triggered();
   void on_viewfontplusAct_triggered();
-  void on_viewlinenosAct_triggered();
   void on_viewsidebarAct_triggered();
 
 private:
