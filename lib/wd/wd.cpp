@@ -432,7 +432,7 @@ void wdcmd()
   if (type)
     cc->cmd(p,v);
   else
-    error("bad child id");
+    error("bad child id: " + n);
 }
 
 // ---------------------------------------------------------------------
@@ -1343,7 +1343,7 @@ void wdset1(string n,string p,string v)
     cc->set(n+" "+p,v);
     break;
   default :
-    error("bad child id");
+    error("bad child id: " + n);
   }
   if (rc!=1) form->child=cc;
   noevents(0);
