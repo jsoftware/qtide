@@ -152,15 +152,15 @@ void Menu::createActions()
   toolsdirmAct = makeact("toolsdirmAct","&Directory Match","");
   toolspacmanAct = makeact("toolspacmanAct","&Package Manager","");
   toolsfkeysAct = makeact("toolsfkeysAct","Function Keys","");
-  toselcommentAct = makeact("toselcommentAct","&Toggle Comment","Ctrl+/");
-  toselnoteAct = makeact("toselnoteAct","&Toggle Note","Ctrl+Shift+/");
-  tosellowerAct = makeact("tosellowerAct","Lower Case","");
-  toselplusline1Act = makeact("toselplusline1Act","Add Comment ---","Ctrl+Shift+K");
-  toselplusline2Act = makeact("toselplusline2Act","Add Comment ===","Ctrl+Shift+L");
-  toselsortAct = makeact("toselsortAct","Sort","");
+  toselcommentAct = makeact("toselcommentAct","Toggle &Comment","Ctrl+/");
+  toselnoteAct = makeact("toselnoteAct","Toggle &Note","Ctrl+Shift+/");
+  tosellowerAct = makeact("tosellowerAct","&Lower Case","");
+  toselplusline1Act = makeact("toselplusline1Act","&Add Comment ---","Ctrl+Shift+K");
+  toselplusline2Act = makeact("toselplusline2Act","A&dd Comment ===","Ctrl+Shift+L");
+  toselsortAct = makeact("toselsortAct","&Sort","");
   toseltoggleAct = makeact("toseltoggleAct","&Toggle Case","");
-  toselupperAct = makeact("toselupperAct","Upper Case","");
-  toselviewlinewrapAct = makeact("toselviewlinewrapAct","Wrap","");
+  toselupperAct = makeact("toselupperAct","&Upper Case","");
+  toselviewlinewrapAct = makeact("toselviewlinewrapAct","&Wrap","");
 
   viewasciiAct = makeact("viewasciiAct","&Toggle Ascii Box Drawing","");
   vieweditorAct = makeact("vieweditorAct","&Editor","Ctrl+M");
