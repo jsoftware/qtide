@@ -181,6 +181,14 @@ string Note::gettabstate()
 }
 
 // ---------------------------------------------------------------------
+bool Note::isNoteline(QString s)
+{
+  if(s.size()<5 || "Note" != s.left(4)) return false;
+  QString t=" ('\t";
+  return t.contains(s[4]);
+}
+
+// ---------------------------------------------------------------------
 void Note::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
@@ -316,10 +324,8 @@ void Note::projectsave()
 // ---------------------------------------------------------------------
 void Note::replacetext(Nedit *e, QString txt)
 {
-  QTextDocument *doc=e->document();
-  QTextCursor c(doc);
-  c.select(QTextCursor::Document);
-  c.insertText(txt);
+  e->selectAll();
+  e->insertPlainText(txt);
 }
 
 // ---------------------------------------------------------------------
@@ -355,6 +361,7 @@ void Note::scriptglobals()
   textview("Script Globals","in script: " + e->sname,n.join("\n"));
 }
 
+
 // ---------------------------------------------------------------------
 void Note::selectline(int linenum)
 {
@@ -365,16 +372,21 @@ void Note::selectline(int linenum)
 void Note::select_line(QString s)
 {
   int pos,len;
-  QString com,hdr,ftr,txt;
+  QString hdr,ftr,txt;
   QStringList mid;
   Nedit *e=editPage();
   config.filetop_set(e->fname,e->readtop());
   txt=e->readselect_line(&pos,&len);
-  hdr=txt.mid(0,pos);
-  mid=txt.mid(pos,len).split('\n');
-  ftr=txt.mid(pos+len);
-  mid=select_line1(mid,s,&pos,&len);
-  replacetext(e,hdr+mid.join("\n")+ftr);
+  if (s=="note")
+    txt=select_line_note(txt,&pos,&len);
+  else {
+    hdr=txt.mid(0,pos);
+    mid=txt.mid(pos,len).split('\n');
+    ftr=txt.mid(pos+len);
+    mid=select_line1(mid,s,&pos,&len);
+    txt=hdr+mid.join("\n")+ftr;
+  }
+  replacetext(e,txt);
   e->settop(config.filetop_get(e->fname));
   e->setselect(pos,len);
   siderefresh();
@@ -404,28 +416,32 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
   if (comment.isEmpty()) return mid;
   com=comment+" ";
 
-  if (s=="minus") {
-    for(i=0; i<mid.size(); i++) {
-      p=mid.at(i);
-      if (matchhead(comment,p) && (!matchhead(com+"----",p))
-          && (!matchhead(com+"====",p)))
-        p=p.mid(comment.size());
-      if (p.size() && (p.at(0)==' '))
-        p=p.mid(1);
-      mid.replace(i,p);
-    }
-    *len=mid.join("a").size();
-    return mid;
-  }
-
-  if (s=="plus") {
-    for(i=0; i<mid.size(); i++) {
-      p=mid.at(i);
-      if (p.size())
-        p=com+p;
-      else
-        p=comment;
-      mid.replace(i,p);
+  if (s=="comment") {
+    int m=0;
+    for(i=0; i<mid.size(); i++)
+      if (!matchhead(comment,mid.at(i))) {
+        m=1;
+        break;
+      }
+    if (m) {
+      for(i=0; i<mid.size(); i++) {
+        p=mid.at(i);
+        if (p.size())
+          p=com+p;
+        else
+          p=comment;
+        mid.replace(i,p);
+      }
+    } else {
+      for(i=0; i<mid.size(); i++) {
+        p=mid.at(i);
+        if (matchhead(comment,p) && (!matchhead(com+"----",p))
+            && (!matchhead(com+"====",p)))
+          p=p.mid(comment.size());
+        if (p.size() && (p.at(0)==' '))
+          p=p.mid(1);
+        mid.replace(i,p);
+      }
     }
     *len=mid.join("a").size();
     return mid;
@@ -433,14 +449,94 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
 
   if (s=="plusline1")
     t.fill('-',57);
-  else
+  else if (s=="plusline2")
     t.fill('=',57);
-
+  else
+    return mid;
   t=com + t;
   mid.prepend(t);
   *pos=*pos+1+t.size();
   *len=0;
   return mid;
+}
+
+// ---------------------------------------------------------------------
+QString Note::select_line_note(QString txt,int *ppos, int *plen)
+{
+  int cnt,i,len,n,ndx,pos,row;
+  bool add;
+  QString r;
+  QString end=")\n";
+  QStringList lns,res;
+
+  pos=*ppos;
+  len=*plen;
+  lns=cut2(txt + '\n');
+
+  row=0;
+  for (n=0; row<lns.size(); row++) {
+    n+=lns[row].size();
+    if (n>pos) break;
+  }
+  if (row==lns.size())
+    return txt;
+  ndx=row;
+  for (n=0; ndx<lns.size(); ndx++) {
+    n+=lns[ndx].size();
+    if (n>len) break;
+  }
+  if (ndx==lns.size())
+    return txt;
+  cnt=1+ndx-row;
+
+  add=true;
+  for (i=row; i>=0; i--) {
+    if ((i<row) && lns[i]==end)
+      break;
+    if (isNoteline(lns[i])) {
+      row=i;
+      add=false;
+      break;
+    }
+  }
+
+  if (add) {
+    n=lns.indexOf(end,row);
+    if (n<0) n=lns.size();
+    for (i=row; i<n; i++)
+      if (isNoteline(lns[i])) {
+        n=i;
+        break;
+      }
+    cnt=qMin(cnt,n-row);
+    res=lns.mid(0,row);
+    res.append("Note''\n");
+    res=res + lns.mid(row,cnt);
+    res.append(end);
+    res=res + lns.mid(row+cnt);
+    row++;
+  } else {
+    lns.removeAt(row);
+    n=lns.indexOf(end,row);
+    if (n>-1) {
+      cnt=n-row;
+      lns.removeAt(n);
+    } else
+      cnt=lns.size()-row-1;
+    res=lns;
+  }
+
+  pos=len=0;
+  for (i=0; i<row; i++)
+    pos+=res[i].size();
+  for (i=0; i<cnt; i++)
+    len+=res[row+i].size();
+
+  r=res.join("");
+  r=r.mid(0,r.size()-1);
+  *ppos=pos;
+  *plen=qMin(len,r.size()-pos);
+  return r;
 }
 
 // ---------------------------------------------------------------------

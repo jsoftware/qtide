@@ -149,16 +149,6 @@ public slots:
   void on_toolsdirmAct_triggered();
   void on_toolsfkeysAct_triggered();
   void on_toolspacmanAct_triggered();
-  void on_tosellowerAct_triggered();
-  void on_toselminusAct_triggered();
-  void on_toselplusAct_triggered();
-  void on_toselplusline1Act_triggered();
-  void on_toselplusline2Act_triggered();
-  void on_toselsortAct_triggered();
-  void on_toseltoggleAct_triggered();
-  void on_toselupperAct_triggered();
-  void on_toselviewlinewrapAct_triggered();
-
 
   void on_viewasciiAct_triggered();
   void on_vieweditorAct_triggered();

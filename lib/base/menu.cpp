@@ -152,9 +152,9 @@ void Menu::createActions()
   toolsdirmAct = makeact("toolsdirmAct","&Directory Match","");
   toolspacmanAct = makeact("toolspacmanAct","&Package Manager","");
   toolsfkeysAct = makeact("toolsfkeysAct","Function Keys","");
+  toselcommentAct = makeact("toselcommentAct","&Toggle Comment","Ctrl+/");
+  toselnoteAct = makeact("toselnoteAct","&Toggle Note","Ctrl+Shift+/");
   tosellowerAct = makeact("tosellowerAct","Lower Case","");
-  toselminusAct = makeact("toselminusAct","Remove Comment","Ctrl+Shift+B");
-  toselplusAct = makeact("toselplusAct","Add Comment","Ctrl+Shift+N");
   toselplusline1Act = makeact("toselplusline1Act","Add Comment ---","Ctrl+Shift+K");
   toselplusline2Act = makeact("toselplusline2Act","Add Comment ===","Ctrl+Shift+L");
   toselsortAct = makeact("toselsortAct","Sort","");
@@ -459,8 +459,9 @@ void Menu::createrunMenu(QString s)
 // ---------------------------------------------------------------------
 void Menu::createselMenu()
 {
-  selMenu->addAction(toselminusAct);
-  selMenu->addAction(toselplusAct);
+  selMenu->addAction(toselcommentAct);
+  selMenu->addAction(toselnoteAct);
+  selMenu->addSeparator();
   selMenu->addAction(toselplusline1Act);
   selMenu->addAction(toselplusline2Act);
   selMenu->addSeparator();
@@ -1098,21 +1099,21 @@ void Note::on_toolsfkeysAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_toselcommentAct_triggered()
+{
+  select_line("comment");
+}
+
+// ---------------------------------------------------------------------
 void Note::on_tosellowerAct_triggered()
 {
   select_text("lower");
 }
 
 // ---------------------------------------------------------------------
-void Note::on_toselminusAct_triggered()
+void Note::on_toselnoteAct_triggered()
 {
-  select_line("minus");
-}
-
-// ---------------------------------------------------------------------
-void Note::on_toselplusAct_triggered()
-{
-  select_line("plus");
+  select_line("note");
 }
 
 // ---------------------------------------------------------------------
@@ -1630,60 +1631,6 @@ void Term::on_toolspacmanAct_triggered()
 void Term::on_toolsfkeysAct_triggered()
 {
   notyet("toolsfkeysAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_tosellowerAct_triggered()
-{
-  notyet("tosellowerAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselminusAct_triggered()
-{
-  notyet("toselminusAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselplusAct_triggered()
-{
-  notyet("toselplusAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselplusline1Act_triggered()
-{
-  notyet("toselplusline1Act");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselplusline2Act_triggered()
-{
-  notyet("toselplusline2Act");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselsortAct_triggered()
-{
-  notyet("toselsortAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toseltoggleAct_triggered()
-{
-  notyet("toseltoggleAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselupperAct_triggered()
-{
-  notyet("toselupperAct");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_toselviewlinewrapAct_triggered()
-{
-  notyet("toselviewlinewrapAct");
 }
 
 // ---------------------------------------------------------------------

@@ -346,6 +346,21 @@ bool createdir(QDir d)
 }
 
 // ---------------------------------------------------------------------
+QStringList cut2(QString s)
+{
+  int n;
+  QStringList r;
+  if (s.isEmpty()) return r;
+  QChar p=s[s.size()-1];
+  while (s.size()>0) {
+    n=s.indexOf(p);
+    r.append(s.mid(0,n+1));
+    s=s.mid(n+1);
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QString detab(QString s)
 {
   return s.replace('\t',' ');

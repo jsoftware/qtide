@@ -39,6 +39,7 @@ QString boxj2utf8(std::string s);
 QString c2q(const char *);
 std::string c2s(const char *);
 bool createdir(QDir d);
+QStringList cut2(QString s);
 QString detab(QString s);
 QString dlb(QString s);
 QString dtb(QString s);

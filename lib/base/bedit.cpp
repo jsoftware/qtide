@@ -215,6 +215,8 @@ QString Bedit::readselect_line(int *pos, int *len)
 
   if (bgn)
     bgn=1+txt.lastIndexOf('\n',bgn-1);
+  if (bgn < end && txt[end-1]=='\n')
+    end--;
   end=txt.indexOf('\n',end);
 
   if (end==-1) end=txt.size();

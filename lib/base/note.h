@@ -174,9 +174,9 @@ public slots:
   void on_toolsdirmAct_triggered();
   void on_toolsfkeysAct_triggered();
   void on_toolspacmanAct_triggered();
+  void on_toselcommentAct_triggered();
   void on_tosellowerAct_triggered();
-  void on_toselminusAct_triggered();
-  void on_toselplusAct_triggered();
+  void on_toselnoteAct_triggered();
   void on_toselplusline1Act_triggered();
   void on_toselplusline2Act_triggered();
   void on_toselsortAct_triggered();
@@ -215,6 +215,7 @@ private:
 
   void changeEvent(QEvent *event);
   void closeEvent(QCloseEvent *event);
+  bool isNoteline(QString);
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   bool maybeSave();
@@ -226,6 +227,7 @@ private:
   void selectline(int linenum);
   void select_line(QString s);
   QStringList select_line1(QStringList mid,QString s,int *pos, int *len);
+  QString select_line_note(QString txt,int *pos, int *len);
   void select_text(QString s);
 
   bool sideBarShow;

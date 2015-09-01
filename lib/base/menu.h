@@ -151,9 +151,9 @@ private:
   QAction *toolsfkeysAct;
   QAction *toolslaunchpadAct;
   QAction *toolspacmanAct;
+  QAction *toselcommentAct;
   QAction *tosellowerAct;
-  QAction *toselminusAct;
-  QAction *toselplusAct;
+  QAction *toselnoteAct;
   QAction *toselplusline1Act;
   QAction *toselplusline2Act;
   QAction *toselsortAct;
