@@ -13,14 +13,10 @@
 #include "font.h"
 #include "font.h"
 #include "form.h"
-#include "isigraph2.h"
 #include "menus.h"
 #include "pane.h"
 #include "tabs.h"
 #include "wd.h"
-#ifndef QT_NO_OPENGL
-#include "opengl2.h"
-#endif
 #include "../base/jsvr.h"
 #include "../base/state.h"
 #include "../base/svr.h"
@@ -38,10 +34,8 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   id=s;
   child=0;
   evtchild=0;
-  isigraph=0;
   locale=loc;
   menubar=0;
-  opengl=0;
   seq=FormSeq++;
   tab=0;
   closed=false;

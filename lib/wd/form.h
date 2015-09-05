@@ -103,8 +103,6 @@ private:
 
 };
 
-extern Child *isigraph;
-extern Child *opengl;
 extern Form *evtform;
 extern int FormSeq;
 extern QList<Form *>Forms;

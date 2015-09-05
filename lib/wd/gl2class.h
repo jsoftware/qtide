@@ -25,6 +25,8 @@
 #include "../base/state.h"
 
 extern Form *form;
+extern Child *isigraph;
+extern Child *opengl;
 
 #if defined(GLISIGRAPH)
 
