@@ -6,6 +6,7 @@
 #include "opengl.h"
 #include "pane.h"
 
+extern Child *opengl;
 extern "C" int gl_clear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------

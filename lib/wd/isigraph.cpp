@@ -6,6 +6,7 @@
 #include "pane.h"
 
 extern Form *form;
+extern Child *isigraph;
 
 // ---------------------------------------------------------------------
 Isigraph::Isigraph(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
