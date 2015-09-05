@@ -605,12 +605,32 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   string fc=getfocus();
   if (fc.size()) lastfocus=fc;
   if (jecallback) {
-    if (ctype=="isigraph")
-      var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'",true);
-    else {
+    // wd'q' normally collects the information lying in the scattered
+    // globals and returns that to wdhandler.
+    // in callback mode (suspension or waiting for user input), we may
+    // process multiple events in Qt before the JE is scheduled to run.
+    // In this case each event overwrites the globals of the previous
+    // event, and we must do something to prevent loss of information.
+
+    // We perform the wd'q' in advance (here), and put the result (a single string
+    // with all the global info) into wdqQueue.  Then, the subsequent wd'q'
+    // returns the saved data from wdqQueue.  At the end of wdhandlerx, we
+    // issue wdq'qpop' to complete the processing of the event.  Each event is
+    // thus properly matched with its wd'q' data.
+    bool isievent = ctype=="isigraph";
+    // paint events in an isigraph are an exception, because all the graphics must
+    // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE.  This means that the event
+    // must be given priority and wait for the callback queue to be scheduled.  So,
+    // we tell var_cmddo() to force immediate execution; but because wdqQueue may contain
+    // previous-event data, which would cause wd'q' to read that data, we put the wd'q' data
+    // for the isigraph event at the head of wdqQueue to match its execution priority.
+    //
+    // Priority is required only for paint events but for simplicity give priority to
+    // all isigraph events
+    if (!isievent)
       term->removeprompt();
-      var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'");
-    }
+    wdqQueueAdd(isievent);  // add at front for isigraph
+    var_cmddo("wdhandlerx_jqtide_ '" + s2q(loc) + "'",isievent);  // force immediate for isigraph
   } else
     var_cmddo("wdhandler_" + s2q(loc) + "_$0");
 }

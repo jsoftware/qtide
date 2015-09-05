@@ -4,6 +4,7 @@
 #include <QLayout>
 #include <QTimer>
 #include <QSysInfo>
+#include <vector>
 #ifndef QT_NO_PRINTER
 #ifdef QT50
 #include <QtPrintSupport/QPrinter>
@@ -143,6 +144,8 @@ static bool notab();
 static int setchild(string id);
 static string formchildid();
 
+static list<string> wdqQueue;
+
 Cmd cmd;
 static Child *cc=0;
 Form *form=0;
@@ -200,6 +203,8 @@ void wd1()
     }
     if (c=="q")
       wdq();
+    else if (c=="qpop")
+      wdqQueueRemove();
     else if (c=="beep")
       wdbeep();
     else if (c=="bin")
@@ -931,7 +936,43 @@ void wdq()
     error("extra parameters: " + p);
     return;
   }
+  if(wdqQueue.empty()) {
+    // normal path (no events pending in suspension)
+    wdstate(evtform,1);
+  } else {
+    // wdqQueue holds 'pre-executed' results from wd'q' that were compiled
+    // to allow for multiple events during suspension.  Return the first one,
+    // which matches the event being executed
+    result = wdqQueue.front();
+    rc = -2;
+  }
+}
+
+// ---------------------------------------------------------------------
+void wdqQueueAdd(bool addatfront)
+{
+  // called to pre-execute wd'q' for events during suspension.
   wdstate(evtform,1);
+  // keep the events in the order they will execute in: FIFO unless there
+  // is a priority event, whose result we add at the front, since it is about to execute
+  // immediately
+  if(addatfront) wdqQueue.push_front(result);
+  else wdqQueue.push_back(result);
+}
+// ---------------------------------------------------------------------
+void wdqQueueInit()
+{
+  // not used - the interlock between wdqQueueAdd and wdqQueueRemove is
+  // airtight.  An item is added to wdqQueue only when a Sentence for wdhandlerx
+  // is scheduled for execution, and wdhandlerx ends with wd'qpop', so there
+  // is no possibility of loss of sync unless J crashes
+  wdqQueue.clear();
+}
+// ---------------------------------------------------------------------
+void wdqQueueRemove()
+{
+  // called by wd'qpop', which is executed at the end of wdhandlerx
+  wdqQueue.pop_front();
 }
 
 // ---------------------------------------------------------------------
