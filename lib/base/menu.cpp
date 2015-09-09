@@ -153,7 +153,11 @@ void Menu::createActions()
   toolspacmanAct = makeact("toolspacmanAct","&Package Manager","");
   toolsfkeysAct = makeact("toolsfkeysAct","Function Keys","");
   toselcommentAct = makeact("toselcommentAct","Toggle &Comment","Ctrl+/");
+#ifdef __MACH__
+  toselnoteAct = makeact("toselnoteAct","Toggle &Note","Alt+Ctrl+/");
+#else
   toselnoteAct = makeact("toselnoteAct","Toggle &Note","Ctrl+Shift+/");
+#endif
   tosellowerAct = makeact("tosellowerAct","&Lower Case","");
   toselplusline1Act = makeact("toselplusline1Act","&Add Comment ---","Ctrl+Shift+K");
   toselplusline2Act = makeact("toselplusline2Act","A&dd Comment ===","Ctrl+Shift+L");
