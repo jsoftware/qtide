@@ -52,7 +52,6 @@ public:
   string lasttype;
   string locale;
   string sysdata;
-  string sysmodifiers;
   int maxsizew;
   int maxsizeh;
   int minsizew;

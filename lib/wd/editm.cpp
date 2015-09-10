@@ -175,10 +175,8 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
   if (ismodifier(key)) return;
   if ((key==Qt::Key_Enter || key==Qt::Key_Return) && !(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
     if (isReadOnly()) {
-      char sysmodifiers[20];
-      sprintf(sysmodifiers , "%d", (2*(!!(event->modifiers() & Qt::CTRL))) + (!!(event->modifiers() & Qt::SHIFT)));
       pchild->event=string("button");
-      pchild->sysmodifiers=string(sysmodifiers);
+      pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
       pchild->pform->signalevent(pchild);
       return;
       // note we don't fall through to handle keyPressEvent in the widget.

@@ -51,6 +51,7 @@ public:
   string state(int evt);
   void status(string);
   string getsysmodifiers();
+  string getsysmodifiers(Qt::KeyboardModifiers);
   string getfocus();
 
   bool closed;

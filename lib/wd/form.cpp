@@ -300,14 +300,6 @@ string Form::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Form::getsysmodifiers()
-{
-  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
-  return i2s((mod.testFlag(Qt::ShiftModifier) ? 1 : 0) +
-             (mod.testFlag(Qt::ControlModifier)? 2 : 0));
-}
-
-// ---------------------------------------------------------------------
 string Form::getfocus()
 {
   QWidget *w=QApplication::focusWidget();
@@ -318,6 +310,20 @@ string Form::getfocus()
       return this->children.at(i)->id;
   }
   return "";
+}
+
+// ---------------------------------------------------------------------
+string Form::getsysmodifiers()
+{
+  return getsysmodifiers(QApplication::keyboardModifiers());
+}
+
+// ---------------------------------------------------------------------
+string Form::getsysmodifiers(Qt::KeyboardModifiers mod)
+{
+  return i2s((mod.testFlag(Qt::ShiftModifier) ? 1 : 0) +
+             (mod.testFlag(Qt::ControlModifier)? 2 : 0) +
+             (mod.testFlag(Qt::AltModifier)? 4 : 0));
 }
 
 // ---------------------------------------------------------------------
