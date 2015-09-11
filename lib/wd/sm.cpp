@@ -39,6 +39,7 @@ static string smsave();
 static string smsaveactive();
 static string smsaveall();
 static string smset();
+static string smsetscroll(Bedit *,string);
 static string smsetinputlog(string,string);
 static string smsetselect(Bedit *,string);
 static string smsettext(string,string);
@@ -418,9 +419,14 @@ string smset()
   else
     return smerror("unrecognized sm command: set " + p);
 
-  if (e==0 && (q=="select" || q=="text"))
-    return smerror("no edit window for sm command: set " + q);
+  if (e==0 && (c=="scroll" || c=="select" || c=="text"))
+    return smerror("no edit window for sm command: set " + c);
 
+  if (p=="term" && (c=="scroll" || c=="select"))
+    return smerror("command applies only to an edit window: " + c);
+
+  if (c=="scroll")
+    return smsetscroll(e,q);
   if (c=="select")
     return smsetselect(e,q);
   if (c=="text")
@@ -438,6 +444,17 @@ string smsetinputlog(string c,string q)
     return smerror("unrecognized sm command: set inputlog " + c + "..." );
   dlog_set(s2q(q));
   return "";
+}
+
+// ---------------------------------------------------------------------
+// set vertical scroll
+string smsetscroll(Bedit *e, string q)
+{
+  QList<int> s=qsl2intlist(qsplit(q));
+  if (s.size()!= 1)
+    return smerror("sm set scroll should have a single parameter of scroll size");
+  e->settop(s[0]);
+  return"";
 }
 
 // ---------------------------------------------------------------------
