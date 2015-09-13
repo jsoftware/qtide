@@ -28,7 +28,6 @@ using namespace std;
 
 extern "C" {
   Dllexport int gethash(const char *, const char *, const int, char *&, int &);
-  Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
@@ -280,7 +279,7 @@ string getversion()
 // return if git available
 bool gitavailable()
 {
-#if defined(__MACH__) || defined(Q_OS_LINUX) && !defined(QT_OS_ANDROID)
+#if defined(__MACH__) || defined(Q_OS_LINUX)
   return !shell("which git","").at(0).isEmpty();
 #else
   return false;
@@ -347,13 +346,6 @@ void helpabout()
 bool ismodifier(int key)
 {
   return Modifiers.contains(key);
-}
-
-// ---------------------------------------------------------------------
-void logcat(const char *s)
-{
-// for debug android standalone app
-  qDebug () /* do not comment this line */ << QString::fromUtf8(s);
 }
 
 // ---------------------------------------------------------------------

@@ -13,9 +13,6 @@ public:
   PComboBox(QWidget *parent = 0);
   bool acceptKeyBack;
 
-protected:
-  void keyReleaseEvent(QKeyEvent *event);
-
 };
 
 #endif

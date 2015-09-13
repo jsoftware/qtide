@@ -34,18 +34,11 @@ public slots:
   void runall(QString s, bool show=true);
 
 private slots:
-#ifdef QT_OS_ANDROID
-  void backButtonTimer();
-#endif
 
 private:
   void docmd(QString t);
   void keyPressEvent(QKeyEvent *);
-  void keyReleaseEvent(QKeyEvent *);
   void enter();
-#ifdef QT_OS_ANDROID
-  int backButtonPressed;
-#endif
   void togglemode();
 };
 

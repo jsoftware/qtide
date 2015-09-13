@@ -56,9 +56,6 @@ public:
   QStringList AllFolderValues;
   QString AppName;
   bool Ascii;
-#ifdef QT_OS_ANDROID
-  QString FontFile;
-#endif
   QDir BinPath;
   int BoxForm;
 #ifdef TABCOMPLETION
@@ -160,9 +157,6 @@ public:
 
 extern QList<QWidget*> ActiveWindows;
 extern Config config;
-#ifdef QT_OS_ANDROID
-extern int androidVfuncPos;
-#endif
 
 QSyntaxHighlighter *highlight(QTextDocument *);
 

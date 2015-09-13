@@ -94,9 +94,6 @@ private:
   QAction *editfiwAct;
   QAction *editfontAct;
   QAction *editinputlogAct;
-#ifdef QT_OS_ANDROID
-  QAction *editwdformAct;
-#endif
   QAction *editredoAct;
   QAction *editundoAct;
   QAction *filecloseAct;

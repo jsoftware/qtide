@@ -21,9 +21,6 @@ Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent)
 #ifdef TABCOMPLETION
   c= 0 ;
 #endif
-#ifdef QT_OS_ANDROID
-  cu0 = textCursor();
-#endif
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
 
@@ -42,28 +39,6 @@ Bedit::Bedit(QWidget *parent) : PlainTextEdit(parent)
 Bedit::~Bedit()
 {
 }
-
-#ifdef QT_OS_ANDROID
-// ---------------------------------------------------------------------
-void Bedit::copy()
-{
-  QTextCursor cu = textCursor();
-  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
-  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
-  setTextCursor(cu);
-  PlainTextEdit::copy();
-}
-
-// ---------------------------------------------------------------------
-void Bedit::cut()
-{
-  QTextCursor cu = textCursor();
-  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
-  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
-  setTextCursor(cu);
-  PlainTextEdit::cut();
-}
-#endif
 
 // ---------------------------------------------------------------------
 int Bedit::getpositioninblock(QTextCursor c)

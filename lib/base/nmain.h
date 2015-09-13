@@ -28,10 +28,6 @@ private:
 
   QAction *lastprojectAct;
   QAction *openprojectAct;
-#ifdef QT_OS_ANDROID
-  QAction *xeditAct;
-  QAction *markCursorAct;
-#endif
 };
 
 #endif

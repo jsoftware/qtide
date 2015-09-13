@@ -35,17 +35,10 @@ Slog::Slog()
   resize(qMax(300,d[2]),qMax(300,d[3]));
 #endif
   s = new SlogList(this);
-#ifdef QT_OS_ANDROID
-  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
-          this,SLOT(itemActivated()));
-  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
-          tedit,SLOT(itemActivated(QListWidgetItem*)));
-#else
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(itemActivated()));
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           tedit,SLOT(itemActivated(QListWidgetItem*)));
-#endif
   t=new QLabel();
   t->hide();
   QVBoxLayout *b = new QVBoxLayout;
@@ -140,16 +133,6 @@ SlogList::SlogList(Slog *p)
 // ---------------------------------------------------------------------
 void SlogList::keyPressEvent(QKeyEvent *event)
 {
-//#ifdef QT_OS_ANDROID
-  //if (event->key()==Qt::Key_Back) {
-  //reject();
-  //}
-//#endif
-  if (event->key()==Qt::Key_Backspace) {
-    pform->delfilter(event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
-    event->accept();
-    return;
-  }
   if (event->key()==Qt::Key_Escape || ischaracter(event->key()))
     event->ignore();
   else

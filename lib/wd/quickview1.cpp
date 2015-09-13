@@ -52,11 +52,6 @@ void QuickView1::sceneResized (QSize size)
 // ---------------------------------------------------------------------
 void QuickView1::closeview ()
 {
-#ifdef QT_OS_ANDROID
-  showide(true);
-  if (Forms.size()>0)
-    (Forms.at(Forms.size()-1))->setVisible(true);
-#endif
   close();
 }
 

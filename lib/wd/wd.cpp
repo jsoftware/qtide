@@ -14,10 +14,6 @@
 #include <QPrinterInfo>
 #endif
 #endif
-#ifdef QT_OS_ANDROID
-#include <QtAndroid>
-#include <QFontDatabase>
-#endif
 #ifndef QT_NO_OPENGL
 #ifdef QT53
 #include <QOpenGLContext>
@@ -34,9 +30,6 @@
 #include "pane.h"
 #include "tabs.h"
 #include "wd.h"
-#ifdef QT_OS_ANDROID
-#include "../base/androidextras.h"
-#endif
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
 #include "../base/wscln.h"
@@ -76,9 +69,6 @@ static void wddefprint();
 static void wddirmatch();
 static void wdend();
 static void wdfontdef();
-#ifdef QT_OS_ANDROID
-static void wdfontfile();
-#endif
 static void wdget();
 static void wdgetp();
 static void wdgrid();
@@ -231,10 +221,6 @@ void wd1()
       wdend();
     else if (c=="fontdef")
       wdfontdef();
-#ifdef QT_OS_ANDROID
-    else if (c=="fontfile")
-      wdfontfile();
-#endif
     else if (c=="get")
       wdget();
     else if (c=="getp")
@@ -536,17 +522,6 @@ void wdfontdef()
   }
 }
 
-#ifdef QT_OS_ANDROID
-// ---------------------------------------------------------------------
-void wdfontfile()
-{
-  string p=remquotes(cmd.getparms());
-  int id=QFontDatabase::addApplicationFont(s2q(p));
-  result=i2s(id);
-  rc=-1;
-}
-#endif
-
 // ---------------------------------------------------------------------
 void wdget()
 {
@@ -747,9 +722,6 @@ void wdpactive()
     return;
   }
   if (noform()) return;
-#ifdef QT_OS_ANDROID
-  if(form!=Forms.last()) return;
-#endif
   form->activateWindow();
   form->raise();
 }
@@ -806,7 +778,6 @@ void wdpcenter()
     return;
   }
   if (noform()) return;
-#ifndef QT_OS_ANDROID
   QDesktopWidget* dw=QApplication::desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
   int sw=screenGeometry.width();
@@ -816,7 +787,6 @@ void wdpcenter()
   int x=(sw-w)/2;
   int y=(sh-h)/2;
   form->move((x<0)?0:x,(y<0)?0:y);
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -850,10 +820,8 @@ void wdpmove()
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
   else {
-#ifndef QT_OS_ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
       form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
-#endif
     if (c_strtoi(q2s(n.at(2)))!=-1 && c_strtoi(q2s(n.at(3)))!=-1)
       form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
   }
@@ -916,9 +884,6 @@ void wdptop()
 {
   string p=remquotes(cmd.getparms());
   if (noform()) return;
-#ifdef QT_OS_ANDROID
-  if(form!=Forms.last()) return;
-#endif
   Qt::WindowFlags f=form->windowFlags();
   if (p=="1")
     f|=Qt::WindowStaysOnTopHint;
@@ -1037,20 +1002,11 @@ void wdqueries(string s)
       return;
     }
     QDesktopWidget* dw=QApplication::desktop();
-#ifdef QT_OS_ANDROID
-    int dpix,dpiy,w,h;
-    android_getdisplaymetrics(0);
-    dpix=DM_densityDpi;
-    dpiy=DM_densityDpi;
-    w=DM_widthPixels;
-    h=DM_heightPixels;
-#else
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
     int dpiy=dw->logicalDpiY();
     int w=screenGeometry.width();
     int h=screenGeometry.height();
-#endif
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
@@ -1100,9 +1056,6 @@ void wdqueries(string s)
       result="10.5";
       return;
     }
-#elif defined(QT_OS_ANDROID)
-    result=i2s(QtAndroid::androidSdkVersion());
-    return;
 #else
     result="";
     return;
@@ -1216,17 +1169,8 @@ void wdquickview1()
     if (n.size()>2 && (n.at(2)=="0"||n.at(2)=="1")) mode=!!c_strtoi(q2s(n.at(2)));
     if (quickview1) quickview1->close();
     quickview1=new QuickView1(t,f,mode);
-#ifdef QT_OS_ANDROID
-    quickview1->showFullScreen();
-#else
     quickview1->show();
-#endif
     quickview1->raise();
-#ifdef QT_OS_ANDROID
-    showide(false);
-    if (Forms.size()>0)
-      (Forms.at(Forms.size()-1))->setVisible(false);
-#endif
   }
 }
 
@@ -1266,19 +1210,10 @@ void wdquickview2()
     }
     if (quickview2) quickview2->close();
     quickview2=new QuickView2(t,f,mode,glver);
-#ifdef QT_OS_ANDROID
-    quickview2->showFullScreen();
-#else
     quickview2->show();
-#endif
     quickview2->raise();
 #ifdef QT50
     quickview2->requestActivate();
-#endif
-#ifdef QT_OS_ANDROID
-    showide(false);
-    if (Forms.size()>0)
-      (Forms.at(Forms.size()-1))->setVisible(false);
 #endif
   }
 }

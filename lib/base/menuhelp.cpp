@@ -12,10 +12,6 @@
 #include "term.h"
 #include "tedit.h"
 
-#ifdef QT_OS_ANDROID
-extern "C" void android_exec_host(char*,char*,char*,int);
-#endif
-
 using namespace std;
 
 void helpabout();
@@ -348,24 +344,14 @@ void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
   QString w="http://www.jsoftware.com/docs/help804/";
-#ifdef QT_OS_ANDROID
-  if (QFile(t).exists())
-    tedit->docmds("browse_j_ '" + t.prepend("file://") + "'", false);
-  else tedit->docmds("browse_j_ '" + s.prepend(w).append(".htm") + "'", false);
-#else
   if (QFile(t).exists())
     QDesktopServices::openUrl(QUrl::fromLocalFile(t));
   else QDesktopServices::openUrl(QUrl(s.prepend(w).append(".htm"),QUrl::TolerantMode));
-#endif
 }
 
 // ---------------------------------------------------------------------
 void wiki(QString s)
 {
   QString w="http://code.jsoftware.com/wiki/";
-#ifdef QT_OS_ANDROID
-  tedit->docmds("browse_j_ '" + s.prepend(w) + "'", false);
-#else
   QDesktopServices::openUrl(QUrl(s.prepend(w),QUrl::TolerantMode));
-#endif
 }

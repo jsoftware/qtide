@@ -8,10 +8,6 @@
 #include "ntabs.h"
 #include "state.h"
 
-#ifdef QT_OS_ANDROID
-extern float DM_density;
-#endif
-
 using namespace std;
 
 // ---------------------------------------------------------------------
@@ -34,33 +30,17 @@ Nmain::Nmain(Note *n)
 void Nmain::createActions()
 {
   lastprojectAct = makeact("lastprojectAct","undo.png", "Open Last Project");
-#ifdef QT_OS_ANDROID
   openprojectAct = makeact("openprojectAct","folder.png","Open Project");
   runallAct = makeact("runallAct","run.png","Run All Lines");
-  xeditAct = makeact("xeditAct","regular.png","External editor");
-  markCursorAct = makeact("markCursorAct","jump-to.png","Mark cursor");
-#else
-  openprojectAct = makeact("openprojectAct","folder.png","Open Project");
-  runallAct = makeact("runallAct","run.png","Run All Lines");
-#endif
 }
 
 // ---------------------------------------------------------------------
 void Nmain::createToolBar()
 {
-#ifdef QT_OS_ANDROID
-  toolBar->setIconSize(QSize((int)DM_density*(5.0/3)*16,(int)DM_density*(5.0/3)*16));
-#else
   toolBar->setIconSize(QSize(16,16));
-#endif
   toolBar->addAction(lastprojectAct);
   toolBar->addAction(openprojectAct);
   toolBar->addAction(runallAct);
-#ifdef QT_OS_ANDROID
-  toolBar->addSeparator();
-  toolBar->addAction(xeditAct);
-  toolBar->addAction(markCursorAct);
-#endif
 }
 
 // ---------------------------------------------------------------------

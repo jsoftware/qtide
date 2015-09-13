@@ -12,27 +12,14 @@ equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
 !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
 
-android  {
-  !contains(DEFINES,QT50): error(requires Qt5)
-  CONFIG += mobility
-  MOBILITY +=
-  QT += androidextras
-  QT += opengl
-  DEFINES += QT_OS_ANDROID
-  DEFINES += QT_NO_PRINTER
-  DEFINES += SMALL_SCREEN
-  TEMPLATE = lib
-  TARGET = jqt
+TEMPLATE = lib
+contains(DEFINES,QT54) {
+  QT += webkit
 } else {
-  TEMPLATE = lib
-  contains(DEFINES,QT54) {
-    QT += webkit
-  } else {
-    QT += webkit
-    QT += opengl
-  }
-  TARGET = jqt
+  QT += webkit
+  QT += opengl
 }
+TARGET = jqt
 
 contains(DEFINES,QT47): QT += declarative
 contains(DEFINES,QT50): QT -= declarative
@@ -93,20 +80,14 @@ win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
-android: QMAKE_TARGET.arch = armeabi
 linux-raspi: QMAKE_TARGET.arch = arm
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 ABI=$$(ABI)
-android {
-!isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
-}
 
 win32: arch = win-$$QMAKE_TARGET.arch
-android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
-android: arch = android-$$QMAKE_TARGET.arch
 
 BUILDROOT = build/$$arch/$$rel
 TARGETROOT = ../bin/$$arch/$$rel
@@ -125,7 +106,7 @@ macx:CONFIG += c++11
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5):!android: QT += printsupport
+equals(QT_MAJOR_VERSION, 5): QT += printsupport
 CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
@@ -152,7 +133,6 @@ contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
 }
 
 contains(DEFINES,QT54) {
-  android: DEFINES += QT_OPENGL_ES_2
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
 } else {
@@ -160,7 +140,6 @@ contains(DEFINES,QT54) {
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL
 } else {
-  android: DEFINES += QT_OPENGL_ES_2
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
 }
@@ -260,7 +239,6 @@ contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
-android:HEADERS += base/androidextras.h base/qtjni.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -309,14 +287,12 @@ contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
-android:SOURCES += base/androidextras.cpp base/qtjni.cpp ../main/main.cpp
 
 RESOURCES += lib.qrc
 
 win32:!win32-msvc*:LIBS += -shared
 win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
-android:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=

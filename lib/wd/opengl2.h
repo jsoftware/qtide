@@ -1,12 +1,7 @@
 #ifndef OPENGL2_H
 #define OPENGL2_H
 
-// regression of Android QOpenGLWidget in Qt 5.4.1
-#ifdef QT54
-#ifndef QT_OS_ANDROID
 #define USE_QOpenGLWidget
-#endif
-#endif
 
 #ifdef USE_QOpenGLWidget
 #include <QOpenGLWidget>

@@ -131,12 +131,6 @@ int Jcon::init(int argc, char* argv[])
   adadbreak=(char**)jt; // first address in jt is address of breakdata
   signal(SIGINT,sigint);
 
-#if defined(QT_OS_ANDROID)
-  Q_UNUSED(argc);
-  Q_UNUSED(type);
-  *inputline=0;
-  jefirst(0,(char *)",<'jqt'");
-#else
   if(argc==2&&!strcmp(argv[1],"-jprofile"))
     type=3;
   else if(argc>2&&!strcmp(argv[1],"-jprofile"))
@@ -145,7 +139,6 @@ int Jcon::init(int argc, char* argv[])
     type=0;
   addargv(argc,argv,inputline+strlen(inputline));
   jefirst(type,inputline);
-#endif
 
   return 0;
 }

@@ -109,10 +109,5 @@ typedef long SI;
 int c_strtoi(std::string s);
 SI c_strtol(std::string s);
 double c_strtod(std::string s);
-#ifdef QT_OS_ANDROID
-extern float DM_density;
-QString scrollbarstyle(float n);
-QString checkboxstyle(float n);
-#endif
 
 #endif

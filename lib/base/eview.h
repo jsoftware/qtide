@@ -29,7 +29,6 @@ private:
   void reject();
   void savepos();
   void keyPressEvent(QKeyEvent *e);
-  void keyReleaseEvent(QKeyEvent *e);
 
   Eview *ev;
 

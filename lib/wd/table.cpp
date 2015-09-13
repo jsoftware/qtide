@@ -602,9 +602,6 @@ void Table::set_cell(int r,int c,QString v)
     if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       QCheckBox *cb=new QCheckBox();
-#ifdef QT_OS_ANDROID
-      cb->setStyleSheet(checkboxstyle(20*DM_density));
-#endif
       cb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) cb;
       QWidget *m=new QWidget();

@@ -34,7 +34,6 @@ private:
   QStringList pic_files();
   void tcompare(int n);
   QString unstamp(QString);
-  void keyReleaseEvent(QKeyEvent *e);
 
   PComboBox *sfile;
   QString File;

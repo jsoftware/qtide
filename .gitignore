@@ -3,12 +3,6 @@ build/
 config/
 jwd/
 libs/
-android-assets/
-android-libs/
-
-buildapk.ijs
-jqtkey.sh
-toykey.sh
 
 cleancdb.sh
 makebill.sh
@@ -20,16 +14,9 @@ makewincdb.sh
 run.sh
 style.sh
 
-android-build/
-
 jqt.xcodeproj
 Info.plist
 jqt_resource.rc
-
-jconsole
-jconsole-nopie
-profile.ijs
-profilex.ijs
 
 *.a
 *.command

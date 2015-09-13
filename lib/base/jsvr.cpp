@@ -14,12 +14,6 @@
 #include "jsvr.h"
 #include "util.h"
 
-#ifdef QT_OS_ANDROID
-#include <QtAndroid>
-#include <QDir>
-#include <sys/stat.h>
-extern QString AndroidPackage;
-#endif
 void * jdllproc=0;
 void * jdlljt=0;
 
@@ -174,7 +168,7 @@ J jeload(void* callbacks)
 void jepath(char* arg)
 {
   Q_UNUSED(arg);
-#if !defined(QT_OS_ANDROID)
+
   if (FHS) {
     strcpy(pathdll,JDLLNAME);
 #if defined(_WIN32_)
@@ -186,16 +180,12 @@ void jepath(char* arg)
 #endif
     return;
   }
-#endif
+
 #ifdef _WIN32
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
-#elif defined(QT_OS_ANDROID)
-  QFileInfo fileInfo(LibName);
-  strcpy(path,fileInfo.canonicalPath().toUtf8().constData());
-  qDebug() << "jepath " << s2q(path);
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -271,152 +261,6 @@ int jefirst(int type,char* arg)
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
 
-#ifdef QT_OS_ANDROID
-  Q_UNUSED(p);
-  Q_UNUSED(q);
-  char homepath[PLEN];
-  char *sdcard=0;
-  char *SDCARD[] = {
-    (char *)"/sdcard",
-    (char *)"/mnt/sdcard",
-    (char *)"/storage/sdcard0",
-    (char *)"/storage/emulated/legacy",
-    (char *)"/storage/emulated/0",
-    (char *)"/storage/extSdCard",
-    (char *)"/storage/MicroSD",
-  };
-  struct stat st;
-// Android kitkat or newer restrict write access to external sdcard
-// prefer emulated to external sdcard
-  if (1 || !(sdcard=getenv("EXTERNAL_STORAGE"))) {
-    for (int i=0; i < 7; i++) {
-      char ts[50];
-      strcpy(ts, SDCARD[i]);
-      strcat(ts, "/Android/data");
-      if (!stat(ts,&st)) {
-        sdcard = SDCARD[i];
-        break;
-      }
-    }
-  }
-  int sdcardok = sdcard && !stat(sdcard,&st);
-//  sdcardok = 0;
-//  if (sdcardok) setenv("EXTERNAL_STORAGE",sdcard,1);
-
-// a dummy file signifying internal install for scripts
-  if (QFile("assets:/internal_install.txt").exists()) sdcardok = 0;
-  if(sdcardok)
-    setenv("HOME",sdcard,1);
-  else {
-    if(!getenv("HOME"))
-      setenv("HOME",QDir::currentPath().toUtf8().constData(),1);
-  }
-  strcpy(homepath,getenv("HOME"));
-  qDebug() << "homepath: " << s2q(homepath);
-  QString appcurrentpath = QDir::currentPath();
-  qDebug() << "application current path: " << appcurrentpath;
-// if(!getenv("TMPDIR"))
-//   setenv("TMPDIR",QDir::tempPath().toUtf8().constData(),1);
-  if(!QFile(appcurrentpath+"/tmp").exists()) mkdir((appcurrentpath+"/tmp").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-  QFile::setPermissions(appcurrentpath+"/tmp",(QFile::Permission)0x7777);
-  setenv("TMPDIR",(appcurrentpath+"/tmp").toUtf8().constData(),1);
-
-  qDebug() << "TMPDIR: " << QString::fromUtf8(getenv("TMPDIR"));
-
-  char install[PLEN];
-  if (sdcardok) {
-    strcpy(install, sdcard);
-    strcat(install, "/Android/data");
-    strcat(install, "/");
-    strcat(install, AndroidPackage.toUtf8().constData());
-    if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
-    strcat(install, "/files");
-    if(stat(install,&st)) mkdir(install, S_IRWXU | S_IRWXG | S_IRWXO);
-    if(stat(install,&st)) {
-      qDebug() << "can not mkdir install: " << s2q(install);
-      strcpy(install, appcurrentpath.toUtf8().constData());
-    }
-  } else {
-    strcpy(install, appcurrentpath.toUtf8().constData());
-  }
-  qDebug() << "install path: " << s2q(install);
-
-  QDir::setCurrent(install);
-  qDebug() << "current path: " << QDir::currentPath();
-  strcpy(install, QDir::currentPath().toUtf8().constData());
-  qDebug() << "install path: " << s2q(install);
-// assume cwd is .../files
-
-  QString v1, v2;
-  QFile *f1 = new QFile("assets:/assets_version.txt");
-  QFile *f2 = new QFile("assets_version.txt");
-  if (f1->exists()) {
-    v1= cfread(f1);
-  }
-  if (f2->exists()) {
-    v2= cfread(f2);
-  }
-  delete f1;
-  delete f2;
-  if (v1!=v2 && QFile("assets:/jqtdata.tgz").exists() && QFile("assets:/tar0.ijs").exists()) {
-    qDebug() << "decompress assets";
-    QFile("jqtdata.tgz").remove();
-    QFile("tar0.ijs").remove();
-    QFile("assets:/jqtdata.tgz").copy("jqtdata.tgz");
-    QFile("assets:/tar0.ijs").copy("tar0.ijs");
-    QFile::setPermissions("jqtdata.tgz",(QFile::Permission)0x6666);  // for busybox tar
-    QFile::setPermissions("tar0.ijs",(QFile::Permission)0x6644);
-// for testing, display script
-//    int e=jedo((char *)"script0=: [: 3 : '0!:1 y [ 4!:55<''y''' ]&.:>");
-    int e=jedo((char *)"script0=: [: 3 : '0!:0 y [ 4!:55<''y''' ]&.:>");
-    if (!e) {
-      e=jedo((char *)"(i.0 0)[4!:55 ::0:<'script0'[18!:55 ::0:<'j'[18!:55 ::0:<'jtar0'[tar_jtar0_ ::0:'x';'jqtdata.tgz';'.'[script0 ::0:'tar0.ijs'");
-      if (e) {
-        qDebug() << "script0 error:" << QString::number(e);
-      }
-    } else {
-      qDebug() << "can not set script0";
-    }
-    QFile("jqtdata.tgz").remove();
-    QFile("tar0.ijs").remove();
-    QFile("assets_version.txt").remove();
-    QFile("assets:/assets_version.txt").copy("assets_version.txt");
-    QFile::setPermissions("assets_version.txt",(QFile::Permission)0x6644);
-
-    if (QtAndroid::androidSdkVersion()>=21) {
-      if (QFile("assets:/jconsole").exists()) {
-        if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-        QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
-        QFile(appcurrentpath+"/bin/jconsole").remove();
-        QFile("assets:/jconsole").copy(appcurrentpath+"/bin/jconsole");
-        QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
-        qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
-      }
-    } else {
-      if (QFile("assets:/jconsole-nopie").exists()) {
-        if (!QFile(appcurrentpath+"/bin").exists()) mkdir((appcurrentpath+"/bin").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
-        QFile::setPermissions(appcurrentpath+"/bin",(QFile::Permission)0x7755);
-        QFile(appcurrentpath+"/bin/jconsole").remove();
-        QFile("assets:/jconsole-nopie").copy(appcurrentpath+"/bin/jconsole");
-        QFile::setPermissions(appcurrentpath+"/bin/jconsole",(QFile::Permission)0x7755);
-        qDebug() << "jconsole: " << (appcurrentpath+"/bin/jconsole");
-      }
-    }
-  }
-
-  if (QFile("assets:/welcome.ijs").exists()) {
-    QFile("welcome.ijs").remove();
-    QFile("assets:/welcome.ijs").copy("welcome.ijs");
-    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6644);
-  }
-
-  QDir::setCurrent(homepath);
-  qDebug() << "current path :(home) " << QDir::currentPath();
-  strcpy(homepath, QDir::currentPath().toUtf8().constData());
-  setenv("HOME",homepath,1);
-  qDebug() << "homepath path: " << s2q(homepath);
-#endif
-
   *input=0;
   QFile sprofile(":/standalone/profile.ijs");
   QFileInfo info=QFileInfo(sprofile);
@@ -441,9 +285,6 @@ int jefirst(int type,char* arg)
     }
   } else {
     if(0==type) {
-#if defined(QT_OS_ANDROID)
-      strcat(input,"(3 : '0!:0 y')<INSTALLROOT,'/bin");
-#else
       if (!FHS) {
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
       } else {
@@ -453,7 +294,6 @@ int jefirst(int type,char* arg)
         strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
 #endif
       }
-#endif
       strcat(input,filesepx);
       strcat(input,"profile.ijs'");
     } else if (1==type)
@@ -466,17 +306,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
   strcat(input,"[BINPATH_z_=:'");
-#ifdef QT_OS_ANDROID
-  strcat(input,appcurrentpath.toUtf8().constData());
-  strcat(input,"/bin'");
-  strcat(input,"[UNAME_z_=:'Android'");
-  strcat(input,"[INSTALLROOT_z_=:'");
-  strcat(input,install);
-  strcat(input,"'");
-  strcat(input,"[AndroidPackage_z_=:'");
-  strcat(input,AndroidPackage.toUtf8().constData());
-  strcat(input,"'");
-#else
   p=path;
   q=input+strlen(input);
   while(*p) {
@@ -485,7 +314,6 @@ int jefirst(int type,char* arg)
   }
   *q=0;
   strcat(input,"'");
-#endif
   if (!FHS)
     strcat(input,"[FHS_z_=:0");
   else
@@ -494,9 +322,6 @@ int jefirst(int type,char* arg)
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");
-#ifdef QT_OS_ANDROID
-  qDebug() << "j first line: " << QString::fromUtf8(input);
-#endif
   r=jedo(input);
   if (r) {
     qDebug() << "j first line error: " << QString::number(r);

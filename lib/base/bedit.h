@@ -47,13 +47,6 @@ public:
 
   int type;
 
-#ifdef QT_OS_ANDROID
-  QTextCursor cu0;
-public slots:
-  void copy();
-  void cut();
-#endif
-
 protected:
   void resizeEvent(QResizeEvent *event);
 #ifdef TABCOMPLETION

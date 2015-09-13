@@ -16,7 +16,6 @@ public:
   bool acceptKeyBack;
 
 protected:
-  void keyReleaseEvent(QKeyEvent *event);
 
 #ifndef QT_NO_PRINTER
 public slots:

@@ -56,9 +56,6 @@ public:
   void vieweditor();
 
   Menu *menuBar;
-#ifdef QT_OS_ANDROID
-  QHBoxLayout *vfunc;
-#endif
 
 public slots:
 
@@ -87,10 +84,6 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
-#ifdef QT_OS_ANDROID
-  void vfuncClicked();
-  void on_editwdformAct_triggered();
-#endif
 
   void on_filedeleteAct_triggered();
   void on_filenewtempAct_triggered();

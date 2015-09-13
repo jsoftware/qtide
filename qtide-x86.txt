@@ -1,1 +1,0 @@
-qtide,jqt,jqtdata.tgz,,x86

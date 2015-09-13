@@ -23,9 +23,6 @@ Tedit::Tedit()
   smprompt="";
   type=0;
   ifResized=Tw=Th=0;
-#ifdef QT_OS_ANDROID
-  backButtonPressed=0;
-#endif
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
   setLineWrapMode(PlainTextEdit::NoWrap);
@@ -49,14 +46,6 @@ void Tedit::append_smoutput(QString s)
   else
     appendPlainText(getprompt());
 }
-
-#ifdef QT_OS_ANDROID
-// ---------------------------------------------------------------------
-void Tedit::backButtonTimer()
-{
-  backButtonPressed=0;
-}
-#endif
 
 // ---------------------------------------------------------------------
 void Tedit::docmd(QString t)
@@ -209,29 +198,6 @@ void Tedit::keyPressEvent(QKeyEvent *e)
   default:
     Bedit::keyPressEvent(e);
   }
-}
-
-// ---------------------------------------------------------------------
-void Tedit::keyReleaseEvent(QKeyEvent *event)
-{
-// separate ANDROID code avoids compiler warnings
-#ifdef QT_OS_ANDROID
-  switch (event->key()) {
-  case Qt::Key_Back:
-    if (2>backButtonPressed) {
-      if (0==backButtonPressed) QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
-      backButtonPressed++;
-    } else {
-      if (!term->filequit(true))
-        event->accept();
-    }
-    break;
-  default:
-    Bedit::keyReleaseEvent(event);
-  }
-#else
-  Bedit::keyReleaseEvent(event);
-#endif
 }
 
 // ---------------------------------------------------------------------

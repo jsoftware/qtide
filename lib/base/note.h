@@ -86,9 +86,6 @@ public slots:
   void on_editfiwAct_triggered();
   void on_editfontAct_triggered();
   void on_editinputlogAct_triggered();
-#ifdef QT_OS_ANDROID
-  void on_editwdformAct_triggered();
-#endif
   void on_editredoAct_triggered();
   void on_editundoAct_triggered();
   void on_filecloseAct_triggered();
@@ -204,10 +201,6 @@ public slots:
   void on_lastprojectAct_triggered();
   void on_openprojectAct_triggered();
   void on_runallAct_triggered();
-#ifdef QT_OS_ANDROID
-  void on_xeditAct_triggered();
-  void on_markCursorAct_triggered();
-#endif
 
 private:
   void createActions();
@@ -217,7 +210,6 @@ private:
   void closeEvent(QCloseEvent *event);
   bool isNoteline(QString);
   void keyPressEvent(QKeyEvent *e);
-  void keyReleaseEvent(QKeyEvent *e);
   bool maybeSave();
   QString readentry(Nedit *, int *);
   QString readnextentry(QStringList,QString,QString, int*);

@@ -27,10 +27,6 @@ private slots:
   void on_nameonly_clicked();
   void on_regex_clicked();
   void on_subdir_clicked();
-#ifdef QT_OS_ANDROID
-  void on_view_clicked();
-  void on_cancel_clicked();
-#endif
 
 private:
 
@@ -42,7 +38,6 @@ private:
   void read();
   void refresh();
   void reject();
-  void keyReleaseEvent(QKeyEvent *e);
   QList<int> removedups(QList<int> n);
   void research();
   void search();
@@ -71,10 +66,6 @@ private:
 
   QListWidget *found;
   QPushButton *find;
-#ifdef QT_OS_ANDROID
-  QPushButton *view;
-  QPushButton *cancel;
-#endif
 
   QList<int>Pos;
 

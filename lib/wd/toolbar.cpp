@@ -9,10 +9,6 @@
 #include "toolbar.h"
 #include "wd.h"
 
-#ifdef QT_OS_ANDROID
-extern float DM_density;
-#endif
-
 // ---------------------------------------------------------------------
 ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {

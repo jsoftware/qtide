@@ -235,18 +235,6 @@ void Picm::reject()
 }
 
 // ---------------------------------------------------------------------
-void Picm::keyReleaseEvent(QKeyEvent *event)
-{
-#ifdef QT_OS_ANDROID
-  if (event->key()==Qt::Key_Back) {
-    reject();
-  } else QDialog::keyReleaseEvent(event);
-#else
-  QDialog::keyReleaseEvent(event);
-#endif
-}
-
-// ---------------------------------------------------------------------
 QString Picm::unstamp(QString s)
 {
   return s.left(2) + ":" + s.mid(2,2) + ":" + s.right(2);

@@ -29,7 +29,6 @@ private:
   void initwrite();
   void prefresh();
   void reject();
-  void keyReleaseEvent(QKeyEvent *e);
 
   int Ftx,Rtx;
   QListWidget *panel(QString s);

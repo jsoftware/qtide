@@ -5,17 +5,8 @@ equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
 !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
 
-android {
-  CONFIG += mobility
-  MOBILITY +=
-  DEFINES += QT_OS_ANDROID
-  TEMPLATE = lib
-  TARGET = qtide
-  !contains(DEFINES,QT50): error(requires Qt5)
-} else {
-  TEMPLATE = app
-  TARGET = jqt
-}
+TEMPLATE = app
+TARGET = jqt
 
 # contains(DEFINES,QT50): QT += widgets
 
@@ -33,20 +24,14 @@ win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
-android: QMAKE_TARGET.arch = armeabi
 linux-raspi: QMAKE_TARGET.arch = arm
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 ABI=$$(ABI)
-android {
-!isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
-}
 
 win32: arch = win-$$QMAKE_TARGET.arch
-android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
-android: arch = android-$$QMAKE_TARGET.arch
 
 BUILDROOT = build/$$arch/$$rel
 TARGETROOT = ../bin/$$arch/$$rel

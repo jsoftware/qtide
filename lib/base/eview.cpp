@@ -91,18 +91,6 @@ void TextView::keyPressEvent(QKeyEvent *event)
 }
 
 // ---------------------------------------------------------------------
-void TextView::keyReleaseEvent(QKeyEvent *event)
-{
-#ifdef QT_OS_ANDROID
-  if (event->key()==Qt::Key_Back) {
-    reject();
-  } else QDialog::keyReleaseEvent(event);
-#else
-  QDialog::keyReleaseEvent(event);
-#endif
-}
-
-// ---------------------------------------------------------------------
 void textview(QString s)
 {
   textview("View",s);
