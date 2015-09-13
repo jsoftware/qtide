@@ -2,7 +2,6 @@
 VERSION = 1.4.5
 JDLLVER = 8.0.4    # ignored if not FHS
 
-# DEFINES += BIGENDIAN # uncomment this line for ppc mac
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
@@ -241,8 +240,8 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/webengine.h wd/webkitview.h wd/webengineview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
- wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h wd/webviewclass.h wd/webviewclass2.h \
+ wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
+ wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h \
  wd/multimedia.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
@@ -290,7 +289,7 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/webengine.cpp wd/webkitview.cpp wd/webengineview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
+ wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
  wd/multimedia.cpp
 
