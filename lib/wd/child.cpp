@@ -51,7 +51,7 @@ string Child::get(string p,string v)
   if (p=="property") {
     r+=string("enable")+"\012"+ "extent"+"\012";
     r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
-    r+=string("id")+"\012"+ "locale"+"\012";
+    r+=string("id")+"\012";
     r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "nextfocus"+"\012"+ "parent"+"\012"+ "prevfocus"+"\012";
     r+=string("property")+"\012"+ "sizepolicy"+"\012"+ "state"+"\012"+ "stylesheet"+"\012";
     r+=string("tooltip")+"\012"+ "type"+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
@@ -84,8 +84,6 @@ string Child::get(string p,string v)
     r=p2s(this);
   } else if (p=="id") {
     r=id;
-  } else if (p=="locale") {
-    r=(locale!="")?locale:pform->locale;
   } else if (p=="maxwh") {
     if (widget) {
       QSize size=widget->maximumSize();
@@ -204,8 +202,6 @@ void Child::set(string p,string v)
     }
   } else if (p=="enable") {
     if (widget) widget->setEnabled(remquotes(v)!="0");
-  } else if (p=="locale") {
-    locale=remquotes(v);
   } else if (p=="focus") {
     if (widget) widget->setFocus();
   } else if (p=="focuspolicy") {

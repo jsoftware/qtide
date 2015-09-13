@@ -120,6 +120,8 @@ void Menus::set(string p,string v)
     a->setChecked(t=="1");
   } else if (m=="enable") {
     items.value(id)->setEnabled(t=="1");
+  } else if (m=="caption" || m=="text") {
+    items.value(id)->setText(t);
   } else
     Child::set(p,v);
 }
