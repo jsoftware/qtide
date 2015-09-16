@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QFontMetrics>
 #include <QFormLayout>
 #include <QLabel>
@@ -14,7 +15,6 @@
 #include "dirm.h"
 #include "eview.h"
 #include "note.h"
-#include "pcombobox.h"
 #include "proj.h"
 #include "recent.h"
 #include "snap.h"

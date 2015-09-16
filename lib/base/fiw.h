@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
-class PComboBox;
+class QComboBox;
 class QLabel;
 class QListWidget;
 
@@ -61,8 +61,8 @@ private:
   QCheckBox *matchcase;
   QCheckBox *assigned;
   QCheckBox *nameonly;
-  PComboBox *searchfor;
-  PComboBox *replaceby;
+  QComboBox *searchfor;
+  QComboBox *replaceby;
   QLabel *lsearchfor;
   QLabel *lreplaceby;
   QListWidget *flist;

@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QLabel>
@@ -8,7 +9,6 @@
 #include <QPushButton>
 #include <QRegExp>
 
-#include "pcombobox.h"
 #include "base.h"
 #include "widget.h"
 

@@ -1,7 +1,7 @@
 
 #include <QApplication>
+#include <QComboBox>
 
-#include "../base/pcombobox.h"
 #include "../base/state.h"
 
 #include "cmd.h"
@@ -16,7 +16,7 @@ extern Font *fontdef;
 ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
-  PComboBox *w=new PComboBox;
+  QComboBox *w=new QComboBox;
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
@@ -39,7 +39,7 @@ void ComboBox::activated()
 // ---------------------------------------------------------------------
 string ComboBox::get(string p,string v)
 {
-  PComboBox *w=(PComboBox*) widget;
+  QComboBox *w=(QComboBox*) widget;
   string r;
   if (p=="property") {
     r+=string("edit")+"\012"+ "allitems"+"\012"+ "select"+"\012"+ "text"+"\012";
@@ -69,7 +69,7 @@ string ComboBox::get(string p,string v)
 // ---------------------------------------------------------------------
 string ComboBox::getitems()
 {
-  PComboBox *w=(PComboBox*) widget;
+  QComboBox *w=(QComboBox*) widget;
   string s="";
 
   for (int i=0; i<w->count(); i++) {
@@ -82,19 +82,19 @@ string ComboBox::getitems()
 // ---------------------------------------------------------------------
 void ComboBox::set(string p,string v)
 {
-  PComboBox *w=(PComboBox*) widget;
+  QComboBox *w=(QComboBox*) widget;
   if (p=="items") {
     w->clear();
     w->addItems(qsplit(v));
   } else if (p=="select")
-    ((PComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
+    ((QComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
   else Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
 string ComboBox::state()
 {
-  PComboBox *w=(PComboBox*) widget;
+  QComboBox *w=(QComboBox*) widget;
   int n=w->currentIndex();
   string r;
   if (n<0) {

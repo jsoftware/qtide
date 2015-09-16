@@ -1,6 +1,7 @@
 
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QHeaderView>
 #include <QTableWidget>
 #include <QPushButton>
@@ -11,7 +12,6 @@
 #include "pane.h"
 #include "table.h"
 #include "wd.h"
-#include "../base/pcombobox.h"
 #include "../base/plaintextedit.h"
 #include "../base/state.h"
 
@@ -269,7 +269,7 @@ string Table::readcell(int row,int col)
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
-    return (!g)?"":i2s(((PComboBox *)g)->currentIndex());
+    return (!g)?"":i2s(((QComboBox *)g)->currentIndex());
   else
     return "";
 }
@@ -288,7 +288,7 @@ string Table::readcellvalue(int row,int col)
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
-    return (!g)?"":q2s(((PComboBox *)g)->currentText());
+    return (!g)?"":q2s(((QComboBox *)g)->currentText());
   else
     return "";
 }
@@ -623,9 +623,9 @@ void Table::set_cell(int r,int c,QString v)
   } else if ((200==celltype[p]) || (300==celltype[p])) {
     if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];
-    if (!(g && QString("PComboBox")==g->metaObject()->className())) {
+    if (!(g && QString("QComboBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
-      PComboBox *cm=new PComboBox();
+      QComboBox *cm=new QComboBox();
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
         cm->setEditable(true);
@@ -644,16 +644,16 @@ void Table::set_cell(int r,int c,QString v)
     dat= qsplit(q2s(v));
     if (1==dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
-      ((PComboBox *)cellwidget[p])->setCurrentIndex(cmind);
+      ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
       return;
     }
     if (1<dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
       dat.removeFirst();
     }
-    ((PComboBox *)cellwidget[p])->clear();
-    ((PComboBox *)cellwidget[p])->addItems(dat);
-    ((PComboBox *)cellwidget[p])->setCurrentIndex(cmind);
+    ((QComboBox *)cellwidget[p])->clear();
+    ((QComboBox *)cellwidget[p])->addItems(dat);
+    ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
   } else if (400==celltype[p]) {
     if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];

@@ -13,7 +13,6 @@
 // ---------------------------------------------------------------------
 PlainTextEdit::PlainTextEdit(QWidget *parent) : QPlainTextEdit(parent)
 {
-  acceptKeyBack=false;
 }
 
 #ifndef QT_NO_PRINTER

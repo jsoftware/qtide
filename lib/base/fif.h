@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
-class PComboBox;
+class QComboBox;
 class QLabel;
 class QListWidget;
 class QListWidgetItem;
@@ -60,9 +60,9 @@ private:
   QCheckBox *regex;
   QCheckBox *subdir;
 
-  PComboBox *searchfor;
-  PComboBox *infolder;
-  PComboBox *filetypes;
+  QComboBox *searchfor;
+  QComboBox *infolder;
+  QComboBox *filetypes;
 
   QListWidget *found;
   QPushButton *find;

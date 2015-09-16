@@ -13,7 +13,6 @@ class PlainTextEdit : public QPlainTextEdit
 
 public:
   PlainTextEdit(QWidget *parent = 0);
-  bool acceptKeyBack;
 
 protected:
 

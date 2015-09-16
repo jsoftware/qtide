@@ -1,4 +1,5 @@
 #include <QBoxLayout>
+#include <QComboBox>
 #include <QDate>
 #include <QFormLayout>
 #include <QLabel>
@@ -10,7 +11,6 @@
 #include "comp.h"
 #include "eview.h"
 #include "note.h"
-#include "pcombobox.h"
 #include "plaintextedit.h"
 #include "recent.h"
 #include "snap.h"

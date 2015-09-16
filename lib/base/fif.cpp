@@ -1,5 +1,6 @@
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -10,7 +11,6 @@
 #include "eview.h"
 #include "fif.h"
 #include "note.h"
-#include "pcombobox.h"
 #include "proj.h"
 #include "recent.h"
 #include "rsel.h"
