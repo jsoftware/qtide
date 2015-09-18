@@ -432,6 +432,7 @@ QString Note::select_line_note(QString txt,int *ppos, int *plen)
   bool add;
   QString r;
   QString end=")\n";
+  QString end2="))\n";
   QStringList lns,res;
 
   pos=*ppos;
@@ -450,9 +451,7 @@ QString Note::select_line_note(QString txt,int *ppos, int *plen)
     n+=lns[ndx].size();
     if (n>len) break;
   }
-  if (ndx==lns.size())
-    return txt;
-  cnt=1+ndx-row;
+  cnt=1+qMin(ndx,lns.size()-1)-row;
 
   add=true;
   for (i=row; i>=0; i--) {
@@ -466,13 +465,13 @@ QString Note::select_line_note(QString txt,int *ppos, int *plen)
   }
 
   if (add) {
-    n=lns.indexOf(end,row);
-    if (n<0) n=lns.size();
-    for (i=row; i<n; i++)
-      if (isNoteline(lns[i])) {
-        n=i;
+    n=row;
+    for (; n<row+cnt; n++) {
+      if (lns[n]==end)
+        lns[n]=end2;
+      else if (isNoteline(lns[n]))
         break;
-      }
+    }
     cnt=qMin(cnt,n-row);
     res=lns.mid(0,row);
     res.append("Note''\n");
@@ -488,6 +487,9 @@ QString Note::select_line_note(QString txt,int *ppos, int *plen)
       lns.removeAt(n);
     } else
       cnt=lns.size()-row-1;
+    for(i=row; i<row+cnt; i++)
+      if (lns[i]==end2)
+        lns[i]=end;
     res=lns;
   }
 

@@ -4,6 +4,7 @@ config/
 jwd/
 libs/
 
+.DS_Store
 cleancdb.sh
 makebill.sh
 makecdb.sh
