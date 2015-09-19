@@ -47,6 +47,7 @@ void* jehjdll();
 char **adadbreak;
 char inputline[BUFLEN+1];
 J jt=0;
+void* hjdll;
 
 static char path[PLEN];
 static char pathdll[PLEN];
@@ -56,7 +57,6 @@ static JFreeType jfree;
 static JgaType jga;
 static JGetAType jgeta;
 static JGetLocaleType jgetlocale;
-static void* hjdll;
 static JSetAType jseta;
 
 extern QString LibName;

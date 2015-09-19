@@ -64,6 +64,7 @@ void sigint(int k);
 extern char inputline[BUFLEN+1];
 extern char **adadbreak;
 extern J jt;
+extern void * hjdll;
 extern void * jdllproc;
 extern void * jdlljt;
 

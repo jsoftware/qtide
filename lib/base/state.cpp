@@ -493,11 +493,11 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
+int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, void **jdll, void **jst)
 {
   app = new QApplication(argc, argv);
   jdllproc=jproc;
-  jdlljt=jt;
+  jdlljt=jt0;
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
@@ -514,6 +514,8 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
   term = new Term;
   bool rc = state_init(argc,argv);
   if (!rc) return 1;
+  *jst=jt;
+  *jdll=hjdll;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
   regQmlJE();
@@ -521,8 +523,10 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt)
 #endif
   if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
   if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
+//  term->fini();
+//  return state_fini();
   term->fini();
-  return state_fini();
+  return 0;
 }
 
 // ---------------------------------------------------------------------
