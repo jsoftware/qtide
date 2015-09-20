@@ -166,7 +166,7 @@ void setactivewindow(QWidget*);
 
 void state_appname();
 QStringList state_about();
-// int state_fini();
+int state_fini();
 bool state_init(int argc, char *argv[], void *jproc);
 void state_init_args(int *,char *argv[]);
 
@@ -185,11 +185,9 @@ void var_set(QString s, QString t);
 extern "C" {
 #ifdef JQT
   Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs, void *jproc, void *jt, void **jdll, void **jst);
-  Dllexport int state_fini();
   Dllexport void immexj(const char *s);
 #else
   Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs);
-  Dllexport int state_fini();
 #endif
 }
 

@@ -495,6 +495,8 @@ void state_reinit() {}
 // ---------------------------------------------------------------------
 int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, void **jdll, void **jst)
 {
+  if (-1==argc) return state_fini();  // the 2nd time state_run is called
+
   app = new QApplication(argc, argv);
   jdllproc=jproc;
   jdlljt=jt0;
@@ -524,7 +526,7 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, v
   if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
   if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
 //  term->fini();
-//  return state_fini();
+//  return state_fini();  // will be executed in the 2nd call to state_run()
   term->fini();
   return 0;
 }

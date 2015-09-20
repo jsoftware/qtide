@@ -13,16 +13,6 @@ extern "C" char * jepath1(char* arg);
 #ifdef _WIN32
 // extern int initexeserver();
 // extern int reg(int set, char* keys);
-int initexeserver()
-{
-  return 0;
-}
-int reg(int set, char* keys)
-{
-  Q_UNUSED(set);
-  Q_UNUSED(keys);
-  return 0;
-}
 #endif
 
 void *pjst;
@@ -47,8 +37,8 @@ int main(int argc, char *argv[])
   else if (argc>1 && (!strcmp(argv[1],"-unregserver") || !strcmp(argv[1],"/unregserver")))
     regn=0;
   if (regn>=0) {
-    char keys[2000];
-    reg(regn, keys);
+//    char keys[2000];
+//    reg(regn, keys);
     exit(0);
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
@@ -76,14 +66,9 @@ int main(int argc, char *argv[])
   if (state_run) {
     state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
 #ifdef _WIN32
-    initexeserver();
+//    initexeserver();
 #endif
-    Run2 state_fini=(Run2) lib->resolve("state_fini");
-    if (state_fini)
-      return state_fini();
-    qDebug() << lib->fileName();
-    qDebug() << "could not resolve: state_fini:\n\n" + lib->errorString();
-    return -1;
+    return state_run(-1, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
   }
 
   qDebug() << lib->fileName();
