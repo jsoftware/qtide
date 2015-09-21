@@ -13,10 +13,13 @@ extern "C" char * jepath1(char* arg);
 #ifdef _WIN32
 // extern int initexeserver();
 // extern int reg(int set, char* keys);
+// extern "C" void *hjdll;
+void *hjdll;
+#else
+void *hjdll;
 #endif
 
 void *pjst;
-void *hjdll;
 
 int main(int argc, char *argv[])
 {
@@ -37,8 +40,8 @@ int main(int argc, char *argv[])
   else if (argc>1 && (!strcmp(argv[1],"-unregserver") || !strcmp(argv[1],"/unregserver")))
     regn=0;
   if (regn>=0) {
-//    char keys[2000];
-//    reg(regn, keys);
+//     char keys[2000];
+//     reg(regn, keys);
     exit(0);
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
@@ -66,7 +69,10 @@ int main(int argc, char *argv[])
   if (state_run) {
     state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
 #ifdef _WIN32
-//    initexeserver();
+    if (argc>1 && !strcmp(argv[1],"-Embedding")) {
+      argc = 1;
+//       initexeserver();
+    }
 #endif
     return state_run(-1, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
   }

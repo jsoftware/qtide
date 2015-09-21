@@ -516,8 +516,8 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, v
   term = new Term;
   bool rc = state_init(argc,argv);
   if (!rc) return 1;
-  *jst=jt;
-  *jdll=hjdll;
+  if (jst) *jst=jt;
+  if (jdll) *jdll=hjdll;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
   regQmlJE();

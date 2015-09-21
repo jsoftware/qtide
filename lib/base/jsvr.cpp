@@ -16,6 +16,7 @@
 
 void * jdllproc=0;
 void * jdlljt=0;
+void * hjdll=0;
 
 using namespace std;
 
@@ -47,7 +48,6 @@ void* jehjdll();
 char **adadbreak;
 char inputline[BUFLEN+1];
 J jt=0;
-void* hjdll;
 
 static char path[PLEN];
 static char pathdll[PLEN];

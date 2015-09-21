@@ -55,7 +55,9 @@ SOURCES += main.cpp jepath.cpp
 win32:config += console
 CONFIG+= release
 
-win32:LIBS += -lole32 -loleaut32 -luuid
+win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
+win32-msvc*:QMAKE_CXXFLAGS_RELEASE -= -Zc:strictStrings
+win32-msvc*:QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -Zc:strictStrings
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
