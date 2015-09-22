@@ -218,7 +218,8 @@ void Tedit::promptreplace(QString t,int pos)
   if (pos>-1) {
     moveCursor(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
     setcurpos(pos+readcurpos());
-  }
+  } else
+    moveCursor(QTextCursor::End);
 }
 
 // ---------------------------------------------------------------------
