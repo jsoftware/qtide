@@ -135,8 +135,15 @@ void SlogList::keyPressEvent(QKeyEvent *event)
 {
   if (event->key()==Qt::Key_Escape || ischaracter(event->key()))
     event->ignore();
-  else
+  else {
+    #ifdef __MACH__
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+      emit itemActivated(currentItem());
+      return event->accept();
+    }
+    #endif
     QListWidget::keyPressEvent(event);
+  }
 }
 
 // ---------------------------------------------------------------------
