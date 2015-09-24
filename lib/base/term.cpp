@@ -145,9 +145,14 @@ bool Term::filequit(bool ignoreconfirm)
   QEvent e=QEvent(QEvent::Clipboard);
   QApplication::sendEvent(clipboard,&e);
 
-  Q_UNUSED(ignoreconfirm);
-  if ((!config.ConfirmClose) ||
-      queryOK("Term","OK to exit " + config.Lang + "?")) {
+  if (ignoreconfirm) {
+    var_cmddo("2!:55[0", true);  // force into the engine even in suspension
+    cleantemp();
+    state_quit();
+    QApplication::quit();
+    return true;
+  } else if ((!config.ConfirmClose) ||
+             queryOK("Term","OK to exit " + config.Lang + "?")) {
     var_cmddo("2!:55[0", true);  // force into the engine even in suspension
     cleantemp();
     state_quit();

@@ -27,6 +27,7 @@
 #include "proj.h"
 #include "recent.h"
 #include "svr.h"
+#include "tedit.h"
 #include "term.h"
 #include "../high/high.h"
 #include "../wd/form.h"
@@ -47,6 +48,7 @@ extern void regQmlJE();
 
 extern bool FHS;
 extern void wdreset();
+extern Tedit *tedit;
 
 using namespace std;
 
@@ -495,7 +497,20 @@ void state_reinit() {}
 // ---------------------------------------------------------------------
 int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, void **jdll, void **jst)
 {
-  if (-1==argc) return state_fini();  // the 2nd time state_run is called
+  if (-1==argc) {
+    return state_fini();  // the 2nd time state_run is called
+  } else if (-2==argc) {
+    if (tedit) tedit->showcmd(QString::fromUtf8(lib));  // olecomh display Do cmd if Log 1
+    return 0;
+  } else if (-3==argc) {
+    showide(fhs);  // olecom Show
+    return 0;
+  } else if (-4==argc) {
+    if (term) term->filequit(true);  // olecom Quit
+    return 0;
+  } else if (0>argc) {
+    return 0;
+  }
 
   app = new QApplication(argc, argv);
   jdllproc=jproc;

@@ -16,6 +16,13 @@ CONFIG(debug, debug|release) {
   rel = release
 }
 
+# export JQTOLECOM before qmake
+JQTOLECOM = $$(JQTOLECOM)
+win32: !isEmpty(JQTOLECOM) {
+  message(building ole server jqt)
+  DEFINES += JQTOLECOM
+}
+
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
@@ -52,7 +59,10 @@ INCLUDEPATH += .
 
 # Input
 SOURCES += main.cpp jepath.cpp
-win32:config += console
+contains(DEFINES,JQTOLECOM) {
+  win32:OBJECTS += $$arch/$$rel/obj/jdllcomx.obj
+}
+# win32:config += console
 CONFIG+= release
 
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32

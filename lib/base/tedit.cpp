@@ -251,6 +251,12 @@ void Tedit::setprompt()
 }
 
 // ---------------------------------------------------------------------
+void Tedit::showcmd(QString t)
+{
+  append_smoutput(getprompt()+t);
+}
+
+// ---------------------------------------------------------------------
 void Tedit::setresized(int s)
 {
   this->ifResized = s;

@@ -7,19 +7,24 @@
 using namespace std;
 
 typedef int (*Run)(int,char **,char *,bool,void *,void *,void **,void **);
-typedef int (*Run2)();
+static Run state_run;
 extern "C" char * jepath1(char* arg);
 
-#ifdef _WIN32
-// extern int initexeserver();
-// extern int reg(int set, char* keys);
-// extern "C" void *hjdll;
-void *hjdll;
-#else
-void *hjdll;
+#if defined(_WIN32) && defined(JQTOLECOM)
+extern int initexeserver();
+extern int reg(int set, char* keys);
 #endif
 
+void *hjdll;
 void *pjst;
+
+extern "C" int staterun(int arg, char *lib, int fhs)
+{
+  if (state_run && arg<0)
+    return state_run(arg,0,lib,(!!fhs),0,(void *)-1,0,0);
+  else
+    return 0;
+}
 
 int main(int argc, char *argv[])
 {
@@ -33,17 +38,22 @@ int main(int argc, char *argv[])
   char *path=jepath1(argv[0]);     // get path to JFE folder
 
   bool fhs = false;
+  bool embedding=false;
 #ifdef _WIN32
+#if defined(JQTOLECOM)
   int regn=-1;
   if (argc>1 && (!strcmp(argv[1],"-regserver") || !strcmp(argv[1],"/regserver")))
     regn=1;
   else if (argc>1 && (!strcmp(argv[1],"-unregserver") || !strcmp(argv[1],"/unregserver")))
     regn=0;
   if (regn>=0) {
-//     char keys[2000];
-//     reg(regn, keys);
+    char keys[2000];
+    reg(regn, keys);
     exit(0);
   }
+  if (argc>1 && !strcmp(argv[1],"-Embedding"))
+    embedding=true;
+#endif
   QString s= QString::fromUtf8(path)+ "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
     s= "jqt.dll";
@@ -65,16 +75,15 @@ int main(int argc, char *argv[])
   }
 #endif
   QLibrary *lib=new QLibrary(s);
-  Run state_run=(Run) lib->resolve("state_run");
+  state_run=(Run) lib->resolve("state_run");
   if (state_run) {
-    state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
-#ifdef _WIN32
-    if (argc>1 && !strcmp(argv[1],"-Embedding")) {
-      argc = 1;
-//       initexeserver();
-    }
+    state_run((embedding)?1:argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
+#if defined(_WIN32) && defined(JQTOLECOM)
+    if (embedding)
+      if (!initexeserver())
+        return -1;
 #endif
-    return state_run(-1, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
+    return staterun(-1,0,0);
   }
 
   qDebug() << lib->fileName();

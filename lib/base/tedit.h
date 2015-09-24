@@ -19,6 +19,7 @@ public:
   void setprompt();
   void setresized(int);
   void promptreplace(QString t,int pos=-1);
+  void showcmd(QString t);
 
   QScrollBar *hScroll;
   int ifResized, Tw, Th;
