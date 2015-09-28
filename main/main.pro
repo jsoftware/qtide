@@ -66,6 +66,7 @@ contains(DEFINES,JQTOLECOM) {
 CONFIG+= release
 
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
+win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32-msvc*:QMAKE_CXXFLAGS_RELEASE -= -Zc:strictStrings
 win32-msvc*:QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -Zc:strictStrings
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc

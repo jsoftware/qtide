@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef int (*Run)(int,char **,char *,bool,void *,void *,void **,void **);
+typedef int (*Run)(int,char **,char *,bool,bool,void *,void *,void **,void **);
 static Run state_run;
 extern "C" char * jepath1(char* arg);
 
@@ -21,7 +21,7 @@ void *pjst;
 extern "C" int staterun(int arg, char *lib, int fhs)
 {
   if (state_run && arg<0)
-    return state_run(arg,0,lib,(!!fhs),0,(void *)-1,0,0);
+    return state_run(arg,0,lib,(!!fhs),false,0,(void *)-1,0,0);
   else
     return 0;
 }
@@ -51,8 +51,11 @@ int main(int argc, char *argv[])
     reg(regn, keys);
     exit(0);
   }
-  if (argc>1 && !strcmp(argv[1],"-Embedding"))
+  if (argc>1 && !strcmp(argv[1],"-Embedding")) {
     embedding=true;
+    argc= 1;
+    strcpy(argv[1],"-jprofile");  // no buffer overflow
+  }
 #endif
   QString s= QString::fromUtf8(path)+ "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
@@ -77,7 +80,7 @@ int main(int argc, char *argv[])
   QLibrary *lib=new QLibrary(s);
   state_run=(Run) lib->resolve("state_run");
   if (state_run) {
-    state_run((embedding)?1:argc, argv, lib->fileName().toUtf8().data(),fhs,0,(void *)-1, &hjdll, &pjst);
+    state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,(!embedding),0,(void *)-1, &hjdll, &pjst);
 #if defined(_WIN32) && defined(JQTOLECOM)
     if (embedding)
       if (!initexeserver())

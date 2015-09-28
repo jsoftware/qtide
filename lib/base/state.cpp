@@ -156,7 +156,7 @@ void Config::init()
   Rxnna = "\\b";
   Rxnnz = "\\b";
 
-  NoProfile="1"!=dors("\":'/profile.ijs'-:(}.~i:&'/')jpathsep>{.4!:3''");
+  NoProfile="1"!=dors("\":'/profile.ijs'-:(}.~i:&'/')('/'&(('\\' I.@:= ])}))>{.4!:3''");
   if (NoProfile) {
     noprofile();
     return;
@@ -495,7 +495,7 @@ void state_quit()
 void state_reinit() {}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, void **jdll, void **jst)
+int state_run(int argc, char *argv[], char *lib, bool fhs, bool fshowide, void *jproc, void *jt0, void **jdll, void **jst)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -512,6 +512,7 @@ int state_run(int argc, char *argv[],char *lib,bool fhs,void *jproc,void *jt0, v
     return 0;
   }
 
+  ShowIde=fshowide;
   app = new QApplication(argc, argv);
   jdllproc=jproc;
   jdlljt=jt0;

@@ -83,6 +83,7 @@ Term::Term()
   menuBar->createActions();
   menuBar->createMenus("term");
   setLayout(layout);
+  setVisible(ShowIde);
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
   QMetaObject::connectSlotsByName(this);

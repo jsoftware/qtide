@@ -290,6 +290,7 @@ contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cp
 
 RESOURCES += lib.qrc
 
+win32:VERSION =
 win32:!win32-msvc*:LIBS += -shared
 win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl

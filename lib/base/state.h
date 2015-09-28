@@ -184,10 +184,10 @@ void var_set(QString s, QString t);
 
 extern "C" {
 #ifdef JQT
-  Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs, void *jproc, void *jt, void **jdll, void **jst);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, bool fshowide, void *jproc, void *jt, void **jdll, void **jst);
   Dllexport void immexj(const char *s);
 #else
-  Dllexport int state_run(int argc, char *argv[],char *lib,bool fhs);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs);
 #endif
 }
 
