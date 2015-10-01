@@ -216,13 +216,29 @@ QString mbfont()
   bool ok;
   QFont font, def;
   QString s;
+  QString title;
+  float pointsize = 0;
+  int fontx = -1;  // index of font name
   def.setStrikeOut(false);
   def.setUnderline(false);
-  if (arg.size())
-    def.setFamily(arg.at(0));
-  if (arg.size()>1)
-    def.setPointSize(arg.at(1).toFloat());
-  for (int i=2; i<arg.size(); i++) {
+  if(arg.size() > 2)pointsize = arg.at(2).toFloat();
+  if(pointsize != 0) {
+      // mbinfo title font size ...
+      fontx = 1;
+      title = arg.at(0);
+  } else {
+    if(arg.size() > 1)pointsize = arg.at(1).toFloat();
+    if(pointsize != 0)fontx = 0;  // mbinfo font size ...
+    else if(arg.size()) {
+      title = arg.at(0);  // mbinfo title [font]
+      if(arg.size() == 2)fontx = 1;  // mbinfo title font   (size omitted)
+    }
+  }
+  if (fontx>=0)
+    def.setFamily(arg.at(fontx));
+  if (pointsize)
+    def.setPointSize(pointsize);
+  for (int i=2+fontx; i<arg.size(); i++) {
     s=arg.at(i);
     if (s=="bold")
       def.setBold(true);
@@ -234,9 +250,9 @@ QString mbfont()
       def.setUnderline(true);
   }
 #ifdef __MACH__
-  font=QFontDialog::getFont(&ok,def,getmbparent(),QString(), QFontDialog::DontUseNativeDialog);
+  font=QFontDialog::getFont(&ok,def,getmbparent(),title, QFontDialog::DontUseNativeDialog);
 #else
-  font=QFontDialog::getFont(&ok,def,getmbparent());
+  font=QFontDialog::getFont(&ok,def,getmbparent(),title);
 #endif
   if (!ok) return "";
   return fontspec(font);
