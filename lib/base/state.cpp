@@ -443,8 +443,8 @@ int state_fini()
 // ---------------------------------------------------------------------
 bool state_init()
 {
-  NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
-  if (!NoProfile) {
+  config.NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
+  if (!config.NoProfile) {
     term->menuBar->show();
     config.ini0();
     config.init();
