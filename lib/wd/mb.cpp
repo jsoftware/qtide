@@ -223,9 +223,9 @@ QString mbfont()
   def.setUnderline(false);
   if(arg.size() > 2)pointsize = arg.at(2).toFloat();
   if(pointsize != 0) {
-      // mbinfo title font size ...
-      fontx = 1;
-      title = arg.at(0);
+    // mbinfo title font size ...
+    fontx = 1;
+    title = arg.at(0);
   } else {
     if(arg.size() > 1)pointsize = arg.at(1).toFloat();
     if(pointsize != 0)fontx = 0;  // mbinfo font size ...

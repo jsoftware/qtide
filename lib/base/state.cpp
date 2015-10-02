@@ -441,6 +441,20 @@ int state_fini()
 }
 
 // ---------------------------------------------------------------------
+bool state_init()
+{
+  NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
+  if (!NoProfile) {
+    term->menuBar->show();
+    config.ini0();
+    config.init();
+    dlog_init();
+    recent.init();
+  }
+  return true;
+}
+
+// ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
   if (!jdllproc && (void*)-1==jdlljt) {
@@ -507,6 +521,9 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, bool fshowide, void *
     return 0;
   } else if (-4==argc) {
     if (term) term->filequit(true);  // olecom Quit
+    return 0;
+  } else if (-100==argc) {
+    state_init();
     return 0;
   } else if (0>argc) {
     return 0;

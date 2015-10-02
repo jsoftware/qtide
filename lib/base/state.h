@@ -167,6 +167,7 @@ void setactivewindow(QWidget*);
 void state_appname();
 QStringList state_about();
 int state_fini();
+bool state_init();
 bool state_init(int argc, char *argv[], void *jproc);
 void state_init_args(int *,char *argv[]);
 
