@@ -156,7 +156,7 @@ void Config::init()
   Rxnna = "\\b";
   Rxnnz = "\\b";
 
-  NoProfile="1"!=dors("\":'/profile.ijs'-:(}.~i:&'/')('/'&(('\\' I.@:= ])}))>{.4!:3''");
+  NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
   if (NoProfile) {
     noprofile();
     return;
@@ -441,20 +441,6 @@ int state_fini()
 }
 
 // ---------------------------------------------------------------------
-bool state_init()
-{
-  config.NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
-  if (!config.NoProfile) {
-    term->menuBar->show();
-    config.ini0();
-    config.init();
-    dlog_init();
-    recent.init();
-  }
-  return true;
-}
-
-// ---------------------------------------------------------------------
 bool state_init(int argc, char *argv[])
 {
   if (!jdllproc && (void*)-1==jdlljt) {
@@ -506,10 +492,21 @@ void state_quit()
 }
 
 // ---------------------------------------------------------------------
-void state_reinit() {}
+void state_reinit()
+{
+  config.NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
+  if (!config.NoProfile) {
+    term->menuBar->show();
+    config.ini0();
+    config.init();
+    dlog_init();
+    recent.init();
+    term->fini();
+  }
+}
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, bool fshowide, void *jproc, void *jt0, void **jdll, void **jst)
+int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -517,19 +514,19 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, bool fshowide, void *
     if (tedit) tedit->showcmd(QString::fromUtf8(lib));  // olecomh display Do cmd if Log 1
     return 0;
   } else if (-3==argc) {
-    showide(fhs);  // olecom Show
+    showide(!!fshowide);  // olecom Show
     return 0;
   } else if (-4==argc) {
     if (term) term->filequit(true);  // olecom Quit
     return 0;
   } else if (-100==argc) {
-    state_init();
+    state_reinit();
     return 0;
   } else if (0>argc) {
     return 0;
   }
 
-  ShowIde=fshowide;
+  ShowIde=!!fshowide;
   app = new QApplication(argc, argv);
   jdllproc=jproc;
   jdlljt=jt0;

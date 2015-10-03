@@ -6,22 +6,20 @@
 
 using namespace std;
 
-typedef int (*Run)(int,char **,char *,bool,bool,void *,void *,void **,void **);
+typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **);
 static Run state_run;
 extern "C" char * jepath1(char* arg);
 
-#if defined(_WIN32) && defined(JQTOLECOM)
 extern int initexeserver();
 extern int reg(int set, char* keys);
-#endif
 
 void *hjdll;
 void *pjst;
 
-extern "C" int staterun(int arg, char *lib, int fhs)
+extern "C" int staterun(int argc, char *arg1, int arg2)
 {
-  if (state_run && arg<0)
-    return state_run(arg,0,lib,(!!fhs),false,0,(void *)-1,0,0);
+  if (state_run && argc<0)
+    return state_run(argc,0,arg1,false,arg2,0,0,0,0);
   else
     return 0;
 }
@@ -38,9 +36,8 @@ int main(int argc, char *argv[])
   char *path=jepath1(argv[0]);     // get path to JFE folder
 
   bool fhs = false;
-  bool embedding=false;
+  int embedding=0;
 #ifdef _WIN32
-#if defined(JQTOLECOM)
   int regn=-1;
   if (argc>1 && (!strcmp(argv[1],"-regserver") || !strcmp(argv[1],"/regserver")))
     regn=1;
@@ -52,11 +49,10 @@ int main(int argc, char *argv[])
     exit(0);
   }
   if (argc>1 && !strcmp(argv[1],"-Embedding")) {
-    embedding=true;
-    argc= 1;
+    embedding=1;
+    argc= 2;
     strcpy(argv[1],"-jprofile");  // no buffer overflow
   }
-#endif
   QString s= QString::fromUtf8(path)+ "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
     s= "jqt.dll";
@@ -80,8 +76,8 @@ int main(int argc, char *argv[])
   QLibrary *lib=new QLibrary(s);
   state_run=(Run) lib->resolve("state_run");
   if (state_run) {
-    state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,(!embedding),0,(void *)-1, &hjdll, &pjst);
-#if defined(_WIN32) && defined(JQTOLECOM)
+    state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,(embedding)?0:1,0,(void *)-1, &hjdll, &pjst);
+#if defined(_WIN32)
     if (embedding)
       if (!initexeserver())
         return -1;
