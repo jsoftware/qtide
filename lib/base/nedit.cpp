@@ -18,9 +18,10 @@ Nedit::Nedit()
                   PlainTextEdit::WidgetWidth : PlainTextEdit::NoWrap);
   setFont(config.Font);
   QPalette p = palette();
-  p.setColor(QPalette::Active, QPalette::Base, config.EditBack.color);
-  p.setColor(QPalette::Inactive, QPalette::Base, config.EditBack.color);
+  p.setColor(QPalette::Base, config.EditBack.color);
   p.setColor(QPalette::Text, config.EditFore.color);
+  p.setColor(QPalette::Highlight, config.EditSelb.color);
+  p.setColor(QPalette::HighlightedText, config.EditSelt.color);
   setPalette(p);
   highlight(document());
 }

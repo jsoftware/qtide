@@ -138,9 +138,13 @@ public:
   Style EditFore;
   Style EditBack;
   Style EditHigh;
+  Style EditSelb;
+  Style EditSelt;
   Style TermFore;
   Style TermBack;
   Style TermHigh;
+  Style TermSelb;
+  Style TermSelt;
 
   Style adverbStyle;
   Style commentStyle;

@@ -365,6 +365,8 @@ void Config::noprofile()
   TermBack.color = QColor("mistyrose");
   TermFore.color = QColor("black");
   TermHigh.color = QColor("gainsboro");
+  TermSelb.color = QColor(0,162,232);
+  TermSelt.color = QColor("white");
   EditHigh.color = QColor("gainsboro");
   TermPos=q2p("0 0 500 500");
   term->menuBar->hide();

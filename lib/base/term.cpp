@@ -170,9 +170,10 @@ void Term::fini()
   menuBar->createMenus_fini("term");
   tedit->setFont(config.Font);
   QPalette p = palette();
-  p.setColor(QPalette::Active, QPalette::Base, config.TermBack.color);
-  p.setColor(QPalette::Inactive, QPalette::Base, config.TermBack.color);
+  p.setColor(QPalette::Base, config.TermBack.color);
   p.setColor(QPalette::Text, config.TermFore.color);
+  p.setColor(QPalette::Highlight, config.TermSelb.color);
+  p.setColor(QPalette::HighlightedText, config.TermSelt.color);
   tedit->setPalette(p);
   setWindowIcon(QIcon(":/images/jgreen.png"));
   if (config.TermSyntaxHighlight)

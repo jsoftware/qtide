@@ -18,10 +18,14 @@ void Config::initstyle()
   EditFore.set(s->value("Edit/fore","0 0 0").toString());
   EditBack.set(s->value("Edit/back","221 252 222").toString());
   EditHigh.set(s->value("Edit/high","240 240 232").toString());
+  EditSelt.set(s->value("Edit/selt","255 255 255").toString());
+  EditSelb.set(s->value("Edit/selb","0 162 232").toString());
 
   TermFore.set(s->value("Term/fore","0 0 0").toString());
   TermBack.set(s->value("Term/back","252 252 221").toString());
   TermHigh.set(s->value("Term/high","240 240 232").toString());
+  TermSelt.set(s->value("Term/selt","255 255 255").toString());
+  TermSelb.set(s->value("Term/selb","0 162 232").toString());
 
   adverbStyle.set(s->value("Class/adverb","221 68 68").toString());
   commentStyle.set(s->value("Class/comment","136 136 136 italic").toString());
@@ -48,9 +52,13 @@ void Config::initstyle()
   s->setValue("Edit/fore",EditFore.read());
   s->setValue("Edit/back",EditBack.read());
   s->setValue("Edit/high",EditHigh.read());
+  s->setValue("Edit/selt",EditSelt.read());
+  s->setValue("Edit/selb",EditSelb.read());
   s->setValue("Term/fore",TermFore.read());
   s->setValue("Term/back",TermBack.read());
   s->setValue("Term/high",TermHigh.read());
+  s->setValue("Term/selt",TermSelt.read());
+  s->setValue("Term/selb",TermSelb.read());
 
   s->setValue("Class/adverb",adverbStyle.read());
   s->setValue("Class/comment",commentStyle.read());
@@ -80,7 +88,9 @@ void Config::initstyle()
     "# Edit/Term definitions are:\n"
     "#  fore = text color\n"
     "#  back = default background color\n"
-    "#  high = selected background color\n"
+    "#  high = edit-line background color\n"
+    "#  selb = selection background color\n"
+    "#  selt = selection text color\n"
     ;
   cfwrite(f,h + "\n" + t);
 }
