@@ -2,12 +2,20 @@
 
 #include "plaintextedit.h"
 #include "base.h"
+#include "jsvr.h"
 #include "nedit.h"
 #include "note.h"
 #include "tedit.h"
 #include "term.h"
 
 using namespace std;
+
+// ---------------------------------------------------------------------
+bool Note::isMultiline(QString txt)
+{
+  sets("inputx_jrx_",q2s(txt));
+  return dorb("ismultiline_jqtide_ inputx_jrx_");
+}
 
 // ---------------------------------------------------------------------
 void Note::runline(bool advance, bool show)
@@ -18,7 +26,16 @@ void Note::runline(bool advance, bool show)
   QTextCursor c = e->textCursor();
   QString txt = c.block().text();
   int row = c.blockNumber();
-
+  bool multi=isMultiline(txt);
+  if (multi) {
+    QString s;
+    while (len>++row) {
+      c.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,1);
+      s=c.block().text();
+      txt+="\n" + s;
+      if (s==")") break;
+    }
+  }
 // advance to next line, or if blank, to before next entry
   if (advance) {
     c.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,1);
@@ -36,7 +53,10 @@ void Note::runline(bool advance, bool show)
     e->setTextCursor(c);
   }
 
-  tedit->docmdp(txt,true,show);
+  if (multi)
+    tedit->docmds(txt,true,show);
+  else
+    tedit->docmdp(txt,true,show);
 }
 
 // ---------------------------------------------------------------------

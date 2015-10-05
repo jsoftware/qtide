@@ -208,6 +208,7 @@ private:
 
   void changeEvent(QEvent *event);
   void closeEvent(QCloseEvent *event);
+  bool isMultiline(QString);
   bool isNoteline(QString);
   void keyPressEvent(QKeyEvent *e);
   bool maybeSave();

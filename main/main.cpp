@@ -81,8 +81,10 @@ int main(int argc, char *argv[])
     if (embedding)
       if (!initexeserver())
         return -1;
-#endif
     return staterun(-1,0,0);
+#else
+    return state_run(-1,0,0,false,0,0,0,0,0);
+#endif
   }
 
   qDebug() << lib->fileName();

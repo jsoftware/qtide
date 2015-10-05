@@ -69,6 +69,7 @@ extern void * jdllproc;
 extern void * jdlljt;
 
 A dora(std::string s);
+bool dorb(std::string s);
 bool doriv(std::string s,I** v,I* len);
 std::string dors(std::string s);
 void dumpA(A a);

@@ -361,11 +361,23 @@ A dora(string s)
 }
 
 // ---------------------------------------------------------------------
+// jdo with boolean result
+bool dorb(string s)
+{
+  if (!jt) return false;
+  A r=dora(s);
+  if (!r) return false;
+  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  assert(p->t==1);
+  assert(p->r==0);
+  return !!*((char*)p->s);
+}
+
+// ---------------------------------------------------------------------
 // jdo to get integer vector
 // return success
 bool doriv(string s,I**v,I*len)
 {
-  string t;
   if (!jt) return false;
   A r=dora(s);
   if (!r) return false;
@@ -374,7 +386,7 @@ bool doriv(string s,I**v,I*len)
   assert(p->r<2);
   if (p->r==0) {
     *len = 1;
-    return ((I*)p->s);
+    *v=((I*)p->s);
   } else {
     *len = p->c;
     *v=(I*)(sizeof(AREP_RECORD)+(char*)p);
@@ -383,10 +395,9 @@ bool doriv(string s,I**v,I*len)
 }
 
 // ---------------------------------------------------------------------
-// jdo with QString result
+// jdo with string result
 string dors(string s)
 {
-  string t;
   if (!jt) return "";
   A r=dora(s);
   if (!r) return "";
