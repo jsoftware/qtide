@@ -38,7 +38,7 @@ void Config::initstyle()
   stringStyle.set(s->value("Class/string","0 0 255").toString());
   verbStyle.set(s->value("Class/verb","0 153 102").toString());
 
-  if (s->allKeys().contains("Edit/high")) return;
+  if (s->allKeys().contains("Edit/selt")) return;
 
   delete s;
 #ifdef _WIN32
