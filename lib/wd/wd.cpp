@@ -84,6 +84,7 @@ static void wdnotyet();
 static void wdopenj();
 static void wdp(string c);
 static void wdpactive();
+static void wdparse();
 static void wdpas();
 static void wdpc();
 static void wdpcenter();
@@ -683,6 +684,8 @@ void wdp(string c)
 {
   if (c=="pactive")
     wdpactive();
+  else if (c=="parse")
+    wdparse();
   else if (c=="pas")
     wdpas();
   else if (c=="pc")
@@ -724,6 +727,18 @@ void wdpactive()
   if (noform()) return;
   form->activateWindow();
   form->raise();
+}
+
+// ---------------------------------------------------------------------
+void wdparse()
+{
+  string r;
+  vector<string> s=ssplit(cmd.getparms());
+  int n=(int)s.size();
+  for(int i=0; i<n; i++)
+    r+=spair(i2s(i),s[i]);
+  result=r;
+  rc=-2;
 }
 
 // ---------------------------------------------------------------------

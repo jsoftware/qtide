@@ -15,6 +15,7 @@ public:
   string getid();
   string getline();
   string getparms(bool s=false);
+  bool ifstarred(string);
   void init(char *,int);
   bool more();
 
@@ -30,6 +31,10 @@ private:
   void skippast(char c);
   void skips(string s);
   void skiptows();
+  QStringList qsplitstd();
+  vector<string> ssplitstd();
+  QStringList qsplitby(char c);
+  vector<string> ssplitby(char c);
 
   size_t bgn;
   size_t len;

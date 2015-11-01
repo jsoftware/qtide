@@ -9,8 +9,6 @@ static string WS=" \f\r\t\v";
 static string WSLF=WS+LF;
 
 static bool contains(string s,char c);
-static QStringList qsplitby(string s, char c);
-static vector<string> ssplitby(string s, char c);
 static string toLF(string s);
 
 // ---------------------------------------------------------------------
@@ -130,23 +128,66 @@ string Cmd::getparms(bool star)
 }
 
 // ---------------------------------------------------------------------
+// if there is a starred parameter (i.e. beginning *)
+// this also means string not delimited by SOH or LF
+bool Cmd::ifstarred(string s)
+{
+  char c;
+  int n=(int)s.size();
+  for (int i=0; i<n; i++) {
+    c=s[i];
+    if (c=='*') return true;
+    if (c==LF || c==SOH) return false;
+    if (c=='"' || c==DEL)
+      while (s[++i]!=c)
+        if (s[i]==SOH) return false;
+  }
+  return false;
+}
+// ---------------------------------------------------------------------
 bool Cmd::more()
 {
   return pos<len;
 }
 
 // ---------------------------------------------------------------------
+// split on character
+QStringList Cmd::qsplitby(char c)
+{
+  string s;
+  if (len==0 || pos==len)
+    return QStringList();
+  if (str[len-1]==c)
+    s=str.substr(pos,len-1);
+  else
+    s=str.substr(pos);
+  pos=len;
+  return s2q(s).split(c);
+}
+
+// ---------------------------------------------------------------------
 // split parameters
-// if has SOH, split on SOH
-// if has LF not in paired delimiters, split on LF
-// otherwise split on WS, or paired "" or DEL
+// standard is split on WS, or paired "" or DEL
+// if starred, do standard
+// otherwise if has SOH, split on SOH
+// otherwise if has LF not in paired delimiters, split on LF
+// otherwise do standard
 QStringList Cmd::qsplits()
 {
   skips(WS);
-  if (contains(str,SOH))
-    return qsplitby(str,SOH);
-  if (delimLF(str))
-    return qsplitby(str,LF);
+  if (ifstarred(str))
+    return qsplitstd();
+  string s=str.substr(pos);
+  if (contains(s,SOH))
+    return qsplitby(SOH);
+  if (delimLF(s))
+    return qsplitby(LF);
+  return qsplitstd();
+}
+
+// ---------------------------------------------------------------------
+QStringList Cmd::qsplitstd()
+{
   char c;
   QStringList r;
   while (pos<len) {
@@ -163,38 +204,6 @@ QStringList Cmd::qsplits()
     } else {
       skiptows();
       r.append(s2q(str.substr(bgn,pos-bgn)));
-      if (pos<len && str[pos]==LF)
-        pos++;
-    }
-  }
-  return r;
-}
-
-// ---------------------------------------------------------------------
-// split as qsplits, but returning vector of string
-vector<string> Cmd::ssplits()
-{
-  skips(WS);
-  if (contains(str,SOH))
-    return ssplitby(str,SOH);
-  if (delimLF(str))
-    return ssplitby(str,LF);
-  char c;
-  vector<string> r;
-  while (pos<len) {
-    skips(WS);
-    bgn=pos;
-    c=str[pos++];
-    if (c=='*') {
-      r.push_back(str.substr(pos));
-      break;
-    }
-    if (c=='"' || c==DEL) {
-      skippast(c);
-      r.push_back(str.substr(bgn+1,pos-bgn-2));
-    } else {
-      skiptows();
-      r.push_back(str.substr(bgn,pos-bgn));
       if (pos<len && str[pos]==LF)
         pos++;
     }
@@ -238,6 +247,74 @@ void Cmd::skiptows()
 }
 
 // ---------------------------------------------------------------------
+// split on char
+vector<string> Cmd::ssplitby(char c)
+{
+  int i,p;
+  vector<string> r;
+  string s;
+  if (len==0 || pos==len)
+    return r;
+  if (str[len-1]==c)
+    s=str.substr(pos,len-1);
+  else
+    s=str.substr(pos);
+  pos=len;
+  int n=(int)s.size();
+  for(i=p=0; i<n; i++)
+    if (s[i]==c) {
+      r.push_back(s.substr(p,i-p));
+      p=i+1;
+    }
+  if (p==n)
+    r.push_back("");
+  else
+    r.push_back(s.substr(p,n-p));
+  return r;
+}
+
+// ---------------------------------------------------------------------
+// split as qsplits, but returning vector of string
+vector<string> Cmd::ssplits()
+{
+  skips(WS);
+  if (ifstarred(str))
+    return ssplitstd();
+  string s=str.substr(pos);
+  if (contains(s,SOH))
+    return ssplitby(SOH);
+  if (delimLF(s))
+    return ssplitby(LF);
+  return ssplitstd();
+}
+
+// ---------------------------------------------------------------------
+vector<string> Cmd::ssplitstd()
+{
+  char c;
+  vector<string> r;
+  while (pos<len) {
+    skips(WS);
+    bgn=pos;
+    c=str[pos++];
+    if (c=='*') {
+      r.push_back(str.substr(pos));
+      break;
+    }
+    if (c=='"' || c==DEL) {
+      skippast(c);
+      r.push_back(str.substr(bgn+1,pos-bgn-2));
+    } else {
+      skiptows();
+      r.push_back(str.substr(bgn,pos-bgn));
+      if (pos<len && str[pos]==LF)
+        pos++;
+    }
+  }
+  return r;
+}
+
+// ---------------------------------------------------------------------
 // split on bin commands and remove blanks
 QStringList bsplit(string s)
 {
@@ -268,46 +345,12 @@ QStringList qsplit(string s,bool star)
 }
 
 // ---------------------------------------------------------------------
-// split on character
-QStringList qsplitby(string s,char c)
-{
-  int n=(int)s.size();
-  if (n==0)
-    return QStringList();
-  if (s[n-1]==c)
-    s=s.substr(0,n-1);
-  return s2q(s).split(c);
-}
-
-// ---------------------------------------------------------------------
 // as qsplit but returning vector of string
 vector<string> ssplit(string s)
 {
   Cmd c;
   c.init((char*)s.c_str(),(int)s.size());
   return c.ssplits();
-}
-
-// ---------------------------------------------------------------------
-// split on char
-vector<string> ssplitby(string s,char c)
-{
-  int i,p;
-  vector<string> r;
-  int n=(int)s.size();
-  if (n==0) return r;
-  if (s[n-1]==c)
-    s=s.substr(0,--n);
-  for (i=p=0; i<n; i++)
-    if (s[i]==c) {
-      r.push_back(s.substr(p,i-p));
-      p=i+1;
-    }
-  if (p==n)
-    r.push_back("");
-  else
-    r.push_back(s.substr(p,n-p));
-  return r;
 }
 
 // ---------------------------------------------------------------------
