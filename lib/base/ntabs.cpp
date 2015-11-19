@@ -27,6 +27,8 @@ extern QCompleter *completer;
 
 using namespace std;
 
+static bool pendingReload=false;
+
 // ---------------------------------------------------------------------
 Ntabs::Ntabs(Note *p)
 {
@@ -63,12 +65,14 @@ void Ntabs::currentChanged(int index)
 // ---------------------------------------------------------------------
 void Ntabs::fileChanged(const QString &path)
 {
+  if (pendingReload) return;
   if (NoEvents) return;
   int index=getfileindex(path);
   Nedit *e=(Nedit *)widget(index);
   if (e->text==cfread(e->file)) return;
   QString m="File contents changed on disk: " + e->sname;
   m=m+"\n\n" + "Reload from disk?";
+  pendingReload=true;
   if (queryNY("File Changed",m)) {
     noevents(1);
     e->text = cfread(e->file);
@@ -76,6 +80,7 @@ void Ntabs::fileChanged(const QString &path)
     setmodified(index,false);
     noevents(0);
   }
+  pendingReload=false;
 }
 
 // ---------------------------------------------------------------------
