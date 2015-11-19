@@ -13,6 +13,7 @@ QMap<QString,QString> Comments;
 Nedit::Nedit()
 {
   type=1;
+  pendingReload=false;
   ensureCursorVisible();
   setLineWrapMode(config.LineWrap ?
                   PlainTextEdit::WidgetWidth : PlainTextEdit::NoWrap);

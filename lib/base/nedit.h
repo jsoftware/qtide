@@ -19,6 +19,7 @@ public:
   QString sname;
   QString text;
   ~Nedit();
+  bool pendingReload;
 
 public slots:
 
