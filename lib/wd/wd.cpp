@@ -1127,15 +1127,19 @@ void wdqueries(string s)
     return;
   }
 // queries that form is needed
-  if (noform()) return;
-  if (s=="qhwndp")
+  if (s=="qhwndp") {
+    if (noform()) return;
     result=form->hsform();
-  else if (s=="qform")
+  } else if (s=="qform") {
+    if (noform()) return;
     result=form->qform();
 // queries expecting parameter
-  else if (!p.size())
-    error("missing parameters");
-  else if (s=="qhwndc") {
+  } else if (s=="qhwndc") {
+    if (noform()) return;
+    if (!p.size()) {
+      error("missing parameters");
+      return;
+    }
     Child *cc;
     if (p=="_") p=formchildid();
     if ((cc=form->id2child(p))) result=p2s(cc);
@@ -1143,6 +1147,11 @@ void wdqueries(string s)
       error("no child selected: " + p);
     if (rc!=1) form->child=cc;
   } else if (s=="qchildxywh") {
+    if (noform()) return;
+    if (!p.size()) {
+      error("missing parameters");
+      return;
+    }
     Child *cc;
     if (p=="_") p=formchildid();
     if ((cc=form->id2child(p)) && cc->widget) {
