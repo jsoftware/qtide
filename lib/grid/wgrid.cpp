@@ -25,13 +25,13 @@ WGrid::WGrid(Child *c,QGrid *qgrid,QWidget *parent,Wasa *s) : QWidget(parent)
 // ---------------------------------------------------------------------
 void WGrid::barhchanged(int v)
 {
-  Scls=roundint ((Sclsmax*v)/(1.0+sa->barh->maximum()));
+  Scls=v;
 }
 
 // ---------------------------------------------------------------------
 void WGrid::barvchanged(int v)
 {
-  Srws=roundint ((Srwsmax*v)/(1.0+sa->barv->maximum()));
+  Srws=v;
 }
 
 // ---------------------------------------------------------------------
@@ -53,10 +53,8 @@ void WGrid::maxscrollc(int w)
   int wid=w-Lw-(0<sa->barv->maximum() ? sbx : 0);
   Sclsmax=maxscroll(wid,Cws);
   Scls=qMin(Scls,Sclsmax);
-  if (Scls)
-    sa->barh->setValue((Scls*(1.0+sa->barh->maximum()))/Sclsmax);
-  else
-    sa->barh->setValue(0);
+  sa->barh->setRange(0,Sclsmax);
+  sa->barh->setValue(Scls);
 }
 
 // ---------------------------------------------------------------------
@@ -65,10 +63,8 @@ void WGrid::maxscrollr(int h)
   int hit=h-Hh-(0<sa->barh->maximum() ? sbx : 0);
   Srwsmax=maxscroll(hit,Chs);
   Srws=qMin(Srws,Srwsmax);
-  if (Srws)
-    sa->barv->setValue((Srws*(1.0+sa->barv->maximum()))/Srwsmax);
-  else
-    sa->barv->setValue(0);
+  sa->barv->setRange(0,Srwsmax);
+  sa->barv->setValue(Srws);
 }
 
 // ---------------------------------------------------------------------

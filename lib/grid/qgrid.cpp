@@ -127,12 +127,6 @@ void Wasa::setmargins(int l,int t,int r,int b)
 // ---------------------------------------------------------------------
 void Wasa::setscroll()
 {
-  int w=width();
-  barh->setRange(0,qMax(0,g->width()-w));
-  g->maxscrollc(w);
-
-  int h=height();
-  barv->setRange(0,qMax(0,g->height()-h));
-  g->maxscrollr(h);
+  g->maxscrollc(width());
+  g->maxscrollr(height());
 }
-

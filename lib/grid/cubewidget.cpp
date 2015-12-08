@@ -79,6 +79,13 @@ void CubeMargin::dropEvent(QDropEvent *e)
 
   n=p->AxisNames.indexOf(e->mimeData()->text());
 
+  if ((this==p->mcols && n==p->AxisCols.last()) ||
+      (this==p->mrows && n==p->AxisRows.last()) ||
+      (this==p->mslice && n==p->AxisSlice.last())) {
+    ((QToolButton *)e->source())->setDown(false);
+    return;
+  }
+
   c=itemremove(p->AxisCols,n);
   r=itemremove(p->AxisRows,n);
   s=itemremove(p->AxisSlice,n);
@@ -186,5 +193,5 @@ void dragstart(QWidget *s,QDrag *dr)
   QMimeData *data = new QMimeData;
   data->setText(s->objectName());
   dr->setMimeData(data);
-  dr->start();
+  dr->exec();
 }
