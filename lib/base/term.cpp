@@ -131,7 +131,7 @@ void Term::closeEvent(QCloseEvent *event)
 // ---------------------------------------------------------------------
 void Term::displayform(int p)
 {
-  var_cmddo("0 0$9!:3[" + QString::number(p));
+  jcon->cmddo("0 0$9!:3[" + q2s((QString::number(p))));
 }
 
 // ---------------------------------------------------------------------
@@ -147,14 +147,14 @@ bool Term::filequit(bool ignoreconfirm)
   QApplication::sendEvent(clipboard,&e);
 
   if (ignoreconfirm) {
-    var_cmddo("2!:55[0", true);  // force into the engine even in suspension
+    jcon->cmd("2!:55[0");
     cleantemp();
     state_quit();
     QApplication::quit();
     return true;
   } else if ((!config.ConfirmClose) ||
              queryOK("Term","OK to exit " + config.Lang + "?")) {
-    var_cmddo("2!:55[0", true);  // force into the engine even in suspension
+    jcon->cmd("2!:55[0");
     cleantemp();
     state_quit();
     QApplication::quit();
@@ -202,14 +202,12 @@ void Term::fini()
 void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
-#ifdef JQT
   case Qt::Key_Escape:
     if (config.EscClose) {
       if (!filequit(false))
         event->accept();
     }
     break;
-#endif
   default:
     QWidget::keyPressEvent(event);
   }
@@ -235,14 +233,14 @@ void Term::launchpad_triggered(QAction *a)
 // ---------------------------------------------------------------------
 void Term::load(QString s, bool d)
 {
-  tedit->docmdx(var_load(s,d));
+  tedit->load(s,d);
 }
 
 // ---------------------------------------------------------------------
 void Term::pacman()
 {
-  var_cmd("require 'pacman ~addons/ide/qt/pacman.ijs'");
-  var_cmd("runpacman_jpacman_ 0");
+  jcon->cmddo("require 'pacman ~addons/ide/qt/pacman.ijs'");
+  jcon->cmddo("runpacman_jpacman_ 0");
 }
 
 // ---------------------------------------------------------------------
@@ -291,7 +289,7 @@ void Term::smprompt(QString s)
 // ---------------------------------------------------------------------
 void Term::systimer()
 {
-  var_cmddo("(i.0 0)\"_ sys_timer_z_$0");
+  jcon->cmddo("(i.0 0)\"_ sys_timer_z_$0");
 }
 
 // ---------------------------------------------------------------------

@@ -14,7 +14,7 @@ public:
   QmlJE(QObject* parent = 0);
   ~QmlJE();
 
-  Q_INVOKABLE QString verb(QString v,QString y,bool ingoreResult=false);
+  Q_INVOKABLE QString verb(QString v,QString y,bool ignoreResult=false);
   Q_INVOKABLE int dor(QString s);
   Q_INVOKABLE QString dors(QString s);
   Q_INVOKABLE QString getvar(QString n);

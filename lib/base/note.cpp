@@ -5,9 +5,7 @@
 
 #include "base.h"
 #include "eview.h"
-#ifdef JQT
 #include "jsvr.h"
-#endif
 #include "menu.h"
 #include "nedit.h"
 #include "nmain.h"
@@ -239,9 +237,9 @@ void Note::prettyprint()
   QString r;
   savecurrent();
   Nedit *e=editPage();
-  var_cmd("require PPScript_jp_");
-  var_set("arg_jpp_",editText());
-  r=var_cmdr("pplintqt_jpp_ arg_jpp_");
+  jcon->cmddo("require PPScript_jp_");
+  jcon->set("arg_jpp_",q2s(editText()));
+  r=jcon->cmdr("pplintqt_jpp_ arg_jpp_");
   if (r.isEmpty()) return;
   if (r.at(0)=='0') {
     pos=e->readcurpos();
@@ -370,12 +368,8 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
   }
 
   if (s=="wrap") {
-#ifdef JQT
     sets("inputx_jrx_",q2s(mid.join("\n")));
     return s2q(dors("70 foldtext inputx_jrx_")).split("\n");
-#else
-    return mid;
-#endif
   }
 
   comment=editPage()->getcomment();

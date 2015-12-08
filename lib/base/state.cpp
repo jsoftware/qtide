@@ -179,7 +179,7 @@ void Config::init()
 
   Ascii="+"==dors("{.9!:6$0");
   if (Ascii!=(BoxForm==1)) {
-    var_cmd("boxdraw_j_ "+QString::number(BoxForm));
+    jcon->cmd("boxdraw_j_ "+q2s(QString::number(BoxForm)));
     Ascii=!Ascii;
   }
 
@@ -382,7 +382,7 @@ void Config::toggleascii()
     if(note2)
       note2->menuBar->viewasciiAct->setChecked(Ascii);
   }
-  QString s="0 0$boxdraw_j_ ";
+  string s="0 0$boxdraw_j_ ";
   s+=Ascii?"1":"0";
   jcon->cmd(s);
 }
@@ -561,51 +561,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 //  return state_fini();  // will be executed in the 2nd call to state_run()
   term->fini();
   return 0;
-}
-
-// ---------------------------------------------------------------------
-void var_cmd(QString s)
-{
-  jcon->cmd(s);
-}
-
-// ---------------------------------------------------------------------
-QString var_cmdr(QString s)
-{
-  return jcon->cmdr(s);
-}
-
-// ---------------------------------------------------------------------
-void var_cmddo(QString s, bool forceexec)
-{
-  jcon->cmddo(s, forceexec);
-}
-
-// ---------------------------------------------------------------------
-QString var_load(QString s, bool d)
-{
-  QString r = d ? "loadd" : "load";
-  return r + " '" + s + "'";
-}
-
-// ---------------------------------------------------------------------
-void var_run(QString s)
-{
-  jcon->immex(s);
-}
-
-// ---------------------------------------------------------------------
-void var_runs(QString s, bool show)
-{
-  QString f=show ? "0!:101" : "0!:100";
-  sets("inputx_jrx_",q2s(s));
-  jcon->immex(f + " inputx_jrx_");
-}
-
-// ---------------------------------------------------------------------
-void var_set(QString s, QString t)
-{
-  jcon->set(s,t);
 }
 
 // ---------------------------------------------------------------------

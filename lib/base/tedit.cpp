@@ -16,6 +16,7 @@
 
 using namespace std;
 extern bool runshow;
+extern bool runterm;
 
 // ---------------------------------------------------------------------
 Tedit::Tedit()
@@ -51,8 +52,9 @@ void Tedit::append_smoutput(QString s)
 void Tedit::docmd(QString t)
 {
   runshow=false;
+  runterm=true;
   dlog_add(t);
-  var_run(t);
+  jcon->cmddo(q2s(t));
 }
 
 // ---------------------------------------------------------------------
@@ -64,23 +66,28 @@ void Tedit::docmdp(QString t,bool show,bool same)
     promptreplace(getprompt() + t);
   if (runshow) {
     dlog_add(t);
-    var_run("output_jrx_=:i.0 0");
-    var_run("output_jrx_=:"+t);
-    var_run("output_jrx_");
+    jcon->cmddo("output_jrx_=:i.0 0");
+    jcon->cmddo("output_jrx_=:"+q2s(t));
+    runterm=true;
+    jcon->cmddo("output_jrx_");
   } else
     docmd(t);
 }
 
 // ---------------------------------------------------------------------
-void Tedit::docmds(QString t, bool show,bool same)
+void Tedit::docmds(QString s, bool show,bool same)
 {
   runshow=same;
-  var_runs(t, show);
+  runterm=true;
+  string f=show ? "0!:101" : "0!:100";
+  jcon->set("inputx_jrx_",q2s(s));
+  jcon->immex(f + " inputx_jrx_");
 }
 
 // ---------------------------------------------------------------------
 void Tedit::docmdx(QString t)
 {
+  runterm=true;
   promptreplace(t);
   docmd(t);
 }
@@ -111,11 +118,12 @@ void Tedit::enter()
 // ---------------------------------------------------------------------
 QString Tedit::getprompt()
 {
+  QString r=jecallback ? "      " : "   ";
   if (smprompt.size()) {
-    prompt=smprompt;
+    r=smprompt;
     smprompt="";
   }
-  return prompt;
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -201,9 +209,22 @@ void Tedit::keyPressEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
+void Tedit::load(QString s, bool d)
+{
+  docmdx((loadcmd(s,d)));
+}
+
+// ---------------------------------------------------------------------
+QString Tedit::loadcmd(QString s, bool d)
+{
+  QString r = d ? "loadd" : "load";
+  return r + " '" + s + "'";
+}
+
+// ---------------------------------------------------------------------
 void Tedit::loadscript(QString s,bool show)
 {
-  tedit->docmdp(var_load(s,false),show, false);
+  tedit->docmdp(loadcmd(s,false),show, false);
 }
 
 // ---------------------------------------------------------------------
@@ -239,7 +260,8 @@ void Tedit::removeprompt()
 void Tedit::runall(QString s, bool show)
 {
   runshow=false;
-  var_run(var_load(s,show));
+  runterm=true;
+  jcon->cmddo(q2s(loadcmd(s,show)));
 }
 
 // ---------------------------------------------------------------------
@@ -261,4 +283,3 @@ void Tedit::setresized(int s)
 {
   this->ifResized = s;
 }
-

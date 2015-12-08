@@ -250,10 +250,6 @@ void WsSvr::onPong(quint64 elapsedTime, const QByteArray & payload)
 #ifdef DEBUG_WEBSOCKET
   qDebug() << QString("ping: %1 ms").arg(elapsedTime);
 #endif
-
-// no need to call J until there is a reason
-//  string s = "(i.0 0)\"_ wssvr_handler_z_ " + p2s((void *)ONPONG) + " " + p2s((void *)socket);
-//  jedo((char *)s.c_str());
 }
 
 // ---------------------------------------------------------------------

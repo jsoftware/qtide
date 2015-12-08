@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "note.h"
 #include "state.h"
+#include "svr.h"
 #include "bedit.h"
 #include "term.h"
 #include "tedit.h"
@@ -306,8 +307,8 @@ void Term::on_helpvocabnuvocAct_triggered()
 // ---------------------------------------------------------------------
 void helpcontext(int c,Bedit *e)
 {
-  var_set("arg_jqtide_",e->readhelptext(c));
-  QString s=var_cmdr("helpcontext0_jqtide_ arg_jqtide_");
+  jcon->set("arg_jqtide_",q2s(e->readhelptext(c)));
+  QString s=jcon->cmdr("helpcontext0_jqtide_ arg_jqtide_");
   if (s.size())
     htmlhelp(s);
 }
@@ -315,8 +316,8 @@ void helpcontext(int c,Bedit *e)
 // ---------------------------------------------------------------------
 void helpcontextnuvoc(int c,Bedit *e)
 {
-  var_set("arg_jqtide_",e->readhelptext(c));
-  QString s=var_cmdr("helpcontext1_jqtide_ arg_jqtide_");
+  jcon->set("arg_jqtide_",q2s(e->readhelptext(c)));
+  QString s=jcon->cmdr("helpcontext1_jqtide_ arg_jqtide_");
   if (s.size())
     wiki("Vocabulary/" + s);
 }

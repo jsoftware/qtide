@@ -15,16 +15,16 @@ QmlJE::~QmlJE()
 }
 
 // ---------------------------------------------------------------------
-QString QmlJE::verb(QString v,QString y,bool ingoreResult)
+QString QmlJE::verb(QString v,QString y,bool ignoreResult)
 {
   QString res="";
   int rc;
   setvar("qmly_jrx_",y);
-  if (!ingoreResult)
+  if (!ignoreResult)
     rc=jedo(("qmldors_jrx_=:"+v+" qmly_jrx_").toUtf8().data());
   else rc=jedo((v+" qmly_jrx_").toUtf8().data());
   jedo((char *)"4!:55<'qmly_jrx_'");
-  if (!ingoreResult) {
+  if (!ignoreResult) {
     if (!rc) res=getvar("qmldors_jrx_");
     jedo((char *)"4!:55<'qmldors_jrx_'");
   }

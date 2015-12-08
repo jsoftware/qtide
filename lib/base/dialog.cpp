@@ -21,6 +21,7 @@
 #include "plaintextedit.h"
 #include "proj.h"
 #include "state.h"
+#include "svr.h"
 
 #ifndef QT_NO_PRINTER
 QPrinter *Printer;
@@ -57,7 +58,7 @@ QString dialogfileopen(QWidget *w,QString t)
   else if (t=="addons")
     d=config.AddonsPath.absolutePath();
   else if (t=="current")
-    d=var_cmdr("1!:43''");
+    d=jcon->cmdr("1!:43''");
   else if (t=="home")
     d=config.HomePath.absolutePath();
   else if (t=="last") {

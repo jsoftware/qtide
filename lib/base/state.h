@@ -178,21 +178,9 @@ void state_init_resource();
 void state_quit();
 void state_reinit();
 
-void var_cmd(QString s);
-void var_cmddo(QString s, bool forceexec = false);
-QString var_cmdr(QString s);
-QString var_load(QString s, bool d);
-void var_run(QString s);
-void var_runs(QString s, bool show);
-void var_set(QString s, QString t);
-
 extern "C" {
-#ifdef JQT
   Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst);
   Dllexport void immexj(const char *s);
-#else
-  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs);
-#endif
 }
 
 #endif

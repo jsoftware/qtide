@@ -25,6 +25,7 @@
 #include "snap.h"
 #include "spic.h"
 #include "state.h"
+#include "svr.h"
 #include "tedit.h"
 #include "term.h"
 
@@ -332,16 +333,12 @@ void Menu::createfileMenu(QString s)
 // ---------------------------------------------------------------------
 void Menu::createfkeyMenu(QString s)
 {
-#ifdef JQT
   fkeyMenu->addAction(helpvocabAct);
-#endif
   fkeyMenu->addAction(helpcontextAct);
   fkeyMenu->addSeparator();
-#ifdef JQT
   fkeyMenu->addAction(helpvocabnuvocAct);
   fkeyMenu->addAction(helpcontextnuvocAct);
   fkeyMenu->addSeparator();
-#endif
   fkeyMenu->addAction(runtestAct);
   fkeyMenu->addSeparator();
   fkeyMenu->addAction(runclipAct);
@@ -472,10 +469,8 @@ void Menu::createselMenu()
 void Menu::createscriptMenu()
 {
   scriptMenu = addMenu("&Script");
-#ifdef JQT
   scriptMenu->addAction(scriptformatAct);
   scriptMenu->addSeparator();
-#endif
   scriptMenu->addAction(scriptrestoreAct);
   scriptMenu->addSeparator();
   scriptMenu->addAction(scriptsnapAct);
@@ -523,10 +518,8 @@ void Menu::createviewMenu(QString s)
     viewMenu->addAction(vieweditorAct);
   viewMenu->addSeparator();
   viewMenu->addAction(cleartermAct);
-#ifdef JQT
   viewMenu->addSeparator();
   viewMenu->addAction(viewasciiAct);
-#endif
   if (s == "note") {
     viewMenu->addAction(viewlinenosAct);
     viewMenu->addAction(viewlinewrapAct);
@@ -1547,7 +1540,7 @@ void Term::on_runselectAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_runtestAct_triggered()
 {
-  var_run("test ''");
+  jcon->cmddo("test ''");
 }
 
 // ---------------------------------------------------------------------

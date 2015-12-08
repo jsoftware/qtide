@@ -112,7 +112,6 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-DEFINES += "JQT"
 
 contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
 !contains(QT,webkit) {

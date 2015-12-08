@@ -15,6 +15,8 @@ public:
   void append_smoutput(QString s);
   QString getprompt();
   void insert(QString s);
+  void load(QString s, bool d);
+  QString loadcmd(QString s, bool d);
   void removeprompt();
   void setprompt();
   void setresized(int);
@@ -23,7 +25,6 @@ public:
 
   QScrollBar *hScroll;
   int ifResized, Tw, Th;
-  QString prompt;
   QString smprompt;
 
 public slots:

@@ -117,7 +117,6 @@ public slots:
   void on_helpaboutAct_triggered();
   void on_helpcontextAct_triggered();
 
-#ifdef JQT
   void on_helpcontextnuvocAct_triggered();
   void on_helpconstantsAct_triggered();
   void on_helpcontrolsAct_triggered();
@@ -134,12 +133,6 @@ public slots:
   void on_helprelnotesAct_triggered();
   void on_helpvocabAct_triggered();
   void on_helpvocabnuvocAct_triggered();
-#else
-  void on_helpbriefAct_triggered();
-  void on_helpintercAct_triggered();
-  void on_helpreferenceAct_triggered();
-  void on_helpwikiAct_triggered();
-#endif
 
   void on_projectbuildAct_triggered();
   void on_projectcloseAct_triggered();

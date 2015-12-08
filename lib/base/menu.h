@@ -175,7 +175,6 @@ private:
   QAction *helpcontextAct;
   QAction *helpcontextnuvocAct;
 
-#ifdef JQT
   QAction *helpconstantsAct;
   QAction *helpcontrolsAct;
   QAction *helpdemoqtAct;
@@ -191,13 +190,6 @@ private:
   QAction *helprelnotesAct;
   QAction *helpvocabAct;
   QAction *helpvocabnuvocAct;
-#else
-  QAction *helpbriefAct;
-  QAction *helpintercAct;
-  QAction *helpreferenceAct;
-  QAction *helpwikiAct;
-#endif
-
 };
 
 #endif
