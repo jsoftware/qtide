@@ -6,6 +6,7 @@ libs/
 
 .DS_Store
 cleancdb.sh
+cleangrid.sh
 makebill.sh
 makecdb.sh
 makegrid.sh

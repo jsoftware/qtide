@@ -204,10 +204,10 @@ char* _stdcall Jinput(J jt, char* p)
       if(s.find("wdhandler") != string::npos)jcon->Sentence.push_back(s);
     }
     jecallback=true;
-  } else if (runterm) {
-    tedit->setprompt();
-    runterm=false;
   }
+  if (runterm || 0==strlen(p))
+    tedit->setprompt();
+  runterm=false;
   if (jcon->Sentence.empty()) {
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   }
@@ -244,11 +244,6 @@ void _stdcall Joutput(J jt,int type, char* s)
   if (MTYOER==type && runshow)
     t=runshowclean(t);
 
-// ifcmddo was true if called from jcmddo (term + other commands)
-// not sure if needed now
-// if (MTYOFILE==type && ifcmddo)
-//~ tedit->append_smoutput(t);
-//~ else
   tedit->append(t);
 }
 
