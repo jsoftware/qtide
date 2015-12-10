@@ -16,6 +16,7 @@ makewincdb.sh
 run.sh
 style.sh
 
+jqt-mac-64
 jqt.xcodeproj
 Info.plist
 jqt_resource.rc
@@ -28,6 +29,7 @@ jqt_resource.rc
 *.pro.user
 *.so
 *.so.*
+*.stash
 *.sublime-project
 *.sublime-workspace
 *.tgz

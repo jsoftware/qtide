@@ -77,6 +77,7 @@ void CubeMargin::dropEvent(QDropEvent *e)
 {
   int c,n,r,s;
 
+  e->acceptProposedAction();
   n=p->AxisNames.indexOf(e->mimeData()->text());
 
   if ((this==p->mcols && n==p->AxisCols.last()) ||
@@ -107,10 +108,16 @@ void CubeMargin::dropEvent(QDropEvent *e)
     itemadd(p->AxisSlice,n);
   }
 
+// timeout crashes OSX (10.11.1, qt5.5), but interval works
+#ifdef __MACH__
+  QTimer::singleShot(150,p,SLOT(redraw()));
+#else
   QTimer *timer = new QTimer(this);
   timer->setSingleShot(true);
   connect(timer, SIGNAL(timeout()), p, SLOT(redraw()));
   timer->start();
+
+#endif
 }
 
 // ---------------------------------------------------------------------
