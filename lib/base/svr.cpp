@@ -35,7 +35,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 static QString inputx;
 bool jecallback=false;
 bool runshow=false;
-bool runterm=false;
+int runterm=0;
 std::string wdQuery="";
 
 void logbin(const char*s,int n);
@@ -104,9 +104,9 @@ void Jcon::cmdSentences()
     Sentence.pop_front();
     cmdSentence(s);
   }
-  if (runterm)
+  if (runterm==1)
     tedit->setprompt();
-  runterm=false;
+  runterm=0;
 }
 
 // ---------------------------------------------------------------------
@@ -205,9 +205,9 @@ char* _stdcall Jinput(J jt, char* p)
     }
     jecallback=true;
   }
-  if (runterm || 0==strlen(p))
+  if (runterm==1 || 0==strlen(p))
     tedit->setprompt();
-  runterm=false;
+  runterm=qMax(0,runterm-1);
   if (jcon->Sentence.empty()) {
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   }

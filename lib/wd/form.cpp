@@ -542,8 +542,6 @@ void Form::signalevent(Child *c, QKeyEvent *e)
 
   string cmd=("wdhandlerx_jqtide_ '" + loc + "'") + '\0' + evtform->state(1);
   bool isievent = ctype=="isigraph";
-  //~ if (!isievent)
-  //~ term->removeprompt();
   // paint events in an isigraph have priority, because all the graphics must
   // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE, and not wait for the callback
   //  queue to be scheduled.

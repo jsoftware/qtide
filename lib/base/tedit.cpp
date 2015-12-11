@@ -16,7 +16,7 @@
 
 using namespace std;
 extern bool runshow;
-extern bool runterm;
+extern int runterm;
 
 // ---------------------------------------------------------------------
 Tedit::Tedit()
@@ -52,7 +52,7 @@ void Tedit::append_smoutput(QString s)
 void Tedit::docmd(QString t)
 {
   runshow=false;
-  runterm=true;
+  runterm=1;
   dlog_add(t);
   jcon->cmddo(q2s(t));
 }
@@ -68,7 +68,7 @@ void Tedit::docmdp(QString t,bool show,bool same)
     dlog_add(t);
     jcon->cmddo("output_jrx_=:i.0 0");
     jcon->cmddo("output_jrx_=:"+q2s(t));
-    runterm=true;
+    runterm=jecallback ? 3 : 1;
     jcon->cmddo("output_jrx_");
   } else
     docmd(t);
@@ -78,7 +78,7 @@ void Tedit::docmdp(QString t,bool show,bool same)
 void Tedit::docmds(QString s, bool show,bool same)
 {
   runshow=same;
-  runterm=true;
+  runterm=1;
   string f=show ? "0!:101" : "0!:100";
   jcon->set("inputx_jrx_",q2s(s));
   jcon->immex(f + " inputx_jrx_");
@@ -87,7 +87,7 @@ void Tedit::docmds(QString s, bool show,bool same)
 // ---------------------------------------------------------------------
 void Tedit::docmdx(QString t)
 {
-  runterm=true;
+  runterm=1;
   promptreplace(t);
   docmd(t);
 }
@@ -260,7 +260,7 @@ void Tedit::removeprompt()
 void Tedit::runall(QString s, bool show)
 {
   runshow=false;
-  runterm=true;
+  runterm=1;
   jcon->cmddo(q2s(loadcmd(s,show)));
 }
 
