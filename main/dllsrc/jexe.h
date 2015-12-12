@@ -60,7 +60,7 @@ typedef struct JEXEServer JEXEServer;
 /* header files for imported files */
 #include "oaidl.h"
 
-void __RPC_FAR * __RPC_USER MIDL_user_allocate(SIZE_T);
+void __RPC_FAR * __RPC_USER MIDL_user_allocate(size_t);
 void __RPC_USER MIDL_user_free( void __RPC_FAR * );
 
 #ifndef __IJEXEServer_INTERFACE_DEFINED__
