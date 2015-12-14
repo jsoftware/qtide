@@ -15,6 +15,7 @@
 #include "svr.h"
 
 using namespace std;
+extern bool runcmd;
 extern bool runshow;
 extern int runterm;
 
@@ -34,7 +35,11 @@ Tedit::Tedit()
 // (note appendPlainText appends to new line)
 void Tedit::append(QString s)
 {
-  appendPlainText(s);
+  if (runcmd)
+    append_smoutput(s);
+  else
+    appendPlainText(s);
+  runcmd=false;
 }
 
 // ---------------------------------------------------------------------
@@ -276,6 +281,7 @@ void Tedit::setprompt()
 void Tedit::showcmd(QString t)
 {
   append_smoutput(getprompt()+t);
+  runcmd=true;
 }
 
 // ---------------------------------------------------------------------

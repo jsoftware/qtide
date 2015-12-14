@@ -34,6 +34,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 
 static QString inputx;
 bool jecallback=false;
+bool runcmd=false;
 bool runshow=false;
 int runterm=0;
 std::string wdQuery="";
@@ -56,6 +57,7 @@ void Jcon::cmd(string s)
 // add expression to Sentence and run all Sentence
 void Jcon::cmddo(string s)
 {
+  runcmd=false;
   Sentence.push_back(s);
   if (jecallback)
     jevloop->exit();
@@ -69,6 +71,7 @@ void Jcon::cmddo(string s)
 // e.g. used for isigraph paint event
 void Jcon::cmddop(string s)
 {
+  runcmd=false;
   cmdSentence(s);
   if (jecallback)
     jevloop->exit();
