@@ -1630,14 +1630,14 @@ static char *qstylesp[]= {
   (char *)"qstyle::sp_drivecdicon",                      /* 18         The CD icon. */
   (char *)"qstyle::sp_drivedvdicon",                     /* 19         The DVD icon. */
   (char *)"qstyle::sp_driveneticon",                     /* 20         The network icon. */
-  (char *)"qstyle::sp_dirhomeicon",                      /* 56         The home directory icon. */
   (char *)"qstyle::sp_diropenicon",                      /* 21         The open directory icon. */
   (char *)"qstyle::sp_dirclosedicon",                    /* 22         The closed directory icon. */
-  (char *)"qstyle::sp_diricon",                          /* 38         The directory icon. */
   (char *)"qstyle::sp_dirlinkicon",                      /* 23         The link to directory icon. */
   (char *)"qstyle::sp_dirlinkopenicon",                  /* 24         The link to open directory icon. */
   (char *)"qstyle::sp_fileicon",                         /* 25         The file icon. */
   (char *)"qstyle::sp_filelinkicon",                     /* 26         The link to file icon. */
+  (char *)"qstyle::sp_toolbarhorizontalextensionbutton", /* 27         Extension button for horizontal toolbars. */
+  (char *)"qstyle::sp_toolbarverticalextensionbutton",   /* 28         Extension button for vertical toolbars. */
   (char *)"qstyle::sp_filedialogstart",                  /* 29         The"start" icon in a file dialog. */
   (char *)"qstyle::sp_filedialogend",                    /* 30         The"end" icon in a file dialog. */
   (char *)"qstyle::sp_filedialogtoparent",               /* 31         The"parent directory" icon in a file dialog. */
@@ -1647,8 +1647,7 @@ static char *qstylesp[]= {
   (char *)"qstyle::sp_filedialogcontentsview",           /* 35         The contents view icon in a file dialog. */
   (char *)"qstyle::sp_filedialoglistview",               /* 36         The list view icon in a file dialog. */
   (char *)"qstyle::sp_filedialogback",                   /* 37         The back arrow in a file dialog. */
-  (char *)"qstyle::sp_toolbarhorizontalextensionbutton", /* 27         Extension button for horizontal toolbars. */
-  (char *)"qstyle::sp_toolbarverticalextensionbutton",   /* 28         Extension button for vertical toolbars. */
+  (char *)"qstyle::sp_diricon",                          /* 38         The directory icon. */
   (char *)"qstyle::sp_dialogokbutton",                   /* 39         Icon for a standard OK button in a QDialogButtonBox. */
   (char *)"qstyle::sp_dialogcancelbutton",               /* 40         Icon for a standard Cancel button in a QDialogButtonBox. */
   (char *)"qstyle::sp_dialoghelpbutton",                 /* 41         Icon for a standard Help button in a QDialogButtonBox. */
@@ -1666,6 +1665,7 @@ static char *qstylesp[]= {
   (char *)"qstyle::sp_arrowright",                       /* 53         Icon arrow pointing right. */
   (char *)"qstyle::sp_arrowback",                        /* 54         Equivalent to SP_ArrowLeft when the current layout direction is Qt::LeftToRight, otherwise SP_ArrowRight. */
   (char *)"qstyle::sp_arrowforward",                     /* 55         Equivalent to SP_ArrowRight when the current layout direction is Qt::LeftToRight, otherwise SP_ArrowLeft. */
+  (char *)"qstyle::sp_dirhomeicon",                      /* 56         The home directory icon. */
   (char *)"qstyle::sp_commandlink",                      /* 57         Icon used to indicate a Vista style command link glyph. */
   (char *)"qstyle::sp_vistashield",                      /* 58         Icon used to indicate UAC prompts on Windows Vista. This will return a null pixmap or icon on all other platforms. */
   (char *)"qstyle::sp_browserreload",                    /* 59         Icon indicating that the current page should be reloaded. */
