@@ -123,12 +123,12 @@ void Tedit::enter()
 // ---------------------------------------------------------------------
 QString Tedit::getprompt()
 {
-  QString r=jecallback ? "      " : "   ";
   if (smprompt.size()) {
-    r=smprompt;
+    prompt=smprompt;
     smprompt="";
-  }
-  return r;
+  } else if (!jecallback)
+    prompt="   ";
+  return prompt;
 }
 
 // ---------------------------------------------------------------------

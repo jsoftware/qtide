@@ -25,6 +25,7 @@ public:
 
   QScrollBar *hScroll;
   int ifResized, Tw, Th;
+  QString prompt;
   QString smprompt;
 
 public slots:

@@ -194,7 +194,6 @@ void Jcon::set(QString s, string t)
 char* _stdcall Jinput(J jt, char* p)
 {
   Q_UNUSED(jt);
-  Q_UNUSED(p);
   Q_ASSERT(tedit);
   string s;
   if (!jecallback) {
@@ -208,8 +207,10 @@ char* _stdcall Jinput(J jt, char* p)
     }
     jecallback=true;
   }
-  if (runterm==1 || 0==strlen(p))
+  tedit->prompt=c2q(p);
+  if (runterm==1 || 0==strlen(p)) {
     tedit->setprompt();
+  }
   runterm=qMax(0,runterm-1);
   if (jcon->Sentence.empty()) {
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
