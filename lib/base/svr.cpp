@@ -35,6 +35,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 static QString inputx;
 bool jecallback=false;
 bool runcmd=false;
+bool runsentences=false;
 bool runshow=false;
 int runterm=0;
 std::string wdQuery="";
@@ -101,6 +102,8 @@ void Jcon::cmdSentence(string s)
 // run all Sentences
 void Jcon::cmdSentences()
 {
+  if (runsentences) return;
+  runsentences=true;
   string s;
   while(!Sentence.empty()) {
     s=Sentence.front();
@@ -110,6 +113,7 @@ void Jcon::cmdSentences()
   if (runterm==1)
     tedit->setprompt();
   runterm=0;
+  runsentences=false;
 }
 
 // ---------------------------------------------------------------------

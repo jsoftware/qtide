@@ -331,7 +331,7 @@ void helplabs()
 // ---------------------------------------------------------------------
 void helplabsadvance()
 {
-  tedit->docmds("labs_run_jqtide_ 0", false);
+  tedit->docmds("labs_run_jqtide_ 0", false,false,true);
 }
 
 // ---------------------------------------------------------------------

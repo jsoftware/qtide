@@ -80,10 +80,10 @@ void Tedit::docmdp(QString t,bool show,bool same)
 }
 
 // ---------------------------------------------------------------------
-void Tedit::docmds(QString s, bool show,bool same)
+void Tedit::docmds(QString s,bool show,bool same,bool term)
 {
   runshow=same;
-  runterm=1;
+  runterm=(show || term) ? 1 : 0;
   string f=show ? "0!:101" : "0!:100";
   jcon->set("inputx_jrx_",q2s(s));
   jcon->immex(f + " inputx_jrx_");
