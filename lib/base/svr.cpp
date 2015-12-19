@@ -252,7 +252,10 @@ void _stdcall Joutput(J jt,int type, char* s)
   if (MTYOER==type && runshow)
     t=runshowclean(t);
 
-  tedit->append(t);
+  if (runterm)
+    tedit->append(t);
+  else
+    tedit->append_smoutput(t);
 }
 
 // ---------------------------------------------------------------------
