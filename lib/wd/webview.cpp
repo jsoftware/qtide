@@ -31,7 +31,7 @@ void WebView::addJavaScriptObject()
 }
 
 // ---------------------------------------------------------------------
-void WebView::cmd(QList<QVariant> obj)
+void WebView::cmd1(QList<QVariant> obj)
 {
   QString c=obj.at(0).toString();
   if (c=="callback")
@@ -106,7 +106,7 @@ WebViewCom::WebViewCom(WebView *c, QWidget *parent)
 // ---------------------------------------------------------------------
 void WebViewCom::cmd(QList<QVariant> obj)
 {
-  pchild->cmd(obj);
+  pchild->cmd1(obj);
 }
 
 // ---------------------------------------------------------------------

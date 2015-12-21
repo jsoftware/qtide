@@ -18,7 +18,7 @@ class WebView : public Child
 public:
   WebView(string n, string s, Form *f, Pane *p);
 
-  void cmd(QList<QVariant> obj);
+  void cmd1(QList<QVariant> obj);
   string get(string p,string v);
   void set(string p,string v);
   string state();
