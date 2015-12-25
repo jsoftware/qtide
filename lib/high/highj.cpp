@@ -125,6 +125,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   highlightingRules.append(rule);
 
   rule.pattern = QRegExp("\\bNB\\.[^\n]*");
+  NBPattern = rule.pattern;
   rule.format = singleLineCommentFormat;
   highlightingRules.append(rule);
 
@@ -154,8 +155,16 @@ void Highj::highlightBlock(const QString &text)
   setCurrentBlockState(0);
 
   int startIndex = 0;
+  int NBIndex = 0;
+  int NBLength = 0;
   if (previousBlockState() != 1)
+    NBIndex = NBPattern.indexIn(text);
+  NBLength = NBPattern.matchedLength();
+  if (NBIndex == -1) {
     startIndex = noundefStartExpression.indexIn(text);
+  } else {
+    startIndex = noundefStartExpression.indexIn(text, NBLength+NBIndex);
+  }
 
   while (startIndex >= 0) {
     int endIndex = noundefEndExpression.indexIn(text, startIndex);

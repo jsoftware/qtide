@@ -29,6 +29,7 @@ private:
   QRegExp commentEndExpression;
   QRegExp noundefStartExpression;
   QRegExp noundefEndExpression;
+  QRegExp NBPattern;
 
   QTextCharFormat controlFormat;
   QTextCharFormat numberFormat;
