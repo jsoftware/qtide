@@ -421,10 +421,10 @@ QStringList state_about()
   QStringList r;
   QString msg,ver,year;
   ver= "J" JDLLVER;
-  year=QString::number(QDate::currentDate().year());
+  year=QString::number(qMax(2016,QDate::currentDate().year()));
   msg=s2q(dors("JVERSION"));
-  msg=msg + "\n\nCopyright 1994-"+year+" Jsoftware\n";
-  msg=msg + "www.jsoftware.com";
+  if (msg.contains("www.jsoftware.com"))
+    msg+= "\n\nCopyright 1994-"+year+" Jsoftware\n";
   r.append("About " + ver);
   r.append(msg);
   return r;

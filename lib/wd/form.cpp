@@ -541,11 +541,11 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   if (fc.size()) lastfocus=fc;
 
   string cmd=("wdhandlerx_jqtide_ '" + loc + "'") + '\0' + evtform->state(1);
-  bool isievent = ctype=="isigraph";
-  // paint events in an isigraph have priority, because all the graphics must
+  // paint events in isigraph/opengl have priority, because all the graphics must
   // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE, and not wait for the callback
   //  queue to be scheduled.
-  if (isievent && c->event=="paint")
+  bool  b=(ctype=="isigraph" || ctype=="opengl") && c->event=="paint";
+  if (b)
     jcon->cmddop(cmd);
   else
     jcon->cmddo(cmd);
