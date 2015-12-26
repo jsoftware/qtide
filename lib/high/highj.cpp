@@ -157,13 +157,14 @@ void Highj::highlightBlock(const QString &text)
   int startIndex = 0;
   int NBIndex = 0;
   int NBLength = 0;
-  if (previousBlockState() != 1)
+  int NBL;
+  if (previousBlockState() != 1) {
     NBIndex = NBPattern.indexIn(text);
-  NBLength = NBPattern.matchedLength();
-  if (NBIndex == -1) {
+    NBLength = NBPattern.matchedLength();
     startIndex = noundefStartExpression.indexIn(text);
-  } else {
-    startIndex = noundefStartExpression.indexIn(text, NBLength+NBIndex);
+    if ((NBIndex > -1) && (NBIndex < startIndex)) {
+     startIndex = noundefStartExpression.indexIn(text, NBLength+NBIndex);
+    }
   }
 
   while (startIndex >= 0) {
@@ -171,10 +172,15 @@ void Highj::highlightBlock(const QString &text)
     int noundefLength;
     if (endIndex == -1) {
       setCurrentBlockState(1);
+      if (NBLength > 0) noundefLength = (text.length() - startIndex) - NBLength;
+        else
       noundefLength = text.length() - startIndex;
     } else {
+      if (NBLength > 0) NBL = noundefEndExpression.matchedLength() - NBLength;
+        else
+          NBL = noundefEndExpression.matchedLength();
       noundefLength = endIndex - startIndex
-                      + noundefEndExpression.matchedLength();
+                      + NBL;
     }
     setFormat(startIndex, noundefLength, noundefFormat);
     startIndex = noundefStartExpression.indexIn(text, startIndex + noundefLength);
