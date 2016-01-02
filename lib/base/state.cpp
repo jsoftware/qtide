@@ -179,7 +179,7 @@ void Config::init()
 
   Ascii="+"==dors("{.9!:6$0");
   if (Ascii!=(BoxForm==1)) {
-    jcon->cmd("boxdraw_j_ "+q2s(QString::number(BoxForm)));
+    jcon->cmd("0 0$boxdraw_j_ "+q2s(QString::number(BoxForm)));
     Ascii=!Ascii;
   }
 
