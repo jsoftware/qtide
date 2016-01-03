@@ -173,10 +173,14 @@ int Jcon::init(int argc, char* argv[])
 void Jcon::immex(string s)
 {
   Sentence.push_back(s);
-  QTimer *timer = new QTimer(this);
-  timer->setSingleShot(true);
-  connect(timer, SIGNAL(timeout()), jcon, SLOT(cmdSentences()));
-  timer->start();
+  if (jecallback)
+    jevloop->exit();
+  else {
+    QTimer *timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), jcon, SLOT(cmdSentences()));
+    timer->start();
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -223,6 +227,8 @@ char* _stdcall Jinput(J jt, char* p)
     s=jcon->Sentence.front();
     jcon->Sentence.pop_front();
   }
+  if (jcon->Sentence.empty())
+    runsentences=false;
   size_t n=s.find('\0');
   if (n!=string::npos)
     wdQuery=s.substr(n+1,string::npos);
