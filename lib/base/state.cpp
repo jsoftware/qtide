@@ -566,7 +566,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
-  term->removeprompt();
+  //~ term->removeprompt();
   sets("inputx_jrx_",string(s));
   jcon->immex("0!:100 inputx_jrx_");
 }
