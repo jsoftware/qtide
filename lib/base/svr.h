@@ -16,7 +16,6 @@ public:
   void cmd(std::string s);
   void cmddo(std::string s);
   void cmddop(std::string s);
-  void cmdSentence(std::string s);
   QString cmdr(std::string s);
   int exec();
   void immex(std::string s);
@@ -28,6 +27,11 @@ public:
 
 public slots:
   void cmdSentences();
+
+private:
+  void cmddos();
+  void cmdSentence(std::string s);
+
 };
 
 bool svr_init(int argc, char* argv[]);

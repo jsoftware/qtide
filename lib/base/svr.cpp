@@ -74,6 +74,13 @@ void Jcon::cmddop(string s)
 {
   runcmd=false;
   cmdSentence(s);
+  cmddos();
+}
+
+// ---------------------------------------------------------------------
+// run all Sentence after timeout
+void Jcon::cmddos()
+{
   if (jecallback)
     jevloop->exit();
   else {
@@ -173,14 +180,7 @@ int Jcon::init(int argc, char* argv[])
 void Jcon::immex(string s)
 {
   Sentence.push_back(s);
-  if (jecallback)
-    jevloop->exit();
-  else {
-    QTimer *timer = new QTimer(this);
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), jcon, SLOT(cmdSentences()));
-    timer->start();
-  }
+  cmddos();
 }
 
 // ---------------------------------------------------------------------
@@ -227,8 +227,6 @@ char* _stdcall Jinput(J jt, char* p)
     s=jcon->Sentence.front();
     jcon->Sentence.pop_front();
   }
-  if (jcon->Sentence.empty())
-    runsentences=false;
   size_t n=s.find('\0');
   if (n!=string::npos)
     wdQuery=s.substr(n+1,string::npos);
