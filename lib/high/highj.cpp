@@ -124,13 +124,13 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = stringFormat;
   highlightingRules.append(rule);
 
+  rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+  rule.format = functionFormat;
+  highlightingRules.append(rule);
+
   rule.pattern = QRegExp("\\bNB\\.[^\n]*");
   NBPattern = rule.pattern;
   rule.format = singleLineCommentFormat;
-  highlightingRules.append(rule);
-
-  rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
-  rule.format = functionFormat;
   highlightingRules.append(rule);
 
   noundefStartExpression = QRegExp("\\b(0\\s+:\\s*0|noun\\s+define)\\b.*$");
