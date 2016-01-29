@@ -301,7 +301,10 @@ void Term::on_helpvocabAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helpvocabnuvocAct_triggered()
 {
-  wiki("NuVoc");
+  QString t=cpath("~addons/docs/nuvoc/Vocabulary.html");
+  if (QFile(t).exists())
+    QDesktopServices::openUrl(QUrl::fromLocalFile(t));
+  else wiki("NuVoc");
 }
 
 // ---------------------------------------------------------------------
