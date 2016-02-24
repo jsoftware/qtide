@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QClipboard>
 #include <QComboBox>
 #include <QFontMetrics>
 #include <QFormLayout>
@@ -161,6 +162,7 @@ QWidget *Dirm::createview()
   view= makebutton("view","View");
   copy= makebutton("copy","Copy");
   ignore= makebutton("ignore","Ignore");
+  clip= makebutton("clip","Clip");
 
   QVBoxLayout *v=new QVBoxLayout();
   v->setSpacing(0);
@@ -171,6 +173,7 @@ QWidget *Dirm::createview()
   v->addWidget(view);
   v->addWidget(copy);
   v->addWidget(ignore);
+  v->addWidget(clip);
   v->addStretch(1);
   h->addLayout(v);
 
@@ -443,6 +446,21 @@ void Dirm::on_fileselAct_triggered()
 void Dirm::on_ignore_clicked()
 {
   ignorefile();
+}
+
+// ---------------------------------------------------------------------
+int Dirm::dmclipwrite()
+{
+  QClipboard *clipboard = QApplication::clipboard();
+  if (!clipboard) return 1;
+  clipboard->setText(Found.join("\n"));
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+void Dirm::on_clip_clicked()
+{
+  dmclipwrite();
 }
 
 // ---------------------------------------------------------------------

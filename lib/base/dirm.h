@@ -68,6 +68,7 @@ private slots:
   void on_compareall_clicked();
   void on_copy_clicked();
   void on_ignore_clicked();
+  void on_clip_clicked();
   void on_match_clicked();
   void on_open_clicked();
   void on_view_clicked();
@@ -104,6 +105,7 @@ private:
   QString dmgetname2();
   QStringList dmgetnames();
   void dminfo(QString);
+  int dmclipwrite();
   void dmread();
   void dmsaverecent();
   void dmshowfind();
@@ -164,6 +166,7 @@ private:
   QPushButton *view;
   QPushButton *copy;
   QPushButton *ignore;
+  QPushButton *clip;
 
   QString Project;
   QString SnapDir;
