@@ -55,7 +55,7 @@
 #include "webview.h"
 #endif
 #ifndef QT_NO_WEBENGINE
-#include "webengine.h"
+#include "webengineview.h"
 #endif
 
 extern Font *fontdef;
@@ -156,6 +156,10 @@ bool Pane::addchild(string n,string c,string p)
 #ifndef QT_NO_WEBKIT
   else if (c=="webview")
     child=(Child *) new WebView(n,p,pform,this);
+#endif
+#ifndef QT_NO_WEBENGINE
+  else if (c=="webview")
+    child=(Child *) new WebEngineView(n,p,pform,this);
 #endif
   else {
     maxsizew=maxsizeh=0;

@@ -11,6 +11,7 @@ greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
 !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
 !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
+!lessThan(QT_VERSION,5.6.0): DEFINES += QT56
 
 TEMPLATE = lib
 contains(DEFINES,QT54) {
@@ -18,6 +19,10 @@ contains(DEFINES,QT54) {
 } else {
   QT += webkit
   QT += opengl
+}
+contains(DEFINES,QT56) {
+  QT += webengine
+  QT -= webkit
 }
 TARGET = jqt
 
@@ -113,6 +118,7 @@ INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
+contains(QT,webkit): contains(DEFINES,QT56):  error(webkit dropped since QT56)
 contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
 !contains(QT,webkit) {
   DEFINES += QT_NO_WEBKIT
@@ -218,13 +224,13 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
+ wd/webengineview.h wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h \
  wd/multimedia.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-!contains(QT,webkit): HEADERS -= wd/webview.h wd/webkitview.h
-!contains(QT,webengine): HEADERS -= wd/webengine.h wd/webengineview.h
+!contains(QT,webkit): HEADERS -= wd/webview.h
+!contains(QT,webengine): HEADERS -= wd/webengine.h
 contains(DEFINES,QT50) {
   !contains(QT,quick): HEADERS -= wd/quickview2.h
   !contains(QT,declarative): HEADERS -= wd/quickview1.h
@@ -266,13 +272,13 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
+ wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
  wd/multimedia.cpp
 
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
-!contains(QT,webkit): SOURCES -= wd/webview.cpp wd/webkitview.cpp
-!contains(QT,webengine): SOURCES -= wd/webengine.cpp wd/webengineview.cpp
+!contains(QT,webkit): SOURCES -= wd/webview.cpp
+!contains(QT,webengine): SOURCES -= wd/webengineview.cpp
 contains(DEFINES,QT50) {
   !contains(QT,quick): SOURCES -= wd/quickview2.cpp
   !contains(QT,declarative): SOURCES -= wd/quickview1.cpp
