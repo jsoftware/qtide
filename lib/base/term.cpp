@@ -142,22 +142,24 @@ bool Term::filequit(bool ignoreconfirm)
   if (note2 && (!note2->saveall())) return false;
 
 // save clipboard
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   QEvent e=QEvent(QEvent::Clipboard);
-  QApplication::sendEvent(clipboard,&e);
+  app->sendEvent(clipboard,&e);
 
   if (ignoreconfirm) {
     jcon->cmd("2!:55[0");
     cleantemp();
     state_quit();
-    QApplication::quit();
+    app->quit();
+   delete app;
     return true;
   } else if ((!config.ConfirmClose) ||
              queryOK("Term","OK to exit " + config.Lang + "?")) {
     jcon->cmd("2!:55[0");
     cleantemp();
     state_quit();
-    QApplication::quit();
+    app->quit();
+    delete app;
     return true;
   } else
     return false;

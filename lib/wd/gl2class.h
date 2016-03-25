@@ -342,7 +342,7 @@ int glqhandles(void **p)
 int glqextent(char *s,int *wh)
 {
   if (!s || !wh) return 1;
-  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
+  if (!FontExtent) FontExtent= new Font(q2s("\""+app->font().family())+"\"",app->font().pointSizeF());
   if (FontExtent->error) {
     delete FontExtent;
     FontExtent=0;
@@ -364,7 +364,7 @@ int glqextentw(char *s,int *wi)
 {
   if (!s || !wi) return 1;
   QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
-  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
+  if (!FontExtent) FontExtent= new Font(q2s("\""+app->font().family())+"\"",app->font().pointSizeF());
   if (FontExtent->error) {
     delete FontExtent;
     FontExtent=0;
@@ -445,7 +445,7 @@ int glqpixels(const int *p, int *pix)
 int glqtextmetrics(int *tm)
 {
   if (!tm) return 1;
-  if (!FontExtent) FontExtent= new Font(q2s("\""+QApplication::font().family())+"\"",QApplication::font().pointSizeF());
+  if (!FontExtent) FontExtent= new Font(q2s("\""+app->font().family())+"\"",app->font().pointSizeF());
 #if defined(GLPRINTER)
   CHKPAINTER
   QFontMetrics fm = QFontMetrics(FontExtent->font,prtobj->painter->device());

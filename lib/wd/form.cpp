@@ -88,7 +88,8 @@ Form::~Form()
     else {
       jcon->cmd("2!:55)0");
       state_quit();
-      QApplication::quit();
+      app->quit();
+      delete app;
     }
   }
 }
@@ -277,7 +278,7 @@ string Form::get(string p,string v)
 // ---------------------------------------------------------------------
 string Form::getfocus()
 {
-  QWidget *w=QApplication::focusWidget();
+  QWidget *w=app->focusWidget();
   if (!w || !this->children.size()) return "";
   for (int i=this->children.size()-1; 0<=i; i--) {
     QWidget *c;
@@ -290,7 +291,7 @@ string Form::getfocus()
 // ---------------------------------------------------------------------
 string Form::getsysmodifiers()
 {
-  return getsysmodifiers(QApplication::keyboardModifiers());
+  return getsysmodifiers(app->keyboardModifiers());
 }
 
 // ---------------------------------------------------------------------

@@ -3,6 +3,7 @@
 #include <QClipboard>
 #include <QImage>
 
+#include "../base/state.h"
 #include "clipboard.h"
 
 static QByteArray tmpba;
@@ -10,7 +11,7 @@ static QByteArray tmpba;
 // ---------------------------------------------------------------------
 int wdclipwrite(char *s)
 {
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 1;
   if (!s || !strlen(s)) clipboard->clear();
   else clipboard->setText(QString::fromUtf8(s));
@@ -20,7 +21,7 @@ int wdclipwrite(char *s)
 // ---------------------------------------------------------------------
 int wdclipwriteimage(char *s)
 {
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 1;
   if (!s || !strlen(s)) clipboard->clear();
   else {
@@ -34,7 +35,7 @@ int wdclipwriteimage(char *s)
 // ---------------------------------------------------------------------
 int wdclipwriteimagedata(const uchar *data,int len)
 {
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 1;
   if (!data || len<=0) clipboard->clear();
   else {
@@ -53,7 +54,7 @@ void *wdclipread(int *len)
     tmpba.clear();
     return 0;
   }
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 0;
   tmpba = clipboard->text().toUtf8();
   *len = tmpba.size();
@@ -64,7 +65,7 @@ void *wdclipread(int *len)
 // ---------------------------------------------------------------------
 void *wdclipreadimage(char * s)
 {
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 0;
   if (!strlen(s)) return 0;
   QImage image = clipboard->image();

@@ -1,6 +1,7 @@
 
 #include <QApplication>
 
+#include "../base/state.h"
 #include "grid/wgrid.h"
 #include "grid/qgrid.h"
 
@@ -115,7 +116,7 @@ void WGrid::drawpixmaps()
   pmlab=new QPixmap(Lw+1,Vh+1);
   pmcell=new QPixmap(Vw+1,Vh+1);
 
-  pmall->fill(QApplication::palette().window().color());
+  pmall->fill(app->palette().window().color());
 }
 
 // ---------------------------------------------------------------------

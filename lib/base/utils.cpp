@@ -250,9 +250,9 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
 QWidget *getmbparent()
 {
   QWidget *w;
-  w=QApplication::focusWidget();
+  w=app->focusWidget();
   if (!w)
-    w=QApplication::activeWindow();
+    w=app->activeWindow();
   if (!w)
     w=getactivewindow();
   return w;

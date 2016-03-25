@@ -1496,7 +1496,7 @@ void Term::on_projectopenAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_runclipAct_triggered()
 {
-  tedit->docmds(QApplication::clipboard()->text().trimmed(),true);
+  tedit->docmds(app->clipboard()->text().trimmed(),true);
 }
 
 // ---------------------------------------------------------------------

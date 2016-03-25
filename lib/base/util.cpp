@@ -10,6 +10,7 @@
 #include "base.h"
 #include "term.h"
 #include "note.h"
+#include "state.h"
 
 using namespace std;
 
@@ -434,7 +435,7 @@ string d2s(double d)
 // ---------------------------------------------------------------------
 bool ifshift()
 {
-  return QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
+  return app->keyboardModifiers().testFlag(Qt::ShiftModifier);
 }
 
 // ---------------------------------------------------------------------

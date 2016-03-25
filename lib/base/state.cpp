@@ -116,7 +116,7 @@ void Config::folder_init()
 // run before svr init
 void Config::ini0()
 {
-  QDesktopWidget* dw=QApplication::desktop();
+  QDesktopWidget* dw=app->desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
   ScreenWidth=screenGeometry.width();
   ScreenHeight=screenGeometry.height();

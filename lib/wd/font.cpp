@@ -19,7 +19,7 @@ Font::Font(string s, float pointsize)
     font=config.Font;
     return;
   } else if (s=="profont") {
-    font=QApplication::font();
+    font=app->font();
     return;
   }
   QString face, sizestyle;

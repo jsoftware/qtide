@@ -35,7 +35,7 @@ string qtstate(string p)
     r+=qpair(c,p2q(config.DebugPosX));
   c="profont";
   if (all || s.contains(c))
-    r+=qpair(c,fontspec(QApplication::font()));
+    r+=qpair(c,fontspec(app->font()));
   c="project";
   if (all || s.contains(c))
     r+=qpair(c,recent.ProjectOpen ? project.Path : "");

@@ -151,7 +151,7 @@ void Tedit::itemActivated(QListWidgetItem *item)
 // ---------------------------------------------------------------------
 void Tedit::keyPressEvent(QKeyEvent *e)
 {
-  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  Qt::KeyboardModifiers mod = app->keyboardModifiers();
   bool shift = mod.testFlag(Qt::ShiftModifier);
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   int key = e->key();

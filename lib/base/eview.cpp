@@ -83,7 +83,7 @@ void TextView::savepos()
 // ---------------------------------------------------------------------
 void TextView::keyPressEvent(QKeyEvent *event)
 {
-  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  Qt::KeyboardModifiers mod = app->keyboardModifiers();
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   if (ctrl && event->key()==Qt::Key_W)
     ev->setLineWrapMode((1==ev->lineWrapMode()) ? QPlainTextEdit::NoWrap : QPlainTextEdit::WidgetWidth);

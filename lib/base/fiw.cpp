@@ -164,7 +164,7 @@ void Fiw::finfo(QString s)
 // ---------------------------------------------------------------------
 void Fiw::keyPressEvent(QKeyEvent *e)
 {
-  Qt::KeyboardModifiers mod = QApplication::keyboardModifiers();
+  Qt::KeyboardModifiers mod = app->keyboardModifiers();
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   if (ctrl && e->key()==Qt::Key_R && !ifReplace)
     on_replaceforward_clicked();

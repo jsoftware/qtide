@@ -2,7 +2,6 @@
 #include "gl2class.h"
 
 #include <QApplication>
-extern QApplication *app;
 
 // ---------------------------------------------------------------------
 int glc_free ()

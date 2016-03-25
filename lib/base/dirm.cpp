@@ -451,7 +451,7 @@ void Dirm::on_ignore_clicked()
 // ---------------------------------------------------------------------
 int Dirm::dmclipwrite()
 {
-  QClipboard *clipboard = QApplication::clipboard();
+  QClipboard *clipboard = app->clipboard();
   if (!clipboard) return 1;
   clipboard->setText(Found.join("\n"));
   return 0;

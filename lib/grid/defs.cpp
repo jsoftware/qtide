@@ -6,9 +6,9 @@
 
 void WGrid::defs()
 {
-  font=QApplication::font();
+  font=app->font();
 
-  sbx=QApplication::style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+  sbx=app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
 
   CellText=QColor(0,0,0);
   CellBack=QColor(255,255,255);

@@ -13,6 +13,7 @@ class QPrinter;
 #endif
 class QSyntaxHighlighter;
 class QTextDocument;
+class QApplication;
 
 class Config : public QObject
 {
@@ -168,6 +169,7 @@ void delactivewindow(QWidget*);
 QWidget* getactivewindow();
 void setactivewindow(QWidget*);
 
+extern QApplication *app;
 void state_appname();
 QStringList state_about();
 int state_fini();

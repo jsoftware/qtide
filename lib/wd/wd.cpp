@@ -49,7 +49,6 @@
 #include "../base/tedit.h"
 #include "../base/term.h"
 extern char* jegetlocale();
-extern QApplication *app;
 extern Term * term;
 extern "C" Dllexport void dirmatch(const char *s,const char *t);
 extern "C" Dllexport void openj(const char *s);
@@ -322,7 +321,7 @@ void wdbeep()
     error("command failed: no QApplication");
     return;
   }
-  QApplication::beep();
+  app->beep();
 }
 
 // ---------------------------------------------------------------------
@@ -654,7 +653,7 @@ void wdmsgs()
     error("command failed: no QApplication");
     return;
   }
-  QApplication::processEvents(QEventLoop::AllEvents);
+  app->processEvents(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------
@@ -791,7 +790,7 @@ void wdpcenter()
     return;
   }
   if (noform()) return;
-  QDesktopWidget* dw=QApplication::desktop();
+  QDesktopWidget* dw=app->desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
   int sw=screenGeometry.width();
   int sh=screenGeometry.height();
@@ -979,7 +978,7 @@ void wdqueries(string s)
       error("command failed: no QApplication");
       return;
     }
-    QDesktopWidget* dw=QApplication::desktop();
+    QDesktopWidget* dw=app->desktop();
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
     int dpiy=dw->logicalDpiY();
