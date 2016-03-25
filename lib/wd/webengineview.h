@@ -17,6 +17,7 @@ class WebEngineView : public Child
 
 public:
   WebEngineView(string n, string s, Form *f, Pane *p);
+  ~WebEngineView();
 
   void cmd1(QList<QVariant> obj);
   string get(string p,string v);

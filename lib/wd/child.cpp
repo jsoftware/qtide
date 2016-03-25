@@ -23,7 +23,13 @@ Child::Child(string n, string s, Form *f, Pane *p)
 // ---------------------------------------------------------------------
 Child::~Child()
 {
-  if (widget) delete widget;
+  if (widget) {
+#ifndef QT_NO_WEBENGINE
+    if (type!="webview") delete widget;
+#else
+    delete widget;
+#endif
+  }
   widget=0;
 }
 

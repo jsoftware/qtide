@@ -24,6 +24,15 @@ WebEngineView::WebEngineView(string n, string s, Form *f, Pane *p) : Child(n,s,f
 }
 
 // ---------------------------------------------------------------------
+WebEngineView::~WebEngineView()
+{
+  Qwebengineview *w = (Qwebengineview *)widget;
+  w->stop();
+  w->close();
+  w->setParent(0);
+}
+
+// ---------------------------------------------------------------------
 void WebEngineView::addJavaScriptObject()
 {
   Qwebengineview *w = (Qwebengineview *)widget;
