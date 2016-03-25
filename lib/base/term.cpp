@@ -151,7 +151,7 @@ bool Term::filequit(bool ignoreconfirm)
     cleantemp();
     state_quit();
     app->quit();
-   delete app;
+    delete app;
     return true;
   } else if ((!config.ConfirmClose) ||
              queryOK("Term","OK to exit " + config.Lang + "?")) {
