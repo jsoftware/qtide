@@ -297,7 +297,6 @@ RESOURCES += lib.qrc
 
 win32:VERSION =
 win32:!win32-msvc*:LIBS += -shared
-win32-msvc*:LIBS += /DLL
 unix:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
