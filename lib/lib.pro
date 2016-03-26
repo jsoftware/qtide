@@ -230,7 +230,7 @@ HEADERS += \
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
-!contains(QT,webengine): HEADERS -= wd/webengine.h
+!contains(QT,webengine): HEADERS -= wd/webengine.h wd/webengineview.h
 contains(DEFINES,QT50) {
   !contains(QT,quick): HEADERS -= wd/quickview2.h
   !contains(QT,declarative): HEADERS -= wd/quickview1.h
