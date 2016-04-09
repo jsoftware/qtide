@@ -543,7 +543,8 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 #endif
 #endif
   state_init_resource();
-  setlocale(LC_NUMERIC,"C");
+  if (!setlocale(LC_NUMERIC,"C"))
+    qDebug() << QString("setlocale LC_NUMERIC failed");
   state_appname();
   term = new Term;
   bool rc = state_init(argc,argv);
