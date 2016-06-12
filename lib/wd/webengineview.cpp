@@ -36,6 +36,7 @@ WebEngineView::~WebEngineView()
 void WebEngineView::addJavaScriptObject()
 {
   Qwebengineview *w = (Qwebengineview *)widget;
+  Q_UNUSED(w);
 // not yet implemented, should use QWebChannel instead
 //  w->page()->addToJavaScriptWindowObject("qcom",qcom);
 }
