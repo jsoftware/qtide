@@ -2,6 +2,9 @@
 /* Licensed to Jsoftware Inc.                                              */
 /*                                                                         */
 // included in both JEXE and JDLL servers
+#ifdef _MSC_VER
+#pragma warning(disable: 4100)
+#endif
 
 // #undef _UNICODE
 #include "windows.h"
@@ -283,7 +286,7 @@ STDMETHODIMP CJServer::Invoke(DISPID dispID, REFIID riid
 {
   HRESULT     hr;
   ITypeInfo  *pTI;
-  LANGID      langID=PRIMARYLANGID(lcid);
+//  LANGID      langID=PRIMARYLANGID(lcid);
 
   if (IID_NULL!=riid) return DISP_E_UNKNOWNINTERFACE;
   hr=GetTypeInfo(0, lcid, &pTI);

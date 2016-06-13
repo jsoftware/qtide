@@ -300,5 +300,6 @@ win32:!win32-msvc*:LIBS += -shared
 unix:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
+win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
