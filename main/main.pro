@@ -64,4 +64,5 @@ win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS += /STACK:10000000
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
+macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = jqt.rc
