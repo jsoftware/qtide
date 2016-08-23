@@ -26,26 +26,10 @@ contains(DEFINES,QT56) {
 }
 TARGET = jqt
 
-contains(DEFINES,QT47): QT += declarative
-contains(DEFINES,QT50): QT -= declarative
-contains(DEFINES,QT53) {
-  QT += quick quickwidgets
-} else {
-  QT -= quick quickwidgets
-}
-
 # to exclude QtWebKit QtWebEngine, uncomment the following line
 # QT -= webkit webengine
 # (pre QT54) to exclude OpenGL, uncomment the following line
 # QT -= opengl
-
-# pre QT50
-# to exclude quickview1, uncomment the following line
-# QT -= declarative
-
-# QT5 or later
-# to exclude quickview2 and quickview, uncomment the following line
-# QT -= quick quickwidgets
 
 contains(DEFINES,QT50) {
   QT +=  multimedia
@@ -53,9 +37,22 @@ contains(DEFINES,QT50) {
   QT -=  multimedia
 }
 
+# export JQTFAT before qmake
+JQTFAT = $$(JQTFAT)
+!isEmpty(JQTFAT) {
+  message(building fat jqt)
+  QT += qml
+  contains(DEFINES,QT47): QT += declarative
+  contains(DEFINES,QT50): QT -= declarative
+  contains(DEFINES,QT53) {
+    QT += quick quickwidgets
+  }
+}
+
 # export JQTSLIM before qmake
 JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
+  !isEmpty(JQTFAT) error(both FAT and SLIM defined)
   message(building slim jqt)
   QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
   DEFINES -= QTWEBSOCKET
