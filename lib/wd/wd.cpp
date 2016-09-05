@@ -1441,7 +1441,7 @@ void wdversion()
   result=result+"s";
 #endif
 #endif
-#if !defined(QT_NO_QUICKVIEW1)||!defined(QT_NO_QUICKVIEW1)
+#if !defined(QT_NO_QUICKVIEW1)||!defined(QT_NO_QUICKVIEW2)
   if(!slim)result=result+"f";
 #endif
   result=result+"/"+qVersion();
