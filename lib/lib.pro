@@ -52,7 +52,7 @@ JQTFAT = $$(JQTFAT)
 # export JQTSLIM before qmake
 JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
-  !isEmpty(JQTFAT) error(both FAT and SLIM defined)
+  !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
   QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
   DEFINES -= QTWEBSOCKET
