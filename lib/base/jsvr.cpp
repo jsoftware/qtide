@@ -6,11 +6,13 @@
 
 #include <csignal>
 #include <assert.h>
+#include <stdint.h>
 
 #ifdef __MACH__
 #include <mach-o/dyld.h>
 #endif
 
+#include "base.h"
 #include "jsvr.h"
 #include "util.h"
 
@@ -43,7 +45,7 @@ void _stdcall JSM(J jt, void*callbacks[]);  /* set callbacks */
 
 A jega(I t, I n, I r, I*s);
 char* jegetlocale();
-void* jehjdll();
+extern "C" Dllexport void* jehjdll();
 
 char **adadbreak;
 char inputline[BUFLEN+1];
@@ -169,18 +171,6 @@ void jepath(char* arg)
 {
   Q_UNUSED(arg);
 
-  if (FHS) {
-    strcpy(pathdll,JDLLNAME);
-#if defined(_WIN32_)
-    *(strrchr(pathdll,'.')) = 0;
-    strcat(pathdll,"-" JDLLVER);
-    strcat(pathdll,".dll");
-#else
-    strcat(pathdll,"." JDLLVER);
-#endif
-    return;
-  }
-
 #ifdef _WIN32
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
@@ -235,6 +225,22 @@ void jepath(char* arg)
   snk=path+strlen(path)-1;
   if('/'==*snk) *snk=0;
 #endif
+
+// for FHS (debian package version)
+// pathdll is not related to path
+// but path is still needed for BINPATH
+  if (FHS) {
+    strcpy(pathdll,JDLLNAME);
+#if defined(_WIN32_)
+    *(strrchr(pathdll,'.')) = 0;
+    strcat(pathdll,"-" JDLLVER);
+    strcat(pathdll,".dll");
+#else
+    strcat(pathdll,"." JDLLVER);
+#endif
+    return;
+  }
+
   strcpy(pathdll,path);
   strcat(pathdll,filesepx );
   strcat(pathdll,JDLLNAME);
@@ -260,6 +266,7 @@ int jefirst(int type,char* arg)
   int r;
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
+  char buf[50];
 
   *input=0;
   QFile sprofile(":/standalone/profile.ijs");
@@ -305,6 +312,9 @@ int jefirst(int type,char* arg)
   }
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
+  sprintf(buf,"(" FMTI ")",(I)(intptr_t)hjdll);
+  strcat(input,"[HLIBJ_z_=:");
+  strcat(input,buf);
   strcat(input,"[BINPATH_z_=:'");
   p=path;
   q=input+strlen(input);

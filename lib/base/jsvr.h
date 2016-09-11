@@ -36,8 +36,10 @@
 
 #if defined(_WIN64)||defined(__LP64__)
 typedef long long I;
+#define FMTI            "%lli"
 #else
 typedef long I;
+#define FMTI            "%li"
 #endif
 
 typedef char C;
