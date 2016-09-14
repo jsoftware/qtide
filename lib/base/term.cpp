@@ -148,18 +148,10 @@ bool Term::filequit(bool ignoreconfirm)
 
   if (ignoreconfirm) {
     jcon->cmd("2!:55[0");
-    cleantemp();
-    state_quit();
-    app->quit();
-    delete app;
     return true;
   } else if ((!config.ConfirmClose) ||
              queryOK("Term","OK to exit " + config.Lang + "?")) {
     jcon->cmd("2!:55[0");
-    cleantemp();
-    state_quit();
-    app->quit();
-    delete app;
     return true;
   } else
     return false;

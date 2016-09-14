@@ -86,10 +86,7 @@ Form::~Form()
   if (Forms.isEmpty() && (!ShowIde)) {
     if (jdllproc) evloop->exit();
     else {
-      jcon->cmd("2!:55)0");
-      state_quit();
-      app->quit();
-      delete app;
+      jcon->cmd("2!:55[0");
     }
   }
 }

@@ -16,6 +16,7 @@
 #include "base.h"
 #include "jsvr.h"
 #include "svr.h"
+#include "state.h"
 #include "tedit.h"
 #include "term.h"
 
@@ -244,6 +245,10 @@ void _stdcall Joutput(J jt,int type, char* s)
   Q_UNUSED(jt);
 
   if(MTYOEXIT==type) {
+// callback from jengine during jcon->cmd("2!:55[0")
+    jefree();
+    state_quit();
+    app->quit();
     exit((int)(intptr_t)s);
   }
 

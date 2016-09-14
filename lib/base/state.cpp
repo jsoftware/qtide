@@ -489,7 +489,11 @@ void state_quit()
   if (Printer) delete Printer;
   if (prtobj) delete prtobj;
 #endif
-  if (term) delete term;
+  if (term) {
+    term->cleantemp();
+    delete term;
+    term=0;
+  }
   jcon->quit();
 }
 
