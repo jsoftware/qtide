@@ -58,21 +58,11 @@ JQTSLIM = $$(JQTSLIM)
   DEFINES -= QTWEBSOCKET
 }
 
-# export JQTRASPI before qmake
-JQTRASPI = $$(JQTRASPI)
-!isEmpty(JQTRASPI) {
-  message(building raspi jqt)
-  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
-}
-
 CONFIG(debug, debug|release) {
   rel = debug
 } else {
   rel = release
 }
-
-contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
-contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): QT += network
 
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -82,10 +72,21 @@ win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
-linux-raspi: QMAKE_TARGET.arch = arm
+linux-raspi: QMAKE_TARGET.arch = armv6l
+linux-armv6l: QMAKE_TARGET.arch = armv6l
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 ABI=$$(ABI)
+
+equals(QMAKE_TARGET.arch , armv6l): {
+  message(building raspberry pi jqt)
+  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webki
+  DEFINES -= QTWEBSOCKET
+  DEFINES += RASPI
+}
+
+contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
+contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): QT += network
 
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
@@ -101,7 +102,6 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-linux-raspi: DEFINES += RASPI
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 macx:CONFIG += c++11

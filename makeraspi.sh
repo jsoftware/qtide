@@ -4,12 +4,15 @@
 
 S=$(dirname "$0")
 
-./clean.sh
+# old version of astyle in raspbian
+# ./clean.sh
 ./clean.rpi
 
 cd lib
-qmake -spec linux-raspi && make
+# qmake -spec linux-raspi && make
+qmake && make
 cd ..
 
 cd main
-qmake -spec linux-raspi && make
+# qmake -spec linux-raspi && make
+qmake && make

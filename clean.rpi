@@ -2,6 +2,6 @@
 
 S=$(dirname "$0")
 
-rm -rf $S/bin/linux-arm
-rm -rf $S/lib/build/linux-arm
-rm -rf $S/main/build/linux-arm
+rm -rf $S/bin/linux-armv6l
+rm -rf $S/lib/build/linux-armv6l
+rm -rf $S/main/build/linux-armv6l

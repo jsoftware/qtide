@@ -24,10 +24,16 @@ win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
-linux-raspi: QMAKE_TARGET.arch = arm
+linux-raspi: QMAKE_TARGET.arch = armv6l
+linux-armv6l: QMAKE_TARGET.arch = armv6l
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 ABI=$$(ABI)
+
+equals(QMAKE_TARGET.arch , armv6l): {
+  message(building raspberry pi jqt)
+  DEFINES += RASPI
+}
 
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
@@ -43,7 +49,6 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-linux-raspi: DEFINES += RASPI
 macx:CONFIG += c++11
 
 win32-msvc*:TARGET = ../bin/jqt
