@@ -315,6 +315,9 @@ int jefirst(int type,char* arg)
   sprintf(buf,"(" FMTI ")",(I)(intptr_t)hjdll);
   strcat(input,"[HLIBJ_z_=:");
   strcat(input,buf);
+#ifdef RASPI
+  strcat(input,"[IFRASPI_z_=:1");
+#endif
   strcat(input,"[BINPATH_z_=:'");
   p=path;
   q=input+strlen(input);
