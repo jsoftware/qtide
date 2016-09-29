@@ -33,6 +33,9 @@ string qtstate(string p)
   c="debugpos";
   if (all || s.contains(c))
     r+=qpair(c,p2q(config.DebugPosX));
+  c="fixfont";
+  if (all || s.contains(c))
+    r+=qpair(c,fontspec(config.Font));
   c="profont";
   if (all || s.contains(c))
     r+=qpair(c,fontspec(app->font()));

@@ -76,6 +76,7 @@ std::string strless(std::string a,std::string w);
 std::string remquotes(std::string s);
 QString remsep(QString);
 QString remtilde(QString);
+QByteArray s2b(std::string);
 QString s2q(std::string);
 std::string spair(std::string s,std::string t);
 std::string spair(std::string s,QString t);

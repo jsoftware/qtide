@@ -814,10 +814,15 @@ QString remtilde(QString s)
 }
 
 // ---------------------------------------------------------------------
+QByteArray s2b(string s)
+{
+  return QByteArray(s.c_str(),s.length());
+}
+
+// ---------------------------------------------------------------------
 QString s2q(string s)
 {
-  QString r=QString::fromUtf8(s.c_str());
-  return r;
+  return QString::fromUtf8(s.c_str());
 }
 
 // ---------------------------------------------------------------------

@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QFont>
 #include <QLibrary>
+#include <QString>
 
 using namespace std;
 
