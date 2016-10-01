@@ -816,7 +816,7 @@ QString remtilde(QString s)
 // ---------------------------------------------------------------------
 QByteArray s2b(string s)
 {
-  return QByteArray(s.c_str(),s.length());
+  return QByteArray(s.c_str(),(int)s.length());
 }
 
 // ---------------------------------------------------------------------
