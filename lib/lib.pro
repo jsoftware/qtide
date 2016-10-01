@@ -1,5 +1,5 @@
 
-VERSION = 1.5.1
+VERSION = 1.5.2
 JDLLVER = 8.05    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
@@ -297,7 +297,7 @@ win32:!win32-msvc*:LIBS += -shared
 unix:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
-win32-msvc*:QMAKE_CXXFLAGS += -WX
+win32-msvc*:QMAKE_CXXFLAGS += 
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
