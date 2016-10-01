@@ -266,7 +266,6 @@ int jefirst(int type,char* arg)
   int r;
   char* p,*q;
   char* input=(char *)malloc(2000+strlen(arg));
-  char buf[50];
 
   *input=0;
   QFile sprofile(":/standalone/profile.ijs");
@@ -312,9 +311,6 @@ int jefirst(int type,char* arg)
   }
   strcat(input,"[ARGV_z_=:");
   strcat(input,arg);
-  sprintf(buf,"(" FMTI ")",(I)(intptr_t)hjdll);
-  strcat(input,"[HLIBJ_z_=:");
-  strcat(input,buf);
 #ifdef RASPI
   strcat(input,"[IFRASPI_z_=:1");
 #endif
