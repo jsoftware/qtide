@@ -27,6 +27,7 @@ static string smgetactive();
 static string smgetinputlog();
 static string smgetscript(string);
 static string smgettabs(QString);
+static string smgettermcwh();
 static string smgetwin(string);
 static string smgetwin1(Bedit *);
 static string smgetwin2(Note *n);
@@ -187,6 +188,8 @@ string smget()
     return smgetactive();
   if (p=="term" || p=="edit" || p=="edit2")
     return smgetwin(p);
+  if (p=="termcwh")
+    return smgettermcwh();
   if (p=="inputlog")
     return smgetinputlog();
   if (p=="xywh")
@@ -238,6 +241,20 @@ string smgettabs(QString p)
     return smerror("sm get tabs needs edit or edit2 parameter");
   rc=-2;
   return n->gettabstate();
+}
+
+// ---------------------------------------------------------------------
+string smgettermcwh() {
+  rc=-1;
+  QSize z=tedit->size();
+  QFontMetrics fm=QFontMetrics(config.Font,0);
+  int sb=app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+  sb+=4; // padding
+  int fh=fm.height();
+  int fw=fm.width("X");
+  int ch=(z.height()-sb)/fh;
+  int cw=(z.width()-sb)/fw;
+  return q2s(QString::number(cw)+" "+QString::number(ch));
 }
 
 // ---------------------------------------------------------------------
