@@ -5,14 +5,14 @@ Folders:
 
 bin   - binaries, demo files
 config - example configs
-lib   - source for libjqt.so (in subdirs base, high and wd)
+lib   - source for libjqt.so (in subdirs base, grid, high and wd)
 main  - source for jqt
 
 Build:
 
 Edit makeall.sh in the top level directory to set jqt path, then run.
 
-Copy the binaries and links from bin to the j8/bin directory. 
+Copy the binaries and links from bin to the j8/bin directory.
 
 Edit config files and copy to the J8 config directory
 
@@ -24,3 +24,4 @@ Example shell script:
 J=~/j8
 cd $J
 bin/jqt "$@"
+
