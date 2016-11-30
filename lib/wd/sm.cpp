@@ -306,7 +306,7 @@ string smgetxywh()
 {
   rc=-2;
   string r;
-  r+=spair("text",smgetxywh1(term));
+  r+=spair("term",smgetxywh1(term));
   if (note)
     r+=spair("edit",smgetxywh1(note));
   if (note2)
