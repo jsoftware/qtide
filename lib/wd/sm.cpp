@@ -244,8 +244,7 @@ string smgettabs(QString p)
 }
 
 // ---------------------------------------------------------------------
-string smgettermcwh()
-{
+string smgettermcwh() {
   rc=-1;
   QSize z=tedit->size();
   QFontMetrics fm=QFontMetrics(config.Font,0);

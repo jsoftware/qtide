@@ -294,14 +294,7 @@ int glpaint()
   CHKPAINTER2
 #if defined(GLISIGRAPH)
   if (w->type=="isigraph" && w->painter) return 0;
-  if (w->type=="isidraw") {
-    QPainter p;
-    p.begin(w);
-    p.drawPixmap(0,0,*(w->pixmap),0,0,w->width(),w->height());
-    p.end();
-    w->repaint();
-  } else
-    w->update();
+  w->update();
 #elif defined(GLOPENGL)
   if (w->painter) return 1;
   w->updateGL();
@@ -315,14 +308,7 @@ int glpaintx()
   CHKPAINTER2
 #if defined(GLISIGRAPH)
   if (w->type=="isigraph") return 0;
-  if (w->type=="isidraw") {
-    QPainter p;
-    p.begin(w);
-    p.drawPixmap(0,0,*(w->pixmap),0,0,w->width(),w->height());
-    p.end();
-    w->repaint();
-  } else
-    w->repaint();
+  w->repaint();
 #elif defined(GLOPENGL)
   return glpaint();
 #endif
