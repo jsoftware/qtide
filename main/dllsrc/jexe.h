@@ -162,6 +162,10 @@ public:
     /* [out] */ VARIANT __RPC_FAR *v,
     /* [retval][out] */ long __RPC_FAR *r) = 0;
 
+  virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE Int64(
+    /* [in] */ long b,
+    /* [retval][out] */ long __RPC_FAR *r) = 0;
+
 };
 
 #else 	/* C style interface */
@@ -311,6 +315,11 @@ typedef struct IJEXEServerVtbl {
     /* [out] */ VARIANT __RPC_FAR *v,
     /* [retval][out] */ long __RPC_FAR *r);
 
+  /* [helpstring] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *Int64 )(
+    IJEXEServer __RPC_FAR * This,
+    /* [in] */ long b,
+    /* [retval][out] */ long __RPC_FAR *r);
+
   END_INTERFACE
 } IJEXEServerVtbl;
 
@@ -399,6 +408,9 @@ interface IJEXEServer {
 
 #define IJEXEServer_DoR(This,input,v,r)	\
     (This)->lpVtbl -> DoR(This,input,v,r)
+
+#define IJEXEServer_Int64(This,b,r)	\
+    (This)->lpVtbl -> Int64(This,b,r)
 
 #endif /* COBJMACROS */
 
@@ -647,6 +659,19 @@ void __RPC_STUB IJEXEServer_SetB_Stub(
 
 
 void __RPC_STUB IJEXEServer_DoR_Stub(
+  IRpcStubBuffer *This,
+  IRpcChannelBuffer *_pRpcChannelBuffer,
+  PRPC_MESSAGE _pRpcMessage,
+  DWORD *_pdwStubPhase);
+
+
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IJEXEServer_Int64_Proxy(
+  IJEXEServer __RPC_FAR * This,
+  /* [in] */ long b,
+  /* [retval][out] */ long __RPC_FAR *r);
+
+
+void __RPC_STUB IJEXEServer_Int64_Stub(
   IRpcStubBuffer *This,
   IRpcChannelBuffer *_pRpcChannelBuffer,
   PRPC_MESSAGE _pRpcMessage,

@@ -1,0 +1,15 @@
+windows only
+
+jexe.tlb is a binary file encoding the com interface type library
+
+jexe.rc includes jexe.tlb
+
+midl.exe (originally mktyplib.exe) builds jexe.tlb from:
+ jexeodl.h  jexe.odl (which includes methods.odl)
+
+build.bat builds jexe.tlb binary from the 3 source files
+
+build.bat must be run under vs developer command prompt with midl as current folder
+(start>all programs>vs 2013>visual studio tools>developer command prompt)
+
+new jexe.tlb should be manually copied to dllsrc for inclusion in new build

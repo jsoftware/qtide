@@ -77,6 +77,7 @@ public:
   STDMETHODIMP GetB(BSTR, VARIANT*, long*);
   STDMETHODIMP SetB(BSTR, VARIANT*, long*);
   STDMETHODIMP DoR(BSTR, VARIANT*, long*);
+  STDMETHODIMP Int64(long, long*);
 };
 
 void ObjectDestroyed(void);

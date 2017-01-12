@@ -1,0 +1,32 @@
+//LIBID_JEXE
+[
+uuid(21EB05E1-1AB3-11cf-A2AC-8FF70874C460)
+    , helpstring("Iverson Software Inc. : J EXE Server")
+    , lcid(0x0000)
+    , version(3.0)
+]
+library JEXE
+    {
+    importlib("STDOLE32.TLB");
+
+    [
+    uuid(21EB05E2-1AB3-11cf-A2AC-8FF70874C460)
+        , helpstring("Definition of J EXE Server interface.")
+        , odl
+        , dual
+    ]
+    interface IJEXEServer : IDispatch
+    {
+#include "methods.odl"
+    }
+
+    //CLSID_JEXEServer
+    [
+    uuid(21EB05E0-1AB3-11cf-A2AC-8FF70874C460)
+        , helpstring("J EXE Server Type Information")
+    ]
+    coclass JEXEServer
+        {
+        interface       IJEXEServer;
+        }
+    };
