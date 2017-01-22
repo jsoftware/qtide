@@ -960,17 +960,17 @@ void wdqueries(string s)
   } else if (s=="qopenglmod") {
 #ifndef QT_NO_OPENGL
     if (!app) {
-      error("command failed: no QApplication");
+      result=i2s(0);
       return;
     }
 #ifdef QT53
-    result=i2s(QOpenGLContext::openGLModuleType());
+    result=i2s(1+QOpenGLContext::openGLModuleType());
 #else
-    result=i2s(0);
+    result=i2s(1);
 #endif
     return;
 #else
-    error("command not found");
+    result=i2s(0);
     return;
 #endif
   } else if (s=="qscreen") {
