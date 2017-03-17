@@ -1,4 +1,6 @@
 
+JDLLVER = 8.06    # ignored if not FHS
+
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
@@ -48,6 +50,8 @@ OBJECTS_DIR = $$BUILDROOT/obj
 MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
+
+DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 macx:CONFIG += c++11
 

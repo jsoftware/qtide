@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
   if(!(QFile(s.append(".dll"))).exists()) {
-    s= "jqt.dll";
+    s= QString("jqt")+"-"+JDLLVER+".dll";
     fhs = true;
   }
 #else
@@ -67,9 +67,9 @@ int main(int argc, char *argv[])
   if(!(QFile(s.append(".so"))).exists()) {
 #endif
 #if defined(__MACH__)
-    s= "libjqt.dylib";
+    s= QString("libjqt.dylib")+"."+JDLLVER;
 #else
-    s= "libjqt.so";
+    s= QString("libjqt.so")+"."+JDLLVER;
 #endif
     fhs = true;
   }

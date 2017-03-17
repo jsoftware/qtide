@@ -19,6 +19,7 @@
 void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
+static int AVX=0;
 
 using namespace std;
 
@@ -167,7 +168,7 @@ J jeload(void* callbacks)
 // ---------------------------------------------------------------------
 // set path and pathdll (wpath also set for win)
 // WIN arg is 0, Unix arg is argv[0]
-void jepath(char* arg)
+void jepath(char* arg, char* lib, int forceavx)
 {
   Q_UNUSED(arg);
 
@@ -176,6 +177,29 @@ void jepath(char* arg)
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
+#if SY_64
+  char *jeavx=getenv("JEAVX");
+  if (forceavx==1) AVX=1;       // force enable avx
+  else if (forceavx==2) AVX=0;  // force disable avx
+  else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
+  else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
+  else { // auto detect
+//  AVX= 0!=(0x4UL & GetEnabledXStateFeatures());
+// above line not worked for pre WIN7 SP1
+// Working with XState Context (Windows)
+// https://msdn.microsoft.com/en-us/library/windows/desktop/hh134240(v=vs.85).aspx
+// Windows 7 SP1 is the first version of Windows to support the AVX API.
+#define XSTATE_MASK_AVX   (XSTATE_MASK_GSSE)
+    typedef DWORD64 (WINAPI *GETENABLEDXSTATEFEATURES)();
+    GETENABLEDXSTATEFEATURES pfnGetEnabledXStateFeatures = NULL;
+// Get the addresses of the AVX XState functions.
+    HMODULE hm = GetModuleHandleA("kernel32.dll");
+    if ((pfnGetEnabledXStateFeatures = (GETENABLEDXSTATEFEATURES)GetProcAddress(hm, "GetEnabledXStateFeatures")) &&
+        ((pfnGetEnabledXStateFeatures() & XSTATE_MASK_AVX) != 0))
+      AVX=1;
+    FreeLibrary(hm);
+  }
+#endif
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -192,6 +216,24 @@ void jepath(char* arg)
   n=readlink("/proc/self/exe",arg2,sizeof(arg2));
   if(-1==n) strcpy(arg2,arg);
   else arg2[n]=0;
+#endif
+#if defined(__x86_64__)
+// http://en.wikipedia.org/wiki/Advanced_Vector_Extensions
+// Linux: supported since kernel version 2.6.30 released on June 9, 2009.
+  char *jeavx=getenv("JEAVX");
+  if (forceavx==1) AVX=1;       // force enable avx
+  else if (forceavx==2) AVX=0;  // force disable avx
+  else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
+  else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
+  else { // auto detect by uname -r
+    struct utsname unm;
+    if (!uname(&unm) &&
+        ((unm.release[0]>'2'&&unm.release[0]<='9')||  // avoid sign/unsigned char difference
+         (strlen(unm.release)>5&&unm.release[0]=='2'&&unm.release[2]=='6'&&unm.release[4]=='3'&&
+          (unm.release[5]>='0'&&unm.release[5]<='9'))))
+      AVX= 0!= __builtin_cpu_supports("avx");
+// fprintf(stderr,"kernel release :%s:\n",unm.release);
+  }
 #endif
 // fprintf(stderr,"arg2 %s\n",arg2);
 // arg2 is path (abs or relative) to executable or soft link
@@ -226,11 +268,15 @@ void jepath(char* arg)
   if('/'==*snk) *snk=0;
 #endif
 
+  strcpy(pathdll,path);
+  strcat(pathdll,filesepx );
+  strcat(pathdll,(AVX)?JAVXDLLNAME:JDLLNAME);
+
 // for FHS (debian package version)
 // pathdll is not related to path
 // but path is still needed for BINPATH
   if (FHS) {
-    strcpy(pathdll,JDLLNAME);
+    strcpy(pathdll,(AVX)?JAVXDLLNAME:JDLLNAME);
 #if defined(_WIN32_)
     *(strrchr(pathdll,'.')) = 0;
     strcat(pathdll,"-" JDLLVER);
@@ -238,13 +284,16 @@ void jepath(char* arg)
 #else
     strcat(pathdll,"." JDLLVER);
 #endif
-    return;
   }
-
-  strcpy(pathdll,path);
-  strcat(pathdll,filesepx );
-  strcat(pathdll,JDLLNAME);
-// fprintf(stderr,"arg4 %s\n",path);
+  if(*lib) {
+    if(filesep==*lib || ('\\'==filesep && ':'==lib[1]))
+      strcpy(pathdll,lib); // absolute path
+    else {
+      strcpy(pathdll,path);
+      strcat(pathdll,filesepx);
+      strcat(pathdll,lib); // relative path
+    }
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -252,7 +301,7 @@ void jefail(char* msg)
 {
   strcpy(msg, "Load library ");
   strcat(msg, pathdll);
-  strcat(msg," failed.");
+  strcat(msg," failed.\n");
 }
 
 // ---------------------------------------------------------------------
@@ -316,6 +365,15 @@ int jefirst(int type,char* arg)
 #endif
   strcat(input,"[BINPATH_z_=:'");
   p=path;
+  q=input+strlen(input);
+  while(*p) {
+    if(*p=='\'') *q++='\'';	// 's doubled
+    *q++=*p++;
+  }
+  *q=0;
+  strcat(input,"'");
+  strcat(input,"[LIBFILE_z_=:'");
+  p=pathdll;
   q=input+strlen(input);
   while(*p) {
     if(*p=='\'') *q++='\'';	// 's doubled

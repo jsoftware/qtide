@@ -1,6 +1,6 @@
 
 VERSION = 1.5.3
-JDLLVER = 8.05    # ignored if not FHS
+JDLLVER = 8.06    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 

@@ -9,8 +9,12 @@
 #include <direct.h>
 #define GETPROCADDRESS(h,p) GetProcAddress(h,p)
 #define JDLLNAME "j.dll"
+#define JAVXDLLNAME "javx.dll"
 #define filesep '\\'
 #define filesepx "\\"
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#endif
 #else
 #define _stdcall
 #include <unistd.h>
@@ -18,8 +22,11 @@
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
 #ifdef __MACH__
 #define JDLLNAME "libj.dylib"
+#define JAVXDLLNAME "libjavx.dylib"
 #else
+#include <sys/utsname.h>
 #define JDLLNAME "libj.so"
+#define JAVXDLLNAME "libjavx.so"
 #endif
 #define _getcwd getcwd
 #define filesep '/'
@@ -58,7 +65,7 @@ void jefree();
 void jefail(char* msg);
 int jefirst(int type,char* arg);
 J jeload(void* callbacks);
-void jepath(char* arg);
+void jepath(char* arg, char* lib, int forceavx);
 
 void addargv(int argc, char* argv[], C* d);
 void sigint(int k);
