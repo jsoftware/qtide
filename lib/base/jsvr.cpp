@@ -187,6 +187,7 @@ void jepath(char* arg, char* lib, int forceavx)
   else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
   else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
   else { // auto detect
+#if 0  // turn off auto detect
 #if defined(_WIN64)||defined(__LP64__)
 //  AVX= 0!=(0x4UL & GetEnabledXStateFeatures());
 // above line not worked for pre WIN7 SP1
@@ -202,6 +203,7 @@ void jepath(char* arg, char* lib, int forceavx)
         ((pfnGetEnabledXStateFeatures() & XSTATE_MASK_AVX) != 0))
       AVX=1;
     FreeLibrary(hm);
+#endif
 #endif
   }
 #else
@@ -234,6 +236,7 @@ void jepath(char* arg, char* lib, int forceavx)
   else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
   else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
   else { // auto detect by uname -r
+#if 0  // turn off auto detect
 #if defined(__x86_64__)
     struct utsname unm;
     if (!uname(&unm) &&
@@ -242,6 +245,7 @@ void jepath(char* arg, char* lib, int forceavx)
           (unm.release[5]>='0'&&unm.release[5]<='9'))))
       AVX= 0!= __builtin_cpu_supports("avx");
 // fprintf(stderr,"kernel release :%s:\n",unm.release);
+#endif
 #endif
   }
 #endif
