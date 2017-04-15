@@ -1034,7 +1034,12 @@ void wdqueries(string s)
       return;
     }
 #else
+#ifdef QT54
+    QSysInfo qsi;
+    result=q2s(qsi.prettyProductName()+" "+qsi.kernelVersion());
+#else
     result="";
+#endif
     return;
 #endif
   } else if (s=="qprinters") {
