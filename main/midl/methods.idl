@@ -1,4 +1,4 @@
-// JEXE and DLL odl methods
+// JEXE and DLL idl methods
 
 	[helpstring("Execute string.")]
 	HRESULT Do([in] BSTR input, [out, retval] long* r);

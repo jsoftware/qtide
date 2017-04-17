@@ -7,17 +7,17 @@ uuid(21EB05E1-1AB3-11cf-A2AC-8FF70874C460)
 ]
 library JEXE
     {
-    importlib("STDOLE32.TLB");
+    importlib("stdole32.tlb");
 
     [
     uuid(21EB05E2-1AB3-11cf-A2AC-8FF70874C460)
         , helpstring("Definition of J EXE Server interface.")
-        , odl
+        , oleautomation
         , dual
     ]
     interface IJEXEServer : IDispatch
     {
-#include "methods.odl"
+#include "methods.idl"
     }
 
     //CLSID_JEXEServer
@@ -27,6 +27,6 @@ library JEXE
     ]
     coclass JEXEServer
         {
-        interface       IJEXEServer;
+        [default]interface       IJEXEServer;
         }
     };
