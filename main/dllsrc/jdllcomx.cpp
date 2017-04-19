@@ -64,7 +64,7 @@ extern "C"
   JGetBType		JGetB;
   JSetBType		JSetB;
   JDoRType		JDoR;
-  JInt64Type	JInt64;
+  JInt64RType	JInt64R;
 }
 #else
 JDoType			JDo;
@@ -85,7 +85,7 @@ JErrorTextBType	JErrorTextB;
 JGetBType		JGetB;
 JSetBType		JSetB;
 JDoRType		JDoR;
-JInt64Type	JInt64;
+JInt64RType	JInt64R;
 #endif
 
 char jclass[100] = "";
@@ -472,7 +472,7 @@ static void oleload()
   JGetB=(JGetBType)GETPROCADDRESS((HMODULE)hjdll,"JGetB");
   JSetB=(JSetBType)GETPROCADDRESS((HMODULE)hjdll,"JSetB");
   JDoR=(JDoRType)GETPROCADDRESS((HMODULE)hjdll,"JDoR");
-  JInt64=(JInt64Type)GETPROCADDRESS((HMODULE)hjdll,"JInt64");
+  JInt64R=(JInt64RType)GETPROCADDRESS((HMODULE)hjdll,"JInt64R");
 }
 #endif // _JDLL
 
@@ -535,9 +535,9 @@ STDMETHODIMP CJServer::ErrorTextB(long ec, VARIANT* v, long* pr)
   return NOERROR;
 }
 
-STDMETHODIMP CJServer::Int64(long b, long* pr)
+STDMETHODIMP CJServer::Int64R(long b, long* pr)
 {
-  *pr = JInt64(m_pjst, b);
+  *pr = JInt64R(m_pjst, b);
   return NOERROR;
 }
 

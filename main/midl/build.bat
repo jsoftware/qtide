@@ -1,1 +1,1 @@
-midl jexe.idl /tlb jexe.tlb /header jexe.h
+midl jexe.idl /tlb jexe.tlb /h jexe.h
