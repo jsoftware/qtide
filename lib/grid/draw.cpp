@@ -95,8 +95,6 @@ bool WGrid::drawinit()
   LabMergeIndex=hdrmergeindex(LabMerge);
   HdrMergeMask=hdrmergemask(HdrMerge);
   LabMergeMask=hdrmergemask(LabMerge);
-  hdrmergesizes();
-  labmergesizes();
 
   return true;
 }
@@ -132,47 +130,5 @@ void WGrid::drawview()
   Vhp=vsumscanp(0,Vhs);
   Vw=Vwp.last();
   Vh=Vhp.last();
-}
-
-// ---------------------------------------------------------------------
-void WGrid::hdrmergesizes()
-{
-  HdrMergeSizes.clear();
-  if (HdrMerge==DefMerge) return;
-
-  int c,i,n;
-  QFontMetrics fm=QFontMetrics(font,0);
-  QVector<int> r(3);
-
-  for (i=0; i<HdrMerge.size(); i++) {
-    if (HdrMerge[i]==1) continue;
-    n=HdrMerge[i];
-    c=HdrMergeIndex[i]%Ccls;
-    r[0]=c;
-    r[1]=c+n-1;
-    r[2]=fm.width(Hdr[n]);
-    HdrMergeSizes.append(r);
-  }
-}
-
-// ---------------------------------------------------------------------
-void WGrid::labmergesizes()
-{
-  LabMergeSizes.clear();
-  if (LabMerge==DefMerge) return;
-
-  int c,i,n;
-  QFontMetrics fm=QFontMetrics(font,0);
-  QVector<int> r(3);
-
-  for (i=0; i<LabMerge.size(); i++) {
-    if (LabMerge[i]==1) continue;
-    n=LabMerge[i];
-    c=LabMergeIndex[i]%Crws;
-    r[0]=c;
-    r[1]=c+n-1;
-    r[2]=fm.height();
-    LabMergeSizes.append(r);
-  }
 }
 

@@ -624,6 +624,20 @@ bool queryRETRY(QString t,QString s)
 }
 
 // ---------------------------------------------------------------------
+// J quote - doubles internal quotes
+QString quote(QString s)
+{
+  QString r="'";
+  for (int i=0; i<s.size(); i++) {
+    r+=s[i];
+    if (s[i]=='\'')
+      r+="'";
+  }
+  r+="'";
+  return r;
+}
+
+// ---------------------------------------------------------------------
 QList<int> qs2intlist(QString c)
 {
   QStringList s=c.split(' ',QString::SkipEmptyParts);

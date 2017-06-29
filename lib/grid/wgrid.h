@@ -97,7 +97,6 @@ private:
   QVector<int> HdrAlign, HdrAlignX, LabAlign, LabAlignX;
   QVector<int> HdrMerge, HdrMergeIndex, HdrMergeMask;
   QVector<int> LabMerge, LabMergeIndex, LabMergeMask;
-  QList< QVector<int> > HdrMergeSizes, LabMergeSizes;
 
   QVector<int> Cws, Chs, Cwx, Chx;
   QVector<int> Dws, Dhs, Hws, Hhs, Lws, Lhs;

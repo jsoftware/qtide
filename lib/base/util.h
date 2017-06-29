@@ -70,6 +70,7 @@ int queryCNY(QString t,QString s);
 bool queryNY(QString t,QString s);
 bool queryOK(QString t,QString s);
 bool queryRETRY(QString t,QString s);
+QString quote(QString s);
 QStringList qsless(QStringList,QStringList);
 bool qsnumeric(QStringList);
 std::string strless(std::string a,std::string w);

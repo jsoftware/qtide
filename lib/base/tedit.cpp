@@ -222,8 +222,8 @@ void Tedit::load(QString s, bool d)
 // ---------------------------------------------------------------------
 QString Tedit::loadcmd(QString s, bool d)
 {
-  QString r = d ? "loadd" : "load";
-  return r + " '" + s + "'";
+  QString r = d ? "loadd " : "load ";
+  return r + quote(s);
 }
 
 // ---------------------------------------------------------------------
