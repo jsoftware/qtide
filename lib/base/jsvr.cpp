@@ -19,6 +19,7 @@
 void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
+QString jdllver="x.xx";  // ignored if not FHS
 static int AVX=0;
 
 using namespace std;
@@ -291,12 +292,14 @@ void jepath(char* arg, char* lib, int forceavx)
 // but path is still needed for BINPATH
   if (FHS) {
     strcpy(pathdll,(AVX)?JAVXDLLNAME:JDLLNAME);
-#if defined(_WIN32_)
+#if defined(_WIN32)
     *(strrchr(pathdll,'.')) = 0;
-    strcat(pathdll,"-" JDLLVER);
+    strcat(pathdll,"-");
+    strcat(pathdll,jdllver.toUtf8().constData());
     strcat(pathdll,".dll");
 #else
-    strcat(pathdll,"." JDLLVER);
+    strcat(pathdll,".");
+    strcat(pathdll,jdllver.toUtf8().constData());
 #endif
   }
   if(*lib) {
@@ -358,9 +361,11 @@ int jefirst(int type,char* arg)
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
       } else {
 #if defined(_WIN32)
-        strcat(input,"(3 : '0!:0 y')<(2!:5'ALLUSERSPROFILE')'\\j\\" JDLLVER);
+        strcat(input,"(3 : '0!:0 y')<(2!:5'ALLUSERSPROFILE'),'\\j\\");
+        strcat(input,jdllver.toUtf8().constData());
 #else
-        strcat(input,"(3 : '0!:0 y')<'/etc/j/" JDLLVER);
+        strcat(input,"(3 : '0!:0 y')<'/etc/j/");
+        strcat(input,jdllver.toUtf8().constData());
 #endif
       }
       strcat(input,filesepx);

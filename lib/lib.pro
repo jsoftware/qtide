@@ -1,6 +1,6 @@
 
 VERSION = 1.5.4
-JDLLVER = 8.06    # ignored if not FHS
+# JDLLVER = 8.06    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
@@ -102,7 +102,7 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
+# DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 
 macx:CONFIG += c++11
 win32:CONFIG += dll console

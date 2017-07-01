@@ -47,6 +47,7 @@ extern void regQmlJE();
 #endif
 
 extern bool FHS;
+extern QString jdllver;
 extern void wdreset();
 extern Tedit *tedit;
 
@@ -420,7 +421,8 @@ QStringList state_about()
 {
   QStringList r;
   QString msg,ver,year;
-  ver= "J" JDLLVER;
+  ver=s2q(dors("9!:14''"));
+  ver=ver.mid(0,ver.indexOf("/")).toUpper();
   year=QString::number(qMax(2016,QDate::currentDate().year()));
   msg=s2q(dors("JVERSION"));
   if (msg.contains("www.jsoftware.com"))
@@ -539,6 +541,17 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
+  if(FHS){
+    int i;
+#ifdef _WIN32
+    i=5+LibName.lastIndexOf(".dll.");
+#elif defined(__MACH__)
+    i=7+LibName.lastIndexOf(".dylib.");
+#else
+    i=4+LibName.lastIndexOf(".so.");
+#endif
+    jdllver=LibName.mid(i);
+  }
 #ifdef QTWEBSOCKET
 #ifdef QT48
   qsrand(QDateTime::currentMSecsSinceEpoch());
