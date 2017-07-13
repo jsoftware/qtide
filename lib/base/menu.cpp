@@ -1188,7 +1188,7 @@ void Note::on_winotherAct_triggered()
 void Note::on_winprojAct_triggered()
 {
   QString f=cfpath(tofoldername(editPage()->fname));
-  if ("~"==f.at(0))
+  if ('~'==f.at(0))
     f=f.mid(1);
   if (f==Id) return;
   project.open(f);

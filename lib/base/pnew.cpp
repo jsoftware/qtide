@@ -166,7 +166,7 @@ void Pnew::on_create_clicked()
   cfwrite(pf,m+p.join("\n"));
 
   QString id=tofoldername(s);
-  if ("~"==id.at(0))
+  if ('~'==id.at(0))
     id=id.mid(1);
 
   if (note == 0)

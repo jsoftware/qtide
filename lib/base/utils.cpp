@@ -604,7 +604,7 @@ QString toprojectname(QString f)
     s=cfsname(s);
   else {
     s=tofoldername(s);
-    if ("~"==s.at(0))
+    if ('~'==s.at(0))
       s=s.mid(1);
   }
   return s;
