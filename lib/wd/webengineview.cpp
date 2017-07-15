@@ -91,9 +91,13 @@ void WebEngineView::set(string p,string v)
   } else if (p=="html") {
     w->setHtml(s2q(remquotes(v)), baseUrl);
     w->show();
+// workaround locale switched to system default
+    setlocale(LC_NUMERIC,"C");
   } else if (p=="url") {
     w->load(QUrl(s2q(remquotes(v))));
     w->show();
+// workaround locale switched to system default
+    setlocale(LC_NUMERIC,"C");
   } else Child::set(p,v);
 }
 
