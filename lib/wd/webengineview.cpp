@@ -1,6 +1,7 @@
 
 #include <QDir>
 #include <QWebEnginePage>
+#include <locale.h>
 
 #include "wd.h"
 #include "webengineview.h"
