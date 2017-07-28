@@ -27,13 +27,19 @@ extern "C" int staterun(int argc, char *arg1, int arg2)
 
 int main(int argc, char *argv[])
 {
-#if defined(__MACH__) && !defined(QT50)
+#if defined(__MACH__)
+#if !defined(QT50)
   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
     // fix Mac OS X 10.9 (mavericks) font issue
     // https://bugreports.qt-project.org/browse/QTBUG-32789
     QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
   }
 #endif
+  // Disable (unsupported) macOS Sierra tab bar functionality if necessary.
+  extern void disableWindowTabbing();
+  disableWindowTabbing();
+#endif
+
   char *path=jepath1(argv[0]);     // get path to JFE folder
 
   bool fhs = false;

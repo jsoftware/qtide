@@ -65,6 +65,10 @@ win32:SOURCES += dllsrc/jdllcomx.cpp
 win32:HEADERS += dllsrc/jexe.h dllsrc/jdllcom.h dllsrc/jdlltype.h
 CONFIG+= release
 
+# macOS-specific sources (Objective-C).
+macx:OBJECTIVE_SOURCES += disableWindowTabbing.mm
+macx:LIBS += -framework AppKit
+
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
