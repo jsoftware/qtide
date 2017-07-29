@@ -9,7 +9,8 @@
     MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_12
 
 @interface NSWindow (SierraSDK)
-@property(class) BOOL allowsAutomaticWindowTabbing;
++ (BOOL) allowsAutomaticWindowTabbing;
++ (BOOL) setAllowsAutomaticWindowTabbing: (BOOL) allowsAutomaticWindowTabbing;
 @end
 
 #endif
