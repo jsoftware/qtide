@@ -57,6 +57,9 @@
 #ifndef QT_NO_WEBENGINE
 #include "webengineview.h"
 #endif
+#ifndef QT_NO_SVGVIEW
+#include "svgview.h"
+#endif
 
 extern Font *fontdef;
 extern int rc;
@@ -145,6 +148,10 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new Static(n,p,pform,this);
   else if (c=="statusbar")
     child=(Child *) new StatusBar(n,p,pform,this);
+#ifndef QT_NO_SVGVIEW
+  else if (c=="svgview")
+    child=(Child *) new SvgView(n,p,pform,this);
+#endif
   else if (c=="table")
     child=(Child *) new Table(n,p,pform,this);
   else if (c=="tab")

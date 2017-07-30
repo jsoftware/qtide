@@ -1,0 +1,64 @@
+#ifndef SVGVIEW2_H
+#define SVGVIEW2_H
+
+#include <string>
+#include <QWidget>
+#include <QString>
+#include <QSvgRenderer>
+#include <QSize>
+#include <QMouseEvent>
+#include <QSlider>
+#include <QPushButton>
+
+#include "child.h"
+
+class SvgView2 : public QWidget
+{
+  Q_OBJECT
+public:
+  SvgView2(Child *c, QWidget *parent = 0);
+  virtual ~SvgView2();
+  void paintEvent(QPaintEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseDoubleClickEvent(QMouseEvent *event);
+  void resizeEvent(QResizeEvent *event) override;
+  void focusInEvent(QFocusEvent *event);
+  void focusOutEvent(QFocusEvent *event);
+  void keyPressEvent(QKeyEvent *event);
+  void setFile(const QString& filePath);
+  void setXml(const string & contents);
+  void showZoom(bool v);
+
+  string type;
+  bool m_showzoom;
+
+public slots:
+  void setZoom(int); // 100 <= newZoom < 0
+
+private:
+  QSvgRenderer* m_renderer;
+  QSlider* m_zoomSlider;
+  QSize m_imageSize;
+  qreal m_zoomLevel;
+  qreal m_imageScale; // How many Image coords 1 widget pixel is worth
+
+  QRectF m_viewBox;
+  QRectF m_viewBoxBounds;
+  QSizeF m_viewBoxSize;
+  QPointF m_viewBoxCenter;
+  QPointF m_viewBoxCenterOnMousePress;
+  QPoint m_mousePress;
+
+  void updateImageScale();
+  QRectF getViewBox(QPointF viewBoxCenter);
+
+  void buttonEvent(QEvent::Type type, QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
+  Child *pchild;
+};
+
+
+
+#endif

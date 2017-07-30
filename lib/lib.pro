@@ -24,12 +24,16 @@ contains(DEFINES,QT56) {
   QT += webengine
   QT -= webkit
 }
+QT += svg
 TARGET = jqt
 
 # to exclude QtWebKit QtWebEngine, uncomment the following line
 # QT -= webkit webengine
 # (pre QT54) to exclude OpenGL, uncomment the following line
 # QT -= opengl
+
+# to exclude svgview, uncomment the following line
+# QT -= svg
 
 contains(DEFINES,QT50) {
   QT +=  multimedia
@@ -199,6 +203,14 @@ contains(DEFINES,QT50) {
   DEFINES += QT_MULTIMEDIA
 }
 
+!contains(QT,svg) {
+  DEFINES += QT_NO_SVGVIEW
+  DEFINES -= QT_SVGVIEW
+} else {
+  DEFINES -= QT_NO_SVGVIEW
+  DEFINES += QT_SVGVIEW
+}
+
 # Input
 HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
@@ -223,7 +235,7 @@ HEADERS += \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webengineview.h wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h \
- wd/multimedia.h
+ wd/multimedia.h wd/svgview.h wd/svgview2.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 !contains(QT,webkit): HEADERS -= wd/webview.h
@@ -241,6 +253,7 @@ contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
+contains(DEFINES,QT_NO_SVGVIEW): HEADERS -= wd/svgview.h wd/svgview2.h
 
 SOURCES += \
  base/comp.cpp base/bedit.cpp base/dialog.cpp \
@@ -271,7 +284,7 @@ SOURCES += \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
- wd/multimedia.cpp
+ wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
 
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 !contains(QT,webkit): SOURCES -= wd/webview.cpp
@@ -289,6 +302,7 @@ contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
+contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
 
 RESOURCES += lib.qrc
 

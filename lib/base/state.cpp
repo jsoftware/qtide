@@ -541,7 +541,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
-  if(FHS){
+  if(FHS) {
     int i;
 #ifdef _WIN32
     i=5+LibName.lastIndexOf(".dll.");
