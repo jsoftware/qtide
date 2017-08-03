@@ -82,6 +82,21 @@ void SvgView2::setXml(const string & v)
 }
 
 // ---------------------------------------------------------------------
+void SvgView2::printSVG()
+{
+  if (!m_renderer) return;
+  QPrinter printer(QPrinter::HighResolution);
+  QPainter p;
+  p.begin(&printer);
+  QRect rect = p.viewport();
+  QSize size = m_renderer->viewBox().size();
+  size.scale(rect.size(), Qt::KeepAspectRatio);
+  p.setViewport(rect.x(), rect.y(), size.width(), size.height());
+  m_renderer->render(&p);
+  p.end();
+}
+  
+// ---------------------------------------------------------------------
 void SvgView2::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event)

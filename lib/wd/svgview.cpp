@@ -61,6 +61,15 @@ void SvgView::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
+void SvgView::cmd(string p,string v)
+{
+  SvgView2 *w = (SvgView2 *)widget;
+  if (p=="print") {
+    w->printSVG();
+  } else Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
 string SvgView::state()
 {
   return "";

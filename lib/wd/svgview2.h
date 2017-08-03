@@ -9,8 +9,24 @@
 #include <QMouseEvent>
 #include <QSlider>
 #include <QPushButton>
+#include <QPainter>
+#ifndef QT_NO_PRINTER
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrinterInfo>
+#include <QtPrintSupport/QPrintPreviewDialog>
+#else
+#include <QPrinter>
+#include <QPrinterInfo>
+#include <QPrintPreviewDialog>
+#endif
+#endif
 
 #include "child.h"
+
+class QPrinter;
+class QPainter;
+
 
 class SvgView2 : public QWidget
 {
@@ -30,6 +46,7 @@ public:
   void setFile(const QString& filePath);
   void setXml(const string & contents);
   void showZoom(bool v);
+  void printSVG();
 
   string type;
   bool m_showzoom;

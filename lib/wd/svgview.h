@@ -16,6 +16,7 @@ public:
   SvgView(string n, string s, Form *f, Pane *p);
   string get(string p,string v);
   void set(string p,string v);
+  void cmd(string p,string v);
   string state();
   string imageFile;
   string imageXml;
