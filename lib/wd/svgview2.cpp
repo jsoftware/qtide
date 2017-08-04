@@ -6,6 +6,7 @@
 #include "svgview2.h"
 #include "svgview.h"
 #include "pane.h"
+#include "../base/state.h"
 
 extern Form *form;
 
@@ -85,9 +86,8 @@ void SvgView2::setXml(const string & v)
 void SvgView2::printSVG()
 {
   if (!m_renderer) return;
-  QPrinter printer(QPrinter::HighResolution);
   QPainter p;
-  p.begin(&printer);
+  p.begin(config.Printer);
   QRect rect = p.viewport();
   QSize size = m_renderer->viewBox().size();
   size.scale(rect.size(), Qt::KeepAspectRatio);
