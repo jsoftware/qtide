@@ -95,7 +95,7 @@ void SvgView2::printSVG()
   m_renderer->render(&p);
   p.end();
 }
-  
+
 // ---------------------------------------------------------------------
 void SvgView2::paintEvent(QPaintEvent *event)
 {
