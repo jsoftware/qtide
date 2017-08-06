@@ -382,6 +382,13 @@ int jefirst(int type,char* arg)
 #ifdef RASPI
   strcat(input,"[IFRASPI_z_=:1");
 #endif
+#if defined(_WIN32)
+  strcat(input,"[UNAME_z_=:'Win'");
+#elif defined(__MACH__)
+  strcat(input,"[UNAME_z_=:'Darwin'");
+#else
+  strcat(input,"[UNAME_z_=:'Linux'");
+#endif
   strcat(input,"[BINPATH_z_=:'");
   p=path;
   q=input+strlen(input);
