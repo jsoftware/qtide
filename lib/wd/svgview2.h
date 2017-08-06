@@ -47,6 +47,9 @@ public:
   void setXml(const string & contents);
   void showZoom(bool v);
   void printSVG();
+  int getZoom();
+  QPoint getOrigin();
+  void setOrigin(int x,int y);
 
   string type;
   bool m_showzoom;
@@ -67,6 +70,11 @@ private:
   QPointF m_viewBoxCenter;
   QPointF m_viewBoxCenterOnMousePress;
   QPoint m_mousePress;
+
+  QPoint m_origin;
+  QPoint m_lastOrigin;
+  QPoint m_mouseLastPos;
+  bool m_mouseDown;
 
   void updateImageScale();
   QRectF getViewBox(QPointF viewBoxCenter);

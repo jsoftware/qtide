@@ -21,6 +21,8 @@ SvgView2::SvgView2(Child *c, QWidget *parent) : QWidget(parent)
   setFocusPolicy(Qt::StrongFocus);  // for char event
 
   m_renderer = 0;
+  m_origin = QPoint(0,0);
+  m_mouseDown = false;
 
   m_zoomSlider = new QSlider(Qt::Vertical, this);
   m_zoomSlider->setMaximum(300);
@@ -85,7 +87,7 @@ void SvgView2::setXml(const string & v)
 // ---------------------------------------------------------------------
 void SvgView2::printSVG()
 {
-  if (!m_renderer) return;
+  if (!m_renderer || !m_renderer->isValid()) return;
   QPainter p;
   p.begin(config.Printer);
   QRect rect = p.viewport();
@@ -100,9 +102,12 @@ void SvgView2::printSVG()
 void SvgView2::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event)
-  if (!m_renderer) return;
+  if (!m_renderer || !m_renderer->isValid()) return;
   QPainter painter(this);
-  m_renderer->setViewBox(m_viewBox);
+  m_renderer->setViewBox(QRectF(m_viewBox.left()+m_origin.x(),
+                                m_viewBox.top()+m_origin.y(),
+                                m_viewBoxSize.width(),
+                                m_viewBoxSize.height()));
   m_renderer->render(&painter);
 }
 
@@ -154,6 +159,12 @@ void SvgView2::resizeEvent ( QResizeEvent * event )
 }
 
 
+int SvgView2::getZoom()
+{
+  return m_zoomLevel * qreal(100);
+}
+
+
 void SvgView2::setZoom(int newZoom)
 {
   newZoom = qMin(300,qMax(1,newZoom));
@@ -166,6 +177,17 @@ void SvgView2::setZoom(int newZoom)
 }
 
 
+QPoint SvgView2::getOrigin()
+{
+  return m_origin;
+}
+
+
+void SvgView2::setOrigin(int x, int y)
+{
+  m_origin = QPoint(x,y);
+  update();
+}
 
 
 // ---------------------------------------------------------------------
@@ -237,12 +259,20 @@ void SvgView2::wheelEvent(QWheelEvent *event)
 // ---------------------------------------------------------------------
 void SvgView2::mousePressEvent(QMouseEvent *event)
 {
+  m_mouseDown = true;
+  m_lastOrigin = m_origin;
+  m_mouseLastPos = QPoint(event->x(),event->y());
   buttonEvent(QEvent::MouseButtonPress, event);
 }
 
 // ---------------------------------------------------------------------
 void SvgView2::mouseMoveEvent(QMouseEvent *event)
 {
+  if (m_mouseDown) {
+    m_origin = QPoint(m_lastOrigin.x()+m_mouseLastPos.x()-event->x(),
+                      m_lastOrigin.y()+m_mouseLastPos.y()-event->y());
+    update();
+  }
   buttonEvent(QEvent::MouseMove, event);
 }
 
@@ -255,6 +285,7 @@ void SvgView2::mouseDoubleClickEvent(QMouseEvent *event)
 // ---------------------------------------------------------------------
 void SvgView2::mouseReleaseEvent(QMouseEvent *event)
 {
+  m_mouseDown = false;
   buttonEvent(QEvent::MouseButtonRelease, event);
 }
 
