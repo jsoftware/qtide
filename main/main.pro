@@ -28,6 +28,8 @@ win32-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 win32-msvc*: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-armv6l: QMAKE_TARGET.arch = armv6l
+linux-arm*: QMAKE_TARGET.arch = armv6l
+linux-aarch64*: QMAKE_TARGET.arch = aarch64
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 ABI=$$(ABI)
@@ -35,6 +37,13 @@ ABI=$$(ABI)
 equals(QMAKE_TARGET.arch , armv6l): {
   message(building raspberry pi jqt)
   DEFINES += RASPI
+  QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
+}
+
+equals(QMAKE_TARGET.arch , aarch64):!macx: {
+  message(building raspberry pi-3 jqt)
+  DEFINES += RASPI
+  QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
 
 win32: arch = win-$$QMAKE_TARGET.arch
