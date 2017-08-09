@@ -73,6 +73,9 @@ void SvgView::set(string p,string v)
     w->setXml(imageXml=v);
   } else if (p=="zoom") {
     w->setZoom(c_strtoi(v));
+  } else if (p=="reset") {
+    w->setZoom(100);
+    w->setOrigin(0,0);
   } else Child::set(p,v);
 }
 

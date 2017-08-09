@@ -26,7 +26,7 @@ SvgView2::SvgView2(Child *c, QWidget *parent) : QWidget(parent)
   m_mouseDown = false;
 
   m_zoomSlider = new QSlider(Qt::Vertical, this);
-  m_zoomSlider->setMaximum(300);
+  m_zoomSlider->setMaximum(1000);
   m_zoomSlider->setMinimum(1);
   showZoom(false);
 
@@ -174,18 +174,18 @@ void SvgView2::resizeEvent ( QResizeEvent * event )
 
 int SvgView2::getZoom()
 {
-  return m_zoomLevel * qreal(100);
+  return  qreal(100) / m_zoomLevel;
 }
 
 
 void SvgView2::setZoom(int newZoom)
 {
-  newZoom = qMin(300,qMax(1,newZoom));
-  m_zoomLevel = qreal(newZoom) / qreal(100);
+  newZoom = qMin(1000,qMax(1,newZoom));
+  m_zoomLevel = qreal(100) / qreal(newZoom);
 
   updateImageScale();
   m_viewBox = getViewBox(m_viewBoxCenter);
-
+  m_zoomSlider->setValue(newZoom);
   update();
 }
 
