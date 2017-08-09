@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include <QPainter>
+#include <QImage>
 
 #include "form.h"
 #include "svgview2.h"
@@ -96,6 +97,17 @@ void SvgView2::printSVG()
   p.setViewport(rect.x(), rect.y(), size.width(), size.height());
   m_renderer->render(&p);
   p.end();
+}
+
+// ---------------------------------------------------------------------
+void SvgView2::saveasSVG(const QString& filepath)
+{
+  if (!m_renderer || !m_renderer->isValid()) return;
+  QSize size = m_renderer->viewBox().size();
+  QImage image(size.width(), size.height(), QImage::Format_ARGB32);
+  QPainter painter(&image);
+  m_renderer->render(&painter);
+  image.save(filepath);
 }
 
 // ---------------------------------------------------------------------

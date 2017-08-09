@@ -47,6 +47,7 @@ public:
   void setXml(const string & contents);
   void showZoom(bool v);
   void printSVG();
+  void saveasSVG(const QString& filePath);
   int getZoom();
   QPoint getOrigin();
   void setOrigin(int x,int y);

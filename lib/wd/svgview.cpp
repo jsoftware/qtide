@@ -82,6 +82,9 @@ void SvgView::cmd(string p,string v)
   SvgView2 *w = (SvgView2 *)widget;
   if (p=="print") {
     w->printSVG();
+  } else if (p=="saveas") {
+    QString s=s2q(remquotes(v));
+    w->saveasSVG(s);
   } else Child::set(p,v);
 }
 
