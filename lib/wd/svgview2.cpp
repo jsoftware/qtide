@@ -105,6 +105,7 @@ void SvgView2::saveasSVG(const QString& filepath)
   if (!m_renderer || !m_renderer->isValid()) return;
   QSize size = m_renderer->viewBox().size();
   QImage image(size.width(), size.height(), QImage::Format_ARGB32);
+  image.fill(0x00FFFFFF);
   QPainter painter(&image);
   m_renderer->render(&painter);
   image.save(filepath);
