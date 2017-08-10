@@ -50,6 +50,9 @@ void SvgView2::showZoom(bool v)
 // ---------------------------------------------------------------------
 void SvgView2::setFile(const QString &filePath)
 {
+  setZoom(100);
+  setOrigin(0,0);
+
   if(!m_renderer)
     m_renderer = new QSvgRenderer(filePath);
   else
@@ -69,6 +72,9 @@ void SvgView2::setFile(const QString &filePath)
 // ---------------------------------------------------------------------
 void SvgView2::setXml(const string & v)
 {
+  setZoom(100);
+  setOrigin(0,0);
+
   if(!m_renderer)
     m_renderer = new QSvgRenderer(QByteArray::fromRawData(v.c_str(),(int)v.length()));
   else
@@ -117,8 +123,8 @@ void SvgView2::paintEvent(QPaintEvent *event)
   Q_UNUSED(event)
   if (!m_renderer || !m_renderer->isValid()) return;
   QPainter painter(this);
-  m_renderer->setViewBox(QRectF(m_viewBox.left()+m_origin.x(),
-                                m_viewBox.top()+m_origin.y(),
+  m_renderer->setViewBox(QRectF(m_viewBox.left()-m_origin.x(),
+                                m_viewBox.top()-m_origin.y(),
                                 m_viewBoxSize.width(),
                                 m_viewBoxSize.height()));
   m_renderer->render(&painter);
@@ -282,8 +288,8 @@ void SvgView2::mousePressEvent(QMouseEvent *event)
 void SvgView2::mouseMoveEvent(QMouseEvent *event)
 {
   if (m_mouseDown) {
-    m_origin = QPoint(m_lastOrigin.x()+m_mouseLastPos.x()-event->x(),
-                      m_lastOrigin.y()+m_mouseLastPos.y()-event->y());
+    m_origin = QPoint(m_lastOrigin.x()-m_mouseLastPos.x()+event->x(),
+                      m_lastOrigin.y()-m_mouseLastPos.y()+event->y());
     update();
   }
   buttonEvent(QEvent::MouseMove, event);
