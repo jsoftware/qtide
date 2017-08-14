@@ -12,8 +12,8 @@ S=$(dirname "$0")
 ./clean.l32
 
 cd lib
-qmake -spec linux-g++-32 && make
+$QM -spec linux-g++-32 && make
 cd ..
 
 cd main
-qmake -spec linux-g++-32 && make
+$QM -spec linux-g++-32 && make
