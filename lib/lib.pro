@@ -58,8 +58,7 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
-  QT -= declarative multimedia multimediawidgets opengl quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
-  DEFINES -= QTWEBSOCKET
+  QT -= declarative multimedia multimediawidgets quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
 }
 
 CONFIG(debug, debug|release) {
