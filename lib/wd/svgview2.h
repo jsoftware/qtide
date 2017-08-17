@@ -34,12 +34,12 @@ class SvgView2 : public QWidget
 public:
   SvgView2(Child *c, QWidget *parent = 0);
   virtual ~SvgView2();
-  void paintEvent(QPaintEvent *event) override;
-  void mouseMoveEvent(QMouseEvent *event) override;
-  void mousePressEvent(QMouseEvent *event) override;
+  void paintEvent(QPaintEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
   void mouseReleaseEvent(QMouseEvent *event);
   void mouseDoubleClickEvent(QMouseEvent *event);
-  void resizeEvent(QResizeEvent *event) override;
+  void resizeEvent(QResizeEvent *event);
   void focusInEvent(QFocusEvent *event);
   void focusOutEvent(QFocusEvent *event);
   void keyPressEvent(QKeyEvent *event);
