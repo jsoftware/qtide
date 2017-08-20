@@ -298,7 +298,7 @@ void Nside::refresh1(int index)
 
   switch(index) {
   case 0 :
-    file_refresh();
+    file_refresh(); /* fall-thru */
   case 1 :
     source_refresh();
     break;
