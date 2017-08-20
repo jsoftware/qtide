@@ -68,9 +68,9 @@ int main(int argc, char *argv[])
 #else
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
-  if(!(QFile(s.append(".dylib"))).exists()) {
+  if(s.startsWith("/usr/bin/") && !(QFile(s.append(".dylib"))).exists()) {
 #else
-  if(!(QFile(s.append(".so"))).exists()) {
+  if(s.startsWith("/usr/bin/") && !(QFile(s.append(".so"))).exists()) {
 #endif
 #if defined(__MACH__)
     s= QString("libjqt.dylib")+"."+JDLLVER;
