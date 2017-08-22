@@ -229,7 +229,7 @@ HEADERS += \
  base/tedit.h base/term.h base/util.h base/utils.h base/qtstate.h \
  base/eview.h base/widget.h high/high.h high/highj.h \
  grid/qgrid.h grid/qutil.h grid/wgrid.h \
- wd/bitmap.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h \
+ wd/bitmap.h wd/browser.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h \
  wd/checkbox.h wd/combobox.h wd/dateedit.h wd/dial.h wd/dspinbox.h wd/dummy.h \
  wd/edit.h wd/editm.h wd/edith.h wd/font.h wd/form.h \
  wd/gl2.h wd/glz.h wd/prtobj.h wd/image.h \
@@ -278,7 +278,7 @@ SOURCES += \
  grid/defs.cpp grid/draw.cpp grid/header.cpp grid/hierdraw.cpp \
  grid/hierwidget.cpp grid/label.cpp grid/qgrid.cpp grid/qutil.cpp \
  grid/sizes.cpp grid/top.cpp grid/wgrid.cpp high/highj.cpp \
- wd/bitmap.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
+ wd/bitmap.cpp wd/browser.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
  wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dial.cpp wd/dspinbox.cpp wd/dummy.cpp \
  wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
  wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \

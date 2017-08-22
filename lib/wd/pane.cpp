@@ -7,6 +7,7 @@
 #include <QSignalMapper>
 #include <QSplitter>
 
+#include "browser.h"
 #include "button.h"
 #include "checkbox.h"
 #include "child.h"
@@ -88,7 +89,9 @@ bool Pane::addchild(string n,string c,string p)
   Child *child=0;
   if (!layout)
     bin("v");
-  if (c=="button")
+  if (c=="browser")
+    child=(Child *) new Browser(n,p,pform,this);
+  else if (c=="button")
     child=(Child *) new Button(n,p,pform,this);
   else if (c=="checkbox")
     child=(Child *) new CheckBox(n,p,pform,this);
