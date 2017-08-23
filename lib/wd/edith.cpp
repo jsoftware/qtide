@@ -141,6 +141,10 @@ void Edith::set(string p,string v)
     w->setLineWrapMode((remquotes(v)!="0")?QTextEdit::WidgetWidth:QTextEdit::NoWrap);
   } else if (p=="find") {
     w->find(opt.at(0));
+  } else if (p=="baseurl") {
+    QString t = s2q(remquotes(v));
+    QUrl baseUrl = QUrl(t);
+    w->document()->setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(baseUrl.toString()).toString());
   } else Child::set(p,v);
 }
 
