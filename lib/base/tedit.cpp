@@ -27,7 +27,7 @@ Tedit::Tedit()
   ifResized=Tw=Th=0;
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
-  setLineWrapMode(PlainTextEdit::NoWrap);
+  setLineWrapMode(TextEdit::NoWrap);
 }
 
 // ---------------------------------------------------------------------
@@ -103,7 +103,7 @@ void Tedit::enter()
   QTextCursor c = textCursor();
   QString txt = c.block().text();
   int row = c.blockNumber();
-  int len = blockCount();
+  int len = document()->blockCount();
   if (row < len - 1) {
     QString p=getprompt();
     int pad=0;
@@ -165,7 +165,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       enter();
       break;
     default:
-      Bedit::keyPressEvent(e);
+      TextEdit::keyPressEvent(e);
     }
     return;
   }
@@ -176,7 +176,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       homeshift();
       break;
     default:
-      Bedit::keyPressEvent(e);
+      TextEdit::keyPressEvent(e);
     }
     return;
   }
@@ -190,7 +190,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
       promptreplace(dlog_scroll (1));
       break;
     default:
-      Bedit::keyPressEvent(e);
+      TextEdit::keyPressEvent(e);
     }
     return;
   }
@@ -209,7 +209,7 @@ void Tedit::keyPressEvent(QKeyEvent *e)
     break;
 
   default:
-    Bedit::keyPressEvent(e);
+    TextEdit::keyPressEvent(e);
   }
 }
 

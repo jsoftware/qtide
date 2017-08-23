@@ -48,7 +48,6 @@ public:
   void openconfig(QString s);
   void pacman();
   void projectenable();
-  void refresh();
   void removeprompt();
   void runlines();
   void smact();

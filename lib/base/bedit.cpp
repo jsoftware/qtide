@@ -41,16 +41,6 @@ Bedit::~Bedit()
 }
 
 // ---------------------------------------------------------------------
-int Bedit::getpositioninblock(QTextCursor c)
-{
-#ifndef QT47
-  return c.position() - c.block().position();
-#else
-  return c.positionInBlock();
-#endif
-}
-
-// ---------------------------------------------------------------------
 int Bedit::lineNumberAreaWidth()
 {
   if ((type==0) || !config.LineNos) return 2;
@@ -153,21 +143,6 @@ void Bedit::lineNumberAreaPaintEvent(QPaintEvent *event)
 int Bedit::readcurpos()
 {
   return textCursor().position();
-}
-
-// ---------------------------------------------------------------------
-// get class, position and text
-QString Bedit::readhelptext(int t)
-{
-  int bgn, end;
-  QString txt=toPlainText();
-  QTextCursor c = textCursor();
-  bgn=c.selectionStart();
-  end=c.selectionEnd();
-  QString hdr=QString::number(t)+" "
-              +QString::number(bgn)+" "
-              +QString::number(end)+" ";
-  return hdr+txt;
 }
 
 // ---------------------------------------------------------------------

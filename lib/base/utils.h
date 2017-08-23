@@ -3,6 +3,8 @@
 
 class QFont;
 class Note;
+class QTextCursor;
+class QTextDocument;
 #ifdef TABCOMPLETION
 class QAbstractItemModel;
 class QCompleter;
@@ -21,7 +23,11 @@ QString getcmd(QString,QString);
 #ifdef TABCOMPLETION
 QAbstractItemModel *getcompletermodel(QCompleter *,const QString&);
 #endif
+QTextCursor getcursor(QWidget *);
+QTextDocument *getdocument(QWidget *w);
 QWidget* getmbparent();
+QString getplaintext(QWidget *);
+int getpositioninblock(QTextCursor c);
 QString getsha1(QString);
 std::string getversion();
 bool gitavailable();
@@ -40,6 +46,7 @@ void projectenable();
 QStringList project_tree(QString b);
 QStringList project_tree1(QString b,QString s);
 void projectterminal();
+QString readhelptext(QWidget *w, int t);
 QString rxassign(QString ext, bool ifglobal);
 void setwh(QWidget *w, QString s);
 void setxywh(QWidget *w, QString s);

@@ -88,6 +88,7 @@ private:
   QString Replace;
   QString Text;
   int TextPos;
+  QWidget *Wid;
   Bedit *Win;
 };
 

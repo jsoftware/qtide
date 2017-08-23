@@ -108,6 +108,8 @@ Fiw::Fiw(int p, QString s)
   replaceby->hide();
   undolast->hide();
   replace->hide();
+  if (Parent==0)
+    replaceforward->hide();
   v->addLayout(h,0);
   v->addStretch(1);
   setLayout(v);
@@ -271,17 +273,17 @@ void Fiw::read()
 void Fiw::readtext()
 {
   readwin();
-  Text=Win->toPlainText();
-  TextPos=Win->textCursor().position();
+  Text=getplaintext(Wid);
+  TextPos=getcursor(Wid).position();
 }
 
 // ---------------------------------------------------------------------
 void Fiw::readwin()
 {
-  if (Parent==0)
-    Win=tedit;
+  if (Parent)
+    Wid=Win=(Bedit *)note->editPage();
   else
-    Win=(Bedit *)note->editPage();
+    Wid=tedit;
 }
 
 // ---------------------------------------------------------------------
@@ -476,7 +478,10 @@ void Fiw::setsearchlist(QString s)
 // ---------------------------------------------------------------------
 void Fiw::showhit()
 {
-  Win->setselect(TextPos,Search.size());
+  if (Parent)
+    Win->setselect(TextPos,Search.size());
+  else
+    tedit->setselect(TextPos,Search.size());
 }
 
 // ---------------------------------------------------------------------

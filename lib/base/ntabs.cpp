@@ -361,7 +361,7 @@ bool Ntabs::tabprint(int index)
 {
   if (index<0) return true;
   Nedit *e=(Nedit *)widget(index);
-  e->printPreview(config.Printer);
+  dialogprintpreview(this, e);
   return true;
 }
 

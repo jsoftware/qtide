@@ -14,11 +14,10 @@ class PlainTextEdit : public QPlainTextEdit
 public:
   PlainTextEdit(QWidget *parent = 0);
 
-protected:
 
 #ifndef QT_NO_PRINTER
 public slots:
-  void printPreview(QPrinter * printer);
+  void printPreview(QPrinter *printer);
 #endif
 
 };

@@ -18,10 +18,11 @@
 #include "base.h"
 #include "dialog.h"
 #include "note.h"
-#include "plaintextedit.h"
 #include "proj.h"
 #include "state.h"
 #include "svr.h"
+#include "bedit.h"
+#include "tedit.h"
 
 #ifndef QT_NO_PRINTER
 QPrinter *Printer;
@@ -106,7 +107,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
 }
 
 // ---------------------------------------------------------------------
-void dialogprint(QWidget *w,PlainTextEdit *d)
+void dialogprint(QWidget *w,QWidget *d)
 {
   QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
@@ -121,22 +122,34 @@ void dialogprint(QWidget *w,PlainTextEdit *d)
   if (dlg->exec() != QDialog::Accepted)
     return;
   if (d) {
-    if(config.Printer->printRange()==(QPrinter::Selection)) {
-      d->print(config.Printer);
+    if (d==tedit) {
+      if(config.Printer->printRange()==(QPrinter::Selection))
+        tedit->print(config.Printer);
+      else
+        tedit->printPreview(config.Printer);
     } else {
-      d->printPreview(config.Printer);
+      PlainTextEdit *p=(PlainTextEdit *)d;
+      if(config.Printer->printRange()==(QPrinter::Selection))
+        p->print(config.Printer);
+      else
+        p->printPreview(config.Printer);
     }
   }
+
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
 }
+
 // ---------------------------------------------------------------------
-void dialogprintpreview(QWidget *w,PlainTextEdit *d)
+void dialogprintpreview(QWidget *w,QWidget *d)
 {
   if (!d) return;
   QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, w);
   dlg->setWindowTitle("Preview Document");
-  QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),d,SLOT(printPreview(QPrinter *)));
+  if (d==tedit)
+    QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),((TextEdit *)d),SLOT(printPreview(QPrinter *)));
+  else
+    QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),((PlainTextEdit *)d),SLOT(printPreview(QPrinter *)));
   dlg->exec();
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
@@ -174,3 +187,21 @@ QString getprojectpath()
     r=config.UserPath.absolutePath();
   return r+"/";
 }
+
+#ifndef QT_NO_PRINTER
+// ---------------------------------------------------------------------
+void printpreview(QPrinter * printer, QTextDocument *d)
+{
+  QTextDocument *dd=d->clone();
+#ifdef QT50
+  dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
+  dd->setPageSize(QSizeF(printer->pageRect().size()));
+  dd->print((QPagedPaintDevice *)printer);
+#else
+  dd->documentLayout()->setPaintDevice(printer);
+  dd->setPageSize(QSizeF(printer->pageRect().size()));
+  dd->print(printer);
+#endif
+  delete dd;
+}
+#endif

@@ -305,18 +305,18 @@ void Term::on_helpvocabnuvocAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void helpcontext(int c,Bedit *e)
+void helpcontext(int c,QWidget *e)
 {
-  jcon->set("arg_jqtide_",q2s(e->readhelptext(c)));
+  jcon->set("arg_jqtide_",q2s(readhelptext(e,c)));
   QString s=jcon->cmdr("helpcontext0_jqtide_ arg_jqtide_");
   if (s.size())
     htmlhelp(s);
 }
 
 // ---------------------------------------------------------------------
-void helpcontextnuvoc(int c,Bedit *e)
+void helpcontextnuvoc(int c,QWidget *e)
 {
-  jcon->set("arg_jqtide_",q2s(e->readhelptext(c)));
+  jcon->set("arg_jqtide_",q2s(readhelptext(e,c)));
   QString s=jcon->cmdr("helpcontext1_jqtide_ arg_jqtide_");
   if (s.size())
     wiki("Vocabulary/" + s);

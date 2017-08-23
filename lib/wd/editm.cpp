@@ -6,6 +6,7 @@
 #include "form.h"
 #include "pane.h"
 #include "wd.h"
+#include "../base/dialog.h"
 #include "../base/plaintextedit.h"
 #include "../base/state.h"
 #ifndef QT_NO_PRINTER

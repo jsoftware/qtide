@@ -15,6 +15,7 @@
 #endif
 
 #include "base.h"
+#include "bedit.h"
 #include "dialog.h"
 #include "note.h"
 #include "jsvr.h"
@@ -32,8 +33,8 @@ extern "C" {
   Dllexport void openj(const char *s);
 }
 
-Bedit *getactiveedit();
-void writewinstate(Bedit *);
+QWidget *getactiveedit();
+void writewinstate(QWidget *);
 
 bool ShowIde=true;
 static string hashbuf;
@@ -159,7 +160,7 @@ QString fontspec(QFont font)
 // ---------------------------------------------------------------------
 // if editor is active, return the note edit control,
 // otherwise return the term edit control
-Bedit * getactiveedit()
+QWidget *getactiveedit()
 {
   if (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
     return (Bedit *)note->editPage();
@@ -203,6 +204,23 @@ QAbstractItemModel *getcompletermodel(QCompleter *completer,const QString& fileN
   return new QStringListModel(words, completer);
 }
 #endif
+
+// ---------------------------------------------------------------------
+QTextCursor getcursor(QWidget *w)
+{
+  if (w==tedit)
+    return tedit->textCursor();
+  return ((Bedit *)w)->textCursor();
+}
+
+
+// ---------------------------------------------------------------------
+QTextDocument *getdocument(QWidget *w)
+{
+  if (w==tedit)
+    return tedit->document();
+  return ((Bedit *)w)->document();
+}
 
 // ---------------------------------------------------------------------
 int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
@@ -256,6 +274,24 @@ QWidget *getmbparent()
   if (!w)
     w=getactivewindow();
   return w;
+}
+
+// ---------------------------------------------------------------------
+QString getplaintext(QWidget *w)
+{
+  if (w==tedit)
+    return tedit->toPlainText();
+  return ((Bedit *)w)->toPlainText();
+}
+
+// ---------------------------------------------------------------------
+int getpositioninblock(QTextCursor c)
+{
+#ifndef QT47
+  return c.position() - c.block().position();
+#else
+  return c.positionInBlock();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -491,6 +527,21 @@ void projectterminal()
 }
 
 // ---------------------------------------------------------------------
+// get class, position and text
+QString readhelptext(QWidget *w, int t)
+{
+  int bgn, end;
+  QString txt=getplaintext(w);
+  QTextCursor c = getcursor(w);
+  bgn=c.selectionStart();
+  end=c.selectionEnd();
+  QString hdr=QString::number(t)+" "
+              +QString::number(bgn)+" "
+              +QString::number(end)+" ";
+  return hdr+txt;
+}
+
+// ---------------------------------------------------------------------
 QString rxassign(QString ext, bool ifglobal)
 {
   QString r;
@@ -613,7 +664,7 @@ QString toprojectname(QString f)
 // ---------------------------------------------------------------------
 void userkey(int mode, QString s)
 {
-  Bedit *w=getactiveedit();
+  QWidget *w=getactiveedit();
 
   if (mode==0 || mode==1) {
     writewinstate(w);
@@ -623,15 +674,30 @@ void userkey(int mode, QString s)
 
   if (!w) return;
 
+  if (w==tedit) {
+
+    if (mode==2) {
+      s=tedit->getprompt()+s;
+      tedit->appendPlainText(s);
+      return;
+    }
+
+    if (mode==4)
+      tedit->moveCursor(QTextCursor::EndOfBlock, QTextCursor::MoveAnchor);
+    tedit->textCursor().insertText(s);
+    return;
+  }
+
+  Bedit *b=(Bedit *) w;
+
   if (mode==2) {
-    if (w==tedit) s=tedit->getprompt()+s;
-    w->appendPlainText(s);
+    b->appendPlainText(s);
     return;
   }
 
   if (mode==4)
-    w->moveCursor(QTextCursor::EndOfBlock, QTextCursor::MoveAnchor);
-  w->textCursor().insertText(s);
+    b->moveCursor(QTextCursor::EndOfBlock, QTextCursor::MoveAnchor);
+  b->textCursor().insertText(s);
 }
 
 // ---------------------------------------------------------------------
@@ -665,17 +731,17 @@ void winpos_set(QWidget *w,QList<int>p)
 }
 
 // ---------------------------------------------------------------------
-void writewinstate(Bedit *w)
+void writewinstate(QWidget *w)
 {
   if (w==0) {
     sets("WinText_jqtide_","");
     jcon->cmddo("WinSelect_jqtide_=: $0");
     return;
   }
-  QTextCursor c=w->textCursor();
+  QTextCursor c=getcursor(w);
+  QString t=getplaintext(w);
   int b=c.selectionStart();
   int e=c.selectionEnd();
-  QString t=w->toPlainText();
   QString s=QString::number(b)+" "+QString::number(e);
   sets("WinText_jqtide_",q2s(t));
   sets("inputx_jrx_",q2s(s));

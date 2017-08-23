@@ -8,6 +8,7 @@
 #endif
 
 #include "plaintextedit.h"
+#include "dialog.h"
 #include "state.h"
 
 // ---------------------------------------------------------------------
@@ -19,16 +20,6 @@ PlainTextEdit::PlainTextEdit(QWidget *parent) : QPlainTextEdit(parent)
 // ---------------------------------------------------------------------
 void PlainTextEdit::printPreview(QPrinter * printer)
 {
-  QTextDocument *dd=document()->clone();
-#ifdef QT50
-  dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
-  dd->setPageSize(QSizeF(printer->pageRect().size()));
-  dd->print((QPagedPaintDevice *)printer);
-#else
-  dd->documentLayout()->setPaintDevice(printer);
-  dd->setPageSize(QSizeF(printer->pageRect().size()));
-  dd->print(printer);
-#endif
-  delete dd;
+  printpreview(printer,document());
 }
 #endif

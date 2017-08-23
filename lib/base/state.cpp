@@ -147,6 +147,7 @@ void Config::init()
 #ifndef QT_NO_PRINTER
   Printer=new QPrinter(QPrinter::HighResolution);
   prtobj=new Prtobj();
+  Printer->setColorMode(QPrinter::Color);
   Printer->setPageMargins(10.0, 10.0, 10.0, 10.0, QPrinter::Millimeter);
 #endif
 

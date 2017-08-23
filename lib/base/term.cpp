@@ -246,13 +246,6 @@ void Term::projectenable()
 }
 
 // ---------------------------------------------------------------------
-void Term::refresh()
-{
-  if (!term->isVisible()) return;
-  tedit->resizer();
-}
-
-// ---------------------------------------------------------------------
 void Term::removeprompt()
 {
   tedit->removeprompt();

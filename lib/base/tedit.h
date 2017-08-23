@@ -2,9 +2,9 @@
 #define TEDIT_H
 
 #include <QListWidgetItem>
-#include "bedit.h"
+#include "textedit.h"
 
-class Tedit : public Bedit
+class Tedit : public TextEdit
 {
   Q_OBJECT
 

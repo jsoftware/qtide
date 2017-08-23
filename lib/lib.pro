@@ -226,7 +226,7 @@ HEADERS += \
  base/plaintextedit.h \
  base/pnew.h base/proj.h base/psel.h base/qmlje.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
- base/tedit.h base/term.h base/util.h base/utils.h base/qtstate.h \
+ base/tedit.h base/term.h base/textedit.h base/util.h base/utils.h base/qtstate.h \
  base/eview.h base/widget.h high/high.h high/highj.h \
  grid/qgrid.h grid/qutil.h grid/wgrid.h \
  wd/bitmap.h wd/browser.h wd/button.h wd/child.h wd/clipboard.h wd/cmd.h \
@@ -272,7 +272,7 @@ SOURCES += \
  base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp \
  base/recent.cpp base/rsel.cpp base/run.cpp \
  base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
- base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp \
+ base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp  base/textedit.cpp \
  base/userkeys.cpp base/util.cpp base/utils.cpp base/qtstate.cpp base/eview.cpp base/widget.cpp \
  grid/cell.cpp grid/cubedata.cpp grid/cubedraw.cpp grid/cubewidget.cpp \
  grid/defs.cpp grid/draw.cpp grid/header.cpp grid/hierdraw.cpp \

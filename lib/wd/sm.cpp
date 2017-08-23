@@ -29,10 +29,11 @@ static string smgetscript(string);
 static string smgettabs(QString);
 static string smgettermcwh();
 static string smgetwin(string);
-static string smgetwin1(Bedit *);
+static string smgetwin1(QWidget *);
 static string smgetwin2(Note *n);
 static string smgetxywh();
 static string smgetxywh1(QWidget *);
+static string smhtml();
 static string smopen();
 static string smprompt();
 static string smreplace();
@@ -62,6 +63,8 @@ string sm(string c)
     return smfont();
   if (c=="get")
     return smget();
+  if (c=="html")
+    return smhtml();
   if (c=="new")
     return smopen();
   if (c=="open")
@@ -275,17 +278,17 @@ string smgetwin(string p)
 }
 
 // ---------------------------------------------------------------------
-string smgetwin1(Bedit *t)
+string smgetwin1(QWidget *t)
 {
   string r;
   if (t==0) {
     r+=spair("text",(string)"");
     r+=spair("select",(string)"");
   } else {
-    QTextCursor c=t->textCursor();
+    QTextCursor c=getcursor(t);
     int b=c.selectionStart();
     int e=c.selectionEnd();
-    r+=spair("text",t->toPlainText());
+    r+=spair("text",getplaintext(t));
     r+=spair("select",QString::number(b)+" "+QString::number(e));
   }
   return r;
@@ -321,6 +324,14 @@ string smgetxywh1(QWidget *w)
   QSize z=w->size();
   return q2s(QString::number(p.rx())+" "+QString::number(p.ry())+" "+
              QString::number(z.width())+" "+QString::number(z.height()));
+}
+
+// ---------------------------------------------------------------------
+string smhtml()
+{
+  string p=cmd.getparms();
+  tedit->appendHtml(s2q(p));
+  return"";
 }
 
 // ---------------------------------------------------------------------
@@ -420,11 +431,21 @@ string smset()
   if (c.empty())
     return smerror("sm set " + p + " parameters not given");
   string q=cmd.getparms();
-  Bedit *e;
+
+  if (p=="inputlog")
+    return smsetinputlog(c,q);
 
   if (p=="term") {
-    e=tedit;
-  } else if (p=="edit") {
+    if (c=="text")
+      return smsettext(p,q);
+    if (c=="xywh")
+      return smsetxywh(p,q);
+    return smerror("command applies only to an edit window: " + c);
+  }
+
+  Bedit *e;
+
+  if (p=="edit") {
     if (note==0)
       return smerror("No active edit window");
     e=(Bedit *)note->editPage();
@@ -432,16 +453,11 @@ string smset()
     if (note2==0)
       return smerror("No active edit2 window");
     e=(Bedit *)note2->editPage();
-  } else if (p=="inputlog")
-    return smsetinputlog(c,q);
-  else
+  } else
     return smerror("unrecognized sm command: set " + p);
 
   if (e==0 && (c=="scroll" || c=="select" || c=="text"))
     return smerror("no edit window for sm command: set " + c);
-
-  if (p=="term" && (c=="scroll" || c=="select"))
-    return smerror("command applies only to an edit window: " + c);
 
   if (c=="scroll")
     return smsetscroll(e,q);
