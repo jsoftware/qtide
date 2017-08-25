@@ -18,7 +18,7 @@ WebEngineView::WebEngineView(string n, string s, Form *f, Pane *p) : Child(n,s,f
   QString qn=s2q(n);
   w->setObjectName(qn);
   qcom=new WebEngineViewCom(this);
-  baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
+  baseUrl = currenturl();
   connect(w,SIGNAL(urlChanged(const QUrl &)), this,SLOT(urlChanged( const QUrl &)));
 // not yet implemented
 //  connect(w->page(),SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavaScriptObject()));

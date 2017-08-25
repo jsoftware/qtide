@@ -74,6 +74,13 @@ QString cpath(QString s)
 }
 
 // ---------------------------------------------------------------------
+// url from current directory
+QUrl currenturl()
+{
+  return QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
+}
+
+// ---------------------------------------------------------------------
 QString defext(QString s)
 {
   if (s.isEmpty() || s.contains('.')) return s;

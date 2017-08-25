@@ -17,7 +17,7 @@ WebView::WebView(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QString qn=s2q(n);
   w->setObjectName(qn);
   qcom=new WebViewCom(this);
-  baseUrl = QUrl::fromLocalFile(QDir::current().absoluteFilePath("dummy.html"));
+  baseUrl = currenturl();
   connect(w,SIGNAL(urlChanged(const QUrl &)), this,SLOT(urlChanged( const QUrl &)));
   connect(w->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),
           this,SLOT(addJavaScriptObject()));

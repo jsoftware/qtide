@@ -17,6 +17,7 @@ TextEdit::TextEdit(QWidget *parent) : QTextEdit(parent)
   setAcceptRichText(false);
   blockfmt=textCursor().blockFormat();
   charfmt=textCursor().charFormat();
+  document()->setBaseUrl(currenturl());
   document()->setDocumentMargin(0);
   connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
   highlightCurrentLine();

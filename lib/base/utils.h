@@ -10,6 +10,7 @@ class QAbstractItemModel;
 class QCompleter;
 #endif
 
+QUrl currenturl();
 QString cpath(QString);
 QString defext(QString s);
 int fkeynum(int key,bool c,bool s);
