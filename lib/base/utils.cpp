@@ -8,6 +8,7 @@
 #include <QFont>
 #include <QPoint>
 #include <QProcess>
+#include <QUrl>
 #include <QWidget>
 #ifdef TABCOMPLETION
 #include <QStringListModel>

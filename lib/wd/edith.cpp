@@ -2,6 +2,7 @@
 #include <QTextEdit>
 #include <QScrollBar>
 #include <QAbstractTextDocumentLayout>
+#include <QUrl>
 
 #include "cmd.h"
 #include "edith.h"

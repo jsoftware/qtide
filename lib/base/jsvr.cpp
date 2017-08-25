@@ -172,6 +172,7 @@ J jeload(void* callbacks)
 void jepath(char* arg, char* lib, int forceavx)
 {
   Q_UNUSED(arg);
+  Q_UNUSED(forceavx);
 
 #ifdef _WIN32
   WCHAR wpath[PLEN];

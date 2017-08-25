@@ -5,6 +5,7 @@ class QFont;
 class Note;
 class QTextCursor;
 class QTextDocument;
+class QUrl;
 #ifdef TABCOMPLETION
 class QAbstractItemModel;
 class QCompleter;

@@ -6,6 +6,7 @@
 #include <QPrinter>
 #endif
 #endif
+#include <QUrl>
 
 #include "textedit.h"
 #include "dialog.h"
@@ -17,7 +18,11 @@ TextEdit::TextEdit(QWidget *parent) : QTextEdit(parent)
   setAcceptRichText(false);
   blockfmt=textCursor().blockFormat();
   charfmt=textCursor().charFormat();
+#ifdef QT53
   document()->setBaseUrl(currenturl());
+#else
+  document()->setMetaInformation(QTextDocument::DocumentUrl, currenturl().toString());
+#endif
   document()->setDocumentMargin(0);
   connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
   highlightCurrentLine();

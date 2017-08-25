@@ -51,7 +51,7 @@ WsCln::~WsCln()
 // ---------------------------------------------------------------------
 void * WsCln::openurl(QString url)
 {
-  url.trimmed();
+  url=url.trimmed();
   if (url.isEmpty()) {
 #ifdef DEBUG_WEBSOCKET
     qDebug() << QString("empty url");
