@@ -1,4 +1,7 @@
 
+# version info
+include(../common.pri)
+
 JDLLVER = 8.06    # ignored if not FHS
 
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47

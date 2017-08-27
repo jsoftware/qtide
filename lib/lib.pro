@@ -1,5 +1,7 @@
 
-VERSION = 1.6.0
+# version info
+include(../common.pri)
+
 # JDLLVER = 8.06    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
@@ -33,6 +35,7 @@ TARGET = jqt
 # QT -= opengl
 
 # to exclude svgview, uncomment the following line
+# QT -= svg
 # QT -= svg
 
 contains(DEFINES,QT50) {
@@ -322,3 +325,4 @@ win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR += @executable_path/../Qt/Frameworks
+

@@ -17,6 +17,7 @@ QStringList InputLog;
 
 void dlog_max();
 QStringList makeitems();
+QStringList qsremdups(const QStringList list);
 QStringList qsreverse(const QStringList list);
 
 bool ischaracter(int);
@@ -158,14 +159,16 @@ QStringList makeitems()
   QString s,t;
   QString p=tedit->getprompt();
   int len=p.size();
+  int maxwid=250;
   for (int i=0; i<InputLog.size(); i++) {
     t = s = InputLog.value(i);
     t.truncate(len);
     if (p == t)
       s.remove(0,len);
+    s=s.left(maxwid);
     items.append(s);
   }
-  return items;
+  return qsremdups(items);
 }
 
 // ---------------------------------------------------------------------
@@ -242,13 +245,21 @@ void dlog_set(QString s)
 void dlog_write()
 {
   if (config.MaxInputLog>0)
-    cfwrite(InputLogFile,InputLog.join("\n")+"\n");
+    cfwrite(InputLogFile,qsremdups(InputLog).join("\n")+"\n");
 }
 
 // ---------------------------------------------------------------------
 bool ischaracter(int k)
 {
   return ((30<=k) && k<=255);
+}
+
+// ---------------------------------------------------------------------
+QStringList qsremdups(const QStringList list)
+{
+  QStringList s=qsreverse(list);
+  s.removeDuplicates();
+  return qsreverse(s);
 }
 
 // ---------------------------------------------------------------------

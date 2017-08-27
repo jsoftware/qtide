@@ -58,6 +58,8 @@ Config config;
 QString LibName;
 QApplication *app=0;
 
+const char *jqtver=JQTVERSION;
+
 // ---------------------------------------------------------------------
 // copy over configs if necessary
 void Config::config_init()
@@ -436,6 +438,7 @@ QStringList state_about()
 // ---------------------------------------------------------------------
 void state_appname()
 {
+  Q_UNUSED(jqtver);
   config.AppName="jqt";
 }
 

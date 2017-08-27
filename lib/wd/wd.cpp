@@ -1432,24 +1432,15 @@ void wdverbose()
 // ---------------------------------------------------------------------
 void wdversion()
 {
-  bool slim=false;
-  Q_UNUSED(slim);
-  string p=remquotes(cmd.getparms());
-  if (p.size()) {
-    error("extra parameters: " + p);
-    return;
-  }
-  result=APP_VERSION;
-#ifdef QT_NO_WEBKIT
-#ifdef QT_NO_WEBENGINE
-  slim=true;
-  result=result+"s";
-#endif
-#endif
-#if !defined(QT_NO_QUICKVIEW1)||!defined(QT_NO_QUICKVIEW2)
-  if(!slim)result=result+"f";
-#endif
-  result=result+"/"+qVersion();
+  QString s=QString::fromUtf8(JQTVERSION);
+  s=s.split(":")[1];
+  QStringList t=s.split("/");
+  result=q2s(t[1]);
+  if ("slim"==t[0])
+    result+="s";
+  if ("fat"==t[0])
+    result+="f";
+  result+="/" + q2s(t[2]);
   rc=-1;
 }
 

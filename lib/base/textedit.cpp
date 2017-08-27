@@ -33,6 +33,7 @@ void TextEdit::appendHtml(const QString &text)
 {
   newblock();
   insertHtml(text);
+  moveCursor(QTextCursor::End);
 }
 
 // ---------------------------------------------------------------------
@@ -40,6 +41,7 @@ void TextEdit::appendPlainText(const QString &text)
 {
   newblock();
   insertPlainText(text);
+  moveCursor(QTextCursor::End);
 }
 
 // ---------------------------------------------------------------------

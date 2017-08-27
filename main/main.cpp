@@ -25,8 +25,11 @@ extern "C" int staterun(int argc, char *arg1, int arg2)
     return 0;
 }
 
+const char *jqtver=JQTVERSION;
+
 int main(int argc, char *argv[])
 {
+  Q_UNUSED(jqtver);
 #if defined(__MACH__)
 #if !defined(QT50)
   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
