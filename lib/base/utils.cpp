@@ -311,12 +311,15 @@ QString getsha1(QString s)
 // ---------------------------------------------------------------------
 string getversion()
 {
-  string r;
-  r=APP_VERSION;
-#ifdef QT_NO_WEBKIT
-  r=r+"s";
-#endif
-  r=r+"/"+qVersion();
+  QString s=QString::fromUtf8(JQTVERSION);
+  s=s.split(":")[1];
+  QStringList t=s.split("/");
+  string r=q2s(t[1]);
+  if ("slim"==t[0])
+    r+="s";
+  if ("fat"==t[0])
+    r+="f";
+  r+="/" + q2s(t[2]);
   return r;
 }
 

@@ -1432,15 +1432,7 @@ void wdverbose()
 // ---------------------------------------------------------------------
 void wdversion()
 {
-  QString s=QString::fromUtf8(JQTVERSION);
-  s=s.split(":")[1];
-  QStringList t=s.split("/");
-  result=q2s(t[1]);
-  if ("slim"==t[0])
-    result+="s";
-  if ("fat"==t[0])
-    result+="f";
-  result+="/" + q2s(t[2]);
+  result=getversion();
   rc=-1;
 }
 
