@@ -9,15 +9,15 @@
 #include "note.h"
 #include "state.h"
 #include "svr.h"
-#include "bedit.h"
+#include "nedit.h"
 #include "term.h"
 #include "tedit.h"
 
 using namespace std;
 
 void helpabout();
-void helpcontext(int c,Bedit *);
-void helpcontextnuvoc(int c,Bedit *);
+void helpcontext(int c,QWidget *);
+void helpcontextnuvoc(int c,QWidget *);
 void htmlhelp(QString s);
 void helplabs();
 void helplabsadvance();
@@ -103,13 +103,13 @@ void Note::on_helpconstantsAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_helpcontextAct_triggered()
 {
-  helpcontext(1,(Bedit *)editPage());
+  helpcontext(1,editPage());
 }
 
 // ---------------------------------------------------------------------
 void Note::on_helpcontextnuvocAct_triggered()
 {
-  helpcontextnuvoc(1,(Bedit *)editPage());
+  helpcontextnuvoc(1,editPage());
 }
 
 // ---------------------------------------------------------------------
@@ -205,13 +205,13 @@ void Term::on_helpaboutAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helpcontextAct_triggered()
 {
-  helpcontext(0,(Bedit *)tedit);
+  helpcontext(0,tedit);
 }
 
 // ---------------------------------------------------------------------
 void Term::on_helpcontextnuvocAct_triggered()
 {
-  helpcontextnuvoc(0,(Bedit *)tedit);
+  helpcontextnuvoc(0,tedit);
 }
 
 // ---------------------------------------------------------------------
