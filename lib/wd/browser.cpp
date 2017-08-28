@@ -50,6 +50,10 @@ void Browser::cmd(string p,string v)
     delete dlg;
     config.Printer->setPrintRange(QPrinter::AllPages);
 #endif
+  } else if (p=="backward") {
+    w->backward();
+  } else if (p=="forward") {
+    w->forward();
   } else if (p=="reload") {
     w->reload();
   } else Child::set(p,v);
@@ -93,7 +97,11 @@ void Browser::set(string p,string v)
   } else if (p=="openlinks") {
     w->setOpenLinks(remquotes(v)!="0");
   } else if (p=="source") {
-    w->setSource(w->source().resolved(QUrl(s2q(remquotes(v)))));
+    QString t = s2q(remquotes(v));
+    if(isroot(t) && !t.startsWith("file:"))
+      w->setSource(QUrl::fromLocalFile(t));
+    else
+      w->setSource(w->source().resolved(QUrl(t)));
   } else Child::set(p,v);
 }
 
@@ -115,9 +123,13 @@ void Browser::sourceChanged(const QUrl & source)
 {
   Qbrowser *w = (Qbrowser *)widget;
   baseUrl = baseUrl.resolved(source.toString());
-  w->document()->setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(baseUrl.toString()).toString());
+  QString t = baseUrl.toString();
+  if(isroot(t) && !t.startsWith("file:"))
+    w->document()->setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(t).toString());
+  else
+    w->document()->setMetaInformation(QTextDocument::DocumentUrl, t);
 // not sure why this line is needed
-  w->setSearchPaths(QStringList(cfpath(baseUrl.toString())));
+//  w->setSearchPaths(QStringList(cfpath(baseUrl.toString())));
   event="source";
   pform->signalevent(this);
 }

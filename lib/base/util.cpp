@@ -480,7 +480,7 @@ bool isint(const string s)
 bool isroot(QString s)
 {
 #ifdef _WIN32
-  return s.size()>1 && s.at(1) == ':';
+  return s.size()>1 && ((s.at(1) == ':') || (s.startsWith("\\\\")) || (s.startsWith("//")));
 #else
   return s.size()>0 && s.at(0) == '/';
 #endif

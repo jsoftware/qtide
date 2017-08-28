@@ -145,7 +145,10 @@ void Edith::set(string p,string v)
   } else if (p=="baseurl") {
     QString t = s2q(remquotes(v));
     QUrl baseUrl = QUrl(t);
-    w->document()->setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(baseUrl.toString()).toString());
+    if(isroot(t) && !t.startsWith("file:"))
+      w->document()->setMetaInformation(QTextDocument::DocumentUrl, QUrl::fromLocalFile(t).toString());
+    else
+      w->document()->setMetaInformation(QTextDocument::DocumentUrl, t);
   } else Child::set(p,v);
 }
 
