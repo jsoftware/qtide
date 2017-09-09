@@ -263,7 +263,11 @@ void Config::initide()
   EditPos=q2p(t);
   EditPosX=initposX(EditPos);
 
+#ifdef __linux__
+  t = s->value("Position/Term","0 20 500 600").toString();
+#else
   t = s->value("Position/Term","0 0 500 600").toString();
+#endif
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
