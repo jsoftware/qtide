@@ -325,19 +325,20 @@ void helpcontextnuvoc(int c,QWidget *e)
 // ---------------------------------------------------------------------
 void helplabs()
 {
-  tedit->docmds("labs_run_jqtide_$0", false);
+  tedit->docmddo("labs_run_jqtide_$0");
 }
 
 // ---------------------------------------------------------------------
 void helplabsadvance()
 {
-  tedit->docmds("labs_run_jqtide_ 0", false,false,true);
+  //tedit->docmd("labs_run_jqtide_ 0", false,false,true);
+  tedit->docmddo("labs_run_jqtide_ 0");
 }
 
 // ---------------------------------------------------------------------
 void helplabschapters()
 {
-  tedit->docmds("labs_run_jqtide_ 1", false);
+  tedit->docmddo("labs_run_jqtide_ 1");
 }
 
 // ---------------------------------------------------------------------

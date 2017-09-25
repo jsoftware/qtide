@@ -63,6 +63,14 @@ void Tedit::docmd(QString t)
 }
 
 // ---------------------------------------------------------------------
+void Tedit::docmddo(QString t)
+{
+  runshow=false;
+  runterm=0;
+  jcon->cmddo(q2s(t));
+}
+
+// ---------------------------------------------------------------------
 void Tedit::docmdp(QString t,bool show,bool same)
 {
   bool cmt="NB."==dlb(t).left(3);
