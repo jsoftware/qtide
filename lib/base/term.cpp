@@ -289,6 +289,7 @@ void Term::vieweditor()
     if (recent.ProjectOpen)
       note->projectopen(true);
     note->show();
+    note->activate();
   }
 }
 
