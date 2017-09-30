@@ -897,12 +897,12 @@ void wdptop()
   string p=remquotes(cmd.getparms());
   if (noform()) return;
   Qt::WindowFlags f=form->windowFlags();
-  if (p=="1")
-    f|=Qt::WindowStaysOnTopHint;
-  else
-    f=f&~Qt::WindowStaysOnTopHint;
-  form->setWindowFlags(f);
+  form->setWindowFlags(f|Qt::WindowStaysOnTopHint);
   form->show();
+  if (p!="1") {
+    form->setWindowFlags(f);
+    form->show();
+  }
 }
 
 // ---------------------------------------------------------------------
