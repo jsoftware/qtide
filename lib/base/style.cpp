@@ -27,6 +27,12 @@ void Config::initstyle()
   TermSelt.set(s->value("Term/selt","255 255 255").toString());
   TermSelb.set(s->value("Term/selb","0 162 232").toString());
 
+  ViewFore.set(s->value("View/fore","0 0 0").toString());
+  ViewBack.set(s->value("View/back","221 252 222").toString());
+  ViewHigh.set(s->value("View/high","240 240 232").toString());
+  ViewSelt.set(s->value("View/selt","255 255 255").toString());
+  ViewSelb.set(s->value("View/selb","0 162 232").toString());
+
   adverbStyle.set(s->value("Class/adverb","221 68 68").toString());
   commentStyle.set(s->value("Class/comment","136 136 136 italic").toString());
   conjunctionStyle.set(s->value("Class/conjunction","221 153 153").toString());
@@ -38,7 +44,7 @@ void Config::initstyle()
   stringStyle.set(s->value("Class/string","0 0 255").toString());
   verbStyle.set(s->value("Class/verb","0 153 102").toString());
 
-  if (s->allKeys().contains("Edit/selt")) return;
+  if (s->allKeys().contains("View/fore")) return;
 
   delete s;
 #ifdef _WIN32
@@ -59,6 +65,11 @@ void Config::initstyle()
   s->setValue("Term/high",TermHigh.read());
   s->setValue("Term/selt",TermSelt.read());
   s->setValue("Term/selb",TermSelb.read());
+  s->setValue("View/fore",ViewFore.read());
+  s->setValue("View/back",ViewBack.read());
+  s->setValue("View/high",ViewHigh.read());
+  s->setValue("View/selt",ViewSelt.read());
+  s->setValue("View/selb",ViewSelb.read());
 
   s->setValue("Class/adverb",adverbStyle.read());
   s->setValue("Class/comment",commentStyle.read());
@@ -85,7 +96,7 @@ void Config::initstyle()
     "# followed by bold or italic, e.g.\n"
     "#  verb=0 128 128 bold\n"
     "#\n"
-    "# Edit/Term definitions are:\n"
+    "# Edit/Term/View definitions are:\n"
     "#  fore = text color\n"
     "#  back = default background color\n"
     "#  high = edit-line background color\n"

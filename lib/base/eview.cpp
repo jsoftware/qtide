@@ -2,47 +2,45 @@
 #include <QApplication>
 #include <QLabel>
 #include <QVBoxLayout>
+
+#include "eview.h"
 #include "plaintextedit.h"
 #include "state.h"
-#include "eview.h"
 #include "term.h"
 
 using namespace std;
 
+int TextViewFontSize=0;
+bool TextViewNos=false;
+
 // ---------------------------------------------------------------------
-Eview::Eview(QWidget *parent) : PlainTextEdit(parent)
+Eview::Eview(QWidget *parent) : PlainTextEditLn(parent)
 {
   Q_UNUSED(parent);
   ensureCursorVisible();
   setLineWrapMode(PlainTextEdit::NoWrap);
   setFont(config.Font);
-  connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-  highlightCurrentLine();
-}
-
-// ---------------------------------------------------------------------
-void Eview::highlightCurrentLine()
-{
-  QList<QTextEdit::ExtraSelection> extraSelections;
-
-  if (!isReadOnly()) {
-    QTextEdit::ExtraSelection selection;
-    QColor lineColor = QColor(240,240,232);
-    selection.format.setBackground(lineColor);
-    selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-    selection.cursor = textCursor();
-    selection.cursor.clearSelection();
-    extraSelections.append(selection);
-  }
-  setExtraSelections(extraSelections);
+  type="view";
+  showNos=TextViewNos;
 }
 
 // ---------------------------------------------------------------------
 TextView::TextView(QString t,QString c,QString s)
 {
+  if (TextViewFontSize==0)
+    TextViewFontSize=config.Font.pointSize();
+  if (t=="") t="View - Ctrl+H help";
   ev=new Eview(this);
   ev->document()->setPlainText(s);
   ev->moveCursor(QTextCursor::Start);
+  QPalette p = ev->palette();
+  p.setColor(QPalette::Base, config.ViewBack.color);
+  p.setColor(QPalette::Text, config.ViewFore.color);
+  p.setColor(QPalette::Highlight, config.ViewSelb.color);
+  p.setColor(QPalette::HighlightedText, config.ViewSelt.color);
+  ev->setPalette(p);
+  zoom(0);
+  max=false;
 
   QVBoxLayout *v=new QVBoxLayout();
 
@@ -56,15 +54,55 @@ TextView::TextView(QString t,QString c,QString s)
   setLayout(v);
   setWindowFlags(Qt::Window);
   setWindowTitle(t);
+
+  QList<int>d=config.winpos_read("View");
 #ifdef SMALL_SCREEN
   move(0,0);
   resize(term->width(),term->height());
 #else
-  resize(600,500);
+  move(d[0],d[1]);
+  resize(qMax(300,d[2]),qMax(300,d[3]));
 #endif
+
   activateWindow();
   show();
   ev->setFocus();
+}
+
+// ---------------------------------------------------------------------
+void TextView::help()
+{
+  QString s;
+  s+="Ctrl+=\tzoom in\n";
+  s+="Ctrl+-\tzoom out\n";
+  s+="Ctrl+0\tzoom reset\n";
+  s+="Ctrl+N\ttoggle line numbers\n";
+  s+="Ctrl+W\ttoggle word wrap\n";
+  s+="F11\ttoggle fullscreen\n";
+  info("View Shortcuts",s);
+}
+
+// ---------------------------------------------------------------------
+void TextView::keyPressEvent(QKeyEvent *event)
+{
+  int key = event->key();
+  Qt::KeyboardModifiers mod = app->keyboardModifiers();
+  bool ctrl = mod.testFlag(Qt::ControlModifier);
+  if (key==Qt::Key_F11)
+    togglemax();
+  else if (ctrl && key==Qt::Key_Minus)
+    zoom(-1);
+  else if (ctrl && key==Qt::Key_Equal)
+    zoom(1);
+  else if (ctrl && key==Qt::Key_0)
+    zoom(9);
+  else if (ctrl && event->key()==Qt::Key_H)
+    help();
+  else if (ctrl && event->key()==Qt::Key_N)
+    togglenos();
+  else if (ctrl && event->key()==Qt::Key_W)
+    ev->setLineWrapMode((1==ev->lineWrapMode()) ? QPlainTextEdit::NoWrap : QPlainTextEdit::WidgetWidth);
+  else QDialog::keyPressEvent(event);
 }
 
 // ---------------------------------------------------------------------
@@ -81,13 +119,31 @@ void TextView::savepos()
 }
 
 // ---------------------------------------------------------------------
-void TextView::keyPressEvent(QKeyEvent *event)
+void TextView::togglemax()
 {
-  Qt::KeyboardModifiers mod = app->keyboardModifiers();
-  bool ctrl = mod.testFlag(Qt::ControlModifier);
-  if (ctrl && event->key()==Qt::Key_W)
-    ev->setLineWrapMode((1==ev->lineWrapMode()) ? QPlainTextEdit::NoWrap : QPlainTextEdit::WidgetWidth);
-  else QDialog::keyPressEvent(event);
+  max=!max;
+  setWindowState(max ? Qt::WindowMaximized : Qt::WindowNoState);
+}
+
+// ---------------------------------------------------------------------
+void TextView::togglenos()
+{
+  TextViewNos=!TextViewNos;
+  ev->showNos=TextViewNos;
+  ev->resizer();
+}
+
+// ---------------------------------------------------------------------
+void TextView::zoom(int n)
+{
+  if (n==9)
+    TextViewFontSize=config.Font.pointSize();
+  else
+    TextViewFontSize=qMax(4,TextViewFontSize+n);
+  QFont f=ev->font();
+  f.setPointSize(TextViewFontSize);
+  ev->setFont(f);
+  ev->update();
 }
 
 // ---------------------------------------------------------------------

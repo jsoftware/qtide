@@ -146,6 +146,11 @@ public:
   Style TermHigh;
   Style TermSelb;
   Style TermSelt;
+  Style ViewFore;
+  Style ViewBack;
+  Style ViewHigh;
+  Style ViewSelb;
+  Style ViewSelt;
 
   Style adverbStyle;
   Style commentStyle;

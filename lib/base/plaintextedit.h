@@ -4,7 +4,9 @@
 #include <QPlainTextEdit>
 #include <QKeyEvent>
 
+class LineNumberArea;
 class QPrinter;
+class QWidget;
 
 // ---------------------------------------------------------------------
 class PlainTextEdit : public QPlainTextEdit
@@ -20,6 +22,59 @@ public slots:
   void printPreview(QPrinter *printer);
 #endif
 
+};
+
+// ---------------------------------------------------------------------
+class PlainTextEditLn : public PlainTextEdit
+{
+  Q_OBJECT
+
+public:
+  PlainTextEditLn(QWidget *parent = 0);
+
+  void lineNumberAreaPaintEvent(QPaintEvent *event);
+  int lineNumberAreaWidth();
+  void resizer();
+  bool showlineNumbers();
+
+  bool showNos;
+  QString type;
+
+public slots:
+  void highlightCurrentLine();
+  void updateLineNumberArea(const QRect &, int);
+  void updateLineNumberAreaWidth(int newBlockCount);
+
+protected:
+  void resizeEvent(QResizeEvent *event);
+
+private:
+  QWidget *lineNumberArea;
+
+};
+
+// ---------------------------------------------------------------------
+class LineNumberArea : public QWidget
+{
+public:
+  LineNumberArea(PlainTextEditLn *editor) : QWidget(editor)
+  {
+    edit = editor;
+  }
+
+  QSize sizeHint() const
+  {
+    return QSize(edit->lineNumberAreaWidth(), 0);
+  }
+
+protected:
+  void paintEvent(QPaintEvent *event)
+  {
+    edit->lineNumberAreaPaintEvent(event);
+  }
+
+private:
+  PlainTextEditLn *edit;
 };
 
 #endif

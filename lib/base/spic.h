@@ -19,7 +19,7 @@ public:
   Picm();
 
 private slots:
-  void on_sfile_currentIndexChanged();
+  void on_sfile_currentIndexChanged(int);
   void on_times_currentRowChanged(int);
   void on_externaldiff_clicked();
   void on_restore_clicked();

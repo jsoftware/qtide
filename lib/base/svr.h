@@ -20,7 +20,6 @@ public:
   int exec();
   void immex(std::string s);
   int init(int argc, char* argv[]);
-  void quit();
   void set(QString s,std::string t);
 
   std::list <std::string> Sentence;

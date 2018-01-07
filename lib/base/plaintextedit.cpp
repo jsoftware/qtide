@@ -7,6 +7,9 @@
 #endif
 #endif
 
+#include <QPainter>
+#include <QTextBlock>
+
 #include "plaintextedit.h"
 #include "dialog.h"
 #include "state.h"
@@ -23,3 +26,129 @@ void PlainTextEdit::printPreview(QPrinter * printer)
   printpreview(printer,document());
 }
 #endif
+
+// ---------------------------------------------------------------------
+PlainTextEditLn::PlainTextEditLn(QWidget *parent) : PlainTextEdit(parent)
+{
+  lineNumberArea = new LineNumberArea(this);
+  document()->setDocumentMargin(0);
+  showNos=false;
+  type="edit";
+
+  connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+  connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+  connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+
+  highlightCurrentLine();
+  updateLineNumberAreaWidth(0);
+}
+
+// ---------------------------------------------------------------------
+void PlainTextEditLn::highlightCurrentLine()
+{
+  QList<QTextEdit::ExtraSelection> extraSelections;
+
+  if (!isReadOnly()) {
+    QTextEdit::ExtraSelection selection;
+    QColor lineColor = (type=="edit") ? config.EditHigh.color : config.ViewHigh.color;
+    selection.format.setBackground(lineColor);
+    selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+    selection.cursor = textCursor();
+    selection.cursor.clearSelection();
+    extraSelections.append(selection);
+  }
+  setExtraSelections(extraSelections);
+}
+
+// ---------------------------------------------------------------------
+int PlainTextEditLn::lineNumberAreaWidth()
+{
+  if (!showlineNumbers()) return 2;
+  int digits = 1;
+  int max = qMax(1, blockCount());
+  while (max >= 10) {
+    max /= 10;
+    ++digits;
+  }
+  digits=qMax(2,digits);
+  int space = 10 + fontMetrics().width(QLatin1Char('9')) * digits;
+  return space;
+}
+
+// ---------------------------------------------------------------------
+void PlainTextEditLn::lineNumberAreaPaintEvent(QPaintEvent *event)
+{
+  if (!showlineNumbers()) {
+    QPainter painter(lineNumberArea);
+    QColor backColor = (type=="edit") ? config.EditBack.color : config.ViewBack.color;
+    painter.fillRect(event->rect(),backColor);
+    return;
+  }
+
+  QPainter painter(lineNumberArea);
+  QColor fillColor = (type=="edit") ? config.EditHigh.color : config.ViewHigh.color;
+  painter.fillRect(event->rect(), fillColor);
+
+  QTextBlock block = firstVisibleBlock();
+  int blockNumber = block.blockNumber();
+  int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
+  int bottom = top + (int) blockBoundingRect(block).height();
+  while (block.isValid() && top <= event->rect().bottom()) {
+    if (block.isVisible() && bottom >= event->rect().top()) {
+      QString number = QString::number(blockNumber + 1);
+      painter.setPen(Qt::black);
+      painter.drawText(0, top, lineNumberArea->width()-5, fontMetrics().height(),
+                       Qt::AlignRight, number);
+    }
+    block = block.next();
+    top = bottom;
+    bottom = top + (int) blockBoundingRect(block).height();
+    ++blockNumber;
+  }
+}
+
+// ---------------------------------------------------------------------
+void PlainTextEditLn::resizeEvent(QResizeEvent *e)
+{
+  PlainTextEdit::resizeEvent(e);
+  QRect cr = contentsRect();
+  lineNumberArea->setGeometry(QRect(cr.left(),cr.top(),lineNumberAreaWidth(),cr.height()));
+}
+
+// ---------------------------------------------------------------------
+// force resize event when setting linenos
+void PlainTextEditLn::resizer()
+{
+  updateLineNumberAreaWidth(0);
+  int w=size().width();
+  int h=size().height();
+  resize(w,h-1);
+  resize(w,h);
+}
+
+// ---------------------------------------------------------------------
+bool PlainTextEditLn::showlineNumbers()
+{
+  return (type=="edit") ? config.LineNos : showNos;
+}
+
+// ---------------------------------------------------------------------
+void PlainTextEditLn::updateLineNumberAreaWidth(int newBlockCount)
+{
+  Q_UNUSED(newBlockCount);
+  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+}
+
+// ---------------------------------------------------------------------
+void PlainTextEditLn::updateLineNumberArea(const QRect &rect, int dy)
+{
+  if (!showlineNumbers()) return;
+  if (dy)
+    lineNumberArea->scroll(0, dy);
+  else
+    lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+
+  if (rect.contains(viewport()->rect()))
+    updateLineNumberAreaWidth(0);
+}
+

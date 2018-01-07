@@ -173,8 +173,9 @@ void Picm::on_restore_clicked()
 }
 
 // ---------------------------------------------------------------------
-void Picm::on_sfile_currentIndexChanged()
+void Picm::on_sfile_currentIndexChanged(int dummy)
 {
+  Q_UNUSED(dummy);
   if (NoEvents) return;
   QString f=sfile->currentText();
   QString p=FilePath+"/"+f;

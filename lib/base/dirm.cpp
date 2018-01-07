@@ -488,8 +488,9 @@ void Dirm::on_open_clicked()
 }
 
 // ---------------------------------------------------------------------
-void Dirm::on_source_currentIndexChanged()
+void Dirm::on_source_currentIndexChanged(int dummy)
 {
+  Q_UNUSED(dummy);
   int n;
   if(NoEvents) return;
   if (Tab=="std") {
@@ -513,8 +514,9 @@ void Dirm::on_subdir_stateChanged()
 }
 
 // ---------------------------------------------------------------------
-void Dirm::on_target_currentIndexChanged()
+void Dirm::on_target_currentIndexChanged(int dummy)
 {
+  Q_UNUSED(dummy);
   int n;
   if(NoEvents) return;
   if (Tab=="std") {
@@ -562,8 +564,9 @@ void Dirm::on_toswapAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Dirm::on_type_currentIndexChanged()
+void Dirm::on_type_currentIndexChanged(int dummy)
 {
+  Q_UNUSED(dummy);
   int n;
   if(NoEvents) return;
   if (Tab=="snp") {

@@ -13,10 +13,8 @@ class QWidget;
 class QCompleter;
 #endif
 
-class LineNumberArea;
-
 // ---------------------------------------------------------------------
-class Bedit : public PlainTextEdit
+class Bedit : public PlainTextEditLn
 {
   Q_OBJECT
 
@@ -26,14 +24,11 @@ public:
 
   void home();
   void homeshift();
-  void lineNumberAreaPaintEvent(QPaintEvent *event);
-  int lineNumberAreaWidth();
   QString readselected();
   QString readselect_line(int *pos, int *len);
   QString readselect_text(int *pos, int *len);
   int readcurpos();
   int readtop();
-  void resizer();
   void selectline(int p);
   void setselect(int p, int len);
   void setcurpos(int pos);
@@ -46,50 +41,21 @@ public:
   int type;
 
 protected:
-  void resizeEvent(QResizeEvent *event);
 #ifdef TABCOMPLETION
   void keyPressEvent(QKeyEvent *e);
   void focusInEvent(QFocusEvent *e);
 #endif
 
 private slots:
-  void updateLineNumberAreaWidth(int newBlockCount);
-  void highlightCurrentLine();
-  void updateLineNumberArea(const QRect &, int);
 #ifdef TABCOMPLETION
   void insertCompletion(const QString &completion);
 #endif
 
 private:
-  QWidget *lineNumberArea;
 #ifdef TABCOMPLETION
   QString textUnderCursor() const;
   QCompleter *c;
 #endif
-};
-
-// ---------------------------------------------------------------------
-class LineNumberArea : public QWidget
-{
-public:
-  LineNumberArea(Bedit *editor) : QWidget(editor)
-  {
-    edit = editor;
-  }
-
-  QSize sizeHint() const
-  {
-    return QSize(edit->lineNumberAreaWidth(), 0);
-  }
-
-protected:
-  void paintEvent(QPaintEvent *event)
-  {
-    edit->lineNumberAreaPaintEvent(event);
-  }
-
-private:
-  Bedit *edit;
 };
 
 #endif

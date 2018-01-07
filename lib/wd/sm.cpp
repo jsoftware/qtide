@@ -146,8 +146,10 @@ string smfocus()
   if (p=="term")
     term->smact();
   else if (p=="edit") {
-    if (note==0 || note->editIndex()==-1)
+    if (note==0)
       return smerror("No active edit window");
+    if (note->editIndex()==-1)
+      return "";
     note->activateWindow();
     note->raise();
     note->repaint();

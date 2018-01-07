@@ -135,9 +135,7 @@ QString Jcon::cmdr(string s)
 int Jcon::exec()
 {
   if (jdllproc) return 0;
-  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-  jefree();
-  return 0;
+  return evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
 }
 
 // ---------------------------------------------------------------------
@@ -199,14 +197,6 @@ void Jcon::immex(string s)
 }
 
 // ---------------------------------------------------------------------
-void Jcon::quit()
-{
-  // is needed?
-  //~ quitx=true;
-  //~ input();
-}
-
-// ---------------------------------------------------------------------
 void Jcon::set(QString s, string t)
 {
   sets(s,t);
@@ -253,17 +243,16 @@ char* _stdcall Jinput(J jt, char* p)
 
 // ---------------------------------------------------------------------
 // J calls for output
-
 void _stdcall Joutput(J jt,int type, char* s)
 {
   Q_UNUSED(jt);
 
   if(MTYOEXIT==type) {
 // callback from jengine during jcon->cmd("2!:55[0")
-    jefree();
+    jt=0;
     state_quit();
-    app->quit();
-    exit((int)(intptr_t)s);
+    app->exit((intptr_t)s);
+    return;
   }
 
   Q_ASSERT(tedit);

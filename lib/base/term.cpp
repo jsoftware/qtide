@@ -53,7 +53,6 @@ OneWin::OneWin()
 void OneWin::closeEvent(QCloseEvent *event)
 {
   term->filequit(true);
-  event->ignore();
 }
 
 // ---------------------------------------------------------------------
@@ -197,10 +196,8 @@ void Term::keyPressEvent(QKeyEvent *event)
 {
   switch (event->key()) {
   case Qt::Key_Escape:
-    if (config.EscClose) {
-      if (!filequit(false))
-        event->accept();
-    }
+    if (config.EscClose)
+      filequit(false);
     break;
   default:
     QWidget::keyPressEvent(event);

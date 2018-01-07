@@ -74,9 +74,9 @@ private slots:
   void on_view_clicked();
   void on_exdiff_clicked();
 
-  void on_source_currentIndexChanged();
-  void on_target_currentIndexChanged();
-  void on_type_currentIndexChanged();
+  void on_source_currentIndexChanged(int);
+  void on_target_currentIndexChanged(int);
+  void on_type_currentIndexChanged(int);
 
   void on_subdir_stateChanged();
 
