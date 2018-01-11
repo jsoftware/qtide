@@ -52,6 +52,7 @@ OneWin::OneWin()
 // ---------------------------------------------------------------------
 void OneWin::closeEvent(QCloseEvent *event)
 {
+  Q_UNUSED(event);
   term->filequit(true);
 }
 
@@ -145,11 +146,9 @@ bool Term::filequit(bool ignoreconfirm)
   QEvent e=QEvent(QEvent::Clipboard);
   app->sendEvent(clipboard,&e);
 
-  if (ignoreconfirm) {
-    jcon->cmd("2!:55[0");
-    return true;
-  } else if ((!config.ConfirmClose) ||
-             queryOK("Term","OK to exit " + config.Lang + "?")) {
+  if (ignoreconfirm ||
+      (!config.ConfirmClose) ||
+      queryOK("Term","OK to exit " + config.Lang + "?")) {
     jcon->cmd("2!:55[0");
     return true;
   } else

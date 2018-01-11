@@ -30,6 +30,9 @@ string qtstate(string p)
   if (s.size()==0) return "";
   bool all="all"==s.at(0);
 
+  c="debugdissect";
+  if (all || s.contains(c))
+    r+=qpair(c,QString(config.DebugDissect ? "true" : "false"));
   c="debugpos";
   if (all || s.contains(c))
     r+=qpair(c,p2q(config.DebugPosX));

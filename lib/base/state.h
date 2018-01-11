@@ -66,12 +66,15 @@ public:
   QDir ConfigPath;
   bool ConfirmClose;
   bool ConfirmSave;
+  bool DebugDissect;
   QList<int> DebugPos;
   QList<int> DebugPosX;
   QString DefCmt;
   QString DefCCmt;
   QString DefExt;
+  QFont DefFont;
   QString DefIndent;
+  QFont DefProFont;
   QStringList DefTypes;
   QStringList DirTreeX;
   QStringList DMFavorites;
@@ -186,7 +189,7 @@ void state_quit();
 void state_reinit();
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt);
   Dllexport void immexj(const char *s);
 }
 

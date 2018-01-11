@@ -35,14 +35,15 @@ static string smgetxywh();
 static string smgetxywh1(QWidget *);
 static string smhtml();
 static string smopen();
+static string smprofont();
 static string smprompt();
 static string smreplace();
 static string smsave();
 static string smsaveactive();
 static string smsaveall();
 static string smset();
-static string smsetscroll(Bedit *,string);
 static string smsetinputlog(string,string);
+static string smsetscroll(Bedit *,string);
 static string smsetselect(Bedit *,string);
 static string smsettext(string,string);
 static string smsetxywh(string,string);
@@ -69,6 +70,8 @@ string sm(string c)
     return smopen();
   if (c=="open")
     return smopen();
+  if (c=="profont")
+    return smprofont();
   if (c=="replace")
     return smreplace();
   if (c=="save")
@@ -177,9 +180,10 @@ string smfont()
     } else {
       config.Font=fnt->font;
       delete fnt;
+      fontset(config.Font);
     }
-  }
-  fontset(config.Font);
+  } else
+    fontset(config.DefFont);
   return "";
 }
 
@@ -365,6 +369,24 @@ string smopen()
   }
   rc=-1;
   return i2s(note->editIndex());
+}
+
+// ---------------------------------------------------------------------
+string smprofont()
+{
+  string p=cmd.getparms();
+  if (!p.empty()) {
+    Font *fnt = new Font(p);
+    if (fnt->error) {
+      delete fnt;
+      return smerror("unrecognized sm command: font " + p);
+    } else {
+      QApplication::setFont(fnt->font);
+      delete fnt;
+    }
+  } else
+    QApplication::setFont(config.DefProFont);
+  return "";
 }
 
 // ---------------------------------------------------------------------

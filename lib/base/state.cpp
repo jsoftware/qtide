@@ -181,6 +181,9 @@ void Config::init()
   initide();
   initstyle();
 
+  DefFont=Font;
+  DefProFont=app->font();
+
   Ascii="+"==dors("{.9!:6$0");
   if (Ascii!=(BoxForm==1)) {
     jcon->cmd("0 0$boxdraw_j_ "+q2s(QString::number(BoxForm)));
@@ -222,6 +225,7 @@ void Config::initide()
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
   ConfirmSave = s->value("Session/ConfirmSave",false).toBool();
+  DebugDissect = s->value("Session/DebugDissect",true).toBool();
   EscClose = s->value("Session/EscClose",false).toBool();
   Font.setFamily(s->value("Session/FontFamily",font).toString());
   Font.setPointSize(s->value("Session/FontSize",fontsize).toInt());
@@ -271,7 +275,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Session/LineNumbers")) return;
+  if (s->allKeys().contains("Session/DebugDissect")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -290,6 +294,7 @@ void Config::initide()
   s->setValue("Session/BoxForm",BoxForm);
   s->setValue("Session/ConfirmClose",ConfirmClose);
   s->setValue("Session/ConfirmSave",ConfirmSave);
+  s->setValue("Session/DebugDissect",DebugDissect);
   s->setValue("Session/EscClose",EscClose);
   s->setValue("Session/FontFamily",Font.family());
   s->setValue("Session/FontSize",Font.pointSize());
@@ -325,6 +330,7 @@ void Config::initide()
 #endif
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
+    "# DebugDissect=true            if Dissect included in Debug\n"
     "# EscClose=false               if Esc will close a window\n"
     "# Extensions=ijs, c cfg...     FIF file extension lists\n"
     "# FontFamily=Menlo             term/edit font family\n"
@@ -367,6 +373,7 @@ void Config::noprofile()
 #endif
   ConfirmClose = false;
   ConfirmSave = false;
+  DebugDissect = false;
   Font.setStyleHint(QFont::TypeWriter);
   Font.setFamily("Monospace");
   Font.setPointSize(12);
@@ -521,7 +528,7 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst)
+int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -573,8 +580,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   term = new Term;
   bool rc = state_init(argc,argv);
   if (!rc) return 1;
-  if (jst) *jst=jt;
-  if (jdll) *jdll=hjdll;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
   regQmlJE();
@@ -582,8 +587,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 #endif
   if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
   if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
-//  term->fini();
-//  return state_fini();  // will be executed in the 2nd call to state_run()
   term->fini();
   return 0;
 }
@@ -591,7 +594,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
-  //~ term->removeprompt();
   sets("inputx_jrx_",string(s));
   jcon->immex("0!:100 inputx_jrx_");
 }
