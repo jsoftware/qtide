@@ -45,8 +45,6 @@ void logbin(const char*s,int n);
 void logcs(char *msg);
 QString runshowclean(QString s);
 Jcon *jcon=0;
-QEventLoop *evloop;
-static QEventLoop *jevloop;
 
 // ---------------------------------------------------------------------
 // usual way to call J when not suspended
@@ -118,7 +116,7 @@ void Jcon::cmdSentences()
     Sentence.pop_front();
     cmdSentence(s);
   }
-  if (runterm==1)
+  if ((!state_exitflag)&&(runterm==1))
     tedit->setprompt();
   runterm=0;
   runsentences=false;
@@ -132,11 +130,11 @@ QString Jcon::cmdr(string s)
 }
 
 // ---------------------------------------------------------------------
-int Jcon::exec()
-{
-  if (jdllproc) return 0;
-  return evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-}
+// int Jcon::exec()
+// {
+//   if (jdllproc) return 0;
+//   return evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+// }
 
 // ---------------------------------------------------------------------
 int Jcon::init(int argc, char* argv[])
@@ -145,9 +143,6 @@ int Jcon::init(int argc, char* argv[])
   int type;
   int flag=0;
   int forceavx=0;
-
-  evloop=new QEventLoop();
-  jevloop=new QEventLoop();
 
   if(argc>=3&&!strcmp(argv[1],"-lib")&&'-'!=*(argv[2])) flag=1;
   else if(!flag&&argc>=2&&!strcmp(argv[1],"-avx")) forceavx=1;  // avx
@@ -221,7 +216,7 @@ char* _stdcall Jinput(J jt, char* p)
     jecallback=true;
   }
   tedit->prompt=c2q(p);
-  if (runterm==1 || 0==strlen(p)) {
+  if ((!state_exitflag)&&(runterm==1 || 0==strlen(p))) {
     tedit->setprompt();
   }
   runterm=qMax(0,runterm-1);
@@ -249,9 +244,14 @@ void _stdcall Joutput(J jt,int type, char* s)
 
   if(MTYOEXIT==type) {
 // callback from jengine during jcon->cmd("2!:55[0")
-    jt=0;
-    state_quit();
-    app->exit((intptr_t)s);
+    jefree();
+    state_exitcode=(intptr_t)s;
+    if (!state_exitflag) {
+      state_exitflag=true;
+      state_quit();
+      evloop->exit();
+      exit(state_exitcode);
+    }
     return;
   }
 

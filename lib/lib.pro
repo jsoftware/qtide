@@ -64,12 +64,6 @@ JQTSLIM = $$(JQTSLIM)
   QT -= declarative multimedia multimediawidgets quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
 }
 
-CONFIG(debug, debug|release) {
-  rel = debug
-} else {
-  rel = release
-}
-
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
@@ -106,6 +100,14 @@ win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 
+CONFIG+= release
+# CONFIG+= debug
+CONFIG(debug, debug|release) {
+  rel = debug
+} else {
+  rel = release
+}
+
 BUILDROOT = build/$$arch/$$rel
 TARGETROOT = ../bin/$$arch/$$rel
 DESTDIR = $$TARGETROOT
@@ -123,7 +125,6 @@ win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 equals(QT_MAJOR_VERSION, 5): QT += widgets
 equals(QT_MAJOR_VERSION, 5): QT += printsupport
-CONFIG+= release
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -325,4 +326,3 @@ win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR += @executable_path/../Qt/Frameworks
-

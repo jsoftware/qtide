@@ -149,7 +149,10 @@ bool Term::filequit(bool ignoreconfirm)
   if (ignoreconfirm ||
       (!config.ConfirmClose) ||
       queryOK("Term","OK to exit " + config.Lang + "?")) {
+    state_exitflag=true;
     jcon->cmd("2!:55[0");
+    state_quit();
+    evloop->exit();
     return true;
   } else
     return false;
@@ -181,7 +184,8 @@ void Term::fini()
   else
     tedit->setCompleter(0);
 #endif
-  tedit->setprompt();
+  if (!state_exitflag)
+    tedit->setprompt();
   if (config.SingleWin)
     new OneWin();
   else if (ShowIde)

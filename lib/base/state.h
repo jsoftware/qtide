@@ -14,6 +14,7 @@ class QPrinter;
 class QSyntaxHighlighter;
 class QTextDocument;
 class QApplication;
+class QEventLoop;
 
 class Config : public QObject
 {
@@ -188,8 +189,13 @@ void state_init_resource();
 void state_quit();
 void state_reinit();
 
+extern int state_exitcode;
+extern bool state_exitflag;
+extern QEventLoop *evloop;
+extern QEventLoop *jevloop;
+
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst);
   Dllexport void immexj(const char *s);
 }
 

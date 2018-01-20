@@ -59,6 +59,10 @@ QString LibName;
 QApplication *app=0;
 
 const char *jqtver=JQTVERSION;
+int state_exitcode=0;
+bool state_exitflag=false;
+QEventLoop *evloop;
+QEventLoop *jevloop;
 
 // ---------------------------------------------------------------------
 // copy over configs if necessary
@@ -456,7 +460,9 @@ void state_appname()
 // ---------------------------------------------------------------------
 int state_fini()
 {
-  return jcon->exec();
+  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+  app->exit(state_exitcode);
+  return state_exitcode;
 }
 
 // ---------------------------------------------------------------------
@@ -501,15 +507,21 @@ void state_init_resource()
 void state_quit()
 {
   wdreset();
-  if (drawobj) delete drawobj;
+  if (!state_exitflag) {
+    if (drawobj) delete drawobj;
 #ifndef QT_NO_PRINTER
-  if (Printer) delete Printer;
-  if (prtobj) delete prtobj;
+    if (Printer) delete Printer;
+    if (prtobj) delete prtobj;
 #endif
+  }
   if (term) {
     term->cleantemp();
-    delete term;
-    term=0;
+    if (!state_exitflag) {
+      delete term;
+      term=0;
+    } else {
+      term->close();
+    }
   }
 }
 
@@ -528,7 +540,7 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0)
+int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -550,6 +562,9 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 
   ShowIde=!!fshowide;
   app = new QApplication(argc, argv);
+  evloop=new QEventLoop();
+  jevloop=new QEventLoop();
+
   jdllproc=jproc;
   jdlljt=jt0;
 
@@ -580,6 +595,8 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   term = new Term;
   bool rc = state_init(argc,argv);
   if (!rc) return 1;
+  if (jst) *jst=jt;
+  if (jdll) *jdll=hjdll;
 #if !(defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #ifdef QT50
   regQmlJE();
@@ -588,7 +605,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
   if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
   term->fini();
-  return 0;
+  return state_fini();
 }
 
 // ---------------------------------------------------------------------

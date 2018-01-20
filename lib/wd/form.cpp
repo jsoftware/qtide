@@ -25,7 +25,6 @@
 extern Form *form;
 extern Font *fontdef;
 extern bool standAlone;
-extern QEventLoop *evloop;
 
 // ---------------------------------------------------------------------
 Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)

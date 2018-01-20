@@ -15,12 +15,6 @@ TARGET = jqt
 
 # contains(DEFINES,QT50): QT += widgets
 
-CONFIG(debug, debug|release) {
-  rel = debug
-} else {
-  rel = release
-}
-
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
@@ -53,6 +47,14 @@ win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 
+CONFIG+= release
+# CONFIG+= debug
+CONFIG(debug, debug|release) {
+  rel = debug
+} else {
+  rel = release
+}
+
 BUILDROOT = build/$$arch/$$rel
 TARGETROOT = ../bin/$$arch/$$rel
 DESTDIR = $$TARGETROOT
@@ -75,7 +77,6 @@ INCLUDEPATH += .
 SOURCES += main.cpp jepath.cpp
 win32:SOURCES += dllsrc/jdllcomx.cpp
 win32:HEADERS += dllsrc/jexe.h dllsrc/jdllcom.h dllsrc/jdlltype.h
-CONFIG+= release
 
 # macOS-specific sources (Objective-C).
 macx:OBJECTIVE_SOURCES += disableWindowTabbing.mm
