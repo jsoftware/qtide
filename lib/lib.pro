@@ -10,10 +10,20 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
-equals(QT_MAJOR_VERSION, 5): DEFINES += QT50
-!lessThan(QT_VERSION,5.3.0): DEFINES += QT53
-!lessThan(QT_VERSION,5.4.0): DEFINES += QT54
-!lessThan(QT_VERSION,5.6.0): DEFINES += QT56
+
+equals(QT_MAJOR_VERSION, 5) {
+ DEFINES += QT50
+ !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
+ !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
+ !lessThan(QT_VERSION,5.6.0): DEFINES += QT56
+
+# versionAtLeast is not supported on Qt 5.5, so hack to get 5.10 recognized
+ equals(QT_MINOR_VERSION, 10) {
+  DEFINES += QT53
+  DEFINES += QT54
+  DEFINES += QT56
+ }
+}
 
 TEMPLATE = lib
 contains(DEFINES,QT54) {

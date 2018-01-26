@@ -1,6 +1,8 @@
 
+#include <QDesktopServices>
 #include <QDir>
-#include <QWebEnginePage>
+#include <QWebChannel>
+#include <QWebEngineSettings>
 #include <locale.h>
 
 #include "wd.h"
@@ -13,15 +15,19 @@
 WebEngineView::WebEngineView(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="webview";
+  curl="";
   Qwebengineview *w=new Qwebengineview(this,p);
   widget=(QWidget *) w;
   QString qn=s2q(n);
   w->setObjectName(qn);
+
   qcom=new WebEngineViewCom(this);
+  QWebChannel *channel = new QWebChannel(this);
+  channel->registerObject(QString("qcom"),qcom);
+  w->page()->setWebChannel(channel);
   baseUrl = currenturl();
   connect(w,SIGNAL(urlChanged(const QUrl &)), this,SLOT(urlChanged( const QUrl &)));
-// not yet implemented
-//  connect(w->page(),SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavaScriptObject()));
+  connect(w->page(),SIGNAL(loadFinished(bool)),this,SLOT(loadFinished(bool)));
 }
 
 // ---------------------------------------------------------------------
@@ -34,46 +40,31 @@ WebEngineView::~WebEngineView()
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::addJavaScriptObject()
+void WebEngineView::cmd(string p,string v)
 {
-  Qwebengineview *w = (Qwebengineview *)widget;
-  Q_UNUSED(w);
-// not yet implemented, should use QWebChannel instead
-//  w->page()->addToJavaScriptWindowObject("qcom",qcom);
+  QStringList s=qsplit(v);
+  s.prepend(s2q(p));
+  qcom->qwrite(s);
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::cmd1(QList<QVariant> obj)
+void WebEngineView::cmdpost(QStringList s)
 {
-  QString c=obj.at(0).toString();
-  if (c=="callback")
-    cmd_callback(obj);
+  QString c=s[0];
+  if (c=="post") {
+    event=q2s(c);
+    cb_name=s[1];
+    cb_value=s[2];
+    pform->signalevent(this);
+  }
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::cmd_callback(QList<QVariant> obj)
+void WebEngineView::loadFinished(bool ok)
 {
-  event="callback";
-  cb_name=obj.at(1).toString();
-  cb_value=obj.at(2).toString();
+  loadok=ok;
+  event="load";
   pform->signalevent(this);
-}
-
-// ---------------------------------------------------------------------
-string WebEngineView::get(string p,string v)
-{
-  string r;
-  if (p=="evaljs") {
-    Qwebengineview *w = (Qwebengineview *)widget;
-    QVariant t;
-// not yet implemented, result returned asynchronously
-    w->page()->runJavaScript(s2q(v), [](const QVariant &result) {
-      qDebug() << result;
-    });
-    r=q2s(t.toString());
-  } else
-    r=Child::get(p,v);
-  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -109,11 +100,22 @@ string WebEngineView::state()
   if (event=="mmove") return r;
   if (event=="curl")
     r+=spair(id+"_curl",q2s(curl));
-  else if (event=="callback") {
+  else if (event=="load")
+    r+=spair(id+"_load",q2s(loadok ? "1" : "0"));
+  else if (event=="post") {
     r+=spair(id+"_name",q2s(cb_name));
     r+=spair(id+"_value",q2s(cb_value));
   }
   return r;
+}
+
+// ---------------------------------------------------------------------
+void WebEngineView::urlChanged(const QUrl & url)
+{
+  if (curl==url.toString()) return;
+  curl=url.toString();
+  event="curl";
+  pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------
@@ -124,17 +126,47 @@ WebEngineViewCom::WebEngineViewCom(WebEngineView *c, QWidget *parent)
 }
 
 // ---------------------------------------------------------------------
-void WebEngineViewCom::cmd(QList<QVariant> obj)
+void WebEngineViewCom::qPost(QStringList s)
 {
-  pchild->cmd1(obj);
+  pchild->cmdpost(s);
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::urlChanged(const QUrl & url)
+void WebEngineViewCom::qwrite(QStringList s)
 {
-  curl=url.toString();
-  event="curl";
-  pform->signalevent(this);
+  emit qNotify(s);
+}
+
+// ---------------------------------------------------------------------
+Qwebenginepage::Qwebenginepage()
+{
+  ;
+}
+
+// ---------------------------------------------------------------------
+// urls are external if ending in ?external or &external
+bool Qwebenginepage::acceptNavigationRequest(
+  const QUrl &url,QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+
+  Q_UNUSED(isMainFrame);
+
+  if (type != QWebEnginePage::NavigationTypeLinkClicked)
+    return true;
+
+  QString q=url.query();
+  if (!(q == "external" || q.endsWith("&external")))
+    return true;
+
+  QUrl qurl=QUrl(url);
+  if (q == "external")
+    qurl.setQuery(QString());
+  else {
+    q.remove(q.length()-9,9);
+    qurl.setQuery(q);
+  }
+  QDesktopServices::openUrl(qurl);
+  return false;
 }
 
 // ---------------------------------------------------------------------
@@ -144,6 +176,15 @@ Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
   pchild=c;
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
+  setPage(new Qwebenginepage());    // open urls
+
+// following avoids rendering problems on Linux Mint 18.3, whereby
+// canvas drawings become corrupted when other web controls are accessed.
+// probably unnecessary on Win+OSX, but not tested
+// requires Qt 5.7
+#ifdef __linux__
+  settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, false);
+#endif
 }
 
 // ---------------------------------------------------------------------

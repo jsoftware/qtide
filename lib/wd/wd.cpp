@@ -416,7 +416,7 @@ void wdcmd()
 {
   string n=cmd.getid();
   string p=cmd.getid();
-  string v=cmd.getparms();
+  string v=cmd.getparms(true);
   int type=setchild(n);
   if (type)
     cc->cmd(p,v);

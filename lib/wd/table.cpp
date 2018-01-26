@@ -584,7 +584,6 @@ void Table::set_cell(int r,int c,QString v)
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       PlainTextEdit *ed=new PlainTextEdit();
       ed->setObjectName(QString::number(p));
-      g=cellwidget[p]=(QWidget*) ed;
       QWidget *m=new QWidget();
       QHBoxLayout *y=new QHBoxLayout();
       y->setContentsMargins(0,0,0,0);
@@ -603,7 +602,6 @@ void Table::set_cell(int r,int c,QString v)
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       QCheckBox *cb=new QCheckBox();
       cb->setObjectName(QString::number(p));
-      g=cellwidget[p]=(QWidget*) cb;
       QWidget *m=new QWidget();
       QHBoxLayout *y=new QHBoxLayout();
       y->setContentsMargins(0,0,0,0);
@@ -629,7 +627,6 @@ void Table::set_cell(int r,int c,QString v)
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
         cm->setEditable(true);
-      g=cellwidget[p]=(QWidget*) cm;
       QWidget *m=new QWidget();
       QHBoxLayout *y=new QHBoxLayout();
       y->setContentsMargins(0,0,0,0);
@@ -661,7 +658,6 @@ void Table::set_cell(int r,int c,QString v)
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       QPushButton *pb=new QPushButton(v);
       pb->setObjectName(QString::number(p));
-      g=cellwidget[p]=(QWidget*) pb;
       w->setCellWidget(r,c,pb);
       connect(pb,SIGNAL(clicked()),this,SLOT(on_cellClicked()));
     } else

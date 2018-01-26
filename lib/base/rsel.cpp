@@ -11,8 +11,10 @@
 
 using namespace std;
 
+// ---------------------------------------------------------------------
 Rsel::Rsel()
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   int i;
   QStringList s;
 

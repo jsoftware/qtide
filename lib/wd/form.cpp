@@ -369,6 +369,14 @@ void Form::keyPressEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
+void Form::resizeEvent(QResizeEvent *e)
+{
+  Q_UNUSED(e);
+  event="resize";
+  signalevent(0);
+}
+
+// ---------------------------------------------------------------------
 void Form::set(string p,string v)
 {
   if (p=="enable") {
@@ -541,8 +549,7 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   // paint events in isigraph/opengl have priority, because all the graphics must
   // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE, and not wait for the callback
   //  queue to be scheduled.
-  bool  b=(ctype=="isigraph" || ctype=="opengl") && c->event=="paint";
-  if (b)
+  if ((ctype=="isigraph" || ctype=="opengl") && c && c->event=="paint")
     jcon->cmddop(cmd);
   else
     jcon->cmddo(cmd);

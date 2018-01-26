@@ -18,6 +18,7 @@ using namespace std;
 // ---------------------------------------------------------------------
 Pnew::Pnew()
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   Title="New Project";
   Path=cfpath(getprojectpath());
   QVBoxLayout *v=new QVBoxLayout;

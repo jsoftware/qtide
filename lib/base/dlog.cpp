@@ -25,6 +25,7 @@ bool ischaracter(int);
 // ---------------------------------------------------------------------
 Slog::Slog()
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   Filter="";
   LogList.append(makeitems());
   setWindowTitle("Input Log");

@@ -508,6 +508,7 @@ string smsetinputlog(string c,string q)
 // set vertical scroll
 string smsetscroll(Bedit *e, string q)
 {
+  if (!e) return"";
   QList<int> s=qsl2intlist(qsplit(q));
   if (s.size()!= 1)
     return smerror("sm set scroll should have a single parameter of scroll size");
@@ -518,6 +519,7 @@ string smsetscroll(Bedit *e, string q)
 // ---------------------------------------------------------------------
 string smsetselect(Bedit *e, string q)
 {
+  if (!e) return"";
   QList<int> s=qsl2intlist(qsplit(q));
   if (s.size()!= 2)
     return smerror("sm set select should have begin and end parameters");

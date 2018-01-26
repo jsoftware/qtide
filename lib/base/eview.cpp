@@ -27,6 +27,7 @@ Eview::Eview(QWidget *parent) : PlainTextEditLn(parent)
 // ---------------------------------------------------------------------
 TextView::TextView(QString t,QString c,QString s)
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   if (TextViewFontSize==0)
     TextViewFontSize=config.Font.pointSize();
   if (t=="") t="View - Ctrl+H help";

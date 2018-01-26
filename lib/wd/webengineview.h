@@ -2,12 +2,15 @@
 #define WEBENGINEVIEW_H
 
 #include <QUrl>
+#include <QWebEnginePage>
 #include <QWebEngineView>
 #include "child.h"
 
 class Form;
 class Pane;
+class Qwebenginepage;
 class Qwebengineview;
+class WebEngineView;
 class WebEngineViewCom;
 
 // ---------------------------------------------------------------------
@@ -19,8 +22,8 @@ public:
   WebEngineView(string n, string s, Form *f, Pane *p);
   ~WebEngineView();
 
-  void cmd1(QList<QVariant> obj);
-  string get(string p,string v);
+  void cmd(string p, string v);
+  void cmdpost(QStringList obj);
   void set(string p,string v);
   string state();
 
@@ -28,14 +31,12 @@ public:
   QString cb_name;
   QString cb_value;
   QString curl;
+  bool loadok;
   WebEngineViewCom *qcom;
 
 private slots:
-  void addJavaScriptObject();
   void urlChanged (const QUrl & url);
-
-private:
-  void cmd_callback(QList<QVariant> obj);
+  void loadFinished(bool);
 };
 
 // ---------------------------------------------------------------------
@@ -47,8 +48,32 @@ public:
   WebEngineViewCom(WebEngineView *c,QWidget *parent = 0);
   WebEngineView *pchild;
 
+  void qwrite(QStringList);
+
+  QStringList qcomval;
+
+signals:
+// qt to html
+  void qNotify(QStringList);
+
 public slots:
-  void cmd(QList<QVariant> obj);
+// html to qt
+  void qPost(QStringList);
+};
+
+// ---------------------------------------------------------------------
+class Qwebenginepage : public QWebEnginePage
+{
+  Q_OBJECT
+
+public:
+  Qwebenginepage();
+
+protected:
+  bool acceptNavigationRequest(const QUrl &, QWebEnginePage::NavigationType, bool);
+
+private:
+  Child *pchild;
 };
 
 // ---------------------------------------------------------------------

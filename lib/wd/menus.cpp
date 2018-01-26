@@ -122,6 +122,8 @@ void Menus::set(string p,string v)
     items.value(id)->setEnabled(t=="1");
   } else if (m=="caption" || m=="text") {
     items.value(id)->setText(t);
+  } else if (m=="show"||m=="visible") {
+    items.value(id)->setVisible(t=="1");
   } else
     Child::set(p,v);
 }

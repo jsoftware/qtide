@@ -32,6 +32,7 @@ extern "C" {
 // ---------------------------------------------------------------------
 Dirm::Dirm(QString s)
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   Tab=s;
   Title="Directory Match";
   config.dirmatch_init();
@@ -54,7 +55,6 @@ Dirm::Dirm(QString s)
   show();
 }
 
-
 // ---------------------------------------------------------------------
 QMenuBar *Dirm::createmenu()
 {
@@ -66,7 +66,7 @@ QMenuBar *Dirm::createmenu()
   tocopyallAct = makeact("tocopyallAct","Copy all source files","");
 
   QMenuBar *r=new QMenuBar();
-  QMenu *m=new (QMenu);
+  QMenu *m;
 
   m=r->addMenu("&File");
   if (Tab=="std")
@@ -688,13 +688,13 @@ void Favs::cellActivated(int row)
 // ---------------------------------------------------------------------
 void dirmatch(const char *s,const char *t)
 {
-  Dirm *d=new Dirm("std");
+  Dirm* dirm=new Dirm("std");
   if (strlen(s)) {
-    d->source->insertItem(0,c2q(s));
-    d->source->setCurrentIndex(0);
+    dirm->source->insertItem(0,c2q(s));
+    dirm->source->setCurrentIndex(0);
   }
   if (strlen(t)) {
-    d->target->insertItem(0,c2q(t));
-    d->target->setCurrentIndex(0);
+    dirm->target->insertItem(0,c2q(t));
+    dirm->target->setCurrentIndex(0);
   }
 }

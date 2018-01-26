@@ -49,7 +49,7 @@ Note::Note()
   split->addWidget(mainBar);
   split->setStretchFactor(1,1);
   QList<int> w;
-  w << 175 << 175;
+  w << sideBar->width << sideBar->width;
   split->setSizes(w);
   layout->addWidget(menuBar);
   layout->addWidget(split);

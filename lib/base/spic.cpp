@@ -27,6 +27,7 @@ QByteArray pp_stamp();
 // ---------------------------------------------------------------------
 Picm::Picm()
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   QString f=note->editFile();
   FilePath=cfpath(f);
   SnapPath=snapgetpath(cfpath(f)) + "/p" + ss_date();

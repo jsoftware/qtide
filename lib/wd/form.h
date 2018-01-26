@@ -86,6 +86,7 @@ protected:
   void changeEvent(QEvent *);
   void closeEvent(QCloseEvent *);
   void keyPressEvent(QKeyEvent *e);
+  void resizeEvent(QResizeEvent *event);
 
 private slots:
 

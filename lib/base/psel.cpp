@@ -22,9 +22,10 @@ using namespace std;
 
 Psel::Psel()
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   QSplitter *s,*t;
-  QHBoxLayout *h=new QHBoxLayout();
-  QVBoxLayout *v=new QVBoxLayout();
+  QHBoxLayout *h;
+  QVBoxLayout *v;
 
   s=new QSplitter();
   t=new QSplitter();

@@ -24,8 +24,10 @@ Fif *fif;
 
 using namespace std;
 
+// ---------------------------------------------------------------------
 Fif::Fif(QString s, bool ifname)
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   Title="Find in Files";
 
   int layoutcmv,checkboxcmv,checkboxspacing;

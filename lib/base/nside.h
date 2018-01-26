@@ -32,6 +32,7 @@ public:
   Nside();
   QString Path;
   void refresh();
+  int width;
 
 private slots:
   void currentChanged(int index);

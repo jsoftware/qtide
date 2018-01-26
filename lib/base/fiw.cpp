@@ -31,6 +31,7 @@ int Dir;
 // ---------------------------------------------------------------------
 Fiw::Fiw(int p, QString s)
 {
+  setAttribute(Qt::WA_DeleteOnClose);
   Assign=false;
   ifReplace=false;
   Inc=0;
@@ -386,7 +387,6 @@ void Fiw::search_replace(int d)
 {
   int count, hit, pad;
   readtext();
-  hit=search1(1);
   Inc=0;
   LastPos=0;
   LastText="";

@@ -239,7 +239,6 @@ void Pane::bin(string s)
     } else if (c=='z') {
       if (layouts.size()>1) {
         b=layout;
-        n=layouts.last()->stretch;
         layouts.removeLast();
         layout=layouts.last();
         layout->addLayout(b);

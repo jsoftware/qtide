@@ -53,6 +53,10 @@ Nside::Nside()
   addTab(d,"defs");
 
   adjustSize();
+
+  QTabBar *tb=tabBar();
+  width= 1 + tb->tabRect(0).width() + tb->tabRect(1).width() + tb->tabRect(2).width();
+
   connect(this, SIGNAL(currentChanged(int)),
           this, SLOT(currentChanged(int)));
 
