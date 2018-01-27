@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-# JDLLVER = 8.06    # ignored if not FHS
+# JDLLVER = 8.07    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
@@ -16,12 +16,14 @@ equals(QT_MAJOR_VERSION, 5) {
  !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
  !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
  !lessThan(QT_VERSION,5.6.0): DEFINES += QT56
+ !lessThan(QT_VERSION,5.7.0): DEFINES += QT57
 
 # versionAtLeast is not supported on Qt 5.5, so hack to get 5.10 recognized
  equals(QT_MINOR_VERSION, 10) {
   DEFINES += QT53
   DEFINES += QT54
   DEFINES += QT56
+  DEFINES += QT57
  }
 }
 

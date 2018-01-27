@@ -441,7 +441,7 @@ QStringList state_about()
   QString msg,ver,year;
   ver=s2q(dors("9!:14''"));
   ver=ver.mid(0,ver.indexOf("/")).toUpper();
-  year=QString::number(qMax(2016,QDate::currentDate().year()));
+  year=QString::number(qMax(2018,QDate::currentDate().year()));
   msg=s2q(dors("JVERSION"));
   if (msg.contains("www.jsoftware.com"))
     msg+= "\n\nCopyright 1994-"+year+" Jsoftware\n";

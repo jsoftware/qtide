@@ -182,7 +182,7 @@ Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
 // canvas drawings become corrupted when other web controls are accessed.
 // probably unnecessary on Win+OSX, but not tested
 // requires Qt 5.7
-#ifdef __linux__
+#if defined( __linux__ ) && defined( QT57 )
   settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, false);
 #endif
 }
