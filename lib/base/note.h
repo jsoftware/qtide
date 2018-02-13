@@ -66,6 +66,7 @@ signals:
 public slots:
 
   void on_cfgbaseAct_triggered();
+  void on_cfgcaseAct_triggered();
   void on_cfgdirmAct_triggered();
   void on_cfgfoldersAct_triggered();
   void on_cfglaunchpadAct_triggered();

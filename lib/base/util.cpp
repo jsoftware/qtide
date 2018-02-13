@@ -96,10 +96,13 @@ int cfappend (QFile *file, QByteArray b)
 // ---------------------------------------------------------------------
 QString cfcase(QString s)
 {
-#if defined(_WIN32) || defined(__MACH__)
-  s=s.toLower();
-#endif
+#if defined(_WIN32)
+  return win2lower(s);
+#elif defined(__MACH__)
+  return s.toLower();
+#else
   return s;
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -119,14 +122,6 @@ bool cfcreate(QString s)
   QFile f(s);
   QString p;
   cfwrite(&f,p);
-  return f.exists();
-}
-
-// ---------------------------------------------------------------------
-bool cftouch(QString s)
-{
-  QFile f(s);
-  f.open(QIODevice::Append);
   return f.exists();
 }
 
@@ -304,6 +299,14 @@ QDateTime cftime(QString s)
 {
   QFileInfo f(s);
   return f.lastModified();
+}
+
+// ---------------------------------------------------------------------
+bool cftouch(QString s)
+{
+  QFile f(s);
+  f.open(QIODevice::Append);
+  return f.exists();
 }
 
 // ---------------------------------------------------------------------

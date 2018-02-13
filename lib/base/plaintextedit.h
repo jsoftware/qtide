@@ -16,7 +16,6 @@ class PlainTextEdit : public QPlainTextEdit
 public:
   PlainTextEdit(QWidget *parent = 0);
 
-
 #ifndef QT_NO_PRINTER
 public slots:
   void printPreview(QPrinter *printer);
@@ -35,6 +34,7 @@ public:
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
   void resizer();
+  void settabwidth();
   bool showlineNumbers();
 
   bool showNos;

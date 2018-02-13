@@ -21,6 +21,7 @@ Bedit::Bedit(QWidget *parent) : PlainTextEditLn(parent)
   c= 0 ;
 #endif
 
+  settabwidth();
   if (config.LineWrap)
     setLineWrapMode(PlainTextEdit::WidgetWidth);
 }

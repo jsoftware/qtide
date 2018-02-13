@@ -161,6 +161,7 @@ void Term::fini()
 {
   menuBar->createMenus_fini("term");
   tedit->setFont(config.Font);
+  tedit->settabwidth();
   QPalette p = palette();
   p.setColor(QPalette::Base, config.TermBack.color);
   p.setColor(QPalette::Text, config.TermFore.color);

@@ -1,6 +1,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QBoxLayout>
+#include <QDesktopServices>
 #include <QDesktopWidget>
 
 #include "base.h"
@@ -24,6 +25,8 @@ using namespace std;
 
 Note *note=0;
 Note *note2=0;
+
+QStringList DS = QStringList() << "ico" << "gif" << "jpeg" << "jpg" << "pdf" << "png" << "svg";
 
 // ---------------------------------------------------------------------
 Note::Note()
@@ -159,7 +162,11 @@ void Note::fileclose(QString f)
 bool Note::fileopen(QString s,int line)
 {
   setid();
-  return tabs->tabopen(s,line);
+  QString ext=cfext(s).mid(1).toLower();
+  if (DS.contains(ext))
+    return QDesktopServices::openUrl(QUrl("file:///" + s, QUrl::TolerantMode));
+  else
+    return tabs->tabopen(s,line);
 }
 
 // ---------------------------------------------------------------------

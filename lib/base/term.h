@@ -62,6 +62,7 @@ public slots:
   void systimer();
 
   void on_cfgbaseAct_triggered();
+  void on_cfgcaseAct_triggered();
   void on_cfgqtideAct_triggered();
   void on_cfgdirmAct_triggered();
   void on_cfgfoldersAct_triggered();

@@ -24,6 +24,7 @@ class Config : public QObject
 public:
   Config() {};
 
+  void case_init();
   QString config_path(QString);
   void config_init();
   void dirmatch_init();
@@ -60,6 +61,7 @@ public:
   bool Ascii;
   QDir BinPath;
   int BoxForm;
+  QStringList CasePaths;
 #ifdef TABCOMPLETION
   bool Completion;
   QString CompletionFile;
@@ -126,6 +128,7 @@ public:
   int Snapshots;
   QString Snapshotx;
   QDir SystemPath;
+  int TabWidth;
   QDir TempPath;
   QString Terminal;
   QList<int> TermPos;
@@ -189,7 +192,6 @@ void state_init_resource();
 void state_quit();
 void state_reinit();
 
-extern int state_exitcode;
 extern QEventLoop *evloop;
 extern QEventLoop *jevloop;
 

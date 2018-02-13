@@ -59,6 +59,7 @@ QString tofoldername(QString s);
 QString toprojectname(QString s);
 void userkey(int mode, QString cmd);
 void utils_init();
+QString win2lower(QString s);
 QList<int> winpos_get(QWidget *w);
 void winpos_set(QWidget *w,QList<int>p);
 void xdiff(QString s,QString t);

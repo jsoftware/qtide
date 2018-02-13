@@ -59,9 +59,21 @@ QString LibName;
 QApplication *app=0;
 
 const char *jqtver=JQTVERSION;
-int state_exitcode=0;
 QEventLoop *evloop;
 QEventLoop *jevloop;
+
+int readTabWidth(QString);
+QString writeTabWidth(int);
+
+// ---------------------------------------------------------------------
+void Config::case_init()
+{
+#ifdef _WIN32
+  CasePaths=s2q(dors("'',}.;',',&.>CasePaths_j_")).split(",");
+#else
+  CasePaths=QStringList();
+#endif
+}
 
 // ---------------------------------------------------------------------
 // copy over configs if necessary
@@ -81,7 +93,7 @@ void Config::config_init()
     }
 
   c.empty();
-  c << "base.cfg" << "folders.cfg";
+  c << "base.cfg" << "case.cfg" << "folders.cfg";
   s=cpath("~system/config/");
   foreach (QString f,c)
     if ((!cfexist(ConfigPath.filePath(f)) && cfexist(s+f)))
@@ -169,6 +181,7 @@ void Config::init()
     return;
   }
 
+  case_init();
   folder_init();
   config_init();
   launch_init();
@@ -249,6 +262,7 @@ void Config::initide()
   OpenTabAt=s->value("Session/OpenTabAt",0).toInt();
   Snapshots = s->value("Session/Snapshots",true).toInt();
   Snapshotx = s->value("Session/Snapshotx","").toString();
+  TabWidth = readTabWidth(s->value("Session/TabWidth","").toString());
   TermSyntaxHighlight = s->value("Session/TermSyntaxHighlight",false).toBool();
   TrimTrailingWS = s->value("Session/TrimTrailingWS",false).toBool();
 
@@ -278,7 +292,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Session/DebugDissect")) return;
+  if (s->allKeys().contains("Session/TabWidth")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -309,6 +323,7 @@ void Config::initide()
   s->setValue("Session/OpenTabAt",OpenTabAt);
   s->setValue("Session/Snapshots",Snapshots);
   s->setValue("Session/Snapshotx",Snapshotx);
+  s->setValue("Session/TabWidth",writeTabWidth(TabWidth));
   s->setValue("Session/TermSyntaxHighlight",TermSyntaxHighlight);
   s->setValue("Session/TrimTrailingWS",TrimTrailingWS);
   s->setValue("FindinFiles/Extensions",FifExt);
@@ -346,6 +361,7 @@ void Config::initide()
     "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
     "# Snapshots=5                  number of project snapshots kept\n"
     "# Snapshotx=                   snapshots exclusion list\n"
+    "# TabWidth=                    tab width (Qt default if empty)\n"
     "# Terminal=gnome-terminal      show in terminal command\n"
     "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
     "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
@@ -459,11 +475,7 @@ void state_appname()
 // ---------------------------------------------------------------------
 int state_fini()
 {
-  evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-// callback from jengine during jcon->cmd("2!:55[0")
-  jefree();
-  app->exit(state_exitcode);
-  return state_exitcode;
+  return evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
 }
 
 // ---------------------------------------------------------------------
@@ -515,8 +527,7 @@ void state_quit()
 #endif
   if (term) {
     term->cleantemp();
-    delete term;
-    term=0;
+    term->deleteLater();
   }
 }
 
@@ -600,7 +611,22 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
   if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
   term->fini();
-  return state_fini();
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int readTabWidth(QString s)
+{
+
+  if (s.isEmpty()) return -1;
+  return s.toInt();
+}
+
+// ---------------------------------------------------------------------
+QString writeTabWidth(int n)
+{
+  if (n<0) return "";
+  return QString::number(n);
 }
 
 // ---------------------------------------------------------------------

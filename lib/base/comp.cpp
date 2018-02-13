@@ -150,16 +150,16 @@ bool Compare::compend()
 // ---------------------------------------------------------------------
 void Compare::complcs()
 {
-  int n;
+  int m,n;
   QVector<int> w;
 
   w=seqlcs(X,Y);
-
-  n=qvremseq(X,NX,w,&SX);
-  X=X.mid(n);
-  NX=NX.mid(n);
+  m=qvremseq(X,NX,w,&SX);
+  X=X.mid(m);
+  NX=NX.mid(m);
 
   n=qvremseq(Y,NY,w,&SY);
+  if ((m==0) && (n==0)) n++;
   Y=Y.mid(n);
   NY=NY.mid(n);
 }

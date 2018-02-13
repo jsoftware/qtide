@@ -32,6 +32,7 @@ PlainTextEditLn::PlainTextEditLn(QWidget *parent) : PlainTextEdit(parent)
 {
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
+  settabwidth();
   showNos=false;
   type="edit";
 
@@ -124,6 +125,17 @@ void PlainTextEditLn::resizer()
   int h=size().height();
   resize(w,h-1);
   resize(w,h);
+}
+
+// ---------------------------------------------------------------------
+// in Qt5.10 setTabStopWidth was replaced by setTabStopDistance which
+//  takes a real argument. The integer should be OK for most fixed fonts.
+void PlainTextEditLn::settabwidth()
+{
+  int w=80;
+  if (config.TabWidth >= 0)
+    w=config.TabWidth * QFontMetrics(font()).averageCharWidth();
+  setTabStopWidth(w);
 }
 
 // ---------------------------------------------------------------------

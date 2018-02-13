@@ -138,6 +138,7 @@ void fontset(QFont font)
 {
   config.Font=font;
   tedit->setFont(font);
+  tedit->settabwidth();
   if (note) {
     note->setfont(font);
     if (note2)
@@ -709,6 +710,31 @@ void userkey(int mode, QString s)
   if (mode==4)
     b->moveCursor(QTextCursor::EndOfBlock, QTextCursor::MoveAnchor);
   b->textCursor().insertText(s);
+}
+
+// ---------------------------------------------------------------------
+// Windows tolower if not case-sensitive. s should be a full pathname.
+QString win2lower(QString s)
+{
+  if (s.isEmpty()) return s;
+  if (config.CasePaths.isEmpty()) return s.toLower();
+  int n,p;
+  n=1+s.indexOf(":");
+  QString d=s.left(n);
+  if (config.CasePaths.contains(d)) return s;
+  QString b=s.mid(n);
+  if (b.isEmpty()) return s.toLower();
+  if (b[0] != "/")
+    b=b.prepend("/");
+  QString t=d+b+"/";
+  n=0;
+  p=1;
+  while (-1 != (n=t.indexOf("/",p))) {
+    if (config.CasePaths.contains(t.left(n)))
+      return s;
+    p=n+1;
+  }
+  return s.toLower();
 }
 
 // ---------------------------------------------------------------------

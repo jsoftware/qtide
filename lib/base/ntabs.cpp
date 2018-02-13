@@ -189,8 +189,10 @@ void Ntabs::projectopen(bool openfiles)
 // ---------------------------------------------------------------------
 void Ntabs::setfont(QFont font)
 {
-  for (int i=0; i<count(); i++)
+  for (int i=0; i<count(); i++) {
     ((Nedit *)widget(i))->setFont(font);
+    ((Nedit *)widget(i))->settabwidth();
+  }
 }
 
 // ---------------------------------------------------------------------

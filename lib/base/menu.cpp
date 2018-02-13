@@ -56,6 +56,7 @@ void Menu::createActions()
 {
   createhelpActions();
   cfgbaseAct = makeact("cfgbaseAct","Base","");
+  cfgcaseAct = makeact("cfgcaseAct","Case Sensitive","");
   cfgdirmAct = makeact("cfgdirmAct","Directory Match","");
   cfgfoldersAct = makeact("cfgfoldersAct","Folders","");
   cfglaunchpadAct = makeact("cfglaunchpadAct","&Launch Pad","");
@@ -225,6 +226,9 @@ void Menu::createMenus_fini(QString s)
 void Menu::createcfgMenu()
 {
   cfgMenu->addAction(cfgbaseAct);
+#ifdef _WIN32
+  cfgMenu->addAction(cfgcaseAct);
+#endif
   cfgMenu->addAction(cfgdirmAct);
   cfgMenu->addAction(cfgfoldersAct);
   cfgMenu->addAction(cfglaunchpadAct);
@@ -563,6 +567,12 @@ void Note::on_cfgbaseAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_cfgcaseAct_triggered()
+{
+  term->on_cfgcaseAct_triggered();
+}
+
+// ---------------------------------------------------------------------
 void Note::on_cfgdirmAct_triggered()
 {
   term->on_cfgdirmAct_triggered();
@@ -708,7 +718,7 @@ void Note::on_filecloseAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_filedeleteAct_triggered()
 {
-  QString m="OK to delete: " + toprojectname(editPage()->sname) + "?";
+  QString m="OK to delete: " + toprojectname(editPage()->fname) + "?";
   if(!queryOK("File Delete",m)) return;
   QString f=editPage()->fname;
   tabclose(editIndex());
@@ -1245,6 +1255,12 @@ void Term::openconfig(QString s)
 void Term::on_cfgbaseAct_triggered()
 {
   openconfig ("base.cfg");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_cfgcaseAct_triggered()
+{
+  openconfig ("case.cfg");
 }
 
 // ---------------------------------------------------------------------

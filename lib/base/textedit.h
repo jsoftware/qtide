@@ -23,6 +23,7 @@ public:
   QString readselected();
   int readcurpos();
   int readtop();
+  void settabwidth();
   void setselect(int p, int len);
   void setcurpos(int pos);
   int type;

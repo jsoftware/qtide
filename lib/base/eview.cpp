@@ -144,6 +144,7 @@ void TextView::zoom(int n)
   QFont f=ev->font();
   f.setPointSize(TextViewFontSize);
   ev->setFont(f);
+  ev->settabwidth();
   ev->update();
 }
 

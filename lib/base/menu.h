@@ -74,6 +74,7 @@ private:
   QMenu *winMenu;
 
   QAction *cfgbaseAct;
+  QAction *cfgcaseAct;
   QAction *cfgdirmAct;
   QAction *cfgfoldersAct;
   QAction *cfglaunchpadAct;

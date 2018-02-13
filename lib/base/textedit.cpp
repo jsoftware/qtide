@@ -156,3 +156,12 @@ void TextEdit::setselect(int p, int len)
   setTextCursor(c);
 }
 
+// ---------------------------------------------------------------------
+// see comment re setTabStopDistance in PlainTextEditLn::settabwidth
+void TextEdit::settabwidth()
+{
+  int w=80;
+  if (config.TabWidth >= 0)
+    w=config.TabWidth * QFontMetrics(font()).averageCharWidth();
+  setTabStopWidth(w);
+}
