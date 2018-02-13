@@ -60,7 +60,6 @@ QApplication *app=0;
 
 const char *jqtver=JQTVERSION;
 int state_exitcode=0;
-bool state_exitflag=false;
 QEventLoop *evloop;
 QEventLoop *jevloop;
 
@@ -461,6 +460,8 @@ void state_appname()
 int state_fini()
 {
   evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+// callback from jengine during jcon->cmd("2!:55[0")
+  jefree();
   app->exit(state_exitcode);
   return state_exitcode;
 }
@@ -507,21 +508,15 @@ void state_init_resource()
 void state_quit()
 {
   wdreset();
-  if (!state_exitflag) {
-    if (drawobj) delete drawobj;
+  if (drawobj) delete drawobj;
 #ifndef QT_NO_PRINTER
-    if (Printer) delete Printer;
-    if (prtobj) delete prtobj;
+  if (Printer) delete Printer;
+  if (prtobj) delete prtobj;
 #endif
-  }
   if (term) {
     term->cleantemp();
-    if (!state_exitflag) {
-      delete term;
-      term=0;
-    } else {
-      term->close();
-    }
+    delete term;
+    term=0;
   }
 }
 

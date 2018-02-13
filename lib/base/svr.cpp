@@ -116,7 +116,7 @@ void Jcon::cmdSentences()
     Sentence.pop_front();
     cmdSentence(s);
   }
-  if ((!state_exitflag)&&(runterm==1))
+  if (runterm==1)
     tedit->setprompt();
   runterm=0;
   runsentences=false;
@@ -216,7 +216,7 @@ char* _stdcall Jinput(J jt, char* p)
     jecallback=true;
   }
   tedit->prompt=c2q(p);
-  if ((!state_exitflag)&&(runterm==1 || 0==strlen(p))) {
+  if ((runterm==1 || 0==strlen(p))) {
     tedit->setprompt();
   }
   runterm=qMax(0,runterm-1);
@@ -244,14 +244,9 @@ void _stdcall Joutput(J jt,int type, char* s)
 
   if(MTYOEXIT==type) {
 // callback from jengine during jcon->cmd("2!:55[0")
-    jefree();
+//    jefree();
     state_exitcode=(intptr_t)s;
-    if (!state_exitflag) {
-      state_exitflag=true;
-      state_quit();
-      evloop->exit();
-      exit(state_exitcode);
-    }
+    evloop->exit();
     return;
   }
 
