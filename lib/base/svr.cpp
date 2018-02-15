@@ -236,12 +236,7 @@ void _stdcall Joutput(J jt,int type, char* s)
   Q_UNUSED(jt);
 
   if(MTYOEXIT==type) {
-// callback from jengine after 2!:55
-    int rc=(intptr_t)s;
-    jefree();
-    state_quit();
-    evloop->exit(rc);
-    exit(rc);
+    evloop->exit((intptr_t)s);
     return;
   }
 

@@ -475,7 +475,11 @@ void state_appname()
 // ---------------------------------------------------------------------
 int state_fini()
 {
-  return evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+  int rc=evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+// callback from jengine during jcon->cmd("2!:55[0")
+  jefree();
+  app->quit();
+  return rc;
 }
 
 // ---------------------------------------------------------------------
