@@ -476,9 +476,10 @@ void state_appname()
 int state_fini()
 {
   int rc=evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
-// callback from jengine during jcon->cmd("2!:55[0")
+#ifndef _WIN32
   jefree();
   app->quit();
+#endif
   return rc;
 }
 
@@ -523,6 +524,8 @@ void state_init_resource()
 // ---------------------------------------------------------------------
 void state_quit()
 {
+  term->cleantemp();
+  return;
   wdreset();
   if (drawobj) delete drawobj;
 #ifndef QT_NO_PRINTER
@@ -530,7 +533,6 @@ void state_quit()
   if (prtobj) delete prtobj;
 #endif
   if (term) {
-    term->cleantemp();
     term->deleteLater();
   }
 }
