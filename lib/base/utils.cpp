@@ -724,7 +724,7 @@ QString win2lower(QString s)
   if (config.CasePaths.contains(d)) return s;
   QString b=s.mid(n);
   if (b.isEmpty()) return s.toLower();
-  if (b[0] != "/")
+  if (b[0] != '/')
     b=b.prepend("/");
   QString t=d+b+"/";
   n=0;
