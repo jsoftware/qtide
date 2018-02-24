@@ -3,6 +3,7 @@
 #include <QBoxLayout>
 #include <QDesktopServices>
 #include <QDesktopWidget>
+#include <QUrl>
 
 #include "base.h"
 #include "eview.h"
