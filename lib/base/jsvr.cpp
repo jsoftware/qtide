@@ -20,7 +20,11 @@ void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
 QString jdllver="x.xx";  // ignored if not FHS
+#if !(defined(_M_X64) || defined(__x86_64__))
 static int AVX=0;
+#else
+static int AVX=1;
+#endif
 
 using namespace std;
 
@@ -287,13 +291,13 @@ void jepath(char* arg, char* lib, int forceavx)
 
   strcpy(pathdll,path);
   strcat(pathdll,filesepx );
-  strcat(pathdll,(AVX)?JAVXDLLNAME:JDLLNAME);
+  strcat(pathdll,(AVX)?JDLLNAME:JNONAVXDLLNAME);
 
 // for FHS (debian package version)
 // pathdll is not related to path
 // but path is still needed for BINPATH
   if (FHS) {
-    strcpy(pathdll,(AVX)?JAVXDLLNAME:JDLLNAME);
+    strcpy(pathdll,(AVX)?JDLLNAME:JNONAVXDLLNAME);
 #if defined(_WIN32)
     *(strrchr(pathdll,'.')) = 0;
     strcat(pathdll,"-");

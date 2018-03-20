@@ -9,7 +9,7 @@
 #include <direct.h>
 #define GETPROCADDRESS(h,p) GetProcAddress(h,p)
 #define JDLLNAME "j.dll"
-#define JAVXDLLNAME "javx.dll"
+#define JNONAVXDLLNAME "j-nonavx.dll"
 #define filesep '\\'
 #define filesepx "\\"
 #ifdef _MSC_VER
@@ -22,15 +22,22 @@
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
 #ifdef __MACH__
 #define JDLLNAME "libj.dylib"
-#define JAVXDLLNAME "libjavx.dylib"
+#define JNONAVXDLLNAME "libj-nonavx.dylib"
 #else
 #include <sys/utsname.h>
 #define JDLLNAME "libj.so"
-#define JAVXDLLNAME "libjavx.so"
+#define JNONAVXDLLNAME "libj-nonavx.so"
 #endif
 #define _getcwd getcwd
 #define filesep '/'
 #define filesepx "/"
+#endif
+// !!! when building jqt for nonavx J64 binary with name libj.so/dylib,
+// !!! change the conditional line to
+// #if 1
+#if !(defined(_M_X64) || defined(__x86_64__))
+#undef JNONAVXDLLNAME
+#define JNONAVXDLLNAME JDLLNAME
 #endif
 
 #define BUFLEN 30000
