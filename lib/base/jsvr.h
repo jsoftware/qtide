@@ -32,13 +32,14 @@
 #define filesep '/'
 #define filesepx "/"
 #endif
-// !!! when building jqt for nonavx J64 binary with name libj.so/dylib,
-// !!! change the conditional line to
-// #if 1
 #if !(defined(_M_X64) || defined(__x86_64__))
 #undef JNONAVXDLLNAME
 #define JNONAVXDLLNAME JDLLNAME
 #endif
+
+// uncomment the following 2 lines to call libj-nonavx.so
+#undef JNONAVXDLLNAME
+#define JNONAVXDLLNAME JDLLNAME
 
 #define BUFLEN 30000
 #define PLEN 1000
