@@ -92,6 +92,8 @@ static void wdpcenter();
 static void wdpclose();
 static void wdpicon();
 static void wdpmove();
+static void wdpmoves();
+static void wdpmove1(string);
 static void wdpn();
 static void wdpsel();
 static void wdpshow();
@@ -99,7 +101,7 @@ static void wdpstylesheet();
 static void wdptimer();
 static void wdptop();
 static void wdq();
-static void wdqtstate(string p);
+static void wdqtstate(string);
 static void wdqueries(string);
 #ifndef QT_NO_QUICKVIEW1
 static void wdquickview1();
@@ -695,6 +697,8 @@ void wdp(string c)
     wdpicon();
   else if (c=="pmove")
     wdpmove();
+  else if (c=="pmoves")
+    wdpmoves();
   else if (c=="pn")
     wdpn();
   else if (c=="psel")
@@ -811,8 +815,7 @@ void wdpclose()
   }
   if (noform()) return;
   if (form->closed) return;
-  form->closed=true;
-  form->close();
+  form->closeit();
 }
 
 // ---------------------------------------------------------------------
@@ -828,6 +831,24 @@ void wdpmove()
 {
   string p=cmd.getparms();
   if (noform()) return;
+  wdpmove1(p);
+}
+
+// ---------------------------------------------------------------------
+void wdpmoves()
+{
+  string p=cmd.getparms();
+  if (noform()) return;
+  form->savepos=true;
+  string s=config.formpos_read(s2q(form->id));
+  if (s.length() > 0)
+    p.assign(s);
+  wdpmove1(p);
+}
+
+// ---------------------------------------------------------------------
+void wdpmove1(string p)
+{
   QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);

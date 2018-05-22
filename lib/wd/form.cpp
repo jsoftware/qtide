@@ -38,6 +38,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   seq=FormSeq++;
   tab=0;
   closed=false;
+  savepos=false;
   shown=false;
   lastfocus="";
   setAttribute(Qt::WA_DeleteOnClose);
@@ -132,6 +133,8 @@ void Form::changeEvent(QEvent *e)
 // ---------------------------------------------------------------------
 void Form::closeEvent(QCloseEvent *e)
 {
+  saveformpos();
+
   if (closeok || closed) {
     e->accept();
     return;
@@ -144,6 +147,14 @@ void Form::closeEvent(QCloseEvent *e)
   if (closed) {
     e->accept();
   } else e->ignore();
+}
+
+// ---------------------------------------------------------------------
+void Form::closeit()
+{
+  saveformpos();
+  closed=true;
+  close();
 }
 
 // ---------------------------------------------------------------------
@@ -341,8 +352,7 @@ void Form::keyPressEvent(QKeyEvent *e)
     if (closed) return;
     if (escclose) {
       if (closeok) {
-        closed=true;
-        close();
+        closeit();
       } else  {
         event="close";
         fakeid="";
@@ -374,6 +384,13 @@ void Form::resizeEvent(QResizeEvent *e)
   Q_UNUSED(e);
   event="resize";
   signalevent(0);
+}
+
+// ---------------------------------------------------------------------
+void Form::saveformpos()
+{
+  if (savepos && !closed)
+    config.formpos_save((QWidget*)this, s2q(form->id));
 }
 
 // ---------------------------------------------------------------------

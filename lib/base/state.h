@@ -34,6 +34,8 @@ public:
   void filetop_set(QString f, int p);
   void fkeys_init();
   void folder_init();
+  std::string formpos_read(QString);
+  void formpos_save(QWidget*, QString);
   QStringList getuserkeys();
   void ini0();
   void init();
@@ -51,8 +53,9 @@ public:
   QStringList userkeys_split(QString s);
   void winpos_init();
   QList<int> winpos_read(QString id);
-  void winpos_save(QWidget *w,QString id);
-  void winpos_save1(QList<int>d,QString id);
+  void winpos_save(QWidget*, QString);
+  void winpos_save(QWidget*, QString, QString);
+  void winpos_save1(QList<int>, QString, QString);
 
   QDir AddonsPath;
   QStringList AllFolderKeys;

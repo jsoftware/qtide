@@ -32,12 +32,14 @@ public:
   Pane *addpane(int n);
   void addmenu();
   void closepane();
+  void closeit();
 
   string hschild();
   string hsform();
   string qform();
   bool nochild();
   string get(string p,string v);
+  void saveformpos();
   void set(string p,string v);
   void setstretch(Child *cc, string factor);
   Child *setmenuid(string id);
@@ -55,6 +57,7 @@ public:
   string getfocus();
 
   bool closed;
+  bool savepos;
   bool shown;
   int seq;
   string id;

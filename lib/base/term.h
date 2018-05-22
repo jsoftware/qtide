@@ -123,6 +123,7 @@ public slots:
   void on_helprelnotesAct_triggered();
   void on_helpvocabAct_triggered();
   void on_helpvocabnuvocAct_triggered();
+  void on_helpwikiAct_triggered();
 
   void on_projectcloseAct_triggered();
   void on_projectnewAct_triggered();

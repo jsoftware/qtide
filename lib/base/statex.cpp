@@ -9,6 +9,7 @@
 #include "term.h"
 
 QList<int> DefPos;
+using namespace std;
 
 // ---------------------------------------------------------------------
 void Config::dirmatch_init()
@@ -102,6 +103,22 @@ int Config::filetop_get(QString f)
 void Config::filetop_set(QString f, int p)
 {
   FileTop.insert(f,p);
+}
+
+// ---------------------------------------------------------------------
+string Config::formpos_read(QString id)
+{
+  QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
+  s.beginGroup("Form");
+  string p=q2s(s.value(id, "").toString());
+  s.endGroup();
+  return p;
+}
+
+// ---------------------------------------------------------------------
+void Config::formpos_save(QWidget *w,QString id)
+{
+  winpos_save1(winpos_get(w),id,"Form");
 }
 
 // ---------------------------------------------------------------------
@@ -210,20 +227,31 @@ QList<int> Config::winpos_read(QString id)
 // ---------------------------------------------------------------------
 void Config::winpos_save(QWidget *w,QString id)
 {
-  QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
-  winpos_save1(winpos_get(w),id);
+  winpos_save(w,id,"");
 }
 
 // ---------------------------------------------------------------------
-void Config::winpos_save1(QList<int>d,QString id)
+void Config::winpos_save(QWidget *w,QString id,QString group)
 {
-  QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
-  WinPos[id]=d;
+  winpos_save1(winpos_get(w),id,group);
+}
+
+// ---------------------------------------------------------------------
+void Config::winpos_save1(QList<int>d,QString id,QString group)
+{
   QString r;
   r.append(
     QString::number(d[0]) + " " +
     QString::number(d[1]) + " " +
     QString::number(d[2]) + " " +
     QString::number(d[3]));
-  s.setValue(id, r);
+  QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
+  if (group.length() == 0) {
+    WinPos[id]=d;
+    s.setValue(id, r);
+  } else {
+    s.beginGroup(group);
+    s.setValue(id, r);
+    s.endGroup();
+  }
 }

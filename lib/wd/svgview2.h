@@ -83,6 +83,8 @@ private:
   void buttonEvent(QEvent::Type type, QMouseEvent *event);
   void wheelEvent(QWheelEvent *event);
   Child *pchild;
+  void setFini();
+
 };
 
 

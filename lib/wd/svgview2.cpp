@@ -58,15 +58,7 @@ void SvgView2::setFile(const QString &filePath)
   else
     m_renderer->load(filePath);
 
-  m_imageSize = m_renderer->viewBox().size();
-
-  m_viewBoxCenter = (QPointF(m_imageSize.width() / qreal(2.0), m_imageSize.height() / qreal(2.0)));
-
-  if (m_renderer->animated())
-    connect(m_renderer, SIGNAL(repaintNeeded()), this, SLOT(update()));
-  else
-    disconnect(m_renderer, SIGNAL(repaintNeeded()), 0, 0);
-
+  setFini();
 }
 
 // ---------------------------------------------------------------------
@@ -80,15 +72,22 @@ void SvgView2::setXml(const string & v)
   else
     m_renderer->load(QByteArray::fromRawData(v.c_str(),(int)v.length()));
 
+  setFini();
+}
+
+// ---------------------------------------------------------------------
+void SvgView2::setFini()
+{
   m_imageSize = m_renderer->viewBox().size();
 
-  m_viewBoxCenter = (QPointF(m_imageSize.width() / qreal(2.0), m_imageSize.height() / qreal(2.0)));
+  m_viewBoxCenter = (QPointF(
+                       m_imageSize.width() / qreal(2.0) + m_renderer->viewBox().left(),
+                       m_imageSize.height() / qreal(2.0) + m_renderer->viewBox().top()));
 
   if (m_renderer->animated())
     connect(m_renderer, SIGNAL(repaintNeeded()), this, SLOT(update()));
   else
     disconnect(m_renderer, SIGNAL(repaintNeeded()), 0, 0);
-
 }
 
 // ---------------------------------------------------------------------
@@ -131,6 +130,7 @@ void SvgView2::paintEvent(QPaintEvent *event)
 }
 
 
+// ---------------------------------------------------------------------
 QRectF SvgView2::getViewBox(QPointF viewBoxCenter)
 {
   QRectF result;
@@ -141,6 +141,7 @@ QRectF SvgView2::getViewBox(QPointF viewBoxCenter)
   return result;
 }
 
+// ---------------------------------------------------------------------
 void SvgView2::updateImageScale()
 {
   m_imageScale = qMax( (qreal)m_imageSize.width() / (qreal)width(),
@@ -151,6 +152,7 @@ void SvgView2::updateImageScale()
 }
 
 
+// ---------------------------------------------------------------------
 void SvgView2::resizeEvent ( QResizeEvent * event )
 {
   Q_UNUSED(event);
@@ -177,13 +179,13 @@ void SvgView2::resizeEvent ( QResizeEvent * event )
   pchild->pform->signalevent(pchild);
 }
 
-
+// ---------------------------------------------------------------------
 int SvgView2::getZoom()
 {
   return  qreal(100) / m_zoomLevel;
 }
 
-
+// ---------------------------------------------------------------------
 void SvgView2::setZoom(int newZoom)
 {
   newZoom = qMin(1000,qMax(1,newZoom));
@@ -196,18 +198,18 @@ void SvgView2::setZoom(int newZoom)
 }
 
 
+// ---------------------------------------------------------------------
 QPoint SvgView2::getOrigin()
 {
   return m_origin;
 }
 
-
+// ---------------------------------------------------------------------
 void SvgView2::setOrigin(int x, int y)
 {
   m_origin = QPoint(x,y);
   update();
 }
-
 
 // ---------------------------------------------------------------------
 void SvgView2::buttonEvent(QEvent::Type type, QMouseEvent *event)

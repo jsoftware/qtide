@@ -284,7 +284,7 @@ void Fif::reject()
   Pos[2]=size().width();
   if (ifResults)
     Pos[3]=size().height();
-  config.winpos_save1(Pos,"Fif");
+  config.winpos_save1(Pos,"Fif","");
   QDialog::reject();
 }
 

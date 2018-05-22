@@ -52,6 +52,7 @@ void Menu::createhelpActions()
   helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
   helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
   helpvocabnuvocAct = makeact("helpvocabnuvocAct","&NuVoc","Shift+F1");
+  helpwikiAct = makeact("helpwikiAct","&Wiki","");
 }
 
 void Menu::createhelpMenu()
@@ -60,6 +61,7 @@ void Menu::createhelpMenu()
   helpMenu->addAction(helphelpAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpgeneralAct);
+  helpMenu->addAction(helpwikiAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpvocabAct);
   helpMenu->addAction(helpvocabnuvocAct);
@@ -197,6 +199,12 @@ void Note::on_helpvocabnuvocAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_helpwikiAct_triggered()
+{
+  term->on_helpwikiAct_triggered();
+}
+
+// ---------------------------------------------------------------------
 void Term::on_helpaboutAct_triggered()
 {
   helpabout();
@@ -302,6 +310,12 @@ void Term::on_helpvocabAct_triggered()
 void Term::on_helpvocabnuvocAct_triggered()
 {
   wiki("NuVoc");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_helpwikiAct_triggered()
+{
+  wiki("");
 }
 
 // ---------------------------------------------------------------------

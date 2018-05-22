@@ -191,6 +191,7 @@ private:
   QAction *helprelnotesAct;
   QAction *helpvocabAct;
   QAction *helpvocabnuvocAct;
+  QAction *helpwikiAct;
 };
 
 #endif
