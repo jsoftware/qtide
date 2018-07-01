@@ -113,6 +113,7 @@ void Menu::createActions()
 
   projectbuildAct = makeact("projectbuildAct","&Build","Ctrl+F9");
   projectcloseAct = makeact("projectcloseAct","&Close","");
+  projectfilemanagerAct = makeact("projectfilemanagerAct","Open in File Manager","");
   projectgitguiAct = makeact("projectgitguiAct","Git Gui","");
   projectgitstatusAct = makeact("projectgitstatusAct","Git Status","");
   projectlastAct = makeact("projectlastAct","Open &Last","");
@@ -181,8 +182,8 @@ void Menu::createActions()
 
   GitEnable << projectgitstatusAct << projectgitguiAct;
 
-  ProjectEnable << projectbuildAct << projectcloseAct << projectsnapAct
-                << projectsnapmakeAct << projectterminalAct
+  ProjectEnable << projectbuildAct << projectcloseAct << projectfilemanagerAct
+                << projectsnapAct << projectsnapmakeAct << projectterminalAct
                 << runprojectAct << winscriptsAct
                 << winsourceAct << wintextAct << winfileclosexAct;
 
@@ -417,6 +418,7 @@ void Menu::createprojectMenu(QString s)
       projMenu->addAction(projectgitstatusAct);
     }
     projMenu->addSeparator();
+    projMenu->addAction(projectfilemanagerAct);
     projMenu->addAction(projectterminalAct);
   } else
     projMenu->addAction(projectcloseAct);
@@ -884,6 +886,13 @@ void Note::on_projectcloseAct_triggered()
 {
   Q_ASSERT(!project.Id.isEmpty());
   projectclose();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_projectfilemanagerAct_triggered()
+{
+  Q_ASSERT(!project.Id.isEmpty());
+  projectfilemanager();
 }
 
 // ---------------------------------------------------------------------

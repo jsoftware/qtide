@@ -200,7 +200,7 @@ void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata , "%d %d %d %d %d %d %d %d %d %d %d %d",
+  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d",
           event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
           (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
@@ -223,7 +223,7 @@ void Qbrowser::wheelEvent(QWheelEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata , "%d %d %d %d %d %d %d %d %d %d %d %c%d",
+  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d",
           event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
           (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);

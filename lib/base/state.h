@@ -92,6 +92,7 @@ public:
   QList<int>EditPosX;
   bool EscClose;
   QStringList FifExt;
+  QString FileManager;
   QString FilePatterns;
   QMap<QString,int> FileCur;
   QMap<QString,int> FileTop;

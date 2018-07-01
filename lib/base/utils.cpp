@@ -488,6 +488,30 @@ void projectenable()
 }
 
 // ---------------------------------------------------------------------
+void projectfilemanager()
+{
+  if (config.FileManager.isEmpty()) {
+    info("FileManager","The FileManager command should be defined in qtide.cfg.");
+    return;
+  }
+  QString d;
+  if (project.Id.isEmpty()) {
+    if (note->editIndex()<0)
+      d=config.TempPath.absolutePath();
+    else
+      d=cfpath(note->editFile());
+  } else
+    d=project.Path;
+  QProcess p;
+  QStringList a;
+#ifdef _WIN32
+  d=QDir::toNativeSeparators(d);
+#endif
+  a << d;
+  p.startDetached(config.FileManager,a,d);
+}
+
+// ---------------------------------------------------------------------
 // folder tree from folder name
 QStringList project_tree(QString s)
 {
@@ -532,6 +556,10 @@ void projectterminal()
     d=project.Path;
   QProcess p;
   QStringList a;
+#ifdef _WIN32
+  if (config.Terminal=="cmd")
+    a << "/K" << "start";
+#endif
 #ifdef __MACH__
   a << d;
 #endif

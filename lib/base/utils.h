@@ -45,6 +45,7 @@ void openfile(QWidget*,QString s);
 void openfile1(QString f);
 void projectclose();
 void projectenable();
+void projectfilemanager();
 QStringList project_tree(QString b);
 QStringList project_tree1(QString b,QString s);
 void projectterminal();

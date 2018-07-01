@@ -222,16 +222,19 @@ void Config::initide()
   int fontsize=10;
   QFont::Weight fontweight=QFont::Normal;
 
+  QString filemanager="nautilus";
   QString terminal="gnome-terminal";
 
 #ifdef __MACH__
+  filemanager="open";
   font="Menlo";
   fontsize=14;
   terminal="/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 #endif
 #ifdef _WIN32
+  filemanager="explorer";
   font="Lucida Console";
-  terminal="cmd.exe";
+  terminal="cmd";
 #endif
 
 #ifdef TABCOMPLETION
@@ -274,6 +277,7 @@ void Config::initide()
     fx << "ijs ijt" << "c cfg cpp h ijs ijt jproj js sh txt" << "htm html" << "*";
   FifExt=fx;
 
+  FileManager = s->value("Run/FileManager",filemanager).toString();
   Terminal = s->value("Run/Terminal",terminal).toString();
 
   t = s->value("Position/Debug","-590 50 540 500").toString();
@@ -292,7 +296,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Session/TabWidth")) return;
+  if (s->allKeys().contains("Run/FileManager")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -330,6 +334,7 @@ void Config::initide()
   s->setValue("Position/Debug",p2q(DebugPos));
   s->setValue("Position/Edit",p2q(EditPos));
   s->setValue("Position/Term",p2q(TermPos));
+  s->setValue("Run/FileManager",FileManager);
   s->setValue("Run/Terminal",Terminal);
   s->sync();
 #ifdef _WIN32
@@ -349,6 +354,7 @@ void Config::initide()
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
     "# DebugDissect=true            if Dissect included in Debug\n"
+    "# FileManager=explorer         show in file manager\n"
     "# EscClose=false               if Esc will close a window\n"
     "# Extensions=ijs, c cfg...     FIF file extension lists\n"
     "# FontFamily=Menlo             term/edit font family\n"
@@ -362,7 +368,7 @@ void Config::initide()
     "# Snapshots=5                  number of project snapshots kept\n"
     "# Snapshotx=                   snapshots exclusion list\n"
     "# TabWidth=                    tab width (Qt default if empty)\n"
-    "# Terminal=gnome-terminal      show in terminal command\n"
+    "# Terminal=cmd                 show in terminal command\n"
     "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
     "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
     "#\n"

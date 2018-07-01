@@ -124,6 +124,7 @@ private:
   QAction *filesaveallAct;
   QAction *filesaveasAct;
   QAction *projectbuildAct;
+  QAction *projectfilemanagerAct;
   QAction *projectgitguiAct;
   QAction *projectgitstatusAct;
   QAction *projectlastAct;

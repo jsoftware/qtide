@@ -138,6 +138,7 @@ public slots:
 
   void on_projectbuildAct_triggered();
   void on_projectcloseAct_triggered();
+  void on_projectfilemanagerAct_triggered();
   void on_projectgitguiAct_triggered();
   void on_projectgitstatusAct_triggered();
   void on_projectlastAct_triggered();

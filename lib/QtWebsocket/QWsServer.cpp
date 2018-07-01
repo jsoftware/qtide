@@ -168,7 +168,7 @@ void QWsServer::dataReceived()
   } else { // version WS_V0
     QByteArray accept = QWsSocket::computeAcceptV0(handshake.key1, handshake.key2, handshake.key3);
     // safari 5.1.7 don't accept the utf8 charset here...
-    handshakeResponse = QWsServer::composeOpeningHandshakeResponseV0(accept, handshake.origin, handshake.hostAddress, handshake.hostPort, handshake.resourceName , handshake.protocol).toLatin1();
+    handshakeResponse = QWsServer::composeOpeningHandshakeResponseV0(accept, handshake.origin, handshake.hostAddress, handshake.hostPort, handshake.resourceName, handshake.protocol).toLatin1();
   }
 
   // Send opening handshake response

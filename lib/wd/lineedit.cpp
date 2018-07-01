@@ -37,8 +37,8 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
   if (!event->modifiers().testFlag(Qt::ControlModifier)) {
     char sysdata[20];
     if (key==key1)
-      sprintf(sysdata , "%s", event->text().toUtf8().constData());
-    else sprintf(sysdata , "%s", QString(QChar(key1)).toUtf8().constData());
+      sprintf(sysdata, "%s", event->text().toUtf8().constData());
+    else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
 
     pchild->event=string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
