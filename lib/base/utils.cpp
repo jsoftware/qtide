@@ -557,7 +557,7 @@ void projectterminal()
   QProcess p;
   QStringList a;
 #ifdef _WIN32
-  if (config.Terminal=="cmd")
+  if (config.Terminal=="cmd" || config.Terminal=="cmd.exe")
     a << "/K" << "start";
 #endif
 #ifdef __MACH__
