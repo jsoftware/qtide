@@ -1,6 +1,7 @@
 bin/
 build/
 config/
+dist/
 jwd/
 libs/
 

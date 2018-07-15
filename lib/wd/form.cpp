@@ -483,7 +483,6 @@ void Form::settimer(string p)
 // ---------------------------------------------------------------------
 void Form::showit(string p)
 {
-  Q_UNUSED(p);
   if (!shown) {
     for (int i=tabs.size()-1; i>=0; i--)
       tabs.last()->tabend();
@@ -491,35 +490,33 @@ void Form::showit(string p)
       panes.last()->fini();
     layout->addWidget(pane);
     setLayout(layout);
+  }
+
+  bool ini = shown;
+  shown = true;
+
+  if (p=="hide")
+    hide();
+  else if (p=="minimized")
+    showMinimized();
+  else {
     if (p=="fullscreen")
       showFullScreen();
     else if (p=="maximized")
       showMaximized();
-    else if (p=="minimized")
-      showMinimized();
     else if (p=="normal")
-      showNormal();    // restore from maximized or minimized
-    else
-      show();          // show or hide
-    if (jdllproc && 1==Forms.size()) evloop->exec(QEventLoop::AllEvents);
+      showNormal();
+    else {
+      if (p!="")
+        error("unrecognized style: " + p);
+      show();
+    }
+    activateWindow();
+    raise();
   }
-  if (p=="") {
-    if (!isVisible()) setVisible(true);
-  } else if (p=="hide") {
-    if (isVisible()) setVisible(false);
-  } else if (p=="fullscreen") {
-    if (shown) showFullScreen();
-  } else if (p=="maximized") {
-    if (shown) showMaximized();
-  } else if (p=="minimized") {
-    if (shown) showMinimized();
-  } else if (p=="normal") {
-    if (shown) showNormal();
-  } else {
-    shown=true;
-    error("unrecognized style: " + p);
-  }
-  shown=true;
+
+  if (!ini && jdllproc && 1==Forms.size())
+    evloop->exec(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------

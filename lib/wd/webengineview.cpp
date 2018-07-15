@@ -25,6 +25,10 @@ WebEngineView::WebEngineView(string n, string s, Form *f, Pane *p) : Child(n,s,f
   QWebChannel *channel = new QWebChannel(this);
   channel->registerObject(QString("qcom"),qcom);
   w->page()->setWebChannel(channel);
+  if (s == "transparent")
+    w->page()->setBackgroundColor(QColor(Qt::transparent));
+  else if (s.length())
+    w->page()->setBackgroundColor(QColor(s2q(s)));
   baseUrl = currenturl();
   connect(w,SIGNAL(urlChanged(const QUrl &)), this,SLOT(urlChanged( const QUrl &)));
   connect(w->page(),SIGNAL(loadFinished(bool)),this,SLOT(loadFinished(bool)));
