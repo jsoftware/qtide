@@ -16,7 +16,7 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget *) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"staticbox left right center sunken raised panel")) return;
+  if (invalidopt(n,opt,"staticbox left right center sunken raised panel nowrap")) return;
   if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
     error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
@@ -27,7 +27,8 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
   w->setObjectName(qn);
   childStyle(opt);
-  w->setWordWrap(true);
+  if (!opt.contains("nowrap"))
+    w->setWordWrap(true);
   if (!opt.contains("staticbox"))
     w->setText(qn);
   if (opt.contains("left"))

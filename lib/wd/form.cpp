@@ -490,11 +490,8 @@ void Form::showit(string p)
       panes.last()->fini();
     layout->addWidget(pane);
     setLayout(layout);
+    shown = true;
   }
-
-  bool ini = shown;
-  shown = true;
-
   if (p=="hide")
     hide();
   else if (p=="minimized")
@@ -514,9 +511,6 @@ void Form::showit(string p)
     activateWindow();
     raise();
   }
-
-  if (!ini && jdllproc && 1==Forms.size())
-    evloop->exec(QEventLoop::AllEvents);
 }
 
 // ---------------------------------------------------------------------
