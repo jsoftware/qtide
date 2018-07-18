@@ -11,16 +11,38 @@
 extern int rc;
 
 // ---------------------------------------------------------------------
+ListWidget::ListWidget(QWidget *w) : QListWidget()
+{
+  p = (ListBox *)w;
+}
+
+// ---------------------------------------------------------------------
+void ListWidget::dropEvent(QDropEvent *e)
+{
+  QListWidget::dropEvent(e);
+  p->signaldrop();
+}
+
+// ---------------------------------------------------------------------
 ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="listbox";
-  QListWidget *w=new QListWidget;
+  QListWidget *w=new ListWidget((QWidget *)this);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"multiple")) return;
+  if (invalidopt(n,opt,"drag drop multiple")) return;
+  if (notbothopt(n,opt,"drag","multiple")) return;
   w->setObjectName(qn);
   childStyle(opt);
+  if (opt.contains("drag"))
+    w->setDragEnabled(true);
+  if (opt.contains("drop")) {
+    w->setDragDropMode(QAbstractItemView::DragDrop);
+    w->viewport()->setAcceptDrops(true);
+    w->setDropIndicatorShown(true);
+    w->setDefaultDropAction(Qt::MoveAction);
+  }
   if (opt.contains("multiple"))
     w->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -134,6 +156,13 @@ void ListBox::set(string p,string v)
     w->setCurrentRow(c_strtoi(v));
   } else
     Child::set(p,v);
+}
+
+// ---------------------------------------------------------------------
+void ListBox::signaldrop()
+{
+  event="drop";
+  pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------

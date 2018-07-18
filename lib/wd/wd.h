@@ -13,6 +13,7 @@ extern "C" {
 void error(string s);
 bool invalidopt(string n,QStringList opt,string valid);
 bool invalidoptn(string n,QStringList opt,string valid);
+bool notbothopt(string n,QStringList opt,string a,string b);
 string remquotes(string s);
 QString mb(string c,string p);
 string sm(string c);

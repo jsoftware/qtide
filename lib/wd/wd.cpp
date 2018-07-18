@@ -1766,6 +1766,14 @@ bool notab()
 }
 
 // ---------------------------------------------------------------------
+bool notbothopt(string n,QStringList opt, string a, string b)
+{
+  if (!(opt.contains(s2q(a)) && opt.contains(s2q(b)))) return false;
+  error ("options for " + n + " should not include both " + a + " and " + b);
+  return true;
+}
+
+// ---------------------------------------------------------------------
 // returns: 0=id not found
 //          1=child id (cc=child)
 //          2=menu  id (cc=menubar)
