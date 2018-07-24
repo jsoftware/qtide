@@ -97,6 +97,9 @@ void Tabs::set(string p,string v)
     w->setCurrentIndex(ndx);
   else if (p=="tabclose")
     w->removeTab(ndx);
+// following adds a tab with no contents:
+  else if (p=="tabnew")
+    tabnew(v);
   else if (p=="label") {
     if (opt.size()<2) return;
     w->setTabText(ndx,s2q(remquotes(q2s(opt.at(1)))));

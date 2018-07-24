@@ -11,9 +11,9 @@
 extern int rc;
 
 // ---------------------------------------------------------------------
-ListWidget::ListWidget(QWidget *w) : QListWidget()
+ListWidget::ListWidget(ListBox *parent) : QListWidget()
 {
-  p = (ListBox *)w;
+  p = parent;
 }
 
 // ---------------------------------------------------------------------
@@ -27,12 +27,11 @@ void ListWidget::dropEvent(QDropEvent *e)
 ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="listbox";
-  QListWidget *w=new ListWidget((QWidget *)this);
+  QListWidget *w=new ListWidget(this);
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
   if (invalidopt(n,opt,"drag drop multiple")) return;
-  if (notbothopt(n,opt,"drag","multiple")) return;
   w->setObjectName(qn);
   childStyle(opt);
   if (opt.contains("drag"))

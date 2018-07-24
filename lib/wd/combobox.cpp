@@ -23,6 +23,7 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (invalidopt(n,opt,"edit")) return;
   w->setObjectName(qn);
   childStyle(opt);
+  w->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   if (opt.contains("edit"))
     w->setEditable(true);
   connect(w,SIGNAL(activated(int)),

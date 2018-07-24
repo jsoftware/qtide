@@ -15,7 +15,7 @@ class ListWidget : public QListWidget
   Q_OBJECT
 
 public:
-  ListWidget(QWidget *w);
+  ListWidget(ListBox *parent);
   ListBox *p;
 
 protected:
