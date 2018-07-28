@@ -325,11 +325,11 @@ void Pane::grid(string p, string v)
       return;
     }
     if ((rs<=0)||(cs<=0)) {
-      error("grid cell row_span and column_span must be positiv: " + p + " " + v);
+      error("grid cell row_span and column_span must be positive: " + p + " " + v);
       return;
     }
     if (alignment<0) {
-      error("grid cell alignment must be non-negativ: " + p + " " + v);
+      error("grid cell alignment must be non-negative: " + p + " " + v);
       return;
     }
     layout->r=r;

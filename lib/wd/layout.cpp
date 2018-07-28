@@ -51,7 +51,7 @@ void Layout::addWidget(QWidget *b)
 void Layout::addLayout(Layout *b)
 {
   if (type!='g')
-    ((QBoxLayout *) bin)->addLayout(b->bin);
+    ((QBoxLayout *) bin)->addLayout(b->bin,b->stretch);
   else {
     if (razed) {
       ((QGridLayout *)bin)->addLayout(b->bin, r, c, (Qt::Alignment) alignment);

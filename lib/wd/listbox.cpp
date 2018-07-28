@@ -19,6 +19,8 @@ ListWidget::ListWidget(ListBox *parent) : QListWidget()
 // ---------------------------------------------------------------------
 void ListWidget::dropEvent(QDropEvent *e)
 {
+  if (p->action == "ignore")
+    e->setDropAction(Qt::IgnoreAction);
   QListWidget::dropEvent(e);
   p->signaldrop();
 }
@@ -31,9 +33,12 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"drag drop multiple")) return;
+  if (invalidopt(n,opt,"drag drop ignore multiple")) return;
   w->setObjectName(qn);
   childStyle(opt);
+
+  action = opt.contains("ignore") ? "ignore" : "";
+
   if (opt.contains("drag"))
     w->setDragEnabled(true);
   if (opt.contains("drop")) {

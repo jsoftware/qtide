@@ -43,12 +43,21 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   connect(w,SIGNAL(returnPressed()),
           this,SLOT(returnPressed()));
+  connect(w,SIGNAL(textChanged(QString)),
+          this,SLOT(textChanged()));
 }
 
 // ---------------------------------------------------------------------
 void Edit::returnPressed()
 {
   event="button";
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+void Edit::textChanged()
+{
+  event="changed";
   pform->signalevent(this);
 }
 
@@ -117,6 +126,9 @@ void Edit::set(string p,string v)
   } else if (p=="focus") {
     w->setFocus();
     if (focusSelect) w->selectAll();
+  } else if (p =="placeholder") {
+    w->setClearButtonEnabled(true);
+    w->setPlaceholderText(s2q(remquotes(v)));
   } else if (p=="readonly") {
     w->setReadOnly(remquotes(v)!="0");
   } else if (p=="select") {

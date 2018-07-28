@@ -19,6 +19,7 @@ public:
 
 private slots:
   void returnPressed();
+  void textChanged();
 
 private:
   bool focusSelect;

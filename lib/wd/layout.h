@@ -26,7 +26,7 @@ public:
   void removeWidget(QWidget *b);
 
   Pane *ppane;
-  QLayout * bin;
+  QLayout *bin;
   QChar type;
   int r,c,rs,cs;
   int alignment;
