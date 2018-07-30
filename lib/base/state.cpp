@@ -579,6 +579,9 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   }
 
   ShowIde=!!fshowide;
+#ifdef _WIN32
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif
   app = new QApplication(argc, argv);
   evloop=new QEventLoop();
   jevloop=new QEventLoop();
