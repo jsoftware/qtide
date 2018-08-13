@@ -47,6 +47,7 @@ public:
   void setpn(string p);
   void setpicon(string p);
   void settaborder(string p);
+  void settheme(string p);
   void settimer(string p);
   void showit(string p);
   void signalevent(Child *c, QKeyEvent *e = 0);

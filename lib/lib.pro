@@ -328,6 +328,7 @@ contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cp
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
 
 RESOURCES += lib.qrc
+RESOURCES += styles/qdarkstyle/style.qrc
 
 win32:VERSION =
 win32:!win32-msvc*:LIBS += -shared

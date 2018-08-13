@@ -47,6 +47,7 @@ static string smsetscroll(Bedit *,string);
 static string smsetselect(Bedit *,string);
 static string smsettext(string,string);
 static string smsetxywh(string,string);
+static string smtheme();
 
 // ---------------------------------------------------------------------
 string sm(string c)
@@ -72,14 +73,16 @@ string sm(string c)
     return smopen();
   if (c=="profont")
     return smprofont();
+  if (c=="prompt")
+    return smprompt();
   if (c=="replace")
     return smreplace();
   if (c=="save")
     return smsave();
   if (c=="set")
     return smset();
-  else if (c=="prompt")
-    return smprompt();
+  if (c=="theme")
+    return smtheme();
   cmd.getparms();
   return smerror("unrecognized sm command: " + c);
 }
@@ -566,3 +569,16 @@ string smsetxywh(string m,string q)
   return"";
 }
 
+// ---------------------------------------------------------------------
+string smtheme()
+{
+  string p=cmd.getparms();
+  if (p == "dark") {
+    QFile f(":qdarkstyle/style.qss");
+    f.open(QFile::ReadOnly | QFile::Text);
+    QTextStream ts(&f);
+    app->setStyleSheet(ts.readAll());
+  } else
+    app->setStyleSheet("");
+  return "";
+}

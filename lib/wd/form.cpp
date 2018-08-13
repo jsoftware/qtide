@@ -47,7 +47,6 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   escclose=m.contains("escclose");
   closeok=m.contains("closeok");
   setpn(s);
-
   Qt::WindowFlags flags=0;
   if (m.contains("dialog")) flags=Qt::Dialog|Qt::WindowTitleHint|Qt::WindowStaysOnTopHint|Qt::CustomizeWindowHint;
   if (m.contains("popup")) flags=Qt::Popup;
@@ -408,6 +407,8 @@ void Form::set(string p,string v)
     setStyleSheet(s2q(remquotes(v)));
   } else if (p=="taborder") {
     settaborder(v);
+  } else if (p=="theme") {
+    settheme(remquotes(v));
   } else if (p=="tooltip") {
     setToolTip(s2q(remquotes(v)));
   } else if (p=="wh") {
@@ -468,6 +469,18 @@ void Form::settaborder(string p)
     }
     QWidget::setTabOrder(c0->widget,c1->widget);
   }
+}
+
+// ---------------------------------------------------------------------
+void Form::settheme(string theme)
+{
+  if (theme == "dark") {
+    QFile f(":qdarkstyle/style.qss");
+    f.open(QFile::ReadOnly | QFile::Text);
+    QTextStream ts(&f);
+    setStyleSheet(ts.readAll());
+  } else
+    setStyleSheet("");
 }
 
 // ---------------------------------------------------------------------
