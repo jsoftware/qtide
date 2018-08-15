@@ -26,6 +26,7 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     return;
   }
   w->setObjectName(qn);
+  w->setOpenExternalLinks(true);
   childStyle(opt);
   if (!opt.contains("nowrap"))
     w->setWordWrap(true);
