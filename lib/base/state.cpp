@@ -244,6 +244,8 @@ void Config::initide()
   BoxForm = s->value("Session/BoxForm",0).toInt();
   ConfirmClose = s->value("Session/ConfirmClose",false).toBool();
   ConfirmSave = s->value("Session/ConfirmSave",false).toBool();
+  CursorWidth = s->value("Session/CursorWidth",1).toInt();
+  if (tedit) tedit->setCursorWidth(CursorWidth);
   DebugDissect = s->value("Session/DebugDissect",true).toBool();
   EscClose = s->value("Session/EscClose",false).toBool();
   Font.setFamily(s->value("Session/FontFamily",font).toString());
@@ -296,7 +298,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos);
 
-  if (s->allKeys().contains("Run/FileManager")) return;
+  if (s->allKeys().contains("Session/CursorWidth")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -315,6 +317,7 @@ void Config::initide()
   s->setValue("Session/BoxForm",BoxForm);
   s->setValue("Session/ConfirmClose",ConfirmClose);
   s->setValue("Session/ConfirmSave",ConfirmSave);
+  s->setValue("Session/CursorWidth",CursorWidth);
   s->setValue("Session/DebugDissect",DebugDissect);
   s->setValue("Session/EscClose",EscClose);
   s->setValue("Session/FontFamily",Font.family());
@@ -353,6 +356,7 @@ void Config::initide()
 #endif
     "# ConfirmClose=false           confirm session close\n"
     "# ConfirmSave=false            confirm script save\n"
+    "# CursorWidth=1                cursor width in session windows\n"
     "# DebugDissect=true            if Dissect included in Debug\n"
     "# FileManager=explorer         show in file manager\n"
     "# EscClose=false               if Esc will close a window\n"

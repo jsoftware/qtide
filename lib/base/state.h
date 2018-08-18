@@ -72,6 +72,7 @@ public:
   QDir ConfigPath;
   bool ConfirmClose;
   bool ConfirmSave;
+  int CursorWidth;
   bool DebugDissect;
   QList<int> DebugPos;
   QList<int> DebugPosX;

@@ -32,6 +32,8 @@ PlainTextEditLn::PlainTextEditLn(QWidget *parent) : PlainTextEdit(parent)
 {
   lineNumberArea = new LineNumberArea(this);
   document()->setDocumentMargin(0);
+
+  setCursorWidth(config.CursorWidth);
   settabwidth();
   showNos=false;
   type="edit";
