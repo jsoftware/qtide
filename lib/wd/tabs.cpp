@@ -1,6 +1,8 @@
 
 #include <QIcon>
+#include <QPushButton>
 #include <QStyle>
+#include <QVBoxLayout>
 
 #include "cmd.h"
 #include "form.h"
@@ -22,7 +24,7 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   pform->tab=this;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"documentmode movable closable east west south nobar")) return;
+  if (invalidopt(n,opt,"documentmode movable closable east west south nobar mycorner")) return;
   w->setObjectName(qn);
   childStyle(opt);
   w->setUsesScrollButtons(true);
@@ -52,6 +54,19 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   connect(w,SIGNAL(tabCloseRequested(int)),
           this,SLOT(tabCloseRequested(int)));
 
+// test of corner widget with style mycorner
+// this is a one-off, can be replaced with a proper implementation
+  if (opt.contains("mycorner")) {
+    QPushButton* b = new QPushButton();
+    b->setText("Add View");
+    QWidget *cw = new QWidget(w);
+    QVBoxLayout *vb = new QVBoxLayout(cw);
+    vb->addWidget(b);
+    vb->addStretch(1);
+    w->setCornerWidget(cw);
+    connect(b,SIGNAL(clicked()),
+            this,SLOT(mycornerClicked()));
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -84,6 +99,13 @@ string Tabs::get(string p,string v)
   } else
     r=Child::get(p,v);
   return r;
+}
+
+// ---------------------------------------------------------------------
+void Tabs::mycornerClicked()
+{
+  event="mycorner";
+  pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------

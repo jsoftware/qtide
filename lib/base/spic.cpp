@@ -168,7 +168,7 @@ void Picm::on_restore_clicked()
   int n=times->currentRow();
   QString m="OK to restore file snapshot: ";
   m+=Stamps.at(n).trimmed() + "?";
-  if(!queryNY(Title,m)) return;
+  if (!queryNY(Title,m)) return;
   note->settext(Texts.at(n));
   closeit();
 }
@@ -255,7 +255,7 @@ void pic(QString f,QString s)
   d=p + "/p" + ss_date();
   QFile t(d + "/" + n);
 
-  if(!t.exists()) {
+  if (!t.exists()) {
     if (!pic_inidir(d)) return;
     a=(cfread(f)+"000000").toUtf8() + (char)255 + a;
   }
@@ -282,7 +282,7 @@ bool pic_inidir(QString s)
     e.removeOne(p);
   }
 
-  if(e.size()) {
+  if (e.size()) {
     qSort(e);
     e.removeLast();
     foreach (const QString m,e)

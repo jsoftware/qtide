@@ -12,7 +12,7 @@
 void Dirm::compareallfiles()
 {
   QStringList r;
-  for(int i=0; i<Diff.size(); i++) {
+  for (int i=0; i<Diff.size(); i++) {
     if (i) r.append("");
     r.append(comparefile1(Diff.at(i)));
   }
@@ -23,7 +23,7 @@ void Dirm::compareallfiles()
 void Dirm::comparefile()
 {
   QString s=dmgetname2();
-  if(s.isEmpty()) {
+  if (s.isEmpty()) {
     dminfo("Nothing to compare");
     return;
   }
@@ -52,7 +52,7 @@ QStringList Dirm::comparefile1(QString s)
 void Dirm::comparexdiff()
 {
   QString s=dmgetname2();
-  if(s.isEmpty()) {
+  if (s.isEmpty()) {
     dminfo("Nothing to compare");
     return;
   }
@@ -86,7 +86,7 @@ void Dirm::copyfile()
   QString t=Target + "/" + w;
   QString p="OK to copy from source to target:\n\n" + w;
 
-  if(queryNY(Title,p))
+  if (queryNY(Title,p))
     cfcopy(s,t);
 
   Diff.removeOne(w);
@@ -109,7 +109,7 @@ void Dirm::copylater()
 {
   QStringList r;
   foreach (const QString s, Diff) {
-    if(cftime(Source+"/"+s) > cftime(Target+"/"+s))
+    if (cftime(Source+"/"+s) > cftime(Target+"/"+s))
       r.append(s);
   }
   if (r.isEmpty())
@@ -162,19 +162,19 @@ void Dirm::matches(bool done)
   Found.clear();
   dmread();
 
-  if(Source.isEmpty()) {
+  if (Source.isEmpty()) {
     dminfo("Enter the source directory");
     return;
   }
-  if(Target.isEmpty()) {
+  if (Target.isEmpty()) {
     dminfo("Enter the target directory");
     return;
   }
-  if(Source==Target) {
+  if (Source==Target) {
     dminfo("Source and Target are the same");
     return;
   }
-  if(match_do())
+  if (match_do())
     match_fmt(done);
 }
 
@@ -195,7 +195,7 @@ bool Dirm::match_do()
   dx=folder_tree(Source,filter,Subdir);
   dy=folder_tree(Target,filter,Subdir);
 
-  if(dx.isEmpty()&&dy.isEmpty()) {
+  if (dx.isEmpty()&&dy.isEmpty()) {
     dminfo("Both directories are empty");
     return false;
   }
@@ -203,22 +203,22 @@ bool Dirm::match_do()
   nx=qsldropeach(1+Source.size(),dx);
   ny=qsldropeach(1+Target.size(),dy);
 
-  for(i=nx.size()-1; i>=0; i--)
-    if(!ny.contains(nx.at(i))) {
+  for (i=nx.size()-1; i>=0; i--)
+    if (!ny.contains(nx.at(i))) {
       NotInTarget.append(nx.at(i));
       nx.removeAt(i);
     }
 
-  for(i=ny.size()-1; i>=0; i--)
-    if(!nx.contains(ny.at(i))) {
+  for (i=ny.size()-1; i>=0; i--)
+    if (!nx.contains(ny.at(i))) {
       NotInSource.append(ny.at(i));
       //ny.removeAt(i);
     }
 
-  for(i=0; i<nx.size(); i++) {
+  for (i=0; i<nx.size(); i++) {
     fx.setFileName(Source+"/"+nx.at(i));
     fy.setFileName(Target+"/"+nx.at(i));
-    if(!(fx.size()==fy.size()&&cfread(&fx)==cfread(&fy)))
+    if (!(fx.size()==fy.size()&&cfread(&fx)==cfread(&fy)))
       Diff.append(nx.at(i));
   }
 
@@ -241,21 +241,21 @@ void Dirm::match_fmt(bool done)
     len=qMax(len,s.size());
   len+=2;
 
-  if(NotInSource.size()) {
+  if (NotInSource.size()) {
     Found.append("not in source:");
     foreach (const QString &s, NotInSource)
       Found.append(match_fmt1(s,Target,len));
   }
 
-  if(NotInTarget.size()) {
-    if(Found.size()) Found.append("");
+  if (NotInTarget.size()) {
+    if (Found.size()) Found.append("");
     Found.append("not in target:");
     foreach (const QString &s, NotInTarget)
       Found.append(match_fmt1(s,Source,len));
   }
 
-  if(Diff.size()) {
-    if(Found.size()) Found.append("");
+  if (Diff.size()) {
+    if (Found.size()) Found.append("");
     Found.append("different contents - source,target:");
     foreach (const QString &s, Diff)
       Found.append(match_fmt2(s,len));

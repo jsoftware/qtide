@@ -28,18 +28,18 @@ static int AVX=1;
 
 using namespace std;
 
-typedef void* (_stdcall *JInitType)     ();
-typedef int   (_stdcall *JDoType)       (void*, C*);
-typedef A     (_stdcall *JGetAType)     (void*, I n, C*);
+typedef void* (_stdcall *JInitType)();
+typedef int (_stdcall *JDoType)(void*, C*);
+typedef A(_stdcall *JGetAType)(void*, I n, C*);
 typedef C*    (_stdcall *JGetLocaleType)(void*);
-typedef void  (_stdcall *JSMType)       (void*, void*);
-typedef void  (_stdcall *JFreeType)     (void*);
-typedef A     (_stdcall *JgaType)       (J jt, I t, I n, I r, I*s);
-typedef int   (_stdcall *JSetAType)     (void*, I n, C*, I x, C*);
+typedef void (_stdcall *JSMType)(void*, void*);
+typedef void (_stdcall *JFreeType)(void*);
+typedef A(_stdcall *JgaType)(J jt, I t, I n, I r, I*s);
+typedef int (_stdcall *JSetAType)(void*, I n, C*, I x, C*);
 
-typedef void  (_stdcall * outputtype)(J,int,C*);
-typedef int   (_stdcall * dowdtype)  (J,int, A, A*);
-typedef C* (_stdcall * inputtype) (J,C*);
+typedef void (_stdcall * outputtype)(J,int,C*);
+typedef int (_stdcall * dowdtype)(J,int, A, A*);
+typedef C* (_stdcall * inputtype)(J,C*);
 
 int _stdcall JDo(J jt,C*);                   /* run sentence */
 C* _stdcall JGetLocale(J jt);                /* get locale */
@@ -78,18 +78,18 @@ void addargv(int argc, char* argv[], C* d)
   I i;
 
   p=d+strlen(d);
-  for(i=0; i<argc; ++i) {
-    if(sizeof(inputline)<(100+strlen(d)+2*strlen(argv[i]))) exit(100);
-    if(1==argc) {
+  for (i=0; i<argc; ++i) {
+    if (sizeof(inputline)<(100+strlen(d)+2*strlen(argv[i]))) exit(100);
+    if (1==argc) {
       *p++=',';
       *p++='<';
     }
-    if(i)*p++=';';
+    if (i)*p++=';';
     *p++='\'';
     q=argv[i];
-    while(*q) {
+    while (*q) {
       *p++=*q++;
-      if('\''==*(p-1))*p++='\'';
+      if ('\''==*(p-1))*p++='\'';
     }
     *p++='\'';
   }
@@ -143,10 +143,10 @@ J jeload(void* callbacks)
     MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
     hjdll=LoadLibraryW(wpath);
   }
-  if(!hjdll)return 0;
+  if (!hjdll)return 0;
   jt=(jdllproc)?jdlljt:((JInitType)GETPROCADDRESS((HMODULE)hjdll,"JInit"))();
-  if(!jt) return 0;
-  if (!jdllproc) ((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
+  if (!jt) return 0;
+  if (!jdllproc)((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS((HMODULE)hjdll,"JDo");
   jfree=(JFreeType)GETPROCADDRESS((HMODULE)hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS((HMODULE)hjdll,"Jga");
@@ -156,10 +156,10 @@ J jeload(void* callbacks)
   return jt;
 #else
   hjdll=(jdllproc)?jdllproc:dlopen(pathdll,RTLD_LAZY);
-  if(!hjdll)return 0;
+  if (!hjdll)return 0;
   jt=(jdllproc)?jdlljt:((JInitType)GETPROCADDRESS(hjdll,"JInit"))();
-  if(!jt) return 0;
-  if (!jdllproc) ((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
+  if (!jt) return 0;
+  if (!jdllproc)((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS(hjdll,"JDo");
   jfree=(JFreeType)GETPROCADDRESS(hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS(hjdll,"Jga");
@@ -202,7 +202,7 @@ void jepath(char* arg, char* lib, int forceavx)
 // https://msdn.microsoft.com/en-us/library/windows/desktop/hh134240(v=vs.85).aspx
 // Windows 7 SP1 is the first version of Windows to support the AVX API.
 #define XSTATE_MASK_AVX   (XSTATE_MASK_GSSE)
-    typedef DWORD64 (WINAPI *GETENABLEDXSTATEFEATURES)();
+    typedef DWORD64(WINAPI *GETENABLEDXSTATEFEATURES)();
     GETENABLEDXSTATEFEATURES pfnGetEnabledXStateFeatures = NULL;
 // Get the addresses of the AVX XState functions.
     HMODULE hm = GetModuleHandleA("kernel32.dll");
@@ -224,10 +224,10 @@ void jepath(char* arg, char* lib, int forceavx)
 #ifdef __MACH__
   uint32_t len=sz;
   n=_NSGetExecutablePath(arg2,&len);
-  if(0!=n) strcat(arg2,arg);
+  if (0!=n) strcat(arg2,arg);
 #else
   n=readlink("/proc/self/exe",arg2,sizeof(arg2));
-  if(-1==n) strcpy(arg2,arg);
+  if (-1==n) strcpy(arg2,arg);
   else arg2[n]=0;
 #endif
 #if defined(__x86_64__)||defined(__i386__)
@@ -259,10 +259,10 @@ void jepath(char* arg, char* lib, int forceavx)
 // fprintf(stderr,"arg2 %s\n",arg2);
 // arg2 is path (abs or relative) to executable or soft link
   n=readlink(arg2,arg3,sz);
-  if(-1==n) strcpy(arg3,arg2);
+  if (-1==n) strcpy(arg3,arg2);
   else arg3[n]=0;
 // fprintf(stderr,"arg3 %s\n",arg3);
-  if('/'==*arg3)
+  if ('/'==*arg3)
     strcpy(path,arg3);
   else {
     char *c=getcwd(path,sizeof(path));
@@ -273,24 +273,24 @@ void jepath(char* arg, char* lib, int forceavx)
   *(1+strrchr(path,'/'))=0;
 // remove ./ and backoff ../
   snk=src=path;
-  while(*src) {
-    if('/'==*src&&'.'==*(1+src)&&'.'==*(2+src)&&'/'==*(3+src)) {
+  while (*src) {
+    if ('/'==*src&&'.'==*(1+src)&&'.'==*(2+src)&&'/'==*(3+src)) {
       *snk=0;
       snk=strrchr(path,'/');
       snk=0==snk?path:snk;
       src+=3;
-    } else if('/'==*src&&'.'==*(1+src)&&'/'==*(2+src))
+    } else if ('/'==*src&&'.'==*(1+src)&&'/'==*(2+src))
       src+=2;
     else
       *snk++=*src++;
   }
   *snk=0;
   snk=path+strlen(path)-1;
-  if('/'==*snk) *snk=0;
+  if ('/'==*snk) *snk=0;
 #endif
 
   strcpy(pathdll,path);
-  strcat(pathdll,filesepx );
+  strcat(pathdll,filesepx);
   strcat(pathdll,(AVX)?JDLLNAME:JNONAVXDLLNAME);
 
 // for FHS (debian package version)
@@ -308,8 +308,8 @@ void jepath(char* arg, char* lib, int forceavx)
     strcat(pathdll,jdllver.toUtf8().constData());
 #endif
   }
-  if(*lib) {
-    if(filesep==*lib || ('\\'==filesep && ':'==lib[1]))
+  if (*lib) {
+    if (filesep==*lib || ('\\'==filesep && ':'==lib[1]))
       strcpy(pathdll,lib); // absolute path
     else {
       strcpy(pathdll,path);
@@ -346,7 +346,7 @@ int jefirst(int type,char* arg)
   if (standAlone) {
     bool done=false;
     qint64 ssize=info.size();
-    if(sprofile.open(QFile::ReadOnly)) {
+    if (sprofile.open(QFile::ReadOnly)) {
       char * sdata=(char *)malloc(ssize);
       QDataStream in(&sprofile);
       if (ssize==in.readRawData(sdata,ssize)) {
@@ -362,7 +362,7 @@ int jefirst(int type,char* arg)
       strcat(input,"0!:0 profile_jrx_[4!:55<'profile_jrx_'");
     }
   } else {
-    if(0==type) {
+    if (0==type) {
       if (!FHS) {
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
       } else {
@@ -398,8 +398,8 @@ int jefirst(int type,char* arg)
   strcat(input,"[BINPATH_z_=:'");
   p=path;
   q=input+strlen(input);
-  while(*p) {
-    if(*p=='\'') *q++='\'';	// 's doubled
+  while (*p) {
+    if (*p=='\'') *q++='\'';	// 's doubled
     *q++=*p++;
   }
   *q=0;
@@ -407,8 +407,8 @@ int jefirst(int type,char* arg)
   strcat(input,"[LIBFILE_z_=:'");
   p=pathdll;
   q=input+strlen(input);
-  while(*p) {
-    if(*p=='\'') *q++='\'';	// 's doubled
+  while (*p) {
+    if (*p=='\'') *q++='\'';	// 's doubled
     *q++=*p++;
   }
   *q=0;
@@ -449,7 +449,7 @@ A dora(string s)
   if (!e) {
     if (!jdo(jt,(C*)"q_jrx_=:4!:0<'r_jrx_'")) {
       A at=jgeta(jt,6,(char*)"q_jrx_");
-      AREP p=(AREP) (sizeof(A_RECORD) + (char*)at);
+      AREP p=(AREP)(sizeof(A_RECORD) + (char*)at);
       assert(p->t==4);
       assert(p->r==0);
       return (0==*(I*)p->s)?jgeta(jt,6,(char*)"r_jrx_"):0;
@@ -466,7 +466,7 @@ bool dorb(string s)
   if (!jt) return false;
   A r=dora(s);
   if (!r) return false;
-  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
   assert(p->t==1);
   assert(p->r==0);
   return !!*((char*)p->s);
@@ -480,7 +480,7 @@ bool doriv(string s,I**v,I*len)
   if (!jt) return false;
   A r=dora(s);
   if (!r) return false;
-  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
   assert(p->t==4);
   assert(p->r<2);
   if (p->r==0) {
@@ -500,7 +500,7 @@ string dors(string s)
   if (!jt) return "";
   A r=dora(s);
   if (!r) return "";
-  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
   assert(p->t==2);
   assert(p->r<2);
   if (p->r==0)
@@ -584,7 +584,7 @@ void jsetc(C* name, C* sb, I slen)
 C* jgetc(C* name, I* len)
 {
   A r = jgeta(jt,strlen(name),name);
-  AREP p=(AREP) (sizeof(A_RECORD) + (char*)r);
+  AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
   assert(p->t==2);
   assert(p->r<2);
   if (p->r==0) {

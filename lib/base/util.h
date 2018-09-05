@@ -7,8 +7,8 @@ class QFile;
 class QString;
 
 bool cderase(QString name);
-int cfappend (QFile *, QString);
-int cfappend (QFile *, QByteArray);
+int cfappend(QFile *, QString);
+int cfappend(QFile *, QByteArray);
 QString cfcase(QString s);
 bool cfcopy(QString from, QString to);
 bool cfcreate(QString s);

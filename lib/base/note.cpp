@@ -186,7 +186,7 @@ string Note::gettabstate()
 // ---------------------------------------------------------------------
 bool Note::isNoteline(QString s)
 {
-  if(s.size()<5 || "Note" != s.left(4)) return false;
+  if (s.size()<5 || "Note" != s.left(4)) return false;
   QString t=" ('\t";
   return t.contains(s[4]);
 }
@@ -260,7 +260,7 @@ void Note::prettyprint()
     r.remove(0,1);
     n=r.indexOf(' ');
     selectline(r.mid(0,n).toInt());
-    info ("Format Script",r.mid(n+1));
+    info("Format Script",r.mid(n+1));
   }
 }
 
@@ -268,11 +268,11 @@ void Note::prettyprint()
 void Note::projectenable()
 {
   bool b=project.Id.size()>0;
-  foreach(QAction *s, menuBar->ProjectEnable)
+  foreach (QAction *s, menuBar->ProjectEnable)
     s->setEnabled(b);
   if (config.ifGit) {
     b=project.Git;
-    foreach(QAction *s, menuBar->GitEnable)
+    foreach (QAction *s, menuBar->GitEnable)
       s->setEnabled(b);
   }
 }
@@ -317,7 +317,7 @@ void Note::scriptenable()
 {
   bool b=tabs->count();
   menuBar->selMenu->setEnabled(b);
-  foreach(QAction *s, menuBar->ScriptEnable)
+  foreach (QAction *s, menuBar->ScriptEnable)
     s->setEnabled(b);
   mainBar->runallAct->setEnabled(b);
 }
@@ -386,13 +386,13 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
 
   if (s=="comment") {
     int m=0;
-    for(i=0; i<mid.size(); i++)
+    for (i=0; i<mid.size(); i++)
       if (!matchhead(comment,mid.at(i))) {
         m=1;
         break;
       }
     if (m) {
-      for(i=0; i<mid.size(); i++) {
+      for (i=0; i<mid.size(); i++) {
         p=mid.at(i);
         if (p.size())
           p=com+p;
@@ -401,7 +401,7 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
         mid.replace(i,p);
       }
     } else {
-      for(i=0; i<mid.size(); i++) {
+      for (i=0; i<mid.size(); i++) {
         p=mid.at(i);
         if (matchhead(comment,p) && (!matchhead(com+"----",p))
             && (!matchhead(com+"====",p)))
@@ -490,7 +490,7 @@ QString Note::select_line_note(QString txt,int *ppos, int *plen)
       lns.removeAt(n);
     } else
       cnt=lns.size()-row-1;
-    for(i=row; i<row+cnt; i++)
+    for (i=row; i<row+cnt; i++)
       if (lns[i]==end2)
         lns[i]=end;
     res=lns;
@@ -535,7 +535,7 @@ void Note::select_text(QString s)
     QString lc=mid.toLower();
     mid=mid.toUpper();
     for (i=0; i<mid.size(); i++)
-      if(mid[i]==old[i]) mid[i]=lc[i];
+      if (mid[i]==old[i]) mid[i]=lc[i];
   }
   replacetext(e,hdr+mid+ftr);
   e->settop(config.filetop_get(e->fname));
@@ -636,7 +636,7 @@ void Note::settitle(QString file, bool mod)
     f = s;
   else
     f = project.projectname(file);
-  setWindowTitle ("[*]" + f + " - " + n + EditText);
+  setWindowTitle("[*]" + f + " - " + n + EditText);
   setWindowModified(mod);
 }
 

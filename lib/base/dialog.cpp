@@ -123,13 +123,13 @@ void dialogprint(QWidget *w,QWidget *d)
     return;
   if (d) {
     if (d==tedit) {
-      if(config.Printer->printRange()==(QPrinter::Selection))
+      if (config.Printer->printRange()==(QPrinter::Selection))
         tedit->print(config.Printer);
       else
         tedit->printPreview(config.Printer);
     } else {
       PlainTextEdit *p=(PlainTextEdit *)d;
-      if(config.Printer->printRange()==(QPrinter::Selection))
+      if (config.Printer->printRange()==(QPrinter::Selection))
         p->print(config.Printer);
       else
         p->printPreview(config.Printer);
@@ -178,9 +178,9 @@ QString getprojectpath()
     return project.Path;
   QString r;
   if (config.UserFolderKeys.contains("Projects"))
-    r=cpath ("~Projects");
+    r=cpath("~Projects");
   else if (config.UserFolderKeys.contains("User"))
-    r=cpath ("~User");
+    r=cpath("~User");
   else if (!config.UserFolderKeys.isEmpty())
     r= config.UserFolderValues.at(0);
   else

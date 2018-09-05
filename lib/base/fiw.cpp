@@ -429,7 +429,7 @@ void Fiw::search_replace(int d)
     Win->setcurpos(pos);
 
     s=QString::number(count) + " replacement";
-    if(count>1) s+='s';
+    if (count>1) s+='s';
     s+=" made";
     finfo(s);
   }

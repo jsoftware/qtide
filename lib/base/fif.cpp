@@ -204,7 +204,7 @@ void Fif::on_found_itemActivated(QListWidgetItem * item)
   s=item->text();
   n=s.indexOf(":");
   f=cpath(Path)+"/"+s.left(n);
-  if(!Fileonly) {
+  if (!Fileonly) {
     r=s.indexOf(":",n+1);
     p=s.mid(n+1,r-n-1).toInt();
   }
@@ -309,7 +309,7 @@ void Fif::setpathlist(QString p)
   QStringList r;
   if (p.isEmpty())
     p=(Path.isEmpty()) ? project.Folder : Path;
-  while(p.size()) {
+  while (p.size()) {
     r.append(p);
     p=cfpath(p);
   }

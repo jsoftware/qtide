@@ -192,10 +192,10 @@ void Tedit::keyPressEvent(QKeyEvent *e)
   if (shift) {
     switch (key) {
     case Qt::Key_Up :
-      promptreplace(dlog_scroll (-1));
+      promptreplace(dlog_scroll(-1));
       break;
     case Qt::Key_Down :
-      promptreplace(dlog_scroll (1));
+      promptreplace(dlog_scroll(1));
       break;
     default:
       TextEdit::keyPressEvent(e);

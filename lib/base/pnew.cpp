@@ -151,10 +151,10 @@ void Pnew::on_create_clicked()
     p.append("init");
 
   p+=other->text().split(" ",QString::SkipEmptyParts);
-  for(i=0; i<p.size(); i++)
+  for (i=0; i<p.size(); i++)
     p.replace(i,defext(p.at(i)));
   p.removeDuplicates();
-  foreach(QString m,p)
+  foreach (QString m,p)
     cfcreate(Dir->filePath(m));
 
   t=config.DefCCmt;

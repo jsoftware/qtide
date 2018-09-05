@@ -52,7 +52,7 @@ QString cpath(QString s)
 
   if ((s.size() == 0) || isroot(s))
     return cfcase(s);
-  t=(int) (s.at(0)=='~');
+  t=(int)(s.at(0)=='~');
   int n = s.indexOf('/');
   if (n < 0) {
     f=s.mid(t);
@@ -113,7 +113,7 @@ QStringList folder_tree1(QString b,QString s,QStringList f)
   QDir d(t);
   d.setNameFilters(f);
   QStringList r=d.entryList(QDir::Files|QDir::Readable);
-  for(int i=0; i<r.size(); i++)
+  for (int i=0; i<r.size(); i++)
     r.replace(i,t+r.at(i));
 
   QDirIterator p(t,QDir::Dirs|QDir::NoDotAndDotDot);
@@ -185,7 +185,7 @@ QString getcmd(QString mode,QString t)
   int i=0,p=0,s=(int)v.size();
   for (; i<s; i++) {
     if (c[i]==')') p=i;
-    if (! (isalnum(c[i]) || c[i]==')' || c[i]=='.')) break;
+    if (!(isalnum(c[i]) || c[i]==')' || c[i]=='.')) break;
   }
   if (p==0) return mode + ")" + t;
   size_t b = v.find_last_of(')',p-1);
@@ -272,7 +272,7 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
   return rc;
 }
 
-// --------------------------------------// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
 // get parent for message box
 QWidget *getmbparent()
 {
@@ -459,7 +459,7 @@ void openj(const char *s)
   QString f(s);
   f=f.trimmed();
   if (f.isEmpty()) return;
-  if(!cfexist(f)) {
+  if (!cfexist(f)) {
     info("Open","Not found: "+f);
     return;
   }
@@ -817,7 +817,7 @@ void writewinstate(QWidget *w)
 void xdiff(QString s,QString t)
 {
   if (config.XDiff.size()==0) {
-    info ("External Diff","First define XDiff in the config");
+    info("External Diff","First define XDiff in the config");
     return;
   }
   QStringList a;

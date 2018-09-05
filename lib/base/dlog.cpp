@@ -224,11 +224,11 @@ QString dlog_scroll(int m)
   QString s;
   len = InputLog.size();
   if (len == 0) return "";
-  pos = max (0, min(len,InputLogPos + m));
+  pos = max(0, min(len,InputLogPos + m));
   if (pos == InputLogPos) return "";
   InputLogPos = pos;
   if (InputLogPos == len)
-    s = InputLog.at (len - 1);
+    s = InputLog.at(len - 1);
   else
     s = InputLog.at(InputLogPos);
   return config.DefIndent + s;
@@ -267,7 +267,7 @@ QStringList qsremdups(const QStringList list)
 QStringList qsreverse(const QStringList list)
 {
   QStringList r;
-  for(int i=list.size()-1; i>=0; i--)
+  for (int i=list.size()-1; i>=0; i--)
     r.append(list.at(i));
   return r;
 }

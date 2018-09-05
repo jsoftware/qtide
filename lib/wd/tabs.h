@@ -25,6 +25,7 @@ public:
 
 private slots:
   void currentChanged(int index);
+  void mycornerClicked();
   void tabCloseRequested(int index);
 
 };

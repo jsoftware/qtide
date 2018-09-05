@@ -49,7 +49,7 @@ Psel::Psel()
   h->addWidget(b);
   v->addLayout(h);
 
-  setLayout (v);
+  setLayout(v);
   setWindowTitle("Open Project");
 
   if (Pxywh.isEmpty())

@@ -145,7 +145,7 @@ void Style::set(QString s)
   p.removeAll("italic");
 
   if (p.size()!=3) {
-    info ("Style","Invalid style setting: " + s);
+    info("Style","Invalid style setting: " + s);
     return;
   }
   color=QColor(p.at(0).toInt(),p.at(1).toInt(),p.at(2).toInt());

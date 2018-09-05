@@ -111,7 +111,7 @@ void Jcon::cmdSentences()
   if (runsentences) return;
   runsentences=true;
   string s;
-  while(!Sentence.empty()) {
+  while (!Sentence.empty()) {
     s=Sentence.front();
     Sentence.pop_front();
     cmdSentence(s);
@@ -137,21 +137,21 @@ int Jcon::init(int argc, char* argv[])
   int flag=0;
   int forceavx=0;
 
-  if(argc>=3&&!strcmp(argv[1],"-lib")&&'-'!=*(argv[2])) flag=1;
-  else if(!flag&&argc>=2&&!strcmp(argv[1],"-avx")) forceavx=1;  // avx
-  else if(!flag&&argc>=2&&!strcmp(argv[1],"-noavx")) forceavx=2;  // no avx
+  if (argc>=3&&!strcmp(argv[1],"-lib")&&'-'!=*(argv[2])) flag=1;
+  else if (!flag&&argc>=2&&!strcmp(argv[1],"-avx")) forceavx=1; // avx
+  else if (!flag&&argc>=2&&!strcmp(argv[1],"-noavx")) forceavx=2; // no avx
   if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],flag?argv[2]:(char*)"",forceavx);  // get path to JFE folder
-  if(argc>=2&&(!strcmp(argv[1],"-lib")||forceavx)) { // remove processed arg
+  if (argc>=2&&(!strcmp(argv[1],"-lib")||forceavx)) { // remove processed arg
     int i;
     int n=(flag)?2:1;
-    for(i=1; i<argc-n; ++i) {
+    for (i=1; i<argc-n; ++i) {
       argv[i]=argv[i+n];
     }
     argc=argc-n;
   }
 
   jt=jeload(callbacks);
-  if(!jt && (void *)-1==jdlljt) {
+  if (!jt && (void *)-1==jdlljt) {
     char m[1000];
     jefail(m), fputs(m,stderr);
     exit(1);
@@ -164,9 +164,9 @@ int Jcon::init(int argc, char* argv[])
   adadbreak=(char**)jt; // first address in jt is address of breakdata
   signal(SIGINT,sigint);
 
-  if(argc==2&&!strcmp(argv[1],"-jprofile"))
+  if (argc==2&&!strcmp(argv[1],"-jprofile"))
     type=3;
-  else if(argc>2&&!strcmp(argv[1],"-jprofile"))
+  else if (argc>2&&!strcmp(argv[1],"-jprofile"))
     type=1;
   else
     type=0;
@@ -201,10 +201,10 @@ char* _stdcall Jinput(J jt, char* p)
     // On initial entry to suspension, purge sentences typed ahead by the user.
     // but DO NOT remove calls to wdhandler[x], because some event sequences
     // such as mbldown-mblup-mbldbl must be kept intact
-    for(size_t i = jcon->Sentence.size(); i>0; --i) {
+    for (size_t i = jcon->Sentence.size(); i>0; --i) {
       string s=jcon->Sentence.front();
       jcon->Sentence.pop_front();
-      if(s.find("wdhandler") != string::npos)jcon->Sentence.push_back(s);
+      if (s.find("wdhandler") != string::npos)jcon->Sentence.push_back(s);
     }
     jecallback=true;
   }
@@ -235,7 +235,7 @@ void _stdcall Joutput(J jt,int type, char* s)
 {
   Q_UNUSED(jt);
 
-  if(MTYOEXIT==type) {
+  if (MTYOEXIT==type) {
     state_quit();
     evloop->exit((intptr_t)s);
 #ifdef _WIN32
@@ -266,7 +266,7 @@ QString runshowclean(QString s)
   int n=s.indexOf("output_jrx_=:");
   if (n>0)
     s.remove(n,13);
-  return(s);
+  return (s);
 }
 
 // ---------------------------------------------------------------------

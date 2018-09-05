@@ -82,23 +82,23 @@ bool snapshot1(bool force, QString today, QString path)
 
 // force snap
   if (force) {
-    if (d.size()>0 && ss_match (p + d.last(),path)) {
+    if (d.size()>0 && ss_match(p + d.last(),path)) {
       ss_info("Last snapshot matches current project.");
       return true;
     }
     if (donetoday) {
-      QString t(QString("000%1" ).arg(1+d.last().right(3).toInt()));
+      QString t(QString("000%1").arg(1+d.last().right(3).toInt()));
       seq=t.right(3);
     }
-    ss_make (path,pfx + seq);
+    ss_make(path,pfx + seq);
     ss_info("New snapshot: " + cfsname(pfx + seq));
 
   }
 // auto snap
   else {
     if (donetoday) return true;
-    if (d.size()>0 && ss_match (p + d.last(),path)) return true;
-    ss_make (path,pfx + seq);
+    if (d.size()>0 && ss_match(p + d.last(),path)) return true;
+    ss_make(path,pfx + seq);
   }
 
   for (int i=0; i<d.size()-config.Snapshots; i++)
@@ -141,8 +141,8 @@ QStringList ss_files(QString s)
 
   QStringList x=cflist(s,config.Snapshotx);
   QStringList r;
-  foreach(QString s,y)
-    if(!x.contains(s))
+  foreach (QString s,y)
+    if (!x.contains(s))
       r << s;
   return r;
 }

@@ -25,7 +25,7 @@ QString Compare::comp(QStringList x,QStringList y)
 
   XY=x+y;
   n=x.size();
-  if(n==0) return "empty left argument";
+  if (n==0) return "empty left argument";
   X.resize(n);
   for (i=0; i<n; i++)
     X.replace(i,XY.indexOf(x.at(i)));
@@ -35,7 +35,7 @@ QString Compare::comp(QStringList x,QStringList y)
     NX.replace(i,i);
 
   n=y.size();
-  if(n==0) return "empty right argument";
+  if (n==0) return "empty right argument";
   Y.resize(n);
   for (i=0; i<n; i++)
     Y.replace(i,XY.indexOf(y.at(i)));
@@ -59,17 +59,17 @@ QString Compare::comp(QStringList x,QStringList y)
     ry.append("1 [" + QString::number(n) + "] " + XY.at(AY.at(n)));
   }
 
-  for(i=0; i<SX.size(); i++)
+  for (i=0; i<SX.size(); i++)
     SX.replace(i,SX.at(i)*2);
 
-  for(i=0; i<SY.size(); i++)
+  for (i=0; i<SY.size(); i++)
     SY.replace(i,1+SY.at(i)*2);
 
   SX=SX+SY;
   qSort(SX);
 
   m=n=0;
-  for(i=0; i<SX.size(); i++)
+  for (i=0; i<SX.size(); i++)
     if (SX.at(i)%2)
       r.append(ry.at(n++));
     else

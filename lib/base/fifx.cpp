@@ -14,14 +14,14 @@ void Fif::search()
 
   QStringList r;
   if (Search.isEmpty()) {
-    finfo ("No search defined");
+    finfo("No search defined");
     return;
   }
   r=searchdo();
   found->clear();
   found->addItems(r);
 
-  if(!ifResults) {
+  if (!ifResults) {
 #ifndef SMALL_SCREEN
     QSize s=size();
     resize(s.width(),qMax(Pos[3],s.height()+100));
@@ -98,7 +98,7 @@ QStringList Fif::searchfile(QString file)
       }
     }
   }
-  if(hit.size()==0) return r;
+  if (hit.size()==0) return r;
   return searchformat(file,hit,dat);
 }
 
@@ -134,7 +134,7 @@ QStringList Fif::searchformat(QString file,QList<int>hit, QString txt)
   hit=lineindex(hit,txt);
   hit=removedups(hit);
   QStringList lines=txt.split("\n");
-  foreach(int i,hit)
+  foreach (int i,hit)
     r.append(QString::number(i) + ": " + lines.at(i));
   r=qslprependeach(file+":",r);
   return r;
@@ -148,7 +148,7 @@ QList<int> Fif::lineindex(const QList<int> hit,const QString txt)
   QList<int> r;
   QList<int> end=lineends(txt);
   for (i=0; i<hit.size(); i++) {
-    while(end.at(p)<hit.at(i))
+    while (end.at(p)<hit.at(i))
       p++;
     r.append(p);
   }
@@ -161,7 +161,7 @@ QList<int> Fif::lineends(const QString txt)
 {
   int n,p=0;
   QList<int>r;
-  while(0<=(n=txt.indexOf('\n',p))) {
+  while (0<=(n=txt.indexOf('\n',p))) {
     r.append(n);
     p=n+1;
   }
@@ -178,7 +178,7 @@ QList<int> Fif::removedups(const QList<int> hit)
   if (hit.size()==0) return r;
   p=hit.at(0);
   r.append(p);
-  for(int i=1; i<hit.size(); i++) {
+  for (int i=1; i<hit.size(); i++) {
     q=hit.at(i);
     if (p!=q) r.append((p=q));
   }

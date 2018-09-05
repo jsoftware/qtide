@@ -41,11 +41,11 @@ void Note::runline(bool advance, bool show)
     c.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,1);
     c.movePosition(QTextCursor::StartOfBlock,QTextCursor::MoveAnchor,1);
     e->setTextCursor(c);
-    if(c.block().text().trimmed().isEmpty()) {
+    if (c.block().text().trimmed().isEmpty()) {
       QTextCursor cnext=c;
       while (len>++row) {
         cnext.movePosition(QTextCursor::NextBlock,QTextCursor::MoveAnchor,1);
-        if(cnext.block().text().trimmed().size()) break;
+        if (cnext.block().text().trimmed().size()) break;
         c=cnext;
       }
     }

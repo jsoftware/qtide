@@ -421,9 +421,9 @@ void Config::toggleascii()
 {
   Ascii=!Ascii;
   term->menuBar->viewasciiAct->setChecked(Ascii);
-  if(note) {
+  if (note) {
     note->menuBar->viewasciiAct->setChecked(Ascii);
-    if(note2)
+    if (note2)
       note2->menuBar->viewasciiAct->setChecked(Ascii);
   }
   string s="0 0$boxdraw_j_ ";
@@ -515,11 +515,11 @@ void state_init_args(int *argc, char *argv[])
 {
   config.SingleWin=false;
   int n=*argc;
-  for(int i=1; i<n; i++)
+  for (int i=1; i<n; i++)
     if (!strcmp(argv[i],"-singlewin")) {
       config.SingleWin=true;
       *argc=n-1;
-      for(int j=i+1; j<n; j++)
+      for (int j=i+1; j<n; j++)
         argv[j-1]=argv[j];
       return;
     }
@@ -535,16 +535,6 @@ void state_init_resource()
 void state_quit()
 {
   term->cleantemp();
-  return;
-  wdreset();
-  if (drawobj) delete drawobj;
-#ifndef QT_NO_PRINTER
-  if (Printer) delete Printer;
-  if (prtobj) delete prtobj;
-#endif
-  if (term) {
-    term->deleteLater();
-  }
 }
 
 // ---------------------------------------------------------------------
@@ -595,7 +585,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
-  if(FHS) {
+  if (FHS) {
     int i;
 #ifdef _WIN32
     i=5+LibName.lastIndexOf(".dll.");

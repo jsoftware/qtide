@@ -60,9 +60,9 @@ bool cderase(QString name)
   bool r;
   QDir dir(name);
   if (!dir.exists(name)) return true;
-  Q_FOREACH(QFileInfo info,dir.entryInfoList(
-              QDir::NoDotAndDotDot | QDir::System | QDir::Hidden
-              | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+  Q_FOREACH (QFileInfo info,dir.entryInfoList(
+               QDir::NoDotAndDotDot | QDir::System | QDir::Hidden
+               | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
     if (info.isDir())
       r = cderase(info.absoluteFilePath());
     else
@@ -73,7 +73,7 @@ bool cderase(QString name)
 }
 
 // ---------------------------------------------------------------------
-int cfappend (QFile *file, QString s)
+int cfappend(QFile *file, QString s)
 {
   if (!file->open(QIODevice::Append | QIODevice::Text))
     return 0;
@@ -84,7 +84,7 @@ int cfappend (QFile *file, QString s)
 }
 
 // ---------------------------------------------------------------------
-int cfappend (QFile *file, QByteArray b)
+int cfappend(QFile *file, QByteArray b)
 {
   if (!file->open(QIODevice::Append))
     return 0;
@@ -162,7 +162,7 @@ QStringList cflistfull(QString b,QString filters)
 {
   QStringList r=cflist(b,filters);
   QString t=b+"/";
-  for(int i=0; i<r.size(); i++)
+  for (int i=0; i<r.size(); i++)
     r.replace(i,t+r.at(i));
   return r;
 }
@@ -179,7 +179,7 @@ QStringList cflisttext(QString path)
   foreach (QString s,p) {
     f.setFileName(s);
     if (f.size() < 1e6 && f.open(QIODevice::ReadOnly)) {
-      if(isutf8(f.readAll()))
+      if (isutf8(f.readAll()))
         r.append(s);
       f.close();
     }
@@ -255,7 +255,7 @@ QStringList cfreadx(QString s)
   QStringList r=cfreads(s);
   QString t;
   r.removeDuplicates();
-  for(int i=r.size()-1; i>=0; i--) {
+  for (int i=r.size()-1; i>=0; i--) {
     t=r.at(i);
     if (t.isEmpty() || t.at(0)=='#' || t.mid(0,3)=="NB.")
       r.removeAt(i);
@@ -272,7 +272,7 @@ bool cfrmdir(const QString & d)
   QDir dir(d);
 
   if (dir.exists(d)) {
-    Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+    Q_FOREACH (QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
       if (info.isDir())
         r = cfrmdir(info.absoluteFilePath());
       else
@@ -404,9 +404,9 @@ QStringList getfilters(QString s)
   QString p;
   QRegExp sep("(\\s|,)");
   QStringList f=s.split(sep,QString::SkipEmptyParts);
-  for(i=0; i<f.size(); i++) {
+  for (i=0; i<f.size(); i++) {
     p=f.at(i);
-    if(!p.contains("*"))
+    if (!p.contains("*"))
       f.replace(i,"*."+p);
   }
   return f;
@@ -461,7 +461,7 @@ QString intlist2qs(QList<int> p)
 {
   QString s("");
   int n=p.size();
-  for(int i=0; i<n; i++) {
+  for (int i=0; i<n; i++) {
     if (i>0) s.append(" ");
     s.append(QString::number(p[i]));
   }
@@ -474,8 +474,8 @@ bool isint(const string s)
 {
   int n=(int)s.size();
   if (n==0) return false;
-  for(int i=0; i<n; i++)
-    if(!isdigit(s[i])) return false;
+  for (int i=0; i<n; i++)
+    if (!isdigit(s[i])) return false;
   return true;
 }
 
@@ -538,12 +538,12 @@ int matchparens(QChar mode, QString p)
   char c;
   int n, len=(int)s.size();
   string t="";
-  for(int i=0; i<len; i++) {
-    if(s[i] == '(' || s[i] == '[' || s[i] == '{')
+  for (int i=0; i<len; i++) {
+    if (s[i] == '(' || s[i] == '[' || s[i] == '{')
       t.push_back(s[i]);
-    else if(s[i] == ')' || s[i] == ']' || s[i] == '}') {
+    else if (s[i] == ')' || s[i] == ']' || s[i] == '}') {
       n=(int)t.size()-1;
-      if(n<0)
+      if (n<0)
         return 2;
       else {
         c=t.at(n);
@@ -580,7 +580,7 @@ QString p2q(QList<int> n)
 {
   QString s("");
   s.append(QString("%1").arg(n[0]));
-  for(int i=1; i<4; i++)
+  for (int i=1; i<4; i++)
     s.append(" " + QString("%1").arg(n[i]));
   return s;
 }
@@ -687,7 +687,7 @@ QString qstaketo(QString s,QString c)
 QStringList qsldtbeach(QStringList s)
 {
   QStringList r;
-  for(int i=0; i<s.size(); i++)
+  for (int i=0; i<s.size(); i++)
     r.append(dtb(s.at(i)));
   return r;
 }
@@ -696,7 +696,7 @@ QStringList qsldtbeach(QStringList s)
 QStringList qsldropeach(int n,QStringList s)
 {
   QStringList r;
-  for(int i=0; i<s.size(); i++)
+  for (int i=0; i<s.size(); i++)
     r.append(s.at(i).mid(n));
   return r;
 }
@@ -715,7 +715,7 @@ QStringList qslexists(QStringList s)
 QStringList qslfcase(QStringList s)
 {
   QStringList r;
-  for(int i=0; i<s.size(); i++)
+  for (int i=0; i<s.size(); i++)
     r.append(cfcase(s.at(i)));
   return r;
 }
@@ -724,7 +724,7 @@ QStringList qslfcase(QStringList s)
 QStringList qslprependeach(QString p,QStringList s)
 {
   QStringList r;
-  for(int i=0; i<s.size(); i++)
+  for (int i=0; i<s.size(); i++)
     r.append(p+s.at(i));
   return r;
 }
@@ -733,7 +733,7 @@ QStringList qslprependeach(QString p,QStringList s)
 QStringList qslreverse(QStringList s)
 {
   int i,n=s.size();
-  for(i=0; i<n/2; i++) s.swap(i,n-1-i);
+  for (i=0; i<n/2; i++) s.swap(i,n-1-i);
   return s;
 }
 
@@ -755,7 +755,7 @@ QStringList qsltrim(QStringList p)
 QStringList qsltrimeach(QStringList s)
 {
   QStringList r;
-  for(int i=0; i<s.size(); i++)
+  for (int i=0; i<s.size(); i++)
     r.append(s.at(i).simplified());
   return r;
 }
@@ -764,7 +764,7 @@ QStringList qsltrimeach(QStringList s)
 // dyadic -. for QStringList
 QStringList qsless(QStringList a,QStringList w)
 {
-  foreach(QString s, w)
+  foreach (QString s, w)
     if (a.contains(s)) a.removeAll(s);
   return a;
 }
@@ -773,7 +773,7 @@ QStringList qsless(QStringList a,QStringList w)
 // return true if all items are numbers
 bool qsnumeric(QStringList a)
 {
-  foreach(QString s,a)
+  foreach (QString s,a)
     if (s.size() && s.at(0)!='_' && s.at(0)!='-' && s.at(0)!='0' && s.at(0)!='1' && s.at(0)!='2' && s.at(0)!='3' && s.at(0)!='4' && s.at(0)!='5' && s.at(0)!='6' && s.at(0)!='7' && s.at(0)!='8' && s.at(0)!='9') return false;
   return true;
 }

@@ -286,9 +286,9 @@ void Dirm::dmsetdirs(QString s,QString t,bool refresh)
   Dirs.prepend(s);
   Dirs.removeAll("");
   Dirs.removeDuplicates();
-  if(Max<Dirs.size())
+  if (Max<Dirs.size())
     Dirs=Dirs.mid(0,Max);
-  if(refresh) {
+  if (refresh) {
     source->clear();
     source->addItems(Dirs);
     source->setCurrentIndex(0);
@@ -303,7 +303,7 @@ void Dirm::dmsetdirs(QString s,QString t,bool refresh)
 void Dirm::dmshowfind()
 {
   found->clear();
-  if(Found.size()) {
+  if (Found.size()) {
     enablefound(true);
     found->addItems(Found);
   } else {
@@ -379,11 +379,11 @@ void Dirm::init_std()
   ltarget->setText("Target:");
   ltype->setText("Type:");
   source->addItems(Dirs);
-  if(source->count()>0) source->setCurrentIndex(0);
+  if (source->count()>0) source->setCurrentIndex(0);
   target->addItems(Dirs);
-  if(target->count()>1) target->setCurrentIndex(1);
+  if (target->count()>1) target->setCurrentIndex(1);
   type->addItems(config.DMTypes);
-  if(type->count()) type->setCurrentIndex(TypeInx);
+  if (type->count()) type->setCurrentIndex(TypeInx);
   subdir->setChecked(Subdir);
 }
 
@@ -492,7 +492,7 @@ void Dirm::on_source_currentIndexChanged(int dummy)
 {
   Q_UNUSED(dummy);
   int n;
-  if(NoEvents) return;
+  if (NoEvents) return;
   if (Tab=="std") {
     if (source->currentText()==target->currentText()) {
       n=target->currentIndex();
@@ -509,7 +509,7 @@ void Dirm::on_source_currentIndexChanged(int dummy)
 void Dirm::on_subdir_stateChanged()
 {
   Subdir=subdir->isChecked();
-  if(NoEvents) return;
+  if (NoEvents) return;
   match_refresh(1);
 }
 
@@ -518,7 +518,7 @@ void Dirm::on_target_currentIndexChanged(int dummy)
 {
   Q_UNUSED(dummy);
   int n;
-  if(NoEvents) return;
+  if (NoEvents) return;
   if (Tab=="std") {
     if (source->currentText()==target->currentText()) {
       n=source->currentIndex();
@@ -568,7 +568,7 @@ void Dirm::on_type_currentIndexChanged(int dummy)
 {
   Q_UNUSED(dummy);
   int n;
-  if(NoEvents) return;
+  if (NoEvents) return;
   if (Tab=="snp") {
     if (type->currentText()==target->currentText()) {
       n=target->currentIndex();
@@ -639,7 +639,7 @@ Favs::Favs(Dirm *d)
   c->setTextAlignment(Qt::AlignLeft);
   w->setHorizontalHeaderItem(1,c);
 
-  for(i=0; i<rws; i++) {
+  for (i=0; i<rws; i++) {
     c=new QTableWidgetItem();
     c->setText(config.DMFavorites.at(2*i));
     w->setItem(i,0,c);

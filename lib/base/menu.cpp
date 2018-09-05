@@ -382,8 +382,8 @@ void Menu::createlaunchMenu(QString m)
   QAction *a;
   runMenu->addSeparator();
   lpadMenu = runMenu->addMenu("Launch Pad");
-  foreach(QString s,config.LaunchPadKeys) {
-    if(s=="=")
+  foreach (QString s,config.LaunchPadKeys) {
+    if (s=="=")
       lpadMenu->addSeparator();
     else {
       a=makeact(config.LaunchPadPrefix+s,s,"");
@@ -721,7 +721,7 @@ void Note::on_filecloseAct_triggered()
 void Note::on_filedeleteAct_triggered()
 {
   QString m="OK to delete: " + toprojectname(editPage()->fname) + "?";
-  if(!queryOK("File Delete",m)) return;
+  if (!queryOK("File Delete",m)) return;
   QString f=editPage()->fname;
   tabclose(editIndex());
   cfdelete(f);
@@ -740,9 +740,9 @@ void Note::on_filecloseotherAct_triggered()
   int count,i,index;
   count=tabs->count();
   index=editIndex();
-  for(i=0; i<index; i++)
+  for (i=0; i<index; i++)
     tabclose(0);
-  for(i=1; i<count-index; i++)
+  for (i=1; i<count-index; i++)
     tabclose(1);
 }
 
@@ -816,20 +816,20 @@ void Note::on_fileopentempAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_fileprintAct_triggered()
 {
-  if(editIndex()>=0)
+  if (editIndex()>=0)
     dialogprint(note,editPage());
 }
 // ---------------------------------------------------------------------
 void Note::on_fileprintpreviewAct_triggered()
 {
-  if(editIndex()>=0)
+  if (editIndex()>=0)
     dialogprintpreview(note,editPage());
 }
 
 // ---------------------------------------------------------------------
 void Note::on_fileprintallAct_triggered()
 {
-  if(editIndex()>=0)
+  if (editIndex()>=0)
     tabs->tabprintall();
 }
 #endif
@@ -1263,49 +1263,49 @@ void Term::openconfig(QString s)
 // ---------------------------------------------------------------------
 void Term::on_cfgbaseAct_triggered()
 {
-  openconfig ("base.cfg");
+  openconfig("base.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgcaseAct_triggered()
 {
-  openconfig ("case.cfg");
+  openconfig("case.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgdirmAct_triggered()
 {
-  openconfig ("dirmatch.cfg");
+  openconfig("dirmatch.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgfoldersAct_triggered()
 {
-  openconfig ("folders.cfg");
+  openconfig("folders.cfg");
 }
 
 
 // ---------------------------------------------------------------------
 void Term::on_cfglaunchpadAct_triggered()
 {
-  openconfig ("launch.cfg");
+  openconfig("launch.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgopenallAct_triggered()
 {
-  openconfig ("style.cfg");
-  openconfig ("qtide.cfg");
-  openconfig ("launch.cfg");
-  openconfig ("folders.cfg");
-  openconfig ("dirmatch.cfg");
-  openconfig ("base.cfg");
+  openconfig("style.cfg");
+  openconfig("qtide.cfg");
+  openconfig("launch.cfg");
+  openconfig("folders.cfg");
+  openconfig("dirmatch.cfg");
+  openconfig("base.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfgqtideAct_triggered()
 {
-  openconfig ("qtide.cfg");
+  openconfig("qtide.cfg");
 }
 
 // ---------------------------------------------------------------------
@@ -1319,13 +1319,13 @@ void Term::on_cfgstartupAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_cfgstyleAct_triggered()
 {
-  openconfig ("style.cfg");
+  openconfig("style.cfg");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_cfguserkeysAct_triggered()
 {
-  openconfig ("userkeys.cfg");
+  openconfig("userkeys.cfg");
 }
 
 // ---------------------------------------------------------------------

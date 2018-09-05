@@ -38,8 +38,8 @@ void Config::dirmatch_init()
 
     if (matchhead("DMTypes=",v)) {
       DMTypes.clear();
-      while(s.size()) {
-        if(s.at(0).at(0)!=' ') break;
+      while (s.size()) {
+        if (s.at(0).at(0)!=' ') break;
         DMTypes.append(s.at(0).trimmed());
         s.removeFirst();
       }
@@ -48,8 +48,8 @@ void Config::dirmatch_init()
 
     if (matchhead("DMFavorites=",v)) {
       DMFavorites.clear();
-      while(s.size()) {
-        if(s.at(0).at(0)!=' ') break;
+      while (s.size()) {
+        if (s.at(0).at(0)!=' ') break;
         DMFavorites.append(s.at(0).trimmed());
         s.removeFirst();
       }
@@ -61,12 +61,12 @@ void Config::dirmatch_init()
     }
   }
 
-  for(i=0; i<DMTypes.size(); i++) {
+  for (i=0; i<DMTypes.size(); i++) {
     v=DMTypes.at(i);
     n=v.indexOf(' ');
     s.clear();
     t.clear();
-    if(n>0) {
+    if (n>0) {
       s=v.mid(n).remove(' ').split(',',QString::SkipEmptyParts);
       s=qslprependeach("*.",s);
       t=s.join(",");
@@ -74,7 +74,7 @@ void Config::dirmatch_init()
     }
     DMTypex.append(t);
     if (v==DMType) DMTypeIndex=i;
-    if(t.size())
+    if (t.size())
       v+=" (" + t + ")";
     DMTypes.replace(i,v);
   }
@@ -128,7 +128,7 @@ void Config::launch_init()
   QString s;
   QStringList t;
   t=cfreadx(ConfigPath.filePath("launch.cfg"));
-  foreach(QString s,t) {
+  foreach (QString s,t) {
     i=s.indexOf(";");
     if (i<0) {
       LaunchPadKeys.append("=");
@@ -146,7 +146,7 @@ void Config::togglelinenos()
   LineNos=!LineNos;
   if (note) {
     note->setlinenos(LineNos);
-    if(note2)
+    if (note2)
       note2->setlinenos(LineNos);
   }
 }
@@ -156,7 +156,7 @@ void Config::togglelinewrap()
 {
   LineWrap=!LineWrap;
   note->setlinewrap(LineWrap);
-  if(note2)
+  if (note2)
     note2->setlinewrap(LineWrap);
 }
 
@@ -211,7 +211,7 @@ void Config::winpos_init()
     d = s.value(k,"").toString().split(' ');
     if (d.size()==4) {
       v.clear();
-      for(int i=0; i<4; i++)
+      for (int i=0; i<4; i++)
         v.append(d.at(i).toInt());
       WinPos[k]=v;
     }

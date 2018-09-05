@@ -166,7 +166,7 @@ void Ntabs::projectopen(bool openfiles)
 
   noevents(1);
   len=0;
-  if(openfiles) {
+  if (openfiles) {
     for (i=open.size()-1; i>=0; i--) {
       if (0<=tabopen1(project.fullname(open.at(i)),-1))
         len++;
@@ -199,7 +199,7 @@ void Ntabs::setfont(QFont font)
 void Ntabs::setlinenos(bool b)
 {
   Q_UNUSED(b);
-  for(int i=0; i<count(); i++)
+  for (int i=0; i<count(); i++)
     ((Nedit *)widget(i))->resizer();
   repaint();
 }
@@ -210,7 +210,7 @@ void Ntabs::setlinewrap(bool b)
   setUpdatesEnabled(false);
   PlainTextEdit::LineWrapMode
   m=b?PlainTextEdit::WidgetWidth:PlainTextEdit::NoWrap;
-  for(int i=0; i<count(); i++)
+  for (int i=0; i<count(); i++)
     ((Nedit *)widget(i))->setLineWrapMode(m);
   setUpdatesEnabled(true);
   repaint();
@@ -220,7 +220,7 @@ void Ntabs::setlinewrap(bool b)
 void Ntabs::setmodified(int index,bool b)
 {
   if (index<0) return;
-  if(index==currentIndex())
+  if (index==currentIndex())
     pnote->setWindowModified(b);
   ((Nedit *)widget(index))->document()->setModified(b);
   tabsetcolor(index,b);
@@ -311,7 +311,7 @@ int Ntabs::tabopen1(QString s,int line)
 {
   int n;
   s=cfcase(s);
-  if(note2)
+  if (note2)
     note2->fileclose(s);
   QFile *f=new QFile(s);
   if (!f->exists()) {
@@ -372,7 +372,7 @@ bool Ntabs::tabprintall()
 {
   bool r=true;
   noevents(1);
-  for(int i=0; i<count(); i++) {
+  for (int i=0; i<count(); i++) {
     r=tabprint(i);
     if (!r) break;
   }
@@ -418,7 +418,7 @@ void Ntabs::tabrestore(int index)
 {
   Nedit *e=(Nedit *)widget(index);
   QString m="OK to restore to saved: " + toprojectname(e->fname) + "?";
-  if(!queryNY("File Restore",m)) return;
+  if (!queryNY("File Restore",m)) return;
   e->setPlainText(e->text);
   setmodified(index,false);
   pnote->siderefresh();
@@ -458,7 +458,7 @@ bool Ntabs::tabsaveall()
 {
   bool r=true;
   noevents(1);
-  for(int i=0; i<count(); i++) {
+  for (int i=0; i<count(); i++) {
     r=tabsave(i);
     if (!r) break;
   }
@@ -482,13 +482,13 @@ void Ntabs::tabsaveas(int index)
   cfwrite(f,e->text);
   e->file = f; // NB. e takes ownership
   e->fname = s;
-  e->sname = cfsname(s);
+  e->sname = toprojectname(s);
   e->saved=true;
   setmodified(index,false);
   setTabText(index,e->sname);
   tabsetindex(index);
   if (recent.Files.contains(old))
-    recent.filesadd (s);
+    recent.filesadd(s);
   watcher->removePath(old);
   watcher->addPath(s);
 }
