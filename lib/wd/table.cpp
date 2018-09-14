@@ -663,7 +663,7 @@ void Table::set_cell(int r,int c,QString v)
       pb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) pb;
       w->setCellWidget(r,c,pb);
-      connect(pb,SIGNAL(clicked()),this,SLOT(on_cellClicked()));
+      connect(pb,SIGNAL(clicked()),this,SLOT(on_cellClicked_button()));
     } else
       ((QPushButton *)g)->setText(v);
   }
