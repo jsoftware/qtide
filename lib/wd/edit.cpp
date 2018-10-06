@@ -127,7 +127,9 @@ void Edit::set(string p,string v)
     w->setFocus();
     if (focusSelect) w->selectAll();
   } else if (p =="placeholder") {
+#ifdef QT53
     w->setClearButtonEnabled(true);
+#endif
     w->setPlaceholderText(s2q(remquotes(v)));
   } else if (p=="readonly") {
     w->setReadOnly(remquotes(v)!="0");
