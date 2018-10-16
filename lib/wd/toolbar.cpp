@@ -75,6 +75,20 @@ void ToolBar::makeact(QStringList opt)
 }
 
 // ---------------------------------------------------------------------
+void ToolBar::makeactright(QStringList opt)
+{
+  if (opt.size()<3) {
+    error("toolbar addright needs id, text, image: " + id);
+    return;
+  }
+  QToolBar *w=(QToolBar *)widget;
+  QWidget *spacer = new QWidget();
+  spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  w->addWidget(spacer);
+  makeact(opt);
+}
+
+// ---------------------------------------------------------------------
 string ToolBar::get(string p,string v)
 {
   return Child::get(p,v);
@@ -88,6 +102,8 @@ void ToolBar::set(string p,string v)
   QStringList opt=qsplit(v);
   if (p=="add")
     makeact(opt);
+  else if (p=="addright")
+    makeactright(opt);
   else if (p=="addsep")
     w->addSeparator();
   else if (p=="checkable")

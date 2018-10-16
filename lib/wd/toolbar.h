@@ -17,6 +17,7 @@ public:
   ToolBar(string n, string s, Form *f, Pane *p);
 
   void makeact(QStringList opt);
+  void makeactright(QStringList opt);
   string get(string p,string v);
   void set(string p,string v);
   QAction * getaction(QString id);
