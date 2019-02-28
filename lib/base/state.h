@@ -16,6 +16,8 @@ class QTextDocument;
 class QApplication;
 class QEventLoop;
 
+void curposide();
+
 class Config : public QObject
 {
 
@@ -40,6 +42,7 @@ public:
   void ini0();
   void init();
   void initide();
+  void curposide();
   QList<int> initposX(QList<int>);
   bool initide1(QString f);
   void initstyle();

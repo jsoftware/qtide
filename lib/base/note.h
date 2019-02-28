@@ -71,6 +71,7 @@ public slots:
   void on_cfgfoldersAct_triggered();
   void on_cfglaunchpadAct_triggered();
   void on_cfgopenallAct_triggered();
+  void on_cfgcurposAct_triggered();
   void on_cfgqtideAct_triggered();
   void on_cfgstartupAct_triggered();
   void on_cfgstyleAct_triggered();

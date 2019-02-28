@@ -79,6 +79,7 @@ private:
   QAction *cfgfoldersAct;
   QAction *cfglaunchpadAct;
   QAction *cfgopenallAct;
+  QAction *cfgcurposAct;
   QAction *cfgqtideAct;
   QAction *cfgstartupAct;
   QAction *cfguserkeysAct;

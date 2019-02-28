@@ -61,6 +61,7 @@ void Menu::createActions()
   cfgfoldersAct = makeact("cfgfoldersAct","Folders","");
   cfglaunchpadAct = makeact("cfglaunchpadAct","&Launch Pad","");
   cfgopenallAct = makeact("cfgopenallAct","Open All","");
+  cfgcurposAct = makeact("cfgcurposAct", "Save Current Positions", "");
   cfgqtideAct = makeact("cfgqtideAct","Qt Ide","");
   cfgstartupAct = makeact("cfgstartupAct","Startup Script","");
   cfgstyleAct = makeact("cfgstyleAct","Styles","");
@@ -244,6 +245,8 @@ void Menu::createcfgMenu()
   }
   cfgMenu->addSeparator();
   cfgMenu->addAction(cfgopenallAct);
+  cfgMenu->addSeparator();
+  cfgMenu->addAction(cfgcurposAct);
 }
 
 // ---------------------------------------------------------------------
@@ -596,6 +599,12 @@ void Note::on_cfglaunchpadAct_triggered()
 void Note::on_cfgopenallAct_triggered()
 {
   term->on_cfgopenallAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_cfgcurposAct_triggered()
+{
+	term->on_cfgcurposAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1300,6 +1309,12 @@ void Term::on_cfgopenallAct_triggered()
   openconfig("folders.cfg");
   openconfig("dirmatch.cfg");
   openconfig("base.cfg");
+}
+
+// ---------------------------------------------------------------------
+void Term::on_cfgcurposAct_triggered()
+{
+	curposide();
 }
 
 // ---------------------------------------------------------------------
