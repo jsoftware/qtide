@@ -1,0 +1,7 @@
+Documentation for dotvscode
+
+This directory is useful if you want to use the Visual Studio
+code to work with qtide source.
+
+You will need to rename it to .vscode and make sure the paths
+in c_cpp_properties.json are appropriate for your system.
