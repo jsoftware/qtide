@@ -13,3 +13,4 @@ DEFINES += JQTVERSION=\\\"jqtversion:$$JQTBUILD/$$VERSION/$$[QT_VERSION]:\\\"
 # for osx - match qmake with xcode. Get version from:
 # ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
 QMAKE_MAC_SDK = MacOSX10.13
+EXPORT_QMAKE_MAC_SDK = MacOSX10.13
