@@ -12,16 +12,16 @@ Build:
 
 Edit makeall.sh in the top level directory to set jqt path, then run.
 
-Copy the binaries and links from bin to the j8/bin directory.
+Copy the binaries and links from bin to the j9/bin directory.
 
-Edit config files and copy to the J8 config directory
+Edit config files and copy to the j9 config directory
 
 Run:
 
 Example shell script:
 
 #!/bin/bash
-J=~/j8
+J=~/j9
 cd $J
 bin/jqt "$@"
 

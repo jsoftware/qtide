@@ -218,45 +218,45 @@ void Config::init()
 // add comments and updates qtide.cfg file
 void initidec(QString f, QString t)
 {
-	QString h;
+  QString h;
 
-	h = "# Qt IDE config\n"
-		"# This file is read and written by the Qt IDE.\n"
-		"# Make changes in the same format as the original.\n"
-		"# \n"
-		"# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
+  h = "# Qt IDE config\n"
+      "# This file is read and written by the Qt IDE.\n"
+      "# Make changes in the same format as the original.\n"
+      "# \n"
+      "# BoxForm=0                    0=linedraw 1=ascii (overrides base cfg)\n"
 #ifdef TABCOMPLETION
-		"# Completion=false             if enable tab completion\n"
-		"# CompletionFile=stdlib.txt    tab completion word list\n"
+      "# Completion=false             if enable tab completion\n"
+      "# CompletionFile=stdlib.txt    tab completion word list\n"
 #endif
-		"# ConfirmClose=false           confirm session close\n"
-		"# ConfirmSave=false            confirm script save\n"
-		"# CursorWidth=1                cursor width in session windows\n"
-		"# DebugDissect=true            if Dissect included in Debug\n"
-		"# FileManager=explorer         show in file manager\n"
-		"# EscClose=false               if Esc will close a window\n"
-		"# Extensions=ijs, c cfg...     FIF file extension lists\n"
-		"# FontFamily=Menlo             term/edit font family\n"
-		"# FontSize=10                  font size\n"
-		"# FontWeight=normal            font weight: normal or bold\n"
-		"# KeepCursorPosOnRecall=false  if keep cursor position on line recall\n"
-		"# LineNumbers=false            if show line numbers\n"
-		"# MaxInputLog=100              max number in input log, 0 for none\n"
-		"# MaxRecent=15                 max number in recent files\n"
-		"# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
-		"# Snapshots=5                  number of project snapshots kept\n"
-		"# Snapshotx=                   snapshots exclusion list\n"
-		"# TabWidth=                    tab width (Qt default if empty)\n"
-		"# Terminal=cmd                 show in terminal command\n"
-		"# TermSyntaxHighlight=false    if term has syntax highlighting\n"
-		"# TrimTrailingWS=false         if remove trailing whitespace on save\n"
-		"#\n"
-		"# Initial xywh positions, with negative xy from opposite edge:\n"
-		"# Debug=-590 50 540 500        debug position\n"
-		"# Edit=600 100 750 750         edit position\n"
-		"# Term=0 0 500 600             term position\n"
-		;
-	cfwrite(f, h + "\n" + t);
+      "# ConfirmClose=false           confirm session close\n"
+      "# ConfirmSave=false            confirm script save\n"
+      "# CursorWidth=1                cursor width in session windows\n"
+      "# DebugDissect=true            if Dissect included in Debug\n"
+      "# FileManager=explorer         show in file manager\n"
+      "# EscClose=false               if Esc will close a window\n"
+      "# Extensions=ijs, c cfg...     FIF file extension lists\n"
+      "# FontFamily=Menlo             term/edit font family\n"
+      "# FontSize=10                  font size\n"
+      "# FontWeight=normal            font weight: normal or bold\n"
+      "# KeepCursorPosOnRecall=false  if keep cursor position on line recall\n"
+      "# LineNumbers=false            if show line numbers\n"
+      "# MaxInputLog=100              max number in input log, 0 for none\n"
+      "# MaxRecent=15                 max number in recent files\n"
+      "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
+      "# Snapshots=5                  number of project snapshots kept\n"
+      "# Snapshotx=                   snapshots exclusion list\n"
+      "# TabWidth=                    tab width (Qt default if empty)\n"
+      "# Terminal=cmd                 show in terminal command\n"
+      "# TermSyntaxHighlight=false    if term has syntax highlighting\n"
+      "# TrimTrailingWS=false         if remove trailing whitespace on save\n"
+      "#\n"
+      "# Initial xywh positions, with negative xy from opposite edge:\n"
+      "# Debug=-590 50 540 500        debug position\n"
+      "# Edit=600 100 750 750         edit position\n"
+      "# Term=0 0 500 600             term position\n"
+      ;
+  cfwrite(f, h + "\n" + t);
 
 }
 
@@ -402,114 +402,114 @@ void Config::initide()
 // get Term or Edit position and size
 QString getxywh(QPoint p, QSize s)
 {
-	int xf, yf, xx, yy, wf, hf;
-	QString r;
+  int xf, yf, xx, yy, wf, hf;
+  QString r;
 
-	xx = p.x();
-	xf = std::max(xx, 0);
-	yy = p.y();
-	yf = std::max(yy, 0);
-	wf = s.width();
-	if (xx < 0) wf = wf + xx;
-	hf = s.height();
-	if (yy < 0) hf = hf + yy;
-	r = QString::number(xf) + " " + QString::number(yf) + " " + QString::number(wf) + " " + QString::number(hf);
-	return r;
+  xx = p.x();
+  xf = std::max(xx, 0);
+  yy = p.y();
+  yf = std::max(yy, 0);
+  wf = s.width();
+  if (xx < 0) wf = wf + xx;
+  hf = s.height();
+  if (yy < 0) hf = hf + yy;
+  r = QString::number(xf) + " " + QString::number(yf) + " " + QString::number(wf) + " " + QString::number(hf);
+  return r;
 }
 
 // ---------------------------------------------------------------------
 // save current positions in qtide.cfg file
 void curposide()
 {
-	QString f = config.ConfigPath.filePath("qtide.cfg");
-	QSettings *s = new QSettings(f, QSettings::IniFormat);
-	QString t, w;
+  QString f = config.ConfigPath.filePath("qtide.cfg");
+  QSettings *s = new QSettings(f, QSettings::IniFormat);
+  QString t, w;
 
-	QString font = "Monospace";
-	QFont::Weight fontweight = QFont::Normal;
+  QString font = "Monospace";
+  QFont::Weight fontweight = QFont::Normal;
 
-	QString filemanager = "nautilus";
-	QString terminal = "gnome-terminal";
+  QString filemanager = "nautilus";
+  QString terminal = "gnome-terminal";
 
-	QString nt("");
-	if (note) nt = getxywh(note->pos(), note->size());
+  QString nt("");
+  if (note) nt = getxywh(note->pos(), note->size());
 
-	QString tt("");
-	tt = getxywh(term->pos(), term->size());
+  QString tt("");
+  tt = getxywh(term->pos(), term->size());
 
-	t = s->value("Position/Debug", "-590 50 540 500").toString();
-	config.DebugPos = q2p(t);
-	config.DebugPosX = config.initposX(config.DebugPos);
+  t = s->value("Position/Debug", "-590 50 540 500").toString();
+  config.DebugPos = q2p(t);
+  config.DebugPosX = config.initposX(config.DebugPos);
 
-	t = s->value("Position/Edit", "600 100 750 750").toString();
-	config.EditPos = q2p(t);
-	config.EditPosX = config.initposX(config.EditPos);
+  t = s->value("Position/Edit", "600 100 750 750").toString();
+  config.EditPos = q2p(t);
+  config.EditPosX = config.initposX(config.EditPos);
 
 #ifdef __linux__
-	t = s->value("Position/Term", "0 20 500 600").toString();
+  t = s->value("Position/Term", "0 20 500 600").toString();
 #else
-	t = s->value("Position/Term", "0 0 500 600").toString();
+  t = s->value("Position/Term", "0 0 500 600").toString();
 #endif
-	config.TermPos = q2p(t);
-	config.TermPosX = config.initposX(config.TermPos);
+  config.TermPos = q2p(t);
+  config.TermPosX = config.initposX(config.TermPos);
 
-	delete s;
-	w = (fontweight == QFont::Normal) ? "normal" : "bold";
+  delete s;
+  w = (fontweight == QFont::Normal) ? "normal" : "bold";
 #ifdef _WIN32
-	QFile temp(config.ConfigPath.filePath("qtide.cfg.0"));
+  QFile temp(config.ConfigPath.filePath("qtide.cfg.0"));
 #else
-	QTemporaryFile temp;
-	temp.open();
-	temp.close();
+  QTemporaryFile temp;
+  temp.open();
+  temp.close();
 #endif
-	s = new QSettings(temp.fileName(), QSettings::IniFormat);
+  s = new QSettings(temp.fileName(), QSettings::IniFormat);
 #ifdef TABCOMPLETION
-	s->setValue("Session/Completion", Completion);
-	s->setValue("Session/CompletionFile", CompletionFile);
+  s->setValue("Session/Completion", Completion);
+  s->setValue("Session/CompletionFile", CompletionFile);
 #endif
-	s->setValue("Session/BoxForm", config.BoxForm);
-	s->setValue("Session/ConfirmClose", config.ConfirmClose);
-	s->setValue("Session/ConfirmSave", config.ConfirmSave);
-	s->setValue("Session/CursorWidth", config.CursorWidth);
-	s->setValue("Session/DebugDissect", config.DebugDissect);
-	s->setValue("Session/EscClose", config.EscClose);
-	s->setValue("Session/FontFamily", config.Font.family());
-	s->setValue("Session/FontSize", config.Font.pointSize());
-	s->setValue("Session/FontWeight", w);
-	s->setValue("Session/KeepCursorPosOnRecall", config.KeepCursorPosOnRecall);
-	s->setValue("Session/LineNumbers", config.LineNos);
-	s->setValue("Session/MaxInputLog", config.MaxInputLog);
-	s->setValue("Session/MaxRecent", config.MaxRecent);
-	s->setValue("Session/OpenTabAt", config.OpenTabAt);
-	s->setValue("Session/Snapshots", config.Snapshots);
-	s->setValue("Session/Snapshotx", config.Snapshotx);
-	s->setValue("Session/TabWidth", writeTabWidth(config.TabWidth));
-	s->setValue("Session/TermSyntaxHighlight", config.TermSyntaxHighlight);
-	s->setValue("Session/TrimTrailingWS", config.TrimTrailingWS);
-	s->setValue("FindinFiles/Extensions", config.FifExt);
-	s->setValue("Position/Debug", p2q(config.DebugPos));
-	if (note) {
-		s->setValue("Position/Edit", nt);
-	}
-	s->setValue("Position/Term", tt);
-	s->setValue("Run/FileManager", config.FileManager);
-	s->setValue("Run/Terminal", config.Terminal);
-	s->sync();
+  s->setValue("Session/BoxForm", config.BoxForm);
+  s->setValue("Session/ConfirmClose", config.ConfirmClose);
+  s->setValue("Session/ConfirmSave", config.ConfirmSave);
+  s->setValue("Session/CursorWidth", config.CursorWidth);
+  s->setValue("Session/DebugDissect", config.DebugDissect);
+  s->setValue("Session/EscClose", config.EscClose);
+  s->setValue("Session/FontFamily", config.Font.family());
+  s->setValue("Session/FontSize", config.Font.pointSize());
+  s->setValue("Session/FontWeight", w);
+  s->setValue("Session/KeepCursorPosOnRecall", config.KeepCursorPosOnRecall);
+  s->setValue("Session/LineNumbers", config.LineNos);
+  s->setValue("Session/MaxInputLog", config.MaxInputLog);
+  s->setValue("Session/MaxRecent", config.MaxRecent);
+  s->setValue("Session/OpenTabAt", config.OpenTabAt);
+  s->setValue("Session/Snapshots", config.Snapshots);
+  s->setValue("Session/Snapshotx", config.Snapshotx);
+  s->setValue("Session/TabWidth", writeTabWidth(config.TabWidth));
+  s->setValue("Session/TermSyntaxHighlight", config.TermSyntaxHighlight);
+  s->setValue("Session/TrimTrailingWS", config.TrimTrailingWS);
+  s->setValue("FindinFiles/Extensions", config.FifExt);
+  s->setValue("Position/Debug", p2q(config.DebugPos));
+  if (note) {
+    s->setValue("Position/Edit", nt);
+  }
+  s->setValue("Position/Term", tt);
+  s->setValue("Run/FileManager", config.FileManager);
+  s->setValue("Run/Terminal", config.Terminal);
+  s->sync();
 #ifdef _WIN32
-	t = cfread(config.ConfigPath.filePath("qtide.cfg.0"));
+  t = cfread(config.ConfigPath.filePath("qtide.cfg.0"));
 #else
-	t = cfread(temp.fileName());
+  t = cfread(temp.fileName());
 #endif
-	initidec(f, t);
+  initidec(f, t);
 }
 
 // ---------------------------------------------------------------------
 QList<int> Config::initposX(QList<int> p)
 {
-	QList<int> r = p;
-	r.replace(0, modpy(ScreenWidth, r.at(0)));
-	r.replace(1, modpy(ScreenHeight, r.at(1)));
-	return r;
+  QList<int> r = p;
+  r.replace(0, modpy(ScreenWidth, r.at(0)));
+  r.replace(1, modpy(ScreenHeight, r.at(1)));
+  return r;
 }
 
 // ---------------------------------------------------------------------

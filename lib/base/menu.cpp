@@ -604,7 +604,7 @@ void Note::on_cfgopenallAct_triggered()
 // ---------------------------------------------------------------------
 void Note::on_cfgcurposAct_triggered()
 {
-	term->on_cfgcurposAct_triggered();
+  term->on_cfgcurposAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1314,7 +1314,7 @@ void Term::on_cfgopenallAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_cfgcurposAct_triggered()
 {
-	curposide();
+  curposide();
 }
 
 // ---------------------------------------------------------------------
