@@ -359,7 +359,7 @@ void helplabschapters()
 void htmlhelp(QString s)
 {
   QString t=cpath("~addons/docs/help/") + s + ".htm";
-  QString w="http://www.jsoftware.com/docs/help807/";
+  QString w="http://www.jsoftware.com/docs/help901/";
   if (QFile(t).exists())
     QDesktopServices::openUrl(QUrl::fromLocalFile(t));
   else QDesktopServices::openUrl(QUrl(s.prepend(w).append(".htm"),QUrl::TolerantMode));

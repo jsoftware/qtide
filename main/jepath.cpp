@@ -1,4 +1,4 @@
-/* Copyright 1990-2018, Jsoftware Inc.  All rights reserved. */
+/* Copyright 1990-2019, Jsoftware Inc.  All rights reserved. */
 #define PLEN 1000 // path length
 #ifdef _WIN32
 #include <windows.h>
