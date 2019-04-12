@@ -15,7 +15,7 @@ equals(QT_MAJOR_VERSION, 5) {
  !lessThan(QT_VERSION,5.7.0): DEFINES += QT57
 
 # versionAtLeast is not supported on Qt 5.5, so hack to get 5.10 or above recognized
- equals(QT_MINOR_VERSION,10)||equals(QT_MINOR_VERSION,11){
+ equals(QT_MINOR_VERSION,10)||equals(QT_MINOR_VERSION,11)||equals(QT_MINOR_VERSION,12){
   DEFINES += QT53
   DEFINES += QT54
   DEFINES += QT56
