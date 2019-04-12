@@ -49,8 +49,8 @@ int Menus::menupop(string c)
   QString s=s2q(c);
   if (curMenu==0) {
     curMenu=((QMenuBar*) widget)->addMenu(s);
-    connect(curMenu,SIGNAL(triggered(QAction *)),
-            this,SLOT(menu_triggered(QAction *)));
+    connect(curMenu,&QMenu::triggered,
+            this,&Menus::menu_triggered);
   } else
     curMenu=curMenu->addMenu(s);
   curMenu->menuAction()->setMenuRole(QAction::NoRole);

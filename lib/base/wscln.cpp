@@ -59,7 +59,7 @@ void * WsCln::openurl(QString url)
     return (void *) 0;
   } else if (!(url.startsWith("ws://", Qt::CaseInsensitive)||url.startsWith("wss://", Qt::CaseInsensitive))) {
 #ifdef DEBUG_WEBSOCKET
-    qDebug() << QString("url not ws:// ro wss://");
+    qDebug() << QString("url not ws:// or wss://");
 #endif
     return (void *) 0;
   }
