@@ -39,7 +39,10 @@ int Menus::menu(string c, string p)
 {
   if (curMenu==0)
     return 1;
-  curMenu->addAction(makeact(c,p));
+  QAction* r=makeact(c,p);
+  curMenu->addAction(r);
+  connect(r,SIGNAL(triggered()),
+            this,SLOT(menu_triggered()));
   return 0;
 }
 
@@ -49,8 +52,6 @@ int Menus::menupop(string c)
   QString s=s2q(c);
   if (curMenu==0) {
     curMenu=((QMenuBar*) widget)->addMenu(s);
-    connect(curMenu,&QMenu::triggered,
-            this,&Menus::menu_triggered);
   } else
     curMenu=curMenu->addMenu(s);
   curMenu->menuAction()->setMenuRole(QAction::NoRole);
@@ -80,10 +81,10 @@ int Menus::menusep()
 }
 
 // ---------------------------------------------------------------------
-void Menus::menu_triggered(QAction *a)
+void Menus::menu_triggered()
 {
   event="button";
-  eid=q2s(a->objectName());
+  eid=q2s(QObject::sender()->objectName());
   pform->signalevent(this);
 }
 

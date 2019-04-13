@@ -26,7 +26,7 @@ public:
   QHash<QString,QAction*> items;
 
 private slots:
-  void menu_triggered(QAction *a);
+  void menu_triggered();
 
 private:
   QMenu *curMenu;
