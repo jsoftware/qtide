@@ -43,7 +43,7 @@ public:
   void init();
   void initide();
   void curposide();
-  QList<int> initposX(QList<int>);
+  QList<int> initposX(QList<int>, QList<int>);
   bool initide1(QString f);
   void initstyle();
   void launch_init();

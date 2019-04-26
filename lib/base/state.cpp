@@ -16,6 +16,8 @@
 #include <QTemporaryFile>
 #include <QPoint>
 #include <QSize>
+#include <QScreen>
+#include <QRect>
 
 #include <locale.h>
 
@@ -333,20 +335,24 @@ void Config::initide()
   Terminal = s->value("Run/Terminal",terminal).toString();
 
   t = s->value("Position/Debug","-590 50 540 500").toString();
+  QString dp("-590 50 540 500");
   DebugPos=q2p(t);
-  DebugPosX=initposX(DebugPos);
+  DebugPosX=initposX(DebugPos, q2p(dp));
 
   t = s->value("Position/Edit","600 100 750 750").toString();
+  QString ep("600 100 750 750");
   EditPos=q2p(t);
-  EditPosX=initposX(EditPos);
+  EditPosX=initposX(EditPos, q2p(ep));
 
 #ifdef __linux__
   t = s->value("Position/Term","0 20 500 600").toString();
+  QString tp("0 20 500 600");
 #else
   t = s->value("Position/Term","0 0 500 600").toString();
+  QString tp("0 0 500 600");
 #endif
   TermPos=q2p(t);
-  TermPosX=initposX(TermPos);
+  TermPosX=initposX(TermPos, q2p(tp));
 
   if (s->allKeys().contains("Session/CursorWidth")) return;
 
@@ -402,18 +408,9 @@ void Config::initide()
 // get Term or Edit position and size
 QString getxywh(QPoint p, QSize s)
 {
-  int xf, yf, xx, yy, wf, hf;
   QString r;
 
-  xx = p.x();
-  xf = std::max(xx, 0);
-  yy = p.y();
-  yf = std::max(yy, 0);
-  wf = s.width();
-  if (xx < 0) wf = wf + xx;
-  hf = s.height();
-  if (yy < 0) hf = hf + yy;
-  r = QString::number(xf) + " " + QString::number(yf) + " " + QString::number(wf) + " " + QString::number(hf);
+  r = QString::number(p.x()) + " " + QString::number(p.y()) + " " + QString::number(s.width()) + " " + QString::number(s.height());
   return r;
 }
 
@@ -438,20 +435,24 @@ void curposide()
   tt = getxywh(term->pos(), term->size());
 
   t = s->value("Position/Debug", "-590 50 540 500").toString();
+  QString dp("-590 50 540 500");
   config.DebugPos = q2p(t);
-  config.DebugPosX = config.initposX(config.DebugPos);
+  config.DebugPosX = config.initposX(config.DebugPos, q2p(dp));
 
   t = s->value("Position/Edit", "600 100 750 750").toString();
+  QString ep("600 100 750 750");
   config.EditPos = q2p(t);
-  config.EditPosX = config.initposX(config.EditPos);
+  config.EditPosX = config.initposX(config.EditPos, q2p(ep));
 
 #ifdef __linux__
   t = s->value("Position/Term", "0 20 500 600").toString();
+  QString tp("0 20 500 600");
 #else
   t = s->value("Position/Term", "0 0 500 600").toString();
+  QString tp("0 0 500 600");
 #endif
   config.TermPos = q2p(t);
-  config.TermPosX = config.initposX(config.TermPos);
+  config.TermPosX = config.initposX(config.TermPos, q2p(tp));
 
   delete s;
   w = (fontweight == QFont::Normal) ? "normal" : "bold";
@@ -504,12 +505,30 @@ void curposide()
 }
 
 // ---------------------------------------------------------------------
-QList<int> Config::initposX(QList<int> p)
+QList<int> Config::initposX(QList<int> p, QList<int> d)
 {
-  QList<int> r = p;
-  r.replace(0, modpy(ScreenWidth, r.at(0)));
-  r.replace(1, modpy(ScreenHeight, r.at(1)));
-  return r;
+	QList<int> r = p;
+	int x1 = 10000000;
+	int x2 = -10000000;
+	int y1 = 10000000;
+	int y2 = -10000000;
+	QList<QScreen*> screens = QGuiApplication::screens();
+	int qsc = screens.count();
+	QScreen *screen;
+	QRect screenGeometry;
+	for (int i = 0; i < qsc; i++) {
+		screen = screens[i];
+		screenGeometry = screen->geometry();
+		x1 = std::min(x1, screenGeometry.left());
+		x2 = std::max(x2, screenGeometry.right());
+		y1 = std::min(y1, screenGeometry.top());
+		y2 = std::max(y2, screenGeometry.bottom());
+	}
+	if ((r.at(0) < x1 || r.at(1) < y1) || (r.at(0) > x2 || r.at(1) > y2)) {
+		r.replace(0, d.at(0));
+		r.replace(1, d.at(1));
+	}
+	return r;
 }
 
 // ---------------------------------------------------------------------
