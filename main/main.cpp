@@ -7,6 +7,11 @@
 
 using namespace std;
 
+#ifndef _WIN32
+#include <unistd.h>
+#include <sys/resource.h>
+#endif
+
 typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **);
 static Run state_run;
 extern "C" char * jepath1(char* arg);
@@ -69,6 +74,12 @@ int main(int argc, char *argv[])
     fhs = true;
   }
 #else
+// set stack size to get limit error instead of crash
+  struct rlimit lim;
+  getrlimit(RLIMIT_STACK,&lim);
+  lim.rlim_cur=0x10000000; // 0xc000000 12mb works, but let's be safe with 16mb
+  setrlimit(RLIMIT_STACK,&lim);
+
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
   if(s.startsWith("/usr/bin/") && !(QFile(s.append(".dylib"))).exists()) {
