@@ -42,7 +42,7 @@ int Menus::menu(string c, string p)
   QAction* r=makeact(c,p);
   curMenu->addAction(r);
   connect(r,SIGNAL(triggered()),
-            this,SLOT(menu_triggered()));
+          this,SLOT(menu_triggered()));
   return 0;
 }
 

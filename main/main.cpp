@@ -74,11 +74,15 @@ int main(int argc, char *argv[])
     fhs = true;
   }
 #else
+#define J_STACK  0x1000000uL // 16mb
 // set stack size to get limit error instead of crash
   struct rlimit lim;
-  getrlimit(RLIMIT_STACK,&lim);
-  lim.rlim_cur=0x1000000; // 16mb
-  setrlimit(RLIMIT_STACK,&lim);
+  if(!getrlimit(RLIMIT_STACK,&lim)) {
+    if(lim.rlim_cur!=RLIM_INFINITY && lim.rlim_cur<J_STACK) {
+      lim.rlim_cur=(lim.rlim_max==RLIM_INFINITY)?J_STACK:(lim.rlim_max<J_STACK)?lim.rlim_max:J_STACK;
+      setrlimit(RLIMIT_STACK,&lim);
+    }
+  }
 
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)

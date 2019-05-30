@@ -507,28 +507,28 @@ void curposide()
 // ---------------------------------------------------------------------
 QList<int> Config::initposX(QList<int> p, QList<int> d)
 {
-	QList<int> r = p;
-	int x1 = 10000000;
-	int x2 = -10000000;
-	int y1 = 10000000;
-	int y2 = -10000000;
-	QList<QScreen*> screens = QGuiApplication::screens();
-	int qsc = screens.count();
-	QScreen *screen;
-	QRect screenGeometry;
-	for (int i = 0; i < qsc; i++) {
-		screen = screens[i];
-		screenGeometry = screen->geometry();
-		x1 = std::min(x1, screenGeometry.left());
-		x2 = std::max(x2, screenGeometry.right());
-		y1 = std::min(y1, screenGeometry.top());
-		y2 = std::max(y2, screenGeometry.bottom());
-	}
-	if ((r.at(0) < x1 || r.at(1) < y1) || (r.at(0) > x2 || r.at(1) > y2)) {
-		r.replace(0, d.at(0));
-		r.replace(1, d.at(1));
-	}
-	return r;
+  QList<int> r = p;
+  int x1 = 10000000;
+  int x2 = -10000000;
+  int y1 = 10000000;
+  int y2 = -10000000;
+  QList<QScreen*> screens = QGuiApplication::screens();
+  int qsc = screens.count();
+  QScreen *screen;
+  QRect screenGeometry;
+  for (int i = 0; i < qsc; i++) {
+    screen = screens[i];
+    screenGeometry = screen->geometry();
+    x1 = std::min(x1, screenGeometry.left());
+    x2 = std::max(x2, screenGeometry.right());
+    y1 = std::min(y1, screenGeometry.top());
+    y2 = std::max(y2, screenGeometry.bottom());
+  }
+  if ((r.at(0) < x1 || r.at(1) < y1) || (r.at(0) > x2 || r.at(1) > y2)) {
+    r.replace(0, d.at(0));
+    r.replace(1, d.at(1));
+  }
+  return r;
 }
 
 // ---------------------------------------------------------------------
