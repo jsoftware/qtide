@@ -58,7 +58,7 @@ public:
 
 public slots:
 
-  void launchpad_triggered(QAction *a);
+  void launchpad_triggered();
   void systimer();
 
   void on_cfgbaseAct_triggered();

@@ -206,9 +206,9 @@ void Term::keyPressEvent(QKeyEvent *event)
 
 // ---------------------------------------------------------------------
 // bug in Qt - this gets called twice, so need to check time...
-void Term::launchpad_triggered(QAction *a)
+void Term::launchpad_triggered()
 {
-  QString s=a->objectName();
+  QString s=QObject::sender()->objectName();
 
   s=s.mid(config.LaunchPadPrefix.size());
   QTime t=QTime::currentTime();

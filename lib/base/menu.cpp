@@ -391,10 +391,10 @@ void Menu::createlaunchMenu(QString m)
     else {
       a=makeact(config.LaunchPadPrefix+s,s,"");
       lpadMenu->addAction(a);
+      connect(a,SIGNAL(triggered()),
+              term,SLOT(launchpad_triggered()));
     }
   }
-  connect(lpadMenu,SIGNAL(triggered(QAction *)),
-          term,SLOT(launchpad_triggered(QAction *)));
 }
 
 // ---------------------------------------------------------------------
