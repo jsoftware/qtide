@@ -20,11 +20,6 @@ void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
 QString jdllver="x.xx";  // ignored if not FHS
-#if !(defined(_M_X64) || defined(__x86_64__))
-static int AVX=0;
-#else
-static int AVX=1;
-#endif
 
 using namespace std;
 
@@ -184,35 +179,6 @@ void jepath(char* arg, char* lib, int forceavx)
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
-#if defined(_WIN64)||defined(__LP64__)
-  char *jeavx=getenv("JEAVX");
-#else
-  char *jeavx=getenv("JEAVX32");
-#endif
-  if (forceavx==1) AVX=1;       // force enable avx
-  else if (forceavx==2) AVX=0;  // force disable avx
-  else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
-  else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
-  else { // auto detect
-#if 0  // turn off auto detect
-#if defined(_WIN64)||defined(__LP64__)
-//  AVX= 0!=(0x4UL & GetEnabledXStateFeatures());
-// above line not worked for pre WIN7 SP1
-// Working with XState Context (Windows)
-// https://msdn.microsoft.com/en-us/library/windows/desktop/hh134240(v=vs.85).aspx
-// Windows 7 SP1 is the first version of Windows to support the AVX API.
-#define XSTATE_MASK_AVX   (XSTATE_MASK_GSSE)
-    typedef DWORD64(WINAPI *GETENABLEDXSTATEFEATURES)();
-    GETENABLEDXSTATEFEATURES pfnGetEnabledXStateFeatures = NULL;
-// Get the addresses of the AVX XState functions.
-    HMODULE hm = GetModuleHandleA("kernel32.dll");
-    if ((pfnGetEnabledXStateFeatures = (GETENABLEDXSTATEFEATURES)GetProcAddress(hm, "GetEnabledXStateFeatures")) &&
-        ((pfnGetEnabledXStateFeatures() & XSTATE_MASK_AVX) != 0))
-      AVX=1;
-    FreeLibrary(hm);
-#endif
-#endif
-  }
 #else
 #define sz 4000
   char arg2[sz],arg3[sz];
@@ -229,32 +195,6 @@ void jepath(char* arg, char* lib, int forceavx)
   n=readlink("/proc/self/exe",arg2,sizeof(arg2));
   if (-1==n) strcpy(arg2,arg);
   else arg2[n]=0;
-#endif
-#if defined(__x86_64__)||defined(__i386__)
-// http://en.wikipedia.org/wiki/Advanced_Vector_Extensions
-// Linux: supported since kernel version 2.6.30 released on June 9, 2009.
-#if defined(__LP64__)
-  char *jeavx=getenv("JEAVX");
-#else
-  char *jeavx=getenv("JEAVX32");
-#endif
-  if (forceavx==1) AVX=1;       // force enable avx
-  else if (forceavx==2) AVX=0;  // force disable avx
-  else if (jeavx&&!strcasecmp(jeavx,"avx")) AVX=1;
-  else if (jeavx&&!strcasecmp(jeavx,"noavx")) AVX=0;
-  else { // auto detect by uname -r
-#if 0  // turn off auto detect
-#if defined(__x86_64__)
-    struct utsname unm;
-    if (!uname(&unm) &&
-        ((unm.release[0]>'2'&&unm.release[0]<='9')||  // avoid sign/unsigned char difference
-         (strlen(unm.release)>5&&unm.release[0]=='2'&&unm.release[2]=='6'&&unm.release[4]=='3'&&
-          (unm.release[5]>='0'&&unm.release[5]<='9'))))
-      AVX= 0!= __builtin_cpu_supports("avx");
-// fprintf(stderr,"kernel release :%s:\n",unm.release);
-#endif
-#endif
-  }
 #endif
 // fprintf(stderr,"arg2 %s\n",arg2);
 // arg2 is path (abs or relative) to executable or soft link
@@ -291,13 +231,13 @@ void jepath(char* arg, char* lib, int forceavx)
 
   strcpy(pathdll,path);
   strcat(pathdll,filesepx);
-  strcat(pathdll,(AVX)?JDLLNAME:JNONAVXDLLNAME);
+  strcat(pathdll,JDLLNAME);
 
 // for FHS (debian package version)
 // pathdll is not related to path
 // but path is still needed for BINPATH
   if (FHS) {
-    strcpy(pathdll,(AVX)?JDLLNAME:JNONAVXDLLNAME);
+    strcpy(pathdll,JDLLNAME);
 #if defined(_WIN32)
     *(strrchr(pathdll,'.')) = 0;
     strcat(pathdll,"-");
