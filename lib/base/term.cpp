@@ -87,6 +87,9 @@ Term::Term()
   timer=new QTimer;
   connect(timer, SIGNAL(timeout()),this,SLOT(systimer()));
   QMetaObject::connectSlotsByName(this);
+#if defined(Q_OS_MAC) && defined(QT512)
+  connect(menuBar->helpaboutAct,SIGNAL(triggered()), this,SLOT(on_helpaboutAct_triggered()));
+#endif
 }
 
 // ---------------------------------------------------------------------

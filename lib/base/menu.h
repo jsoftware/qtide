@@ -27,6 +27,7 @@ public:
   QAction *viewasciiAct;
   QAction *viewlinenosAct;
   QAction *viewlinewrapAct;
+  QAction *helpaboutAct;
 
   QMenu *selMenu;
   QMenu *viewMenu;
@@ -174,7 +175,7 @@ private:
   QAction *winthrowAct;
 
   static QAction *sharedHelpAboutAct; // QTBUG-17941
-  QAction *helpaboutAct;
+//  QAction *helpaboutAct;
   QAction *helpcontextAct;
   QAction *helpcontextnuvocAct;
 
