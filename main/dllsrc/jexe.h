@@ -346,7 +346,8 @@ typedef struct IJEXEServerVtbl {
   END_INTERFACE
 } IJEXEServerVtbl;
 
-interface IJEXEServer {
+interface IJEXEServer
+{
   CONST_VTBL struct IJEXEServerVtbl *lpVtbl;
 };
 
