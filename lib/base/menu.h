@@ -175,25 +175,21 @@ private:
   QAction *winthrowAct;
 
   static QAction *sharedHelpAboutAct; // QTBUG-17941
-//  QAction *helpaboutAct;
   QAction *helpcontextAct;
-  QAction *helpcontextnuvocAct;
-
   QAction *helpconstantsAct;
   QAction *helpcontrolsAct;
   QAction *helpdemoqtAct;
   QAction *helpdemowdAct;
-  QAction *helpdictionaryAct;
+  QAction *helpstdlibAct;
   QAction *helpforeignsAct;
   QAction *helpgeneralAct;
   QAction *helphelpAct;
   QAction *helplabsAct;
   QAction *helplabsadvanceAct;
   QAction *helplabschaptersAct;
-  QAction *helpreleaseAct;
   QAction *helprelnotesAct;
   QAction *helpvocabAct;
-  QAction *helpvocabnuvocAct;
+  QAction *helpwdAct;
   QAction *helpwikiAct;
 };
 

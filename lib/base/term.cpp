@@ -292,4 +292,3 @@ void Term::vieweditor()
     note->activate();
   }
 }
-

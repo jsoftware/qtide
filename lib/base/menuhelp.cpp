@@ -17,8 +17,6 @@ using namespace std;
 
 void helpabout();
 void helpcontext(int c,QWidget *);
-void helpcontextnuvoc(int c,QWidget *);
-void htmlhelp(QString s);
 void helplabs();
 void helplabsadvance();
 void helplabschapters();
@@ -37,39 +35,35 @@ void Menu::createhelpActions()
 #endif
   helpconstantsAct = makeact("helpconstantsAct","&Constants","");
   helpcontextAct = makeact("helpcontextAct","&Context Sensitive","Ctrl+F1");
-  helpcontextnuvocAct = makeact("helpcontextnuvocAct","&NuVoc Context Sensitive","Ctrl+Shift+F1");
   helpcontrolsAct = makeact("helpcontrolsAct","&Control Structures","");
   helpdemoqtAct = makeact("helpdemoqtAct","&Qt Demos...","");
   helpdemowdAct = makeact("helpdemowdAct","&Showcase...","");
-  helpdictionaryAct = makeact("helpdictionaryAct","&Dictionary","");
-  helpforeignsAct = makeact("helpforeignsAct","&Foreign Conjunction","");
+  helpstdlibAct = makeact("helpstdlibAct","&Standard Library","");
+  helpforeignsAct = makeact("helpforeignsAct","&Foreigns","");
   helpgeneralAct = makeact("helpgeneralAct","&General Info","");
   helphelpAct = makeact("helphelpAct","&Help","");
   helplabsAct = makeact("helplabsAct","&Labs...","");
   helplabsadvanceAct = makeact("helplabsadvanceAct","Advance","Ctrl+J");
   helplabschaptersAct = makeact("helplabschaptersAct","Chapters...","");
-  helpreleaseAct = makeact("helpreleaseAct","&Release Highlights","");
   helprelnotesAct = makeact("helprelnotesAct","&Release Notes","");
   helpvocabAct = makeact("helpvocabAct","&Vocabulary","F1");
-  helpvocabnuvocAct = makeact("helpvocabnuvocAct","&NuVoc","Shift+F1");
+  helpwdAct = makeact("helpwdAct","&Window Driver","");
   helpwikiAct = makeact("helpwikiAct","&Wiki","");
 }
 
 void Menu::createhelpMenu()
 {
   helpMenu = addMenu(tr("&Help"));
-  helpMenu->addAction(helphelpAct);
-  helpMenu->addSeparator();
-  helpMenu->addAction(helpgeneralAct);
   helpMenu->addAction(helpwikiAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpvocabAct);
-  helpMenu->addAction(helpvocabnuvocAct);
   helpMenu->addAction(helpconstantsAct);
   helpMenu->addAction(helpcontrolsAct);
   helpMenu->addAction(helpforeignsAct);
+  helpMenu->addAction(helprelnotesAct);
   helpMenu->addSeparator();
-  helpMenu->addAction(helpdictionaryAct);
+  helpMenu->addAction(helpstdlibAct);
+  helpMenu->addAction(helpwdAct);
   helpMenu->addSeparator();
   QMenu *m = helpMenu->addMenu(tr("Studio"));
   helpMenu->addSeparator();
@@ -82,7 +76,6 @@ void Menu::createhelpMenu()
   m->addAction(helpdemowdAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
-  helpMenu->addAction(helpcontextnuvocAct);
 #ifndef __MACH__
   helpMenu->addSeparator();
 #endif
@@ -109,12 +102,6 @@ void Note::on_helpcontextAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_helpcontextnuvocAct_triggered()
-{
-  helpcontextnuvoc(1,editPage());
-}
-
-// ---------------------------------------------------------------------
 void Note::on_helpcontrolsAct_triggered()
 {
   term->on_helpcontrolsAct_triggered();
@@ -133,9 +120,9 @@ void Note::on_helpdemowdAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_helpdictionaryAct_triggered()
+void Note::on_helpstdlibAct_triggered()
 {
-  term->on_helpdictionaryAct_triggered();
+  term->on_helpstdlibAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -175,12 +162,6 @@ void Note::on_helplabschaptersAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_helpreleaseAct_triggered()
-{
-  term->on_helpreleaseAct_triggered();
-}
-
-// ---------------------------------------------------------------------
 void Note::on_helprelnotesAct_triggered()
 {
   term->on_helprelnotesAct_triggered();
@@ -193,9 +174,9 @@ void Note::on_helpvocabAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_helpvocabnuvocAct_triggered()
+void Note::on_helpwdAct_triggered()
 {
-  term->on_helpvocabnuvocAct_triggered();
+  term->on_helpwdAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -217,21 +198,15 @@ void Term::on_helpcontextAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Term::on_helpcontextnuvocAct_triggered()
-{
-  helpcontextnuvoc(0,tedit);
-}
-
-// ---------------------------------------------------------------------
 void Term::on_helpconstantsAct_triggered()
 {
-  htmlhelp("dictionary/dcons");
+  wiki("Vocabulary/Constants");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_helpcontrolsAct_triggered()
 {
-  htmlhelp("dictionary/ctrl");
+  wiki("Vocabulary/ControlStructures");
 }
 
 // ---------------------------------------------------------------------
@@ -247,27 +222,15 @@ void Term::on_helpdemowdAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Term::on_helpdictionaryAct_triggered()
+void Term::on_helpstdlibAct_triggered()
 {
-  htmlhelp("dictionary/contents");
+  wiki("Standard_Library/Overview");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_helpforeignsAct_triggered()
 {
-  htmlhelp("dictionary/xmain");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_helpgeneralAct_triggered()
-{
-  htmlhelp("user/product");
-}
-
-// ---------------------------------------------------------------------
-void Term::on_helphelpAct_triggered()
-{
-  htmlhelp("index");
+  wiki("Vocabulary/Foreigns");
 }
 
 // ---------------------------------------------------------------------
@@ -289,27 +252,21 @@ void Term::on_helplabschaptersAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Term::on_helpreleaseAct_triggered()
-{
-  htmlhelp("user/relhigh.htm");
-}
-
-// ---------------------------------------------------------------------
 void Term::on_helprelnotesAct_triggered()
 {
-  htmlhelp("release/contents");
+  wiki("System/ReleaseNotes/J901");
 }
 
 // ---------------------------------------------------------------------
 void Term::on_helpvocabAct_triggered()
 {
-  htmlhelp("dictionary/vocabul");
+  wiki("NuVoc");
 }
 
 // ---------------------------------------------------------------------
-void Term::on_helpvocabnuvocAct_triggered()
+void Term::on_helpwdAct_triggered()
 {
-  wiki("NuVoc");
+  wiki("Guides/Window_Driver");
 }
 
 // ---------------------------------------------------------------------
@@ -320,15 +277,6 @@ void Term::on_helpwikiAct_triggered()
 
 // ---------------------------------------------------------------------
 void helpcontext(int c,QWidget *e)
-{
-  jcon->set("arg_jqtide_",q2s(readhelptext(e,c)));
-  QString s=jcon->cmdr("helpcontext0_jqtide_ arg_jqtide_");
-  if (s.size())
-    htmlhelp(s);
-}
-
-// ---------------------------------------------------------------------
-void helpcontextnuvoc(int c,QWidget *e)
 {
   jcon->set("arg_jqtide_",q2s(readhelptext(e,c)));
   QString s=jcon->cmdr("helpcontext1_jqtide_ arg_jqtide_");
@@ -345,7 +293,6 @@ void helplabs()
 // ---------------------------------------------------------------------
 void helplabsadvance()
 {
-  //tedit->docmd("labs_run_jqtide_ 0", false,false,true);
   tedit->docmddo("labs_run_jqtide_ 0");
 }
 
@@ -353,16 +300,6 @@ void helplabsadvance()
 void helplabschapters()
 {
   tedit->docmddo("labs_run_jqtide_ 1");
-}
-
-// ---------------------------------------------------------------------
-void htmlhelp(QString s)
-{
-  QString t=cpath("~addons/docs/help/") + s + ".htm";
-  QString w="http://www.jsoftware.com/docs/help901/";
-  if (QFile(t).exists())
-    QDesktopServices::openUrl(QUrl::fromLocalFile(t));
-  else QDesktopServices::openUrl(QUrl(s.prepend(w).append(".htm"),QUrl::TolerantMode));
 }
 
 // ---------------------------------------------------------------------

@@ -344,9 +344,6 @@ void Menu::createfkeyMenu(QString s)
   fkeyMenu->addAction(helpvocabAct);
   fkeyMenu->addAction(helpcontextAct);
   fkeyMenu->addSeparator();
-  fkeyMenu->addAction(helpvocabnuvocAct);
-  fkeyMenu->addAction(helpcontextnuvocAct);
-  fkeyMenu->addSeparator();
   fkeyMenu->addAction(runtestAct);
   fkeyMenu->addSeparator();
   fkeyMenu->addAction(runclipAct);
