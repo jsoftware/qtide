@@ -113,11 +113,9 @@ public slots:
   void on_helpdemowdAct_triggered();
   void on_helpstdlibAct_triggered();
   void on_helpforeignsAct_triggered();
-  void on_helphelpAct_triggered();
   void on_helplabsAct_triggered();
   void on_helplabsadvanceAct_triggered();
   void on_helplabschaptersAct_triggered();
-  void on_helpgeneralAct_triggered();
   void on_helprelnotesAct_triggered();
   void on_helpvocabAct_triggered();
   void on_helpwdAct_triggered();

@@ -182,8 +182,6 @@ private:
   QAction *helpdemowdAct;
   QAction *helpstdlibAct;
   QAction *helpforeignsAct;
-  QAction *helpgeneralAct;
-  QAction *helphelpAct;
   QAction *helplabsAct;
   QAction *helplabsadvanceAct;
   QAction *helplabschaptersAct;

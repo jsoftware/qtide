@@ -40,8 +40,6 @@ void Menu::createhelpActions()
   helpdemowdAct = makeact("helpdemowdAct","&Showcase...","");
   helpstdlibAct = makeact("helpstdlibAct","&Standard Library","");
   helpforeignsAct = makeact("helpforeignsAct","&Foreigns","");
-  helpgeneralAct = makeact("helpgeneralAct","&General Info","");
-  helphelpAct = makeact("helphelpAct","&Help","");
   helplabsAct = makeact("helplabsAct","&Labs...","");
   helplabsadvanceAct = makeact("helplabsadvanceAct","Advance","Ctrl+J");
   helplabschaptersAct = makeact("helplabschaptersAct","Chapters...","");
@@ -129,18 +127,6 @@ void Note::on_helpstdlibAct_triggered()
 void Note::on_helpforeignsAct_triggered()
 {
   term->on_helpforeignsAct_triggered();
-}
-
-// ---------------------------------------------------------------------
-void Note::on_helpgeneralAct_triggered()
-{
-  term->on_helpgeneralAct_triggered();
-}
-
-// ---------------------------------------------------------------------
-void Note::on_helphelpAct_triggered()
-{
-  term->on_helphelpAct_triggered();
 }
 
 // ---------------------------------------------------------------------
