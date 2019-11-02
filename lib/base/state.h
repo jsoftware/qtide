@@ -204,7 +204,7 @@ extern QEventLoop *evloop;
 extern QEventLoop *jevloop;
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst, uintptr_t stackinit);
   Dllexport void immexj(const char *s);
 }
 

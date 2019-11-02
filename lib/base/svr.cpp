@@ -130,9 +130,9 @@ QString Jcon::cmdr(string s)
 }
 
 // ---------------------------------------------------------------------
-int Jcon::init(int argc, char* argv[])
+int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 {
-  void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,0,(void*)SMCON};
+  void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,(void*)stackinit,(void*)SMQT};
   int type;
   int flag=0;
   int forceavx=0;
@@ -270,10 +270,10 @@ QString runshowclean(QString s)
 }
 
 // ---------------------------------------------------------------------
-bool svr_init(int argc, char* argv[])
+bool svr_init(int argc, char* argv[], uintptr_t stackinit)
 {
   jcon=new Jcon();
-  int r=jcon->init(argc,argv);
+  int r=jcon->init(argc,argv,stackinit);
   if (r)
     info("Server","svr_init result: " + QString::number(r));
   return r==0;

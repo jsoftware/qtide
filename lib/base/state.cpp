@@ -632,18 +632,18 @@ int state_fini()
 }
 
 // ---------------------------------------------------------------------
-bool state_init(int argc, char *argv[])
+static bool state_init(int argc, char *argv[], uintptr_t stackinit)
 {
   if (!jdllproc && (void*)-1==jdlljt) {
     state_init_args(&argc,argv);
     config.ini0();
-    svr_init(argc,argv);
+    svr_init(argc,argv,stackinit);
     config.init();
     dlog_init();
     recent.init();
   } else {
     state_init_args(&argc,argv);
-    if ((void*)-1!=jdlljt) svr_init(argc,argv);
+    if ((void*)-1!=jdlljt) svr_init(argc,argv,stackinit);
   }
   return true;
 }
@@ -690,7 +690,7 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst)
+int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst, uintptr_t stackinit)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -746,7 +746,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
     qDebug() << QString("setlocale LC_NUMERIC failed");
   state_appname();
   term = new Term;
-  bool rc = state_init(argc,argv);
+  bool rc = state_init(argc,argv,stackinit);
   if (!rc) return 1;
   if (jst) *jst=jt;
   if (jdll) *jdll=hjdll;

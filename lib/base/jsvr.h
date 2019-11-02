@@ -37,6 +37,7 @@
 #define SMWIN    0  /* j.exe    Jwdw (Windows) front end */
 #define SMJAVA   2  /* j.jar    Jwdp (Java) front end */
 #define SMCON    3  /* jconsole */
+#define SMQT     4  /* jqt */
 
 #if defined(_WIN64)||defined(__LP64__)
 typedef long long I;

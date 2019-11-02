@@ -19,7 +19,7 @@ public:
   QString cmdr(std::string s);
 //  int exec();
   void immex(std::string s);
-  int init(int argc, char* argv[]);
+  int init(int argc, char* argv[], uintptr_t stackinit);
   void set(QString s,std::string t);
 
   std::list <std::string> Sentence;
@@ -33,7 +33,7 @@ private:
 
 };
 
-bool svr_init(int argc, char* argv[]);
+bool svr_init(int argc, char* argv[], uintptr_t stackinit);
 extern Jcon *jcon;
 extern bool jecallback;
 extern std::string wdQuery;
