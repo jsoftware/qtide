@@ -5,6 +5,7 @@
 #include <QDebug>
 #endif
 
+#include <stdint.h>
 #include "wscln.h"
 #include "jsvr.h"
 #include "svr.h"

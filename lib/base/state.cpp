@@ -508,6 +508,9 @@ void curposide()
 QList<int> Config::initposX(QList<int> p, QList<int> d)
 {
   QList<int> r = p;
+#ifndef QT50
+  Q_UNUSED(d);
+#else
   int x1 = 10000000;
   int x2 = -10000000;
   int y1 = 10000000;
@@ -528,6 +531,7 @@ QList<int> Config::initposX(QList<int> p, QList<int> d)
     r.replace(0, d.at(0));
     r.replace(1, d.at(1));
   }
+#endif
   return r;
 }
 

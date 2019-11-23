@@ -13,7 +13,6 @@
 #endif
 
 #include "base.h"
-#include "base.h"
 #include "jsvr.h"
 #include "svr.h"
 #include "state.h"

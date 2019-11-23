@@ -10,6 +10,7 @@ using namespace std;
 #ifndef _WIN32
 #include <unistd.h>
 #include <sys/resource.h>
+#include <stdint.h>
 #endif
 
 typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **, uintptr_t);

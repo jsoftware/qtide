@@ -8,6 +8,7 @@
 #endif
 
 #include <QDebug>
+#include <stdint.h>
 #include "util.h"
 #include "utils.h"
 

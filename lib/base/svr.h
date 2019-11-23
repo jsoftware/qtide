@@ -5,6 +5,7 @@
 #include <QString>
 #include <QStringList>
 #include <list>
+#include <stdint.h>
 
 class Jcon : public QObject
 
