@@ -77,6 +77,17 @@ JQTSLIM = $$(JQTSLIM)
   QT -= declarative multimedia multimediawidgets quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
 }
 
+# export JQTWEBKIT before qmake
+JQTWEBKIT = $$(JQTWEBKIT)
+!isEmpty(JQTWEBKIT) {
+  !isEmpty(JQTSLIM): error(both WEBKIT and SLIM defined)
+  message(building webkit jqt)
+  contains(DEFINES,QT56) {
+  QT -= webengine
+  QT += webkit
+  }
+}
+
 linux-g++: QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
@@ -143,7 +154,7 @@ INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-contains(QT,webkit): contains(DEFINES,QT56):  error(webkit dropped since QT56)
+contains(QT,webkit): contains(DEFINES,QT56): isEmpty(JQTWEBKIT):  error(webkit dropped since QT56)
 contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
 !contains(QT,webkit) {
   DEFINES += QT_NO_WEBKIT
