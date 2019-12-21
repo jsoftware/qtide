@@ -13,19 +13,11 @@ greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
 equals(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
- !lessThan(QT_VERSION,5.3.0): DEFINES += QT53
- !lessThan(QT_VERSION,5.4.0): DEFINES += QT54
- !lessThan(QT_VERSION,5.6.0): DEFINES += QT56
- !lessThan(QT_VERSION,5.7.0): DEFINES += QT57
- !lessThan(QT_VERSION,5.12.0): DEFINES += QT512
-
-# versionAtLeast is not supported on Qt 5.5, so hack to get 5.10 or above recognized
- equals(QT_MINOR_VERSION,10)||equals(QT_MINOR_VERSION,11)||equals(QT_MINOR_VERSION,12){
-  DEFINES += QT53
-  DEFINES += QT54
-  DEFINES += QT56
-  DEFINES += QT57
- }
+ !lessThan(QT_MINOR_VERSION,3): DEFINES += QT53
+ !lessThan(QT_MINOR_VERSION,4): DEFINES += QT54
+ !lessThan(QT_MINOR_VERSION,6): DEFINES += QT56
+ !lessThan(QT_MINOR_VERSION,7): DEFINES += QT57
+ !lessThan(QT_MINOR_VERSION,12): DEFINES += QT512
 }
 
 TEMPLATE = lib
