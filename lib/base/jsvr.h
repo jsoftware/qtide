@@ -63,7 +63,7 @@ void jefree();
 void jefail(char* msg);
 int jefirst(int type,char* arg);
 J jeload(void* callbacks);
-void jepath(char* arg, char* lib, int forceavx);
+void jepath(char* arg, char* lib);
 
 void addargv(int argc, char* argv[], C* d);
 void sigint(int k);

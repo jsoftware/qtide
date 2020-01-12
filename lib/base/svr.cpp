@@ -133,26 +133,39 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 {
   void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,(void*)stackinit,(void*)SMQT};
   int type;
-  int flag=0;
-  int forceavx=0;
 
-  if (argc>=3&&!strcmp(argv[1],"-lib")&&'-'!=*(argv[2])) flag=1;
-  else if (!flag&&argc>=2&&!strcmp(argv[1],"-avx")) forceavx=1; // avx
-  else if (!flag&&argc>=2&&!strcmp(argv[1],"-noavx")) forceavx=2; // no avx
-  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],flag?argv[2]:(char*)"",forceavx);  // get path to JFE folder
-  if (argc>=2&&(!strcmp(argv[1],"-lib")||forceavx)) { // remove processed arg
-    int i;
-    int n=(flag)?2:1;
-    for (i=1; i<argc-n; ++i) {
-      argv[i]=argv[i+n];
+  int i,poslib=0,poslibpath=0,posnorl=0,posprmpt=0; // assume all absent
+  for(i=1; i<argc; i++) {
+    if(!poslib&&!strcmp(argv[i],"-lib")) {
+      poslib=i;
+      if((i<argc-1)&&('-'!=*(argv[i+1])))poslibpath=i+1;
+    } else if(!posnorl&&!strcmp(argv[i],"-norl")) {
+      posnorl=i;
+//      norl=1;
+    } else if(!posprmpt&&!strcmp(argv[i],"-prompt")) {
+      posprmpt=i;
+//      forceprmpt=1;
     }
-    argc=argc-n;
+  }
+  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],(poslibpath)?argv[poslibpath]:"");
+// remove processed arg
+  if(poslib||poslibpath||posnorl||posprmpt) {
+    int j=0;
+    char **argvv = malloc(argc*sizeof(char*));
+    argvv[j++]=argv[0];
+    for(i=1; i<argc; i++) {
+      if(!(i==poslib||i==poslibpath||i==posnorl||i==posprmpt))argvv[j++]=argv[i];
+    }
+    argc=j;
+    for(i=1; i<argc; ++i)argv[i]=argvv[i];
+    free(argvv);
   }
 
   jt=jeload(callbacks);
   if (!jt && (void *)-1==jdlljt) {
     char m[1000];
-    jefail(m), fputs(m,stderr);
+    jefail(m);
+    fputs(m,stderr);
     exit(1);
   }
 
