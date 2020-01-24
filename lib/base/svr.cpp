@@ -147,11 +147,11 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 //      forceprmpt=1;
     }
   }
-  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],(poslibpath)?argv[poslibpath]:"");
+  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],(poslibpath)?argv[poslibpath]:(char *)"");
 // remove processed arg
   if(poslib||poslibpath||posnorl||posprmpt) {
     int j=0;
-    char **argvv = malloc(argc*sizeof(char*));
+    char **argvv = (char **)malloc(argc*sizeof(char*));
     argvv[j++]=argv[0];
     for(i=1; i<argc; i++) {
       if(!(i==poslib||i==poslibpath||i==posnorl||i==posprmpt))argvv[j++]=argv[i];

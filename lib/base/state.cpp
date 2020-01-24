@@ -696,6 +696,7 @@ void state_reinit()
 // ---------------------------------------------------------------------
 int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst, uintptr_t stackinit)
 {
+  locale_t loc;
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
   } else if (-2==argc) {
@@ -746,8 +747,12 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 #endif
 #endif
   state_init_resource();
-  if (!setlocale(LC_NUMERIC,"C"))
-    qDebug() << QString("setlocale LC_NUMERIC failed");
+  if (!(loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0)))
+    qDebug() << QString("newlocale LC_NUMERIC failed");
+  else {
+    uselocale(loc);
+    freelocale(loc);
+  }
   state_appname();
   term = new Term;
   bool rc = state_init(argc,argv,stackinit);

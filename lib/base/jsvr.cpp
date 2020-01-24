@@ -273,7 +273,8 @@ void jefail(char* msg)
     buf, (sizeof(buf)/sizeof(char)), 0);
   strcat(msg,buf);
 #else
-  strcat(msg,strerror(errno));
+  char buf[256],ermsg[256];
+  if(errno&&!strerror_r(errno,ermsg,256))strcat(buf,ermsg);
 #endif
   strcat(msg,"\n");
 }
