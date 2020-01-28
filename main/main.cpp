@@ -11,6 +11,7 @@ using namespace std;
 #include <unistd.h>
 #include <sys/resource.h>
 #include <stdint.h>
+#include <locale.h>
 #endif
 
 typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **, uintptr_t);
@@ -39,6 +40,10 @@ int main(int argc, char *argv[])
   double y;
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
+#ifndef _WIN32
+  locale_t loc=0;
+  if ((loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0))) uselocale(loc);
+#endif
 #if defined(__MACH__)
 #if !defined(QT50)
   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {

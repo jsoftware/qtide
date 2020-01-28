@@ -87,25 +87,9 @@ void WebEngineView::set(string p,string v)
   } else if (p=="html") {
     w->setHtml(s2q(remquotes(v)), baseUrl);
     w->show();
-// workaround locale switched to system default
-    locale_t loc;
-    if (!(loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0)))
-      qDebug() << QString("newlocale LC_NUMERIC failed");
-    else {
-      uselocale(loc);
-      freelocale(loc);
-    }
   } else if (p=="url") {
     w->load(QUrl(s2q(remquotes(v))));
     w->show();
-// workaround locale switched to system default
-    locale_t loc;
-    if (!(loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0)))
-      qDebug() << QString("newlocale LC_NUMERIC failed");
-    else {
-      uselocale(loc);
-      freelocale(loc);
-    }
   } else Child::set(p,v);
 }
 
