@@ -11,8 +11,8 @@ using namespace std;
 #include <unistd.h>
 #include <sys/resource.h>
 #include <stdint.h>
-#include <locale.h>
 #endif
+#include <locale.h>
 
 typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **, uintptr_t);
 static Run state_run;
@@ -40,9 +40,12 @@ int main(int argc, char *argv[])
   double y;
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
+  setlocale(LC_ALL, "");
 #ifndef _WIN32
   locale_t loc=0;
   if ((loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0))) uselocale(loc);
+#else
+  setlocale(LC_NUMERIC,"C");
 #endif
 #if defined(__MACH__)
 #if !defined(QT50)
