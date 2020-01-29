@@ -13,6 +13,9 @@ using namespace std;
 #include <stdint.h>
 #endif
 #include <locale.h>
+#ifdef __MACH__
+#include <xlocale.h>
+#endif
 
 typedef int (*Run)(int,char **,char *,bool,int,void *,void *,void **,void **, uintptr_t);
 static Run state_run;
