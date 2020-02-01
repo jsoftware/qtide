@@ -10,6 +10,7 @@
 
 #ifdef __MACH__
 #include <mach-o/dyld.h>
+#include <errno.h>
 #endif
 
 #include "base.h"
