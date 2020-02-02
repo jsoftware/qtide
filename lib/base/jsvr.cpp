@@ -403,8 +403,8 @@ A dora(string s)
     if (!jdo(jt,(C*)"q_jrx_=:4!:0<'r_jrx_'")) {
       A at=jgeta(jt,6,(char*)"q_jrx_");
       AREP p=(AREP)(sizeof(A_RECORD) + (char*)at);
-      assert(p->t==4);
-      assert(p->r==0);
+      assert((0x1fffff&p->t)==4);
+      assert((0xff&p->r)==0);
       return (0==*(I*)p->s)?jgeta(jt,6,(char*)"r_jrx_"):0;
     }
     return 0;
@@ -420,8 +420,8 @@ bool dorb(string s)
   A r=dora(s);
   if (!r) return false;
   AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
-  assert(p->t==1);
-  assert(p->r==0);
+  assert((0x1fffff&p->t)==1);
+  assert((0xff&p->r)==0);
   return !!*((char*)p->s);
 }
 
@@ -434,9 +434,9 @@ bool doriv(string s,I**v,I*len)
   A r=dora(s);
   if (!r) return false;
   AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
-  assert(p->t==4);
-  assert(p->r<2);
-  if (p->r==0) {
+  assert((0x1fffff&p->t)==4);
+  assert((0xff&p->r)<2);
+  if ((0xff&p->r)==0) {
     *len = 1;
     *v=((I*)p->s);
   } else {
@@ -454,9 +454,9 @@ string dors(string s)
   A r=dora(s);
   if (!r) return "";
   AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
-  assert(p->t==2);
-  assert(p->r<2);
-  if (p->r==0)
+  assert((0x1fffff&p->t)==2);
+  assert((0xff&p->r)<2);
+  if ((0xff&p->r)==0)
     return string(((char*)p->s),1);
   else
     return string((sizeof(AREP_RECORD)+(char*)p), p->c);
@@ -538,9 +538,9 @@ C* jgetc(C* name, I* len)
 {
   A r = jgeta(jt,strlen(name),name);
   AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
-  assert(p->t==2);
-  assert(p->r<2);
-  if (p->r==0) {
+  assert((0x1fffff&p->t)==2);
+  assert((0xff&p->r)<2);
+  if ((0xff&p->r)==0) {
     *len = 1;
     return (C*)((char*)p->s);
   } else {
@@ -555,10 +555,10 @@ void dumpA(A a)
   qDebug() << "k " << a->k;
   qDebug() << "flag " << a->flag;
   qDebug() << "m " << a->m;
-  qDebug() << "t " << a->t;
+  qDebug() << "t " << (0x1fffff&a->t);
   qDebug() << "c " << a->c;
   qDebug() << "n " << a->n;
-  qDebug() << "r " << a->r;
+  qDebug() << "r " << (0xff&a->r);
   qDebug() << "s " << a->s[0];
 }
 
@@ -566,8 +566,8 @@ void dumpA(A a)
 void dumpAREP(AREP a)
 {
   qDebug() << "n " << a->n;
-  qDebug() << "t " << a->t;
+  qDebug() << "t " << (0x1fffff&a->t);
   qDebug() << "c " << a->c;
-  qDebug() << "r " << a->r;
+  qDebug() << "r " << (0xff&a->r);
   qDebug() << "s " << a->s[0];
 }
