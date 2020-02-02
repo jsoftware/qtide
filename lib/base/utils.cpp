@@ -313,6 +313,7 @@ QString getsha1(QString s)
 string getversion()
 {
   QString s=QString::fromUtf8(JQTVERSION);
+  QString rt=QString(qVersion());
   s=s.split(":")[1];
   QStringList t=s.split("/");
   string r=q2s(t[1]);
@@ -320,7 +321,7 @@ string getversion()
     r+="s";
   if ("fat"==t[0])
     r+="f";
-  r+="/" + q2s(t[2]);
+  r+="/" + q2s(t[2]) + "(" + q2s(rt) + ")";
   return r;
 }
 
