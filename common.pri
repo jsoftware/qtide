@@ -1,6 +1,6 @@
 # included by main.pro and lib.pro
 
-VERSION = 1.8.5
+VERSION = 1.8.6
 
 JQTBUILD = "full"
 JQTFAT = $$(JQTFAT)
