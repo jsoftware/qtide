@@ -4,12 +4,19 @@
 
 S=$(dirname "$0")
 
+QM=qmake
+hash $QM &> /dev/null
+if [ $? -eq 1 ]; then
+  echo 'use qmake-qt5' >&2
+  QM=qmake-qt5
+fi
+
 ./clean.sh
 ./clean.l64
 
 cd lib
-qmake && make
+$QM && make
 cd ..
 
 cd main
-qmake && make
+$QM && make
