@@ -1025,47 +1025,6 @@ void wdqueries(string s)
     result="jqt";
     return;
   } else if (s=="qosver") {
-#if defined(_WIN32)
-    QSysInfo qsi;
-    Q_UNUSED(qsi);
-    if (qsi.WindowsVersion >= QSysInfo::WV_WINDOWS8_1) {
-      result="6.3";
-      return;
-    } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS8) {
-      result="6.2";
-      return;
-    } else if (qsi.WindowsVersion == QSysInfo::WV_WINDOWS7) {
-      result="6.1";
-      return;
-    } else if (qsi.WindowsVersion == QSysInfo::WV_VISTA) {
-      result="6.0";
-      return;
-    } else if (qsi.WindowsVersion == QSysInfo::WV_2003) {
-      result="5.2";
-      return;
-    } else if (qsi.WindowsVersion == QSysInfo::WV_XP) {
-      result="5.1";
-      return;
-    }
-#elif defined(__MACH__)
-    QSysInfo qsi;
-    if (qsi.MacintoshVersion > QSysInfo::MV_10_8) {
-      result="10.9";
-      return;
-    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_8) {
-      result="10.8";
-      return;
-    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_7) {
-      result="10.7";
-      return;
-    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_6) {
-      result="10.6";
-      return;
-    } else if (qsi.MacintoshVersion == QSysInfo::MV_10_5) {
-      result="10.5";
-      return;
-    }
-#else
 #ifdef QT54
     QSysInfo qsi;
     result=q2s(qsi.prettyProductName()+" "+qsi.kernelVersion());
@@ -1073,7 +1032,9 @@ void wdqueries(string s)
     result="";
 #endif
     return;
-#endif
+  } else if (s=="qpath") {
+    result=q2s(QApplication::applicationDirPath());
+    return;
   } else if (s=="qprinters") {
     if (!app) {
       error("command failed: no QApplication");

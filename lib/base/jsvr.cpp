@@ -454,6 +454,7 @@ string dors(string s)
   A r=dora(s);
   if (!r) return "";
   AREP p=(AREP)(sizeof(A_RECORD) + (char*)r);
+  if (!p->c) return "";
   assert((0x1fffff&p->t)==2);
   assert((0xff&p->r)<2);
   if ((0xff&p->r)==0)
