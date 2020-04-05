@@ -172,8 +172,8 @@ void Term::fini()
   p.setColor(QPalette::HighlightedText, config.TermSelt.color);
   tedit->setPalette(p);
   setWindowIcon(QIcon(":/images/jgreen.png"));
-  if (config.TermSyntaxHighlight)
-    highlight(tedit->document());
+  if (config.TermSyntaxHighlight && tedit->highlighter)
+    tedit->highlighter(tedit->document());
 #ifdef TABCOMPLETION
   completer = new QCompleter(this);
   completer->setModel(getcompletermodel(completer,config.ConfigPath.filePath(config.CompletionFile)));

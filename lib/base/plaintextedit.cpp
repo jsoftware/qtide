@@ -17,13 +17,25 @@
 // ---------------------------------------------------------------------
 PlainTextEdit::PlainTextEdit(QWidget *parent) : QPlainTextEdit(parent)
 {
+  highlighter=0;
 }
 
 #ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
+void PlainTextEdit::print(QPrinter * printer)
+{
+  QTextDocument *d = document()->clone();
+  if(highlighter) highlighter(d);
+  d->print(printer);
+  delete d;
+}
+
 void PlainTextEdit::printPreview(QPrinter * printer)
 {
-  printpreview(printer,document());
+  QTextDocument *d = document()->clone();
+  if(highlighter) highlighter(d);
+  printpreview(printer,d);
+  delete d;
 }
 #endif
 

@@ -96,15 +96,11 @@ void dialogprint(QWidget *w,QTextDocument *d)
   if (dlg->exec() != QDialog::Accepted)
     return;
   if (d) {
-    QTextDocument *dd=d->clone();
-    QSyntaxHighlighter *hg = highlight(dd);
-    Q_UNUSED(hg);
 #ifdef QT50
-    dd->print((QPagedPaintDevice *)config.Printer);
+    d->print((QPagedPaintDevice *)config.Printer);
 #else
-    dd->print(config.Printer);
+    d->print(config.Printer);
 #endif
-    delete dd;
   }
   delete dlg;
   config.Printer->setPrintRange(QPrinter::AllPages);
@@ -196,18 +192,14 @@ QString getprojectpath()
 // ---------------------------------------------------------------------
 void printpreview(QPrinter * printer, QTextDocument *d)
 {
-  QTextDocument *dd=d->clone();
-  QSyntaxHighlighter *hg = highlight(dd);
-  Q_UNUSED(hg);
 #ifdef QT50
-  dd->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
-  dd->setPageSize(QSizeF(printer->pageRect().size()));
-  dd->print((QPagedPaintDevice *)printer);
+  d->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
+  d->setPageSize(QSizeF(printer->pageRect().size()));
+  d->print((QPagedPaintDevice *)printer);
 #else
-  dd->documentLayout()->setPaintDevice(printer);
-  dd->setPageSize(QSizeF(printer->pageRect().size()));
-  dd->print(printer);
+  d->documentLayout()->setPaintDevice(printer);
+  d->setPageSize(QSizeF(printer->pageRect().size()));
+  d->print(printer);
 #endif
-  delete dd;
 }
 #endif

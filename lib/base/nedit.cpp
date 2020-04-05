@@ -12,6 +12,7 @@ QMap<QString,QString> Comments;
 // ---------------------------------------------------------------------
 Nedit::Nedit()
 {
+  highlighter=highlight;
   type=1;
   pendingReload=false;
   ensureCursorVisible();
@@ -24,7 +25,7 @@ Nedit::Nedit()
   p.setColor(QPalette::Highlight, config.EditSelb.color);
   p.setColor(QPalette::HighlightedText, config.EditSelt.color);
   setPalette(p);
-  highlight(document());
+  if(highlighter)highlighter(document());
 }
 
 // ---------------------------------------------------------------------

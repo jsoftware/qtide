@@ -7,6 +7,7 @@
 class LineNumberArea;
 class QPrinter;
 class QWidget;
+class QSyntaxHighlighter;
 
 // ---------------------------------------------------------------------
 class PlainTextEdit : public QPlainTextEdit
@@ -15,9 +16,11 @@ class PlainTextEdit : public QPlainTextEdit
 
 public:
   PlainTextEdit(QWidget *parent = 0);
+  QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
 
 #ifndef QT_NO_PRINTER
 public slots:
+  void print(QPrinter  *printer);
   void printPreview(QPrinter *printer);
 #endif
 
@@ -78,3 +81,4 @@ private:
 };
 
 #endif
+

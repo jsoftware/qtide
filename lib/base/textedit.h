@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 
 class QPrinter;
+class QSyntaxHighlighter;
 
 // ---------------------------------------------------------------------
 class TextEdit : public QTextEdit
@@ -28,8 +29,11 @@ public:
   void setcurpos(int pos);
   int type;
 
+  QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
+
 #ifndef QT_NO_PRINTER
 public slots:
+  void print(QPrinter *printer);
   void printPreview(QPrinter *printer);
 #endif
 

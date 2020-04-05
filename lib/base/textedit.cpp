@@ -15,6 +15,7 @@
 // ---------------------------------------------------------------------
 TextEdit::TextEdit(QWidget *parent) : QTextEdit(parent)
 {
+  highlighter=highlight;
   setAcceptRichText(false);
   blockfmt=textCursor().blockFormat();
   charfmt=textCursor().charFormat();
@@ -113,9 +114,20 @@ void TextEdit::newblock()
 
 #ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
+void TextEdit::print(QPrinter *printer)
+{
+  QTextDocument *d = document()->clone();
+  if (config.TermSyntaxHighlight && highlighter) highlighter(d);
+  d->print(printer);
+  delete d;
+}
+
 void TextEdit::printPreview(QPrinter *printer)
 {
-  printpreview(printer,document());
+  QTextDocument *d = document()->clone();
+  if (config.TermSyntaxHighlight && highlighter) highlighter(d);
+  printpreview(printer,d);
+  delete d;
 }
 #endif
 
