@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-# JDLLVER = 9.01    # ignored if not FHS
+# JDLLVER = 9.02    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
