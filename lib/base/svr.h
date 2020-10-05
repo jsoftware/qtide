@@ -16,6 +16,7 @@ public:
   Jcon() {};
   void cmd(std::string s);
   void cmddo(std::string s);
+  void cmddoImm(std::string s);
   void cmddop(std::string s);
   QString cmdr(std::string s);
 //  int exec();
@@ -24,6 +25,7 @@ public:
   void set(QString s,std::string t);
 
   std::list <std::string> Sentence;
+  std::list <std::string> SentenceImm;
 
 public slots:
   void cmdSentences();
@@ -37,6 +39,7 @@ private:
 bool svr_init(int argc, char* argv[], uintptr_t stackinit);
 extern Jcon *jcon;
 extern bool jecallback;
+extern bool nowjinput;
 extern std::string wdQuery;
 
 #endif

@@ -34,6 +34,7 @@ void _stdcall Joutput(J jt, int type, C* s);
 
 static QString inputx;
 bool jecallback=false;
+bool nowjinput=false;
 bool runcmd=false;
 bool runsentences=false;
 bool runshow=false;
@@ -58,10 +59,20 @@ void Jcon::cmddo(string s)
 {
   runcmd=false;
   Sentence.push_back(s);
-  if (jecallback)
+  if (0&&jecallback)
     jevloop->exit();
   else
     cmdSentences();
+}
+
+// ---------------------------------------------------------------------
+// add expression to SentenceImm
+void Jcon::cmddoImm(string s)
+{
+  SentenceImm.push_back(s);
+  nowjinput=false;
+  jevloop->exit();
+  jecallback=false;
 }
 
 // ---------------------------------------------------------------------
@@ -79,7 +90,7 @@ void Jcon::cmddop(string s)
 // run all Sentence after timeout
 void Jcon::cmddos()
 {
-  if (jecallback)
+  if (0&&jecallback)
     jevloop->exit();
   else {
     QTimer *timer = new QTimer(this);
@@ -225,12 +236,13 @@ char* _stdcall Jinput(J jt, char* p)
     tedit->setprompt();
   }
   runterm=qMax(0,runterm-1);
-  if (jcon->Sentence.empty()) {
+  if (jcon->SentenceImm.empty()) {
+    nowjinput=true;
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   }
-  if (!jcon->Sentence.empty()) {
-    s=jcon->Sentence.front();
-    jcon->Sentence.pop_front();
+  if (!jcon->SentenceImm.empty()) {
+    s=jcon->SentenceImm.front();
+    jcon->SentenceImm.pop_front();
   }
   size_t n=s.find('\0');
   if (n!=string::npos)

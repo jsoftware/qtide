@@ -18,6 +18,7 @@ using namespace std;
 extern bool runcmd;
 extern bool runshow;
 extern int runterm;
+extern bool nowjinput;
 
 // ---------------------------------------------------------------------
 Tedit::Tedit()
@@ -60,6 +61,14 @@ void Tedit::docmd(QString t)
   runterm=1;
   dlog_add(t);
   jcon->cmddo(q2s(t));
+}
+
+// ---------------------------------------------------------------------
+void Tedit::docmdImm(QString t)
+{
+  runshow=false;
+  runterm=0;
+  jcon->cmddoImm(q2s(t));
 }
 
 // ---------------------------------------------------------------------
@@ -124,8 +133,9 @@ void Tedit::enter()
     if (config.KeepCursorPosOnRecall)
       pos=getpositioninblock(c) + pad;
     promptreplace(txt,pos);
-  } else
-    docmd(txt.trimmed());
+  } else {
+    if(nowjinput)docmdImm(txt);else docmd(txt.trimmed());
+  }
 }
 
 // ---------------------------------------------------------------------

@@ -41,6 +41,7 @@ private slots:
 
 private:
   void docmd(QString t);
+  void docmdImm(QString t);
   void keyPressEvent(QKeyEvent *);
   void enter();
   void togglemode();
