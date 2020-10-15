@@ -19,7 +19,7 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"password readonly left right center")) return;
+  if (invalidopt(n,opt,"password readonly left right center uppercase")) return;
   if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
     error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
@@ -27,6 +27,8 @@ Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setObjectName(qn);
   focusSelect=false;
   childStyle(opt);
+
+  uppercase=opt.contains("uppercase");
 
   if (opt.contains("password"))
     w->setEchoMode(LineEdit::Password);
@@ -57,6 +59,10 @@ void Edit::returnPressed()
 // ---------------------------------------------------------------------
 void Edit::textChanged()
 {
+  LineEdit *w=(LineEdit*) widget;
+  if(uppercase){
+  w->setText(w->text().toUpper());
+  }
   event="changed";
   pform->signalevent(this);
 }

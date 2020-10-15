@@ -23,6 +23,7 @@ private slots:
 
 private:
   bool focusSelect;
+  bool uppercase;
 
 };
 
