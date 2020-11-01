@@ -58,7 +58,7 @@ void Tedit::docmd(QString t)
 {
   runshow=false;
   runterm=1;
-  dlog_add(t);
+  dlog_add(jecallback?t:t.trimmed());
   jcon->cmddo(q2s(t));
 }
 
@@ -74,11 +74,11 @@ void Tedit::docmddo(QString t)
 void Tedit::docmdp(QString t,bool show,bool same)
 {
   bool cmt="NB."==dlb(t).left(3);
-  runshow=same && t.size()>0 && !cmt;
+  runshow=same && t.trimmed().size()>0 && !cmt;
   if (show)
     promptreplace(getprompt() + t);
   if (runshow) {
-    dlog_add(t);
+    dlog_add(jecallback?t:t.trimmed());
     jcon->cmddo("output_jrx_=:i.0 0");
     jcon->cmddo("output_jrx_=:"+q2s(t));
     runterm=jecallback ? 3 : 1;
@@ -125,7 +125,7 @@ void Tedit::enter()
       pos=getpositioninblock(c) + pad;
     promptreplace(txt,pos);
   } else
-    docmd(txt.trimmed());
+    docmd(txt);
 }
 
 // ---------------------------------------------------------------------
