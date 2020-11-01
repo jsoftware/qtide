@@ -120,6 +120,14 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = conjunctionFormat;
   highlightingRules.append(rule);
 
+  rule.pattern = QRegExp("\\{\\{");
+  rule.format = controlFormat;
+  highlightingRules.append(rule);
+
+  rule.pattern = QRegExp("\\}\\}");
+  rule.format = controlFormat;
+  highlightingRules.append(rule);
+
   rule.pattern = QRegExp("'[^']*'");
   rule.format = stringFormat;
   highlightingRules.append(rule);
