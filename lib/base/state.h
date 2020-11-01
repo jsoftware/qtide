@@ -116,6 +116,7 @@ public:
   bool LineWrap;
   int MaxInputLog;
   int MaxRecent;
+  int MaxVisibleItems;
   bool NoProfile;
   int OpenTabAt;
   QString Pass;

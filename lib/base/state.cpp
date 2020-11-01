@@ -243,6 +243,7 @@ void initidec(QString f, QString t)
       "# LineNumbers=false            if show line numbers\n"
       "# MaxInputLog=100              max number in input log, 0 for none\n"
       "# MaxRecent=15                 max number in recent files\n"
+      "# MaxVisibleItems=10           max visible items in combobox\n"
       "# OpenTabAt=0                  open tab 0=left,1=insert,2=right\n"
       "# Snapshots=5                  number of project snapshots kept\n"
       "# Snapshotx=                   snapshots exclusion list\n"
@@ -313,6 +314,7 @@ void Config::initide()
     len=(s->value("Session/KeepInputLog",true).toBool()) ? 100 : 0;
   MaxInputLog=len;
 
+  MaxVisibleItems = s->value("Session/MaxVisibleItems",10).toInt();
   MaxRecent = s->value("Session/MaxRecent",15).toInt();
   OpenTabAt=s->value("Session/OpenTabAt",0).toInt();
   Snapshots = s->value("Session/Snapshots",true).toInt();
@@ -352,7 +354,7 @@ void Config::initide()
   TermPos=q2p(t);
   TermPosX=initposX(TermPos, q2p(tp));
 
-  if (s->allKeys().contains("Session/CursorWidth")) return;
+  if (s->allKeys().contains("Session/MaxVisibleItems")) return;
 
   delete s;
   w=(fontweight==QFont::Normal) ? "normal" : "bold";
@@ -381,6 +383,7 @@ void Config::initide()
   s->setValue("Session/LineNumbers",LineNos);
   s->setValue("Session/MaxInputLog",MaxInputLog);
   s->setValue("Session/MaxRecent",MaxRecent);
+  s->setValue("Session/MaxVisibleItems",MaxVisibleItems);
   s->setValue("Session/OpenTabAt",OpenTabAt);
   s->setValue("Session/Snapshots",Snapshots);
   s->setValue("Session/Snapshotx",Snapshotx);
@@ -479,6 +482,7 @@ void curposide()
   s->setValue("Session/LineNumbers", config.LineNos);
   s->setValue("Session/MaxInputLog", config.MaxInputLog);
   s->setValue("Session/MaxRecent", config.MaxRecent);
+  s->setValue("Session/MaxVisibleItems", config.MaxVisibleItems);
   s->setValue("Session/OpenTabAt", config.OpenTabAt);
   s->setValue("Session/Snapshots", config.Snapshots);
   s->setValue("Session/Snapshotx", config.Snapshotx);

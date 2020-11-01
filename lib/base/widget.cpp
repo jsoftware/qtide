@@ -3,6 +3,8 @@
 #include <QComboBox>
 #include <QPushButton>
 
+#include "state.h"
+
 // ---------------------------------------------------------------------
 QPushButton *makebutton(QString id)
 {
@@ -28,6 +30,7 @@ QCheckBox *makecheckbox(QString text, QString id="")
 QComboBox *makecombobox(QString id)
 {
   QComboBox *p=new QComboBox();
+  p->setMaxVisibleItems(config.MaxVisibleItems);
   p->setEditable(true);
   p->setCompleter(0);
   p->setObjectName(id.remove(' ').remove('&').toLower());
