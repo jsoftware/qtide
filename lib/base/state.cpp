@@ -789,7 +789,8 @@ QString writeTabWidth(int n)
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
-  sets("inputx_jrx_",string(s));
-  jcon->immex("0!:100 inputx_jrx_");
+//  sets("inputx_jrx_",string(s));
+//  jcon->immex("0!:100 inputx_jrx_");
+  jcon->runimmx0(string(s));
 }
 
