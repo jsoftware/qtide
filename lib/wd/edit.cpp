@@ -60,8 +60,8 @@ void Edit::returnPressed()
 void Edit::textChanged()
 {
   LineEdit *w=(LineEdit*) widget;
-  if(uppercase){
-  w->setText(w->text().toUpper());
+  if(uppercase) {
+    w->setText(w->text().toUpper());
   }
   event="changed";
   pform->signalevent(this);

@@ -707,6 +707,7 @@ void userkey(int mode, QString s)
 {
   QWidget *w=getactiveedit();
 
+  qDebug() << "userkey " + s + " mode "+ mode;
   if (mode==0) {
     tedit->docmds(s,mode==1);
     return;
