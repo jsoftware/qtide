@@ -96,7 +96,9 @@ void addargv(int argc, char* argv[], C* d)
 int jedo(char* sentence)
 {
   if (!jt) return 0;
+#ifdef DEBUG_JDO
   qDebug() << "jsvr jedo " + QString(sentence);
+#endif
   return jdo(jt,sentence);
 }
 

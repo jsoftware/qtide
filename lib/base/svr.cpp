@@ -49,7 +49,9 @@ Jcon *jcon=0;
 // usual way to call J when not suspended
 void Jcon::cmd(string s)
 {
+#ifdef DEBUG_JDO
   qDebug() << "jcon cmd "+s2q(s)+ " jecallback "+ jecallback;
+#endif
   if (jecallback)
     runimmx0(s);
   else
@@ -59,7 +61,9 @@ void Jcon::cmd(string s)
 // ---------------------------------------------------------------------
 void Jcon::runimmx0(string s)
 {
+#ifdef DEBUG_JDO
   qDebug() << "jcon runimmx0 "+s2q(s)+ " jecallback "+ jecallback;
+#endif
   jcon->set("IMMX_jrx_",s);
   jedo((char *)"9!:29[1[9!:27'0!:100 IMMX_jrx_'");
 }
@@ -67,7 +71,9 @@ void Jcon::runimmx0(string s)
 // ---------------------------------------------------------------------
 void Jcon::runimmx1(string s)
 {
+#ifdef DEBUG_JDO
   qDebug() << "jcon runimmx1 "+s2q(s)+ " jecallback "+ jecallback;
+#endif
   jcon->set("IMMX_jrx_",s);
   jedo((char *)"9!:29[1[9!:27'0!:101 IMMX_jrx_'");
 }
@@ -76,7 +82,9 @@ void Jcon::runimmx1(string s)
 // add expression to Sentence and run all Sentence
 void Jcon::cmddo(string s)
 {
+#ifdef DEBUG_JDO
   qDebug() << "jcon cmddo "+s2q(s)+ " jecallback "+ jecallback;
+#endif
   runcmd=false;
   Sentence.push_back(s);
   if (jecallback)
@@ -246,11 +254,15 @@ char* _stdcall Jinput(J jt, char* p)
     tedit->setprompt();
   }
   runterm=qMax(0,runterm-1);
+#ifdef DEBUG_JDO
   qDebug() << "jcon Jinput loop begin";
+#endif
   if (jcon->Sentence.empty()) {
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
   }
+#ifdef DEBUG_JDO
   qDebug() << "jcon Jinput loop end";
+#endif
   jecallback=false;
   if (!jcon->Sentence.empty()) {
     s=jcon->Sentence.front();
@@ -262,7 +274,9 @@ char* _stdcall Jinput(J jt, char* p)
   s=s.substr(0,n);
   if ((int)sizeof(inputline)<s.size()) exit(100);
   strcpy(inputline,s.c_str());
+#ifdef DEBUG_JDO
   qDebug() << "jcon Jinput return "+s2q(s);
+#endif
   return inputline;
 }
 

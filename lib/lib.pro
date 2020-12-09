@@ -43,6 +43,9 @@ TARGET = jqt
 # QT -= svg
 # QT -= svg
 
+# to print debug messages for calling JDo,  uncomment the following line
+# DEFINES += DEBUG_JDO
+
 contains(DEFINES,QT50) {
   QT +=  multimedia
 } else {

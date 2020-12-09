@@ -570,9 +570,11 @@ void Form::signalevent(Child *c, QKeyEvent *e)
   // paint events in isigraph/opengl have priority, because all the graphics must
   // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE, and not wait for the callback
   //  queue to be scheduled.
+#ifdef DEBUG_JDO
   string cmdtmp=cmd;
   std::replace( cmdtmp.begin(), cmdtmp.end(), '\0', '\\');
   qDebug() << "form event "+s2q(cmdtmp);
+#endif
   if ((ctype=="isigraph" || ctype=="opengl") && c && c->event=="paint")
     jcon->cmddop(cmd);
   else

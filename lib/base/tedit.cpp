@@ -56,7 +56,9 @@ void Tedit::append_smoutput(QString s)
 // ---------------------------------------------------------------------
 void Tedit::docmd(QString t)
 {
+#ifdef DEBUG_JDO
   qDebug() << "tedit docmd " + t;
+#endif
   runshow=false;
   runterm=1;
   dlog_add(jecallback?t:t.trimmed());
@@ -66,7 +68,9 @@ void Tedit::docmd(QString t)
 // ---------------------------------------------------------------------
 void Tedit::docmddo(QString t)
 {
+#ifdef DEBUG_JDO
   qDebug() << "tedit docmddo " + t;
+#endif
   runshow=false;
   runterm=0;
   jcon->cmddo(q2s(t));
@@ -75,7 +79,9 @@ void Tedit::docmddo(QString t)
 // ---------------------------------------------------------------------
 void Tedit::docmdp(QString t,bool show,bool same)
 {
+#ifdef DEBUG_JDO
   qDebug() << "tedit docmdp " + t;
+#endif
   bool cmt="NB."==dlb(t).left(3);
   runshow=same && t.trimmed().size()>0 && !cmt;
   if (show)
@@ -93,16 +99,16 @@ void Tedit::docmdp(QString t,bool show,bool same)
 // ---------------------------------------------------------------------
 void Tedit::docmds(QString s,bool show,bool same,bool term)
 {
+#ifdef DEBUG_JDO
   qDebug() << "tedit docmds " + s;
+#endif
   runshow=same;
   runterm=(show || term) ? 1 : 0;
   if (jecallback) {
-//    string f=show ? "0!:101" : "0!:100";
-//    jcon->set("inputx_jrx_",q2s(s));
-//    jcon->cmddo(f + " inputx_jrx_");
+    if (show)
+      promptreplace(getprompt() + s);
     jcon->cmddo(q2s(s));
   } else {
-//    jcon->cmddo(q2s(s));
     if(show)jcon->runimmx1(q2s(s));
     else jcon->runimmx0(q2s(s));
   }
