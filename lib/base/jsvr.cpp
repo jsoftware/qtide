@@ -13,6 +13,12 @@
 #include <errno.h>
 #endif
 
+#ifdef RASPI
+#if !defined(__clang__)
+#include <errno.h>
+#endif
+#endif
+
 #include "base.h"
 #include "jsvr.h"
 #include "util.h"
