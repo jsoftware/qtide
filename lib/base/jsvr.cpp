@@ -6,17 +6,11 @@
 
 #include <csignal>
 #include <assert.h>
+#include <errno.h>
 #include <stdint.h>
 
 #ifdef __MACH__
 #include <mach-o/dyld.h>
-#include <errno.h>
-#endif
-
-#ifdef RASPI
-#if !defined(__clang__)
-#include <errno.h>
-#endif
 #endif
 
 #include "base.h"
