@@ -713,6 +713,7 @@ void userkey(int mode, QString s)
   if (mode==0 || mode==1) {
     writewinstate(w);
     tedit->docmds(s,mode==1);
+    if(mode==1 && w==tedit) tedit->setprompt();
     return;
   }
 
