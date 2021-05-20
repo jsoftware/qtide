@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-JDLLVER = 9.02    # ignored if not FHS
+JDLLVER = 9.03    # ignored if not FHS
 
 greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
 greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
@@ -44,6 +44,16 @@ equals(QMAKE_TARGET.arch , aarch64):!macx: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
+}
+
+equals(QMAKE_TARGET.arch , aarch64):macx: {
+  message(building apple arm64 jqt)
+  QMAKE_CXXFLAGS += -march=armv8-a+crc -target arm64-apple-macos11
+}
+
+equals(QMAKE_TARGET.arch , arm64):macx: {
+  message(building apple arm64 jqt)
+  QMAKE_CXXFLAGS += -march=armv8-a+crc -target arm64-apple-macos11
 }
 
 win32: arch = win-$$QMAKE_TARGET.arch
