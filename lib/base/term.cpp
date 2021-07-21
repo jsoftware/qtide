@@ -276,7 +276,6 @@ void Term::smprompt(QString s)
 // ---------------------------------------------------------------------
 void Term::systimer()
 {
-//  jcon->cmddo("(i.0 0)\"_ sys_timer_z_$0");
   jcon->cmd("(i.0 0)\"_ sys_timer_z_$0");
 }
 

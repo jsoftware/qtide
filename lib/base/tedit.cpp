@@ -88,8 +88,8 @@ void Tedit::docmdp(QString t,bool show,bool same)
     promptreplace(getprompt() + t);
   if (runshow) {
     dlog_add(jecallback?t:t.trimmed());
-    jcon->cmd("output_jrx_=:i.0 0");
-    jcon->cmd("output_jrx_=:"+q2s(t));
+    jcon->cmddo("output_jrx_=:i.0 0");
+    jcon->cmddo("output_jrx_=:"+q2s(t));
     runterm=jecallback ? 3 : 1;
     jcon->cmddo("output_jrx_");
   } else
@@ -104,14 +104,9 @@ void Tedit::docmds(QString s,bool show,bool same,bool term)
 #endif
   runshow=same;
   runterm=(show || term) ? 1 : 0;
-  if (jecallback) {
-    if (show)
-      promptreplace(getprompt() + s);
-    jcon->cmddo(q2s(s));
-  } else {
-    if(show)jcon->runimmx1(q2s(s));
-    else jcon->runimmx0(q2s(s));
-  }
+  string f=show ? "0!:101" : "0!:100";
+  jcon->set("inputx_jrx_",q2s(s));
+  jcon->immex(f + " inputx_jrx_");
 }
 
 // ---------------------------------------------------------------------

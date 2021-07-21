@@ -713,7 +713,6 @@ void userkey(int mode, QString s)
   if (mode==0 || mode==1) {
     writewinstate(w);
     tedit->docmds(s,mode==1);
-    if(mode==1 && w==tedit) tedit->setprompt();
     return;
   }
 
@@ -805,7 +804,7 @@ void writewinstate(QWidget *w)
 {
   if (w==0) {
     sets("WinText_jqtide_","");
-    jcon->jdo("WinSelect_jqtide_=: $0");
+    jcon->cmddo("WinSelect_jqtide_=: $0");
     return;
   }
   QTextCursor c=getcursor(w);
@@ -815,7 +814,7 @@ void writewinstate(QWidget *w)
   QString s=QString::number(b)+" "+QString::number(e);
   sets("WinText_jqtide_",q2s(t));
   sets("inputx_jrx_",q2s(s));
-  jcon->jdo("WinSelect_jqtide_=: 0 \". inputx_jrx_");
+  jcon->cmddo("WinSelect_jqtide_=: 0 \". inputx_jrx_");
 }
 
 // ---------------------------------------------------------------------

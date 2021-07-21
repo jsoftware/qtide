@@ -52,21 +52,19 @@ void Jcon::cmd(string s)
 #ifdef DEBUG_JDO
   qDebug() << "jcon cmd "+s2q(s)+ " jecallback "+ jecallback;
 #endif
-  if (jecallback)
-    runimmx0(s);
-  else
-    jedo((char *)s.c_str());
+  jedo((char *)s.c_str());
 }
 
 // ---------------------------------------------------------------------
+// commented out since same as cmd
 // always call J via jedo
-int Jcon::jdo(string s)
-{
-#ifdef DEBUG_JDO
-  qDebug() << "jcon do "+s2q(s)+ " jecallback "+ jecallback;
-#endif
-  return jedo((char *)s.c_str());
-}
+// int Jcon::jdo(string s)
+// {
+// #ifdef DEBUG_JDO
+//   qDebug() << "jcon do "+s2q(s)+ " jecallback "+ jecallback;
+// #endif
+//   return jedo((char *)s.c_str());
+// }
 
 // ---------------------------------------------------------------------
 void Jcon::runimmx0(string s)

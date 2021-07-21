@@ -18,11 +18,9 @@ public:
   void cmddo(std::string s);
   void cmddop(std::string s);
   QString cmdr(std::string s);
-//  int exec();
   void immex(std::string s);
   void runimmx0(std::string s);
   void runimmx1(std::string s);
-  int jdo(std::string s);
 
   int init(int argc, char* argv[], uintptr_t stackinit);
   void set(QString s,std::string t);
