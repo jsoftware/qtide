@@ -517,7 +517,7 @@ void wdfontdef()
     Font *fnt = new Font(p);
     if (fnt->error) {
       delete fnt;
-      error("fonddef command failed: "+ p);
+      error("fontdef command failed: "+ p);
     } else
       fontdef=fnt;
   }

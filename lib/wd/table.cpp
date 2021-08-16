@@ -60,7 +60,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
-  if (invalidoptn(n,opt,"selectrows sortable")) return;
+  if (invalidoptn(n,opt,"selectrows sortable nostretchlast")) return;
   QStringList shape;
 
   if (opt.size()>=2) {
@@ -74,8 +74,12 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->resizeRowsToContents();
   w->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
   w->horizontalHeader()->setHighlightSections(false);
-  w->horizontalHeader()->setStretchLastSection(true);
   w->horizontalHeader()->setVisible(false);
+
+  if (opt.contains("nostretchlast"))
+    w->horizontalHeader()->setStretchLastSection(false);
+  else
+    w->horizontalHeader()->setStretchLastSection(true);
 
   w->verticalHeader()->setHighlightSections(false);
   w->verticalHeader()->setVisible(false);
@@ -90,6 +94,7 @@ Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     w->selectRow(0);
   }
 
+// this needs updating for Qt5...
 #ifndef QT50
   if (opt.contains("sortable")) {
     w->horizontalHeader()->setClickable(true);
@@ -752,7 +757,6 @@ void Table::setdata(string s)
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
-//    int p= c + r*cls;
       if (colmode && c==c1) q=0;
       set_cell(r,c,dat[q]);
       if (n!=1) q++;
@@ -762,7 +766,6 @@ void Table::setdata(string s)
   w->resizeColumnsToContents();
   w->resizeRowsToContents();
   w->setVisible(true);
-  w->horizontalHeader()->setStretchLastSection(true);
 }
 
 // ---------------------------------------------------------------------

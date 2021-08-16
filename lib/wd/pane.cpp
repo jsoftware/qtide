@@ -421,6 +421,19 @@ void Pane::grid(string p, string v)
       }
       ((QGridLayout *)(layout->bin))->setRowStretch(r,s);
     }
+  } else if (p=="spacing") {
+    QStringList opt=qsplit(v);
+    int r,s;
+    int n=opt.size();
+    if (n==0 || n>2) {
+      error("grid spacing must specify one or two values: " + p + " " + v);
+      return;
+    }
+    r=s=c_strtoi(q2s(opt.at(0)));
+    if (n==2)
+      s=c_strtoi(q2s(opt.at(1)));
+    ((QGridLayout *)(layout->bin))->setHorizontalSpacing(r);
+    ((QGridLayout *)(layout->bin))->setVerticalSpacing(s);
   } else
     error("bad grid command: " + p + " " + v);
 }
