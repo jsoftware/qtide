@@ -70,6 +70,14 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
+QWidget *Tabs::activetab()
+{
+  QTabWidget *w = (QTabWidget *)widget;
+  qDebug() << "activetab index=" << w->currentIndex();
+  return w->currentWidget();
+}
+
+// ---------------------------------------------------------------------
 void Tabs::currentChanged(int ndx)
 {
   Q_UNUSED(ndx);
@@ -174,13 +182,7 @@ void Tabs::tabend()
 {
   QTabWidget *w=(QTabWidget *) widget;
   pform->pane->fini();
-
-  pform->tabs.removeLast();
-  if (pform->tabs.isEmpty())
-    pform->tab=0;
-  else
-    pform->tab=pform->tabs.last();
-
+  pform->tabpane=0;
   if (index)
     w->setCurrentIndex(0);
 }
@@ -192,6 +194,7 @@ void Tabs::tabnew(string p)
     pform->pane->fini();
   QTabWidget *w=(QTabWidget *) widget;
   pform->addpane(1);
+  pform->tabpane=(QWidget*) pform->pane;
   w->addTab(pform->pane, s2q(p));
   index++;
 }

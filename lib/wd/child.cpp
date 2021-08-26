@@ -18,6 +18,7 @@ Child::Child(string n, string s, Form *f, Pane *p)
   ppane=p;
   widget=0;
   locale="";
+  ptab=pform->tabpane;
 }
 
 // ---------------------------------------------------------------------

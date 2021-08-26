@@ -12,6 +12,7 @@ using namespace std;
 
 int TextViewFontSize=0;
 bool TextViewNos=false;
+QList <TextView *> TextViews;
 
 // ---------------------------------------------------------------------
 Eview::Eview(QWidget *parent) : PlainTextEditLn(parent)
@@ -66,8 +67,35 @@ TextView::TextView(QString t,QString c,QString s)
 #endif
 
   activateWindow();
+// following 2 lines avoid spurious blank line number column
+  ev->showNos=TextViewNos;
+  ev->resizer();
   show();
   ev->setFocus();
+}
+
+// ---------------------------------------------------------------------
+void TextView::closeall()
+{
+  TextViews.removeOne(this);
+  int len=TextViews.length();
+  for (int i=len-1; i>=0; i--)
+    TextViews[i]->close();
+  closeme();
+}
+
+// ---------------------------------------------------------------------
+void TextView::closeme()
+{
+  TextViews.removeOne(this);
+  close();
+}
+
+// ---------------------------------------------------------------------
+void TextView::closeEvent(QCloseEvent *event)
+{
+  TextViews.removeOne(this);
+  QWidget::closeEvent(event);
 }
 
 // ---------------------------------------------------------------------
@@ -78,6 +106,8 @@ void TextView::help()
   s+="Ctrl+-\tzoom out\n";
   s+="Ctrl+0\tzoom reset\n";
   s+="Ctrl+N\ttoggle line numbers\n";
+  s+="Ctrl+Q|Esc\tclose\n";
+  s+="Ctrl+Shift+Q\tclose all textviews\n";
   s+="Ctrl+W\ttoggle word wrap\n";
   s+="F11\ttoggle fullscreen\n";
   info("View Shortcuts",s);
@@ -89,6 +119,7 @@ void TextView::keyPressEvent(QKeyEvent *event)
   int key = event->key();
   Qt::KeyboardModifiers mod = app->keyboardModifiers();
   bool ctrl = mod.testFlag(Qt::ControlModifier);
+  bool shift = mod.testFlag(Qt::ShiftModifier);
   if (key==Qt::Key_F11)
     togglemax();
   else if (ctrl && key==Qt::Key_Minus)
@@ -101,6 +132,10 @@ void TextView::keyPressEvent(QKeyEvent *event)
     help();
   else if (ctrl && event->key()==Qt::Key_N)
     togglenos();
+  else if (ctrl && shift && event->key()==Qt::Key_Q)
+    closeall();
+  else if (ctrl && event->key()==Qt::Key_Q)
+    closeme();
   else if (ctrl && event->key()==Qt::Key_W)
     ev->setLineWrapMode((1==ev->lineWrapMode()) ? QPlainTextEdit::NoWrap : QPlainTextEdit::WidgetWidth);
   else QDialog::keyPressEvent(event);
@@ -170,7 +205,8 @@ void textview(QString t,QString s)
 // title, caption, text
 void textview(QString t,QString c,QString s)
 {
-  new TextView(t,c,s);
+  TextView *n = new TextView(t,c,s);
+  TextViews.append(n);
 }
 
 // ---------------------------------------------------------------------

@@ -16,6 +16,7 @@ public:
   Tabs(string n, string s, Form *f, Pane *p);
   string state();
 
+  QWidget *activetab();
   string get(string p,string v);
   void set(string p,string v);
   void tabend();

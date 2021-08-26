@@ -37,13 +37,15 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   menubar=0;
   seq=FormSeq++;
   tab=0;
+  tabpane=0;
   closed=false;
   savepos=false;
   shown=false;
   lastfocus="";
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
-  if (invalidopt(s,m,"escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize")) return;
+  if (invalidopt(s,m,"escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize activeonly")) return;
+  activeonly=m.contains("activeonly");
   escclose=m.contains("escclose");
   closeok=m.contains("closeok");
   setpn(s);
@@ -88,6 +90,13 @@ Form::~Form()
       jcon->cmd("2!:55[0");
     }
   }
+}
+
+// ---------------------------------------------------------------------
+QWidget *Form::activetab()
+{
+  if (!tab) return 0;
+  return tab->activetab();
 }
 
 // ---------------------------------------------------------------------
@@ -614,8 +623,18 @@ string Form::state(int evt)
   r+=spair("sysmodifiers",sysmodifiers);
   r+=spair("sysdata",sysdata);
 
-  for (int i=0; i<children.size(); i++)
-    s+=children.at(i)->state();
+  QWidget *act = activetab();
+
+  if (activeonly && act) {
+    QWidget *ctab;
+    for (int i=0; i<children.size(); i++) {
+      ctab=children.at(i)->ptab;
+      if (ctab && act != ctab) continue;
+      s+=children.at(i)->state();
+    }
+  } else
+    for (int i=0; i<children.size(); i++)
+      s+=children.at(i)->state();
 
   return r+s;
 }

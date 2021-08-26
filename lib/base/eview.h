@@ -22,6 +22,9 @@ public:
   TextView(QString t,QString h,QString s);
 
 private:
+  void closeall();
+  void closeme();
+  void closeEvent(QCloseEvent *event);
   void help();
   void keyPressEvent(QKeyEvent *e);
   void reject();

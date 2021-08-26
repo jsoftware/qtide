@@ -49,6 +49,7 @@ public:
   string sysmodifiers;
   Form *pform;
   Pane *ppane;
+  QWidget *ptab;
   QWidget *widget;
 
 protected:

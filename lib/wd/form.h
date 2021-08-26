@@ -28,12 +28,14 @@ class Form : public QWidget
 public:
   Form(string id, string p, string locale, QWidget *parent = 0);
   ~Form();
+  QWidget *activetab();
   void addchild(Child *);
   Pane *addpane(int n);
   void addmenu();
   void closepane();
   void closeit();
 
+  bool activeonly;
   string hschild();
   string hsform();
   string qform();
@@ -74,6 +76,7 @@ public:
   Menus *menubar;
   Pane *pane;
   QList<Pane *>panes;
+  QWidget *tabpane;
   QTimer *timer;
   Tabs *tab;
   QList<Tabs *>tabs;
