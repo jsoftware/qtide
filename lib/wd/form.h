@@ -60,6 +60,7 @@ public:
   string getfocus();
 
   bool closed;
+  int maxvisibleitems;
   bool savepos;
   bool shown;
   int seq;

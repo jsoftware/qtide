@@ -448,13 +448,33 @@ bool Pane::groupbox(string c, string s)
     if (!layout)
       bin("v");
     QStringList opt=qsplit(s);
-    if (opt.size())
-      id=opt.at(0);
+
+    int n = opt.size();
+    int p = 0;
+
+    if (n > 0)
+      id=opt.at(p++);
     groupboxw=new QGroupBox(id);
     if (fontdef) groupboxw->setFont(fontdef->font);
     layout->addWidget(groupboxw);
     QVBoxLayout *vb=new QVBoxLayout;
     vb->addWidget(pform->addpane(0));
+
+    while (p < n) {
+      QString m=opt.at(p++);
+      if (m == "flush")
+        vb->setContentsMargins(0,0,0,0);
+      else if (m == "margins") {
+        if (2 > (n - p)) {
+          error("margins requires 2 values for width, height " + s);
+          return false;
+        }
+        int w=c_strtoi(q2s(opt.at(p++)));
+        int h=c_strtoi(q2s(opt.at(p++)));
+        vb->setContentsMargins(w,h,w,h);
+      } else error("unrecognized parameter: " + q2s(m));
+    }
+
     groupboxw->setLayout(vb);
     pform->pane->bin("v");
     return true;

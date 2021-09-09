@@ -26,6 +26,8 @@ ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   if (opt.contains("edit"))
     w->setEditable(true);
+  if (f->maxvisibleitems)
+    w->setMaxVisibleItems(f->maxvisibleitems);
   connect(w,SIGNAL(activated(int)),
           this,SLOT(activated()));
 }
@@ -87,7 +89,9 @@ void ComboBox::set(string p,string v)
   if (p=="items") {
     w->clear();
     w->addItems(qsplit(v));
-  } else if (p=="select")
+  } else if (p=="maxvisibleitems")
+    ((QComboBox *)widget)->setMaxVisibleItems(atoi(v.c_str()));
+  else if (p=="select")
     ((QComboBox *)widget)->setCurrentIndex(atoi(v.c_str()));
   else Child::set(p,v);
 }

@@ -276,9 +276,13 @@ void Child::setmaxwhv(string p)
 }
 
 // ---------------------------------------------------------------------
+// sets max value if either argument is -1
 void Child::setmaxwh(int w, int h)
 {
   if (widget && w && h) {
+    int m=QWIDGETSIZE_MAX;
+    if (w == -1) w=m;
+    if (h == -1) h=m;
     widget->setMaximumSize(w,h);
     widget->updateGeometry();
   }

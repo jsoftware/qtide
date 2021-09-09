@@ -34,6 +34,7 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   child=0;
   evtchild=0;
   locale=loc;
+  maxvisibleitems=0;
   menubar=0;
   seq=FormSeq++;
   tab=0;
@@ -410,6 +411,8 @@ void Form::set(string p,string v)
     setFont((Font(v)).font);
   } else if (p=="invalid") {
     update();
+  } else if (p=="maxvisibleitems") {
+    maxvisibleitems=c_strtoi((v));
   } else if (p=="show"||p=="visible") {
     setVisible(remquotes(v)!="0");
   } else if (p=="stylesheet") {
