@@ -88,12 +88,15 @@ void TextView::closeall()
 void TextView::closeme()
 {
   TextViews.removeOne(this);
+  savepos();
   close();
+
 }
 
 // ---------------------------------------------------------------------
 void TextView::closeEvent(QCloseEvent *event)
 {
+  if (TextViews.length() == 1) savepos();
   TextViews.removeOne(this);
   QWidget::closeEvent(event);
 }
