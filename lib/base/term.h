@@ -53,6 +53,9 @@ public:
   void smact();
   void smprompt(QString s);
   void vieweditor();
+#ifdef _WIN32
+  bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+#endif
 
   Menu *menuBar;
 

@@ -336,6 +336,7 @@ RESOURCES += styles/qdarkstyle/style.qrc
 
 win32:VERSION =
 win32:!win32-msvc*:LIBS += -shared
+win32:LIBS += -lws2_32
 unix:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc

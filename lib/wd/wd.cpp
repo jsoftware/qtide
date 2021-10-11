@@ -961,7 +961,7 @@ void wdqueries(string s)
 {
   string p=cmd.getparms();
 
-  if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qform")) {
+  if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qhwndx" || s=="qform")) {
     error("extra parameters: " + p);
     return;
   }
@@ -1065,6 +1065,10 @@ void wdqueries(string s)
       }
       result=q;
     }
+    return;
+  } else if (s=="qhwndx") {
+    if (!term) result="";
+    else result=p2s((void*)term->winId());
     return;
   } else if (s=="qfile") {
     bool done=false;

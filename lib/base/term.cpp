@@ -9,6 +9,11 @@
 #include <QCompleter>
 QCompleter *completer=0;
 #endif
+#ifdef _WIN32
+#include <windows.h>
+#include <winsock2.h>
+#define WM_SOCK 1026
+#endif
 
 #include "base.h"
 #include "dialog.h"
@@ -292,3 +297,44 @@ void Term::vieweditor()
     note->activate();
   }
 }
+
+#ifdef _WIN32
+bool Term::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+  MSG* msg = (MSG*)message;
+  switch(msg->message) {
+  case WM_SOCK:
+    // lParam lower half
+    //MSDN https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-connect
+    switch (WSAGETSELECTEVENT(msg->lParam)) {
+    case FD_CONNECT: {
+      // error code lParam upper halg
+      int error = WSAGETSELECTERROR(msg->lParam);
+      if(  WSAECONNREFUSED == error || WSAENETUNREACH == error ||WSAETIMEDOUT == error) { // connection failure
+        qDebug() << QString("winsock connection failed");
+      } else {
+        qDebug() << QString("winsock connection successful");
+      }
+      jcon->cmd("(i.0 0)\"_ socket_handler_z_$0");
+    }
+    break;
+    case FD_READ:
+      qDebug() << QString("winsock read available");
+      jcon->cmd("(i.0 0)\"_ socket_handler_z_$0");
+      break;
+    case FD_CLOSE:
+      qDebug() << QString("winsock closed");
+      jcon->cmd("(i.0 0)\"_ socket_handler_z_$0");
+      break;
+    }
+    break;
+    case FD_OOB:
+    case FD_ACCEPT:
+    qDebug() << QString("winsock OOB, ACCEPT events");
+    jcon->cmd("(i.0 0)\"_ socket_handler_z_$0");
+    break;
+  }
+  // default handler
+  return QWidget::nativeEvent(eventType, message, result);
+}
+#endif
