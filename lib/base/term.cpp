@@ -11,7 +11,6 @@ QCompleter *completer=0;
 #endif
 #ifdef _WIN32
 #include <windows.h>
-#include <winsock2.h>
 #define WM_SOCK 1026
 #endif
 
