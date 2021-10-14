@@ -85,6 +85,7 @@ QString termLF(QString s);
 QString termsep(QString);
 QString trimtws(QString s);
 QString toqlist(QStringList);
+QString uptoLF(QString);
 
 QList<int> qs2intlist(QString c);
 QList<int> qsl2intlist(QStringList s);

@@ -61,6 +61,7 @@ void Tedit::docmd(QString t)
 #endif
   runshow=false;
   runterm=1;
+  t=uptoLF(t);
   dlog_add(jecallback?t:t.trimmed());
   jcon->cmddo(q2s(t));
 }
@@ -71,6 +72,7 @@ void Tedit::docmddo(QString t)
 #ifdef DEBUG_JDO
   qDebug() << "tedit docmddo " + t;
 #endif
+  t=uptoLF(t);
   runshow=false;
   runterm=0;
   jcon->cmddo(q2s(t));
@@ -82,6 +84,7 @@ void Tedit::docmdp(QString t,bool show,bool same)
 #ifdef DEBUG_JDO
   qDebug() << "tedit docmdp " + t;
 #endif
+  t=uptoLF(t);
   bool cmt="NB."==dlb(t).left(3);
   runshow=same && t.trimmed().size()>0 && !cmt;
   if (show)
@@ -112,6 +115,7 @@ void Tedit::docmds(QString s,bool show,bool same,bool term)
 // ---------------------------------------------------------------------
 void Tedit::docmdx(QString t)
 {
+  t=uptoLF(t);
   runterm=1;
   promptreplace(t);
   docmd(t);
@@ -122,6 +126,7 @@ void Tedit::enter()
 {
   QTextCursor c = textCursor();
   QString txt = c.block().text();
+  txt=uptoLF(txt);
   int row = c.blockNumber();
   int len = document()->blockCount();
   if (row < len - 1) {
@@ -255,6 +260,7 @@ void Tedit::loadscript(QString s,bool show)
 // ---------------------------------------------------------------------
 void Tedit::promptreplace(QString t,int pos)
 {
+  t=uptoLF(t);
   if (t.size() == 0) return;
   moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
   moveCursor(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);

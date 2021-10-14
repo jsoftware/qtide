@@ -904,6 +904,18 @@ QString trimtws(QString s)
 }
 
 // ---------------------------------------------------------------------
+// return characters up to a LF or line separator
+QString uptoLF(QString s)
+{
+  int n;
+  n= s.indexOf('\n');
+  if (n > -1) s = s.left(n);
+  n = s.indexOf(QChar::LineSeparator);
+  if (n > -1) s = s.left(n);
+  return s;
+}
+
+// ---------------------------------------------------------------------
 int c_strtoi(string s)
 {
   if (!s.size()) return 0;

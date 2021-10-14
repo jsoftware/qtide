@@ -56,17 +56,6 @@ void Jcon::cmd(string s)
 }
 
 // ---------------------------------------------------------------------
-// commented out since same as cmd
-// always call J via jedo
-// int Jcon::jdo(string s)
-// {
-// #ifdef DEBUG_JDO
-//   qDebug() << "jcon do "+s2q(s)+ " jecallback "+ jecallback;
-// #endif
-//   return jedo((char *)s.c_str());
-// }
-
-// ---------------------------------------------------------------------
 void Jcon::runimmx0(string s)
 {
 #ifdef DEBUG_JDO
