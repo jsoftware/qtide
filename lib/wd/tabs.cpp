@@ -73,7 +73,6 @@ Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 QWidget *Tabs::activetab()
 {
   QTabWidget *w = (QTabWidget *)widget;
-  qDebug() << "activetab index=" << w->currentIndex();
   return w->currentWidget();
 }
 

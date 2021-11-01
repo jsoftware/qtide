@@ -1,5 +1,6 @@
 
 #include <QApplication>
+#include <QStyle>
 
 #include "base.h"
 #include "proj.h"
@@ -45,6 +46,9 @@ string qtstate(string p)
   c="project";
   if (all || s.contains(c))
     r+=qpair(c,recent.ProjectOpen ? project.Path : "");
+  c="style";
+  if (all || s.contains(c))
+    r+=qpair(c,QApplication::style()->objectName());
   c="version";
   if (all || s.contains(c))
     r+=qpair(c,getversion());

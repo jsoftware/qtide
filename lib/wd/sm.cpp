@@ -1,5 +1,6 @@
 
 #include <QApplication>
+#include <QStyleFactory>
 
 #include "cmd.h"
 #include "font.h"
@@ -47,6 +48,7 @@ static string smsetscroll(Bedit *,string);
 static string smsetselect(Bedit *,string);
 static string smsettext(string,string);
 static string smsetxywh(string,string);
+static string smstyle();
 static string smtheme();
 
 // ---------------------------------------------------------------------
@@ -81,6 +83,8 @@ string sm(string c)
     return smsave();
   if (c=="set")
     return smset();
+  if (c=="style")
+    return smstyle();
   if (c=="theme")
     return smtheme();
   cmd.getparms();
@@ -567,6 +571,15 @@ string smsetxywh(string m,string q)
   w->move(s[0],s[1]);
   w->resize(s[2],s[3]);
   return"";
+}
+
+// ---------------------------------------------------------------------
+string smstyle()
+{
+  string p=cmd.getparms();
+  if (!p.empty())
+    QApplication::setStyle(QStyleFactory::create(s2q(p)));
+  return "";
 }
 
 // ---------------------------------------------------------------------
