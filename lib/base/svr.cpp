@@ -286,10 +286,10 @@ void _stdcall Joutput(J jt,int type, char* s)
   if (MTYOEXIT==type) {
     state_quit();
     evloop->exit((intptr_t)s);
-#ifdef _WIN32
+//#ifdef _WIN32
     jefree();
     exit((intptr_t)s);
-#endif
+//#endif
     return;
   }
 
