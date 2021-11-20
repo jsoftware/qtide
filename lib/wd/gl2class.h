@@ -980,7 +980,7 @@ int gltext(char *ys)
 // ---------------------------------------------------------------------
 int gltextcolor()
 {
-  CHKPAINTER2
+  CHKPAINTER
   w->textcolor = QColor(w->color);
   w->textpen = QPen(w->painter->pen());
   w->textpen.setColor(w->textcolor);
