@@ -97,6 +97,7 @@ void Jcon::cmddo(string s)
 void Jcon::cmddop(string s)
 {
   runcmd=false;
+  jevloop->exit();
   cmdSentence(s);
   cmddos();
 }
