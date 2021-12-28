@@ -1,7 +1,5 @@
 
-#ifdef QT54
 #include <QVideoWidget>
-#endif
 
 #include "cmd.h"
 #include "form.h"
@@ -19,7 +17,6 @@ Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QStringList opt=qsplit(s);
   if (invalidopt(n,opt,"video")) return;
   childStyle(opt);
-#ifdef QT54
   if (opt.contains("video")) {
     isVideo=true;
     QVideoWidget *w=new QVideoWidget;
@@ -27,7 +24,6 @@ Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     widget=(QWidget *) w;
     widget->setObjectName(qn);
   }
-#endif
   QObject::connect(&mediaPlayer, SIGNAL( bufferStatusChanged(int)), this, SLOT( bufferStatusChanged(int)));
   QObject::connect(&mediaPlayer, SIGNAL( durationChanged(qint64)), this, SLOT( durationChanged(qint64)));
   QObject::connect(&mediaPlayer, SIGNAL( error(QMediaPlayer::Error)), this, SLOT( merror(QMediaPlayer::Error)));
@@ -133,11 +129,7 @@ static char * artab[]= {
 // ---------------------------------------------------------------------
 string Multimedia::get(string p,string v)
 {
-#ifdef QT54
   QVideoWidget *w=(QVideoWidget*) widget;
-#else
-  QWidget *w=widget;
-#endif
   Q_UNUSED(w);
   string r;
   if (p=="property") {
@@ -163,7 +155,6 @@ string Multimedia::get(string p,string v)
   else if (p=="volume")
     r=i2s(mediaPlayer.volume());
   else if (isVideo && w) {
-#ifdef QT54
     if (p=="aspectratio")
       r=string(artab[w->aspectRatioMode()]);
     else if (p=="brightness")
@@ -178,7 +169,6 @@ string Multimedia::get(string p,string v)
       r=i2s(w->saturation());
     else
       r=Child::get(p,v);
-#endif
   } else
     r=Child::get(p,v);
   return r;
@@ -187,11 +177,7 @@ string Multimedia::get(string p,string v)
 // ---------------------------------------------------------------------
 void Multimedia::set(string p,string v)
 {
-#ifdef QT54
   QVideoWidget *w=(QVideoWidget*) widget;
-#else
-  QWidget *w=widget;
-#endif
   if ((p=="pause" || p=="play" || p=="stop") && v.size()) {
     error("extra parameters: " + p + " " + v);
     return;
@@ -217,7 +203,6 @@ void Multimedia::set(string p,string v)
   else if (p=="volume")
     mediaPlayer.setVolume(c_strtoi(v));
   else if (isVideo && w) {
-#ifdef QT54
     if (p=="aspectratio") {
       if (v=="ignore")
         w->setAspectRatioMode(Qt::IgnoreAspectRatio);
@@ -241,7 +226,6 @@ void Multimedia::set(string p,string v)
       w->setSaturation(c_strtoi(v));
     else
       Child::set(p,v);
-#endif
   } else Child::set(p,v);
 }
 

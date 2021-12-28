@@ -85,9 +85,7 @@ void dialogprint(QWidget *w,QTextDocument *d)
 {
   QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
-#ifdef QT48
     QAbstractPrintDialog::PrintCurrentPage|
-#endif
     QAbstractPrintDialog::PrintSelection|
     QAbstractPrintDialog::PrintPageRange|
     QAbstractPrintDialog::PrintShowPageSize|
@@ -111,9 +109,7 @@ void dialogprint(QWidget *w,QWidget *d)
 {
   QPrintDialog *dlg = new QPrintDialog(config.Printer, w);
   dlg->setOptions(
-#ifdef QT48
     QAbstractPrintDialog::PrintCurrentPage|
-#endif
     QAbstractPrintDialog::PrintSelection|
     QAbstractPrintDialog::PrintPageRange|
     QAbstractPrintDialog::PrintShowPageSize|

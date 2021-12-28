@@ -11,9 +11,7 @@
 #include <QPrinter>
 #endif
 #endif
-#ifdef QT53
 #include <QLoggingCategory>
-#endif
 #include <QSettings>
 #include <QSyntaxHighlighter>
 #include <QTemporaryFile>
@@ -720,9 +718,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   }
 
   ShowIde=!!fshowide;
-#ifdef QT53
   QLoggingCategory::setFilterRules("*.debug=true\nqt.*.debug=false");
-#endif
 #ifdef _WIN32
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif
@@ -747,11 +743,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
     jdllver=LibName.mid(i);
   }
 #ifdef QTWEBSOCKET
-#ifdef QT48
   qsrand(QDateTime::currentMSecsSinceEpoch());
-#else
-  qsrand(QTime::currentTime().msec());
-#endif
 #endif
   state_init_resource();
   state_appname();

@@ -4,16 +4,16 @@ include(../common.pri)
 
 JDLLVER = 9.02    # ignored if not FHS
 
-greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
-greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
-
-equals(QT_MAJOR_VERSION, 5) {
+!lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
- !lessThan(QT_MINOR_VERSION,3): DEFINES += QT53
- !lessThan(QT_MINOR_VERSION,4): DEFINES += QT54
- !lessThan(QT_MINOR_VERSION,6): DEFINES += QT56
  !lessThan(QT_MINOR_VERSION,7): DEFINES += QT57
  !lessThan(QT_MINOR_VERSION,12): DEFINES += QT512
+ !lessThan(QT_MINOR_VERSION,15): DEFINES += QT515
+}
+
+equals(QT_MAJOR_VERSION, 6) {
+ DEFINES += QT60
+ !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
 }
 
 TEMPLATE = app

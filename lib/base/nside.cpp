@@ -105,11 +105,7 @@ QWidget *Nside::createfiles()
 
   fm = new QFileSystemModel;
   fm->setIconProvider(nicon);
-#ifdef QT48
   fm->setFilter(QDir::AllEntries|QDir::NoDot);
-#else
-  fm->setFilter(QDir::AllEntries);
-#endif
   flv->setModel(fm);
   file_refresh();
 

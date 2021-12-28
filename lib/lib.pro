@@ -2,66 +2,47 @@
 # version info
 include(../common.pri)
 
-# JDLLVER = 9.02    # ignored if not FHS
+# JDLLVER = 9.04    # ignored if not FHS
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
-greaterThan(QT_VERSION,4.7.0): DEFINES += QT47
-greaterThan(QT_VERSION,4.8.0): DEFINES += QT48
 
-equals(QT_MAJOR_VERSION, 5) {
+!lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
- !lessThan(QT_MINOR_VERSION,3): DEFINES += QT53
- !lessThan(QT_MINOR_VERSION,4): DEFINES += QT54
- !lessThan(QT_MINOR_VERSION,6): DEFINES += QT56
  !lessThan(QT_MINOR_VERSION,7): DEFINES += QT57
  !lessThan(QT_MINOR_VERSION,12): DEFINES += QT512
+ !lessThan(QT_MINOR_VERSION,15): DEFINES += QT515
+}
+
+equals(QT_MAJOR_VERSION, 6) {
+ DEFINES += QT60
+ QT += core5compat
+ !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
 }
 
 TEMPLATE = lib
-contains(DEFINES,QT54) {
-  QT += webkit
-} else {
-  QT += webkit
-  QT += opengl
-}
-contains(DEFINES,QT56) {
-  QT += webengine
-  QT -= webkit
-}
 QT += svg
+QT +=  multimedia
 TARGET = jqt
 
-# to exclude QtWebKit QtWebEngine, uncomment the following line
-# QT -= webkit webengine
-# (pre QT54) to exclude OpenGL, uncomment the following line
-# QT -= opengl
+QT += webenginewidgets
+
+# to exclude QtWebEngine, uncomment the following line
+# QT -= webenginewidgets
 
 # to exclude svgview, uncomment the following line
-# QT -= svg
 # QT -= svg
 
 # to print debug messages for calling JDo,  uncomment the following line
 # DEFINES += DEBUG_JDO
 
-contains(DEFINES,QT50) {
-  QT +=  multimedia
-} else {
-  QT -=  multimedia
-}
-
 # export JQTFAT before qmake
 JQTFAT = $$(JQTFAT)
 !isEmpty(JQTFAT) {
   message(building fat jqt)
-  QT += qml
-  contains(DEFINES,QT47): QT += declarative
-  contains(DEFINES,QT50): QT -= declarative
-  contains(DEFINES,QT53) {
-    QT += quick quickwidgets
-  }
+  QT += qml quick quickwidgets 
 }
 
 # export JQTSLIM before qmake
@@ -69,19 +50,9 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
-  QT -= declarative multimedia multimediawidgets quick qml quickwidgets webkit webkitwidgets webengine webenginewidgets
+  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webenginewidgets
 }
 
-# export JQTWEBKIT before qmake
-JQTWEBKIT = $$(JQTWEBKIT)
-!isEmpty(JQTWEBKIT) {
-  !isEmpty(JQTSLIM): error(both WEBKIT and SLIM defined)
-  message(building webkit jqt)
-  contains(DEFINES,QT56) {
-  QT -= webengine
-  QT += webkit
-  }
-}
 
 QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -109,8 +80,7 @@ equals(QMAKE_TARGET.arch , aarch64):!macx: {
   QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
 
-contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT53): QT += websockets
-contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): QT += network
+contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57): QT += websockets
 
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
@@ -146,16 +116,6 @@ INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-contains(QT,webkit): contains(DEFINES,QT56): isEmpty(JQTWEBKIT):  error(webkit dropped since QT56)
-contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
-!contains(QT,webkit) {
-  DEFINES += QT_NO_WEBKIT
-  DEFINES -= QT_WEBKIT
-} else {
-  equals(QT_MAJOR_VERSION, 5) QT += webkitwidgets
-  DEFINES -= QT_NO_WEBKIT
-  DEFINES += QT_WEBKIT
-}
 !contains(QT,webengine) {
   DEFINES += QT_NO_WEBENGINE
   DEFINES -= QT_WEBENGINE
@@ -165,7 +125,7 @@ contains(QT,webengine): !contains(DEFINES,QT54):  error(webengine requires QT54)
   DEFINES += QT_WEBENGINE
 }
 
-contains(DEFINES,QT54) {
+contains(DEFINES,QT57) {
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
 } else {
@@ -178,8 +138,6 @@ contains(DEFINES,QT54) {
 }
 }
 
-contains(DEFINES,QT50) {
-
 # QT50 or later
   !contains(QT,quick) {
     DEFINES += QT_NO_QUICKVIEW2
@@ -190,27 +148,6 @@ contains(DEFINES,QT50) {
     DEFINES += QT_QUICKVIEW2
   }
 
-  !contains(QT,declarative) {
-    DEFINES += QT_NO_QUICKVIEW1
-    DEFINES -= QT_QUICKVIEW1
-  } else {
-    DEFINES -= QT_NO_QUICKVIEW1
-    DEFINES += QT_QUICKVIEW1
-  }
-
-} else {
-  DEFINES += QT_NO_QUICKVIEW2
-  DEFINES -= QT_QUICKVIEW2
-# pre QT50
-  !contains(QT,declarative) {
-    DEFINES += QT_NO_QUICKVIEW1
-    DEFINES -= QT_QUICKVIEW1
-  } else {
-    DEFINES -= QT_NO_QUICKVIEW1
-    DEFINES += QT_QUICKVIEW1
-  }
-
-}
 
 !contains(QT,quickwidgets) {
   DEFINES += QT_NO_QUICKWIDGET
@@ -225,7 +162,7 @@ contains(DEFINES,QT50) {
   DEFINES += QT_NO_MULTIMEDIA
   DEFINES -= QT_MULTIMEDIA
 } else {
-  contains(DEFINES,QT54) QT +=  multimediawidgets
+  QT +=  multimediawidgets
   DEFINES -= QT_NO_MULTIMEDIA
   DEFINES += QT_MULTIMEDIA
 }

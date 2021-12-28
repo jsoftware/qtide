@@ -15,9 +15,7 @@
 #endif
 #endif
 #ifndef QT_NO_OPENGL
-#ifdef QT53
 #include <QOpenGLContext>
-#endif
 #endif
 
 #include "bitmap.h"
@@ -995,11 +993,7 @@ void wdqueries(string s)
       result=i2s(0);
       return;
     }
-#ifdef QT53
     result=i2s(1+QOpenGLContext::openGLModuleType());
-#else
-    result=i2s(1);
-#endif
     return;
 #else
     result=i2s(0);
@@ -1025,12 +1019,8 @@ void wdqueries(string s)
     result="jqt";
     return;
   } else if (s=="qosver") {
-#ifdef QT54
     QSysInfo qsi;
     result=q2s(qsi.prettyProductName()+" "+qsi.kernelVersion());
-#else
-    result="";
-#endif
     return;
   } else if (s=="qpath") {
     result=q2s(QApplication::applicationDirPath());

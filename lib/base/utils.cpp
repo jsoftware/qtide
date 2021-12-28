@@ -243,7 +243,6 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
     a=QCryptographicHash::Md5;
   else if (m=="sha1")
     a=QCryptographicHash::Sha1;
-#ifdef QT53
   else if (m=="sha224")
     a=QCryptographicHash::Sha224;
   else if (m=="sha256")
@@ -260,7 +259,6 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
     a=QCryptographicHash::Sha3_384;
   else if (m=="sha3_512")
     a=QCryptographicHash::Sha3_512;
-#endif
   else {
     rc=1;
     hashbuf="Hash type unknown: " + m;
@@ -296,11 +294,7 @@ QString getplaintext(QWidget *w)
 // ---------------------------------------------------------------------
 int getpositioninblock(QTextCursor c)
 {
-#ifndef QT47
-  return c.position() - c.block().position();
-#else
   return c.positionInBlock();
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -372,7 +366,11 @@ QStringList globalassigns(QString s,QString ext)
     pos += rx.matchedLength();
   }
 
+  #ifdef QT60
+  std::sort(p.begin(), p.end());
+  #else
   qSort(p);
+  #endif
   i=0;
   while (i<p.size()) {
     t=p.at(i);
@@ -426,7 +424,11 @@ QString newtempscript()
   }
   t=1;
   if (n.size()) {
-    qSort(n);
+    #ifdef QT60
+	std::sort(n.begin(), n.end());
+	#else
+	qSort(n);
+    #endif
     for (i=1; i<n.size()+2; i++)
       if (!n.contains(i)) {
         t=i;

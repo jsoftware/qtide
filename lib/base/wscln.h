@@ -4,15 +4,7 @@
 // #include <QtCore>
 // #include <QtNetwork>
 
-#ifdef QT53
 #include <QtWebSockets/QtWebSockets>
-#else
-#include "../QtWebsocket/QWsSocket.h"
-#define QWebSocket QtWebsocket::QWsSocket
-#define QWebSocketServer QtWebsocket::QWsServer
-#define sendTextMessage write
-#define sendBinaryMessage write
-#endif
 
 #include "jsvr.h"
 
@@ -28,9 +20,7 @@ public:
   I write(void * server, const char * msg, I len, bool binary);
   std::string querySocket();
   bool hasSocket(void * server);
-#ifdef QT53
   std::string state(void * server);
-#endif
 
 private Q_SLOTS:
   void onConnected();

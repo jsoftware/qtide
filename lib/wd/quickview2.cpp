@@ -44,9 +44,7 @@ QuickView2::QuickView2(string n, string s, int resizemode, string glver) : QQuic
   else sourceUrl = QUrl::fromLocalFile(t);
   setSource(sourceUrl);
   connect(this, SIGNAL(statusChanged(QQuickView::Status)), this, SLOT(statusChanged(QQuickView::Status)));
-#ifdef QT53
   connect(this, SIGNAL(sceneGraphError(QQuickWindow::SceneGraphError,QString)), this, SLOT(sceneGraphError(QQuickWindow::SceneGraphError,QString)));
-#endif
 }
 
 // ---------------------------------------------------------------------
@@ -60,14 +58,12 @@ void QuickView2::statusChanged(QQuickView::Status status)
   }
 }
 
-#ifdef QT53
 // ---------------------------------------------------------------------
 void QuickView2::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
 {
   info("QtQuick",message);
 //  qDebug() << message;
 }
-#endif
 
 // ---------------------------------------------------------------------
 void QuickView2::keyPressEvent(QKeyEvent *event)

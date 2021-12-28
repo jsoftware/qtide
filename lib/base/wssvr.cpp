@@ -29,12 +29,7 @@ void wssvr_handler(void *, QWebSocket*);
 WsSvr::WsSvr(int port, int secureMode) : clients()
 {
   errstring = "";
-#ifdef QT53
   server = new QWebSocketServer("JWebserver", (QWebSocketServer::SslMode)secureMode, this);
-#else
-  Q_UNUSED(secureMode);
-  server = new QWebSocketServer(this, (QtWebsocket::Protocol)1);
-#endif
   if (! server->listen(QHostAddress::Any, port)) {
     errstring = q2s(server->errorString());
 #ifdef DEBUG_WEBSOCKET
@@ -47,29 +42,19 @@ WsSvr::WsSvr(int port, int secureMode) : clients()
     qDebug() << QString("Websocket server is listening on port %1").arg(port);
 #endif
     QObject::connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
-#ifdef QT53
     QObject::connect(server, SIGNAL(closed()), this, SLOT(onClosed()));
-#endif
   }
 }
 
 // ---------------------------------------------------------------------
-#ifdef QT53
 WsSvr::~WsSvr() {}
 
 // ---------------------------------------------------------------------
 void WsSvr::onClosed()
-#else
-WsSvr::~WsSvr()
-#endif
 {
   QWebSocket* socket;
   foreach (socket, clients) {
-#ifdef QT53
     socket->close();
-#else
-    socket->disconnectFromHost();
-#endif
   }
 #ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Websocket server terminated");
@@ -85,13 +70,8 @@ void WsSvr::onNewConnection()
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChanged(QAbstractSocket::SocketState)));
   QObject::connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onSslErrors(const QList<QSslError>&)));
-#ifdef QT53
   QObject::connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
   QObject::connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
-#else
-  QObject::connect(socket, SIGNAL(frameReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
-  QObject::connect(socket, SIGNAL(frameReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
-#endif
 
   clients << socket;
   wssvr_handler((void *)ONOPEN, socket);
@@ -265,7 +245,6 @@ string WsSvr::querySocket()
 }
 
 // ---------------------------------------------------------------------
-#ifdef QT53
 string WsSvr::state(void * client)
 {
   string s = "";
@@ -283,7 +262,6 @@ string WsSvr::state(void * client)
   s += spair("resourceName", socket->resourceName());
   return s;
 }
-#endif
 
 // ---------------------------------------------------------------------
 bool WsSvr::hasSocket(void * client)
@@ -299,11 +277,7 @@ void WsSvr::disconnect(void * client)
   if (client) {
     socket = (QWebSocket *)client;
     if (clients.contains(socket))
-#ifdef QT53
       socket->close();
-#else
-      socket->disconnectFromHost();
-#endif
   }
 }
 

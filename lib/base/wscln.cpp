@@ -38,11 +38,7 @@ WsCln::~WsCln()
 {
   QWebSocket* socket;
   foreach (socket, servers) {
-#ifdef QT53
     socket->close();
-#else
-    socket->disconnectFromHost();
-#endif
   }
 #ifdef DEBUG_WEBSOCKET
   qDebug() << QString("Websocket client terminated");
@@ -65,26 +61,15 @@ void * WsCln::openurl(QString url)
     return (void *) 0;
   }
 
-#ifdef QT53
   QWebSocket* socket = new QWebSocket();
-#else
-  int port=80;
-  if (url.startsWith("wss://", Qt::CaseInsensitive)) port=443;
-  QWebSocket* socket = new QWebSocket(this, NULL, QtWebsocket::WS_V13);
-#endif
 
   QObject::connect(socket, SIGNAL(connected()), this, SLOT(onConnected()));
   QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChanged(QAbstractSocket::SocketState)));
   QObject::connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onSslErrors(const QList<QSslError>&)));
-#ifdef QT53
   QObject::connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
   QObject::connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
-#else
-  QObject::connect(socket, SIGNAL(frameReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
-  QObject::connect(socket, SIGNAL(frameReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
-#endif
 
   servers << socket;
 
@@ -92,28 +77,7 @@ void * WsCln::openurl(QString url)
   qDebug() << QString("try connect to: ") + url;
 #endif
 
-#ifdef QT53
   socket->open(QUrl(url));
-#else
-  if (2>url.count(QChar(':'))) {
-    socket->connectToHost(url.toUtf8(), port);
-  } else {
-    QStringList n = url.split(":",QString::SkipEmptyParts);
-    QString p;
-    int i;
-    if (0<=(i=n.at(2).lastIndexOf(QChar('/')))) {
-      port=n.at(2).left(i).toInt();
-      p = n.at(0)+":"+n.at(1)+n.at(2).mid(i);
-    } else {
-      port=n.at(2).toInt();
-      p = n.at(0)+":"+n.at(1);
-    }
-#ifdef DEBUG_WEBSOCKET
-    qDebug() << QString("parsed url: ") + p + " port: " + QString::number(port);
-#endif
-    socket->connectToHost(p.toUtf8(), port);
-  }
-#endif
 
   return (void *) socket;
 }
@@ -293,7 +257,6 @@ string WsCln::querySocket()
 }
 
 // ---------------------------------------------------------------------
-#ifdef QT53
 string WsCln::state(void * server)
 {
   string s = "";
@@ -311,7 +274,6 @@ string WsCln::state(void * server)
   s += spair("resourceName", socket->resourceName());
   return s;
 }
-#endif
 
 // ---------------------------------------------------------------------
 bool WsCln::hasSocket(void * server)
@@ -327,11 +289,7 @@ void WsCln::disconnect(void * server)
   if (server) {
     socket = (QWebSocket*)server;
     if (servers.contains(socket))
-#ifdef QT53
       socket->close();
-#else
-      socket->disconnectFromHost();
-#endif
   }
 }
 

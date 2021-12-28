@@ -21,7 +21,6 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   QGLFormat qglFormat;
   qglFormat.setSampleBuffers(true);
 #endif
-#ifdef QT47
   int l=opt.indexOf("version");
   if ((l!=-1) && (l<opt.size()-1) && 0!=opt.at(l+1).toDouble()) {
     int ver1,ver2;
@@ -43,7 +42,6 @@ Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 #else
   if (opt.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
   else qglFormat.setProfile(QGLFormat::CoreProfile);
-#endif
 #endif
 
   Opengl2 *w= new Opengl2(this, qglFormat);

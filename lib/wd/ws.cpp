@@ -14,9 +14,7 @@ static string wsconnect();
 static string wsclose();
 static string wslisten();
 static string wsquery();
-#ifdef QT53
 static string wsstate();
-#endif
 static string wssend(int binary);
 
 static vector<string> arg;
@@ -46,10 +44,8 @@ string ws(string p)
     return wsclose();
   if (type=="query")
     return wsquery();
-#ifdef QT53
   if (type=="state")
     return wsstate();
-#endif
   error("invalid ws cmd: " + type);
   return "";
 }
@@ -135,7 +131,6 @@ string wsquery()
   return r;
 }
 
-#ifdef QT53
 // ---------------------------------------------------------------------
 string wsstate()
 {
@@ -153,7 +148,6 @@ string wsstate()
   }
   return r;
 }
-#endif
 
 // ---------------------------------------------------------------------
 string wssend(int binary)
