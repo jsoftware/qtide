@@ -109,8 +109,8 @@ UI_DIR = $$BUILDROOT/ui
 macx:CONFIG += c++11
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5): QT += printsupport
+!lessThan(QT_MAJOR_VERSION, 5): QT += widgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -197,19 +197,16 @@ HEADERS += \
  wd/tabs.h wd/tabwidget.h \
  wd/timeedit.h wd/toolbar.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
- wd/webengineview.h wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
+ wd/webengineview.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h wd/glc.h \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-!contains(QT,webkit): HEADERS -= wd/webview.h
 !contains(QT,webengine): HEADERS -= wd/webengine.h wd/webengineview.h
 contains(DEFINES,QT50) {
   !contains(QT,quick): HEADERS -= wd/quickview2.h
-  !contains(QT,declarative): HEADERS -= wd/quickview1.h
   !contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.h
 } else {
-  !contains(QT,declarative): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
   HEADERS -= wd/quickview2.h
 }
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
@@ -246,7 +243,7 @@ SOURCES += \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
  wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
- wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
+ wd/webengineview.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp wd/glc.cpp \
  wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
 
@@ -255,10 +252,7 @@ contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.
 !contains(QT,webengine): SOURCES -= wd/webengineview.cpp
 contains(DEFINES,QT50) {
   !contains(QT,quick): SOURCES -= wd/quickview2.cpp
-  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp
-  !contains(QT,quick): !contains(QT,declarative): SOURCES -= base/qmlje.cpp
 } else {
-  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
   SOURCES -= wd/quickview2.cpp
 }
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp

@@ -52,9 +52,6 @@
 #ifndef QT_NO_MULTIMEDIA
 #include "multimedia.h"
 #endif
-#ifndef QT_NO_WEBKIT
-#include "webview.h"
-#endif
 #ifndef QT_NO_WEBENGINE
 #include "webengineview.h"
 #endif
@@ -163,10 +160,6 @@ bool Pane::addchild(string n,string c,string p)
     child=(Child *) new TimeEdit(n,p,pform,this);
   else if (c=="toolbar")
     child=(Child *) new ToolBar(n,p,pform,this);
-#ifndef QT_NO_WEBKIT
-  else if (c=="webview")
-    child=(Child *) new WebView(n,p,pform,this);
-#endif
 #ifndef QT_NO_WEBENGINE
   else if (c=="webview")
     child=(Child *) new WebEngineView(n,p,pform,this);
