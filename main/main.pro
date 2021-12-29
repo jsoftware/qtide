@@ -19,9 +19,6 @@ equals(QT_MAJOR_VERSION, 6) {
  DEFINES += QT515
 }
 
-contains(DEFINES,QT515) {
- QMAKE_CXXFLAGS += -Wno-deprecated-declarations
-}
 
 TEMPLATE = app
 TARGET = jqt
