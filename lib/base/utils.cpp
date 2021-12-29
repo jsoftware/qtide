@@ -366,11 +366,11 @@ QStringList globalassigns(QString s,QString ext)
     pos += rx.matchedLength();
   }
 
-  #ifdef QT60
+#ifdef QT60
   std::sort(p.begin(), p.end());
-  #else
+#else
   qSort(p);
-  #endif
+#endif
   i=0;
   while (i<p.size()) {
     t=p.at(i);
@@ -424,11 +424,11 @@ QString newtempscript()
   }
   t=1;
   if (n.size()) {
-    #ifdef QT60
-	std::sort(n.begin(), n.end());
-	#else
-	qSort(n);
-    #endif
+#ifdef QT60
+    std::sort(n.begin(), n.end());
+#else
+    qSort(n);
+#endif
     for (i=1; i<n.size()+2; i++)
       if (!n.contains(i)) {
         t=i;

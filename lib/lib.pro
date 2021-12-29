@@ -20,9 +20,19 @@ equals(QT_MAJOR_VERSION, 6) {
  DEFINES += QT60
  QT += core5compat
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
+ DEFINES += QT57
+ DEFINES += QT512
+ DEFINES += QT515
+}
+
+contains(DEFINES,QT515) {
+ QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 }
 
 TEMPLATE = lib
+QT += opengl
+QT += webengine
+QT -= webkit
 QT += svg
 QT +=  multimedia
 TARGET = jqt
@@ -126,16 +136,15 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 }
 
 contains(DEFINES,QT57) {
-  DEFINES -= QT_NO_OPENGL
-  DEFINES += QT_OPENGL
-} else {
+  DEFINES += QT_NO_WEBKIT
+  DEFINES -= QT_WEBKIT
+}
 !contains(QT,opengl) {
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL
 } else {
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
-}
 }
 
 # QT50 or later
@@ -146,6 +155,14 @@ contains(DEFINES,QT57) {
   } else {
     DEFINES -= QT_NO_QUICKVIEW2
     DEFINES += QT_QUICKVIEW2
+  }
+
+  !contains(QT,declarative) {
+    DEFINES += QT_NO_QUICKVIEW1
+    DEFINES -= QT_QUICKVIEW1
+  } else {
+    DEFINES -= QT_NO_QUICKVIEW1
+    DEFINES += QT_QUICKVIEW1
   }
 
 

@@ -283,11 +283,11 @@ bool pic_inidir(QString s)
   }
 
   if (e.size()) {
-    #ifdef QT60
-	std::sort(e.begin(), e.end());
-	#else
-	qSort(e);
-    #endif
+#ifdef QT60
+    std::sort(e.begin(), e.end());
+#else
+    qSort(e);
+#endif
     e.removeLast();
     foreach (const QString m,e)
       snaprmdir(h.filePath(m));

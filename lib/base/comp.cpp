@@ -46,13 +46,13 @@ QString Compare::comp(QStringList x,QStringList y)
 
   while (compend()) complcs();
 
-  #ifdef QT60
+#ifdef QT60
   std::sort(SX.begin(), SX.end());
   std::sort(SY.begin(), SY.end());
-  #else
+#else
   qSort(SX);
   qSort(SY);
-  #endif
+#endif
 
   for (i=0; i<SX.size(); i++) {
     n=SX.at(i);
@@ -71,11 +71,11 @@ QString Compare::comp(QStringList x,QStringList y)
     SY.replace(i,1+SY.at(i)*2);
 
   SX=SX+SY;
-  #ifdef QT60
+#ifdef QT60
   std::sort(SX.begin(), SX.end());
-  #else
+#else
   qSort(SX);
-  #endif
+#endif
   m=n=0;
   for (i=0; i<SX.size(); i++)
     if (SX.at(i)%2)

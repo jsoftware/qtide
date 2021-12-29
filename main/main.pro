@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-JDLLVER = 9.02    # ignored if not FHS
+JDLLVER = 9.04    # ignored if not FHS
 
 !lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
@@ -14,6 +14,13 @@ JDLLVER = 9.02    # ignored if not FHS
 equals(QT_MAJOR_VERSION, 6) {
  DEFINES += QT60
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
+ DEFINES += QT57
+ DEFINES += QT512
+ DEFINES += QT515
+}
+
+contains(DEFINES,QT515) {
+ QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 }
 
 TEMPLATE = app
