@@ -323,7 +323,13 @@ string getversion()
 // return if git available
 bool gitavailable()
 {
-#if defined(__MACH__) || defined(Q_OS_LINUX)
+#if defined(__MACH__)
+#if defined(__aarch64__)
+  return false;
+#else
+  return !shell("which git","").at(0).isEmpty();
+#endif
+#elif defined(Q_OS_LINUX)
   return !shell("which git","").at(0).isEmpty();
 #else
   return false;

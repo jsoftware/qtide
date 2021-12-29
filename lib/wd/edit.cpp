@@ -2,7 +2,11 @@
 #include <QLineEdit>
 #include <QIntValidator>
 #include <QDoubleValidator>
+#if defined(QT60)
+#include <QRegularExpressionValidator>
+#else
 #include <QRegExpValidator>
+#endif
 
 #include "cmd.h"
 #include "edit.h"
@@ -189,8 +193,13 @@ void Edit::set(string p,string v)
     if (opt.isEmpty())
       w->setValidator(0);
     else {
+#if defined(QT60)
+      QRegularExpression rx(opt.at(0));
+      w->setValidator(new QRegularExpressionValidator(rx, w));
+#else
       QRegExp rx(opt.at(0));
       w->setValidator(new QRegExpValidator(rx,w));
+#endif
     }
   } else Child::set(p,v);
 }

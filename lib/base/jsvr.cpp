@@ -9,6 +9,11 @@
 #include <errno.h>
 #include <stdint.h>
 
+#ifndef _WIN32
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+
 #ifdef __MACH__
 #include <mach-o/dyld.h>
 #endif
@@ -21,6 +26,10 @@ void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
 QString jdllver="x.xx";  // ignored if not FHS
+
+static char pathetcpx[PLEN];
+static char pathexec0[PLEN];
+static char pathexec[PLEN];
 
 using namespace std;
 
@@ -183,6 +192,7 @@ void jepath(char* arg, char* lib)
   *(wcsrchr(wpath, '\\')) = 0;
   WideCharToMultiByte(CP_UTF8,0,wpath,1+(int)wcslen(wpath),path,PLEN,0,0);
 #else
+  struct stat st;
 #define sz 4000
   char arg2[sz],arg3[sz];
   char* src,*snk;
@@ -205,6 +215,7 @@ void jepath(char* arg, char* lib)
   if (-1==n) strcpy(arg3,arg2);
   else arg3[n]=0;
 // fprintf(stderr,"arg3 %s\n",arg3);
+  strcpy(pathexec,arg3);
   if ('/'==*arg3)
     strcpy(path,arg3);
   else {
@@ -235,22 +246,59 @@ void jepath(char* arg, char* lib)
   strcpy(pathdll,path);
   strcat(pathdll,filesepx);
   strcat(pathdll,JDLLNAME);
+  strcat(pathdll,JDLLEXT);
 
-// for FHS (debian package version)
-// pathdll is not related to path
-// but path is still needed for BINPATH
-  if (FHS) {
-    strcpy(pathdll,JDLLNAME);
-#if defined(_WIN32)
-    *(strrchr(pathdll,'.')) = 0;
-    strcat(pathdll,"-");
-    strcat(pathdll,jdllver.toUtf8().constData());
-    strcat(pathdll,".dll");
+#if !defined(_WIN32)
+  if(stat(pathdll,&st)||strncmp(pathexec0,"/usr/bin/",9)||strncmp(pathexec0,"/usr/local/bin/",15)||strncmp(pathexec0,"/opt/homebrew/bin/",18)) {
+    char pathpx[PLEN];
+    if('/'==*pathexec) {
+      if(!strncmp(pathexec,"/opt/homebrew/bin/",strlen("/opt/homebrew/bin/"))) {
+        FHS=1;
+        strcat(pathetcpx,"/opt/homebrew");
+      } else if(!strncmp(pathexec,"/usr/local/bin/",strlen("/usr/local/bin/"))) {
+        FHS=1;
+        strcat(pathetcpx,"/usr/local");
+      } else if(!strncmp(pathexec,"/usr/bin/",strlen("/usr/bin/"))) {
+        FHS=1;
+        pathetcpx[0]=0;
+      }
+    } else {
+      strcpy(pathpx,"/opt/homebrew/bin/");
+      strcat(pathpx,pathexec);
+      if(!stat(pathpx,&st)) {
+        FHS=1;
+        strcat(pathetcpx,"/opt/homebrew");
+      } else {
+        strcpy(pathpx,"/usr/local/bin/");
+        strcat(pathpx,pathexec);
+        if(!stat(pathpx,&st)) {
+          FHS=1;
+          strcat(pathetcpx,"/usr/local");
+        } else {
+          strcpy(pathpx,"/usr/bin/");
+          strcat(pathpx,pathexec);
+          if(!stat(pathpx,&st)) {
+            FHS=1;
+            pathetcpx[0]=0;
+          }
+        }
+      }
+    }
+    if (FHS) {
+      strcpy(pathdll,JDLLNAME);
+#if defined(__APPLE__)
+      strcat(pathdll,".");
+      strcat(pathdll,jdllver.toUtf8().constData());
+      strcat(pathdll,JDLLEXT);
 #else
-    strcat(pathdll,".");
-    strcat(pathdll,jdllver.toUtf8().constData());
+      strcat(pathdll,JDLLEXT);
+      strcat(pathdll,".");
+      strcat(pathdll,jdllver.toUtf8().constData());
 #endif
+    }
   }
+#endif
+
   if (*lib) {
     if (filesep==*lib || ('\\'==filesep && ':'==lib[1]))
       strcpy(pathdll,lib); // absolute path
@@ -322,13 +370,10 @@ int jefirst(int type,char* arg)
       if (!FHS) {
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
       } else {
-#if defined(_WIN32)
-        strcat(input,"(3 : '0!:0 y')<(2!:5'ALLUSERSPROFILE'),'\\j\\");
+        strcat(input,"(3 : '0!:0 y')<'");
+        strcat(input,pathetcpx);
+        strcat(input,"/etc/j/");
         strcat(input,jdllver.toUtf8().constData());
-#else
-        strcat(input,"(3 : '0!:0 y')<'/etc/j/");
-        strcat(input,jdllver.toUtf8().constData());
-#endif
       }
       strcat(input,filesepx);
       strcat(input,"profile.ijs'");
@@ -352,22 +397,30 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif
   strcat(input,"[BINPATH_z_=:'");
-  p=path;
-  q=input+strlen(input);
-  while (*p) {
-    if (*p=='\'') *q++='\'';	// 's doubled
-    *q++=*p++;
+  if(!FHS) {
+    p=path;
+    q=input+strlen(input);
+    while (*p) {
+      if (*p=='\'') *q++='\'';	// 's doubled
+      *q++=*p++;
+    }
+    *q=0;
+    strcat(input,"'");
+    strcat(input,"[LIBFILE_z_=:'");
+    p=pathdll;
+    q=input+strlen(input);
+    while (*p) {
+      if (*p=='\'') *q++='\'';	// 's doubled
+      *q++=*p++;
+    }
+    *q=0;
+  } else {
+    if(0==*pathetcpx) strcat(input,"/usr/bin");
+    else {
+      strcat(input,pathetcpx);
+      strcat(input,"/bin");
+    }
   }
-  *q=0;
-  strcat(input,"'");
-  strcat(input,"[LIBFILE_z_=:'");
-  p=pathdll;
-  q=input+strlen(input);
-  while (*p) {
-    if (*p=='\'') *q++='\'';	// 's doubled
-    *q++=*p++;
-  }
-  *q=0;
   strcat(input,"'");
   if (!FHS)
     strcat(input,"[FHS_z_=:0");

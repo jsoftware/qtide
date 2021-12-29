@@ -392,13 +392,14 @@ QString mbprint(bool iftext)
     d->setDefaultFont(config.Font);
 #ifdef QT50
     d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+    d->setPageSize(config.Printer->pageLayout().pageSize().size(QPageSize::Millimeter));
 #else
     d->documentLayout()->setPaintDevice(config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
 #endif
 
 #ifdef __MACH__
+#if !defined(QT60)
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
       if (!config.Printer->isValid()) {
@@ -411,15 +412,18 @@ QString mbprint(bool iftext)
       return "";
     }
 #endif
+#endif
     dialogprint(getmbparent(),d);
     delete d;
   } else {
 #ifdef __MACH__
+#if !defined(QT60)
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
       r=config.Printer->printerName();
       return r;
     }
+#endif
 #endif
     QPrintDialog *dlg = new QPrintDialog(config.Printer);
     if (dlg->exec() == QDialog::Accepted) {
@@ -470,7 +474,7 @@ QString mbprintx(bool iftext)
   }
 #ifdef QT50
   d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+  d->setPageSize(config.Printer->pageLayout().pageSize().size(QPageSize::Millimeter));
   d->print((QPagedPaintDevice *)config.Printer);
 #else
   d->documentLayout()->setPaintDevice(config.Printer);

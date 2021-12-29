@@ -194,7 +194,11 @@ int CubeMargin::itemremove(QList<int> v, int n)
 // ---------------------------------------------------------------------
 void dragstart(QWidget *s,QDrag *dr)
 {
+#if defined(QT60)
+  QPixmap pixmap=s->grab();
+#else
   QPixmap pixmap=QPixmap::grabWidget(s);
+#endif
   dr->setPixmap(pixmap);
   dr->setHotSpot(QPoint(s->width()/2,s->height()/2));
   QMimeData *data = new QMimeData;

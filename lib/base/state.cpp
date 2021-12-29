@@ -2,7 +2,9 @@
 #define NOMINMAX
 #include <QApplication>
 #include <QDate>
+#if !defined(QT60)
 #include <QDesktopWidget>
+#endif
 #include <QFont>
 #ifndef QT_NO_PRINTER
 #ifdef QT50
@@ -139,8 +141,12 @@ void Config::folder_init()
 // run before svr init
 void Config::ini0()
 {
+#if defined(QT60)
+  QRect screenGeometry = app->primaryScreen()->geometry();
+#else
   QDesktopWidget* dw=app->desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
+#endif
   ScreenWidth=screenGeometry.width();
   ScreenHeight=screenGeometry.height();
 }
@@ -170,7 +176,7 @@ void Config::init()
   Printer=new QPrinter(QPrinter::HighResolution);
   prtobj=new Prtobj();
   Printer->setColorMode(QPrinter::Color);
-  Printer->setPageMargins(10.0, 10.0, 10.0, 10.0, QPrinter::Millimeter);
+  Printer->setPageMargins(QMarginsF(10.0, 10.0, 10.0, 10.0), QPageLayout::Millimeter);
 #endif
 
   Lang = "J";
@@ -197,7 +203,7 @@ void Config::init()
     XDiff=s2q(dors("XDiff_j_"));
 
   if ("0"==dors("\":4!:0 <'DirTreeX_j_'"))
-    DirTreeX=s2q(dors("DirTreeX_j_")).split(" ",QString::SkipEmptyParts);
+    DirTreeX=s2q(dors("DirTreeX_j_")).split(" ",_SkipEmptyParts);
 
   initide();
   initstyle();
@@ -732,18 +738,18 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
   if (FHS) {
-    int i;
 #ifdef _WIN32
-    i=5+LibName.lastIndexOf(".dll.");
+    jdllver=LibName.mid(5+LibName.lastIndexOf(".dll."));
 #elif defined(__MACH__)
-    i=7+LibName.lastIndexOf(".dylib.");
+    jdllver=LibName.mid(8+LibName.indexOf("/libjqt."),LibName.length()-LibName.lastIndexOf(".dylib")-2);
 #else
-    i=4+LibName.lastIndexOf(".so.");
+    jdllver=LibName.mid(4+LibName.lastIndexOf(".so."));
 #endif
-    jdllver=LibName.mid(i);
   }
+#if !defined(QT60)
 #ifdef QTWEBSOCKET
   qsrand(QDateTime::currentMSecsSinceEpoch());
+#endif
 #endif
   state_init_resource();
   state_appname();

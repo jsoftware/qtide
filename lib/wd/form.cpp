@@ -44,13 +44,13 @@ Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
   shown=false;
   lastfocus="";
   setAttribute(Qt::WA_DeleteOnClose);
-  QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
+  QStringList m=s2q(p).split(' ',_SkipEmptyParts);
   if (invalidopt(s,m,"escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize activeonly")) return;
   activeonly=m.contains("activeonly");
   escclose=m.contains("escclose");
   closeok=m.contains("closeok");
   setpn(s);
-  Qt::WindowFlags flags=0;
+  Qt::WindowFlags flags=Qt::Widget;
   if (m.contains("dialog")) flags=Qt::Dialog|Qt::WindowTitleHint|Qt::WindowStaysOnTopHint|Qt::CustomizeWindowHint;
   if (m.contains("popup")) flags=Qt::Popup;
   if (m.contains("minbutton")) flags|=Qt::WindowMinimizeButtonHint;
@@ -199,7 +199,7 @@ string Form::get(string p,string v)
     r=i2s(this->isEnabled());
   } else if (p=="extent") {
     QFontMetrics fm = QFontMetrics(this->font());
-    r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+    r=i2s(fm.horizontalAdvance(s2q(v)))+" "+i2s(fm.height());
   } else if (p=="focus") {
     r=this->getfocus();
   } else if (p=="focuspolicy") {

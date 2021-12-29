@@ -78,7 +78,7 @@ int Bedit::readcurpos()
 QString Bedit::readselected()
 {
   QString s=textCursor().selectedText();
-  s.replace(0x2029,'\n');
+  s.replace((short)0x2029,'\n');
   return s;
 }
 

@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QWidget>
 
+#include "../base/base.h"
 #include "qgrid.h"
 #include "qutil.h"
 #include "../wd/child.h"

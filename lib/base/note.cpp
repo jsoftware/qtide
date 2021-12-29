@@ -2,7 +2,9 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QDesktopServices>
+#if !defined(QT60)
 #include <QDesktopWidget>
+#endif
 #include <QUrl>
 
 #include "base.h"
@@ -595,8 +597,12 @@ void Note::setpos()
     w=config.EditPosX[2];
     h=config.EditPosX[3];
   } else {
+#if defined(QT60)
+    QRect s=qApp->primaryScreen()->geometry();
+#else
     QDesktopWidget *d=qApp->desktop();
     QRect s=d->screenGeometry();
+#endif
     wid=s.width();
     QPoint p=note->pos();
     QSize z=note->size();

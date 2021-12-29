@@ -101,18 +101,29 @@ int main(int argc, char *argv[])
 
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
-  if(s.startsWith("/usr/bin/") && !(QFile(s.append(".dylib"))).exists()) {
+  if(s.startsWith("/usr/local/bin")||("/opt/homebrew/bin")) {
 #else
-  if(s.startsWith("/usr/bin/") && !(QFile(s.append(".so"))).exists()) {
+  if(s.startsWith("/usr/bin")) {
 #endif
 #if defined(__MACH__)
-    s= QString("libjqt.dylib")+"."+JDLLVER;
+    s= QString("libjqt.")+JDLLVER+QString(".dylib");
 #else
     s= QString("libjqt.so")+"."+JDLLVER;
 #endif
     fhs = true;
   }
 #endif
+  if(!fhs) {
+#ifdef _WIN32
+    s=s+".dll";
+#else
+#if defined(__MACH__)
+    s=s+".dylib";
+#else
+    s=s+".so";
+#endif
+#endif
+  }
   QLibrary *lib=new QLibrary(s);
   state_run=(Run) lib->resolve("state_run");
   if (state_run) {

@@ -2,6 +2,19 @@
 
 S=$(dirname "$0")
 
+
+if [ "$(uname)" = "Linux" ] ; then
 rm -rf $S/bin/linux-x86_64
 rm -rf $S/lib/build/linux-x86_64
 rm -rf $S/main/build/linux-x86_64
+else
+if [ "$(uname -m)" = "x86_64" ] ; then
+rm -rf $S/bin/mac-x86_64
+rm -rf $S/lib/build/mac-x86_64
+rm -rf $S/main/build/mac-x86_64
+else
+rm -rf $S/bin/mac-arm64
+rm -rf $S/lib/build/mac-arm64
+rm -rf $S/main/build/mac-arm64
+fi
+fi

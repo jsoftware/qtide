@@ -7,7 +7,11 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#if defined(QT60)
+#include <QRegularExpression>
+#else
 #include <QRegExp>
+#endif
 
 #include "base.h"
 #include "widget.h"
@@ -98,10 +102,10 @@ Fiw::Fiw(int p, QString s)
   replaceforward->setText("&Replace");
   undolast=makebutton("&Undo Last");
 
-  g->addWidget(findback,0,0);
+  g->addWidget(findback,0,Qt::Alignment());
   g->addWidget(findtop,0,1);
   g->addWidget(findnext,0,2);
-  g->addWidget(undolast,1,0);
+  g->addWidget(undolast,1,Qt::Alignment());
   g->addWidget(replace,1,1);
   g->addWidget(replaceforward,1,2);
 

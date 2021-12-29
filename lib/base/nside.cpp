@@ -75,8 +75,8 @@ QWidget *Nside::createdefs()
   dlw = new QListWidget();
   connect(dlw,SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(defs_activated(QListWidgetItem*)));
-  layout->addWidget(t,0,0);
-  layout->addWidget(dlw,1,0);
+  layout->addWidget(t,0,Qt::Alignment());
+  layout->addWidget(dlw,1,Qt::Alignment());
   r->setLayout(layout);
   return r;
 }
@@ -113,9 +113,9 @@ QWidget *Nside::createfiles()
           this,SLOT(path_returnPressed()));
   connect(flv,SIGNAL(activated(const QModelIndex &)),
           this,SLOT(file_activated(const QModelIndex &)));
-  layout->addWidget(t,0,0);
-  layout->addWidget(path,0,0);
-  layout->addWidget(flv,1,0);
+  layout->addWidget(t,0,Qt::Alignment());
+  layout->addWidget(path,0,Qt::Alignment());
+  layout->addWidget(flv,1,Qt::Alignment());
   r->setLayout(layout);
   return r;
 }
@@ -148,8 +148,8 @@ QWidget *Nside::createsource()
   slw = new QListWidget();
   connect(slw,SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(source_activated(QListWidgetItem*)));
-  layout->addWidget(t,0,0);
-  layout->addWidget(slw,1,0);
+  layout->addWidget(t,0,Qt::Alignment());
+  layout->addWidget(slw,1,Qt::Alignment());
   r->setLayout(layout);
   return r;
 }

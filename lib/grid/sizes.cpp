@@ -15,7 +15,7 @@ void WGrid::drawsizes(int sx, int sy, int sw, int sh)
     for (j=0; j<sw; j++) {
       n=p+j;
       if (!Hfm[n]) {
-        Hws[n]=fm.width(HdrX[n]);
+        Hws[n]=fm.horizontalAdvance(HdrX[n]);
         Hhs[n]=fm.height();
         Twx[sx+j]=qMax(Twx[sx+j],Hws[n]*vindex(n,HdrMergeMask));
         Hhx[i]=qMax(Hhx[i],Hhs[n]);
@@ -29,7 +29,7 @@ void WGrid::drawsizes(int sx, int sy, int sw, int sh)
     for (j=0; j<sh; j++) {
       n=p+j;
       if (!Lfm[n]) {
-        Lws[n]=fm.width(LabX[n]);
+        Lws[n]=fm.horizontalAdvance(LabX[n]);
         Lhs[n]=fm.height();
         Lwx[i]=qMax(Lwx[i],Lws[n]);
         Thx[sy+j]=qMax(Thx[sy+j],Lhs[n]);
@@ -43,7 +43,7 @@ void WGrid::drawsizes(int sx, int sy, int sw, int sh)
     for (j=0; j<sw; j++) {
       n=p+j;
       if (!Dfm[n]) {
-        Dws[n]=fm.width(Data[n]);
+        Dws[n]=fm.horizontalAdvance(Data[n]);
         Dhs[n]=fm.height();
         Twx[sx+j]=qMax(Twx[sx+j],Dws[n]);
         Thx[sy+i]=qMax(Thx[sy+i],Dhs[n]);

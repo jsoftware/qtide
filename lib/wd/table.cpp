@@ -32,7 +32,7 @@ void QTableWidgex::mousePressEvent(QMouseEvent* event)
   case Qt::LeftButton:
     p->lmr = "l";
     break;
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     p->lmr = "m";
     break;
   case Qt::RightButton:

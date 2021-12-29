@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-JDLLVER = 9.04    # ignored if not FHS
+JDLLVER = 9.03    # ignored if not FHS
 
 !lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
@@ -11,14 +11,13 @@ JDLLVER = 9.04    # ignored if not FHS
  !lessThan(QT_MINOR_VERSION,15): DEFINES += QT515
 }
 
-equals(QT_MAJOR_VERSION, 6) {
+!lessThan(QT_MAJOR_VERSION, 6) {
  DEFINES += QT60
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
  DEFINES += QT57
  DEFINES += QT512
  DEFINES += QT515
 }
-
 
 TEMPLATE = app
 TARGET = jqt

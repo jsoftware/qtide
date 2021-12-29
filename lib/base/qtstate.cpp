@@ -24,7 +24,7 @@ static string qpair(QString s, string t)
 // ---------------------------------------------------------------------
 string qtstate(string p)
 {
-  QStringList s=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList s=s2q(p).split(" ",_SkipEmptyParts);
   QString c;
   string r;
 

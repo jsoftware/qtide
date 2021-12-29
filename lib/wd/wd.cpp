@@ -1,5 +1,7 @@
 
+#if !defined(QT60)
 #include <QDesktopWidget>
+#endif
 #include <QApplication>
 #include <QLayout>
 #include <QTimer>
@@ -52,6 +54,7 @@ extern "C" Dllexport void dirmatch(const char *s,const char *t);
 extern "C" Dllexport void openj(const char *s);
 // extern string wdQuery;
 
+#define max(a,b)    (((a) > (b)) ? (a) : (b))
 #include "math.h"
 
 static void wd1();
@@ -443,24 +446,24 @@ void wddefprint()
   string p=cmd.getparms();
   if (c=="orient") {
     if (p=="landscape")
-      config.Printer->setOrientation(QPrinter::Landscape);
+      config.Printer->setPageOrientation(QPageLayout::Landscape);
     else
-      config.Printer->setOrientation(QPrinter::Portrait);
+      config.Printer->setPageOrientation(QPageLayout::Portrait);
   } else if (c=="margin") {
-    QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+    QStringList n=s2q(p).split(" ",_SkipEmptyParts);
     if (n.size()==1) {
       qreal m=c_strtod(q2s(n.at(0)));
-      config.Printer->setPageMargins(m, m, m, m, QPrinter::Millimeter);
+      config.Printer->setPageMargins(QMarginsF(m, m, m, m), QPageLayout::Millimeter);
     } else if (n.size()==2) {
       qreal l=c_strtod(q2s(n.at(0)));
       qreal t=c_strtod(q2s(n.at(1)));
-      config.Printer->setPageMargins(l, t, l, t, QPrinter::Millimeter);
+      config.Printer->setPageMargins(QMarginsF(l, t, l, t), QPageLayout::Millimeter);
     } else if (n.size()==4) {
       qreal l=c_strtod(q2s(n.at(0)));
       qreal t=c_strtod(q2s(n.at(1)));
       qreal r=c_strtod(q2s(n.at(2)));
       qreal b=c_strtod(q2s(n.at(3)));
-      config.Printer->setPageMargins(l, t, r, b, QPrinter::Millimeter);
+      config.Printer->setPageMargins(QMarginsF(l, t, r, b), QPageLayout::Millimeter);
     } else
       error("margin requires 1, 2, or 4 numbers: " + p);
   } else if (c=="printer") {
@@ -748,7 +751,7 @@ void wdpas()
 {
   string p=cmd.getparms();
   if (noform()) return;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   int l,t,r,b;
   if (n.size()==2) {
     l=r=c_strtoi(q2s(n.at(0)));
@@ -776,7 +779,7 @@ void wdpc()
   c=cmd.getid();
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
-  QStringList m=s2q(p).split(' ',QString::SkipEmptyParts);
+  QStringList m=s2q(p).split(' ',_SkipEmptyParts);
   Form *f=new Form(c,p,tlocale,m.contains("owner")?form:0);
   if (rc==1) {
     delete f;
@@ -795,8 +798,12 @@ void wdpcenter()
     return;
   }
   if (noform()) return;
+#if defined(QT60)
+  QRect screenGeometry = app->primaryScreen()->geometry();
+#else
   QDesktopWidget* dw=app->desktop();
   QRect screenGeometry = dw->screenGeometry(-1);
+#endif
   int sw=screenGeometry.width();
   int sh=screenGeometry.height();
   int w=form->size().width();
@@ -850,7 +857,7 @@ void wdpmoves()
 // ---------------------------------------------------------------------
 void wdpmove1(string p)
 {
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
   else {
@@ -1004,16 +1011,27 @@ void wdqueries(string s)
       error("command failed: no QApplication");
       return;
     }
+#if defined(QT60)
+    QScreen *dw = app->primaryScreen();
+    QRect screenGeometry = dw->geometry();
+    int dpix=dw->logicalDotsPerInchX();
+    int dpiy=dw->logicalDotsPerInchX();
+#else
     QDesktopWidget* dw=app->desktop();
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
     int dpiy=dw->logicalDpiY();
+#endif
     int w=screenGeometry.width();
     int h=screenGeometry.height();
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
+#if defined(QT60)
+    result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(INT_MAX) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dia);
+#else
     result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(dw->colorCount()) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dia);
+#endif
     return;
   } else if (s=="qwd") {
     result="jqt";
@@ -1124,7 +1142,7 @@ void wdqueries(string s)
 void wdquickview1()
 {
   string p=cmd.getparms();
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (!jt) {
     error("command failed: no interpreter");
     return;
@@ -1158,7 +1176,7 @@ void wdquickview1()
 void wdquickview2()
 {
   string p=cmd.getparms();
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (!jt) {
     error("command failed: no interpreter");
     return;
@@ -1405,7 +1423,7 @@ void wdws()
 void wdverbose()
 {
   string p=remquotes(cmd.getparms());
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.empty())
     error("verbose requires 1 number: " + p);
   else {
@@ -1428,7 +1446,7 @@ void wdmaxwh()
 {
   string p=cmd.getparms();
   if (noform()) return;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2)
     error("maxwh requires 2 numbers: " + p);
   else {
@@ -1442,7 +1460,7 @@ void wdminwh()
 {
   string p=cmd.getparms();
   if (noform()) return;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2)
     error("minwh requires 2 numbers: " + p);
   else {
@@ -1512,7 +1530,7 @@ void wdsetsizepolicy(QWidget *widget,string p)
   if (!widget) return;
   QString h,v;
   int hoz,ver;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.empty()) {
     error("set sizepolicy requires 1 or 2 options: " + p);
     return;
@@ -1569,7 +1587,7 @@ void wdsetsizepolicy(QWidget *widget,string p)
 void wdsetwh(QWidget *widget,string p)
 {
   if (!widget) return;
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2) {
     error("set wh requires 2 numbers: " + p);
   } else {

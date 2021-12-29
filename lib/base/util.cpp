@@ -203,7 +203,9 @@ QString cfread(QFile *file)
   if (!file->open(QIODevice::ReadOnly|QIODevice::Text))
     return s2q("");
   QTextStream in(file);
+#if !defined(QT60)
   in.setCodec("UTF-8");
+#endif
   QString r = in.readAll();
   file->close();
   return r;
@@ -315,7 +317,9 @@ int cfwrite(QFile *file, QString t)
   if (!file->open(QIODevice::WriteOnly|QIODevice::Text))
     return 0;
   QTextStream out(file);
+#if !defined(QT60)
   out.setCodec("UTF-8");
+#endif
   out << t;
   file->close();
   return t.size();
@@ -402,8 +406,12 @@ QStringList getfilters(QString s)
 {
   int i;
   QString p;
+#if defined(QT60)
+  QRegularExpression sep("(\\s|,)");
+#else
   QRegExp sep("(\\s|,)");
-  QStringList f=s.split(sep,QString::SkipEmptyParts);
+#endif
+  QStringList f=s.split(sep,_SkipEmptyParts);
   for (i=0; i<f.size(); i++) {
     p=f.at(i);
     if (!p.contains("*"))
@@ -643,7 +651,7 @@ QString quote(QString s)
 // ---------------------------------------------------------------------
 QList<int> qs2intlist(QString c)
 {
-  QStringList s=c.split(' ',QString::SkipEmptyParts);
+  QStringList s=c.split(' ',_SkipEmptyParts);
   return qsl2intlist(s);
 }
 
@@ -668,7 +676,7 @@ bool qshasonly(const QString s, const QString t)
 // ---------------------------------------------------------------------
 QVector<int> qs2intvector(QString c)
 {
-  QStringList s=c.split(' ',QString::SkipEmptyParts);
+  QStringList s=c.split(' ',_SkipEmptyParts);
   QVector<int> r(s.size());
   for (int i=0; i<s.size(); i++)
     r[i]=s.at(i).toInt();
@@ -733,7 +741,7 @@ QStringList qslprependeach(QString p,QStringList s)
 QStringList qslreverse(QStringList s)
 {
   int i,n=s.size();
-  for (i=0; i<n/2; i++) s.swap(i,n-1-i);
+  for (i=0; i<n/2; i++) s.swapItemsAt(i,n-1-i);
   return s;
 }
 
@@ -791,7 +799,7 @@ string strless(string a,string w)
 // ---------------------------------------------------------------------
 QList<int> q2p(QString s)
 {
-  QStringList t = s.split(" ",QString::SkipEmptyParts);
+  QStringList t = s.split(" ",_SkipEmptyParts);
   QList<int> r;
   for (int i=0; i<4; i++)
     r.append(t.at(i).toInt());

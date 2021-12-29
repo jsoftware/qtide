@@ -190,7 +190,7 @@ void printpreview(QPrinter * printer, QTextDocument *d)
 {
 #ifdef QT50
   d->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
-  d->setPageSize(QSizeF(printer->pageRect().size()));
+  d->setPageSize(QSizeF(printer->pageRect(QPrinter::DevicePixel).size()));
   d->print((QPagedPaintDevice *)printer);
 #else
   d->documentLayout()->setPaintDevice(printer);

@@ -199,7 +199,7 @@ void dlog_init()
   InputLogFile = new QFile(config.ConfigPath.filePath("inputlog.dat"));
   QString s = cfread(InputLogFile);
   s.remove('\r');
-  QStringList t = s.split("\n",QString::SkipEmptyParts);
+  QStringList t = s.split("\n",_SkipEmptyParts);
   t = qsreverse(t);
   t.removeDuplicates();
   InputLog = qsreverse(t);
@@ -237,7 +237,7 @@ QString dlog_scroll(int m)
 // ---------------------------------------------------------------------
 void dlog_set(QString s)
 {
-  InputLog=s.split('\n',QString::SkipEmptyParts);
+  InputLog=s.split('\n',_SkipEmptyParts);
   dlog_write();
 }
 

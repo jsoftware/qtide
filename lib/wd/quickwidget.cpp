@@ -15,7 +15,7 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   type="quickwidget";
 
   int mode=1;
-  QStringList m=s2q(s).split(' ',QString::SkipEmptyParts);
+  QStringList m=s2q(s).split(' ',_SkipEmptyParts);
   if (m.size() && (m.at(0)=="0"||m.at(0)=="1")) mode=!!c_strtoi(q2s(m.at(0)));
   QSurfaceFormat format;
   int l=m.indexOf("version");

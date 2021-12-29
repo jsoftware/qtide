@@ -133,7 +133,7 @@ QString Style::read()
 // ---------------------------------------------------------------------
 void Style::set(QString s)
 {
-  QStringList p=s.toLower().split(" ",QString::SkipEmptyParts);
+  QStringList p=s.toLower().split(" ",_SkipEmptyParts);
 
   if (p.contains("bold")) {
     weight=QFont::Bold;

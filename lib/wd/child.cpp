@@ -67,7 +67,7 @@ string Child::get(string p,string v)
   } else if (p=="extent") {
     if (widget) {
       QFontMetrics fm = QFontMetrics(widget->font());
-      r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+      r=i2s(fm.horizontalAdvance(s2q(v)))+" "+i2s(fm.height());
     }
   } else if (p=="focuspolicy") {
     if (widget) {
@@ -265,7 +265,7 @@ void Child::setwh(string p)
 // ---------------------------------------------------------------------
 void Child::setmaxwhv(string p)
 {
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2) {
     error("set maxwh requires 2 numbers: " + id + " " + p);
   } else {
@@ -291,7 +291,7 @@ void Child::setmaxwh(int w, int h)
 // ---------------------------------------------------------------------
 void Child::setminwhv(string p)
 {
-  QStringList n=s2q(p).split(" ",QString::SkipEmptyParts);
+  QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2) {
     error("set minwh requires 2 numbers: " + id + " " + p);
   } else {

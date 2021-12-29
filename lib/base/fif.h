@@ -3,6 +3,12 @@
 
 #include <QDialog>
 
+#if defined(QT60)
+#include <QRegularExpression>
+#else
+#include <QRegExp>
+#endif
+
 class QCheckBox;
 class QComboBox;
 class QLabel;
@@ -88,7 +94,11 @@ private:
   bool ifRegex;
   bool ifResults;
   QString what;
+#if defined(QT60)
+  QRegularExpression pat;
+#else
   QRegExp pat;
+#endif
 
 };
 

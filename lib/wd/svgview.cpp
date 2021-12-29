@@ -61,7 +61,7 @@ void SvgView::set(string p,string v)
   } else if (p=="showzoom") {
     w->showZoom(remquotes(v)!="0");
   } else if (p=="windoworg") {
-    QStringList n=s2q(v).split(" ",QString::SkipEmptyParts);
+    QStringList n=s2q(v).split(" ",_SkipEmptyParts);
     if (n.size()!=2) {
       error("set windoworg requires 2 numbers: " + v);
     } else {

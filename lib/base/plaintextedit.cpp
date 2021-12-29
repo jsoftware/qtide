@@ -86,7 +86,7 @@ int PlainTextEditLn::lineNumberAreaWidth()
     ++digits;
   }
   digits=qMax(2,digits);
-  int space = 10 + fontMetrics().width(QLatin1Char('9')) * digits;
+  int space = 10 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
   return space;
 }
 

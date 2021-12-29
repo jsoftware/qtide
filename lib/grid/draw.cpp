@@ -61,7 +61,7 @@ bool WGrid::drawinit()
                      + " does not match data rows of " + QString::number(Crws) );
 
   QFontMetrics fm=QFontMetrics(font,0);
-  minwidth=fm.width("XXX");
+  minwidth=fm.horizontalAdvance("XXX");
   minheight=fm.height();
 
   int n;

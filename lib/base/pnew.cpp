@@ -150,7 +150,7 @@ void Pnew::on_create_clicked()
   if (cinit->isChecked())
     p.append("init");
 
-  p+=other->text().split(" ",QString::SkipEmptyParts);
+  p+=other->text().split(" ",_SkipEmptyParts);
   for (i=0; i<p.size(); i++)
     p.replace(i,defext(p.at(i)));
   p.removeDuplicates();

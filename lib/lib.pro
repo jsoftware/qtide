@@ -2,11 +2,9 @@
 # version info
 include(../common.pri)
 
-# JDLLVER = 9.04    # ignored if not FHS
-
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
-DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
+# DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {
@@ -16,7 +14,7 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
  !lessThan(QT_MINOR_VERSION,15): DEFINES += QT515
 }
 
-equals(QT_MAJOR_VERSION, 6) {
+!lessThan(QT_MAJOR_VERSION, 6) {
  DEFINES += QT60
  QT += core5compat
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
@@ -25,19 +23,22 @@ equals(QT_MAJOR_VERSION, 6) {
  DEFINES += QT515
 }
 
+!lessThan(QT_MAJOR_VERSION, 5): QT += widgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
 
 TEMPLATE = lib
-QT += opengl
+equals(QT_MAJOR_VERSION, 6): QT -= opengl
+equals(QT_MAJOR_VERSION, 6): QT -= multimedia
 QT += webengine
 QT -= webkit
 QT += svg
-QT +=  multimedia
 TARGET = jqt
 
 QT += webenginewidgets
 
 # to exclude QtWebEngine, uncomment the following line
-# QT -= webenginewidgets
+ QT -= webengine
+ QT -= webenginewidgets
 
 # to exclude svgview, uncomment the following line
 # QT -= svg
@@ -116,10 +117,9 @@ UI_DIR = $$BUILDROOT/ui
 macx:CONFIG += c++11
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-equals(QT_MAJOR_VERSION, 5): QT += widgets
-equals(QT_MAJOR_VERSION, 5): QT += printsupport
 DEPENDPATH += .
 INCLUDEPATH += .
+
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
@@ -187,6 +187,18 @@ contains(DEFINES,QT57) {
 } else {
   DEFINES -= QT_NO_SVGVIEW
   DEFINES += QT_SVGVIEW
+}
+
+!contains(QT,printsupport) {
+  DEFINES += QT_NO_PRINTER
+  DEFINES -= QT_PRINTER
+  DEFINES += QT_NO_PRINTDIALOG
+  DEFINES -= QT_PRINTDIALOG
+} else {
+  DEFINES -= QT_NO_PRINTER
+  DEFINES += QT_PRINTER
+  DEFINES -= QT_NO_PRINTDIALOG
+  DEFINES += QT_PRINTDIALOG
 }
 
 # Input

@@ -16,7 +16,7 @@ int glzqwh(float *wh, int unit)
 {
   if (!wh) return 1;
   CHKPAINTER2
-  QSizeF size = Printer->paperSize((QPrinter::Unit)unit);
+  QSizeF size = Printer->pageLayout().pageSize().size((QPageSize::Unit)unit);
   wh[0] = (float) size.width();
   wh[1] = (float) size.height();
   return 0;
@@ -27,12 +27,11 @@ int glzqmargins(float *ltrb, int unit)
 {
   if (!ltrb) return 1;
   CHKPAINTER2
-  qreal l,t,r,b;
-  Printer->getPageMargins(&l,&t,&r,&b,(QPrinter::Unit)unit);
-  ltrb[0] = (float) l;
-  ltrb[1] = (float) t;
-  ltrb[2] = (float) r;
-  ltrb[3] = (float) b;
+  QMarginsF m=Printer->pageLayout().margins((QPageLayout::Unit)unit);
+  ltrb[0] = (float) m.left();
+  ltrb[1] = (float) m.top();
+  ltrb[2] = (float) m.right();
+  ltrb[3] = (float) m.bottom();
   return 0;
 }
 
@@ -75,7 +74,7 @@ int glzqduplexmode ()
 int glzqorientation ()
 {
   CHKPAINTER2
-  return Printer->orientation();
+  return Printer->pageLayout().orientation();
 }
 
 // ---------------------------------------------------------------------
@@ -96,7 +95,7 @@ int glzqpageorder ()
 int glzqpapersize ()
 {
   CHKPAINTER2
-  return Printer->paperSize();
+  return Printer->pageLayout().pageSize().id();
 }
 
 // ---------------------------------------------------------------------
@@ -134,7 +133,7 @@ int glzduplexmode (int n)
 int glzorientation (int n)
 {
   CHKPAINTER2
-  Printer->setOrientation((QPrinter::Orientation)n);
+  Printer->setPageOrientation((QPageLayout::Orientation)n);
   return 0;
 }
 
@@ -158,7 +157,7 @@ int glzpageorder (int n)
 int glzpapersize (int n)
 {
   CHKPAINTER2
-  Printer->setPaperSize((QPrinter::PaperSize)n);
+  Printer->setPageSize(QPageSize((QPageSize::PageSizeId)n));
   return 0;
 }
 

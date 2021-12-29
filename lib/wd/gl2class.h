@@ -354,7 +354,7 @@ int glqextent(char *s,int *wh)
 #else
   QFontMetrics fm = QFontMetrics(FontExtent->font);
 #endif
-  *(wh) = fm.width(QString::fromUtf8(s));
+  *(wh) = fm.horizontalAdvance(QString::fromUtf8(s));
   *(wh+1) = fm.height();
   return 0;
 }
@@ -363,7 +363,7 @@ int glqextent(char *s,int *wh)
 int glqextentw(char *s,int *wi)
 {
   if (!s || !wi) return 1;
-  QStringList n=(QString::fromUtf8(s)).split("\n",QString::KeepEmptyParts);
+  QStringList n=(QString::fromUtf8(s)).split("\n",_KeepEmptyParts);
   if (!FontExtent) FontExtent= new Font(q2s("\""+app->font().family())+"\"",app->font().pointSizeF());
   if (FontExtent->error) {
     delete FontExtent;
@@ -377,7 +377,7 @@ int glqextentw(char *s,int *wi)
   QFontMetrics fm = QFontMetrics(FontExtent->font);
 #endif
   for (int i=0; i<n.size(); i++) {
-    wi[i] = fm.width(n.at(i));
+    wi[i] = fm.horizontalAdvance(n.at(i));
   }
   return 0;
 }

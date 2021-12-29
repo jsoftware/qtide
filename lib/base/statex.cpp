@@ -67,7 +67,7 @@ void Config::dirmatch_init()
     s.clear();
     t.clear();
     if (n>0) {
-      s=v.mid(n).remove(' ').split(',',QString::SkipEmptyParts);
+      s=v.mid(n).remove(' ').split(',',_SkipEmptyParts);
       s=qslprependeach("*.",s);
       t=s.join(",");
       v=v.mid(0,n);

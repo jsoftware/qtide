@@ -134,7 +134,7 @@ void Qwebview::buttonEvent(QEvent::Type type, QMouseEvent *event)
   case Qt::LeftButton:
     lmr = "l";
     break;
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     lmr = "m";
     break;
   case Qt::RightButton:
@@ -165,8 +165,8 @@ void Qwebview::buttonEvent(QEvent::Type type, QMouseEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
   sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d",
-          event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
-          (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)),
+          (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
+          (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
 
   pchild->event=evtname;
@@ -179,7 +179,7 @@ void Qwebview::buttonEvent(QEvent::Type type, QMouseEvent *event)
 void Qwebview::wheelEvent(QWheelEvent *event)
 {
   char deltasign = ' ';
-  int delta = event->delta() / 8;  // degree
+  int delta = event->angleDelta().y() / 8;  // degree
   if (delta<0) {
     delta = -delta;
     deltasign = '_';
@@ -188,8 +188,8 @@ void Qwebview::wheelEvent(QWheelEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
   sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d",
-          event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
-          (!!(event->buttons() & Qt::MidButton)), (!!(event->modifiers() & Qt::CTRL)),
+          (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
+          (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 
   pchild->event=string("mwheel");

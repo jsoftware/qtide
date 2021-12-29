@@ -19,8 +19,8 @@ Nmain::Nmain(Note *n)
   tabBar = new Ntabs(n);
   n->tabs = tabBar;
   toolBar = new QToolBar(0);
-  layout->addWidget(toolBar,0,0);
-  layout->addWidget(tabBar,1,0);
+  layout->addWidget(toolBar,0,Qt::Alignment());
+  layout->addWidget(tabBar,1,Qt::Alignment());
   createActions();
   createToolBar();
   setLayout(layout);
