@@ -12,14 +12,17 @@
 
 #if defined(QT60)
 #include <QtCore5Compat>
+#else
+#define playbackStateChanged stateChanged
+#define PlaybackState State
+#endif
+#if defined(QT512)
 #define _KeepEmptyParts Qt::KeepEmptyParts
 #define _SkipEmptyParts Qt::SkipEmptyParts
 #define setTabStopWidth setTabStopDistance
 #else
 #define _KeepEmptyParts QString::KeepEmptyParts
 #define _SkipEmptyParts QString::SkipEmptyParts
-#define playbackStateChanged stateChanged
-#define PlaybackState State
 #define horizontalAdvance width
 #endif
 

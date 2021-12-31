@@ -2,7 +2,9 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QDesktopServices>
-#if !defined(QT60)
+#if defined(QT57)
+#include <QScreen>
+#else
 #include <QDesktopWidget>
 #endif
 #include <QUrl>
@@ -597,7 +599,7 @@ void Note::setpos()
     w=config.EditPosX[2];
     h=config.EditPosX[3];
   } else {
-#if defined(QT60)
+#if defined(QT57)
     QRect s=qApp->primaryScreen()->geometry();
 #else
     QDesktopWidget *d=qApp->desktop();

@@ -2,7 +2,9 @@
 #define NOMINMAX
 #include <QApplication>
 #include <QDate>
-#if !defined(QT60)
+#if defined(QT57)
+#include <QScreen>
+#else
 #include <QDesktopWidget>
 #endif
 #include <QFont>
@@ -141,7 +143,7 @@ void Config::folder_init()
 // run before svr init
 void Config::ini0()
 {
-#if defined(QT60)
+#if defined(QT57)
   QRect screenGeometry = app->primaryScreen()->geometry();
 #else
   QDesktopWidget* dw=app->desktop();
@@ -746,7 +748,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
     jdllver=LibName.mid(4+LibName.lastIndexOf(".so."));
 #endif
   }
-#if !defined(QT60)
+#if !defined(QT515)
 #ifdef QTWEBSOCKET
   qsrand(QDateTime::currentMSecsSinceEpoch());
 #endif

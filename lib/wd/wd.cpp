@@ -1,5 +1,7 @@
 
-#if !defined(QT60)
+#if defined(QT57)
+#include <QScreen>
+#else
 #include <QDesktopWidget>
 #endif
 #include <QApplication>
@@ -798,7 +800,7 @@ void wdpcenter()
     return;
   }
   if (noform()) return;
-#if defined(QT60)
+#if defined(QT57)
   QRect screenGeometry = app->primaryScreen()->geometry();
 #else
   QDesktopWidget* dw=app->desktop();
@@ -1011,7 +1013,7 @@ void wdqueries(string s)
       error("command failed: no QApplication");
       return;
     }
-#if defined(QT60)
+#if defined(QT57)
     QScreen *dw = app->primaryScreen();
     QRect screenGeometry = dw->geometry();
     int dpix=dw->logicalDotsPerInchX();
@@ -1027,7 +1029,7 @@ void wdqueries(string s)
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
-#if defined(QT60)
+#if defined(QT515)
     result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(INT_MAX) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dia);
 #else
     result=i2s(mmx) + " " + i2s(mmy) + " " + i2s(w) + " " + i2s(h) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dw->depth()) + " 1 " + i2s(dw->colorCount()) + " " + i2s(dpix) + " " + i2s(dpiy) + " " + i2s(dia);

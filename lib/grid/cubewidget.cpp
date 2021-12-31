@@ -194,7 +194,7 @@ int CubeMargin::itemremove(QList<int> v, int n)
 // ---------------------------------------------------------------------
 void dragstart(QWidget *s,QDrag *dr)
 {
-#if defined(QT60)
+#if defined(QT50)
   QPixmap pixmap=s->grab();
 #else
   QPixmap pixmap=QPixmap::grabWidget(s);

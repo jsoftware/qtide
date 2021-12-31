@@ -251,7 +251,11 @@ void SvgView2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
+#if defined(QT60)
   sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+#else
+  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+#endif
 
   pchild->event=evtname;
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
@@ -271,7 +275,11 @@ void SvgView2::wheelEvent(QWheelEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
+#if defined(QT515)
   sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
+#else
+  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
+#endif
 
   pchild->event=string("mwheel");
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
@@ -284,7 +292,11 @@ void SvgView2::mousePressEvent(QMouseEvent *event)
 {
   m_mouseDown = true;
   m_lastOrigin = m_origin;
+#if defined(QT60)
   m_mouseLastPos = QPoint((int)event->position().x(),(int)event->position().y());
+#else
+  m_mouseLastPos = QPoint(event->x(),event->y());
+#endif
   buttonEvent(QEvent::MouseButtonPress, event);
 }
 
@@ -292,8 +304,13 @@ void SvgView2::mousePressEvent(QMouseEvent *event)
 void SvgView2::mouseMoveEvent(QMouseEvent *event)
 {
   if (m_mouseDown) {
+#if defined(QT60)
     m_origin = QPoint(m_lastOrigin.x()-m_mouseLastPos.x()+(int)event->position().x(),
                       m_lastOrigin.y()-m_mouseLastPos.y()+(int)event->position().y());
+#else
+    m_origin = QPoint(m_lastOrigin.x()-m_mouseLastPos.x()+event->x(),
+                      m_lastOrigin.y()-m_mouseLastPos.y()+event->y());
+#endif
     update();
   }
   buttonEvent(QEvent::MouseMove, event);

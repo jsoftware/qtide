@@ -21,7 +21,9 @@ Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
     isVideo=true;
     QVideoWidget *w=new QVideoWidget;
     mediaPlayer.setVideoOutput(w);
+#if defined(QT60)
     mediaPlayer.setAudioOutput(new QAudioOutput);
+#endif
     widget=(QWidget *) w;
     widget->setObjectName(qn);
   }
@@ -144,9 +146,15 @@ string Multimedia::get(string p,string v)
   else if (p=="error")
     r=string(errortab[mediaPlayer.error()]);
   else if (p=="mute")
+#if defined(QT60)
     r=i2s(mediaPlayer.audioOutput()->isMuted());
   else if (p=="playstate")
     r=string(statetab[mediaPlayer.playbackState()]);
+#else
+    r=i2s(mediaPlayer.isMuted());
+  else if (p=="playstate")
+    r=string(statetab[mediaPlayer.state()]);
+#endif
   else if (p=="position")
     r=i2s(mediaPlayer.position());
   else if (p=="seekable")
@@ -154,7 +162,11 @@ string Multimedia::get(string p,string v)
   else if (p=="status")
     r=string(statustab[mediaPlayer.mediaStatus()]);
   else if (p=="volume")
+#if defined(QT60)
     r=i2s(mediaPlayer.audioOutput()->volume());
+#else
+    r=i2s(mediaPlayer.volume());
+#endif
   else if (isVideo && w) {
     if (p=="aspectratio")
       r=string(artab[w->aspectRatioMode()]);
@@ -188,11 +200,19 @@ void Multimedia::set(string p,string v)
   if (p=="media") {
     QString f=s2q(remquotes(v));
     if (f.contains("://"))
+#if defined(QT60)
       mediaPlayer.setSource(QUrl(f));
     else
       mediaPlayer.setSource(QUrl::fromLocalFile(f));
   } else if (p=="mute")
     mediaPlayer.audioOutput()->setMuted(remquotes(v)!="0");
+#else
+      mediaPlayer.setMedia(QUrl(f));
+    else
+      mediaPlayer.setMedia(QUrl::fromLocalFile(f));
+  } else if (p=="mute")
+    mediaPlayer.setMuted(remquotes(v)!="0");
+#endif
   else if (p=="pause")
     mediaPlayer.pause();
   else if (p=="play")
@@ -204,7 +224,11 @@ void Multimedia::set(string p,string v)
   else if (p=="stop")
     mediaPlayer.stop();
   else if (p=="volume")
+#if defined(QT60)
     mediaPlayer.audioOutput()->setVolume(c_strtoi(v));
+#else
+    mediaPlayer.setVolume(c_strtoi(v));
+#endif
   else if (isVideo && w) {
     if (p=="aspectratio") {
       if (v=="ignore")

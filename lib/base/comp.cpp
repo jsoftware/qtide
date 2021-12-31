@@ -46,7 +46,7 @@ QString Compare::comp(QStringList x,QStringList y)
 
   while (compend()) complcs();
 
-#ifdef QT60
+#ifdef QT57
   std::sort(SX.begin(), SX.end());
   std::sort(SY.begin(), SY.end());
 #else
@@ -71,7 +71,7 @@ QString Compare::comp(QStringList x,QStringList y)
     SY.replace(i,1+SY.at(i)*2);
 
   SX=SX+SY;
-#ifdef QT60
+#ifdef QT57
   std::sort(SX.begin(), SX.end());
 #else
   qSort(SX);

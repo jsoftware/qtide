@@ -283,7 +283,7 @@ bool pic_inidir(QString s)
   }
 
   if (e.size()) {
-#ifdef QT60
+#ifdef QT57
     std::sort(e.begin(), e.end());
 #else
     qSort(e);
