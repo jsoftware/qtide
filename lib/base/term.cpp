@@ -194,8 +194,8 @@ void Term::fini()
     new OneWin();
   else if (ShowIde)
     show();
-  move(config.TermPosX[0],config.TermPosX[1]);
-  resize(config.TermPosX[2],config.TermPosX[3]);
+  if(config.TermPosX.length()>1) move(config.TermPosX[0],config.TermPosX[1]);
+  if(config.TermPosX.length()>3) resize(config.TermPosX[2],config.TermPosX[3]);
 }
 
 // ---------------------------------------------------------------------

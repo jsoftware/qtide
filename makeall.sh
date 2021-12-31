@@ -8,6 +8,7 @@ S=$(dirname "$0")
 # export QMAKESPEC=linux-clang
 
 QM=qmake
+# QM=/usr/local/bin/qmake
 hash $QM &> /dev/null
 if [ $? -eq 1 ]; then
   echo 'use qmake-qt5' >&2

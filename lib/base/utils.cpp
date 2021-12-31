@@ -323,14 +323,10 @@ string getversion()
 // return if git available
 bool gitavailable()
 {
-#if defined(__MACH__)
-#if defined(__aarch64__)
-  return false;
-#else
-  return !shell("which git","").at(0).isEmpty();
-#endif
-#elif defined(Q_OS_LINUX)
-  return !shell("which git","").at(0).isEmpty();
+#if defined(__MACH__) || defined(Q_OS_LINUX)
+  QStringList r=shell("which git","");
+  if(!r.length()) return false;
+  return !r.at(0).isEmpty();
 #else
   return false;
 #endif
