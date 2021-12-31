@@ -8,7 +8,6 @@ class QGridLayout;
 class QBoxLayout;
 class QButtonGroup;
 class QGroupBox;
-class QSignalMapper;
 class QSplitter;
 
 class Child;
@@ -61,7 +60,6 @@ public:
   Child *child;
   Child *evtchild;
   QGroupBox *groupboxw;
-  QSignalMapper *signalMapper;
   Layout *layout;
   QList<Layout *>layouts;
   QSplitter *qsplitter;

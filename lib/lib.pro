@@ -4,7 +4,7 @@ include(../common.pri)
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
-# DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
+DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {
@@ -23,6 +23,7 @@ include(../common.pri)
  DEFINES += QT515
 }
 
+contains(DEFINES,QTWEBSOCKET): QT += websockets
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
 !lessThan(QT_MAJOR_VERSION, 5): QT += opengl
@@ -89,8 +90,6 @@ equals(QMAKE_TARGET.arch , aarch64):!macx: {
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
-
-contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57): QT += websockets
 
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
@@ -243,7 +242,7 @@ contains(DEFINES,QT50) {
 !contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
 contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
-contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
+contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
 contains(DEFINES,QT_NO_SVGVIEW): HEADERS -= wd/svgview.h wd/svgview2.h
 
@@ -292,7 +291,7 @@ contains(DEFINES,QT50) {
 !contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
 contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
 contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
-contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT53): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
+contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
 

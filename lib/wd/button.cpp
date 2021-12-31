@@ -24,8 +24,14 @@ Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
   iconFile="";
   if (opt.contains("default"))
     w->setDefault(true);
-  connect(w,SIGNAL(clicked()),f->signalMapper,SLOT(map()));
-  f->signalMapper->setMapping(w,(QWidget*)this);
+  connect(w,SIGNAL(clicked()), this,SLOT(clicked()));
+}
+
+// ---------------------------------------------------------------------
+void Button::clicked()
+{
+  event="button";
+  pform->signalevent(this);
 }
 
 // ---------------------------------------------------------------------

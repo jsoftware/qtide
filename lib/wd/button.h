@@ -18,6 +18,9 @@ public:
   void set(string p,string v);
   string state();
   string iconFile;
+
+private slots:
+  void clicked();
 };
 
 #endif
