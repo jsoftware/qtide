@@ -25,20 +25,22 @@ include(../common.pri)
 
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
+!lessThan(QT_MAJOR_VERSION, 5): QT += opengl
+!lessThan(QT_MAJOR_VERSION, 5): QT += multimedia
+!lessThan(QT_MAJOR_VERSION, 5): QT += webengine
+!lessThan(QT_MAJOR_VERSION, 5): QT += webenginewidgets 
 
 TEMPLATE = lib
 equals(QT_MAJOR_VERSION, 6): QT -= opengl
-equals(QT_MAJOR_VERSION, 6): QT -= multimedia
-QT += webengine
+equals(QT_MAJOR_VERSION, 6): QT -= webengine
+equals(QT_MAJOR_VERSION, 6): QT -= webenginewidgets 
 QT -= webkit
 QT += svg
 TARGET = jqt
 
-QT += webenginewidgets
-
 # to exclude QtWebEngine, uncomment the following line
- QT -= webengine
- QT -= webenginewidgets
+# QT -= webengine
+# QT -= webenginewidgets
 
 # to exclude svgview, uncomment the following line
 # QT -= svg

@@ -18,6 +18,8 @@
 #else
 #define _KeepEmptyParts QString::KeepEmptyParts
 #define _SkipEmptyParts QString::SkipEmptyParts
+#define playbackStateChanged stateChanged
+#define PlaybackState State
 #define horizontalAdvance width
 #endif
 

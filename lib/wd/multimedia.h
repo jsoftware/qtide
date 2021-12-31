@@ -2,6 +2,7 @@
 #define MULTIMEDIA_H
 
 #include <QMediaPlayer>
+#include <QAudioOutput>
 #include "child.h"
 
 class Form;
@@ -25,7 +26,7 @@ private slots:
   void merror(QMediaPlayer::Error error);
   void mediaStatusChanged(QMediaPlayer::MediaStatus status);
   void positionChanged(qint64 position);
-  void stateChanged(QMediaPlayer::State state);
+  void playbackStateChanged(QMediaPlayer::PlaybackState state);
   void volumeChanged(int volume);
 
 private:
