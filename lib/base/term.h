@@ -54,7 +54,11 @@ public:
   void smprompt(QString s);
   void vieweditor();
 #ifdef _WIN32
+#if defined QT60
+  bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
+#else
   bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+#endif
 #endif
 
   Menu *menuBar;

@@ -298,7 +298,11 @@ void Term::vieweditor()
 }
 
 #ifdef _WIN32
+#if defined(QT60)
+bool Term::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
+#else
 bool Term::nativeEvent(const QByteArray &eventType, void *message, long *result)
+#endif
 {
   MSG* msg = (MSG*)message;
   if(msg->message == WM_SOCK) jcon->cmd("(i.0 0)\"_ socket_handler_z_ "+i2s(WSAGETSELECTEVENT(msg->lParam))+" "+i2s(WSAGETSELECTERROR(msg->lParam)));
