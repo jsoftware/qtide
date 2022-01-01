@@ -620,7 +620,7 @@ QStringList shell(QString cmd, QString dir)
   QProcess p;
   if (!dir.isEmpty())
     p.setWorkingDirectory(dir);
-  p.start(cmd);
+  p.start(cmd,QStringList());
   try {
     if (!p.waitForStarted())
       return r;

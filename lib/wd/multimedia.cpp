@@ -210,7 +210,8 @@ void Multimedia::set(string p,string v)
       mediaPlayer.setMedia(QUrl(f));
     else
       mediaPlayer.setMedia(QUrl::fromLocalFile(f));
-  } else if (p=="mute")
+  }
+  else if (p=="mute")
     mediaPlayer.setMuted(remquotes(v)!="0");
 #endif
   else if (p=="pause")
@@ -229,7 +230,8 @@ void Multimedia::set(string p,string v)
 #else
     mediaPlayer.setVolume(c_strtoi(v));
 #endif
-  else if (isVideo && w) {
+  else if (isVideo && w)
+  {
     if (p=="aspectratio") {
       if (v=="ignore")
         w->setAspectRatioMode(Qt::IgnoreAspectRatio);
