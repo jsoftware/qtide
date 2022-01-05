@@ -121,7 +121,7 @@ void WGrid::paintEvent(QPaintEvent *e)
 }
 
 // ---------------------------------------------------------------------
-void WGrid::set(string p,string v)
+void WGrid::set(std::string p,std::string v)
 {
   QStringList s=qsplit(v);
   WGridInit=false;
@@ -256,9 +256,9 @@ void WGrid::setshape(QStringList s)
 }
 
 // ---------------------------------------------------------------------
-string WGrid::state(string event)
+std::string WGrid::state(std::string event)
 {
-  string r;
+  std::string r;
   if ("mb"==event.substr(0,2))
     r+=spair(pchild->id,i2s(row)+" "+i2s(col));
   return r;

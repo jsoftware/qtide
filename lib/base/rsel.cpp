@@ -9,7 +9,7 @@
 #include "state.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 Rsel::Rsel()

@@ -8,7 +8,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ProgressBar::ProgressBar(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="progressbar";
   QProgressBar *w=new QProgressBar;
@@ -39,12 +39,12 @@ ProgressBar::ProgressBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string ProgressBar::get(string p,string v)
+std::string ProgressBar::get(std::string p,std::string v)
 {
   QProgressBar *w=(QProgressBar*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "pos"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "pos"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(w->minimum());
@@ -58,7 +58,7 @@ string ProgressBar::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void ProgressBar::set(string p,string v)
+void ProgressBar::set(std::string p,std::string v)
 {
   QProgressBar *w=(QProgressBar*) widget;
   QString cmd=s2q(p);
@@ -77,7 +77,7 @@ void ProgressBar::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string ProgressBar::state()
+std::string ProgressBar::state()
 {
   QProgressBar *w=(QProgressBar*) widget;
   return spair(id,i2s(w->value()));

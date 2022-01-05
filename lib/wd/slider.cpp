@@ -17,7 +17,7 @@
 // position
 
 // ---------------------------------------------------------------------
-Slider::Slider(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Slider::Slider(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="slider";
   QSlider *w=new QSlider(Qt::Horizontal);
@@ -69,12 +69,12 @@ void Slider::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string Slider::get(string p,string v)
+std::string Slider::get(std::string p,std::string v)
 {
   QSlider *w=(QSlider*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "tic"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "tic"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(w->minimum());
@@ -94,7 +94,7 @@ string Slider::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Slider::set(string p,string v)
+void Slider::set(std::string p,std::string v)
 {
   QSlider *w=(QSlider*) widget;
   QString cmd=s2q(p);
@@ -119,7 +119,7 @@ void Slider::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Slider::state()
+std::string Slider::state()
 {
   QSlider *w=(QSlider*) widget;
   return spair(id,i2s(w->sliderPosition()));

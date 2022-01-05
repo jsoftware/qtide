@@ -5,46 +5,46 @@
 #include <QStringList>
 #include <vector>
 
-using namespace std;
+// using namespace std;
 
 class Cmd
 {
 public:
   void end();
-  bool delimLF(string);
-  string getid();
-  string getline();
-  string getparms(bool s=false);
-  bool ifstarred(string);
+  bool delimLF(std::string);
+  std::string getid();
+  std::string getline();
+  std::string getparms(bool s=false);
+  bool ifstarred(std::string);
   void init(char *,int);
   bool more();
 
-  string remws(string s);
+  std::string remws(std::string s);
   void markpos();
   void rewindpos();
 
   QStringList bsplits();
   QStringList qsplits();
-  vector<string> ssplits();
+  std::vector<std::string> ssplits();
 
 private:
   void skippast(char c);
-  void skips(string s);
+  void skips(std::string s);
   void skiptows();
   QStringList qsplitstd();
-  vector<string> ssplitstd();
+  std::vector<std::string> ssplitstd();
   QStringList qsplitby(char c);
-  vector<string> ssplitby(char c);
+  std::vector<std::string> ssplitby(char c);
 
   size_t bgn;
   size_t len;
   size_t pos;
   size_t pos0;
-  string str;
+  std::string str;
 };
 
-QStringList bsplit(string s);
-QStringList qsplit(string s,bool p=false);
-vector<string> ssplit(string s);
+QStringList bsplit(std::string s);
+QStringList qsplit(std::string s,bool p=false);
+std::vector<std::string> ssplit(std::string s);
 
 #endif

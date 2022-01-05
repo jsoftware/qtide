@@ -60,7 +60,7 @@ extern QString jdllver;
 extern void wdreset();
 extern Tedit *tedit;
 
-using namespace std;
+// using namespace std;
 
 QList<QWidget*> ActiveWindows;
 Config config;
@@ -579,7 +579,7 @@ void Config::toggleascii()
     if (note2)
       note2->menuBar->viewasciiAct->setChecked(Ascii);
   }
-  string s="0 0$boxdraw_j_ ";
+  std::string s="0 0$boxdraw_j_ ";
   s+=Ascii?"1":"0";
   jcon->cmd(s);
 }
@@ -789,7 +789,7 @@ QString writeTabWidth(int n)
 // ---------------------------------------------------------------------
 void immexj(const char *s)
 {
-  sets("inputx_jrx_",string(s));
+  sets("inputx_jrx_",std::string(s));
   jcon->immex("0!:100 inputx_jrx_");
 }
 

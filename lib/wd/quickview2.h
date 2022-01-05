@@ -11,7 +11,7 @@ class QuickView2 : public QQuickView
   Q_OBJECT
 
 public:
-  QuickView2(string n, string s, int resizemode, string glver);
+  QuickView2(std::string n, std::string s, int resizemode, std::string glver);
 
   QUrl sourceUrl;
   int resizeMode;

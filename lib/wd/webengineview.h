@@ -19,13 +19,13 @@ class WebEngineView : public Child
   Q_OBJECT
 
 public:
-  WebEngineView(string n, string s, Form *f, Pane *p);
+  WebEngineView(std::string n, std::string s, Form *f, Pane *p);
   ~WebEngineView();
 
-  void cmd(string p, string v);
+  void cmd(std::string p, std::string v);
   void cmdpost(QStringList obj);
-  void set(string p,string v);
-  string state();
+  void set(std::string p,std::string v);
+  std::string state();
 
   QUrl baseUrl;
   QString cb_name;

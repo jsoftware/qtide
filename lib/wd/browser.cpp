@@ -21,7 +21,7 @@
 #endif
 
 // ---------------------------------------------------------------------
-Browser::Browser(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Browser::Browser(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="browser";
   Qbrowser *w=new Qbrowser(this,p);
@@ -33,7 +33,7 @@ Browser::Browser(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Browser::cmd(string p,string v)
+void Browser::cmd(std::string p,std::string v)
 {
   Qbrowser *w = (Qbrowser *)widget;
   QStringList opt=qsplit(v);
@@ -60,12 +60,12 @@ void Browser::cmd(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Browser::get(string p,string v)
+std::string Browser::get(std::string p,std::string v)
 {
   Qbrowser *w = (Qbrowser *)widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("baseurl")+"\012"+ "html"+"\012"+ "openexternallinks"+"\012"+ "openlinks"+"\012"+ "source"+"\012";
+    r+=std::string("baseurl")+"\012"+ "html"+"\012"+ "openexternallinks"+"\012"+ "openlinks"+"\012"+ "source"+"\012";
     r+=Child::get(p,v);
   } else if (p=="baseurl")
     r=q2s(baseUrl.toString());
@@ -83,7 +83,7 @@ string Browser::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Browser::set(string p,string v)
+void Browser::set(std::string p,std::string v)
 {
   Qbrowser *w = (Qbrowser *)widget;
   if (p=="baseurl") {
@@ -106,11 +106,11 @@ void Browser::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Browser::state()
+std::string Browser::state()
 {
   Qbrowser *w = (Qbrowser *)widget;
   Q_UNUSED(w);
-  string r;
+  std::string r;
   if (event=="mmove") return r;
   if (event=="source") {
     r+=spair(id+"_baseurl",q2s(baseUrl.toString()));
@@ -165,7 +165,7 @@ Qbrowser::Qbrowser(Child *c, QWidget *parent)
 // ---------------------------------------------------------------------
 void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  string lmr = "";
+  std::string lmr = "";
   switch (event->button()) {
   case Qt::LeftButton:
     lmr = "l";
@@ -180,7 +180,7 @@ void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
     break;
   }
 
-  string evtname = "mmove";
+  std::string evtname = "mmove";
   switch (type) {
   case QEvent::MouseButtonPress:
     evtname = "mb" + lmr + "down";
@@ -211,7 +211,7 @@ void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   pchild->event=evtname;
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
 }
 
@@ -236,9 +236,9 @@ void Qbrowser::wheelEvent(QWheelEvent *event)
           (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 
-  pchild->event=string("mwheel");
+  pchild->event=std::string("mwheel");
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
   QTextBrowser::wheelEvent(event);
 }

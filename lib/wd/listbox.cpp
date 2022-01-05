@@ -26,7 +26,7 @@ void ListWidget::dropEvent(QDropEvent *e)
 }
 
 // ---------------------------------------------------------------------
-ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ListBox::ListBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="listbox";
   QListWidget *w=new ListWidget(this);
@@ -57,12 +57,12 @@ ListBox::ListBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string ListBox::get(string p,string v)
+std::string ListBox::get(std::string p,std::string v)
 {
   QListWidget *w=(QListWidget*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("allitems")+"\012"+ "items"+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=std::string("allitems")+"\012"+ "items"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="allitems")
     r=getitems();
@@ -95,10 +95,10 @@ string ListBox::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string ListBox::getitems()
+std::string ListBox::getitems()
 {
   QListWidget *w=(QListWidget*) widget;
-  string s="";
+  std::string s="";
 
   for (int i=0; i<w->count(); i++) {
     s += q2s(w->item(i)->text());
@@ -108,11 +108,11 @@ string ListBox::getitems()
 }
 
 // ---------------------------------------------------------------------
-string ListBox::getselection()
+std::string ListBox::getselection()
 {
   QListWidget *w=(QListWidget*) widget;
   QList <QListWidgetItem*> list = w->selectedItems();
-  string s="";
+  std::string s="";
 
   for (int i=0; i<list.count(); i++) {
     s += q2s(((QListWidgetItem*) list.at(i))->text());
@@ -122,11 +122,11 @@ string ListBox::getselection()
 }
 
 // ---------------------------------------------------------------------
-string ListBox::getselectionindex()
+std::string ListBox::getselectionindex()
 {
   QListWidget *w=(QListWidget*) widget;
   QModelIndexList list = ((QItemSelectionModel *)w->selectionModel())->selectedIndexes();
-  string s="";
+  std::string s="";
 
   for (int i=0; i<list.size(); i++) {
     s += i2s(list[i].row());
@@ -150,7 +150,7 @@ void ListBox::itemSelectionChanged()
 }
 
 // ---------------------------------------------------------------------
-void ListBox::set(string p,string v)
+void ListBox::set(std::string p,std::string v)
 {
   QListWidget *w=(QListWidget*) widget;
   if (p=="items") {
@@ -170,14 +170,14 @@ void ListBox::signaldrop()
 }
 
 // ---------------------------------------------------------------------
-string ListBox::state()
+std::string ListBox::state()
 {
   QListWidget *w=(QListWidget*) widget;
   QList <QListWidgetItem*> list = w->selectedItems();
-  string r;
+  std::string r;
   if (0==list.count()) {
-    r+=spair(id,(string)"");
-    r+=spair(id+"_select",(string)"_1");
+    r+=spair(id,(std::string)"");
+    r+=spair(id+"_select",(std::string)"_1");
   } else {
     if ((w->selectionMode()) == QAbstractItemView::ExtendedSelection) {
       r+=spair(id,getselection());

@@ -14,15 +14,15 @@ class ToolBar : public Child
   Q_OBJECT
 
 public:
-  ToolBar(string n, string s, Form *f, Pane *p);
+  ToolBar(std::string n, std::string s, Form *f, Pane *p);
 
   void makeact(QStringList opt);
   void makeactright(QStringList opt);
-  string get(string p,string v);
-  void set(string p,string v);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
   QAction * getaction(QString id);
-  void setbutton(string p, QStringList opt);
-  string state();
+  void setbutton(std::string p, QStringList opt);
+  std::string state();
 
 private slots:
   void actionTriggered(QAction *action);

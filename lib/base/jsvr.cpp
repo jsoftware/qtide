@@ -31,7 +31,7 @@ static char pathetcpx[PLEN];
 static char pathexec0[PLEN];
 static char pathexec[PLEN];
 
-using namespace std;
+// using namespace std;
 
 typedef void* (_stdcall *JInitType)();
 typedef int (_stdcall *JDoType)(void*, C*);
@@ -449,7 +449,7 @@ void sigint(int k)
 // ---------------------------------------------------------------------
 // jdo with result (contains 3!:1 rep)
 // return 0 on error
-A dora(string s)
+A dora(std::string s)
 {
   if (sizeof(inputline)<8+s.size()) exit(100);
   strcpy(inputline,"r_jrx_=:");
@@ -470,7 +470,7 @@ A dora(string s)
 
 // ---------------------------------------------------------------------
 // jdo with boolean result
-bool dorb(string s)
+bool dorb(std::string s)
 {
   if (!jt) return false;
   A r=dora(s);
@@ -484,7 +484,7 @@ bool dorb(string s)
 // ---------------------------------------------------------------------
 // jdo to get integer vector
 // return success
-bool doriv(string s,I**v,I*len)
+bool doriv(std::string s,I**v,I*len)
 {
   if (!jt) return false;
   A r=dora(s);
@@ -503,8 +503,8 @@ bool doriv(string s,I**v,I*len)
 }
 
 // ---------------------------------------------------------------------
-// jdo with string result
-string dors(string s)
+// jdo with std::string result
+std::string dors(std::string s)
 {
   if (!jt) return "";
   A r=dora(s);
@@ -514,14 +514,14 @@ string dors(string s)
   assert((0x1fffff&p->t)==2);
   assert((0xff&p->r)<2);
   if ((0xff&p->r)==0)
-    return string(((char*)p->s),1);
+    return std::string(((char*)p->s),1);
   else
-    return string((sizeof(AREP_RECORD)+(char*)p), p->c);
+    return std::string((sizeof(AREP_RECORD)+(char*)p), p->c);
 }
 
 // ---------------------------------------------------------------------
-// set string in J
-void sets(QString name, string s)
+// set std::string in J
+void sets(QString name, std::string s)
 {
   int n,hlen,nlen,slen,tlen;
 

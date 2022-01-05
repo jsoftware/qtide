@@ -19,7 +19,7 @@
 #include "term.h"
 #include "widget.h"
 
-using namespace std;
+// using namespace std;
 
 bool pic_inidir(QString s);
 QByteArray pp_stamp();

@@ -28,17 +28,17 @@ class ListBox : public Child
   Q_OBJECT
 
 public:
-  ListBox(string n, string s, Form *f, Pane *p);
+  ListBox(std::string n, std::string s, Form *f, Pane *p);
   void signaldrop();
   QString action;
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
 private:
-  string getitems();
-  string getselection();
-  string getselectionindex();
+  std::string getitems();
+  std::string getselection();
+  std::string getselectionindex();
 
 private slots:
   void itemActivated();

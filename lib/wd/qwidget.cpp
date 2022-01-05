@@ -7,26 +7,26 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-QWidgex::QWidgex(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+QWidgex::QWidgex(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="qwidget";
   widget=new QWidget;
 }
 
 // ---------------------------------------------------------------------
-string QWidgex::get(string p,string v)
+std::string QWidgex::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void QWidgex::set(string p,string v)
+void QWidgex::set(std::string p,std::string v)
 {
   Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string QWidgex::state()
+std::string QWidgex::state()
 {
   return "";
 }

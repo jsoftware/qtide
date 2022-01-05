@@ -10,7 +10,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Button::Button(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Button::Button(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="button";
   QPushButton *w=new QPushButton;
@@ -35,12 +35,12 @@ void Button::clicked()
 }
 
 // ---------------------------------------------------------------------
-string Button::get(string p,string v)
+std::string Button::get(std::string p,std::string v)
 {
   QPushButton *w=(QPushButton*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012";
+    r+=std::string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="caption"||p=="text")
     r=q2s(w->text());
@@ -52,7 +52,7 @@ string Button::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Button::set(string p,string v)
+void Button::set(std::string p,std::string v)
 {
   QPushButton *w=(QPushButton*) widget;
   if (p=="caption" || p=="text")
@@ -92,7 +92,7 @@ void Button::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Button::state()
+std::string Button::state()
 {
   return "";
 }

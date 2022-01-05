@@ -172,9 +172,9 @@ int roundint(double d)
 }
 
 // ---------------------------------------------------------------------
-string v2s(QVector<int> v)
+std::string v2s(QVector<int> v)
 {
-  string r;
+  std::string r;
   int n=v.size();
   if (n==0) return r;
   for (int i=0; i<n; i++)

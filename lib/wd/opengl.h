@@ -12,12 +12,12 @@ class Opengl : public Child
   Q_OBJECT
 
 public:
-  Opengl(string n, string s, Form *f, Pane *p);
+  Opengl(std::string n, std::string s, Form *f, Pane *p);
   virtual ~Opengl();
   void setform();
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
 private slots:
 

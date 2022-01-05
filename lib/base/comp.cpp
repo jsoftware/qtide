@@ -4,14 +4,14 @@
 #include "comp.h"
 
 /*
- * x,y,XY = original and combined stringlists
+ * x,y,XY = original and combined std::stringlists
  * AX = indices of x in XY
  * X  = items of x not yet accounted for
  * NX = indices of x not yet accounted for
  * SX = indices of x not matched
 */
 
-using namespace std;
+// using namespace std;
 
 bool qvcontainseach(QVector<int>v,QVector<int>w);
 QVector<int> qvlastseq(QVector<int>v,QVector<int>w);
@@ -179,25 +179,25 @@ QVector<int> Compare::seqlcs(QVector<int> x,QVector<int> y)
   int mx=100;
   QVector<int> r;
 
-  int m=min(mx,(int)x.size());
-  int n=min(mx,(int)y.size());
+  int m=std::min(mx,(int)x.size());
+  int n=std::min(mx,(int)y.size());
 
   x = x.mid(0,m);
   y = y.mid(0,n);
 
   if (m < n) {
-    swap(x,y);
-    swap(m,n);
+    std::swap(x,y);
+    std::swap(m,n);
   }
 
-  vector< vector<int> > c(m+1, vector<int>(n+1,0));
+  std::vector< std::vector<int> > c(m+1, std::vector<int>(n+1,0));
 
   for (i=0; i<m; ++i)
     for (j=0; j<n; ++j)
       if (x.at(i) == y.at(j))
         c[i+1][j+1] = c[i][j] + 1;
       else
-        c[i+1][j+1] = max(c[i+1][j], c[i][j+1]);
+        c[i+1][j+1] = std::max(c[i+1][j], c[i][j+1]);
 
   i = c[m][n];
   r.resize(i);

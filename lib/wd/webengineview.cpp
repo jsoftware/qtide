@@ -12,7 +12,7 @@
 #include "cmd.h"
 
 // ---------------------------------------------------------------------
-WebEngineView::WebEngineView(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+WebEngineView::WebEngineView(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="webview";
   curl="";
@@ -44,7 +44,7 @@ WebEngineView::~WebEngineView()
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::cmd(string p,string v)
+void WebEngineView::cmd(std::string p,std::string v)
 {
   QStringList s=qsplit(v);
   s.prepend(s2q(p));
@@ -72,7 +72,7 @@ void WebEngineView::loadFinished(bool ok)
 }
 
 // ---------------------------------------------------------------------
-void WebEngineView::set(string p,string v)
+void WebEngineView::set(std::string p,std::string v)
 {
   Qwebengineview *w = (Qwebengineview *)widget;
   if (p=="baseurl") {
@@ -94,9 +94,9 @@ void WebEngineView::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string WebEngineView::state()
+std::string WebEngineView::state()
 {
-  string r;
+  std::string r;
   if (event=="mmove") return r;
   if (event=="curl")
     r+=spair(id+"_curl",q2s(curl));
@@ -190,7 +190,7 @@ Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
 // ---------------------------------------------------------------------
 void Qwebengineview::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
-  string lmr = "";
+  std::string lmr = "";
   switch (event->button()) {
   case Qt::LeftButton:
     lmr = "l";
@@ -205,7 +205,7 @@ void Qwebengineview::buttonEvent(QEvent::Type type, QMouseEvent *event)
     break;
   }
 
-  string evtname = "mmove";
+  std::string evtname = "mmove";
   switch (type) {
   case QEvent::MouseButtonPress:
     evtname = "mb" + lmr + "down";
@@ -236,7 +236,7 @@ void Qwebengineview::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   pchild->event=evtname;
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
 }
 
@@ -261,9 +261,9 @@ void Qwebengineview::wheelEvent(QWheelEvent *event)
           (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 
-  pchild->event=string("mwheel");
+  pchild->event=std::string("mwheel");
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
   QWebEngineView::wheelEvent(event);
 }
@@ -336,9 +336,9 @@ void Qwebengineview::keyPressEvent(QKeyEvent *event)
       sprintf(sysdata, "%s", event->text().toUtf8().constData());
     else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
 
-    pchild->event=string("char");
+    pchild->event=std::string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-    pchild->sysdata=string(sysdata);
+    pchild->sysdata=std::string(sysdata);
     pchild->pform->signalevent(pchild);
     // for ESC key, abort further processing lest we generate a second J event.
     if (key==Qt::Key_Escape) return;

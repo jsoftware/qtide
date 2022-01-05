@@ -8,7 +8,7 @@
 #include "../grid/qgrid.h"
 
 // ---------------------------------------------------------------------
-IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+IsiGrid::IsiGrid(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="isigrid";
   QString qn=s2q(n);
@@ -24,19 +24,19 @@ IsiGrid::IsiGrid(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string IsiGrid::get(string p,string v)
+std::string IsiGrid::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void IsiGrid::set(string p,string v)
+void IsiGrid::set(std::string p,std::string v)
 {
   ((QGrid *)widget)->set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string IsiGrid::state()
+std::string IsiGrid::state()
 {
   return ((QGrid *)widget)->state(event);
 }

@@ -14,7 +14,7 @@ extern QmlJE qmlje;
 extern QuickView1 * quickview1;
 
 // ---------------------------------------------------------------------
-QuickView1::QuickView1(string n, string s, int resizemode) : QDeclarativeView()
+QuickView1::QuickView1(std::string n, std::string s, int resizemode) : QDeclarativeView()
 {
   QString qn=s2q(n);
   setObjectName(qn);

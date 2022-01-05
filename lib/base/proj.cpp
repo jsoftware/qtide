@@ -8,7 +8,7 @@
 #include "state.h"
 #include "recent.h"
 
-using namespace std;
+// using namespace std;
 
 Project project;
 

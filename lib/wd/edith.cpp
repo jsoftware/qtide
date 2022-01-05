@@ -22,7 +22,7 @@
 #endif
 #endif
 // ---------------------------------------------------------------------
-Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Edith::Edith(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edith";
   QTextEdit *w=new QTextEdit;
@@ -36,7 +36,7 @@ Edith::Edith(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Edith::cmd(string p,string v)
+void Edith::cmd(std::string p,std::string v)
 {
   QStringList opt=qsplit(v);
   if (p=="print") {
@@ -56,12 +56,12 @@ void Edith::cmd(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Edith::get(string p,string v)
+std::string Edith::get(std::string p,std::string v)
 {
   QTextEdit *w=(QTextEdit*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("readonly")+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
+    r+=std::string("readonly")+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
     r+=Child::get(p,v);
   } else if (p=="text")
     r=q2s(w->toHtml());
@@ -85,7 +85,7 @@ string Edith::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Edith::set(string p,string v)
+void Edith::set(std::string p,std::string v)
 {
   QTextEdit *w=(QTextEdit*) widget;
   QStringList opt=qsplit(v);
@@ -162,7 +162,7 @@ void Edith::setselect(QTextEdit *w, int bgn, int end)
 }
 
 // ---------------------------------------------------------------------
-string Edith::state()
+std::string Edith::state()
 {
   QTextEdit *w=(QTextEdit*) widget;
   QTextCursor c=w->textCursor();
@@ -170,7 +170,7 @@ string Edith::state()
   b=c.selectionStart();
   e=c.selectionEnd();
   QScrollBar *v=w->verticalScrollBar();
-  string r;
+  std::string r;
   r+=spair(id,q2s(w->toHtml()));
   r+=spair(id+"_select",i2s(b)+" "+i2s(e));
   r+=spair(id+"_scroll",i2s(v->value()));

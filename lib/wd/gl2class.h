@@ -258,7 +258,7 @@ static int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p);
 static int gltext_i(const int *p, int len);
 
 // ---------------------------------------------------------------------
-// caller should free string
+// caller should free std::string
 static char *
 int2utf8(const int *yi, int nc)
 {
@@ -526,7 +526,7 @@ int glsel2(char *g)
   if (!g) return 1;
 #if (!(defined(GLPRINTER) || defined(GLPAINTER)))
   Child *cc;
-  string p=string(g);
+  std::string p=std::string(g);
   if (p.size()==0) {
     return 1;
   }
@@ -750,7 +750,7 @@ int glfont0(void *wid, char *s)
   QTWidget2 *w = (QTWidget2 *)wid;
 #endif
   if (!w) return 1;
-  Font *fnt = new Font(string(s));
+  Font *fnt = new Font(std::string(s));
   if (fnt->error) {
     delete fnt;
     return 1;
@@ -758,7 +758,7 @@ int glfont0(void *wid, char *s)
   w->font = fnt;
 // also set glfontextent
   if (FontExtent) delete FontExtent;
-  FontExtent=new Font(string(s));
+  FontExtent=new Font(std::string(s));
   return 0;
 }
 
@@ -781,7 +781,7 @@ int glfont2(const int *p, int len)
   strikeout = 8 & *(p + 1);
   degree10 = *(p + 2);
   char *face = int2utf8(p + 3, len - 3);
-  Font *fnt = new Font(string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  Font *fnt = new Font(std::string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
   if (fnt->error) {
     delete fnt;
     return 1;
@@ -789,7 +789,7 @@ int glfont2(const int *p, int len)
   w->font = fnt;
 // also set glfontextent
   if (FontExtent) delete FontExtent;
-  FontExtent=new Font(string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
+  FontExtent=new Font(std::string(face), size10, !!bold, !!italic, !!strikeout, !!underline, degree10);
   return 0;
 }
 
@@ -809,7 +809,7 @@ int glfontextent(char *s)
     if (FontExtent) delete FontExtent;
     FontExtent=0;
   } else {
-    Font *fnt = new Font(string(s));
+    Font *fnt = new Font(std::string(s));
     if (fnt->error) {
       delete fnt;
       return 1;
@@ -1153,7 +1153,7 @@ int glsetlocale(char *c)
   CHKPAINTER2
   Q_UNUSED(c);
 #if (!(defined(GLPRINTER) || defined(GLPAINTER)))
-  QTwidget->locale = string(c);
+  QTwidget->locale = std::string(c);
 #endif
   return 0;
 }

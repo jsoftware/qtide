@@ -12,10 +12,10 @@ class ProgressBar : public Child
   Q_OBJECT
 
 public:
-  ProgressBar(string n, string s, Form *f, Pane *p);
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  ProgressBar(std::string n, std::string s, Form *f, Pane *p);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
 private slots:
 

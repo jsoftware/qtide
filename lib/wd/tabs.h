@@ -13,14 +13,14 @@ class Tabs : public Child
   Q_OBJECT
 
 public:
-  Tabs(string n, string s, Form *f, Pane *p);
-  string state();
+  Tabs(std::string n, std::string s, Form *f, Pane *p);
+  std::string state();
 
   QWidget *activetab();
-  string get(string p,string v);
-  void set(string p,string v);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
   void tabend();
-  void tabnew(string p);
+  void tabnew(std::string p);
 
   int index;
 

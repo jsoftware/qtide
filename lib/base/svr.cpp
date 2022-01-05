@@ -27,7 +27,7 @@
 #define MTYOEXIT	5	/* exit */
 #define MTYOFILE	6	/* output 1!:2[2 */
 
-using namespace std;
+// using namespace std;
 
 C* _stdcall Jinput(J jt, C*);
 void _stdcall Joutput(J jt, int type, C* s);
@@ -47,7 +47,7 @@ Jcon *jcon=0;
 
 // ---------------------------------------------------------------------
 // usual way to call J when not suspended
-void Jcon::cmd(string s)
+void Jcon::cmd(std::string s)
 {
 #ifdef DEBUG_JDO
   qDebug() << "jcon cmd "+s2q(s)+ " jecallback "+ jecallback;
@@ -56,7 +56,7 @@ void Jcon::cmd(string s)
 }
 
 // ---------------------------------------------------------------------
-void Jcon::runimmx0(string s)
+void Jcon::runimmx0(std::string s)
 {
 #ifdef DEBUG_JDO
   qDebug() << "jcon runimmx0 "+s2q(s)+ " jecallback "+ jecallback;
@@ -66,7 +66,7 @@ void Jcon::runimmx0(string s)
 }
 
 // ---------------------------------------------------------------------
-void Jcon::runimmx1(string s)
+void Jcon::runimmx1(std::string s)
 {
 #ifdef DEBUG_JDO
   qDebug() << "jcon runimmx1 "+s2q(s)+ " jecallback "+ jecallback;
@@ -77,7 +77,7 @@ void Jcon::runimmx1(string s)
 
 // ---------------------------------------------------------------------
 // add expression to Sentence and run all Sentence
-void Jcon::cmddo(string s)
+void Jcon::cmddo(std::string s)
 {
 #ifdef DEBUG_JDO
   qDebug() << "jcon cmddo "+s2q(s)+ " jecallback "+ jecallback;
@@ -94,7 +94,7 @@ void Jcon::cmddo(string s)
 // execute priority expression immediately, then
 // set up to run all Sentence
 // e.g. used for isigraph paint event
-void Jcon::cmddop(string s)
+void Jcon::cmddop(std::string s)
 {
   runcmd=false;
   cmdSentence(s);
@@ -118,13 +118,13 @@ void Jcon::cmddos()
 
 // ---------------------------------------------------------------------
 // run single Sentence
-void Jcon::cmdSentence(string s)
+void Jcon::cmdSentence(std::string s)
 {
   size_t n=s.find('\0');
-  if (n==string::npos)
+  if (n==std::string::npos)
     cmd(s);
   else {
-    wdQuery=s.substr(n+1,string::npos);
+    wdQuery=s.substr(n+1,std::string::npos);
     cmd(s.substr(0,n));
   }
   jecallback=false;
@@ -136,7 +136,7 @@ void Jcon::cmdSentences()
 {
   if (runsentences) return;
   runsentences=true;
-  string s;
+  std::string s;
   while (!Sentence.empty()) {
     s=Sentence.front();
     Sentence.pop_front();
@@ -150,7 +150,7 @@ void Jcon::cmdSentences()
 
 // ---------------------------------------------------------------------
 // execute J expression and return result
-QString Jcon::cmdr(string s)
+QString Jcon::cmdr(std::string s)
 {
   return s2q(dors(s));
 }
@@ -217,14 +217,14 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 
 // ---------------------------------------------------------------------
 // run immex command
-void Jcon::immex(string s)
+void Jcon::immex(std::string s)
 {
   Sentence.push_back(s);
   cmddos();
 }
 
 // ---------------------------------------------------------------------
-void Jcon::set(QString s, string t)
+void Jcon::set(QString s, std::string t)
 {
   sets(s,t);
 }
@@ -235,15 +235,15 @@ char* _stdcall Jinput(J jt, char* p)
 {
   Q_UNUSED(jt);
   Q_ASSERT(tedit);
-  string s;
+  std::string s;
   if (!jecallback) {
     // On initial entry to suspension, purge sentences typed ahead by the user.
     // but DO NOT remove calls to wdhandler[x], because some event sequences
     // such as mbldown-mblup-mbldbl must be kept intact
     for (size_t i = jcon->Sentence.size(); i>0; --i) {
-      string s=jcon->Sentence.front();
+      std::string s=jcon->Sentence.front();
       jcon->Sentence.pop_front();
-      if (s.find("wdhandler") != string::npos)jcon->Sentence.push_back(s);
+      if (s.find("wdhandler") != std::string::npos)jcon->Sentence.push_back(s);
     }
     jecallback=true;
   }
@@ -267,8 +267,8 @@ char* _stdcall Jinput(J jt, char* p)
     jcon->Sentence.pop_front();
   }
   size_t n=s.find('\0');
-  if (n!=string::npos)
-    wdQuery=s.substr(n+1,string::npos);
+  if (n!=std::string::npos)
+    wdQuery=s.substr(n+1,std::string::npos);
   s=s.substr(0,n);
   if ((int)sizeof(inputline)<s.size()) exit(100);
   strcpy(inputline,s.c_str());

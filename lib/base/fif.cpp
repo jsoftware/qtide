@@ -22,7 +22,7 @@ static int MaxFif=100; // max search length
 
 Fif *fif;
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 Fif::Fif(QString s, bool ifname)

@@ -30,12 +30,12 @@ class Table : public Child
   Q_OBJECT
 
 public:
-  Table(string n, string s, Form *f, Pane *p);
+  Table(std::string n, std::string s, Form *f, Pane *p);
 
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
-  string lmr;
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
+  std::string lmr;
   QDateTime dblclick;
 
 private slots:
@@ -51,37 +51,37 @@ private:
   void applyhdralign();
   Qt::Alignment getalign(int i);
   QVector<int> getcellvec(QVector<int>);
-  bool getrange(string,int&, int&, int&, int&);
+  bool getrange(std::string,int&, int&, int&, int&);
   void initglobals();
 
   QTableWidgetItem * newitem(int r, int c,QString s);
-  string readcell(int row,int col);
-  string readcellvalue(int row,int col);
-  string readcolvalue(int col);
-  string readrowvalue(int row);
-  string readtable(string v);
+  std::string readcell(int row,int col);
+  std::string readcellvalue(int row,int col);
+  std::string readcolvalue(int col);
+  std::string readrowvalue(int row);
+  std::string readtable(std::string v);
   void resetlen(QVector<int> *v, QVector<int> def);
   void set_cell(int r,int c,QString v);
 
-  void setalign(string v);
-  void setbackforeground(int colortype, string s);
-  void setblock(string v);
-  void setcell(string v);
-  void setcolwidth(string v);
-  void setdata(string s);
-  void setfontstr(string s);
-  void sethdr(string v);
-  void sethdralign(string v);
-  void setlab(string v);
-  void setprotect(string v);
+  void setalign(std::string v);
+  void setbackforeground(int colortype, std::string s);
+  void setblock(std::string v);
+  void setcell(std::string v);
+  void setcolwidth(std::string v);
+  void setdata(std::string s);
+  void setfontstr(std::string s);
+  void sethdr(std::string v);
+  void sethdralign(std::string v);
+  void setlab(std::string v);
+  void setprotect(std::string v);
   void setresizecol();
   void setresizerow();
-  void setrowheight(string v);
-  void setscroll(string v);
-  void setselect(string v);
+  void setrowheight(std::string v);
+  void setscroll(std::string v);
+  void setselect(std::string v);
   void setshape(QStringList);
-  void setsort(string v);
-  void settype(string v);
+  void setsort(std::string v);
+  void settype(std::string v);
 
   bool vecin(QVector<int>vec,QVector<int>values,QString id);
   bool vecisbool(QVector<int>vec,QString id);

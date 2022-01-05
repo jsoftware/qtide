@@ -12,7 +12,7 @@
 #include "note.h"
 #include "state.h"
 
-using namespace std;
+// using namespace std;
 
 int NoEvents=0;
 
@@ -24,7 +24,7 @@ void about(QString t,QString s)
 
 // ---------------------------------------------------------------------
 // converts J 16-26 box chars to utf8
-QString boxj2utf8(string s)
+QString boxj2utf8(std::string s)
 {
   QByteArray b(s.c_str());
   b.replace('\20',"\342\224\214");
@@ -48,9 +48,9 @@ QString c2q(const char *c)
 }
 
 // ---------------------------------------------------------------------
-string c2s(const char *c)
+std::string c2s(const char *c)
 {
-  string s(c);
+  std::string s(c);
   return s;
 }
 
@@ -421,24 +421,24 @@ QStringList getfilters(QString s)
 }
 
 // ---------------------------------------------------------------------
-// integer to string
-string i2s(int i)
+// integer to std::string
+std::string i2s(int i)
 {
-  stringstream s;
+  std::stringstream s;
   s << i;
-  string s1=s.str();
+  std::string s1=s.str();
   if (s1[0]=='-') s1[0]='_';
   return s1;
 }
 
 // ---------------------------------------------------------------------
-// double to string
-string d2s(double d)
+// double to std::string
+std::string d2s(double d)
 {
-  stringstream s;
+  std::stringstream s;
   s.precision(16);
   s << d;
-  string s1=s.str();
+  std::string s1=s.str();
   if (s1[0]=='-') s1[0]='_';
   return s1;
 }
@@ -478,7 +478,7 @@ QString intlist2qs(QList<int> p)
 
 // ---------------------------------------------------------------------
 // is non-empty and all digit
-bool isint(const string s)
+bool isint(const std::string s)
 {
   int n=(int)s.size();
   if (n==0) return false;
@@ -521,7 +521,7 @@ bool matchfolder(QString s, QString t)
 }
 
 // ---------------------------------------------------------------------
-//void f(string s)
+//void f(std::string s)
 //{
 //cout << s << " " << matchparens('j',s) << endl;
 //}
@@ -542,10 +542,10 @@ bool matchfolder(QString s, QString t)
 int matchparens(QChar mode, QString p)
 {
   Q_UNUSED(mode);
-  string s=q2s(p);
+  std::string s=q2s(p);
   char c;
   int n, len=(int)s.size();
-  string t="";
+  std::string t="";
   for (int i=0; i<len; i++) {
     if (s[i] == '(' || s[i] == '[' || s[i] == '{')
       t.push_back(s[i]);
@@ -594,12 +594,12 @@ QString p2q(QList<int> n)
 }
 
 // ---------------------------------------------------------------------
-// pointer to string
-string p2s(const void *p)
+// pointer to std::string
+std::string p2s(const void *p)
 {
-  stringstream s;
+  std::stringstream s;
   s << (SI) p;
-  string s1=s.str();
+  std::string s1=s.str();
   if (s1[0]=='-') s1[0]='_';
   return s1;
 }
@@ -787,11 +787,11 @@ bool qsnumeric(QStringList a)
 }
 
 // ---------------------------------------------------------------------
-string strless(string a,string w)
+std::string strless(std::string a,std::string w)
 {
-  string r="";
+  std::string r="";
   for (size_t i=0; i<a.size(); i++) {
-    if (string::npos == w.find_first_of(a[i])) r+=a[i];
+    if (std::string::npos == w.find_first_of(a[i])) r+=a[i];
   }
   return r;
 }
@@ -807,13 +807,13 @@ QList<int> q2p(QString s)
 }
 
 // ---------------------------------------------------------------------
-string q2s(QString s)
+std::string q2s(QString s)
 {
   return s.toUtf8().constData();
 }
 
 // ---------------------------------------------------------------------
-string remquotes(string s)
+std::string remquotes(std::string s)
 {
   int len=(int)s.size();
   if (len<2) return s;
@@ -839,22 +839,22 @@ QString remtilde(QString s)
 }
 
 // ---------------------------------------------------------------------
-QByteArray s2b(string s)
+QByteArray s2b(std::string s)
 {
   return QByteArray(s.c_str(),(int)s.length());
 }
 
 // ---------------------------------------------------------------------
-QString s2q(string s)
+QString s2q(std::string s)
 {
   return QString::fromUtf8(s.c_str());
 }
 
 // ---------------------------------------------------------------------
-// pair strings with zero delimeter
-string spair(string s,string t)
+// pair std::strings with zero delimeter
+std::string spair(std::string s,std::string t)
 {
-  string r=s;
+  std::string r=s;
   r.push_back('\0');
   r.append(t);
   r.push_back('\0');
@@ -862,10 +862,10 @@ string spair(string s,string t)
 }
 
 // ---------------------------------------------------------------------
-// pair strings with zero delimeter
-string spair(string s,QString t)
+// pair std::strings with zero delimeter
+std::string spair(std::string s,QString t)
 {
-  string r=s;
+  std::string r=s;
   r.push_back('\0');
   r.append(q2s(t));
   r.push_back('\0');
@@ -924,19 +924,19 @@ QString uptoLF(QString s)
 }
 
 // ---------------------------------------------------------------------
-int c_strtoi(string s)
+int c_strtoi(std::string s)
 {
   if (!s.size()) return 0;
-  string p=s;
+  std::string p=s;
   if (p[0]=='_') p[0]='-';
   return (int)strtol(p.c_str(),NULL,0);
 }
 
 // ---------------------------------------------------------------------
-SI c_strtol(string s)
+SI c_strtol(std::string s)
 {
   if (!s.size()) return 0;
-  string p=s;
+  std::string p=s;
   if (p[0]=='_') p[0]='-';
 #if defined(_WIN64)
   return _strtoi64(p.c_str(),NULL,0);
@@ -946,10 +946,10 @@ SI c_strtol(string s)
 }
 
 // ---------------------------------------------------------------------
-double c_strtod(string s)
+double c_strtod(std::string s)
 {
   if (!s.size()) return 0;
-  string p=s;
+  std::string p=s;
   if (p[0]=='_') p[0]='-';
   return strtod(p.c_str(),NULL);
 }

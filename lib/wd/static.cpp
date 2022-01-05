@@ -9,7 +9,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Static::Static(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="static";
   QLabel *w=new QLabel;
@@ -51,29 +51,29 @@ Static::Static(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string Static::get(string p,string v)
+std::string Static::get(std::string p,std::string v)
 {
   QLabel *w=(QLabel*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("alignment")+"\012"+ "caption"+"\012"+ "text"+"\012";
+    r+=std::string("alignment")+"\012"+ "caption"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="caption"||p=="text")
     r=q2s(w->text());
   else if (p=="alignment") {
     if ((w->alignment())&Qt::AlignRight)
-      r=string("right");
+      r=std::string("right");
     else if ((w->alignment())&Qt::AlignHCenter)
-      r=string("center");
+      r=std::string("center");
     else
-      r=string("left");
+      r=std::string("left");
   } else
     r=Child::get(p,v);
   return r;
 }
 
 // ---------------------------------------------------------------------
-void Static::set(string p,string v)
+void Static::set(std::string p,std::string v)
 {
   QLabel *w=(QLabel*) widget;
   QStringList opt=qsplit(v);
@@ -98,7 +98,7 @@ void Static::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Static::state()
+std::string Static::state()
 {
   return "";
 }

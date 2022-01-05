@@ -10,7 +10,7 @@
 #include "qutil.h"
 #include "../wd/child.h"
 
-using namespace std;
+// using namespace std;
 
 class CubeMargin;
 class Wasa;
@@ -26,8 +26,8 @@ public:
   ~QGrid();
 
   bool drawcube();
-  void set(string,string);
-  string state(string);
+  void set(std::string,std::string);
+  std::string state(std::string);
 
   bool GGridInit;
   Wasa *sa;

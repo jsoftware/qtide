@@ -40,9 +40,9 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
       sprintf(sysdata, "%s", event->text().toUtf8().constData());
     else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
 
-    pchild->event=string("char");
+    pchild->event=std::string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-    pchild->sysdata=string(sysdata);
+    pchild->sysdata=std::string(sysdata);
     pchild->pform->signalevent(pchild);
     // for ESC key, abort further processing lest we generate a second J event.
     if (key==Qt::Key_Escape) return;

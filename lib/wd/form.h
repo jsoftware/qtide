@@ -26,7 +26,7 @@ class Form : public QWidget
   Q_OBJECT
 
 public:
-  Form(string id, string p, string locale, QWidget *parent = 0);
+  Form(std::string id, std::string p, std::string locale, QWidget *parent = 0);
   ~Form();
   QWidget *activetab();
   void addchild(Child *);
@@ -36,40 +36,40 @@ public:
   void closeit();
 
   bool activeonly;
-  string hschild();
-  string hsform();
-  string qform();
+  std::string hschild();
+  std::string hsform();
+  std::string qform();
   bool nochild();
-  string get(string p,string v);
+  std::string get(std::string p,std::string v);
   void saveformpos();
-  void set(string p,string v);
-  void setstretch(Child *cc, string factor);
-  Child *setmenuid(string id);
+  void set(std::string p,std::string v);
+  void setstretch(Child *cc, std::string factor);
+  Child *setmenuid(std::string id);
   void setpadding(int l,int t,int r,int b);
-  void setpn(string p);
-  void setpicon(string p);
-  void settaborder(string p);
-  void settheme(string p);
-  void settimer(string p);
-  void showit(string p);
+  void setpn(std::string p);
+  void setpicon(std::string p);
+  void settaborder(std::string p);
+  void settheme(std::string p);
+  void settimer(std::string p);
+  void showit(std::string p);
   void signalevent(Child *c, QKeyEvent *e = 0);
-  string state(int evt);
-  void status(string);
-  string getsysmodifiers();
-  string getsysmodifiers(Qt::KeyboardModifiers);
-  string getfocus();
+  std::string state(int evt);
+  void status(std::string);
+  std::string getsysmodifiers();
+  std::string getsysmodifiers(Qt::KeyboardModifiers);
+  std::string getfocus();
 
   bool closed;
   int maxvisibleitems;
   bool savepos;
   bool shown;
   int seq;
-  string id;
-  string event;
-  string lasttype;
-  string locale;
-  string sysdata;
-  string sysmodifiers;
+  std::string id;
+  std::string event;
+  std::string lasttype;
+  std::string locale;
+  std::string sysdata;
+  std::string sysmodifiers;
 
   Child *child;
   Child *evtchild;
@@ -86,7 +86,7 @@ public:
 
 public slots:
   void buttonClicked(QWidget *);
-  Child *id2child(string n);
+  Child *id2child(std::string n);
   bool ischild(Child* n);
   void systimer();
 
@@ -101,8 +101,8 @@ private slots:
 private:
   bool closeok;
   bool escclose;
-  string fakeid;
-  string lastfocus;
+  std::string fakeid;
+  std::string lastfocus;
 
 };
 

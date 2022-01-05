@@ -4,24 +4,24 @@
 #include "../base/wscln.h"
 #include "../base/wssvr.h"
 
-using namespace std;
+// using namespace std;
 
 static WsSvr *wssvr;
 static WsCln *wscln;
 
-string ws(string p);
-static string wsconnect();
-static string wsclose();
-static string wslisten();
-static string wsquery();
-static string wsstate();
-static string wssend(int binary);
+std::string ws(std::string p);
+static std::string wsconnect();
+static std::string wsclose();
+static std::string wslisten();
+static std::string wsquery();
+static std::string wsstate();
+static std::string wssend(int binary);
 
-static vector<string> arg;
-static string argjoin;
+static std::vector<std::string> arg;
+static std::string argjoin;
 
 // ---------------------------------------------------------------------
-string ws(string p)
+std::string ws(std::string p)
 {
   argjoin=p;
   arg=ssplit(p);
@@ -30,7 +30,7 @@ string ws(string p)
     return "";
   }
 
-  string type=arg.front();
+  std::string type=arg.front();
   arg.erase(arg.begin());
   if (type=="listen")
     return wslisten();
@@ -51,9 +51,9 @@ string ws(string p)
 }
 
 // ---------------------------------------------------------------------
-string wsconnect()
+std::string wsconnect()
 {
-  string q;
+  std::string q;
 
   if (arg.size()==1) {
     q=arg.at(0);
@@ -71,7 +71,7 @@ string wsconnect()
 }
 
 // ---------------------------------------------------------------------
-string wsclose()
+std::string wsclose()
 {
   if (arg.size()==0) {
     return "";
@@ -86,7 +86,7 @@ string wsclose()
 }
 
 // ---------------------------------------------------------------------
-string wslisten()
+std::string wslisten()
 {
   int port=0,protocol=0;
 
@@ -115,10 +115,10 @@ string wslisten()
 }
 
 // ---------------------------------------------------------------------
-string wsquery()
+std::string wsquery()
 {
   int type=0;
-  string r="";
+  std::string r="";
   if (arg.size()!=0)
     type=c_strtoi(arg.at(0));
   if (0==type) {
@@ -132,10 +132,10 @@ string wsquery()
 }
 
 // ---------------------------------------------------------------------
-string wsstate()
+std::string wsstate()
 {
   I socket=0;
-  string r="";
+  std::string r="";
   if (arg.size()==0) {
     error("Need socket: "+argjoin);
     return "";
@@ -150,10 +150,10 @@ string wsstate()
 }
 
 // ---------------------------------------------------------------------
-string wssend(int binary)
+std::string wssend(int binary)
 {
   I socket=0;
-  string r, data="";
+  std::string r, data="";
 
   if (arg.size()==1) {
     socket=c_strtol(arg.at(0));

@@ -17,7 +17,7 @@
 // position
 
 // ---------------------------------------------------------------------
-Dial::Dial(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Dial::Dial(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="dial";
   QDial *w=new QDial();
@@ -75,12 +75,12 @@ void Dial::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string Dial::get(string p,string v)
+std::string Dial::get(std::string p,std::string v)
 {
   QDial *w=(QDial*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "notchesvisible"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "wrap"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "notchesvisible"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "wrap"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(w->minimum());
@@ -102,7 +102,7 @@ string Dial::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Dial::set(string p,string v)
+void Dial::set(std::string p,std::string v)
 {
   QDial *w=(QDial*) widget;
   QString cmd=s2q(p);
@@ -129,7 +129,7 @@ void Dial::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Dial::state()
+std::string Dial::state()
 {
   QDial *w=(QDial*) widget;
   return spair(id,i2s(w->sliderPosition()));

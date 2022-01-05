@@ -9,7 +9,7 @@
 #include "term.h"
 
 QList<int> DefPos;
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 void Config::dirmatch_init()
@@ -106,11 +106,11 @@ void Config::filetop_set(QString f, int p)
 }
 
 // ---------------------------------------------------------------------
-string Config::formpos_read(QString id)
+std::string Config::formpos_read(QString id)
 {
   QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
   s.beginGroup("Form");
-  string p=q2s(s.value(id, "").toString());
+  std::string p=q2s(s.value(id, "").toString());
   s.endGroup();
   return p;
 }

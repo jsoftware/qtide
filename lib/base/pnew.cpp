@@ -13,7 +13,7 @@
 #include "term.h"
 #include "widget.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 Pnew::Pnew()

@@ -20,7 +20,7 @@ class QuickView1 : public QDeclarativeView
   Q_OBJECT
 
 public:
-  QuickView1(string n, string s, int resizemode);
+  QuickView1(std::string n, std::string s, int resizemode);
 
   QUrl sourceUrl;
   int resizeMode;

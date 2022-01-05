@@ -14,7 +14,7 @@
 // value
 
 // ---------------------------------------------------------------------
-SpinBox::SpinBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+SpinBox::SpinBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="spinbox";
   QSpinBox *w=new QSpinBox;
@@ -55,12 +55,12 @@ void SpinBox::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string SpinBox::get(string p,string v)
+std::string SpinBox::get(std::string p,std::string v)
 {
   QSpinBox *w=(QSpinBox*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "step"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "step"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(w->minimum());
@@ -78,7 +78,7 @@ string SpinBox::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void SpinBox::set(string p,string v)
+void SpinBox::set(std::string p,std::string v)
 {
   QSpinBox *w=(QSpinBox*) widget;
   QString cmd=s2q(p);
@@ -101,7 +101,7 @@ void SpinBox::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string SpinBox::state()
+std::string SpinBox::state()
 {
   QSpinBox *w=(QSpinBox*) widget;
   return spair(id,i2s(w->value()));

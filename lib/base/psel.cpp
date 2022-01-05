@@ -18,7 +18,7 @@
 
 QList<int> Pxywh;
 
-using namespace std;
+// using namespace std;
 
 Psel::Psel()
 {

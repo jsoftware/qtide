@@ -8,7 +8,7 @@
 extern Form *form;
 
 // ---------------------------------------------------------------------
-SvgView::SvgView(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+SvgView::SvgView(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="svgview";
   SvgView2 *w= new SvgView2(this);
@@ -24,12 +24,12 @@ SvgView::SvgView(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string SvgView::get(string p,string v)
+std::string SvgView::get(std::string p,std::string v)
 {
   SvgView2 *w = (SvgView2 *)widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("image")+"\012"+string("showzoom")+"\012"+string("windoworg")+"\012"+string("xml")+"\012"+string("zoom")+"\012";
+    r+=std::string("image")+"\012"+std::string("showzoom")+"\012"+std::string("windoworg")+"\012"+std::string("xml")+"\012"+std::string("zoom")+"\012";
     r+=Child::get(p,v);
   } else if (p=="image") {
     r=imageFile;
@@ -47,7 +47,7 @@ string SvgView::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void SvgView::set(string p,string v)
+void SvgView::set(std::string p,std::string v)
 {
   SvgView2 *w = (SvgView2 *)widget;
   if (p=="image") {
@@ -80,7 +80,7 @@ void SvgView::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void SvgView::cmd(string p,string v)
+void SvgView::cmd(std::string p,std::string v)
 {
   SvgView2 *w = (SvgView2 *)widget;
   if (p=="print") {
@@ -92,7 +92,7 @@ void SvgView::cmd(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string SvgView::state()
+std::string SvgView::state()
 {
   return "";
 }

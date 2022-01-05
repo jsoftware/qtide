@@ -9,7 +9,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+StatusBar::StatusBar(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="statusbar";
   QStatusBar *w=new QStatusBar;
@@ -22,13 +22,13 @@ StatusBar::StatusBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string StatusBar::get(string p,string v)
+std::string StatusBar::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void StatusBar::set(string p,string v)
+void StatusBar::set(std::string p,std::string v)
 {
   QStatusBar *w=(QStatusBar*) widget;
   QStringList arg=qsplit(v);
@@ -72,7 +72,7 @@ void StatusBar::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string StatusBar::state()
+std::string StatusBar::state()
 {
   return "";
 }

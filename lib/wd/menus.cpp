@@ -9,7 +9,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Menus::Menus(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Menus::Menus(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="menu";
   curMenu=0;
@@ -19,7 +19,7 @@ Menus::Menus(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-QAction *Menus::makeact(string id, string p)
+QAction *Menus::makeact(std::string id, std::string p)
 {
   QStringList s=qsplit(p);
   QString text=s.value(0);
@@ -35,7 +35,7 @@ QAction *Menus::makeact(string id, string p)
 }
 
 // ---------------------------------------------------------------------
-int Menus::menu(string c, string p)
+int Menus::menu(std::string c, std::string p)
 {
   if (curMenu==0)
     return 1;
@@ -47,7 +47,7 @@ int Menus::menu(string c, string p)
 }
 
 // ---------------------------------------------------------------------
-int Menus::menupop(string c)
+int Menus::menupop(std::string c)
 {
   QString s=s2q(c);
   if (curMenu==0) {
@@ -89,13 +89,13 @@ void Menus::menu_triggered()
 }
 
 // ---------------------------------------------------------------------
-string Menus::get(string p,string v)
+std::string Menus::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void Menus::set(string p,string v)
+void Menus::set(std::string p,std::string v)
 {
   QString id,m,parm,t;
   QStringList sel,opt;
@@ -130,7 +130,7 @@ void Menus::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Menus::state()
+std::string Menus::state()
 {
   return "";
 }

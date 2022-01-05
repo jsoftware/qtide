@@ -9,7 +9,7 @@ extern Form *form;
 extern Child *opengl;
 
 // ---------------------------------------------------------------------
-Opengl::Opengl(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Opengl::Opengl(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="opengl";
   QString qn=s2q(n);
@@ -67,19 +67,19 @@ void Opengl::setform()
 }
 
 // ---------------------------------------------------------------------
-string Opengl::get(string p,string v)
+std::string Opengl::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void Opengl::set(string p,string v)
+void Opengl::set(std::string p,std::string v)
 {
   Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string Opengl::state()
+std::string Opengl::state()
 {
   return "";
 }

@@ -58,7 +58,7 @@
 #include "../base/dialog.h"
 #include "../base/state.h"
 
-QString mb(string,string);
+QString mb(std::string,std::string);
 static QString mbabout();
 static QString mbcolor();
 static QString mbdir();
@@ -78,13 +78,13 @@ static QMessageBox::StandardButton getonebutton(bool *);
 static QMessageBox::StandardButtons getotherbuttons();
 static QString getname(int);
 
-static string type;
+static std::string type;
 static QStringList arg;
 static QMessageBox::StandardButton defbutton;
 
 // ---------------------------------------------------------------------
 // c is type, p is parameter, possibly preceded by *
-QString mb(string c,string p)
+QString mb(std::string c,std::string p)
 {
   type=c;
   if (type.size()==0) {

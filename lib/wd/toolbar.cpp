@@ -10,7 +10,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-ToolBar::ToolBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ToolBar::ToolBar(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="toolbar";
 
@@ -58,7 +58,7 @@ void ToolBar::makeact(QStringList opt)
   QToolBar *w=(QToolBar *)widget;
   QString id=opt.at(0);
   QString text=opt.at(1);
-  string iconFile=remquotes(q2s(opt.at(2)));
+  std::string iconFile=remquotes(q2s(opt.at(2)));
   QIcon image;
   int spi;
   if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
@@ -89,13 +89,13 @@ void ToolBar::makeactright(QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-string ToolBar::get(string p,string v)
+std::string ToolBar::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void ToolBar::set(string p,string v)
+void ToolBar::set(std::string p,std::string v)
 {
 
   QToolBar *w=(QToolBar *)widget;
@@ -127,7 +127,7 @@ QAction * ToolBar::getaction(QString id)
 }
 
 // ---------------------------------------------------------------------
-void ToolBar::setbutton(string p, QStringList opt)
+void ToolBar::setbutton(std::string p, QStringList opt)
 {
   bool n=true;
   if (opt.isEmpty()) {
@@ -154,7 +154,7 @@ void ToolBar::setbutton(string p, QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-string ToolBar::state()
+std::string ToolBar::state()
 {
   return "";
 }

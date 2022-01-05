@@ -44,7 +44,7 @@ public:
   void focusOutEvent(QFocusEvent *event);
   void keyPressEvent(QKeyEvent *event);
   void setFile(const QString& filePath);
-  void setXml(const string & contents);
+  void setXml(const std::string & contents);
   void showZoom(bool v);
   void printSVG();
   void saveasSVG(const QString& filePath);
@@ -52,7 +52,7 @@ public:
   QPoint getOrigin();
   void setOrigin(int x,int y);
 
-  string type;
+  std::string type;
   bool m_showzoom;
 
 public slots:

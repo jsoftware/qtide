@@ -17,42 +17,42 @@
 extern Cmd cmd;
 extern int rc;
 
-static string smact();
-static string smactive();
-static string smclose();
-static string smerror(string p);
-static string smfocus();
-static string smfont();
-static string smget();
-static string smgetactive();
-static string smgetinputlog();
-static string smgetscript(string);
-static string smgettabs(QString);
-static string smgettermcwh();
-static string smgetwin(string);
-static string smgetwin1(QWidget *);
-static string smgetwin2(Note *n);
-static string smgetxywh();
-static string smgetxywh1(QWidget *);
-static string smhtml();
-static string smopen();
-static string smprofont();
-static string smprompt();
-static string smreplace();
-static string smsave();
-static string smsaveactive();
-static string smsaveall();
-static string smset();
-static string smsetinputlog(string,string);
-static string smsetscroll(Bedit *,string);
-static string smsetselect(Bedit *,string);
-static string smsettext(string,string);
-static string smsetxywh(string,string);
-static string smstyle();
-static string smtheme();
+static std::string smact();
+static std::string smactive();
+static std::string smclose();
+static std::string smerror(std::string p);
+static std::string smfocus();
+static std::string smfont();
+static std::string smget();
+static std::string smgetactive();
+static std::string smgetinputlog();
+static std::string smgetscript(std::string);
+static std::string smgettabs(QString);
+static std::string smgettermcwh();
+static std::string smgetwin(std::string);
+static std::string smgetwin1(QWidget *);
+static std::string smgetwin2(Note *n);
+static std::string smgetxywh();
+static std::string smgetxywh1(QWidget *);
+static std::string smhtml();
+static std::string smopen();
+static std::string smprofont();
+static std::string smprompt();
+static std::string smreplace();
+static std::string smsave();
+static std::string smsaveactive();
+static std::string smsaveall();
+static std::string smset();
+static std::string smsetinputlog(std::string,std::string);
+static std::string smsetscroll(Bedit *,std::string);
+static std::string smsetselect(Bedit *,std::string);
+static std::string smsettext(std::string,std::string);
+static std::string smsetxywh(std::string,std::string);
+static std::string smstyle();
+static std::string smtheme();
 
 // ---------------------------------------------------------------------
-string sm(string c)
+std::string sm(std::string c)
 {
   rc=0;
   if (c=="act")
@@ -92,7 +92,7 @@ string sm(string c)
 }
 
 // ---------------------------------------------------------------------
-string smact()
+std::string smact()
 {
   cmd.getparms();
   term->smact();
@@ -100,9 +100,9 @@ string smact()
 }
 
 // ---------------------------------------------------------------------
-string smactive()
+std::string smactive()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   QStringList opt=qsplit(p);
   if (note==0 || note->editIndex()<0)
     return smerror ("No active edit window");
@@ -116,10 +116,10 @@ string smactive()
 }
 
 // ---------------------------------------------------------------------
-string smclose()
+std::string smclose()
 {
-  string c=cmd.getid();
-  string p=cmd.getparms();
+  std::string c=cmd.getid();
+  std::string p=cmd.getparms();
   if (c=="tab") {
     if (note==0 || note->editIndex()<0)
       return smerror ("No active edit window");
@@ -141,16 +141,16 @@ string smclose()
 }
 
 // ---------------------------------------------------------------------
-string smerror(string p)
+std::string smerror(std::string p)
 {
   rc=1;
   return p;
 }
 
 // ---------------------------------------------------------------------
-string smfocus()
+std::string smfocus()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.empty())
     return smerror("sm focus needs additional parameters");
   if (p=="term")
@@ -176,9 +176,9 @@ string smfocus()
 }
 
 // ---------------------------------------------------------------------
-string smfont()
+std::string smfont()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!p.empty()) {
     Font *fnt = new Font(p);
     if (fnt->error) {
@@ -195,9 +195,9 @@ string smfont()
 }
 
 // ---------------------------------------------------------------------
-string smget()
+std::string smget()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()==0)
     return smerror("sm get needs additional parameters");
   if (p=="active")
@@ -221,7 +221,7 @@ string smget()
 }
 
 // ---------------------------------------------------------------------
-string smgetactive()
+std::string smgetactive()
 {
   rc=-1;
   return (note && ActiveWindows.indexOf(note)<ActiveWindows.indexOf(term))
@@ -229,20 +229,20 @@ string smgetactive()
 }
 
 // ---------------------------------------------------------------------
-string smgetinputlog()
+std::string smgetinputlog()
 {
   rc=-1;
   return q2s(dlog_get());
 }
 
 // ---------------------------------------------------------------------
-string smgetscript(string f)
+std::string smgetscript(std::string f)
 {
   return dors(">{.getscripts_j_ '" + f + "'");
 }
 
 // ---------------------------------------------------------------------
-string smgettabs(QString p)
+std::string smgettabs(QString p)
 {
   Note *n;
   if (p=="edit") {
@@ -260,7 +260,7 @@ string smgettabs(QString p)
 }
 
 // ---------------------------------------------------------------------
-string smgettermcwh()
+std::string smgettermcwh()
 {
   rc=-1;
   QSize z=tedit->size();
@@ -275,7 +275,7 @@ string smgettermcwh()
 }
 
 // ---------------------------------------------------------------------
-string smgetwin(string p)
+std::string smgetwin(std::string p)
 {
   rc=-2;
   if (p=="term")
@@ -291,12 +291,12 @@ string smgetwin(string p)
 }
 
 // ---------------------------------------------------------------------
-string smgetwin1(QWidget *t)
+std::string smgetwin1(QWidget *t)
 {
-  string r;
+  std::string r;
   if (t==0) {
-    r+=spair("text",(string)"");
-    r+=spair("select",(string)"");
+    r+=spair("text",(std::string)"");
+    r+=spair("select",(std::string)"");
   } else {
     QTextCursor c=getcursor(t);
     int b=c.selectionStart();
@@ -308,20 +308,20 @@ string smgetwin1(QWidget *t)
 }
 
 // ---------------------------------------------------------------------
-string smgetwin2(Note *n)
+std::string smgetwin2(Note *n)
 {
   if (n->editIndex()==-1)
     return smgetwin1((Bedit *)0);
-  string r=smgetwin1((Bedit *)n->editPage());
+  std::string r=smgetwin1((Bedit *)n->editPage());
   r+=spair("file",n->editFile());
   return r;
 }
 
 // ---------------------------------------------------------------------
-string smgetxywh()
+std::string smgetxywh()
 {
   rc=-2;
-  string r;
+  std::string r;
   r+=spair("term",smgetxywh1(term));
   if (note)
     r+=spair("edit",smgetxywh1(note));
@@ -331,7 +331,7 @@ string smgetxywh()
 }
 
 // ---------------------------------------------------------------------
-string smgetxywh1(QWidget *w)
+std::string smgetxywh1(QWidget *w)
 {
   QPoint p=w->pos();
   QSize z=w->size();
@@ -340,18 +340,18 @@ string smgetxywh1(QWidget *w)
 }
 
 // ---------------------------------------------------------------------
-string smhtml()
+std::string smhtml()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   tedit->appendHtml(s2q(p));
   return"";
 }
 
 // ---------------------------------------------------------------------
-string smopen()
+std::string smopen()
 {
-  string c=cmd.getid();
-  string p=cmd.getparms();
+  std::string c=cmd.getid();
+  std::string p=cmd.getparms();
 
   if (c=="edit")
     term->vieweditor();
@@ -379,9 +379,9 @@ string smopen()
 }
 
 // ---------------------------------------------------------------------
-string smprofont()
+std::string smprofont()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!p.empty()) {
     Font *fnt = new Font(p);
     if (fnt->error) {
@@ -397,18 +397,18 @@ string smprofont()
 }
 
 // ---------------------------------------------------------------------
-string smprompt()
+std::string smprompt()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   term->smprompt(s2q(p));
   return"";
 }
 
 // ---------------------------------------------------------------------
-string smreplace()
+std::string smreplace()
 {
-  string c=cmd.getid();
-  string p=cmd.getparms();
+  std::string c=cmd.getid();
+  std::string p=cmd.getparms();
   if (note==0 || note->editIndex()<0)
     return smerror ("No active edit window");
   if (c!="edit")
@@ -423,9 +423,9 @@ string smreplace()
 }
 
 // ---------------------------------------------------------------------
-string smsave()
+std::string smsave()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (note==0)
     return smerror("No active edit window");
   if (p.empty())
@@ -438,30 +438,30 @@ string smsave()
 }
 
 // ---------------------------------------------------------------------
-string smsaveactive()
+std::string smsaveactive()
 {
   note->savecurrent();
   return "";
 }
 
 // ---------------------------------------------------------------------
-string smsaveall()
+std::string smsaveall()
 {
   note->saveall();
   return "";
 }
 
 // ---------------------------------------------------------------------
-string smset()
+std::string smset()
 {
-  string p=cmd.getid();
+  std::string p=cmd.getid();
   if (p.empty())
     return smerror("sm set parameters not given");
 
-  string c=cmd.getid();
+  std::string c=cmd.getid();
   if (c.empty())
     return smerror("sm set " + p + " parameters not given");
-  string q=cmd.getparms();
+  std::string q=cmd.getparms();
 
   if (p=="inputlog")
     return smsetinputlog(c,q);
@@ -503,7 +503,7 @@ string smset()
 }
 
 // ---------------------------------------------------------------------
-string smsetinputlog(string c,string q)
+std::string smsetinputlog(std::string c,std::string q)
 {
   if (c!="text")
     return smerror("unrecognized sm command: set inputlog " + c + "..." );
@@ -513,7 +513,7 @@ string smsetinputlog(string c,string q)
 
 // ---------------------------------------------------------------------
 // set vertical scroll
-string smsetscroll(Bedit *e, string q)
+std::string smsetscroll(Bedit *e, std::string q)
 {
   if (!e) return"";
   QList<int> s=qsl2intlist(qsplit(q));
@@ -524,7 +524,7 @@ string smsetscroll(Bedit *e, string q)
 }
 
 // ---------------------------------------------------------------------
-string smsetselect(Bedit *e, string q)
+std::string smsetselect(Bedit *e, std::string q)
 {
   if (!e) return"";
   QList<int> s=qsl2intlist(qsplit(q));
@@ -539,7 +539,7 @@ string smsetselect(Bedit *e, string q)
 }
 
 // ---------------------------------------------------------------------
-string smsettext(string p,string s)
+std::string smsettext(std::string p,std::string s)
 {
   QString t=s2q(s);
   if (p=="term")
@@ -552,7 +552,7 @@ string smsettext(string p,string s)
 }
 
 // ---------------------------------------------------------------------
-string smsetxywh(string m,string q)
+std::string smsetxywh(std::string m,std::string q)
 {
   QWidget *w;
   if (m=="term")
@@ -574,18 +574,18 @@ string smsetxywh(string m,string q)
 }
 
 // ---------------------------------------------------------------------
-string smstyle()
+std::string smstyle()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!p.empty())
     QApplication::setStyle(QStyleFactory::create(s2q(p)));
   return "";
 }
 
 // ---------------------------------------------------------------------
-string smtheme()
+std::string smtheme()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p == "dark") {
     QFile f(":qdarkstyle/style.qss");
     f.open(QFile::ReadOnly | QFile::Text);

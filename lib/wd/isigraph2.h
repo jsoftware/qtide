@@ -21,7 +21,7 @@ public:
   void fill(const int *);
   QPixmap getpixmap();
   void paintend();
-  string type;
+  std::string type;
 
   QBrush brush;
   Font *font;

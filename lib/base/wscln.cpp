@@ -11,7 +11,7 @@
 #include "svr.h"
 #include "util.h"
 
-using namespace std;
+// using namespace std;
 
 #define   ONOPEN        0
 #define   ONCLOSE       1
@@ -162,7 +162,7 @@ void WsCln::onError(QAbstractSocket::SocketError error)
   qDebug() << QString("Server 0x%1 error: ").arg((quintptr)socket, QT_POINTER_SIZE * 2, 16, QChar('0'));
 #endif
 
-  string er = q2s(socket->errorString()) + '\012';
+  std::string er = q2s(socket->errorString()) + '\012';
   jsetc((char *)"wsc0_jrx_",(C*)er.c_str(), er.size());
   jsetc((char *)"wsc1_jrx_",(C*)"text", 4);
   wscln_handler((void *)ONERROR,socket);
@@ -179,7 +179,7 @@ void WsCln::onSslErrors(const QList<QSslError> &errors)
   qDebug() << QString("Server 0x%1 ssl error: ").arg((quintptr)socket, QT_POINTER_SIZE * 2, 16, QChar('0'));
 #endif
 
-  string er = "";
+  std::string er = "";
   for (int i=0, sz=errors.size(); i<sz; i++) {
     er = er + q2s(errors.at(i).errorString()) + '\012';
   }
@@ -195,7 +195,7 @@ void WsCln::onStateChanged(QAbstractSocket::SocketState socketState)
   if (socket == 0) {
     return;
   }
-  string st;
+  std::string st;
   switch (socketState) {
   case QAbstractSocket::UnconnectedState:
     st = "Unconnected";
@@ -246,10 +246,10 @@ void WsCln::onPong(quint64 elapsedTime, const QByteArray & payload)
 }
 
 // ---------------------------------------------------------------------
-string WsCln::querySocket()
+std::string WsCln::querySocket()
 {
   QWebSocket* socket;
-  string s = "";
+  std::string s = "";
   foreach (socket, servers) {
     s = s + p2s((void *)socket) + '\012';
   }
@@ -257,13 +257,13 @@ string WsCln::querySocket()
 }
 
 // ---------------------------------------------------------------------
-string WsCln::state(void * server)
+std::string WsCln::state(void * server)
 {
-  string s = "";
+  std::string s = "";
   QWebSocket* socket = (QWebSocket*)server;
   if (!hasSocket(socket)) return s;
   s += spair("errorString", socket->errorString());
-  s += spair("isValid", socket->isValid()?(string)"1":(string)"0");
+  s += spair("isValid", socket->isValid()?(std::string)"1":(std::string)"0");
   s += spair("localAddress", socket->localAddress().toString());
   s += spair("localPort", QString::number(socket->localPort()));
   s += spair("origin", socket->origin());
@@ -329,6 +329,6 @@ I WsCln::write(void * server, const char * msg, I len, bool binary)
 // ---------------------------------------------------------------------
 void wscln_handler(void *n, QWebSocket* socket)
 {
-  string s="(i.0 0)\"_ wscln_handler_z_ " + p2s(n) + " " + p2s((void *)socket);
+  std::string s="(i.0 0)\"_ wscln_handler_z_ " + p2s(n) + " " + p2s((void *)socket);
   jcon->cmddo(s);
 }

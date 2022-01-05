@@ -16,12 +16,12 @@ class WebView : public Child
   Q_OBJECT
 
 public:
-  WebView(string n, string s, Form *f, Pane *p);
+  WebView(std::string n, std::string s, Form *f, Pane *p);
 
   void cmd1(QList<QVariant> obj);
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
   QUrl baseUrl;
   QString cb_name;

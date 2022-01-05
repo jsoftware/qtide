@@ -12,7 +12,7 @@
 #include "proj.h"
 #include "svr.h"
 
-using namespace std;
+// using namespace std;
 
 Recent recent;
 

@@ -2,7 +2,7 @@
 #include "qgrid.h"
 #include "wgrid.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 void QGrid::drawbuttons(QBoxLayout *layout,QList<int> axis)

@@ -6,7 +6,7 @@
 #include <QSignalMapper>
 #include <QTimer>
 
-#include <sstream>  //include this to use string streams
+#include <sstream>  //include this to use std::string streams
 
 #include "child.h"
 #include "cmd.h"
@@ -27,7 +27,7 @@ extern Font *fontdef;
 extern bool standAlone;
 
 // ---------------------------------------------------------------------
-Form::Form(string s, string p, string loc, QWidget *parent) : QWidget (parent)
+Form::Form(std::string s, std::string p, std::string loc, QWidget *parent) : QWidget (parent)
 {
   Q_UNUSED(parent);
   id=s;
@@ -176,20 +176,20 @@ void Form::closepane()
 }
 
 // ---------------------------------------------------------------------
-string Form::get(string p,string v)
+std::string Form::get(std::string p,std::string v)
 {
-  string r="";
+  std::string r="";
   if (v.size() && p!="extent") {
     error("extra parameters: " + p + " " + v);
     return "";
   }
   if (p=="property") {
-    r+=string("caption")+"\012"+ "children"+"\012"+ "enable"+"\012"+ "extent"+"\012"+ "focus"+"\012";
-    r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
-    r+=string("id")+"\012"+ "lastfocus"+"\012"+ "locale"+"\012";
-    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
-    r+=string("stylesheet")+"\012"+ "sysdata"+"\012"+ "sysmodifiers"+"\012";
-    r+=string("tooltip")+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
+    r+=std::string("caption")+"\012"+ "children"+"\012"+ "enable"+"\012"+ "extent"+"\012"+ "focus"+"\012";
+    r+=std::string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
+    r+=std::string("id")+"\012"+ "lastfocus"+"\012"+ "locale"+"\012";
+    r+=std::string("maxwh")+"\012"+ "minwh"+"\012"+ "property"+"\012"+ "sizepolicy"+"\012"+ "state"+"\012";
+    r+=std::string("stylesheet")+"\012"+ "sysdata"+"\012"+ "sysmodifiers"+"\012";
+    r+=std::string("tooltip")+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
   } else if (p=="caption") {
     r=q2s(this->windowTitle());
   } else if (p=="children") {
@@ -233,7 +233,7 @@ string Form::get(string p,string v)
     QSize size=this->minimumSize();
     r=i2s(size.width())+" "+i2s(size.height());
   } else if (p=="sizepolicy") {
-    string h,vr;
+    std::string h,vr;
     int hoz=this->sizePolicy().horizontalPolicy();
     if (hoz==QSizePolicy::Fixed)
       h="fixed";
@@ -292,7 +292,7 @@ string Form::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Form::getfocus()
+std::string Form::getfocus()
 {
   QWidget *w=app->focusWidget();
   if (!w || !this->children.size()) return "";
@@ -305,13 +305,13 @@ string Form::getfocus()
 }
 
 // ---------------------------------------------------------------------
-string Form::getsysmodifiers()
+std::string Form::getsysmodifiers()
 {
   return getsysmodifiers(app->keyboardModifiers());
 }
 
 // ---------------------------------------------------------------------
-string Form::getsysmodifiers(Qt::KeyboardModifiers mod)
+std::string Form::getsysmodifiers(Qt::KeyboardModifiers mod)
 {
   return i2s((mod.testFlag(Qt::ShiftModifier) ? 1 : 0) +
              (mod.testFlag(Qt::ControlModifier)? 2 : 0) +
@@ -319,25 +319,25 @@ string Form::getsysmodifiers(Qt::KeyboardModifiers mod)
 }
 
 // ---------------------------------------------------------------------
-string Form::hschild()
+std::string Form::hschild()
 {
   return p2s((void *)child);
 }
 
 // ---------------------------------------------------------------------
-string Form::hsform()
+std::string Form::hsform()
 {
   return p2s((void *)this);
 }
 
 // ---------------------------------------------------------------------
-string Form::qform()
+std::string Form::qform()
 {
   return i2s(pos().x())+" "+i2s(pos().y())+" "+i2s(size().width())+" "+i2s(size().height());
 }
 
 // ---------------------------------------------------------------------
-Child *Form::id2child(string n)
+Child *Form::id2child(std::string n)
 {
   for (int i=0; i<children.size(); i++)
     if ("menu"!=children.at(i)->type && n==children.at(i)->id)
@@ -403,7 +403,7 @@ void Form::saveformpos()
 }
 
 // ---------------------------------------------------------------------
-void Form::set(string p,string v)
+void Form::set(std::string p,std::string v)
 {
   if (p=="enable") {
     setEnabled(remquotes(v)!="0");
@@ -430,7 +430,7 @@ void Form::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-Child *Form::setmenuid(string id)
+Child *Form::setmenuid(std::string id)
 {
   if (menubar && menubar->items.contains(s2q(id)))
     return (Child *) menubar;
@@ -444,13 +444,13 @@ void Form::setpadding(int l,int t,int r,int b)
 }
 
 // ---------------------------------------------------------------------
-void Form::setpn(string p)
+void Form::setpn(std::string p)
 {
   setWindowTitle(s2q(p));
 }
 
 // ---------------------------------------------------------------------
-void Form::setpicon(string p)
+void Form::setpicon(std::string p)
 {
   int spi;
   if (p.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(p)))
@@ -460,7 +460,7 @@ void Form::setpicon(string p)
 }
 
 // ---------------------------------------------------------------------
-void Form::settaborder(string p)
+void Form::settaborder(std::string p)
 {
   Child *c0,*c1;
   QStringList cs=qsplit(p);
@@ -484,7 +484,7 @@ void Form::settaborder(string p)
 }
 
 // ---------------------------------------------------------------------
-void Form::settheme(string theme)
+void Form::settheme(std::string theme)
 {
   if (theme == "dark") {
     QFile f(":qdarkstyle/style.qss");
@@ -496,7 +496,7 @@ void Form::settheme(string theme)
 }
 
 // ---------------------------------------------------------------------
-void Form::settimer(string p)
+void Form::settimer(std::string p)
 {
   int n=c_strtoi(p);
   if (n)
@@ -506,7 +506,7 @@ void Form::settimer(string p)
 }
 
 // ---------------------------------------------------------------------
-void Form::showit(string p)
+void Form::showit(std::string p)
 {
   if (!shown) {
     for (int i=tabs.size()-1; i>=0; i--)
@@ -542,8 +542,8 @@ void Form::showit(string p)
 void Form::signalevent(Child *c, QKeyEvent *e)
 {
   if (NoEvents || closed) return;
-  string ctype="";
-  string loc = locale;
+  std::string ctype="";
+  std::string loc = locale;
   evtform=this;
   if (c) {
     ctype=c->type;
@@ -560,30 +560,30 @@ void Form::signalevent(Child *c, QKeyEvent *e)
       int k=e->key();
       if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_A && k<=Qt::Key_Z) {
         fakeid=(char)e->key()+32;  // lower case
-        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+        fakeid=fakeid + "ctrl" + std::string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
       } else if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_0 && k<=Qt::Key_9) {
-        fakeid=(char)e->key();  // turn to string
-        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+        fakeid=(char)e->key();  // turn to std::string
+        fakeid=fakeid + "ctrl" + std::string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
       } else if ((e->modifiers() & Qt::ControlModifier) && k>=Qt::Key_Home && k<=Qt::Key_PageDown) {
-        string keynames[] = {"home", "end", "left", "up", "right", "down", "pgup", "pgdn"} ;
+        std::string keynames[] = {"home", "end", "left", "up", "right", "down", "pgup", "pgdn"} ;
         fakeid=keynames[e->key()-Qt::Key_Home];  // select event name
-        fakeid=fakeid + "ctrl" + string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
+        fakeid=fakeid + "ctrl" + std::string( (e->modifiers() & Qt::ShiftModifier) ? "shift" : "" );
       } else if (k>=Qt::Key_F1 && k<=Qt::Key_F35) {
-        ostringstream ostr;
+        std::ostringstream ostr;
         ostr << e->key()+1-Qt::Key_F1;
-        fakeid="f"+ ostr.str() + string((e->modifiers() & Qt::ControlModifier) ? "ctrl" : "") + string((e->modifiers() & Qt::ShiftModifier) ? "shift" : "");
+        fakeid="f"+ ostr.str() + std::string((e->modifiers() & Qt::ControlModifier) ? "ctrl" : "") + std::string((e->modifiers() & Qt::ShiftModifier) ? "shift" : "");
       }
     }
   }
-  string fc=getfocus();
+  std::string fc=getfocus();
   if (fc.size()) lastfocus=fc;
 
-  string cmd=("wdhandlerx_jqtide_ '" + loc + "'") + '\0' + evtform->state(1);
+  std::string cmd=("wdhandlerx_jqtide_ '" + loc + "'") + '\0' + evtform->state(1);
   // paint events in isigraph/opengl have priority, because all the graphics must
   // be drawn WHILE THE Qt PAINT EVENT IS ACTIVE, and not wait for the callback
   //  queue to be scheduled.
 #ifdef DEBUG_JDO
-  string cmdtmp=cmd;
+  std::string cmdtmp=cmd;
   std::replace( cmdtmp.begin(), cmdtmp.end(), '\0', '\\');
   qDebug() << "form event "+s2q(cmdtmp);
 #endif
@@ -594,9 +594,9 @@ void Form::signalevent(Child *c, QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
-string Form::state(int evt)
+std::string Form::state(int evt)
 {
-  string c,c1,e,r,s,ec;
+  std::string c,c1,e,r,s,ec;
 
   if (evt) {
     if (evtchild) {
@@ -607,7 +607,7 @@ string Form::state(int evt)
       c=fakeid;
       e=event;
     }
-    c1=(c.empty()) ? string("") : (c+"_") ;
+    c1=(c.empty()) ? std::string("") : (c+"_") ;
     r+=spair("syshandler",id+"_handler");
     r+=spair("sysevent",id+"_"+c1+e);
     r+=spair("sysdefault",id+"_default");
@@ -644,7 +644,7 @@ string Form::state(int evt)
 
 // ---------------------------------------------------------------------
 // for debugging
-void Form::status(string s)
+void Form::status(std::string s)
 {
   qDebug() << "form status: " << s2q(s);
   qDebug() << "current pane, panes: " << pane << panes;

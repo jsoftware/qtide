@@ -39,7 +39,7 @@ void QGrid::redraw()
 }
 
 // ---------------------------------------------------------------------
-void QGrid::set(string p,string v)
+void QGrid::set(std::string p,std::string v)
 {
   QStringList s=qsplit(v);
   if (style!="cube") {
@@ -88,7 +88,7 @@ void QGrid::setaxisorder(QStringList s)
 }
 
 // ---------------------------------------------------------------------
-string QGrid::state(string event)
+std::string QGrid::state(std::string event)
 {
   return sa->g->state(event);
 }

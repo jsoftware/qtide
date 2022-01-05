@@ -27,30 +27,30 @@ class Pane : public QWidget
 
 public:
   Pane(int n,Form *f);
-  bool addchild(string n,string c,string p);
+  bool addchild(std::string n,std::string c,std::string p);
   void addlayout(Layout *b);
-  void bin(string c);
+  void bin(std::string c);
   void fini();
-  void grid(string c, string s);
-  bool groupbox(string c, string s);
-  bool line(string c, string s);
-  string hschild();
-  string hsform();
+  void grid(std::string c, std::string s);
+  bool groupbox(std::string c, std::string s);
+  bool line(std::string c, std::string s);
+  std::string hschild();
+  std::string hsform();
   bool nochild();
-  void setstretch(Child *cc, string factor);
-  Child *setmenuid(string id);
-  void setpn(string p);
+  void setstretch(Child *cc, std::string factor);
+  Child *setmenuid(std::string id);
+  void setpn(std::string p);
   void showit();
   void signalevent(Child *c);
-  bool split(string c, string s);
+  bool split(std::string c, std::string s);
   void splitend();
-  string state(int evt);
+  std::string state(int evt);
 
   Form *pform;
-  string event;
-  string lasttype;
-  string locale;
-  string sysdata;
+  std::string event;
+  std::string lasttype;
+  std::string locale;
+  std::string sysdata;
   int maxsizew;
   int maxsizeh;
   int minsizew;

@@ -6,7 +6,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Dummy::Dummy(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Dummy::Dummy(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="dummy";
   widget=0;
@@ -16,19 +16,19 @@ Dummy::Dummy(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string Dummy::get(string p,string v)
+std::string Dummy::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void Dummy::set(string p,string v)
+void Dummy::set(std::string p,std::string v)
 {
   Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string Dummy::state()
+std::string Dummy::state()
 {
   return "";
 }

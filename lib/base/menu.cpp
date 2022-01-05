@@ -29,7 +29,7 @@
 #include "tedit.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 QAction *Menu::makeact(QString id, QString text, QString shortcut)

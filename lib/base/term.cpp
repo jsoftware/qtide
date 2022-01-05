@@ -26,7 +26,7 @@ QCompleter *completer=0;
 #include "state.h"
 #include "recent.h"
 
-using namespace std;
+// using namespace std;
 
 Term *term=0;
 Tedit *tedit=0;

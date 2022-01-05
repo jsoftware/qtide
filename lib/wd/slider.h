@@ -13,10 +13,10 @@ class Slider : public Child
   Q_OBJECT
 
 public:
-  Slider(string n, string s, Form *f, Pane *p);
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  Slider(std::string n, std::string s, Form *f, Pane *p);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
 private slots:
   void valueChanged();

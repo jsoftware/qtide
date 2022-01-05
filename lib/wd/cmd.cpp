@@ -5,11 +5,11 @@
 static char DEL='\177';
 static char LF='\n';
 static char SOH='\001';
-static string WS=" \f\r\t\v";
-static string WSLF=WS+LF;
+static std::string WS=" \f\r\t\v";
+static std::string WSLF=WS+LF;
 
-static bool contains(string s,char c);
-static string toLF(string s);
+static bool contains(std::string s,char c);
+static std::string toLF(std::string s);
 
 // ---------------------------------------------------------------------
 void Cmd::end()
@@ -20,7 +20,7 @@ void Cmd::end()
 // ---------------------------------------------------------------------
 void Cmd::init(char *s,int slen)
 {
-  str=string(s,slen);
+  str=std::string(s,slen);
   str=toLF(str);
   len=str.size();
   bgn=pos=pos0=0;
@@ -36,7 +36,7 @@ QStringList Cmd::bsplits()
   while (pos<len) {
     bgn=pos++;
     pos=str.find_first_of("ghmpsvz",pos);
-    if (pos==string::npos) {
+    if (pos==std::string::npos) {
       r.append(s2q(str.substr(bgn)));
       break;
     } else
@@ -46,8 +46,8 @@ QStringList Cmd::bsplits()
 }
 
 // ---------------------------------------------------------------------
-// if string delimited by LF
-bool Cmd::delimLF(string s)
+// if std::string delimited by LF
+bool Cmd::delimLF(std::string s)
 {
   char c;
   int n=(int)s.size();
@@ -62,7 +62,7 @@ bool Cmd::delimLF(string s)
 }
 
 // ---------------------------------------------------------------------
-string Cmd::getid()
+std::string Cmd::getid()
 {
   char c;
   skips(WSLF+';');
@@ -77,24 +77,24 @@ string Cmd::getid()
 
 // ---------------------------------------------------------------------
 // get to next LF
-string Cmd::getline()
+std::string Cmd::getline()
 {
-  string r;
+  std::string r;
   if (pos==len) return "";
   if (str[pos]==LF) pos++;
   if (pos==len) return "";
   bgn=pos;
   pos=str.find_first_of(LF,pos);
-  if (pos==string::npos)
+  if (pos==std::string::npos)
     pos=str.size();
   else
     pos++;
   return str.substr(bgn,pos-bgn-1);
 }
 // ---------------------------------------------------------------------
-// to next ; else return rest of string
+// to next ; else return rest of std::string
 // if star, preserve leading *
-string Cmd::getparms(bool star)
+std::string Cmd::getparms(bool star)
 {
   char c;
 
@@ -110,7 +110,7 @@ string Cmd::getparms(bool star)
   if (pos==len)
     return "";
   if (str[pos]=='*') {
-    string r=str.substr(pos+(star?0:1));
+    std::string r=str.substr(pos+(star?0:1));
     pos=len;
     return r;
   }
@@ -129,8 +129,8 @@ string Cmd::getparms(bool star)
 
 // ---------------------------------------------------------------------
 // if there is a starred parameter (i.e. beginning *)
-// this also means string not delimited by SOH or LF
-bool Cmd::ifstarred(string s)
+// this also means std::string not delimited by SOH or LF
+bool Cmd::ifstarred(std::string s)
 {
   char c;
   int n=(int)s.size();
@@ -154,7 +154,7 @@ bool Cmd::more()
 // split on character
 QStringList Cmd::qsplitby(char c)
 {
-  string s;
+  std::string s;
   if (len==0 || pos==len)
     return QStringList();
   if (str[len-1]==c)
@@ -177,7 +177,7 @@ QStringList Cmd::qsplits()
   skips(WS);
   if (ifstarred(str))
     return qsplitstd();
-  string s=str.substr(pos);
+  std::string s=str.substr(pos);
   if (contains(s,SOH))
     return qsplitby(SOH);
   if (delimLF(s))
@@ -212,9 +212,9 @@ QStringList Cmd::qsplitstd()
 }
 
 // ---------------------------------------------------------------------
-string Cmd::remws(const string s)
+std::string Cmd::remws(const std::string s)
 {
-  string r;
+  std::string r;
   for (size_t i=0; i<s.size(); i++)
     if (!contains(WSLF,s[i]))
       r.push_back(s[i]);
@@ -230,10 +230,10 @@ void Cmd::skippast(char c)
 }
 
 // ---------------------------------------------------------------------
-void Cmd::skips(string s)
+void Cmd::skips(std::string s)
 {
   pos=str.find_first_not_of(s,pos);
-  if (pos==string::npos) pos=len;
+  if (pos==std::string::npos) pos=len;
 }
 
 // ---------------------------------------------------------------------
@@ -248,11 +248,11 @@ void Cmd::skiptows()
 
 // ---------------------------------------------------------------------
 // split on char
-vector<string> Cmd::ssplitby(char c)
+std::vector<std::string> Cmd::ssplitby(char c)
 {
   int i,p;
-  vector<string> r;
-  string s;
+  std::vector<std::string> r;
+  std::string s;
   if (len==0 || pos==len)
     return r;
   if (str[len-1]==c)
@@ -274,13 +274,13 @@ vector<string> Cmd::ssplitby(char c)
 }
 
 // ---------------------------------------------------------------------
-// split as qsplits, but returning vector of string
-vector<string> Cmd::ssplits()
+// split as qsplits, but returning vector of std::string
+std::vector<std::string> Cmd::ssplits()
 {
   skips(WS);
   if (ifstarred(str))
     return ssplitstd();
-  string s=str.substr(pos);
+  std::string s=str.substr(pos);
   if (contains(s,SOH))
     return ssplitby(SOH);
   if (delimLF(s))
@@ -289,10 +289,10 @@ vector<string> Cmd::ssplits()
 }
 
 // ---------------------------------------------------------------------
-vector<string> Cmd::ssplitstd()
+std::vector<std::string> Cmd::ssplitstd()
 {
   char c;
-  vector<string> r;
+  std::vector<std::string> r;
   while (pos<len) {
     skips(WS);
     bgn=pos;
@@ -316,7 +316,7 @@ vector<string> Cmd::ssplitstd()
 
 // ---------------------------------------------------------------------
 // split on bin commands and remove blanks
-QStringList bsplit(string s)
+QStringList bsplit(std::string s)
 {
   Cmd c;
   c.init((char*)s.c_str(),(int)s.size());
@@ -324,19 +324,19 @@ QStringList bsplit(string s)
 }
 
 // ---------------------------------------------------------------------
-bool contains(string s,char c)
+bool contains(std::string s,char c)
 {
-  return string::npos != s.find_first_of(c);
+  return std::string::npos != s.find_first_of(c);
 }
 
 // ---------------------------------------------------------------------
 // split parameters
 // if star and first non WS is *, then return rest as single parameter
-QStringList qsplit(string s,bool star)
+QStringList qsplit(std::string s,bool star)
 {
   if (star) {
     size_t p=s.find_first_not_of(WS);
-    if (p!=string::npos && s[p]=='*')
+    if (p!=std::string::npos && s[p]=='*')
       return QStringList(s2q(s.substr(p+1)));
   }
   Cmd c;
@@ -345,8 +345,8 @@ QStringList qsplit(string s,bool star)
 }
 
 // ---------------------------------------------------------------------
-// as qsplit but returning vector of string
-vector<string> ssplit(string s)
+// as qsplit but returning vector of std::string
+std::vector<std::string> ssplit(std::string s)
 {
   Cmd c;
   c.init((char*)s.c_str(),(int)s.size());
@@ -355,15 +355,15 @@ vector<string> ssplit(string s)
 
 // ---------------------------------------------------------------------
 // convert CRLF to LF
-string toLF(string s)
+std::string toLF(std::string s)
 {
   if (!contains(s,'\r'))
     return s;
   int n=(int)s.size();
   int p=0;
   int t;
-  string r;
-  while ((int)string::npos != (t=(int)s.find("\r\n",p))) {
+  std::string r;
+  while ((int)std::string::npos != (t=(int)s.find("\r\n",p))) {
     r.append(s.substr(p,t-p));
     p=t+1;
   }

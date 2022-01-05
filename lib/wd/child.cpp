@@ -8,7 +8,7 @@
 extern Form *form;
 
 // ---------------------------------------------------------------------
-Child::Child(string n, string s, Form *f, Pane *p)
+Child::Child(std::string n, std::string s, Form *f, Pane *p)
 {
   grouped=false;
   id=n;
@@ -41,27 +41,27 @@ void Child::childStyle(QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-void Child::cmd(string p, string v)
+void Child::cmd(std::string p, std::string v)
 {
   Q_UNUSED(p);
   Q_UNUSED(v);
 }
 
 // ---------------------------------------------------------------------
-string Child::get(string p,string v)
+std::string Child::get(std::string p,std::string v)
 {
-  string r="";
+  std::string r="";
   if (v.size() && p!="extent") {
     error("extra parameters: " + id + " " + p + " " + v);
     return "";
   }
   if (p=="property") {
-    r+=string("enable")+"\012"+ "extent"+"\012";
-    r+=string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
-    r+=string("id")+"\012";
-    r+=string("maxwh")+"\012"+ "minwh"+"\012"+ "nextfocus"+"\012"+ "parent"+"\012"+ "prevfocus"+"\012";
-    r+=string("property")+"\012"+ "sizepolicy"+"\012"+ "state"+"\012"+ "stylesheet"+"\012";
-    r+=string("tooltip")+"\012"+ "type"+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
+    r+=std::string("enable")+"\012"+ "extent"+"\012";
+    r+=std::string("focuspolicy")+"\012"+ "font"+"\012"+ "hasfocus"+"\012"+ "hwnd"+"\012";
+    r+=std::string("id")+"\012";
+    r+=std::string("maxwh")+"\012"+ "minwh"+"\012"+ "nextfocus"+"\012"+ "parent"+"\012"+ "prevfocus"+"\012";
+    r+=std::string("property")+"\012"+ "sizepolicy"+"\012"+ "state"+"\012"+ "stylesheet"+"\012";
+    r+=std::string("tooltip")+"\012"+ "type"+"\012"+ "visible"+"\012"+ "wh"+"\012"+ "xywh"+"\012";
   } else if (p=="enable") {
     if (widget) r=i2s(widget->isEnabled());
   } else if (p=="extent") {
@@ -113,7 +113,7 @@ string Child::get(string p,string v)
     }
   } else if (p=="sizepolicy") {
     if (widget) {
-      string h,vr;
+      std::string h,vr;
       int hoz=widget->sizePolicy().horizontalPolicy();
       if (hoz==QSizePolicy::Fixed)
         h="fixed";
@@ -177,7 +177,7 @@ string Child::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Child::getfocuschain(bool prev)
+std::string Child::getfocuschain(bool prev)
 {
   if (!widget) return "";
   QWidget *w=(prev)?widget->previousInFocusChain():widget->nextInFocusChain();
@@ -191,13 +191,13 @@ string Child::getfocuschain(bool prev)
 }
 
 // ---------------------------------------------------------------------
-string Child::getsysdata()
+std::string Child::getsysdata()
 {
   return"";
 }
 
 // ---------------------------------------------------------------------
-void Child::set(string p,string v)
+void Child::set(std::string p,std::string v)
 {
   if (p=="cursor") {
     if (widget) {
@@ -238,7 +238,7 @@ void Child::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Child::setfocuspolicy(string p)
+void Child::setfocuspolicy(std::string p)
 {
   if (widget) wdsetfocuspolicy(widget,p);
 }
@@ -251,19 +251,19 @@ void Child::setform()
 }
 
 // ---------------------------------------------------------------------
-void Child::setsizepolicy(string p)
+void Child::setsizepolicy(std::string p)
 {
   if (widget) wdsetsizepolicy(widget,p);
 }
 
 // ---------------------------------------------------------------------
-void Child::setwh(string p)
+void Child::setwh(std::string p)
 {
   if (widget) wdsetwh(widget,p);
 }
 
 // ---------------------------------------------------------------------
-void Child::setmaxwhv(string p)
+void Child::setmaxwhv(std::string p)
 {
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2) {
@@ -289,7 +289,7 @@ void Child::setmaxwh(int w, int h)
 }
 
 // ---------------------------------------------------------------------
-void Child::setminwhv(string p)
+void Child::setminwhv(std::string p)
 {
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2) {

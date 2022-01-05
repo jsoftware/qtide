@@ -10,23 +10,23 @@
 #include "qtstate.h"
 
 // ---------------------------------------------------------------------
-static string qpair(QString s, QString t)
+static std::string qpair(QString s, QString t)
 {
   return spair(q2s(s),q2s(t));
 }
 
 // ---------------------------------------------------------------------
-static string qpair(QString s, string t)
+static std::string qpair(QString s, std::string t)
 {
   return spair(q2s(s),t);
 }
 
 // ---------------------------------------------------------------------
-string qtstate(string p)
+std::string qtstate(std::string p)
 {
   QStringList s=s2q(p).split(" ",_SkipEmptyParts);
   QString c;
-  string r;
+  std::string r;
 
   if (s.size()==0) return "";
   bool all="all"==s.at(0);

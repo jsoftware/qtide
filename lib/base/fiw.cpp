@@ -26,7 +26,7 @@
 
 Fiw *fiw;
 
-using namespace std;
+// using namespace std;
 
 QStringList Fiw::ReplaceList;
 QStringList Fiw::SearchList;

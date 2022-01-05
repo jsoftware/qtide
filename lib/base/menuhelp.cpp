@@ -13,7 +13,7 @@
 #include "term.h"
 #include "tedit.h"
 
-using namespace std;
+// using namespace std;
 
 void helpabout();
 void helpcontext(int c,QWidget *);

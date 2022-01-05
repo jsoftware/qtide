@@ -8,7 +8,7 @@
 #include "tedit.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 bool Note::isMultiline(QString txt)

@@ -8,7 +8,7 @@
 #include "tedit.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 QFile *InputLogFile;
 
@@ -224,7 +224,7 @@ QString dlog_scroll(int m)
   QString s;
   len = InputLog.size();
   if (len == 0) return "";
-  pos = max(0, min(len,InputLogPos + m));
+  pos = std::max(0, std::min(len,InputLogPos + m));
   if (pos == InputLogPos) return "";
   InputLogPos = pos;
   if (InputLogPos == len)

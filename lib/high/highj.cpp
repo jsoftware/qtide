@@ -2,7 +2,7 @@
 /*
  * Note this contains experimental highlighting for J.
  * Current implementation attempts to suppport:
- * strings, numbers, primitive nouns, control words,
+ * std::strings, numbers, primitive nouns, control words,
  * comments, multiline Note.
  * There is currently no context aware support (for example to show that control
  * words are not valid outside an explicit definition).

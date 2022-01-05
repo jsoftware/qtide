@@ -49,7 +49,7 @@ ap         use am/pm display. ap will be replaced by either "am" or "pm".
 All other input characters will be ignored. Any sequence of characters that are enclosed in singlequotes will be treated as text and not be
 used as an expression. Two consecutive singlequotes ("''") are replaced by a singlequote in the output.
 
-Example format strings (assumed that the QDateTime is 21 May 2001 14:13:09):
+Example format std::strings (assumed that the QDateTime is 21 May 2001 14:13:09):
 
     Format         Result
 dd.MM.yyyy     21.05.2001
@@ -61,7 +61,7 @@ h:m:s ap       2:13:9 pm
 static void toymd(int v, int *y, int *m, int *d);
 
 // ---------------------------------------------------------------------
-DateEdit::DateEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+DateEdit::DateEdit(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="dateedit";
   QDateEdit *w=new QDateEdit;
@@ -108,31 +108,31 @@ void DateEdit::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string DateEdit::get(string p,string v)
+std::string DateEdit::get(std::string p,std::string v)
 {
   QDateEdit *w=(QDateEdit*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
+    r+=std::string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="format")
     r=q2s(w->displayFormat());
   else if (p=="max") {
     QDate q=w->maximumDate();
     if (q.isNull())
-      r=string("0");
+      r=std::string("0");
     else r=i2s((10000*q.year())+(100*q.month())+q.day());
   } else if (p=="min") {
     QDate q=w->minimumDate();
     if (q.isNull())
-      r=string("0");
+      r=std::string("0");
     else r=i2s((10000*q.year())+(100*q.month())+q.day());
   } else if (p=="readonly")
     r=i2s(w->isReadOnly());
   else if (p=="value") {
     QDate q=w->date();
     if (q.isNull())
-      r=string("0");
+      r=std::string("0");
     else r=i2s((10000*q.year())+(100*q.month())+q.day());
   } else
     r=Child::get(p,v);
@@ -140,7 +140,7 @@ string DateEdit::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void DateEdit::set(string p,string v)
+void DateEdit::set(std::string p,std::string v)
 {
   QDateEdit *w=(QDateEdit*) widget;
   QString cmd=s2q(p);
@@ -173,7 +173,7 @@ void DateEdit::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string DateEdit::state()
+std::string DateEdit::state()
 {
   QDateEdit *w=(QDateEdit*) widget;
   QDate q=w->date();

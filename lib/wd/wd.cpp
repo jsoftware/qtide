@@ -54,7 +54,7 @@ extern char* jegetlocale();
 extern Term * term;
 extern "C" Dllexport void dirmatch(const char *s,const char *t);
 extern "C" Dllexport void openj(const char *s);
-// extern string wdQuery;
+// extern std::string wdQuery;
 
 #define max(a,b)    (((a) > (b)) ? (a) : (b))
 #include "math.h"
@@ -76,17 +76,17 @@ static void wdfontdef();
 static void wdget();
 static void wdgetp();
 static void wdgrid();
-static void wdgroupbox(string c);
+static void wdgroupbox(std::string c);
 static void wdide();
 static void wdimmexj();
-static void wdline(string);
+static void wdline(std::string);
 static void wdmb();
-static void wdmenu(string);
+static void wdmenu(std::string);
 static void wdmsgs();
 static void wdnb();
 static void wdnotyet();
 static void wdopenj();
-static void wdp(string c);
+static void wdp(std::string c);
 static void wdpactive();
 static void wdparse();
 static void wdpas();
@@ -96,7 +96,7 @@ static void wdpclose();
 static void wdpicon();
 static void wdpmove();
 static void wdpmoves();
-static void wdpmove1(string);
+static void wdpmove1(std::string);
 static void wdpn();
 static void wdpsel();
 static void wdpshow();
@@ -105,8 +105,8 @@ static void  wdptheme();
 static void wdptimer();
 static void wdptop();
 static void wdq();
-static void wdqtstate(string);
-static void wdqueries(string);
+static void wdqtstate(std::string);
+static void wdqueries(std::string);
 #ifndef QT_NO_QUICKVIEW1
 static void wdquickview1();
 static QuickView1 *quickview1;
@@ -119,12 +119,12 @@ static void wdrem();
 void wdreset();
 static void wdset();
 static void wdsetp();
-static void wdsetx(string);
-static void wdset1(string n,string p,string v);
-static void wdsm(string);
-static void wdsplit(string c);
+static void wdsetx(std::string);
+static void wdset1(std::string n,std::string p,std::string v);
+static void wdsm(std::string);
+static void wdsplit(std::string c);
 static void wdstate(Form *,int);
-static void wdtab(string);
+static void wdtab(std::string);
 static void wdtextview();
 static void wdtimer();
 static void wdverbose();
@@ -133,14 +133,14 @@ static void wdmaxwh();
 static void wdminwh();
 #ifdef QTWEBSOCKET
 static void wdws();
-extern string ws(string p);
+extern std::string ws(std::string p);
 #endif
 
 static bool nochild();
 static bool noform();
 static bool notab();
-static int setchild(string id);
-static string formchildid();
+static int setchild(std::string id);
+static std::string formchildid();
 
 Cmd cmd;
 static Child *cc=0;
@@ -154,13 +154,13 @@ QList<Form *>Forms;
 
 int FormSeq=0;
 int rc;
-static string lasterror="";
-static string result="";
+static std::string lasterror="";
+static std::string result="";
 
-static string ccmd="";
+static std::string ccmd="";
 
 static int verbose=0;
-static string cmdstrparms="";
+static std::string cmdstrparms="";
 QStringList defChildStyle=QStringList("flush");
 
 // ---------------------------------------------------------------------
@@ -181,7 +181,7 @@ int wd(char *s,int slen,char *&res,int &len)
 // subroutines may set int rc and wd1 returns if non-zero
 void wd1()
 {
-  string c;
+  std::string c;
   while ((rc==0) && cmd.more()) {
     c=cmd.getid();
     if (c.empty()) continue;
@@ -191,7 +191,7 @@ void wd1()
       cmdstrparms=c + " " + cmd.getparms();
       cmd.rewindpos();
       if (2==verbose || 3==verbose) {
-        string indent="";
+        std::string indent="";
         if (form && form->pane) indent.append(2*max(0,form->pane->layouts.size()-1),' ');
         if (2==verbose && tedit && ShowIde) tedit->append_smoutput("wd command: " + s2q(indent+cmdstrparms));
         if (3==verbose) qDebug() << "wd command: " + s2q(indent+cmdstrparms);
@@ -333,7 +333,7 @@ void wdbeep()
 // ---------------------------------------------------------------------
 void wdbin()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->pane->bin(p);
 }
@@ -345,7 +345,7 @@ void wdcc()
     cmd.getparms();
     return;
   }
-  string c,n,p;
+  std::string c,n,p;
   n=cmd.getid();
   c=cmd.getid();
   p=cmd.getparms();
@@ -355,7 +355,7 @@ void wdcc()
 // ---------------------------------------------------------------------
 void wdclipcopy()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!app) {
     error("command failed: no QApplication");
     return;
@@ -366,8 +366,8 @@ void wdclipcopy()
 // ---------------------------------------------------------------------
 void wdclipcopyx()
 {
-  string n=cmd.getid();
-  string p=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string p=cmd.getparms();
   if (!app) {
     error("command failed: no QApplication");
     return;
@@ -382,7 +382,7 @@ void wdclipcopyx()
 // ---------------------------------------------------------------------
 void wdclippaste()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!app) {
     error("command failed: no QApplication");
     return;
@@ -403,8 +403,8 @@ void wdclippaste()
 // ---------------------------------------------------------------------
 void wdclippastex()
 {
-  string n=cmd.getid();
-  string p=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string p=cmd.getparms();
   if (!app) {
     error("command failed: no QApplication");
     return;
@@ -420,9 +420,9 @@ void wdclippastex()
 // ---------------------------------------------------------------------
 void wdcmd()
 {
-  string n=cmd.getid();
-  string p=cmd.getid();
-  string v=cmd.getparms(true);
+  std::string n=cmd.getid();
+  std::string p=cmd.getid();
+  std::string v=cmd.getparms(true);
   int type=setchild(n);
   if (type)
     cc->cmd(p,v);
@@ -433,7 +433,7 @@ void wdcmd()
 // ---------------------------------------------------------------------
 void wdcn()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   cc=form->child;
   if (nochild()) return;
@@ -444,8 +444,8 @@ void wdcn()
 void wddefprint()
 {
 #ifndef QT_NO_PRINTER
-  string c=cmd.getid();
-  string p=cmd.getparms();
+  std::string c=cmd.getid();
+  std::string p=cmd.getparms();
   if (c=="orient") {
     if (p=="landscape")
       config.Printer->setPageOrientation(QPageLayout::Landscape);
@@ -494,7 +494,7 @@ void wddefprint()
 // ---------------------------------------------------------------------
 void wddirmatch()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   QStringList f=qsplit(p);
   if (f.size()!=2) {
     error("dirmatch requires 2 directories");
@@ -512,7 +512,7 @@ void wdend()
 // ---------------------------------------------------------------------
 void wdfontdef()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!p.size()) {
     if (fontdef) delete fontdef;
     fontdef=0;
@@ -529,9 +529,9 @@ void wdfontdef()
 // ---------------------------------------------------------------------
 void wdget()
 {
-  string n=cmd.getid();
-  string p=cmd.getid();
-  string v=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string p=cmd.getid();
+  std::string v=cmd.getparms();
   rc=-1;
   if (n=="_") n=formchildid();
   int type=setchild(n);
@@ -544,8 +544,8 @@ void wdget()
 // ---------------------------------------------------------------------
 void wdgetp()
 {
-  string p=cmd.getid();
-  string v=cmd.getparms();
+  std::string p=cmd.getid();
+  std::string v=cmd.getparms();
   rc=-1;
   if (noform()) return;
   result=form->get(p,v);
@@ -559,15 +559,15 @@ void wdgrid()
     cmd.getparms();
     return;
   }
-  string n=cmd.getid();
-  string v=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string v=cmd.getparms();
   form->pane->grid(n,v);
 }
 
 // ---------------------------------------------------------------------
-void wdgroupbox(string c)
+void wdgroupbox(std::string c)
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   if (!form->pane->groupbox(c,p))
     error("unrecognized command: " + c + " " + p);
@@ -576,7 +576,7 @@ void wdgroupbox(string c)
 // ---------------------------------------------------------------------
 void wdide()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (!jt) {
     error("command failed: no interpreter");
     return;
@@ -592,14 +592,14 @@ void wdide()
 // ---------------------------------------------------------------------
 void wdimmexj()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   immexj(p.c_str());
 }
 
 // ---------------------------------------------------------------------
-void wdline(string c)
+void wdline(std::string c)
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   if (!form->pane->line(c,p))
     error("unrecognized command: " + c + " " + p);
@@ -608,8 +608,8 @@ void wdline(string c)
 // ---------------------------------------------------------------------
 void wdmb()
 {
-  string c=cmd.getid();
-  string p=cmd.getparms(true);
+  std::string c=cmd.getid();
+  std::string p=cmd.getparms(true);
   result=q2s(mb(c,p));
   if (1==rc)
     result="";
@@ -618,7 +618,7 @@ void wdmb()
 }
 
 // ---------------------------------------------------------------------
-void wdmenu(string s)
+void wdmenu(std::string s)
 {
   int rc=0;
   if (noform()) {
@@ -626,7 +626,7 @@ void wdmenu(string s)
     return;
   }
   if (form->menubar==0) form->addmenu();
-  string c,p;
+  std::string c,p;
   if (s=="menu") {
     c=cmd.getid();
     p=cmd.getparms();
@@ -650,7 +650,7 @@ void wdmenu(string s)
 // ---------------------------------------------------------------------
 void wdmsgs()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -678,12 +678,12 @@ void wdnotyet()
 // ---------------------------------------------------------------------
 void wdopenj()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   openj(p.c_str());
 }
 
 // ---------------------------------------------------------------------
-void wdp(string c)
+void wdp(std::string c)
 {
   if (c=="pactive")
     wdpactive();
@@ -726,7 +726,7 @@ void wdp(string c)
 // ---------------------------------------------------------------------
 void wdpactive()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -739,8 +739,8 @@ void wdpactive()
 // ---------------------------------------------------------------------
 void wdparse()
 {
-  string r;
-  vector<string> s=ssplit(cmd.getparms());
+  std::string r;
+  std::vector<std::string> s=ssplit(cmd.getparms());
   int n=(int)s.size();
   for(int i=0; i<n; i++)
     r+=spair(i2s(i),s[i]);
@@ -751,7 +751,7 @@ void wdparse()
 // ---------------------------------------------------------------------
 void wdpas()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   int l,t,r,b;
@@ -772,12 +772,12 @@ void wdpas()
 // ---------------------------------------------------------------------
 void wdpc()
 {
-  string c,p;
+  std::string c,p;
   if (!jt) {
     error("command failed: no interpreter");
     return;
   }
-  string tlocale=jegetlocale();
+  std::string tlocale=jegetlocale();
   c=cmd.getid();
   p=cmd.getparms();
 // QWidget must be parentless to be top-level window
@@ -794,7 +794,7 @@ void wdpc()
 // ---------------------------------------------------------------------
 void wdpcenter()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -818,7 +818,7 @@ void wdpcenter()
 // ---------------------------------------------------------------------
 void wdpclose()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -831,7 +831,7 @@ void wdpclose()
 // ---------------------------------------------------------------------
 void wdpicon()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->setpicon(p);
 }
@@ -839,7 +839,7 @@ void wdpicon()
 // ---------------------------------------------------------------------
 void wdpmove()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   wdpmove1(p);
 }
@@ -847,17 +847,17 @@ void wdpmove()
 // ---------------------------------------------------------------------
 void wdpmoves()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   form->savepos=true;
-  string s=config.formpos_read(s2q(form->id));
+  std::string s=config.formpos_read(s2q(form->id));
   if (s.length() > 0)
     p.assign(s);
   wdpmove1(p);
 }
 
 // ---------------------------------------------------------------------
-void wdpmove1(string p)
+void wdpmove1(std::string p)
 {
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=4)
@@ -873,7 +873,7 @@ void wdpmove1(string p)
 // ---------------------------------------------------------------------
 void wdpn()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->setpn(p);
 }
@@ -881,7 +881,7 @@ void wdpn()
 // ---------------------------------------------------------------------
 void wdpsel()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()==0) {
     form=0;
     return;
@@ -901,7 +901,7 @@ void wdpsel()
 // ---------------------------------------------------------------------
 void wdpshow()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->showit(p);
 }
@@ -909,7 +909,7 @@ void wdpshow()
 // ---------------------------------------------------------------------
 void wdpstylesheet()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->setStyleSheet(s2q(p));
 }
@@ -917,7 +917,7 @@ void wdpstylesheet()
 // ---------------------------------------------------------------------
 void wdptheme()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->settheme(p);
 }
@@ -925,7 +925,7 @@ void wdptheme()
 // ---------------------------------------------------------------------
 void wdptimer()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->settimer(p);
 }
@@ -933,7 +933,7 @@ void wdptimer()
 // ---------------------------------------------------------------------
 void wdptop()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   Qt::WindowFlags f=form->windowFlags();
   form->setWindowFlags(f|Qt::WindowStaysOnTopHint);
@@ -947,7 +947,7 @@ void wdptop()
 // ---------------------------------------------------------------------
 void wdq()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -957,16 +957,16 @@ void wdq()
 }
 
 // ---------------------------------------------------------------------
-void wdqtstate(string p)
+void wdqtstate(std::string p)
 {
   rc=-2;
   result=qtstate(p);
 }
 
 // ---------------------------------------------------------------------
-void wdqueries(string s)
+void wdqueries(std::string s)
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
 
   if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qhwndx" || s=="qform")) {
     error("extra parameters: " + p);
@@ -1050,12 +1050,12 @@ void wdqueries(string s)
       error("command failed: no QApplication");
       return;
     }
-    string q="";
+    std::string q="";
 #ifndef QT_NO_PRINTER
     QPrinterInfo pd=QPrinterInfo::defaultPrinter();
-    if ((!config.Printer) || !config.Printer->isValid()) q = string("\012");
+    if ((!config.Printer) || !config.Printer->isValid()) q = std::string("\012");
     else q = q2s(config.Printer->printerName()) + "\012";
-    if (pd.isNull()) q = q + string("\012");
+    if (pd.isNull()) q = q + std::string("\012");
     else q = q + q2s(pd.printerName()) + "\012";
     QList<QPrinterInfo> pl=QPrinterInfo::availablePrinters();
     if (pl.size()) {
@@ -1068,7 +1068,7 @@ void wdqueries(string s)
   } else if (s=="qpx") {
     if (!Forms.size()) result="";
     else {
-      string q;
+      std::string q;
       for (int i=0; i<Forms.size(); i++) {
         Form *f=Forms.at(i);
         q = q + f->id + "\t" + p2s((void *)f) + "\t" + f->locale + "\t\t" + i2s(f->seq) + "\t\012";
@@ -1143,7 +1143,7 @@ void wdqueries(string s)
 // ---------------------------------------------------------------------
 void wdquickview1()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (!jt) {
     error("command failed: no interpreter");
@@ -1158,8 +1158,8 @@ void wdquickview1()
   } else if (n.size()<2)
     error("quickview1 requires at least 2 parameters: " + p);
   else {
-    string t=remquotes(q2s(n.at(0)));
-    string f=remquotes(q2s(n.at(1)));
+    std::string t=remquotes(q2s(n.at(0)));
+    std::string f=remquotes(q2s(n.at(1)));
     if (!QFile(s2q(f)).exists()) {
       error("quickview1 file error: " + p);
       return;
@@ -1177,7 +1177,7 @@ void wdquickview1()
 // ---------------------------------------------------------------------
 void wdquickview2()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (!jt) {
     error("command failed: no interpreter");
@@ -1192,13 +1192,13 @@ void wdquickview2()
   } else if (n.size()<2)
     error("quickview2 requires at least 2 parameters: " + p);
   else {
-    string t=remquotes(q2s(n.at(0)));
-    string f=remquotes(q2s(n.at(1)));
+    std::string t=remquotes(q2s(n.at(0)));
+    std::string f=remquotes(q2s(n.at(1)));
     if (!QFile(s2q(f)).exists()) {
       error("quickview2 file error: " + p);
       return;
     }
-    string glver="";
+    std::string glver="";
     if (n.size()>2) {
       if (n.at(2)=="0"||n.at(2)=="1") mode=!!c_strtoi(q2s(n.at(2)));
       int l=n.indexOf("version");
@@ -1226,7 +1226,7 @@ void wdrem()
 // ---------------------------------------------------------------------
 void wdreset()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (p.size()) {
     error("extra parameters: " + p);
     return;
@@ -1267,17 +1267,17 @@ void wdreset()
 // ---------------------------------------------------------------------
 void wdset()
 {
-  string n=cmd.getid();
-  string p=cmd.getid();
-  string v=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string p=cmd.getid();
+  std::string v=cmd.getparms();
   wdset1(n,p,v);
 }
 
 // ---------------------------------------------------------------------
 void wdsetp()
 {
-  string p=cmd.getid();
-  string v=cmd.getparms();
+  std::string p=cmd.getid();
+  std::string v=cmd.getparms();
   if (noform()) return;
   noevents(1);
   form->set(p,v);
@@ -1286,16 +1286,16 @@ void wdsetp()
 }
 
 // ---------------------------------------------------------------------
-void wdsetx(string c)
+void wdsetx(std::string c)
 {
-  string n=cmd.getid();
-  string p=c.substr(3);
-  string v=cmd.getparms();
+  std::string n=cmd.getid();
+  std::string p=c.substr(3);
+  std::string v=cmd.getparms();
   wdset1(n,p,v);
 }
 
 // ---------------------------------------------------------------------
-void wdset1(string n,string p,string v)
+void wdset1(std::string n,std::string p,std::string v)
 {
   if (noform()) return;
   noevents(1);
@@ -1324,9 +1324,9 @@ void wdset1(string n,string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void wdsm(string s)
+void wdsm(std::string s)
 {
-  string c,p;
+  std::string c,p;
   if (s=="sm")
     c=cmd.getid();
   else if (s=="smact")
@@ -1339,9 +1339,9 @@ void wdsm(string s)
 }
 
 // ---------------------------------------------------------------------
-void wdsplit(string c)
+void wdsplit(std::string c)
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   if (!form->pane->split(c,p))
     error("unrecognized command: " + c + " " + p);
@@ -1356,9 +1356,9 @@ void wdstate(Form * f,int event)
 }
 
 // ---------------------------------------------------------------------
-void wdtab(string c)
+void wdtab(std::string c)
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (notab()) return;
   if (c=="tabend")
     form->tab->tabend();
@@ -1392,7 +1392,7 @@ void wdtextview()
 // ---------------------------------------------------------------------
 void wdtimer()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   int n=atoi(p.c_str());
   if (!jt) {
     error("command failed: no interpreter");
@@ -1408,7 +1408,7 @@ void wdtimer()
 // ---------------------------------------------------------------------
 void wdws()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (!jt) {
     error("command failed: no interpreter");
     return;
@@ -1424,7 +1424,7 @@ void wdws()
 // ---------------------------------------------------------------------
 void wdverbose()
 {
-  string p=remquotes(cmd.getparms());
+  std::string p=remquotes(cmd.getparms());
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.empty())
     error("verbose requires 1 number: " + p);
@@ -1446,7 +1446,7 @@ void wdversion()
 // ---------------------------------------------------------------------
 void wdmaxwh()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2)
@@ -1460,7 +1460,7 @@ void wdmaxwh()
 // ---------------------------------------------------------------------
 void wdminwh()
 {
-  string p=cmd.getparms();
+  std::string p=cmd.getparms();
   if (noform()) return;
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
   if (n.size()!=2)
@@ -1472,7 +1472,7 @@ void wdminwh()
 }
 
 // ---------------------------------------------------------------------
-void wdsetfocuspolicy(QWidget *widget,string p)
+void wdsetfocuspolicy(QWidget *widget,std::string p)
 {
   if (!widget) return;
   if (p=="tab")
@@ -1527,7 +1527,7 @@ void wdsetfocuspolicy(QWidget *widget,string p)
 // QSizePolicy::IgnoreFlag 8     The widget's size hint is ignored. The widget will get as much space as possible.
 
 // ---------------------------------------------------------------------
-void wdsetsizepolicy(QWidget *widget,string p)
+void wdsetsizepolicy(QWidget *widget,std::string p)
 {
   if (!widget) return;
   QString h,v;
@@ -1586,7 +1586,7 @@ void wdsetsizepolicy(QWidget *widget,string p)
 }
 
 // ---------------------------------------------------------------------
-void wdsetwh(QWidget *widget,string p)
+void wdsetwh(QWidget *widget,std::string p)
 {
   if (!widget) return;
   QStringList n=s2q(p).split(" ",_SkipEmptyParts);
@@ -1684,16 +1684,16 @@ static char *qstylesp[]= {
 
 // ---------------------------------------------------------------------
 // widget->style()->standardIcon(i);
-int wdstandardicon(string s)
+int wdstandardicon(std::string s)
 {
   for (int i=0; i<71; i++) {
-    if (s==string(qstylesp[i])) return i;
+    if (s==std::string(qstylesp[i])) return i;
   }
   return -1;
 }
 
 // ---------------------------------------------------------------------
-void error(string s)
+void error(std::string s)
 {
   lasterror=ccmd+" : "+s;
   rc=1;
@@ -1701,7 +1701,7 @@ void error(string s)
 
 // ---------------------------------------------------------------------
 // returns: id of current form child
-string formchildid()
+std::string formchildid()
 {
   if (noform()) return "";
   if (!form->child) return "";
@@ -1709,7 +1709,7 @@ string formchildid()
 }
 
 // ---------------------------------------------------------------------
-bool invalidopt(string n,QStringList opt,string valid)
+bool invalidopt(std::string n,QStringList opt,std::string valid)
 {
   QStringList unopt=qsless(opt,defChildStyle+qsplit(valid));
   if (0==unopt.size()) return false;
@@ -1718,7 +1718,7 @@ bool invalidopt(string n,QStringList opt,string valid)
 }
 
 // ---------------------------------------------------------------------
-bool invalidoptn(string n,QStringList opt,string valid)
+bool invalidoptn(std::string n,QStringList opt,std::string valid)
 {
   QStringList unopt=qsless(opt,defChildStyle+qsplit(valid));
   if (0==unopt.size() || qsnumeric(unopt)) return false;
@@ -1752,7 +1752,7 @@ bool notab()
 }
 
 // ---------------------------------------------------------------------
-bool notbothopt(string n,QStringList opt, string a, string b)
+bool notbothopt(std::string n,QStringList opt, std::string a, std::string b)
 {
   if (!(opt.contains(s2q(a)) && opt.contains(s2q(b)))) return false;
   error ("options for " + n + " should not include both " + a + " and " + b);
@@ -1763,7 +1763,7 @@ bool notbothopt(string n,QStringList opt, string a, string b)
 // returns: 0=id not found
 //          1=child id (cc=child)
 //          2=menu  id (cc=menubar)
-int setchild(string id)
+int setchild(std::string id)
 {
   Child *c;
   if (noform()) return 0;

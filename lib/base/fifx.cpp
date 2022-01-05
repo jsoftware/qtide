@@ -6,7 +6,7 @@
 #include "state.h"
 #include "utils.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 void Fif::search()

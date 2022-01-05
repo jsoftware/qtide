@@ -22,7 +22,7 @@
 #endif
 
 // ---------------------------------------------------------------------
-Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Editm::Editm(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="editm";
   EditmPTE *w=new EditmPTE;
@@ -41,7 +41,7 @@ Editm::Editm(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-void Editm::cmd(string p,string v)
+void Editm::cmd(std::string p,std::string v)
 {
   QStringList opt=qsplit(v);
   if (p=="print") {
@@ -61,12 +61,12 @@ void Editm::cmd(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Editm::get(string p,string v)
+std::string Editm::get(std::string p,std::string v)
 {
   EditmPTE *w=(EditmPTE*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("limit")+"\012"+ "readonly"+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
+    r+=std::string("limit")+"\012"+ "readonly"+"\012"+ "scroll"+"\012"+ "select"+"\012"+ "text"+"\012"+ "wrap"+"\012";
     r+=Child::get(p,v);
   } else if (p=="text")
     r=q2s(w->toPlainText());
@@ -92,10 +92,10 @@ string Editm::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Editm::set(string p,string v)
+void Editm::set(std::string p,std::string v)
 {
   EditmPTE *w=(EditmPTE*) widget;
-  string r;
+  std::string r;
   QStringList opt=qsplit(v);
   QScrollBar *sb;
 
@@ -151,7 +151,7 @@ void Editm::setselect(PlainTextEdit *w, int bgn, int end)
 }
 
 // ---------------------------------------------------------------------
-string Editm::state()
+std::string Editm::state()
 {
   EditmPTE *w=(EditmPTE*) widget;
   QTextCursor c=w->textCursor();
@@ -159,7 +159,7 @@ string Editm::state()
   b=c.selectionStart();
   e=c.selectionEnd();
   QScrollBar *v=w->verticalScrollBar();
-  string r;
+  std::string r;
   r+=spair(id,q2s(w->toPlainText()));
   r+=spair(id+"_select",i2s(b)+" "+i2s(e));
   r+=spair(id+"_scroll",i2s(v->value()));
@@ -176,7 +176,7 @@ void EditmPTE::keyPressEvent(QKeyEvent *event)
   if (ismodifier(key)) return;
   if ((key==Qt::Key_Enter || key==Qt::Key_Return) && !(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
     if (isReadOnly()) {
-      pchild->event=string("button");
+      pchild->event=std::string("button");
       pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
       pchild->pform->signalevent(pchild);
       return;

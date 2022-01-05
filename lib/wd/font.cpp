@@ -11,7 +11,7 @@
 Font *FontExtent=0;
 
 // ---------------------------------------------------------------------
-Font::Font(string s, float pointsize)
+Font::Font(std::string s, float pointsize)
 {
   error=false;
   angle=0;
@@ -56,7 +56,7 @@ Font::Font(string s, float pointsize)
 }
 
 // ---------------------------------------------------------------------
-Font::Font(string s,int size10, bool bold, bool italic, bool strikeout, bool underline, int angle10)
+Font::Font(std::string s,int size10, bool bold, bool italic, bool strikeout, bool underline, int angle10)
 {
   error=false;
   angle=angle10;

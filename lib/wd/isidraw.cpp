@@ -9,7 +9,7 @@ extern Form *form;
 extern Child *isigraph;
 
 // ---------------------------------------------------------------------
-Isidraw::Isidraw(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Isidraw::Isidraw(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="isidraw";
   Isigraph2 *w= new Isigraph2(this);
@@ -31,19 +31,19 @@ void Isidraw::setform()
 }
 
 // ---------------------------------------------------------------------
-string Isidraw::get(string p,string v)
+std::string Isidraw::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void Isidraw::set(string p,string v)
+void Isidraw::set(std::string p,std::string v)
 {
   Child::set(p,v);
 }
 
 // ---------------------------------------------------------------------
-string Isidraw::state()
+std::string Isidraw::state()
 {
   return "";
 }

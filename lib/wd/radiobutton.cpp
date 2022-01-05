@@ -11,7 +11,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+RadioButton::RadioButton(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="radiobutton";
   QRadioButton *w=new QRadioButton;
@@ -43,26 +43,26 @@ RadioButton::RadioButton(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string RadioButton::get(string p,string v)
+std::string RadioButton::get(std::string p,std::string v)
 {
   QRadioButton *w=(QRadioButton*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012"+ "value"+"\012";
+    r+=std::string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="caption"||p=="text")
     r=q2s(w->text());
   else if (p=="icon")
     r=iconFile;
   else if (p=="value")
-    r=w->isChecked()?(string)"1":(string)"0";
+    r=w->isChecked()?(std::string)"1":(std::string)"0";
   else
     r=Child::get(p,v);
   return r;
 }
 
 // ---------------------------------------------------------------------
-void RadioButton::set(string p,string v)
+void RadioButton::set(std::string p,std::string v)
 {
   QRadioButton *w=(QRadioButton*) widget;
   if (p=="caption" || p=="text")
@@ -104,10 +104,10 @@ void RadioButton::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string RadioButton::state()
+std::string RadioButton::state()
 {
   QRadioButton *w=(QRadioButton*) widget;
-  return spair(id,w->isChecked()?(string)"1":(string)"0");
+  return spair(id,w->isChecked()?(std::string)"1":(std::string)"0");
 }
 
 // ---------------------------------------------------------------------

@@ -16,7 +16,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Edit::Edit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Edit::Edit(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="edit";
   LineEdit *w=new LineEdit(this);
@@ -72,20 +72,20 @@ void Edit::textChanged()
 }
 
 // ---------------------------------------------------------------------
-string Edit::get(string p,string v)
+std::string Edit::get(std::string p,std::string v)
 {
   LineEdit *w=(LineEdit*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("alignment")+"\012"+ "focusselect"+"\012"+ "inputmask"+"\012"+ "limit"+"\012"+ "readonly"+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=std::string("alignment")+"\012"+ "focusselect"+"\012"+ "inputmask"+"\012"+ "limit"+"\012"+ "readonly"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="alignment") {
     if ((w->alignment())&Qt::AlignRight)
-      r=string("right");
+      r=std::string("right");
     else if ((w->alignment())&Qt::AlignHCenter)
-      r=string("center");
+      r=std::string("center");
     else
-      r=string("left");
+      r=std::string("left");
   } else if (p=="focusselect")
     r=i2s(focusSelect);
   else if (p=="inputmask")
@@ -110,7 +110,7 @@ string Edit::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Edit::set(string p,string v)
+void Edit::set(std::string p,std::string v)
 {
   LineEdit *w = (LineEdit *)widget;
   QStringList opt=qsplit(v);
@@ -205,7 +205,7 @@ void Edit::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Edit::state()
+std::string Edit::state()
 {
   LineEdit *w=(LineEdit*) widget;
   int b,e;
@@ -214,7 +214,7 @@ string Edit::state()
     b=e=w->cursorPosition();
   else
     e=b+w->selectedText().size();
-  string r;
+  std::string r;
   r+=spair(id,q2s(w->text()));
   r+=spair(id+"_select",i2s(b)+" "+i2s(e));
   return r;

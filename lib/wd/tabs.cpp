@@ -12,7 +12,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Tabs::Tabs(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Tabs::Tabs(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="tabs";
   index=0;
@@ -85,20 +85,20 @@ void Tabs::currentChanged(int ndx)
 }
 
 // ---------------------------------------------------------------------
-string Tabs::get(string p,string v)
+std::string Tabs::get(std::string p,std::string v)
 {
   QTabWidget *w = (QTabWidget *)widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("label")+"\012"+ "select"+"\012";
+    r+=std::string("label")+"\012"+ "select"+"\012";
     r+=Child::get(p,v);
   }
   if (p=="label"||p=="select") {
     int n=w->currentIndex();
-    string s,t;
+    std::string s,t;
     for (int i=0; i<w->count(); i++)
       s+=q2s(w->tabText(i)) + '\377';
-    t=(n>=0)?i2s(n):string("_1");
+    t=(n>=0)?i2s(n):std::string("_1");
     if (p=="label")
       r=s;
     else
@@ -116,7 +116,7 @@ void Tabs::mycornerClicked()
 }
 
 // ---------------------------------------------------------------------
-void Tabs::set(string p,string v)
+void Tabs::set(std::string p,std::string v)
 {
   QTabWidget *w = (QTabWidget *)widget;
   QStringList opt=qsplit(v);
@@ -137,7 +137,7 @@ void Tabs::set(string p,string v)
     w->setTabEnabled(ndx,remquotes(q2s(opt.at(1)))!="0");
   } else if (p=="icon") {
     if (opt.size()<2) return;
-    string iconFile=remquotes(q2s(opt.at(1)));
+    std::string iconFile=remquotes(q2s(opt.at(1)));
     QIcon image;
     int spi;
     if (iconFile.substr(0,8)=="qstyle::" && -1!=(spi=wdstandardicon(iconFile)))
@@ -151,7 +151,7 @@ void Tabs::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Tabs::state()
+std::string Tabs::state()
 {
   QTabWidget *w=(QTabWidget*) widget;
   int n;
@@ -159,10 +159,10 @@ string Tabs::state()
     n=index;
   else
     n=w->currentIndex();
-  string r,s,t;
+  std::string r,s,t;
   for (int i=0; i<w->count(); i++)
     s+=q2s(w->tabText(i)) + '\377';
-  t=(n>=0)?i2s(n):string("_1");
+  t=(n>=0)?i2s(n):std::string("_1");
   r+=spair(id,s);
   r+=spair(id+"_select",t);
   return r;
@@ -187,7 +187,7 @@ void Tabs::tabend()
 }
 
 // ---------------------------------------------------------------------
-void Tabs::tabnew(string p)
+void Tabs::tabnew(std::string p)
 {
   if (index)
     pform->pane->fini();

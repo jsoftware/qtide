@@ -12,16 +12,16 @@ class Menus : public Child
   Q_OBJECT
 
 public:
-  Menus(string n, string s, Form *f, Pane *p);
-  QAction *makeact(string id, string parms);
+  Menus(std::string n, std::string s, Form *f, Pane *p);
+  QAction *makeact(std::string id, std::string parms);
 
-  int menu(string c, string p);
-  int menupop(string c);
+  int menu(std::string c, std::string p);
+  int menupop(std::string c);
   int menupopz();
   int menusep();
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
   QHash<QString,QAction*> items;
 

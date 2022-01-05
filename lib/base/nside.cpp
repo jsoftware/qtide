@@ -17,7 +17,7 @@
 #include "state.h"
 #include "recent.h"
 
-using namespace std;
+// using namespace std;
 
 Nicon *nicon=0;
 

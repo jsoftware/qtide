@@ -8,7 +8,7 @@
 #include "ntabs.h"
 #include "state.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 Nmain::Nmain(Note *n)

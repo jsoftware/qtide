@@ -13,7 +13,7 @@
 extern Font *fontdef;
 
 // ---------------------------------------------------------------------
-ComboBox::ComboBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ComboBox::ComboBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="combobox";
   QComboBox *w=new QComboBox;
@@ -40,12 +40,12 @@ void ComboBox::activated()
 }
 
 // ---------------------------------------------------------------------
-string ComboBox::get(string p,string v)
+std::string ComboBox::get(std::string p,std::string v)
 {
   QComboBox *w=(QComboBox*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("edit")+"\012"+ "allitems"+"\012"+ "select"+"\012"+ "text"+"\012";
+    r+=std::string("edit")+"\012"+ "allitems"+"\012"+ "select"+"\012"+ "text"+"\012";
     r+=Child::get(p,v);
   } else if (p=="edit") {
     r=i2s(w->isEditable());
@@ -70,10 +70,10 @@ string ComboBox::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string ComboBox::getitems()
+std::string ComboBox::getitems()
 {
   QComboBox *w=(QComboBox*) widget;
-  string s="";
+  std::string s="";
 
   for (int i=0; i<w->count(); i++) {
     s += q2s(w->itemText(i));
@@ -83,7 +83,7 @@ string ComboBox::getitems()
 }
 
 // ---------------------------------------------------------------------
-void ComboBox::set(string p,string v)
+void ComboBox::set(std::string p,std::string v)
 {
   QComboBox *w=(QComboBox*) widget;
   if (p=="items") {
@@ -97,14 +97,14 @@ void ComboBox::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string ComboBox::state()
+std::string ComboBox::state()
 {
   QComboBox *w=(QComboBox*) widget;
   int n=w->currentIndex();
-  string r;
+  std::string r;
   if (n<0) {
-    r+=spair(id,(string)"");
-    r+=spair(id+"_select",(string)"_1");
+    r+=spair(id,(std::string)"");
+    r+=spair(id+"_select",(std::string)"_1");
   } else {
     r+=spair(id,q2s(w->currentText()));
     r+=spair(id+"_select",i2s(n));

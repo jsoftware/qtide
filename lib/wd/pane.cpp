@@ -84,7 +84,7 @@ Pane::Pane(int n,Form *f) : QWidget(f)
 
 // ---------------------------------------------------------------------
 // return if child valid
-bool Pane::addchild(string n,string c,string p)
+bool Pane::addchild(std::string n,std::string c,std::string p)
 {
   Child *child=0;
   if (!layout)
@@ -207,14 +207,14 @@ void Pane::addlayout(Layout *b)
 }
 
 // ---------------------------------------------------------------------
-void Pane::bin(string s)
+void Pane::bin(std::string s)
 {
   QChar c;
   int i,n;
   Layout *b;
   QString m;
   QStringList p=bsplit(s);
-  string s1=strless(s," 0123456789ghmpsvz");
+  std::string s1=strless(s," 0123456789ghmpsvz");
   if (s1.size()) {
     error("unrecognized bin type: " + s1);
     return;
@@ -259,7 +259,7 @@ void Pane::fini()
 }
 
 // ---------------------------------------------------------------------
-void Pane::grid(string p, string v)
+void Pane::grid(std::string p, std::string v)
 {
 // decommit the name size in the next release
   if (p=="shape"||p=="size") {
@@ -439,7 +439,7 @@ void Pane::grid(string p, string v)
 }
 
 // ---------------------------------------------------------------------
-bool Pane::groupbox(string c, string s)
+bool Pane::groupbox(std::string c, std::string s)
 {
   QString cmd=s2q(c);
   QString id;
@@ -498,7 +498,7 @@ bool Pane::groupbox(string c, string s)
 }
 
 // ---------------------------------------------------------------------
-bool Pane::line(string p, string s)
+bool Pane::line(std::string p, std::string s)
 {
   Q_UNUSED(s);
   QString cmd=s2q(p);
@@ -512,13 +512,13 @@ bool Pane::line(string p, string s)
 }
 
 // ---------------------------------------------------------------------
-void Pane::setstretch(Child *cc, string factor)
+void Pane::setstretch(Child *cc, std::string factor)
 {
   if (layout->type!='g')((QBoxLayout *)(layout->bin))->setStretchFactor(cc->widget,atoi(factor.c_str()));
 }
 
 // ---------------------------------------------------------------------
-bool Pane::split(string p, string s)
+bool Pane::split(std::string p, std::string s)
 {
   if (p=="splith" || p=="splitv") {
     if (!layout)

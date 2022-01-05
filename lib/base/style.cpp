@@ -41,7 +41,7 @@ void Config::initstyle()
   nounStyle.set(s->value("Class/noun","0 0 255 bold").toString());
   noundefStyle.set(s->value("Class/noundef","0 0 255").toString());
   numberStyle.set(s->value("Class/number","160 32 240").toString());
-  stringStyle.set(s->value("Class/string","0 0 255").toString());
+  stringStyle.set(s->value("Class/std::string","0 0 255").toString());
   verbStyle.set(s->value("Class/verb","0 153 102").toString());
 
   if (s->allKeys().contains("View/fore")) return;
@@ -79,7 +79,7 @@ void Config::initstyle()
   s->setValue("Class/noun",nounStyle.read());
   s->setValue("Class/noundef",noundefStyle.read());
   s->setValue("Class/number",numberStyle.read());
-  s->setValue("Class/string",stringStyle.read());
+  s->setValue("Class/std::string",stringStyle.read());
   s->setValue("Class/verb",verbStyle.read());
 
   s->sync();

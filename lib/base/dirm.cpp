@@ -23,7 +23,7 @@
 #include "term.h"
 #include "widget.h"
 
-using namespace std;
+// using namespace std;
 
 extern "C" {
   Dllexport void dirmatch(const char *s,const char *t);

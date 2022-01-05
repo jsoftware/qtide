@@ -10,7 +10,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+QuickWidget::QuickWidget(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="quickwidget";
 
@@ -49,13 +49,13 @@ QuickWidget::QuickWidget(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string QuickWidget::get(string p,string v)
+std::string QuickWidget::get(std::string p,std::string v)
 {
   return Child::get(p,v);
 }
 
 // ---------------------------------------------------------------------
-void QuickWidget::set(string p,string v)
+void QuickWidget::set(std::string p,std::string v)
 {
   QQuickWidget *w = (QQuickWidget *)widget;
   if (p=="source") {
@@ -91,7 +91,7 @@ void QuickWidget::sceneGraphError(QQuickWindow::SceneGraphError, const QString &
 }
 
 // ---------------------------------------------------------------------
-string QuickWidget::state()
+std::string QuickWidget::state()
 {
   return "";
 }

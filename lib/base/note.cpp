@@ -26,7 +26,7 @@
 #include "tedit.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 Note *note=0;
 Note *note2=0;
@@ -182,7 +182,7 @@ bool Note::filereplace(QString s,int line)
 }
 
 // ---------------------------------------------------------------------
-string Note::gettabstate()
+std::string Note::gettabstate()
 {
   return tabs->gettabstate();
 }

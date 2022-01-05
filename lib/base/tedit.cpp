@@ -14,7 +14,7 @@
 #include "term.h"
 #include "svr.h"
 
-using namespace std;
+// using namespace std;
 extern bool runcmd;
 extern bool runshow;
 extern int runterm;
@@ -107,7 +107,7 @@ void Tedit::docmds(QString s,bool show,bool same,bool term)
 #endif
   runshow=same;
   runterm=(show || term) ? 1 : 0;
-  string f=show ? "0!:101" : "0!:100";
+  std::string f=show ? "0!:101" : "0!:100";
   jcon->set("inputx_jrx_",q2s(s));
   jcon->immex(f + " inputx_jrx_");
 }

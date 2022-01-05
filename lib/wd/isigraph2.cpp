@@ -143,7 +143,7 @@ void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 {
   isigraph=pchild;
 
-  string lmr = "";
+  std::string lmr = "";
   switch (event->button()) {
   case Qt::LeftButton:
     lmr = "l";
@@ -158,7 +158,7 @@ void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
     break;
   }
 
-  string evtname = "mmove";
+  std::string evtname = "mmove";
   switch (type) {
   case QEvent::MouseButtonPress:
     evtname = "mb" + lmr + "down";
@@ -186,7 +186,7 @@ void Isigraph2::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   pchild->event=evtname;
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
 }
 
@@ -210,9 +210,9 @@ void Isigraph2::wheelEvent(QWheelEvent *event)
   sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 #endif
 
-  pchild->event=string("mwheel");
+  pchild->event=std::string("mwheel");
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-  pchild->sysdata=string(sysdata);
+  pchild->sysdata=std::string(sysdata);
   pchild->pform->signalevent(pchild);
 }
 
@@ -279,9 +279,9 @@ void Isigraph2::keyPressEvent(QKeyEvent *event)
       sprintf(sysdata, "%s", event->text().toUtf8().constData());
     else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
 
-    pchild->event=string("char");
+    pchild->event=std::string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
-    pchild->sysdata=string(sysdata);
+    pchild->sysdata=std::string(sysdata);
     pchild->pform->signalevent(pchild);
     // for ESC key, abort further processing lest we generate a second J event.
     if (key==Qt::Key_Escape) return;

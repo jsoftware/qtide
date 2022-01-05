@@ -10,7 +10,7 @@
 #include "qutil.h"
 #include "../wd/child.h"
 
-using namespace std;
+// using namespace std;
 
 class QGrid;
 
@@ -32,8 +32,8 @@ public:
   bool getgrid();
   void maxscrollc(int);
   void maxscrollr(int);
-  void set(string,string);
-  string state(string);
+  void set(std::string,std::string);
+  std::string state(std::string);
 
   bool WGridInit;
   Child *pchild;

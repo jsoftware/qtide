@@ -10,7 +10,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Image::Image(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="image";
 
@@ -57,11 +57,11 @@ Image::Image(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string Image::get(string p,string v)
+std::string Image::get(std::string p,std::string v)
 {
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("image")+"\012";
+    r+=std::string("image")+"\012";
     r+=Child::get(p,v);
   } else if (p=="image")
     r=imageFile;
@@ -71,7 +71,7 @@ string Image::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Image::set(string p,string v)
+void Image::set(std::string p,std::string v)
 {
   if (p=="image") {
 
@@ -94,7 +94,7 @@ void Image::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Image::state()
+std::string Image::state()
 {
   return "";
 }

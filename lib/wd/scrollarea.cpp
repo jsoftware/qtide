@@ -15,7 +15,7 @@
 // the h,v position can be set with wd 'set id pos h p'
 
 // ---------------------------------------------------------------------
-ScrollArea::ScrollArea(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ScrollArea::ScrollArea(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="scrollarea";
   QScrollArea *w = new QScrollArea;
@@ -44,14 +44,14 @@ ScrollArea::~ScrollArea()
 }
 
 // ---------------------------------------------------------------------
-string ScrollArea::get(string p,string v)
+std::string ScrollArea::get(std::string p,std::string v)
 {
   QScrollArea *w=(QScrollArea*) widget;
   QScrollBar *h=w->horizontalScrollBar();
   QScrollBar *q=w->verticalScrollBar();
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "pos"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "pos"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(h->minimum())+" "+i2s(q->minimum());
@@ -67,7 +67,7 @@ string ScrollArea::get(string p,string v)
 // ---------------------------------------------------------------------
 // set horizontal, vertical scrollbar positions
 // ignore any -1
-void ScrollArea::set(string p,string v)
+void ScrollArea::set(std::string p,std::string v)
 {
   QScrollArea *w=(QScrollArea*) widget;
   QScrollBar *h=w->horizontalScrollBar();
@@ -92,7 +92,7 @@ void ScrollArea::set(string p,string v)
 // ---------------------------------------------------------------------
 // shows horizontal position, maximum
 // followed by vertical position, maximum
-string ScrollArea::state()
+std::string ScrollArea::state()
 {
   QScrollArea *w=(QScrollArea*) widget;
   QScrollBar *h=w->horizontalScrollBar();

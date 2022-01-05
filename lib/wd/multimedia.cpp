@@ -8,7 +8,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-Multimedia::Multimedia(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Multimedia::Multimedia(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   , mediaPlayer(f)
 {
   type="multimedia";
@@ -66,7 +66,7 @@ static  char * errortab[]= {
 void Multimedia::merror(QMediaPlayer::Error error)
 {
   event="error";
-  sysdata=string(errortab[error]);
+  sysdata=std::string(errortab[error]);
   pform->signalevent(this);
 }
 
@@ -87,7 +87,7 @@ static  char * statustab[]= {
 void Multimedia::mediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
   event="mediastatus";
-  sysdata=string(statustab[status]);
+  sysdata=std::string(statustab[status]);
   pform->signalevent(this);
 }
 
@@ -110,7 +110,7 @@ static char * statetab[]= {
 void Multimedia::playbackStateChanged(QMediaPlayer::PlaybackState state)
 {
   event="playstate";
-  sysdata=string(statetab[state]);
+  sysdata=std::string(statetab[state]);
   pform->signalevent(this);
 }
 
@@ -130,37 +130,37 @@ static char * artab[]= {
 };
 
 // ---------------------------------------------------------------------
-string Multimedia::get(string p,string v)
+std::string Multimedia::get(std::string p,std::string v)
 {
   QVideoWidget *w=(QVideoWidget*) widget;
   Q_UNUSED(w);
-  string r;
+  std::string r;
   if (p=="property") {
     if (isVideo && w)
-      r+=string("aspectratio")+"\012"+ "brightness"+"\012"+ "contrast"+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "hue"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "saturation"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+      r+=std::string("aspectratio")+"\012"+ "brightness"+"\012"+ "contrast"+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "hue"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "saturation"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
     else
-      r+=string("duration")+"\012"+ "error"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+      r+=std::string("duration")+"\012"+ "error"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
     r+=Child::get(p,v);
   } else if (p=="duration")
     r=d2s(mediaPlayer.duration());
   else if (p=="error")
-    r=string(errortab[mediaPlayer.error()]);
+    r=std::string(errortab[mediaPlayer.error()]);
   else if (p=="mute")
 #if defined(QT60)
     r=i2s(mediaPlayer.audioOutput()->isMuted());
   else if (p=="playstate")
-    r=string(statetab[mediaPlayer.playbackState()]);
+    r=std::string(statetab[mediaPlayer.playbackState()]);
 #else
     r=i2s(mediaPlayer.isMuted());
   else if (p=="playstate")
-    r=string(statetab[mediaPlayer.state()]);
+    r=std::string(statetab[mediaPlayer.state()]);
 #endif
   else if (p=="position")
     r=i2s(mediaPlayer.position());
   else if (p=="seekable")
     r=i2s(mediaPlayer.isSeekable());
   else if (p=="status")
-    r=string(statustab[mediaPlayer.mediaStatus()]);
+    r=std::string(statustab[mediaPlayer.mediaStatus()]);
   else if (p=="volume")
 #if defined(QT60)
     r=i2s(mediaPlayer.audioOutput()->volume());
@@ -169,7 +169,7 @@ string Multimedia::get(string p,string v)
 #endif
   else if (isVideo && w) {
     if (p=="aspectratio")
-      r=string(artab[w->aspectRatioMode()]);
+      r=std::string(artab[w->aspectRatioMode()]);
 #if !defined(QT60)
     else if (p=="brightness")
       r=i2s(w->brightness());
@@ -190,7 +190,7 @@ string Multimedia::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Multimedia::set(string p,string v)
+void Multimedia::set(std::string p,std::string v)
 {
   QVideoWidget *w=(QVideoWidget*) widget;
   if ((p=="pause" || p=="play" || p=="stop") && v.size()) {
@@ -210,8 +210,7 @@ void Multimedia::set(string p,string v)
       mediaPlayer.setMedia(QUrl(f));
     else
       mediaPlayer.setMedia(QUrl::fromLocalFile(f));
-  }
-  else if (p=="mute")
+  } else if (p=="mute")
     mediaPlayer.setMuted(remquotes(v)!="0");
 #endif
   else if (p=="pause")
@@ -261,7 +260,7 @@ void Multimedia::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string Multimedia::state()
+std::string Multimedia::state()
 {
   return "";
 }

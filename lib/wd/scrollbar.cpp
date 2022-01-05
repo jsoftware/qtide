@@ -17,7 +17,7 @@
 // position
 
 // ---------------------------------------------------------------------
-ScrollBar::ScrollBar(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+ScrollBar::ScrollBar(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="scrollbar";
   QScrollBar *w=new QScrollBar(Qt::Horizontal);
@@ -65,12 +65,12 @@ void ScrollBar::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string ScrollBar::get(string p,string v)
+std::string ScrollBar::get(std::string p,std::string v)
 {
   QScrollBar *w=(QScrollBar*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("max")+"\012"+ "min"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "value"+"\012";
+    r+=std::string("max")+"\012"+ "min"+"\012"+ "page"+"\012"+ "pos"+"\012"+ "step"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="min")
     r=i2s(w->minimum());
@@ -88,7 +88,7 @@ string ScrollBar::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void ScrollBar::set(string p,string v)
+void ScrollBar::set(std::string p,std::string v)
 {
   QScrollBar *w=(QScrollBar*) widget;
   QString cmd=s2q(p);
@@ -111,7 +111,7 @@ void ScrollBar::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string ScrollBar::state()
+std::string ScrollBar::state()
 {
   QScrollBar *w=(QScrollBar*) widget;
   return spair(id,i2s(w->sliderPosition()));

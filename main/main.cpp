@@ -5,7 +5,7 @@
 #include <QLibrary>
 #include <QString>
 
-using namespace std;
+// using namespace std;
 
 #ifndef _WIN32
 #include <unistd.h>

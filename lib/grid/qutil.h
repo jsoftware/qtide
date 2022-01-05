@@ -3,7 +3,7 @@
 
 #include <QStringList>
 
-using namespace std;
+// using namespace std;
 
 int getcellcount(int,int,QVector<int>);
 int getindexof(int w, QVector<int> p);

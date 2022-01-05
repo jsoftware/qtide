@@ -12,7 +12,7 @@
 extern QuickView2 * quickview2;
 
 // ---------------------------------------------------------------------
-QuickView2::QuickView2(string n, string s, int resizemode, string glver) : QQuickView()
+QuickView2::QuickView2(std::string n, std::string s, int resizemode, std::string glver) : QQuickView()
 {
   QString qn=s2q(n);
   setObjectName(qn);
@@ -23,8 +23,8 @@ QuickView2::QuickView2(string n, string s, int resizemode, string glver) : QQuic
   QSurfaceFormat format;
   if (!glver.empty()) {
     int ver1,ver2;
-    string::size_type d=glver.find(".",0);
-    if (d == string::npos) {
+    std::string::size_type d=glver.find(".",0);
+    if (d == std::string::npos) {
       ver1=atoi(glver.c_str());
       ver2=0;
     } else {

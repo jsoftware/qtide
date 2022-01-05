@@ -18,7 +18,7 @@
 static void totime(double v, int *h, int *m, int *se, int *mi);
 
 // ---------------------------------------------------------------------
-TimeEdit::TimeEdit(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+TimeEdit::TimeEdit(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="timeedit";
   QTimeEdit *w=new QTimeEdit;
@@ -62,12 +62,12 @@ void TimeEdit::valueChanged()
 }
 
 // ---------------------------------------------------------------------
-string TimeEdit::get(string p,string v)
+std::string TimeEdit::get(std::string p,std::string v)
 {
   QTimeEdit *w=(QTimeEdit*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
+    r+=std::string("format")+"\012"+ "max"+"\012"+ "min"+"\012"+ "readonly"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="format")
     r=q2s(w->displayFormat());
@@ -88,7 +88,7 @@ string TimeEdit::get(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void TimeEdit::set(string p,string v)
+void TimeEdit::set(std::string p,std::string v)
 {
   QTimeEdit *w=(QTimeEdit*) widget;
   QString cmd=s2q(p);
@@ -119,7 +119,7 @@ void TimeEdit::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string TimeEdit::state()
+std::string TimeEdit::state()
 {
   QTimeEdit *w=(QTimeEdit*) widget;
   QTime v=w->time();

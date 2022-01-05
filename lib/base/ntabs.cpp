@@ -25,7 +25,7 @@ extern QCompleter *completer;
 #include "state.h"
 #include "recent.h"
 
-using namespace std;
+// using namespace std;
 
 // ---------------------------------------------------------------------
 Ntabs::Ntabs(Note *p)
@@ -115,9 +115,9 @@ QStringList Ntabs::gettablist()
 }
 
 // ---------------------------------------------------------------------
-string Ntabs::gettabstate()
+std::string Ntabs::gettabstate()
 {
-  string r;
+  std::string r;
   Nedit *e;
   int ndx= currentIndex();
   int len=count();

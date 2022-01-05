@@ -45,7 +45,7 @@ void QTableWidgex::mousePressEvent(QMouseEvent* event)
 }
 
 // -------------------------------------------------------------------
-Table::Table(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="table";
   initglobals();
@@ -126,14 +126,14 @@ void Table::applyhdralign()
 }
 
 // ---------------------------------------------------------------------
-string Table::get(string p,string v)
+std::string Table::get(std::string p,std::string v)
 {
   QStringList opt;
   int r,c;
 
   if (p=="property") {
-    string r;
-    r+=string("cell")+"\012"+ "col"+"\012"+ "row"+"\012"+ "table"+"\012";
+    std::string r;
+    r+=std::string("cell")+"\012"+ "col"+"\012"+ "row"+"\012"+ "table"+"\012";
     r+=Child::get(p,v);
     return r;
   } else if (p=="cell") {
@@ -212,7 +212,7 @@ QVector<int> Table::getcellvec(QVector<int> v)
 // ---------------------------------------------------------------------
 // get range for set block, set select
 // r1 [r2] c1 [c2] or empty for all
-bool Table::getrange(string v,int &r1, int &r2, int &c1, int &c2)
+bool Table::getrange(std::string v,int &r1, int &r2, int &c1, int &c2)
 {
   QStringList arg=qsplit(v);
   int n=arg.size();
@@ -261,7 +261,7 @@ QTableWidgetItem * Table::newitem(int r, int c,QString s)
 }
 
 // ---------------------------------------------------------------------
-string Table::readcell(int row,int col)
+std::string Table::readcell(int row,int col)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QTableWidgetItem *m=w->item(row,col);
@@ -280,7 +280,7 @@ string Table::readcell(int row,int col)
 }
 
 // ---------------------------------------------------------------------
-string Table::readcellvalue(int row,int col)
+std::string Table::readcellvalue(int row,int col)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QTableWidgetItem *m=w->item(row,col);
@@ -299,9 +299,9 @@ string Table::readcellvalue(int row,int col)
 }
 
 // ---------------------------------------------------------------------
-string Table::readcolvalue(int col)
+std::string Table::readcolvalue(int col)
 {
-  string colout="";
+  std::string colout="";
   int r;
 
   for (r=0; r<rws; r++)
@@ -310,9 +310,9 @@ string Table::readcolvalue(int col)
 }
 
 // ---------------------------------------------------------------------
-string Table::readrowvalue(int row)
+std::string Table::readrowvalue(int row)
 {
-  string rowout="";
+  std::string rowout="";
   int c;
 
   for (c=0; c<cls; c++)
@@ -321,9 +321,9 @@ string Table::readrowvalue(int row)
 }
 
 // ---------------------------------------------------------------------
-string Table::readtable(string v)
+std::string Table::readtable(std::string v)
 {
-  string tableout="";
+  std::string tableout="";
   int r1,r2,c1,c2;
 
   QStringList opt;
@@ -382,7 +382,7 @@ void Table::resetlen(QVector<int> *v, QVector<int> def)
 }
 
 // ---------------------------------------------------------------------
-void Table::set(string p,string v)
+void Table::set(std::string p,std::string v)
 {
   if (p=="align")
     setalign(v);
@@ -430,7 +430,7 @@ void Table::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setalign(string v)
+void Table::setalign(std::string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
@@ -478,7 +478,7 @@ void Table::setalign(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setbackforeground(int colortype, string s)
+void Table::setbackforeground(int colortype, std::string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
 
@@ -552,7 +552,7 @@ void Table::setbackforeground(int colortype, string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setblock(string v)
+void Table::setblock(std::string v)
 {
   int r1,r2,c1,c2;
   if (!getrange(v,r1,r2,c1,c2)) return;
@@ -675,7 +675,7 @@ void Table::set_cell(int r,int c,QString v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setcell(string v)
+void Table::setcell(std::string v)
 {
   QStringList opt;
 
@@ -694,7 +694,7 @@ void Table::setcell(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setcolwidth(string s)
+void Table::setcolwidth(std::string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QStringList opt;
@@ -725,7 +725,7 @@ void Table::setcolwidth(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setdata(string s)
+void Table::setdata(std::string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
 
@@ -769,7 +769,7 @@ void Table::setdata(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setfontstr(string s)
+void Table::setfontstr(std::string s)
 {
   int c,r;
   QTableWidget *w=(QTableWidget*) widget;
@@ -808,7 +808,7 @@ void Table::setfontstr(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::sethdr(string v)
+void Table::sethdr(std::string v)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QStringList s=qsplit(v);
@@ -826,7 +826,7 @@ void Table::sethdr(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::sethdralign(string v)
+void Table::sethdralign(std::string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   if (!(a.size()==1 || a.size()==cls)) {
@@ -841,7 +841,7 @@ void Table::sethdralign(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setlab(string v)
+void Table::setlab(std::string v)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QStringList s=qsplit(v);
@@ -857,7 +857,7 @@ void Table::setlab(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setprotect(string v)
+void Table::setprotect(std::string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
@@ -927,7 +927,7 @@ void Table::setresizerow()
 }
 
 // ---------------------------------------------------------------------
-void Table::setrowheight(string s)
+void Table::setrowheight(std::string s)
 {
   QTableWidget *w=(QTableWidget*) widget;
   QStringList opt;
@@ -958,7 +958,7 @@ void Table::setrowheight(string s)
 }
 
 // ---------------------------------------------------------------------
-void Table::setscroll(string v)
+void Table::setscroll(std::string v)
 {
   QStringList opt;
   QTableWidget *w=(QTableWidget*) widget;
@@ -983,7 +983,7 @@ void Table::setscroll(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::setselect(string v)
+void Table::setselect(std::string v)
 {
   int r1,r2,c1,c2;
   if (!getrange(v,r1,r2,c1,c2)) return;
@@ -1037,7 +1037,7 @@ void Table::setshape(QStringList opt)
 }
 
 // ---------------------------------------------------------------------
-void Table::setsort(string v)
+void Table::setsort(std::string v)
 {
   int c;
   QTableWidget *w=(QTableWidget*) widget;
@@ -1056,7 +1056,7 @@ void Table::setsort(string v)
 }
 
 // ---------------------------------------------------------------------
-void Table::settype(string v)
+void Table::settype(std::string v)
 {
   QVector<int> a=qs2intvector(s2q(v));
   int n=a.size();
@@ -1101,15 +1101,15 @@ void Table::settype(string v)
 }
 
 // ---------------------------------------------------------------------
-string Table::state()
+std::string Table::state()
 {
-  string r;
+  std::string r;
 
   if (this!=pform->evtchild || event=="mark" || event.substr(0,2)=="mb") {
     r+=spair(id,i2s(row)+" "+i2s(col));
     QTableWidgex *w=(QTableWidgex*) widget;
     QModelIndexList ml=w->selectionModel()->selectedIndexes();
-    string mark="";
+    std::string mark="";
     if (!ml.isEmpty()) {
       int r0,r1,c0,c1;
       r0=rws;

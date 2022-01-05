@@ -14,10 +14,10 @@ class Multimedia : public Child
   Q_OBJECT
 
 public:
-  Multimedia(string n, string s, Form *f, Pane *p);
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  Multimedia(std::string n, std::string s, Form *f, Pane *p);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
   bool isVideo;
 
 private slots:

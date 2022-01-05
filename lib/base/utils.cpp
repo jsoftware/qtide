@@ -27,7 +27,7 @@
 #include "tedit.h"
 #include "term.h"
 
-using namespace std;
+// using namespace std;
 
 extern "C" {
   Dllexport int gethash(const char *, const char *, const int, char *&, int &);
@@ -38,7 +38,7 @@ QWidget *getactiveedit();
 void writewinstate(QWidget *);
 
 bool ShowIde=true;
-static string hashbuf;
+static std::string hashbuf;
 static QList<int> Modifiers =
   QList<int>() << Qt::Key_Alt << Qt::Key_AltGr
   << Qt::Key_Control << Qt::Key_Meta << Qt::Key_Shift;
@@ -177,10 +177,10 @@ QWidget *getactiveedit()
 }
 
 // ---------------------------------------------------------------------
-// get command string in form: mode)text
+// get command std::string in form: mode)text
 QString getcmd(QString mode,QString t)
 {
-  string v=q2s(t.trimmed());
+  std::string v=q2s(t.trimmed());
   const char *c=v.c_str();
   int i=0,p=0,s=(int)v.size();
   for (; i<s; i++) {
@@ -189,7 +189,7 @@ QString getcmd(QString mode,QString t)
   }
   if (p==0) return mode + ")" + t;
   size_t b = v.find_last_of(')',p-1);
-  if (b==string::npos) return t;
+  if (b==std::string::npos) return t;
   v.erase(0,b+1);
   return s2q(v);
 }
@@ -236,7 +236,7 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
 {
   int rc=0;
   QCryptographicHash::Algorithm a;
-  string m=c2s(s);
+  std::string m=c2s(s);
   if (m=="md4")
     a=QCryptographicHash::Md4;
   else if (m=="md5")
@@ -304,13 +304,13 @@ QString getsha1(QString s)
 }
 
 // ---------------------------------------------------------------------
-string getversion()
+std::string getversion()
 {
   QString s=QString::fromUtf8(JQTVERSION);
   QString rt=QString(qVersion());
   s=s.split(":")[1];
   QStringList t=s.split("/");
-  string r=q2s(t[1]);
+  std::string r=q2s(t[1]);
   if ("slim"==t[0])
     r+="s";
   if ("fat"==t[0])

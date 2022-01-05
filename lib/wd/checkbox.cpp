@@ -9,7 +9,7 @@
 #include "wd.h"
 
 // ---------------------------------------------------------------------
-CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
+CheckBox::CheckBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
   type="checkbox";
   QCheckBox *w=new QCheckBox;
@@ -26,26 +26,26 @@ CheckBox::CheckBox(string n, string s, Form *f, Pane *p) : Child(n,s,f,p)
 }
 
 // ---------------------------------------------------------------------
-string CheckBox::get(string p,string v)
+std::string CheckBox::get(std::string p,std::string v)
 {
   QCheckBox *w=(QCheckBox*) widget;
-  string r;
+  std::string r;
   if (p=="property") {
-    r+=string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012"+ "value"+"\012";
+    r+=std::string("caption")+"\012"+ "icon"+"\012"+ "text"+"\012"+ "value"+"\012";
     r+=Child::get(p,v);
   } else if (p=="caption"||p=="text")
     r=q2s(w->text());
   else if (p=="icon")
     r=iconFile;
   else if (p=="value")
-    r=w->isChecked()?(string)"1":(string)"0";
+    r=w->isChecked()?(std::string)"1":(std::string)"0";
   else
     r=Child::get(p,v);
   return r;
 }
 
 // ---------------------------------------------------------------------
-void CheckBox::set(string p,string v)
+void CheckBox::set(std::string p,std::string v)
 {
   QCheckBox *w=(QCheckBox*) widget;
   if (p=="caption" || p=="text")
@@ -87,10 +87,10 @@ void CheckBox::set(string p,string v)
 }
 
 // ---------------------------------------------------------------------
-string CheckBox::state()
+std::string CheckBox::state()
 {
   QCheckBox *w=(QCheckBox*) widget;
-  return spair(id,w->isChecked()?(string)"1":(string)"0");
+  return spair(id,w->isChecked()?(std::string)"1":(std::string)"0");
 }
 
 // ---------------------------------------------------------------------

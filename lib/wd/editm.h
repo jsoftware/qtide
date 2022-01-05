@@ -13,11 +13,11 @@ class Editm : public Child
   Q_OBJECT
 
 public:
-  Editm(string n, string s, Form *f, Pane *p);
-  void cmd(string p, string v);
-  string get(string p,string v);
-  void set(string p,string v);
-  string state();
+  Editm(std::string n, std::string s, Form *f, Pane *p);
+  void cmd(std::string p, std::string v);
+  std::string get(std::string p,std::string v);
+  void set(std::string p,std::string v);
+  std::string state();
 
 private slots:
 
