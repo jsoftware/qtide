@@ -177,7 +177,7 @@ QWidget *getactiveedit()
 }
 
 // ---------------------------------------------------------------------
-// get command std::string in form: mode)text
+// get command string in form: mode)text
 QString getcmd(QString mode,QString t)
 {
   std::string v=q2s(t.trimmed());

@@ -92,7 +92,7 @@ std::string Cmd::getline()
   return str.substr(bgn,pos-bgn-1);
 }
 // ---------------------------------------------------------------------
-// to next ; else return rest of std::string
+// to next ; else return rest of string
 // if star, preserve leading *
 std::string Cmd::getparms(bool star)
 {
@@ -129,7 +129,7 @@ std::string Cmd::getparms(bool star)
 
 // ---------------------------------------------------------------------
 // if there is a starred parameter (i.e. beginning *)
-// this also means std::string not delimited by SOH or LF
+// this also means string not delimited by SOH or LF
 bool Cmd::ifstarred(std::string s)
 {
   char c;
@@ -274,7 +274,7 @@ std::vector<std::string> Cmd::ssplitby(char c)
 }
 
 // ---------------------------------------------------------------------
-// split as qsplits, but returning vector of std::string
+// split as qsplits, but returning vector of string
 std::vector<std::string> Cmd::ssplits()
 {
   skips(WS);
@@ -345,7 +345,7 @@ QStringList qsplit(std::string s,bool star)
 }
 
 // ---------------------------------------------------------------------
-// as qsplit but returning vector of std::string
+// as qsplit but returning vector of string
 std::vector<std::string> ssplit(std::string s)
 {
   Cmd c;

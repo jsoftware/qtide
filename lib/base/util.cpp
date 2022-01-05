@@ -421,7 +421,7 @@ QStringList getfilters(QString s)
 }
 
 // ---------------------------------------------------------------------
-// integer to std::string
+// integer to string
 std::string i2s(int i)
 {
   std::stringstream s;
@@ -432,7 +432,7 @@ std::string i2s(int i)
 }
 
 // ---------------------------------------------------------------------
-// double to std::string
+// double to string
 std::string d2s(double d)
 {
   std::stringstream s;
@@ -594,7 +594,7 @@ QString p2q(QList<int> n)
 }
 
 // ---------------------------------------------------------------------
-// pointer to std::string
+// pointer to string
 std::string p2s(const void *p)
 {
   std::stringstream s;
@@ -851,7 +851,7 @@ QString s2q(std::string s)
 }
 
 // ---------------------------------------------------------------------
-// pair std::strings with zero delimeter
+// pair strings with zero delimeter
 std::string spair(std::string s,std::string t)
 {
   std::string r=s;
@@ -862,7 +862,7 @@ std::string spair(std::string s,std::string t)
 }
 
 // ---------------------------------------------------------------------
-// pair std::strings with zero delimeter
+// pair strings with zero delimeter
 std::string spair(std::string s,QString t)
 {
   std::string r=s;

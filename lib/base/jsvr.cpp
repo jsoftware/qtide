@@ -503,7 +503,7 @@ bool doriv(std::string s,I**v,I*len)
 }
 
 // ---------------------------------------------------------------------
-// jdo with std::string result
+// jdo with string result
 std::string dors(std::string s)
 {
   if (!jt) return "";
@@ -520,7 +520,7 @@ std::string dors(std::string s)
 }
 
 // ---------------------------------------------------------------------
-// set std::string in J
+// set string in J
 void sets(QString name, std::string s)
 {
   int n,hlen,nlen,slen,tlen;
