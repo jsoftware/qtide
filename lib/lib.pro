@@ -26,22 +26,22 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 contains(DEFINES,QTWEBSOCKET): QT += websockets
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
-!lessThan(QT_MAJOR_VERSION, 5): QT += openglwidgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += opengl
 !lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += webenginewidgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += svg
+
+!lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
 TEMPLATE = lib
-# equals(QT_MAJOR_VERSION, 6): QT -= openglwidgets
-# equals(QT_MAJOR_VERSION, 6): QT -= webenginewidgets
 QT -= webkit
-QT += svgwidgets
 TARGET = jqt
 
 # to exclude QtWebEngine, uncomment the following line
 # QT -= webenginewidgets
 
 # to exclude svgview, uncomment the following line
-# QT -= svgwidgets
+# QT -= svg
 
 # to print debug messages for calling JDo,  uncomment the following line
 # DEFINES += DEBUG_JDO
@@ -133,7 +133,7 @@ contains(DEFINES,QT57) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
 }
-!contains(QT,openglwidgets) {
+!contains(QT,opengl) {
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL
 } else {
@@ -176,7 +176,7 @@ contains(DEFINES,QT57) {
   DEFINES += QT_MULTIMEDIA
 }
 
-!contains(QT,svgwidgets) {
+!contains(QT,svg) {
   DEFINES += QT_NO_SVGVIEW
   DEFINES -= QT_SVGVIEW
 } else {
