@@ -73,6 +73,7 @@ cop
 elif [ "`uname`" = "Darwin" ] ; then
 
 if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-arm64/release/libjqt.$JQTVER.dylib ] ; then 
+./maclipo.sh
 coplipo
 
 else

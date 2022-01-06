@@ -26,25 +26,22 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 contains(DEFINES,QTWEBSOCKET): QT += websockets
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
-!lessThan(QT_MAJOR_VERSION, 5): QT += opengl
-!lessThan(QT_MAJOR_VERSION, 5): QT += multimedia
-!lessThan(QT_MAJOR_VERSION, 5): QT += webengine
-!lessThan(QT_MAJOR_VERSION, 5): QT += webenginewidgets 
+!lessThan(QT_MAJOR_VERSION, 5): QT += openglwidgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
+!lessThan(QT_MAJOR_VERSION, 5): QT += webenginewidgets
 
 TEMPLATE = lib
-equals(QT_MAJOR_VERSION, 6): QT -= opengl
-equals(QT_MAJOR_VERSION, 6): QT -= webengine
-equals(QT_MAJOR_VERSION, 6): QT -= webenginewidgets 
+# equals(QT_MAJOR_VERSION, 6): QT -= openglwidgets
+# equals(QT_MAJOR_VERSION, 6): QT -= webenginewidgets
 QT -= webkit
-QT += svg
+QT += svgwidgets
 TARGET = jqt
 
 # to exclude QtWebEngine, uncomment the following line
-# QT -= webengine
 # QT -= webenginewidgets
 
 # to exclude svgview, uncomment the following line
-# QT -= svg
+# QT -= svgwidgets
 
 # to print debug messages for calling JDo,  uncomment the following line
 # DEFINES += DEBUG_JDO
@@ -53,7 +50,7 @@ TARGET = jqt
 JQTFAT = $$(JQTFAT)
 !isEmpty(JQTFAT) {
   message(building fat jqt)
-  QT += qml quick quickwidgets 
+  QT += qml quick quickwidgets
 }
 
 # export JQTSLIM before qmake
@@ -124,11 +121,10 @@ INCLUDEPATH += .
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-!contains(QT,webengine) {
+!contains(QT,webenginewidgets) {
   DEFINES += QT_NO_WEBENGINE
   DEFINES -= QT_WEBENGINE
 } else {
-  QT += webenginewidgets
   DEFINES -= QT_NO_WEBENGINE
   DEFINES += QT_WEBENGINE
 }
@@ -137,7 +133,7 @@ contains(DEFINES,QT57) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
 }
-!contains(QT,opengl) {
+!contains(QT,openglwidgets) {
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL
 } else {
@@ -172,17 +168,15 @@ contains(DEFINES,QT57) {
   DEFINES += QT_QUICKWIDGET
 }
 
-!contains(QT,multimedia) {
-  QT -=  multimediawidgets
+!contains(QT,multimediawidgets) {
   DEFINES += QT_NO_MULTIMEDIA
   DEFINES -= QT_MULTIMEDIA
 } else {
-  QT +=  multimediawidgets
   DEFINES -= QT_NO_MULTIMEDIA
   DEFINES += QT_MULTIMEDIA
 }
 
-!contains(QT,svg) {
+!contains(QT,svgwidgets) {
   DEFINES += QT_NO_SVGVIEW
   DEFINES -= QT_SVGVIEW
 } else {
@@ -229,17 +223,17 @@ HEADERS += \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
-!contains(QT,webkit): HEADERS -= wd/webview.h
-!contains(QT,webengine): HEADERS -= wd/webengine.h wd/webengineview.h
+contains(DEFINES,QT_NO_WEBKIT): HEADERS -= wd/webview.h
+contains(DEFINES,QT_NO_WEBENGINE): HEADERS -= wd/webengine.h wd/webengineview.h
 contains(DEFINES,QT50) {
-  !contains(QT,quick): HEADERS -= wd/quickview2.h
-  !contains(QT,declarative): HEADERS -= wd/quickview1.h
-  !contains(QT,quick): !contains(QT,declarative): HEADERS -= base/qmlje.h
+  contains(DEFINES,QT_NO_QUICKVIEW2): HEADERS -= wd/quickview2.h
+  contains(DEFINES,QT_NO_QUICKVIEW1): HEADERS -= wd/quickview1.h
+  contains(DEFINES,QT_NO_QUICKVIEW2): contains(DEFINES,QT_NO_QUICKVIEW1): HEADERS -= base/qmlje.h
 } else {
-  !contains(QT,declarative): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
+  contains(DEFINES,QT_NO_QUICKVIEW1): HEADERS -= wd/quickview1.h wd/quickview2.h base/qmlje.h
   HEADERS -= wd/quickview2.h
 }
-!contains(QT,quickwidgets): HEADERS -= wd/quickwidget.h
+contains(DEFINES,QT_NO_QUICKWIDGET): HEADERS -= wd/quickwidget.h
 contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
@@ -278,19 +272,19 @@ SOURCES += \
  wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
 
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
-!contains(QT,webkit): SOURCES -= wd/webview.cpp
-!contains(QT,webengine): SOURCES -= wd/webengineview.cpp
+contains(DEFINES,QT_NO_WEBKIT): SOURCES -= wd/webview.cpp
+contains(DEFINES,QT_NO_WEBENGINE): SOURCES -= wd/webengineview.cpp
 contains(DEFINES,QT50) {
-  !contains(QT,quick): SOURCES -= wd/quickview2.cpp
-  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp
-  !contains(QT,quick): !contains(QT,declarative): SOURCES -= base/qmlje.cpp
+  contains(DEFINES,QT_NO_QUICKVIEW2): SOURCES -= wd/quickview2.cpp
+  contains(DEFINES,QT_NO_QUICKVIEW1): SOURCES -= wd/quickview1.cpp
+  contains(DEFINES,QT_NO_QUICKVIEW2): contains(DEFINES,QT_NO_QUICKVIEW1): SOURCES -= base/qmlje.cpp
 } else {
-  !contains(QT,declarative): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
+  contains(DEFINES,QT_NO_QUICKVIEW1): SOURCES -= wd/quickview1.cpp wd/quickview2.cpp base/qmlje.cpp
   SOURCES -= wd/quickview2.cpp
 }
-!contains(QT,quickwidgets): SOURCES -= wd/quickwidget.cpp
+contains(DEFINES,QT_NO_QUICKWIDGET): SOURCES -= wd/quickwidget.cpp
 contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
-contains(DEFINES,QT_NO_PRINTER ): SOURCES -= wd/glz.cpp wd/prtobj.cpp
+contains(DEFINES,QT_NO_PRINTER): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
