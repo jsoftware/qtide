@@ -67,7 +67,11 @@ std::string Child::get(std::string p,std::string v)
   } else if (p=="extent") {
     if (widget) {
       QFontMetrics fm = QFontMetrics(widget->font());
+#ifdef QT512
       r=i2s(fm.horizontalAdvance(s2q(v)))+" "+i2s(fm.height());
+#else
+      r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+#endif
     }
   } else if (p=="focuspolicy") {
     if (widget) {

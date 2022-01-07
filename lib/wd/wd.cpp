@@ -1039,8 +1039,12 @@ void wdqueries(std::string s)
     result="jqt";
     return;
   } else if (s=="qosver") {
+#ifdef QT57
     QSysInfo qsi;
     result=q2s(qsi.prettyProductName()+" "+qsi.kernelVersion());
+#else
+    result="";
+#endif
     return;
   } else if (s=="qpath") {
     result=q2s(QApplication::applicationDirPath());

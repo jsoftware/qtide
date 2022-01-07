@@ -1,7 +1,9 @@
 #ifndef OPENGL2_H
 #define OPENGL2_H
 
+#ifdef QT57
 #define USE_QOpenGLWidget
+#endif
 
 #ifdef USE_QOpenGLWidget
 #include <QOpenGLWidget>

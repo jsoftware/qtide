@@ -23,7 +23,6 @@
 #else
 #define _KeepEmptyParts QString::KeepEmptyParts
 #define _SkipEmptyParts QString::SkipEmptyParts
-#define horizontalAdvance width
 #endif
 
 #include "util.h"

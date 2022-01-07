@@ -741,7 +741,11 @@ QStringList qslprependeach(QString p,QStringList s)
 QStringList qslreverse(QStringList s)
 {
   int i,n=s.size();
+#ifdef QT515
   for (i=0; i<n/2; i++) s.swapItemsAt(i,n-1-i);
+#else
+  for (i=0; i<n/2; i++) s.swap(i,n-1-i);
+#endif
   return s;
 }
 

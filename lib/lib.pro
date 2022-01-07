@@ -28,14 +28,17 @@ contains(DEFINES,QTWEBSOCKET): QT += websockets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
 !lessThan(QT_MAJOR_VERSION, 5): QT += opengl
 !lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
-!lessThan(QT_MAJOR_VERSION, 5): QT += webenginewidgets
+!lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += svg
+!contains(DEFINES,QT57): QT += webkitwidgets
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
 TEMPLATE = lib
-QT -= webkit
 TARGET = jqt
+
+# to exclude webkit, uncomment the following line
+QT -= webkitwidgets
 
 # to exclude QtWebEngine, uncomment the following line
 # QT -= webenginewidgets
@@ -58,7 +61,7 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
-  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webenginewidgets
+  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webenginewidgets webkit webkitwidgets
 }
 
 
@@ -124,9 +127,19 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 !contains(QT,webenginewidgets) {
   DEFINES += QT_NO_WEBENGINE
   DEFINES -= QT_WEBENGINE
+  QT -= webengine
 } else {
   DEFINES -= QT_NO_WEBENGINE
   DEFINES += QT_WEBENGINE
+}
+
+!contains(QT,webkitwidgets) {
+  DEFINES += QT_NO_WEBKIT
+  DEFINES -= QT_WEBKIT
+  QT -= webkit
+} else {
+  DEFINES -= QT_NO_WEBKIT
+  DEFINES += QT_WEBKIT
 }
 
 contains(DEFINES,QT57) {
@@ -136,6 +149,7 @@ contains(DEFINES,QT57) {
 !contains(QT,opengl) {
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL
+  QT -= openglwidgets
 } else {
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
@@ -171,6 +185,7 @@ contains(DEFINES,QT57) {
 !contains(QT,multimediawidgets) {
   DEFINES += QT_NO_MULTIMEDIA
   DEFINES -= QT_MULTIMEDIA
+  QT -=  multimedia
 } else {
   DEFINES -= QT_NO_MULTIMEDIA
   DEFINES += QT_MULTIMEDIA

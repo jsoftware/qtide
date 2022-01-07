@@ -354,7 +354,11 @@ int glqextent(char *s,int *wh)
 #else
   QFontMetrics fm = QFontMetrics(FontExtent->font);
 #endif
+#ifdef QT512
   *(wh) = fm.horizontalAdvance(QString::fromUtf8(s));
+#else
+  *(wh) = fm.width(QString::fromUtf8(s));
+#endif
   *(wh+1) = fm.height();
   return 0;
 }
@@ -377,7 +381,11 @@ int glqextentw(char *s,int *wi)
   QFontMetrics fm = QFontMetrics(FontExtent->font);
 #endif
   for (int i=0; i<n.size(); i++) {
+#ifdef QT512
     wi[i] = fm.horizontalAdvance(n.at(i));
+#else
+    wi[i] = fm.width(n.at(i));
+#endif
   }
   return 0;
 }

@@ -199,7 +199,11 @@ std::string Form::get(std::string p,std::string v)
     r=i2s(this->isEnabled());
   } else if (p=="extent") {
     QFontMetrics fm = QFontMetrics(this->font());
+#ifdef QT512
     r=i2s(fm.horizontalAdvance(s2q(v)))+" "+i2s(fm.height());
+#else
+    r=i2s(fm.width(s2q(v)))+" "+i2s(fm.height());
+#endif
   } else if (p=="focus") {
     r=this->getfocus();
   } else if (p=="focuspolicy") {

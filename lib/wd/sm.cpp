@@ -268,7 +268,11 @@ std::string smgettermcwh()
   int sb=app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
   sb+=4; // padding
   int fh=fm.height();
+#ifdef QT512
   int fw=fm.horizontalAdvance("X");
+#else
+  int fw=fm.width("X");
+#endif
   int ch=(z.height()-sb)/fh;
   int cw=(z.width()-sb)/fw;
   return q2s(QString::number(cw)+" "+QString::number(ch));

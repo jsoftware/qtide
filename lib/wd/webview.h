@@ -2,7 +2,7 @@
 #define WEBVIEW_H
 
 #include <QUrl>
-#include <QWebView>
+#include <QtWebKitWidgets/QWebView>
 #include "child.h"
 
 class Form;
