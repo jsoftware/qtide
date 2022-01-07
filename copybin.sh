@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # run in jqt directory
+# work for redhat/debian and macos
 
 S=$HOME/dev/apps/ide/jqt
 cd $S || exit 1
@@ -14,6 +15,7 @@ cop(){
 # $2 CPU
 if [ $PLATFORM = "mac" ] ; then
 SUDO=
+SLIB=lib
 JQTAPP=jqt.app/Contents/MacOS
 EXT=.dylib
 VEXT=.$VER.dylib
@@ -24,17 +26,22 @@ PX=/usr/local
 fi
 else
 SUDO=sudo
+if [ $ID = "redhat" ] ; then
+SLIB=lib64
+else
+SLIB=lib/x86_64-linux-gnu
+fi
 JQTAPP=
 EXT=.so
 VEXT=.so.$VER
 PX=/usr
 fi
 
-$SUDO mv -f $PX/lib/libjqt$VEXT /tmp/libjqt$VEXT.old
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old
 $SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old
-$SUDO cp bin/$PLATFORM-$CPU/release/libjqt$EXT $PX/lib/libjqt$VEXT
+$SUDO cp bin/$PLATFORM-$CPU/release/libjqt$EXT $PX/$SLIB/libjqt$VEXT
 $SUDO cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt $PX/bin/jqt-$VER
-$SUDO chmod 755 $PX/lib/libjqt$VEXT
+$SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
 mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old
@@ -48,15 +55,16 @@ coplipo(){
 # $2 CPU
 
 SUDO=
+SLIB=lib
 EXT=.dylib
 VEXT=.$VER.dylib
 PX=/opt/homebrew
 
-$SUDO mv -f $PX/lib/libjqt$VEXT /tmp/libjqt$VEXT.old
+$SUDO mv -f $PX/$SBIB/libjqt$VEXT /tmp/libjqt$VEXT.old
 $SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old
-$SUDO cp bin/libjqt.$JQTVER$EXT $PX/lib/libjqt$VEXT
+$SUDO cp bin/libjqt.$JQTVER$EXT $PX/$SBIB/libjqt$VEXT
 $SUDO cp bin/jqt $PX/bin/jqt-$VER
-$SUDO chmod 755 $PX/lib/libjqt$VEXT
+$SUDO chmod 755 $PX/$SBIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
 mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old
@@ -66,6 +74,11 @@ cp bin/jqt ~/share/jsoftware/j$JVER/bin/.
 }
 
 if [ "`uname`" = "Linux" ] ; then
+if [ -f /etc/redhat-release ]; then
+ID='redhat'
+else
+ID='debian'
+fi
 PLATFORM=linux
 CPU=x86_64
 cop
