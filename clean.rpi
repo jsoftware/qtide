@@ -1,7 +1,0 @@
-#!/bin/bash
-
-S=$(dirname "$0")
-
-rm -rf $S/bin/linux-armv6l
-rm -rf $S/lib/build/linux-armv6l
-rm -rf $S/main/build/linux-armv6l

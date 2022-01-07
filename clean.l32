@@ -1,7 +1,0 @@
-#!/bin/bash
-
-S=$(dirname "$0")
-
-rm -rf $S/bin/linux-x86
-rm -rf $S/lib/build/linux-x86
-rm -rf $S/main/build/linux-x86

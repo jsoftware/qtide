@@ -15,7 +15,8 @@ if [ $? -eq 1 ]; then
   QM=qmake-qt5
 fi
 
-./clean.sh
+# old version of astyle in raspbian
+./clean.sh || true
 ./clean.l64
 
 cd lib

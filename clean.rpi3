@@ -1,7 +1,0 @@
-#!/bin/bash
-
-S=$(dirname "$0")
-
-rm -rf $S/bin/linux-aarch64
-rm -rf $S/lib/build/linux-aarch64
-rm -rf $S/main/build/linux-aarch64
