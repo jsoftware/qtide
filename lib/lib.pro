@@ -23,14 +23,16 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
  DEFINES += QT515
 }
 
-contains(DEFINES,QTWEBSOCKET): QT += websockets
+contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57) QT += websockets
+contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += printsupport
-!lessThan(QT_MAJOR_VERSION, 5): QT += opengl
+!lessThan(QT_MAJOR_VERSION, 4): QT += opengl
 !lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
 !lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += svg
-!contains(DEFINES,QT57): QT += webkitwidgets
+!lessThan(QT_MAJOR_VERSION, 5): !contains(DEFINES,QT57): QT += webkit webkitwidgets
+lessThan(QT_MAJOR_VERSION, 5): QT += webkit
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
@@ -38,7 +40,7 @@ TEMPLATE = lib
 TARGET = jqt
 
 # to exclude webkit, uncomment the following line
-QT -= webkitwidgets
+# QT -= webkit webkitwidgets
 
 # to exclude QtWebEngine, uncomment the following line
 # QT -= webenginewidgets
@@ -133,10 +135,10 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
   DEFINES += QT_WEBENGINE
 }
 
-!contains(QT,webkitwidgets) {
+!contains(QT,webkit) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
-  QT -= webkit
+  QT -= webkitwidgets
 } else {
   DEFINES -= QT_NO_WEBKIT
   DEFINES += QT_WEBKIT

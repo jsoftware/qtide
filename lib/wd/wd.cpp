@@ -19,7 +19,9 @@
 #endif
 #endif
 #ifndef QT_NO_OPENGL
+#ifdef QT50
 #include <QOpenGLContext>
+#endif
 #endif
 
 #include "bitmap.h"
@@ -1002,7 +1004,11 @@ void wdqueries(std::string s)
       result=i2s(0);
       return;
     }
+#ifdef QT50
     result=i2s(1+QOpenGLContext::openGLModuleType());
+#else
+    result=i2s(1);
+#endif
     return;
 #else
     result=i2s(0);

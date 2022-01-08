@@ -183,7 +183,11 @@ void Qwebview::buttonEvent(QEvent::Type type, QMouseEvent *event)
 void Qwebview::wheelEvent(QWheelEvent *event)
 {
   char deltasign = ' ';
+#ifdef QT50
   int delta = event->angleDelta().y() / 8;  // degree
+#else
+  int delta = event->delta() / 8;  // degree
+#endif
   if (delta<0) {
     delta = -delta;
     deltasign = '_';

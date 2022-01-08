@@ -219,7 +219,11 @@ void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
 void Qbrowser::wheelEvent(QWheelEvent *event)
 {
   char deltasign = ' ';
+#if defined(QT50)
   int delta = event->angleDelta().y() / 8;  // degree
+#else
+  int delta = event->delta() / 8;  // degree
+#endif
   if (delta<0) {
     delta = -delta;
     deltasign = '_';

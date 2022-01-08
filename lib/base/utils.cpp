@@ -243,6 +243,7 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
     a=QCryptographicHash::Md5;
   else if (m=="sha1")
     a=QCryptographicHash::Sha1;
+#ifdef QT50
   else if (m=="sha224")
     a=QCryptographicHash::Sha224;
   else if (m=="sha256")
@@ -259,6 +260,7 @@ int gethash(const char *s, const char *t, const int wid, char *&msg, int &len)
     a=QCryptographicHash::Sha3_384;
   else if (m=="sha3_512")
     a=QCryptographicHash::Sha3_512;
+#endif
   else {
     rc=1;
     hashbuf="Hash type unknown: " + m;

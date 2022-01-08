@@ -14,7 +14,9 @@ static std::string wsconnect();
 static std::string wsclose();
 static std::string wslisten();
 static std::string wsquery();
+#ifdef QT50
 static std::string wsstate();
+#endif
 static std::string wssend(int binary);
 
 static std::vector<std::string> arg;
@@ -44,8 +46,10 @@ std::string ws(std::string p)
     return wsclose();
   if (type=="query")
     return wsquery();
+#ifdef QT50
   if (type=="state")
     return wsstate();
+#endif
   error("invalid ws cmd: " + type);
   return "";
 }
@@ -131,6 +135,7 @@ std::string wsquery()
   return r;
 }
 
+#ifdef QT50
 // ---------------------------------------------------------------------
 std::string wsstate()
 {
@@ -148,6 +153,7 @@ std::string wsstate()
   }
   return r;
 }
+#endif
 
 // ---------------------------------------------------------------------
 std::string wssend(int binary)
