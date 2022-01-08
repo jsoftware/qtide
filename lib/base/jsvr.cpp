@@ -432,6 +432,7 @@ int jefirst(int type,char* arg)
   strcat(input,"'");
   r=jedo(input);
   if (r) {
+    qDebug() << QString(input);
     qDebug() << "j first line error: " << QString::number(r);
   }
   free(input);

@@ -53,6 +53,9 @@ win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 
+# uncomment the next to open windows console to display qDebug() messages
+# win32:CONFIG += console
+
 CONFIG+= release
 # CONFIG+= debug
 CONFIG(debug, debug|release) {

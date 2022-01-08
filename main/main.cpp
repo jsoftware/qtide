@@ -84,10 +84,6 @@ int main(int argc, char *argv[])
     strcpy(argv[1],"-jprofile");  // no buffer overflow
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
-  if(!(QFile(s.append(".dll"))).exists()) {
-    s= QString("jqt")+"-"+JDLLVER+".dll";
-    fhs = true;
-  }
 #else
 #define J_STACK  0x1000000uL // 16mb
 // set stack size to get limit error instead of crash
