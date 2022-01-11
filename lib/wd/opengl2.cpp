@@ -174,6 +174,8 @@ void Opengl2::wheelEvent(QWheelEvent *event)
     deltasign = '_';
   }
 
+  Q_UNUSED(deltasign);
+
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
 #if defined(QT515)

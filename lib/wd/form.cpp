@@ -491,7 +491,7 @@ void Form::settaborder(std::string p)
 void Form::settheme(std::string theme)
 {
   if (theme == "dark") {
-    QFile f(":qdarkstyle/style.qss");
+    QFile f(":qdarkstyle/dark/style.qss");
     f.open(QFile::ReadOnly | QFile::Text);
     QTextStream ts(&f);
     setStyleSheet(ts.readAll());
