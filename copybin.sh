@@ -60,11 +60,13 @@ EXT=.dylib
 VEXT=.$VER.dylib
 PX=/opt/homebrew
 
-$SUDO mv -f $PX/$SBIB/libjqt$VEXT /tmp/libjqt$VEXT.old
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old
 $SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old
-$SUDO cp bin/libjqt.$JQTVER$EXT $PX/$SBIB/libjqt$VEXT
+echo cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
+echo cp bin/jqt $PX/bin/jqt-$VER
+$SUDO cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
 $SUDO cp bin/jqt $PX/bin/jqt-$VER
-$SUDO chmod 755 $PX/$SBIB/libjqt$VEXT
+$SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
 mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old

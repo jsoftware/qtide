@@ -16,7 +16,7 @@ int glzqwh(float *wh, int unit)
 {
   if (!wh) return 1;
   CHKPAINTER2
-  QSizeF size = Printer->pageLayout().pageSize().size((QPageSize::Unit)unit);
+  QRectF size = Printer->pageRect((QPrinter::Unit)unit);
   wh[0] = (float) size.width();
   wh[1] = (float) size.height();
   return 0;
