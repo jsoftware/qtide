@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
-  if(s.startsWith("/usr/local/bin")||("/opt/homebrew/bin")) {
+  if(s.startsWith("/usr/local/bin")||s.startsWith("/opt/homebrew/bin")) {
 #else
   if(s.startsWith("/usr/bin")) {
 #endif
