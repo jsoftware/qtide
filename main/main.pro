@@ -2,7 +2,7 @@
 # version info
 include(../common.pri)
 
-JDLLVER = 9.03    # ignored if not FHS
+JDLLVER = 9.04    # ignored if not FHS
 
 !lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
