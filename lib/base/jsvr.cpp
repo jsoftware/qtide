@@ -25,7 +25,6 @@
 void * jdllproc=0;
 void * jdlljt=0;
 void * hjdll=0;
-QString jdllver="x.xx";  // ignored if not FHS
 
 static char pathetcpx[PLEN];
 static char pathexec0[PLEN];
@@ -288,12 +287,12 @@ void jepath(char* arg, char* lib)
       strcpy(pathdll,JDLLNAME);
 #if defined(__APPLE__)
       strcat(pathdll,".");
-      strcat(pathdll,jdllver.toUtf8().constData());
+      strcat(pathdll,JDLLVER);
       strcat(pathdll,JDLLEXT);
 #else
       strcat(pathdll,JDLLEXT);
       strcat(pathdll,".");
-      strcat(pathdll,jdllver.toUtf8().constData());
+      strcat(pathdll,JDLLVER);
 #endif
     }
   }
@@ -373,7 +372,7 @@ int jefirst(int type,char* arg)
         strcat(input,"(3 : '0!:0 y')<'");
         strcat(input,pathetcpx);
         strcat(input,"/etc/j/");
-        strcat(input,jdllver.toUtf8().constData());
+        strcat(input,JDLLVER);
       }
       strcat(input,filesepx);
       strcat(input,"profile.ijs'");

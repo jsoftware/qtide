@@ -6,8 +6,8 @@
 S=$HOME/dev/apps/ide/jqt
 cd $S || exit 1
 
-VER=9.03
-JVER=903
+VER=9.04
+JVER=904
 JQTVER=2.0.1
 
 cop(){
@@ -18,7 +18,7 @@ SUDO=
 SLIB=lib
 JQTAPP=jqt.app/Contents/MacOS
 EXT=.dylib
-VEXT=.$VER.dylib
+VEXT=.$JQTVER.dylib
 if [ $CPU = "arm64" ] ; then
 PX=/opt/homebrew
 else
@@ -33,19 +33,19 @@ SLIB=lib/x86_64-linux-gnu
 fi
 JQTAPP=
 EXT=.so
-VEXT=.so.$VER
+VEXT=.so.$JQTVER
 PX=/usr
 fi
 
-$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old
-$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old || true
+$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old || true
 $SUDO cp bin/$PLATFORM-$CPU/release/libjqt$EXT $PX/$SLIB/libjqt$VEXT
 $SUDO cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
-mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old
-mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old
+mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old || true
+mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old || true
 cp bin/$PLATFORM-$CPU/release/libjqt$EXT ~/share/jsoftware/j$JVER/bin/.
 cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ~/share/jsoftware/j$JVER/bin/.
 }
@@ -57,11 +57,11 @@ coplipo(){
 SUDO=
 SLIB=lib
 EXT=.dylib
-VEXT=.$VER.dylib
+VEXT=.$JQTVER.dylib
 PX=/opt/homebrew
 
-$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old
-$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old || true
+$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old || true
 echo cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
 echo cp bin/jqt $PX/bin/jqt-$VER
 $SUDO cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
@@ -69,8 +69,8 @@ $SUDO cp bin/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
-mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old
-mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old
+mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old || true
+mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old || true
 cp bin/libjqt.$JQTVER$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT
 cp bin/jqt ~/share/jsoftware/j$JVER/bin/.
 }

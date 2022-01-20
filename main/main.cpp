@@ -102,9 +102,9 @@ int main(int argc, char *argv[])
   if(s.startsWith("/usr/bin")) {
 #endif
 #if defined(__MACH__)
-    s= QString("libjqt.")+JDLLVER+QString(".dylib");
+    s= QString("libjqt.")+QString(APP_VERSION)+QString(".dylib");
 #else
-    s= QString("libjqt.so")+"."+JDLLVER;
+    s= QString("libjqt.so")+"."+QString(APP_VERSION);
 #endif
     fhs = true;
   }

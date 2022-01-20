@@ -2,8 +2,6 @@
 # version info
 include(../common.pri)
 
-JDLLVER = 9.04    # ignored if not FHS
-
 !lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
  !lessThan(QT_MINOR_VERSION,7): DEFINES += QT57
@@ -75,6 +73,7 @@ RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 macx:CONFIG += c++11
 

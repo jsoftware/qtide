@@ -115,15 +115,13 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-# DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
-
 macx:CONFIG += c++11
 win32:CONFIG += dll console
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 DEPENDPATH += .
 INCLUDEPATH += .
 
-
+DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 !contains(QT,webenginewidgets) {

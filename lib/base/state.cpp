@@ -58,7 +58,6 @@ extern void regQmlJE();
 #endif
 
 extern bool FHS;
-extern QString jdllver;
 extern void wdreset();
 extern Tedit *tedit;
 
@@ -743,15 +742,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
-  if (FHS) {
-#ifdef _WIN32
-    jdllver=LibName.mid(5+LibName.lastIndexOf(".dll."));
-#elif defined(__MACH__)
-    jdllver=LibName.mid(8+LibName.indexOf("/libjqt."),LibName.length()-LibName.lastIndexOf(".dylib")-2);
-#else
-    jdllver=LibName.mid(4+LibName.lastIndexOf(".so."));
-#endif
-  }
 #if !defined(QT515)
 #ifdef QTWEBSOCKET
   qsrand(QDateTime::currentMSecsSinceEpoch());
