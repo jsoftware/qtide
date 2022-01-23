@@ -21,6 +21,13 @@ Opengl::Opengl(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   QGLFormat qglFormat;
   qglFormat.setSampleBuffers(true);
 #endif
+#ifdef USE_QOpenGLWidget
+  if (opt.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+  else qglFormat.setProfile(QSurfaceFormat::CoreProfile);
+#else
+  if (opt.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
+  else qglFormat.setProfile(QGLFormat::CoreProfile);
+#endif
   int l=opt.indexOf("version");
   if ((l!=-1) && (l<opt.size()-1) && 0!=opt.at(l+1).toDouble()) {
     int ver1,ver2;
@@ -35,14 +42,11 @@ Opengl::Opengl(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
     }
 //    qDebug() << QString::number(ver1) << QString::number(ver2);
     qglFormat.setVersion(ver1,ver2);
-  }
-#ifdef USE_QOpenGLWidget
-  if (opt.contains("compatibility")) qglFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-  else qglFormat.setProfile(QSurfaceFormat::CoreProfile);
-#else
-  if (opt.contains("compatibility")) qglFormat.setProfile(QGLFormat::CompatibilityProfile);
-  else qglFormat.setProfile(QGLFormat::CoreProfile);
+  } else {
+#ifdef __MACH__
+    qglFormat.setVersion(4,1);
 #endif
+  }
 
   Opengl2 *w= new Opengl2(this, qglFormat);
   widget=(QWidget *) w;
