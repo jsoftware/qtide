@@ -297,8 +297,8 @@ void _stdcall Joutput(J jt,int type, char* s)
   Q_ASSERT(tedit);
   int n=(int)strlen(s);
   if (n==0) return;
-  if (s[n-1]=='\n') s[n-1]='\0';
-  QString t=QString::fromUtf8(s);
+//  if (s[n-1]=='\n') s[n-1]='\0';
+  QString t=QString::fromUtf8(s,(s[n-1]=='\n')?n-1:n);
 
   if (MTYOER==type && runshow)
     t=runshowclean(t);
