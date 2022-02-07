@@ -20,7 +20,7 @@ Run:
 
 Example shell script:
 
-#!/bin/bash
+#!/bin/sh
 J=~/j9
 cd $J
 bin/jqt "$@"

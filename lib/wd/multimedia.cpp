@@ -137,7 +137,11 @@ std::string Multimedia::get(std::string p,std::string v)
   std::string r;
   if (p=="property") {
     if (isVideo && w)
+#if !defined(QT60)
       r+=std::string("aspectratio")+"\012"+ "brightness"+"\012"+ "contrast"+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "hue"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "saturation"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+#else
+      r+=std::string("aspectratio")+"\012"+ "duration"+"\012"+ "error"+"\012"+ "fullscreen"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
+#endif
     else
       r+=std::string("duration")+"\012"+ "error"+"\012"+ "mute"+"\012"+ "playstate"+"\012"+ "position"+"\012"+ "seekable"+"\012"+ "status"+"\012"+ "volume"+"\012";
     r+=Child::get(p,v);

@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 #
 # run in jqt directory
 
 S=$(dirname "$0")
 
-if [ "`uname`" = "Darwin" ] ; then
- export QMAKESPEC=macx-g++
-fi
-
 # use clang instead of g++
 # export QMAKESPEC=linux-clang
+
+if [ "`uname`" = "Darwin" ] && [ "$QMAKESPEC"x = "x" ] ; then
+ export QMAKESPEC=macx-g++
+fi
 
 # QM=/usr/local/bin/qmake
 QM="${QM:=qmake}"

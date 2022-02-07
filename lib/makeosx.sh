@@ -1,5 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
-qmake -spec macx-g++
-make
+qmake -spec macx-g++ && make
 

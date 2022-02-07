@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # run in jqt directory
 # work for redhat/debian and macos

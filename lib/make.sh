@@ -1,5 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-qmake
-make
-
+qmake && make
