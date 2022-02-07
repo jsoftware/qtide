@@ -4,6 +4,10 @@
 
 S=$(dirname "$0")
 
+if [ "`uname`" = "Darwin" ] ; then
+ export QMAKESPEC=macx-g++
+fi
+
 # use clang instead of g++
 # export QMAKESPEC=linux-clang
 

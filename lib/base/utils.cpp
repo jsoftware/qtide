@@ -622,7 +622,11 @@ QStringList shell(QString cmd, QString dir)
   QProcess p;
   if (!dir.isEmpty())
     p.setWorkingDirectory(dir);
+#if defined(QT60)
+  p.startCommand(cmd);
+#else
   p.start(cmd,QStringList());
+#endif
   try {
     if (!p.waitForStarted())
       return r;

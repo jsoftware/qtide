@@ -1,6 +1,7 @@
 
 # version info
 include(../common.pri)
+message($$QMAKESPEC)
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
