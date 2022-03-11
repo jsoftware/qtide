@@ -1,6 +1,6 @@
 # included by main.pro and lib.pro
 
-VERSION = 2.0.1
+VERSION = 2.0.2
 JDLLVER = 9.04    # ignored if not FHS
 
 JQTBUILD = "full"
