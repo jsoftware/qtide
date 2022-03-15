@@ -1,6 +1,6 @@
 #!/bin/sh
 
-JQTVER=2.0.1
+JQTVER=2.0.2
 
 if [ "`uname`" = "Darwin" ] ; then
 if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-arm64/release/libjqt.$JQTVER.dylib ] ; then
