@@ -16,7 +16,7 @@
 #define playbackStateChanged stateChanged
 #define PlaybackState State
 #endif
-#if defined(QT512)
+#if defined(QT515)
 #define _KeepEmptyParts Qt::KeepEmptyParts
 #define _SkipEmptyParts Qt::SkipEmptyParts
 #define setTabStopWidth setTabStopDistance
