@@ -392,7 +392,11 @@ QString mbprint(bool iftext)
     d->setDefaultFont(config.Font);
 #ifdef QT50
     d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-    d->setPageSize(config.Printer->pageLayout().pageSize().size(QPageSize::Millimeter));
+ #ifdef QT62
+    d->setPageSize(config.Printer->pageLayout().paintRectPixels(config.Printer->resolution()).size());
+ #else
+    d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+ #endif
 #else
     d->documentLayout()->setPaintDevice(config.Printer);
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
@@ -474,7 +478,11 @@ QString mbprintx(bool iftext)
   }
 #ifdef QT50
   d->documentLayout()->setPaintDevice((QPagedPaintDevice *)config.Printer);
-  d->setPageSize(config.Printer->pageLayout().pageSize().size(QPageSize::Millimeter));
+ #ifdef QT62
+  d->setPageSize(config.Printer->pageLayout().paintRectPixels(config.Printer->resolution()).size());
+ #else
+  d->setPageSize(QSizeF(config.Printer->pageRect().size()));
+ #endif
   d->print((QPagedPaintDevice *)config.Printer);
 #else
   d->documentLayout()->setPaintDevice(config.Printer);
