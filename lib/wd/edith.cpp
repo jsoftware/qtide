@@ -185,11 +185,11 @@ void Edith::printPreview(QPrinter * printer)
   QTextDocument *d=w->document()->clone();
 #ifdef QT50
   d->documentLayout()->setPaintDevice((QPagedPaintDevice *)printer);
- #ifdef QT62
+#ifdef QT62
   d->setPageSize(printer->pageLayout().paintRectPixels(printer->resolution()).size());
- #else
+#else
   d->setPageSize(QSizeF(printer->pageRect().size()));
- #endif
+#endif
   d->print((QPagedPaintDevice *)printer);
 #else
   d->documentLayout()->setPaintDevice(printer);
