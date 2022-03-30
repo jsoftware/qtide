@@ -8,7 +8,7 @@ cd $S || exit 1
 
 VER=9.04
 JVER=904
-JQTVER=2.0.2
+JQTVER=2.0.3
 
 cop(){
 # $1 PLATFORM
