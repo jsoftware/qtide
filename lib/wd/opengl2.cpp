@@ -71,9 +71,11 @@ QPixmap Opengl2::getpixmap()
 // ---------------------------------------------------------------------
 void Opengl2::initializeGL()
 {
-  pchild->event="initialize";
-  pchild->pform->signalevent(pchild);
-  initialized = true;
+  if(!initialized) {
+    initialized = true;
+    pchild->event="initialize";
+    pchild->pform->signalevent(pchild);
+  }
 }
 
 // ---------------------------------------------------------------------
