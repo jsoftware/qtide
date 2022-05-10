@@ -85,4 +85,16 @@ jobs:
        tag: build
        artifacts: "jqt-win.zip,jqt-win-slim.zip"
        token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true 
+       allowUpdates: true
+
+ webhook:
+  name: Run Webhook
+  runs-on: ubuntu-18.04
+  needs: jqtide
+  steps:
+   - name: update server
+     uses: distributhor/workflow-webhook@v2
+     env:
+      webhook_url: ${{ secrets.WEBHOOK_URL }}
+      webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+      data: '{ "id": "jqtbuild" }'
