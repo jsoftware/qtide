@@ -85,4 +85,4 @@ jobs:
        tag: build
        artifacts: "jqt-win.zip,jqt-win-slim.zip"
        token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
+       allowUpdates: true 
