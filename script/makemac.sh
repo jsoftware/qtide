@@ -6,7 +6,7 @@ export QMAKESPEC=macx-clang
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/clang_64/bin:$PATH
 
 run() {
- clean.l64
+ ./clean.l64
  cd lib
  qmake
  make

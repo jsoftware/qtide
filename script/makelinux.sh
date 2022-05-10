@@ -6,7 +6,7 @@ export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/clang_64/bin:$PATH
 export QMAKE_CXXFLAGS="-fno-sized-deallocation"
 
 run() {
- clean.l64
+ ./clean.l64
  cd lib
  qmake && make
  cd ../main
