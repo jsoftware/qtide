@@ -1,0 +1,88 @@
+name: JQtide
+
+on:
+ push:
+  branches:
+   - master
+   - main
+
+permissions: write-all
+
+jobs:
+ jqtide:
+  name: JQtide
+  runs-on: ${{ matrix.os }}
+
+  strategy:
+   matrix:
+    include:
+      - os: ubuntu-18.04
+        version: 5.12.8
+        modules: 'qtwebengine'
+      - os: macos-10.15
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      - os: windows-2019
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt
+     uses: jurplel/install-qt-action@v2
+     with:
+      version: ${{ matrix.version }}
+      target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: ${{ matrix.modules }}
+      aqtversion: '==2.1.0'
+
+   - name: Compile JQtide (Linux)
+     if: runner.os == 'Linux'
+     env:
+      CC: clang
+      USE_SLEEF: 1
+     run: script/makelinux.sh ${{ matrix.version }}
+
+   - name: Compile JQtide (macOS)
+     if: runner.os == 'macOS'
+     env:
+      CC: clang
+      USE_SLEEF: 1
+     run: script/makemac.sh ${{ matrix.version }}
+
+   - name: Compile JQtide (Windows)
+     if: runner.os == 'Windows'
+     shell: cmd
+     run: script\makewin.cmd ${{ matrix.version }}
+
+   - name: Release JQtide (Linux)
+     if: runner.os == 'Linux'
+     uses: ncipollo/release-action@v1
+     with:
+       tag: build
+       artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz"
+       token: ${{ secrets.GITHUB_TOKEN }}
+       allowUpdates: true
+
+   - name: Release JQtide (macOS)
+     if: runner.os == 'macOS'
+     uses: ncipollo/release-action@v1
+     with:
+       tag: build
+       artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
+       token: ${{ secrets.GITHUB_TOKEN }}
+       allowUpdates: true
+
+   - name: Release JQtide (Windows)
+     if: runner.os == 'Windows'
+     uses: ncipollo/release-action@v1
+     with:
+       tag: build
+       artifacts: "jqt-win.zip,jqt-win-slim.zip"
+       token: ${{ secrets.GITHUB_TOKEN }}
+       allowUpdates: true

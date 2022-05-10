@@ -1,0 +1,32 @@
+DRAFT
+
+github builds
+
+Whenever the qtide repo is updated, the linux/macos/windows Jqt binaries are built and written to:
+
+  https://github.com/jsoftware/qtide/releases/tag/build
+
+and copied to the J webserver developers download folder:
+
+  https://www.jsoftware.com/download/j904/qtidedev
+
+If the latest commit has a new version number in common.pri, then the binaries are also copied to the user download folder:
+
+  https://www.jsoftware.com/download/j904/qtide
+
+The process is defined in the workflow file:
+
+  .github/workflows/jqtide.yml
+
+This workflow references files in the repo script folder: makelinux.sh, makemac.sh and makewin.cmd.
+
+Builds take place on runners which are machines created dynamically for each OS. Elapsed time is around 25 minutes for a successful run.
+
+To see the status of a run, login to github and visit
+
+  https://github.com/jsoftware/qtide/actions
+
+Recent runs are shown with a status mark. Drill down into a run name for the compile logs.
+
+Github actions are documented at https://docs.github.com/en/actions.
+
