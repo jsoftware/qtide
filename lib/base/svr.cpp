@@ -45,6 +45,20 @@ void logcs(char *msg);
 QString runshowclean(QString s);
 Jcon *jcon=0;
 
+static void DispatchToMainThread(std::function<void()> callback)
+{
+  // any thread
+  QTimer* timer = new QTimer();
+  timer->moveToThread(qApp->thread());
+  timer->setSingleShot(true);
+  QObject::connect(timer, &QTimer::timeout, [=]() {
+    // main thread
+    callback();
+    timer->deleteLater();
+  });
+  QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
+}
+
 // ---------------------------------------------------------------------
 // usual way to call J when not suspended
 void Jcon::cmd(std::string s)
@@ -300,13 +314,29 @@ void _stdcall Joutput(J jt,int type, char* s)
 //  if (s[n-1]=='\n') s[n-1]='\0';
   QString t=QString::fromUtf8(s,(s[n-1]=='\n')?n-1:n);
 
-  if (MTYOER==type && runshow)
-    t=runshowclean(t);
+  if (QThread::currentThread() != this->thread()) {
+    qDebug() << "Joutput Called from a different thread";
+    DispatchToMainThread([] {
+      // main thread
+      // do UI work here
+      if (MTYOER==type && runshow)
+        t=runshowclean(t);
 
-  if (runterm)
-    tedit->append(t);
-  else
-    tedit->append_smoutput(t);
+      if (runterm)
+        tedit->append(t);
+      else
+        tedit->append_smoutput(t);
+    });
+  } else {
+    qDebug() << "Joutput Called from the main thread";
+    if (MTYOER==type && runshow)
+      t=runshowclean(t);
+
+    if (runterm)
+      tedit->append(t);
+    else
+      tedit->append_smoutput(t);
+  }
 }
 
 // ---------------------------------------------------------------------
