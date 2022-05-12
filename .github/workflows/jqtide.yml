@@ -16,7 +16,7 @@ jobs:
   strategy:
    matrix:
     include:
-      - os: ubuntu-18.04
+      - os: ubuntu-20.04
         version: 5.12.8
         modules: 'qtwebengine'
       - os: macos-10.15
@@ -89,7 +89,7 @@ jobs:
 
  webhook:
   name: Run Webhook
-  runs-on: ubuntu-18.04
+  runs-on: ubuntu-20.04
   needs: jqtide
   steps:
    - name: update server
