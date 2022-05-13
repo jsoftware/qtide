@@ -8,10 +8,10 @@ export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/clang_64/bin:$PATH
 run() {
  ./clean.l64
  cd lib
- qmake
+ qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
  make
  cd ../main
- qmake
+ qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
  make
  cd ..
  mv bin/mac-x86_64/release $1
