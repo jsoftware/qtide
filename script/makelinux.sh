@@ -2,8 +2,7 @@
 #
 # arg is Qt version, e.g. "5.15.2"
 
-export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/clang_64/bin:$PATH
-export QMAKE_CXXFLAGS="-fno-sized-deallocation"
+export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
 run() {
  ./clean.l64

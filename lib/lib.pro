@@ -317,3 +317,4 @@ win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR += @executable_path/../Qt/Frameworks
+unix:QMAKE_CXXFLAGS += -fno-sized-deallocation
