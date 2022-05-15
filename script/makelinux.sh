@@ -4,6 +4,9 @@
 
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
+# following required on github actions, not needed on desktop:
+cp -r lib/images .
+
 run() {
  ./clean.l64
  cd lib

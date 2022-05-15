@@ -18,7 +18,6 @@ jobs:
     include:
       - os: ubuntu-20.04
         version: 5.12.8
-        modules: 'qtwebengine'
       #- os: macos-11
         #version: 6.2.4
         #modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -32,7 +31,12 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt
+   - name: Install Qt Linux
+     if: runner.os == 'Linux'
+     run: script/installqt.sh ${{ matrix.version }}
+
+   - name: Install Qt not Linux
+     if: runner.os != 'Linux'
      uses: jurplel/install-qt-action@v2
      with:
       version: ${{ matrix.version }}
@@ -43,9 +47,6 @@ jobs:
 
    - name: Compile JQtide (Linux)
      if: runner.os == 'Linux'
-     env:
-      CC: gcc
-      USE_SLEEF: 1
      run: script/makelinux.sh ${{ matrix.version }}
 
    - name: Compile JQtide (macOS)
