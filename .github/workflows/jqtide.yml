@@ -18,12 +18,12 @@ jobs:
     include:
       - os: ubuntu-20.04
         version: 5.12.8
-      #- os: macos-11
-        #version: 6.2.4
-        #modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      #- os: windows-2019
-        #version: 6.2.4
-        #modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      - os: macos-11
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      - os: windows-2019
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 
   steps:
    - name: Check Git repository
