@@ -85,7 +85,8 @@ int main(int argc, char *argv[])
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
 #else
-#define J_STACK  0x1000000uL // 16mb
+#if 0
+#define J_STACK  0xc00000uL // 12mb
 // set stack size to get limit error instead of crash
   struct rlimit lim;
   if(!getrlimit(RLIMIT_STACK,&lim)) {
@@ -94,6 +95,7 @@ int main(int argc, char *argv[])
       setrlimit(RLIMIT_STACK,&lim);
     }
   }
+#endif
 
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
