@@ -314,6 +314,7 @@ void _stdcall Joutput(J jt,int type, char* s)
 //  if (s[n-1]=='\n') s[n-1]='\0';
   QString t=QString::fromUtf8(s,(s[n-1]=='\n')?n-1:n);
 
+#if 0
   if (QThread::currentThread() != this->thread()) {
     qDebug() << "Joutput Called from a different thread";
     DispatchToMainThread([] {
@@ -328,6 +329,7 @@ void _stdcall Joutput(J jt,int type, char* s)
         tedit->append_smoutput(t);
     });
   } else {
+#endif
     qDebug() << "Joutput Called from the main thread";
     if (MTYOER==type && runshow)
       t=runshowclean(t);
@@ -336,7 +338,9 @@ void _stdcall Joutput(J jt,int type, char* s)
       tedit->append(t);
     else
       tedit->append_smoutput(t);
+#if 0
   }
+#endif
 }
 
 // ---------------------------------------------------------------------
