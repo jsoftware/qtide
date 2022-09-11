@@ -206,7 +206,8 @@ void Fif::on_found_itemActivated(QListWidgetItem * item)
   f=cpath(Path)+"/"+s.left(n);
   if (!Fileonly) {
     r=s.indexOf(":",n+1);
-    p=s.mid(n+1,r-n-1).toInt();
+// r in origin 1, p set in origin 0
+    p=s.mid(n+1,r-n-1).toInt() - 1 ;
   }
   term->vieweditor();
   note->fileopen(f,p);

@@ -11,6 +11,7 @@ cleancdb.sh
 cleangrid.sh
 makebill.sh
 makecdb.sh
+makegem.sh
 makegrid.sh
 Makefile*
 makeosx.

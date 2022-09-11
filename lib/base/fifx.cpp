@@ -134,8 +134,9 @@ QStringList Fif::searchformat(QString file,QList<int>hit, QString txt)
   hit=lineindex(hit,txt);
   hit=removedups(hit);
   QStringList lines=txt.split("\n");
+  // hit in origin 0, displayed in origin 1:
   foreach (int i,hit)
-    r.append(QString::number(i) + ": " + lines.at(i));
+    r.append(QString::number(i+1) + ": " + lines.at(i));
   r=qslprependeach(file+":",r);
   return r;
 }

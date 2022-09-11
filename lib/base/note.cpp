@@ -389,31 +389,21 @@ QStringList Note::select_line1(QStringList mid,QString s,int *pos, int *len)
   com=comment+" ";
 
   if (s=="comment") {
-    int m=0;
-    for (i=0; i<mid.size(); i++)
-      if (!matchhead(comment,mid.at(i))) {
-        m=1;
-        break;
-      }
-    if (m) {
-      for (i=0; i<mid.size(); i++) {
-        p=mid.at(i);
-        if (p.size())
-          p=com+p;
+    for (i=0; i<mid.size(); i++) {
+      p=mid.at(i);
+      if (!matchhead(comment,p)) {
+        if (p.trimmed().size() == 0) p=comment;
         else
-          p=comment;
-        mid.replace(i,p);
-      }
-    } else {
-      for (i=0; i<mid.size(); i++) {
-        p=mid.at(i);
-        if (matchhead(comment,p) && (!matchhead(com+"----",p))
-            && (!matchhead(com+"====",p)))
+          p = com + p;
+      } else {
+        if ((!matchhead(com+"----",p)) && (!matchhead(com+"====",p))) {
           p=p.mid(comment.size());
-        if (p.size() && (p.at(0)==' '))
-          p=p.mid(1);
-        mid.replace(i,p);
+          if (p.trimmed().size() == 0)
+            p="";
+          else if (p.size() > 0 && p[0] == ' ') p=p.mid(1);
+        }
       }
+      mid.replace(i,p);
     }
     *len=mid.join("a").size();
     return mid;
