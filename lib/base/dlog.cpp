@@ -175,6 +175,7 @@ QStringList makeitems()
 // ---------------------------------------------------------------------
 void dlog_add(QString s)
 {
+  s=s.trimmed();
   if (s.size() == 0) return;
   int i = InputLog.indexOf(s);
   if (i >= 0)

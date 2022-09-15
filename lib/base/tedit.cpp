@@ -62,7 +62,7 @@ void Tedit::docmd(QString t)
   runshow=false;
   runterm=1;
   t=uptoLF(t);
-  dlog_add(jecallback?t:t.trimmed());
+  dlog_add(t);
   jcon->cmddo(q2s(t));
 }
 
@@ -90,7 +90,7 @@ void Tedit::docmdp(QString t,bool show,bool same)
   if (show)
     promptreplace(getprompt() + t);
   if (runshow) {
-    dlog_add(jecallback?t:t.trimmed());
+    dlog_add(t);
     jcon->cmddo("output_jrx_=:i.0 0");
     jcon->cmddo("output_jrx_=:"+q2s(t));
     runterm=jecallback ? 3 : 1;
