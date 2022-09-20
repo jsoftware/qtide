@@ -4,6 +4,12 @@
 
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
+if [ "x$MAKEFLAGS" = x'' ] ; then
+if [ `uname` == "linux" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
+export MAKEFLAGS=-j$par
+fi
+echo "MAKEFLAGS=$MAKEFLAGS"
+
 # following required on github actions, not needed on desktop:
 cp -r lib/images .
 
