@@ -186,8 +186,8 @@ void Config::init()
   LineWrap = false;
   ScriptFilter="*.ijs";
 
-  Rxnna = "\\b";
-  Rxnnz = "\\b";
+  Rxnna = "\\b\\Q";
+  Rxnnz = "\\E\\b";
 
   NoProfile="1"!=dors("\":(<'/profile.ijs')e.((}.~i:&'/')@('/'&(('\\' I.@:= ])})))&.>4!:3''");
   if (NoProfile) {
