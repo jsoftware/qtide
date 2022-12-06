@@ -2,7 +2,7 @@
 
 f() { sudo apt-get install -y "$@"; }
 
-if [ "$1" != "raspberry32" ]; then
+if [ "$1" != "raspberry32xx" ]; then
 f libpulse-dev
 f qtbase5-dev qtbase5-dev-tools
 f qtmultimedia5-dev libqt5multimediawidgets5
