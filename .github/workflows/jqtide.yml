@@ -62,7 +62,7 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspi_2_bullseye:20220121
+      base_image: raspios_lite:latest
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
