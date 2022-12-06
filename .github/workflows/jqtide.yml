@@ -18,6 +18,8 @@ jobs:
     include:
       - os: ubuntu-20.04
         version: 5.12.8
+      - os: ubuntu-latest
+        version: 5.12.8
       - os: macos-11
         version: 6.2.4
         modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -32,8 +34,25 @@ jobs:
       submodules: recursive
 
    - name: Install Qt Linux
-     if: runner.os == 'Linux'
-     run: script/installqt.sh ${{ matrix.version }}
+     if: matrix.os == 'ubuntu-20.04'
+     run: script/installqt.sh linux
+
+   - name: Install Qt, Compile JQtide Raspberry
+     if: matrix.os == 'ubuntu-latest'
+     uses: pguyot/arm-runner-action@v2
+     with:
+      cpu: cortex-a53
+      cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
+      base_image: raspios_lite_arm64:latest
+      image_additional_mb: 1024
+      copy_artifact_path: j64
+      commands: |
+       export CC=gcc
+       export USE_SLEEF=0
+       script/installqt.sh raspberry
+       script/makelinux.sh raspberry
+       find j64 -type d -exec chmod a+rwx {} \;
+       find j64 -type f -exec chmod a+rw {} \;
 
    - name: Install Qt not Linux
      if: runner.os != 'Linux'
