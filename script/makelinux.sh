@@ -20,7 +20,7 @@ run() {
  cd ../main
  qmake && make
  cd ..
-if [ "$1" = "linux" ];
+if [ "$1" = "linux" ]; then
  mv bin/linux-x86_64/release $1
 else
  mv bin/raspberry-aarch64/release $1
