@@ -20,15 +20,17 @@ run() {
  cd ../main
  qmake && make
  cd ..
-if [ "$2" = "linux" ]; then
- mv bin/linux-x86_64/release $1
+if [ "$3" = "linux" ]; then
+ mv bin/linux-x86_64/release $2
+ tar -czvf "$1".tar.gz $2
 else
- mv bin/linux-"`uname -m`"/release $1
+ mv bin/linux-"`uname -m`"/release $2
+ mkdir -p output
+ tar -czvf output/"$1".tar.gz $2
 fi
- tar -czvf "$1".tar.gz $1
 }
 
-run jqt-"$2"
+run jqt-"$2" "$1" "$2"
 
 export JQTSLIM=1
-run jqt-"$2"-slim
+run jqt-"$2"-slim "$1" "$2"

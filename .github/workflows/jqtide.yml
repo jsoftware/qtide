@@ -45,14 +45,19 @@ jobs:
       cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
       base_image: raspios_lite_arm64:latest
       image_additional_mb: 1024
-      copy_artifact_path: j64
+      copy_artifact_path: output
       commands: |
        export CC=gcc
        export USE_SLEEF=0
        script/installqt.sh raspberry
        script/makelinux.sh ${{ matrix.version }} raspberry
-       find j64 -type d -exec chmod a+rwx {} \;
-       find j64 -type f -exec chmod a+rw {} \;
+       find output -type d -exec chmod a+rwx {} \;
+       find output -type f -exec chmod a+rw {} \;
+
+   - name: Transfer JQtide (Raspberry)
+     if: matrix.os == 'ubuntu-latest'
+     run: |
+      mv output/* .
 
    - name: Install Qt not Linux
      if: runner.os != 'Linux'
@@ -65,7 +70,7 @@ jobs:
       aqtversion: '==2.1.0'
 
    - name: Compile JQtide (Linux)
-     if: runner.os == 'Linux'
+     if: matrix.os == 'ubuntu-20.04'
      run: script/makelinux.sh ${{ matrix.version }} linux
 
    - name: Compile JQtide (macOS)
@@ -81,11 +86,20 @@ jobs:
      run: script\makewin.cmd ${{ matrix.version }}
 
    - name: Release JQtide (Linux)
-     if: runner.os == 'Linux'
+     if: matrix.os == 'ubuntu-20.04'
      uses: ncipollo/release-action@v1
      with:
        tag: build
        artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz"
+       token: ${{ secrets.GITHUB_TOKEN }}
+       allowUpdates: true
+
+   - name: Release JQtide (Raspberry)
+     if: matrix.os == 'ubuntu-latest'
+     uses: ncipollo/release-action@v1
+     with:
+       tag: build
+       artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
        token: ${{ secrets.GITHUB_TOKEN }}
        allowUpdates: true
 
