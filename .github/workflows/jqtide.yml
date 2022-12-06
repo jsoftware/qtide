@@ -16,12 +16,12 @@ jobs:
   strategy:
    matrix:
     include:
-      - os: ubuntu-latest
+      - os: ubuntu-22.04
         version: 5.15.2
+#      - os: ubuntu-latest
+#        version: 5.15.2
 #      - os: ubuntu-20.04
 #        version: 5.12.8
-#      - os: ubuntu-22.04
-#        version: 5.15.2
 #      - os: macos-11
 #        version: 6.2.4
 #        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -62,7 +62,7 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspbian_lite:latest
+      base_image: raspbian_lite:2020-02-13
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
