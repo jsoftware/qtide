@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # arg is Qt version, e.g. "5.15.2"
+#        linux/raspberry/raspberry32
 
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
@@ -20,17 +21,17 @@ run() {
  cd ../main
  qmake && make
  cd ..
-if [ "$3" = "linux" ]; then
- mv bin/linux-x86_64/release $2
- tar -czvf "$1".tar.gz $2
+if [ "$2" = "linux" ]; then
+ mv bin/linux-x86_64/release $1
+ tar -czvf "$1".tar.gz $1
 else
- mv bin/linux-"`uname -m`"/release $2
+ mv bin/linux-"`uname -m`"/release $1
  mkdir -p output
- tar -czvf output/"$1".tar.gz $2
+ tar -czvf output/"$1".tar.gz $1
 fi
 }
 
-run jqt-"$2" "$1" "$2"
+run jqt-"$1" "$2"
 
 export JQTSLIM=1
 run jqt-"$2"-slim "$1" "$2"

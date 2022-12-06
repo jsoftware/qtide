@@ -16,18 +16,18 @@ jobs:
   strategy:
    matrix:
     include:
+      - os: ubuntu-20.04
+        version: 5.12.8
       - os: ubuntu-22.04
         version: 5.15.2
+      - os: macos-11
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      - os: windows-2019
+        version: 6.2.4
+        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 #      - os: ubuntu-latest
 #        version: 5.15.2
-#      - os: ubuntu-20.04
-#        version: 5.12.8
-#      - os: macos-11
-#        version: 6.2.4
-#        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-#      - os: windows-2019
-#        version: 6.2.4
-#        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 
   steps:
    - name: Check Git repository
@@ -73,16 +73,6 @@ jobs:
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
-   - name: Transfer JQtide (Raspberry)
-     if: matrix.os == 'ubuntu-22.04'
-     run: |
-      mv output/* .
-
-   - name: Transfer JQtide (Raspberry32)
-     if: matrix.os == 'ubuntu-latest'
-     run: |
-      mv output/* .
-
    - name: Install Qt not Linux
      if: runner.os != 'Linux'
      uses: jurplel/install-qt-action@v2
@@ -108,6 +98,18 @@ jobs:
      if: runner.os == 'Windows'
      shell: cmd
      run: script\makewin.cmd ${{ matrix.version }}
+
+   - name: Transfer JQtide (Raspberry)
+     if: matrix.os == 'ubuntu-22.04'
+     run: |
+      ls output/*
+      mv output/* .
+
+   - name: Transfer JQtide (Raspberry32)
+     if: matrix.os == 'ubuntu-latest'
+     run: |
+      ls output/*
+      mv output/* .
 
    - name: Release JQtide (Linux)
      if: matrix.os == 'ubuntu-20.04'
