@@ -3,7 +3,7 @@
 f() { sudo apt-get install --no-install-recommends -y "$@"; }
 f1() { sudo apt-get install --allow-unauthenticated --no-install-recommends -y "$@"; }
 
-if [ "$1" != "raspberry32" ]; then
+if [ "$1" != "raspberry32xx" ]; then
 f libpulse-dev
 f qtbase5-dev qtbase5-dev-tools
 f qtmultimedia5-dev libqt5multimediawidgets5
