@@ -19,7 +19,7 @@ jobs:
       - os: ubuntu-20.04
         version: 5.12.8
       - os: ubuntu-latest
-        version: 5.12.8
+        version: 5.15.2
       - os: macos-11
         version: 6.2.4
         modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -50,7 +50,7 @@ jobs:
        export CC=gcc
        export USE_SLEEF=0
        script/installqt.sh raspberry
-       script/makelinux.sh raspberry
+       script/makelinux.sh ${{ matrix.version }} raspberry
        find j64 -type d -exec chmod a+rwx {} \;
        find j64 -type f -exec chmod a+rw {} \;
 
@@ -66,7 +66,7 @@ jobs:
 
    - name: Compile JQtide (Linux)
      if: runner.os == 'Linux'
-     run: script/makelinux.sh ${{ matrix.version }}
+     run: script/makelinux.sh ${{ matrix.version }} linux
 
    - name: Compile JQtide (macOS)
      if: runner.os == 'macOS'

@@ -5,8 +5,8 @@
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
 if [ "x$MAKEFLAGS" = x'' ] ; then
-if [ "$1" = "linux" ] || [ "$1" = "raspberry" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
-# export MAKEFLAGS=-j$par
+if [ "$2" != "darwin" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
+export MAKEFLAGS=-j$par
 fi
 echo "MAKEFLAGS=$MAKEFLAGS"
 
@@ -20,15 +20,15 @@ run() {
  cd ../main
  qmake && make
  cd ..
-if [ "$1" = "linux" ]; then
+if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
 else
- mv bin/raspberry-aarch64/release $1
+ mv bin/linux-"`uname -m`"/release $1
 fi
  tar -czvf "$1".tar.gz $1
 }
 
-run jqt-"$1"
+run jqt-"$2"
 
 export JQTSLIM=1
-run jqt-"$1"-slim
+run jqt-"$2"-slim
