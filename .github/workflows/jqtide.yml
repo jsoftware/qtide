@@ -66,7 +66,7 @@ jobs:
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
-       apt-get search qt4
+       apt-cache search qt4
 
 #       export CC=gcc
 #       export USE_SLEEF=0
