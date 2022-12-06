@@ -16,18 +16,18 @@ jobs:
   strategy:
    matrix:
     include:
-      - os: ubuntu-20.04
-        version: 5.12.8
-      - os: ubuntu-22.04
-        version: 5.15.2
       - os: ubuntu-latest
         version: 5.15.2
-      - os: macos-11
-        version: 6.2.4
-        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      - os: windows-2019
-        version: 6.2.4
-        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      - os: ubuntu-20.04
+#        version: 5.12.8
+#      - os: ubuntu-22.04
+#        version: 5.15.2
+#      - os: macos-11
+#        version: 6.2.4
+#        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      - os: windows-2019
+#        version: 6.2.4
+#        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 
   steps:
    - name: Check Git repository
@@ -62,16 +62,18 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspios_lite:latest
+      base_image: raspbian_lite:2020-02-13
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
-       export CC=gcc
-       export USE_SLEEF=0
-       script/installqt.sh raspberry32
-       script/makelinux.sh ${{ matrix.version }} raspberry32
-       find output -type d -exec chmod a+rwx {} \;
-       find output -type f -exec chmod a+rw {} \;
+       aptitude search qt4
+
+#       export CC=gcc
+#       export USE_SLEEF=0
+#       script/installqt.sh raspberry32
+#       script/makelinux.sh ${{ matrix.version }} raspberry32
+#       find output -type d -exec chmod a+rwx {} \;
+#       find output -type f -exec chmod a+rw {} \;
 
    - name: Transfer JQtide (Raspberry)
      if: matrix.os == 'ubuntu-22.04'
