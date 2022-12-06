@@ -10,6 +10,6 @@ f libqt5opengl5 libqt5opengl5-dev
 f libqt5svg5 libqt5svg5-dev
 f qtwebengine5-dev libqt5websockets5-dev
 else
-f libqt4-dev libqt4-svg qt4-make
-f libqtwebkit-dev libqt4-opengl-dev
+sudo apt-get update
+f libqt4-dev libqt4-svg libqtwebkit-dev libqt4-opengl-dev
 fi
