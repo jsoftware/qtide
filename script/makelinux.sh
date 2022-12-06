@@ -31,7 +31,7 @@ else
 fi
 }
 
-run jqt-"$1" "$2"
+run jqt-"$2" "$2"
 
 export JQTSLIM=1
-run jqt-"$2"-slim "$1" "$2"
+run jqt-"$2"-slim "$2"
