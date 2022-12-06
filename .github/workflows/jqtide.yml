@@ -18,6 +18,8 @@ jobs:
     include:
       - os: ubuntu-20.04
         version: 5.12.8
+      - os: ubuntu-22.04
+        version: 5.15.2
       - os: ubuntu-latest
         version: 5.15.2
       - os: macos-11
@@ -38,7 +40,7 @@ jobs:
      run: script/installqt.sh linux
 
    - name: Install Qt, Compile JQtide Raspberry
-     if: matrix.os == 'ubuntu-latest'
+     if: matrix.os == 'ubuntu-22.04'
      uses: pguyot/arm-runner-action@v2
      with:
       cpu: cortex-a53
@@ -48,13 +50,35 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       export USE_SLEEF=0
+       export USE_SLEEF=1
        script/installqt.sh raspberry
        script/makelinux.sh ${{ matrix.version }} raspberry
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
+   - name: Install Qt, Compile JQtide Raspberry32
+     if: matrix.os == 'ubuntu-latest'
+     uses: pguyot/arm-runner-action@v2
+     with:
+      cpu: arm1176
+      cpu_info: cpuinfo/raspberrypi_zero2_w
+      base_image: raspbian_lite:2020-02-13
+      image_additional_mb: 1024
+      copy_artifact_path: output
+      commands: |
+       export CC=gcc
+       export USE_SLEEF=0
+       script/installqt.sh raspberry32
+       script/makelinux.sh ${{ matrix.version }} raspberry32
+       find output -type d -exec chmod a+rwx {} \;
+       find output -type f -exec chmod a+rw {} \;
+
    - name: Transfer JQtide (Raspberry)
+     if: matrix.os == 'ubuntu-22.04'
+     run: |
+      mv output/* .
+
+   - name: Transfer JQtide (Raspberry32)
      if: matrix.os == 'ubuntu-latest'
      run: |
       mv output/* .
@@ -95,11 +119,20 @@ jobs:
        allowUpdates: true
 
    - name: Release JQtide (Raspberry)
-     if: matrix.os == 'ubuntu-latest'
+     if: matrix.os == 'ubuntu-22.04'
      uses: ncipollo/release-action@v1
      with:
        tag: build
        artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
+       token: ${{ secrets.GITHUB_TOKEN }}
+       allowUpdates: true
+
+   - name: Release JQtide (Raspberry32)
+     if: matrix.os == 'ubuntu-latest'
+     uses: ncipollo/release-action@v1
+     with:
+       tag: build
+       artifacts: "jqt-raspberry32.tar.gz,jqt-raspberry32-slim.tar.gz"
        token: ${{ secrets.GITHUB_TOKEN }}
        allowUpdates: true
 
