@@ -66,14 +66,12 @@ jobs:
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
-       apt-cache search qt4
-
-#       export CC=gcc
-#       export USE_SLEEF=0
-#       script/installqt.sh raspberry32
-#       script/makelinux.sh ${{ matrix.version }} raspberry32
-#       find output -type d -exec chmod a+rwx {} \;
-#       find output -type f -exec chmod a+rw {} \;
+       export CC=gcc
+       export USE_SLEEF=0
+       script/installqt.sh raspberry32
+       script/makelinux.sh ${{ matrix.version }} raspberry32
+       find output -type d -exec chmod a+rwx {} \;
+       find output -type f -exec chmod a+rw {} \;
 
    - name: Transfer JQtide (Raspberry)
      if: matrix.os == 'ubuntu-22.04'
