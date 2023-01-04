@@ -84,7 +84,7 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt, Compile JQtide Raspberry
+   - name: Install Qt, Compile JQtide
      uses: pguyot/arm-runner-action@v2
      with:
       cpu: cortex-a53
@@ -93,8 +93,6 @@ jobs:
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
-       export CC=gcc
-       export USE_SLEEF=1
        script/installqt.sh raspberry
        script/makelinux.sh '5.15.2' raspberry
        find output -type d -exec chmod a+rwx {} \;
@@ -125,7 +123,7 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt, Compile JQtide Raspberry32
+   - name: Install Qt, Compile JQtide
      uses: pguyot/arm-runner-action@v2
      with:
       cpu: arm1176
@@ -134,8 +132,6 @@ jobs:
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
-       export CC=gcc
-       export USE_SLEEF=0
        script/installqt.sh raspberry32
        script/makelinux.sh '5.15.2' raspberry32
        find output -type d -exec chmod a+rwx {} \;
@@ -151,6 +147,47 @@ jobs:
      with:
       tag: build
       artifacts: "jqt-raspberry32.tar.gz,jqt-raspberry32-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# freebsd --------------------------------------------------------------
+ jqtfreebsd:
+  name: JQtide (FreeBSD cross-platform-actions)
+  runs-on: macos-12
+  steps:
+   - name: Checkout Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt, Compile JQtide
+     uses: cross-platform-actions/action@v0.7.0
+     with:
+      operating_system: freebsd
+      architecture: x86-64
+      version: '13.0'
+      shell: bash
+
+      run: |
+       rm -f jobdone
+       export IGNORE_OSVERSION=yes
+       sudo rdate time.cloudflare.com || true
+       sudo pkg install -y curl zip gmake
+       ldconfig -r
+       script/installqt.sh freebsd || exit 1
+       script/makelinux.sh '5.15.2' freebsd || exit 1
+       touch jobdone
+
+   - name: Check Status
+     run: |
+      test -f jobdone || exit 1
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-freebsd.tar.gz,jqt-freebsd-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
