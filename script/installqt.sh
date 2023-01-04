@@ -1,11 +1,17 @@
 #!/bin/sh
+set -e
 
 f() { sudo apt-get install --no-install-recommends -y "$@"; }
 g() { sudo pkg_add install "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] ; then
-f qt5-default
+f libpulse-dev
+f qtbase5-dev qtbase5-dev-tools
+f qtmultimedia5-dev libqt5multimediawidgets5
+f libqt5opengl5 libqt5opengl5-dev
+f libqt5svg5 libqt5svg5-dev
+f qtwebengine5-dev libqt5websockets5-dev
 elif [ "$1" = "raspberry" ] ; then
 f libpulse-dev
 f qtbase5-dev qtbase5-dev-tools

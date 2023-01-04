@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 #
 # arg is Qt version, e.g. "5.15.2"
 #        linux/raspberry/raspberry32/openbsd/freebsd
