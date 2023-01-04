@@ -18,10 +18,10 @@ jobs:
 
 # linux ----------------------------------------------------------------
  jqtlinux:
-  name: JQtide (Linux)
-  runs-on: ubuntu-20.04
   variables:
    version: 5.12.8
+  name: JQtide (Linux)
+  runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
@@ -45,11 +45,11 @@ jobs:
 
 # macOS ----------------------------------------------------------------
  jqtmacos:
-  name: JQtide (macOS)
-  runs-on: macos-11
   variables:
    version: 6.2.4
    modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+  name: JQtide (macOS)
+  runs-on: macos-11
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
@@ -81,10 +81,10 @@ jobs:
 
 # rpi64 ----------------------------------------------------------------
  jqtrpi64:
-  name: JQtide (Raspberry)
-  runs-on: ubuntu-20.04
   variables:
    version: 5.15.2
+  name: JQtide (Raspberry)
+  runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
@@ -123,11 +123,11 @@ jobs:
 
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
+  variables:
+   version: 5.15.2
   name: JQtide (Raspberry32)
   if: ${{ false }}
   runs-on: ubuntu-20.04
-  variables:
-   version: 5.15.2
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
@@ -166,11 +166,11 @@ jobs:
 
 # windows --------------------------------------------------------------
  jqtwin:
-  name: JQtide (Windows)
-  runs-on: windows-2019
   variables:
    version: 6.2.4
    modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+  name: JQtide (Windows)
+  runs-on: windows-2019
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
