@@ -6,41 +6,92 @@ on:
    - master
    - main
 
-permissions: write-all
+# trigger workflow on file change
+#on:
+# push:
+#  paths:
+#   - 'version.txt'
+
+# if: ${{ false }}
 
 jobs:
- jqtide:
-  name: JQtide
-  runs-on: ${{ matrix.os }}
 
-  strategy:
-   matrix:
-    include:
-      - os: ubuntu-20.04
-        version: 5.12.8
-      - os: ubuntu-22.04
-        version: 5.15.2
-      - os: macos-11
-        version: 6.2.4
-        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      - os: windows-2019
-        version: 6.2.4
-        modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-#      - os: ubuntu-latest
-#        version: 5.15.2
-
+# linux ----------------------------------------------------------------
+ jqtlinux:
+  name: JQtide (Linux)
+  runs-on: ubuntu-20.04
+  variables:
+   version: 5.12.8
   steps:
    - name: Check Git repository
      uses: actions/checkout@v2
      with:
       submodules: recursive
 
-   - name: Install Qt Linux
-     if: matrix.os == 'ubuntu-20.04'
+   - name: Install Qt from distro
      run: script/installqt.sh linux
 
+   - name: Compile JQtide
+     run: script/makelinux.sh $(version) linux
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# macOS ----------------------------------------------------------------
+ jqtmacos:
+  name: JQtide (macOS)
+  runs-on: macos-11
+  variables:
+   version: 6.2.4
+   modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v2
+     with:
+      version: $(version)
+      target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: $(modules)
+      aqtversion: '==2.1.0'
+
+   - name: Compile JQtide
+     env:
+      CC: clang
+     run: script/makemac.sh $(version)
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# rpi64 ----------------------------------------------------------------
+ jqtrpi64:
+  name: JQtide (Raspberry)
+  runs-on: ubuntu-20.04
+  variables:
+   version: 5.15.2
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
    - name: Install Qt, Compile JQtide Raspberry
-     if: matrix.os == 'ubuntu-22.04'
      uses: pguyot/arm-runner-action@v2
      with:
       cpu: cortex-a53
@@ -52,12 +103,38 @@ jobs:
        export CC=gcc
        export USE_SLEEF=1
        script/installqt.sh raspberry
-       script/makelinux.sh ${{ matrix.version }} raspberry
+       script/makelinux.sh $(version) raspberry
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
+   - name: Transfer JQtide
+     run: |
+      ls output/*
+      mv output/* .
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# rpi32 ----------------------------------------------------------------
+ jqtrpi32:
+  name: JQtide (Raspberry32)
+  if: ${{ false }}
+  runs-on: ubuntu-20.04
+  variables:
+   version: 5.15.2
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
    - name: Install Qt, Compile JQtide Raspberry32
-     if: matrix.os == 'ubuntu-latest'
      uses: pguyot/arm-runner-action@v2
      with:
       cpu: arm1176
@@ -69,97 +146,63 @@ jobs:
        export CC=gcc
        export USE_SLEEF=0
        script/installqt.sh raspberry32
-       script/makelinux.sh ${{ matrix.version }} raspberry32
+       script/makelinux.sh $(version) raspberry32
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
-   - name: Install Qt not Linux
-     if: runner.os != 'Linux'
+   - name: Transfer JQtide
+     run: |
+      ls output/*
+      mv output/* .
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-raspberry32.tar.gz,jqt-raspberry32-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# windows --------------------------------------------------------------
+ jqtwin:
+  name: JQtide (Windows)
+  runs-on: windows-2019
+  variables:
+   version: 6.2.4
+   modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt from source
      uses: jurplel/install-qt-action@v2
      with:
-      version: ${{ matrix.version }}
+      version: $(version)
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
-      modules: ${{ matrix.modules }}
+      modules: ${{ modules }}
       aqtversion: '==2.1.0'
 
-   - name: Compile JQtide (Linux)
-     if: matrix.os == 'ubuntu-20.04'
-     run: script/makelinux.sh ${{ matrix.version }} linux
-
-   - name: Compile JQtide (macOS)
-     if: runner.os == 'macOS'
-     env:
-      CC: clang
-      USE_SLEEF: 1
-     run: script/makemac.sh ${{ matrix.version }}
-
-   - name: Compile JQtide (Windows)
-     if: runner.os == 'Windows'
+   - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd ${{ matrix.version }}
+     run: script\makewin.cmd $(version)
 
-   - name: Transfer JQtide (Raspberry)
-     if: matrix.os == 'ubuntu-22.04'
-     run: |
-      ls output/*
-      mv output/* .
-
-   - name: Transfer JQtide (Raspberry32)
-     if: matrix.os == 'ubuntu-latest'
-     run: |
-      ls output/*
-      mv output/* .
-
-   - name: Release JQtide (Linux)
-     if: matrix.os == 'ubuntu-20.04'
+   - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-       tag: build
-       artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz"
-       token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
-
-   - name: Release JQtide (Raspberry)
-     if: matrix.os == 'ubuntu-22.04'
-     uses: ncipollo/release-action@v1
-     with:
-       tag: build
-       artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
-       token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
-
-   - name: Release JQtide (Raspberry32)
-     if: matrix.os == 'ubuntu-latest'
-     uses: ncipollo/release-action@v1
-     with:
-       tag: build
-       artifacts: "jqt-raspberry32.tar.gz,jqt-raspberry32-slim.tar.gz"
-       token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
-
-   - name: Release JQtide (macOS)
-     if: runner.os == 'macOS'
-     uses: ncipollo/release-action@v1
-     with:
-       tag: build
-       artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
-       token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
-
-   - name: Release JQtide (Windows)
-     if: runner.os == 'Windows'
-     uses: ncipollo/release-action@v1
-     with:
-       tag: build
-       artifacts: "jqt-win.zip,jqt-win-slim.zip"
-       token: ${{ secrets.GITHUB_TOKEN }}
-       allowUpdates: true
+      tag: build
+      artifacts: "jqt-win.zip,jqt-win-slim.zip"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
 
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: jqtide
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
