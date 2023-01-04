@@ -172,11 +172,10 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
-       sudo rdate time.cloudflare.com || true
        sudo pkg install -y curl zip gmake
-       ldconfig -r
+       sudo rdate time.cloudflare.com || true
        script/installqt.sh freebsd || exit 1
-       script/makelinux.sh '5.15.2' freebsd || exit 1
+       script/makelinux.sh '6.3.2' freebsd || exit 1
        touch jobdone
 
    - name: Check Status
