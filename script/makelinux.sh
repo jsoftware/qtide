@@ -14,6 +14,10 @@ echo "MAKEFLAGS=$MAKEFLAGS"
 # following required on github actions, not needed on desktop:
 cp -r lib/images .
 
+if [ "$2" = "freebsd" ]; then
+ export QMAKESPEC=freebsd-g++
+fi
+
 run() {
  ./clean.l64
  cd lib

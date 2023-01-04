@@ -31,8 +31,11 @@ win32-cross: QMAKE_TARGET.arch = x86_64
 linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm*: QMAKE_TARGET.arch = armv6l
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
+freebsd-g++-32: QMAKE_TARGET.arch = x86
+feebsd-g++-64: QMAKE_TARGET.arch = x86_64
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
+equals(QMAKE_TARGET.arch , amd64): QMAKE_TARGET.arch = x86_64
 ABI=$$(ABI)
 
 equals(QMAKE_TARGET.arch , armv6l): {
@@ -50,6 +53,7 @@ equals(QMAKE_TARGET.arch , aarch64):!macx: {
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
+freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 
 # uncomment the next to open windows console to display qDebug() messages
 # win32:CONFIG += console
