@@ -8,7 +8,7 @@ set -e
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
 if [ "x$MAKEFLAGS" = x'' ] ; then
-if [ "$2" = "linux" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
+if [ "$2" = "linux" ] || [ "$2" = "raspberry" ] || [ "$2" = "raspberry32" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
 export MAKEFLAGS=-j$par
 fi
 echo "MAKEFLAGS=$MAKEFLAGS"
