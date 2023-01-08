@@ -94,6 +94,7 @@ jobs:
       copy_artifact_path: output
       commands: |
        script/installqt.sh raspberry
+       export CC=clang
        script/makelinux.sh '5.15.2' raspberry
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
@@ -132,6 +133,7 @@ jobs:
       image_additional_mb: 1024
       copy_artifact_path: output
       commands: |
+       export CC=gcc
        script/installqt.sh raspberry32
        script/makelinux.sh '5.15.2' raspberry32
        find output -type d -exec chmod a+rwx {} \;
@@ -174,8 +176,9 @@ jobs:
        export IGNORE_OSVERSION=yes
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
+       export CC=clang
        script/installqt.sh openbsd || exit 1
-       script/makelinux.sh '5.15.6' openbsd || exit 1
+       script/makelinux.sh '5.15.2' openbsd || exit 1
        touch jobdone
 
    - name: Check Status
@@ -214,6 +217,7 @@ jobs:
        export IGNORE_OSVERSION=yes
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
+       export CC=clang
        script/installqt.sh freebsd || exit 1
        script/makelinux.sh '5.15.7' freebsd || exit 1
        touch jobdone

@@ -22,11 +22,7 @@ f qtwebengine5-dev libqt5websockets5-dev
 elif [ "$1" = "raspberry32" ] ; then
 f libqt4-dev libqt4-opengl-dev libqt4-svg
 elif [ "$1" = "openbsd" ] ; then
-sudo pkg_info -Q qt
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
-which qmake || true
-which qmake-qt || true
-ls -l/usr/local/bin/qmake* || true
 elif [ "$1" = "freebsd" ] ; then
 h qt5-qmake qt5-buildtools qt5-core
 h qt5-gui qt5-opengl qt5-printsupport
