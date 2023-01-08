@@ -151,6 +151,46 @@ jobs:
       allowUpdates: true
       replacesArtifacts: true
 
+# openbsd --------------------------------------------------------------
+ jqtopenbsd:
+  name: JQtide (OpenBSD cross-platform-actions)
+  runs-on: macos-12
+  steps:
+   - name: Checkout Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt, Compile JQtide
+     uses: cross-platform-actions/action@v0.7.0
+     with:
+      operating_system: openbsd
+      architecture: x86-64
+      version: '7.1'
+      shell: bash
+
+      run: |
+       rm -f jobdone
+       export IGNORE_OSVERSION=yes
+       sudo pkg_add curl zip gmake
+       sudo rdate time.cloudflare.com || true
+       script/installqt.sh openbsd || exit 1
+       script/makelinux.sh '5.15.5' openbsd || exit 1
+       touch jobdone
+
+   - name: Check Status
+     run: |
+      test -f jobdone || exit 1
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-openbsd.tar.gz,jqt-openbsd-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
 # freebsd --------------------------------------------------------------
  jqtfreebsd:
   name: JQtide (FreeBSD cross-platform-actions)
@@ -175,7 +215,7 @@ jobs:
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        script/installqt.sh freebsd || exit 1
-       script/makelinux.sh '6.3.2' freebsd || exit 1
+       script/makelinux.sh '5.15.5' freebsd || exit 1
        touch jobdone
 
    - name: Check Status

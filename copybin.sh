@@ -2,6 +2,7 @@
 #
 # run in jqt directory
 # work for redhat/debian and macos
+set -e
 
 S=$HOME/dev/apps/ide/jqt
 cd $S || exit 1

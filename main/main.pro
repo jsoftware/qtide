@@ -22,6 +22,8 @@ TARGET = jqt
 
 # contains(DEFINES,QT50): QT += widgets
 
+message(QMAKESPEC $$QMAKESPEC)
+message(original arch $$QMAKE_HOST.arch)
 QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
@@ -31,11 +33,12 @@ win32-cross: QMAKE_TARGET.arch = x86_64
 linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm*: QMAKE_TARGET.arch = armv6l
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
-freebsd-g++-32: QMAKE_TARGET.arch = x86
-feebsd-g++-64: QMAKE_TARGET.arch = x86_64
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 equals(QMAKE_TARGET.arch , amd64): QMAKE_TARGET.arch = x86_64
+equals(QMAKE_TARGET.arch , arm64): QMAKE_TARGET.arch = aarch64
+message(adjusted arch $$QMAKE_TARGET.arch)
+
 ABI=$$(ABI)
 
 equals(QMAKE_TARGET.arch , armv6l): {
@@ -44,7 +47,7 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx: {
+equals(QMAKE_TARGET.arch , aarch64):!macx:!openbsd:!freebsd: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
@@ -54,6 +57,7 @@ win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
+openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 
 # uncomment the next to open windows console to display qDebug() messages
 # win32:CONFIG += console

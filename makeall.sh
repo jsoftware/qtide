@@ -1,14 +1,31 @@
 #!/bin/sh
 #
 # run in jqt directory
+set -e
 
 S=$(dirname "$0")
+
+if [ "x$MAKEFLAGS" = x'' ] ; then
+if [ `uname` = "Linux" ] ; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
+export MAKEFLAGS=-j$par
+fi
+echo "MAKEFLAGS=$MAKEFLAGS"
 
 # use clang instead of g++
 # export QMAKESPEC=linux-clang
 
 if [ "`uname`" = "Darwin" ] && [ "$QMAKESPEC"x = "x" ] ; then
- export QMAKESPEC=macx-g++
+ export QMAKESPEC=macx-clang
+fi
+
+if [ "`uname`" = "FreeBSD" ] && [ "$QMAKESPEC"x = "x" ] ; then
+ export QMAKESPEC=freebsd-clang
+ QM=/usr/local/bin/qmake-qt5
+fi
+
+if [ "`uname`" = "OpenBSD" ] && [ "$QMAKESPEC"x = "x" ] ; then
+ export QMAKESPEC=openbsd-g++
+ QM=/usr/local/bin/qmake-qt5
 fi
 
 # QM=/usr/local/bin/qmake

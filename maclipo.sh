@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 JQTVER=2.0.3
 
