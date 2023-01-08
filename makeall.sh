@@ -19,12 +19,11 @@ if [ "`uname`" = "Darwin" ] && [ "$QMAKESPEC"x = "x" ] ; then
 fi
 
 if [ "`uname`" = "FreeBSD" ] && [ "$QMAKESPEC"x = "x" ] ; then
- export QMAKESPEC=freebsd-clang
+# export QMAKESPEC=freebsd-clang
  QM=/usr/local/bin/qmake-qt5
 fi
 
 if [ "`uname`" = "OpenBSD" ] && [ "$QMAKESPEC"x = "x" ] ; then
- export QMAKESPEC=openbsd-g++
  QM=/usr/local/bin/qmake-qt5
 fi
 
