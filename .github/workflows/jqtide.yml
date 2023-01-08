@@ -175,7 +175,7 @@ jobs:
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        script/installqt.sh openbsd || exit 1
-       script/makelinux.sh '5.15.5' openbsd || exit 1
+       script/makelinux.sh '5.15.6' openbsd || exit 1
        touch jobdone
 
    - name: Check Status
@@ -215,7 +215,7 @@ jobs:
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        script/installqt.sh freebsd || exit 1
-       script/makelinux.sh '5.15.5' freebsd || exit 1
+       script/makelinux.sh '5.15.7' freebsd || exit 1
        touch jobdone
 
    - name: Check Status
