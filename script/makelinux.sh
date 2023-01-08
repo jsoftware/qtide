@@ -17,11 +17,9 @@ echo "MAKEFLAGS=$MAKEFLAGS"
 cp -r lib/images .
 
 if [ "$2" = "openbsd" ]; then
- export QMAKESPEC=openbsd-g++
- export QM=/usr/local/bin/qmake-qt5
+ QM=/usr/local/lib/qt5/bin/qmake
 elif [ "$2" = "freebsd" ]; then
- export QMAKESPEC=freebsd-clang
- export QM=/usr/local/bin/qmake-qt5
+ QM=/usr/local/lib/qt5/bin/qmake
 fi
 
 run() {
