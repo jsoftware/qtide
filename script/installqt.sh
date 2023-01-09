@@ -26,7 +26,7 @@ g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
 elif [ "$1" = "freebsd" ] ; then
 h qt5-qmake qt5-buildtools qt5-core
 h qt5-gui qt5-opengl qt5-printsupport qt5-svg qt5-websockets
-h qt5-multimedia || true
+h qt5-multimedia
 h qt5-webengine || true
-sudo pkg searh qt
+sudo pkg search qt
 fi
