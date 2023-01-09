@@ -116,6 +116,7 @@ jobs:
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
   name: JQtide (Raspberry32)
+  if: ${{ false }}
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
@@ -269,7 +270,7 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd, jqtopenbsd]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
