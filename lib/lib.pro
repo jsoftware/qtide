@@ -24,6 +24,10 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
  DEFINES += QT515
 }
 
+# export JQTWEBKIT before qmake
+# use webkit instead of webengine
+JQTWEBKIT = $$(JQTWEBKIT)
+
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57) QT += websockets
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
@@ -33,6 +37,10 @@ contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): QT += svg
 !lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): !contains(DEFINES,QT57): QT += webkit webkitwidgets
+!isEmpty(JQTWEBKIT) {
+QT -= webenginewidgets
+QT += webkit webkitwidgets
+}
 lessThan(QT_MAJOR_VERSION, 5): QT += webkit
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
@@ -104,11 +112,6 @@ macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
-
-lessThan(QT_MAJOR_VERSION, 6): freebsd: isEmpty(JQTSLIM): {
-QT += webkit webkitwidgets
-QT -= webenginewidgets
-}
 
 CONFIG+= release
 # CONFIG+= debug
