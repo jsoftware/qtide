@@ -30,6 +30,7 @@ if [ $? -eq 1 ]; then
   QM=qmake-qt5
 fi
 ./clean.l64
+rm -rf "$1"
 cd lib
 $QM && make
 cd ../main
@@ -57,7 +58,8 @@ elif [ "$2" = "freebsd" ]; then
  fi
  tar -czvf "$1".tar.gz $1
 fi
-rm -f $1/*
+ls -l "$1"
+rm -rf "$1"
 }
 
 run jqt-"$2" "$2"
