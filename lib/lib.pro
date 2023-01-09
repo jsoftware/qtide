@@ -38,6 +38,7 @@ contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): !contains(DEFINES,QT57): QT += webkit webkitwidgets
 !isEmpty(JQTWEBKIT) {
+message(use webkit instead of webengine)
 QT -= webenginewidgets
 QT += webkit webkitwidgets
 }
@@ -158,9 +159,11 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
   DEFINES += QT_WEBKIT
 }
 
+isEmpty(JQTWEBKIT) {
 contains(DEFINES,QT57) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
+}
 }
 !contains(QT,opengl) {
   DEFINES += QT_NO_OPENGL
