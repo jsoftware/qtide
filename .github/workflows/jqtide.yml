@@ -116,7 +116,6 @@ jobs:
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
   name: JQtide (Raspberry32)
-  if: ${{ false }}
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
