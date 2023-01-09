@@ -32,3 +32,5 @@ run jqt-mac
 
 export JQTSLIM=1
 run jqt-mac-slim
+
+./clean.l64 || true

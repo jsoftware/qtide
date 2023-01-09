@@ -67,3 +67,5 @@ run jqt-"$2" "$2"
 
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
+
+./clean.l64 || true

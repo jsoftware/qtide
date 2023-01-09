@@ -29,3 +29,9 @@ nmake
 cd ..
 move bin\win-x86_64\release jqt-win-slim
 powershell Compress-Archive jqt-win-slim jqt-win-slim.zip
+
+RD /S /Q release
+RD /S /Q bin
+RD /S /Q lib\build
+RD /S /Q main\build
+
