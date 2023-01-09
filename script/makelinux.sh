@@ -43,12 +43,21 @@ elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry32" ]; then
  mkdir -p output
  tar -czvf output/"$1".tar.gz $1
 elif [ "$2" = "openbsd" ]; then
+ if [ "`uname -m`" = "amd64" ]; then
  mv bin/openbsd-x86_64/release $1
+ else
+ mv bin/openbsd-aarch64/release $1
+ fi
  tar -czvf "$1".tar.gz $1
 elif [ "$2" = "freebsd" ]; then
+ if [ "`uname -m`" = "amd64" ]; then
  mv bin/freebsd-x86_64/release $1
+ else
+ mv bin/freebsd-aarch64/release $1
+ fi
  tar -czvf "$1".tar.gz $1
 fi
+rm -f $1/*
 }
 
 run jqt-"$2" "$2"
