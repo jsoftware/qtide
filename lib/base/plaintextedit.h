@@ -17,6 +17,7 @@ class PlainTextEdit : public QPlainTextEdit
 public:
   PlainTextEdit(QWidget *parent = 0);
   QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
+  void updatetext(QString s);
 
 #ifndef QT_NO_PRINTER
 public slots:

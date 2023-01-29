@@ -20,6 +20,16 @@ PlainTextEdit::PlainTextEdit(QWidget *parent) : QPlainTextEdit(parent)
   highlighter=0;
 }
 
+// ---------------------------------------------------------------------
+// update without clearing undo/redo history
+void PlainTextEdit::updatetext(QString s)
+{
+  QTextCursor c=textCursor();
+  c.select (QTextCursor::Document);
+  c.insertText(s);
+  setTextCursor(c);
+}
+
 #ifndef QT_NO_PRINTER
 // ---------------------------------------------------------------------
 void PlainTextEdit::print(QPrinter * printer)

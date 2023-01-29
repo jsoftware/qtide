@@ -257,7 +257,7 @@ void Note::prettyprint()
     pos=e->readcurpos();
     top=e->readtop();
     r.remove(0,1);
-    settext(r);
+    updatetext(r);
     e->settop(top);
     e->setcurpos(pos);
   } else {
@@ -664,4 +664,10 @@ void Note::tabclose(int index)
 {
   tabs->tabclose(index);
   scriptenable();
+}
+
+// ---------------------------------------------------------------------
+void Note::updatetext(QString s)
+{
+  tabs->tabupdatetext(s);
 }

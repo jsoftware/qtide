@@ -3,6 +3,7 @@
 
 #include <string>
 #include <QFont>
+#include <QObject>
 
 // using namespace std;
 

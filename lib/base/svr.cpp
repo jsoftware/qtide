@@ -45,6 +45,7 @@ void logcs(char *msg);
 QString runshowclean(QString s);
 Jcon *jcon=0;
 
+/*
 static void DispatchToMainThread(std::function<void()> callback)
 {
   // any thread
@@ -58,6 +59,7 @@ static void DispatchToMainThread(std::function<void()> callback)
   });
   QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
 }
+*/
 
 // ---------------------------------------------------------------------
 // usual way to call J when not suspended
@@ -330,7 +332,7 @@ void _stdcall Joutput(J jt,int type, char* s)
     });
   } else {
 #endif
-    qDebug() << "Joutput Called from the main thread";
+    //qDebug() << "Joutput Called from the main thread";
     if (MTYOER==type && runshow)
       t=runshowclean(t);
 

@@ -54,6 +54,7 @@ public:
   void settitle2(bool);
   void siderefresh();
   void tabclose(int index);
+  void updatetext(QString s);
 
   QString Id;
   Nmain *mainBar;

@@ -242,7 +242,7 @@ void Fiw::on_undolast_clicked()
 {
   read();
   Text=LastText;
-  Win->setPlainText(Text);
+  Win->updatetext(Text);
   TextPos=LastPos;
   LastPos=0;
   LastText="";
@@ -409,8 +409,7 @@ void Fiw::search_replace(int d)
   Text=Text.mid(0,TextPos) + Replace + Text.mid(TextPos+Search.size());
 
   if (d==0) {
-    Win->setPlainText(Text);
-    setmodified();
+    Win->updatetext(Text);
     if (0 <= (hit=search1(1))) {
       TextPos=hit;
       showhit();
@@ -427,8 +426,8 @@ void Fiw::search_replace(int d)
 
     int pos=Win->readcurpos();
     int top=Win->readtop();
-    Win->setPlainText(Text);
-    setmodified();
+    Win->updatetext(Text);
+
     Win->settop(top);
     Win->setcurpos(pos);
 

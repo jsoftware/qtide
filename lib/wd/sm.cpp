@@ -591,7 +591,7 @@ std::string smtheme()
 {
   std::string p=cmd.getparms();
   if (p == "dark") {
-    QFile f(":qdarkstyle/dark/style.qss");
+    QFile f(":qdarkstyle/dark/darkstyle.qss");
     f.open(QFile::ReadOnly | QFile::Text);
     QTextStream ts(&f);
     app->setStyleSheet(ts.readAll());

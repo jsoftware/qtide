@@ -534,3 +534,19 @@ void Ntabs::tabsettext(QString s)
   setmodified(n,s!=e->text);
   pnote->siderefresh();
 }
+
+// ---------------------------------------------------------------------
+// replaces text without clearing undo/redo history
+void Ntabs::tabupdatetext(QString s)
+{
+  int n=currentIndex();
+  if (n<0) return;
+  Nedit *e=(Nedit *)widget(n);
+  QTextCursor c=e->textCursor();
+  c.select (QTextCursor::Document);
+  c.insertText(s);
+  e->setTextCursor(c);
+  pnote->siderefresh();
+}
+
+

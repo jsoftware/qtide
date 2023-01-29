@@ -40,6 +40,7 @@ public:
   int tabsaveOK(int index);
   void tabsetindex(int index);
   void tabsettext(QString s);
+  void tabupdatetext(QString s);
 
 private slots:
   void currentChanged(int index);
