@@ -86,10 +86,7 @@ Form::~Form()
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
   if (Forms.isEmpty() && (!ShowIde)) {
-    if (jdllproc) evloop->exit();
-    else {
-      jcon->cmd("2!:55[0");
-    }
+    jcon->cmd("2!:55[0");
   }
 }
 

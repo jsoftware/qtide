@@ -190,7 +190,7 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 //      forceprmpt=1;
     }
   }
-  if (!jdllproc && (void *)-1==jdlljt) jepath(argv[0],(poslibpath)?argv[poslibpath]:(char *)"");
+  jepath(argv[0],(poslibpath)?argv[poslibpath]:(char *)"");
 // remove processed arg
   if(poslib||poslibpath||posnorl||posprmpt) {
     int j=0;
@@ -205,17 +205,13 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
   }
 
   jt=jeload(callbacks);
-  if (!jt && (void *)-1==jdlljt) {
+  if (!jt) {
     char m[1000];
     jefail(m);
     fputs(m,stderr);
     exit(1);
   }
 
-  if (jdllproc || (void *)-1!=jdlljt) {
-    *inputline=0;
-    return 0;
-  }
   adadbreak=(char**)jt; // first address in jt is address of breakdata
   signal(SIGINT,sigint);
 

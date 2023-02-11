@@ -22,8 +22,6 @@
 #include "jsvr.h"
 #include "util.h"
 
-void * jdllproc=0;
-void * jdlljt=0;
 void * hjdll=0;
 
 static char pathetcpx[PLEN];
@@ -141,19 +139,14 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 J jeload(void* callbacks)
 {
-  if (!jdllproc && (void*)-1!=jdlljt) return 0;
 #ifdef _WIN32
   WCHAR wpath[PLEN];
-  if (jdllproc) {
-    hjdll=jdllproc;
-  } else {
-    MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
-    hjdll=LoadLibraryW(wpath);
-  }
+  MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
+  hjdll=LoadLibraryW(wpath);
   if (!hjdll)return 0;
-  jt=(jdllproc)?jdlljt:((JInitType)GETPROCADDRESS((HMODULE)hjdll,"JInit"))();
+  jt=((JInitType)GETPROCADDRESS((HMODULE)hjdll,"JInit"))();
   if (!jt) return 0;
-  if (!jdllproc)((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
+  ((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS((HMODULE)hjdll,"JDo");
   jfree=(JFreeType)GETPROCADDRESS((HMODULE)hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS((HMODULE)hjdll,"Jga");
@@ -162,11 +155,11 @@ J jeload(void* callbacks)
   jseta=(JSetAType)GETPROCADDRESS((HMODULE)hjdll,"JSetA");
   return jt;
 #else
-  hjdll=(jdllproc)?jdllproc:dlopen(pathdll,RTLD_LAZY);
+  hjdll=dlopen(pathdll,RTLD_LAZY);
   if (!hjdll)return 0;
-  jt=(jdllproc)?jdlljt:((JInitType)GETPROCADDRESS(hjdll,"JInit"))();
+  jt=((JInitType)GETPROCADDRESS(hjdll,"JInit"))();
   if (!jt) return 0;
-  if (!jdllproc)((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
+  ((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS(hjdll,"JDo");
   jfree=(JFreeType)GETPROCADDRESS(hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS(hjdll,"Jga");

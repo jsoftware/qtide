@@ -194,8 +194,8 @@ extern QApplication *app;
 void state_appname();
 QStringList state_about();
 int state_fini();
-bool state_init(int argc, char *argv[], void *jproc);
-void state_init_args(int *,char *argv[]);
+bool state_init(int argc, char *argv[], uintptr_t stackinit);
+void state_init_args(int *, char *argv[]);
 
 void state_init_resource();
 void state_quit();
@@ -205,7 +205,7 @@ extern QEventLoop *evloop;
 extern QEventLoop *jevloop;
 
 extern "C" {
-  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt, void **jdll, void **jst, uintptr_t stackinit);
+  Dllexport int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit);
   Dllexport void immexj(const char *s);
 }
 

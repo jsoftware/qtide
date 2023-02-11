@@ -74,8 +74,6 @@ extern char inputline[BUFLEN+1];
 extern char **adadbreak;
 extern J jt;
 extern void * hjdll;
-extern void * jdllproc;
-extern void * jdlljt;
 
 A dora(std::string s);
 bool dorb(std::string s);

@@ -651,19 +651,14 @@ int state_fini()
 }
 
 // ---------------------------------------------------------------------
-static bool state_init(int argc, char *argv[], uintptr_t stackinit)
+bool state_init(int argc, char *argv[], uintptr_t stackinit)
 {
-  if (!jdllproc && (void*)-1==jdlljt) {
-    state_init_args(&argc,argv);
-    config.ini0();
-    svr_init(argc,argv,stackinit);
-    config.init();
-    dlog_init();
-    recent.init();
-  } else {
-    state_init_args(&argc,argv);
-    if ((void*)-1!=jdlljt) svr_init(argc,argv,stackinit);
-  }
+  state_init_args(&argc,argv);
+  config.ini0();
+  svr_init(argc,argv,stackinit);
+  config.init();
+  dlog_init();
+  recent.init();
   return true;
 }
 
@@ -709,7 +704,7 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *jproc, void *jt0, void **jdll, void **jst, uintptr_t stackinit)
+int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called
@@ -721,9 +716,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
     return 0;
   } else if (-4==argc) {
     if (term) term->filequit(true);  // olecom Quit
-    return 0;
-  } else if (-100==argc) {
-    state_reinit();
     return 0;
   } else if (0>argc) {
     return 0;
@@ -739,9 +731,6 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   app = new QApplication(argc, argv);
   evloop=new QEventLoop();
   jevloop=new QEventLoop();
-
-  jdllproc=jproc;
-  jdlljt=jt0;
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
@@ -762,8 +751,7 @@ int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void *j
   regQmlJE();
 #endif
 #endif
-  if (jdllproc || (!jdllproc && (void*)-1!=jdlljt)) showide(false);
-  if ((!jdllproc) && (!ShowIde) && Forms.isEmpty()) return 0;
+  if ((!ShowIde) && Forms.isEmpty()) return 0;
   term->fini();
   return 0;
 }
