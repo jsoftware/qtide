@@ -196,7 +196,49 @@ jobs:
 
 # freebsd --------------------------------------------------------------
  jqtfreebsd:
+  name: JQtide (FreeBSD vmactions)
+  runs-on: macos-12
+  steps:
+   - name: Checkout Git repository
+     uses: actions/checkout@v2
+     with:
+      submodules: recursive
+
+   - name: Install Qt, Compile JQtide
+     uses: vmactions/freebsd-vm@v0
+     with:
+      usesh: true
+      sync: sshfs
+      prepare: |
+       rdate time.cloudflare.com || true
+       pkg install -y curl zip gmake
+
+      run: |
+       rm -f jobdone
+       sudo pkg install -y curl zip gmake
+       sudo rdate time.cloudflare.com || true
+       export CC=clang
+       script/installqt.sh freebsd || exit 1
+       script/makelinux.sh '5.15.7' freebsd || exit 1
+       touch jobdone
+
+   - name: Check Status
+     run: |
+      test -f jobdone || exit 1
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-freebsd.tar.gz,jqt-freebsd-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# freebsd --------------------------------------------------------------
+ jqtfreebsd2:
   name: JQtide (FreeBSD cross-platform-actions)
+  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
