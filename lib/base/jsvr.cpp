@@ -32,6 +32,7 @@ static char pathexec[PLEN];
 
 typedef void* (_stdcall *JInitType)();
 typedef int (_stdcall *JDoType)(void*, C*);
+typedef void (_stdcall *JInterruptType)(void*);
 typedef A(_stdcall *JGetAType)(void*, I n, C*);
 typedef C*    (_stdcall *JGetLocaleType)(void*);
 typedef void (_stdcall *JSMType)(void*, void*);
@@ -44,6 +45,7 @@ typedef int (_stdcall * dowdtype)(J,int, A, A*);
 typedef C* (_stdcall * inputtype)(J,C*);
 
 int _stdcall JDo(J jt,C*);                   /* run sentence */
+void _stdcall JInterrupt(J jt);              /* interrupt */
 C* _stdcall JGetLocale(J jt);                /* get locale */
 J _stdcall JInit();                          /* init instance */
 int _stdcall JFree(J jt);                    /* free instance */
@@ -63,6 +65,7 @@ static char path[PLEN];
 static char pathdll[PLEN];
 
 static JDoType jdo;
+static JInterruptType jinterrupt;
 static JFreeType jfree;
 static JgaType jga;
 static JGetAType jgeta;
@@ -148,6 +151,7 @@ J jeload(void* callbacks)
   if (!jt) return 0;
   ((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS((HMODULE)hjdll,"JDo");
+  jinterrupt=(JInterruptType)GETPROCADDRESS((HMODULE)hjdll,"JInterrupt");
   jfree=(JFreeType)GETPROCADDRESS((HMODULE)hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS((HMODULE)hjdll,"Jga");
   jgeta=(JGetAType)GETPROCADDRESS((HMODULE)hjdll,"JGetA");
@@ -161,6 +165,7 @@ J jeload(void* callbacks)
   if (!jt) return 0;
   ((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
   jdo=(JDoType)GETPROCADDRESS(hjdll,"JDo");
+  jinterrupt=(JInterruptType)GETPROCADDRESS(hjdll,"JInterrupt");
   jfree=(JFreeType)GETPROCADDRESS(hjdll,"JFree");
   jga=(JgaType)GETPROCADDRESS(hjdll,"Jga");
   jgeta=(JGetAType)GETPROCADDRESS(hjdll,"JGetA");

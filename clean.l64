@@ -7,6 +7,9 @@ CPU=$(uname -m)
 
 
 if [ "$UNAME" = "darwin" ] ; then
+if [ "$CPU" = "arm64" ] ; then
+CPU=aarch64
+fi
 rm -rf $S/bin/mac-$CPU
 rm -rf $S/lib/build/mac-$CPU
 rm -rf $S/main/build/mac-$CPU

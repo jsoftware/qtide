@@ -2,6 +2,7 @@
 /* Licensed use only. Any other use is in violation of copyright. */
 /*                                                                         */
 typedef int (_stdcall *JDoType)(void*, LPSTR);
+typedef int (_stdcall *JInterruptType)(void*);
 typedef int (_stdcall *JBreakType)(void*);
 typedef int (_stdcall *JIsBusyType)(void*);
 typedef int (_stdcall *JGetType)(void*, LPSTR, VARIANT*);

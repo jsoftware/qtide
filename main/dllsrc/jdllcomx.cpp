@@ -47,6 +47,7 @@ extern "C"
 extern "C"
 {
   JDoType			JDo;
+  JInterruptType			JInterrupt;
   JBreakType		JBreak;
   JIsBusyType		JIsBusy;
   JGetType		JGet;
@@ -68,6 +69,7 @@ extern "C"
 }
 #else
 JDoType			JDo;
+JInterruptType			JInterrupt;
 JBreakType		JBreak;
 JIsBusyType		JIsBusy;
 JGetType		JGet;
@@ -455,6 +457,7 @@ static void oleload()
 {
   JSetB=(JSetBType)GETPROCADDRESS((HMODULE)hjdll,"JSetB");
   JDo=(JDoType)GETPROCADDRESS((HMODULE)hjdll,"JDo");
+  JInterrupt=(JInterruptType)GETPROCADDRESS((HMODULE)hjdll,"JInterrupt");
   JBreak=(JBreakType)GETPROCADDRESS((HMODULE)hjdll,"JBreak");
   JIsBusy=(JIsBusyType)GETPROCADDRESS((HMODULE)hjdll,"JIsBusy");
   JGet=(JGetType)GETPROCADDRESS((HMODULE)hjdll,"JGet");

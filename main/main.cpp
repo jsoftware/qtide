@@ -24,8 +24,8 @@ extern "C" char * jepath1(char* arg);
 extern int initexeserver();
 extern int reg(int set, char* keys);
 
-void *hjdll;
-void *pjst;
+static void *hjdll;
+static void *pjst;
 static uintptr_t cstackinit;
 
 extern "C" int staterun(int argc, char *arg1, int arg2)
@@ -85,18 +85,6 @@ int main(int argc, char *argv[])
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
 #else
-#if 0
-#define J_STACK  0xc00000uL // 12mb
-// set stack size to get limit error instead of crash
-  struct rlimit lim;
-  if(!getrlimit(RLIMIT_STACK,&lim)) {
-    if(lim.rlim_cur!=RLIM_INFINITY && lim.rlim_cur<J_STACK) {
-      lim.rlim_cur=(lim.rlim_max==RLIM_INFINITY)?J_STACK:(lim.rlim_max<J_STACK)?lim.rlim_max:J_STACK;
-      setrlimit(RLIMIT_STACK,&lim);
-    }
-  }
-#endif
-
   QString s= QString::fromUtf8(path)+ "/libjqt";
 #if defined(__MACH__)
   if(s.startsWith("/usr/local/bin")||s.startsWith("/opt/homebrew/bin")) {

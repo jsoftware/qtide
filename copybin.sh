@@ -7,8 +7,9 @@ set -e
 S=$HOME/dev/apps/ide/jqt
 cd $S || exit 1
 
-VER=9.04
-JVER=904
+VER=9.4
+JVER=9.4
+JVERNUM=904
 JQTVER=2.0.3
 
 cop(){
@@ -45,10 +46,10 @@ $SUDO cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
-mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old || true
-mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old || true
-cp bin/$PLATFORM-$CPU/release/libjqt$EXT ~/share/jsoftware/j$JVER/bin/.
-cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ~/share/jsoftware/j$JVER/bin/.
+mv -f ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT.old || true
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
+cp bin/$PLATFORM-$CPU/release/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/.
+cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ~/share/jsoftware/j$JVERNUM/bin/.
 }
 
 coplipo(){
@@ -70,10 +71,10 @@ $SUDO cp bin/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
 $SUDO chmod 755 $PX/bin/jqt-$VER
 
-mv -f ~/share/jsoftware/j$JVER/bin/libjqt$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT.old || true
-mv -f ~/share/jsoftware/j$JVER/bin/jqt ~/share/jsoftware/j$JVER/bin/jqt.old || true
-cp bin/libjqt.$JQTVER$EXT ~/share/jsoftware/j$JVER/bin/libjqt$EXT
-cp bin/jqt ~/share/jsoftware/j$JVER/bin/.
+mv -f ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT.old || true
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
+cp bin/libjqt.$JQTVER$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT
+cp bin/jqt ~/share/jsoftware/j$JVERNUM/bin/.
 }
 
 if [ "`uname`" = "Linux" ] ; then
@@ -88,7 +89,7 @@ cop
 
 elif [ "`uname`" = "Darwin" ] ; then
 
-if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-arm64/release/libjqt.$JQTVER.dylib ] ; then 
+if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; then 
 ./maclipo.sh
 coplipo
 
@@ -100,7 +101,7 @@ CPU=x86_64
 cop
 fi
 
-if [ -f bin/mac-arm64/release/libjqt.$JQTVER.dylib ] ; then 
+if [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; then 
 PLATFORM=mac
 CPU=arm64
 cop

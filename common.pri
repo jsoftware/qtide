@@ -1,7 +1,7 @@
 # included by main.pro and lib.pro
 
 VERSION = 2.0.3
-JDLLVER = 9.04    # ignored if not FHS
+JDLLVER = 9.4    # ignored if not FHS
 
 JQTBUILD = "full"
 JQTFAT = $$(JQTFAT)
