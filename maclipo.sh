@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-JQTVER=2.0.3
+JQTVER=$(grep "^VERSION *=" common.pri|cut -d= -f2 | tr -d " ")
+echo $JQTVER
 
 if [ "`uname`" = "Darwin" ] ; then
 if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; then

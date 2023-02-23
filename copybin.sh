@@ -7,10 +7,13 @@ set -e
 S=$HOME/dev/apps/ide/jqt
 cd $S || exit 1
 
-VER=9.4
-JVER=9.4
-JVERNUM=904
-JQTVER=2.0.3
+VER=$(grep "^JDLLVER *=" common.pri|cut -d= -f2 | tr -d " ")
+JVER=$VER
+JVERNUM=$(echo $VER|tr "." "0")
+JQTVER=$(grep "^VERSION *=" common.pri|cut -d= -f2 | tr -d " ")
+echo $JVER
+echo $JVERNUM
+echo $JQTVER
 
 cop(){
 # $1 PLATFORM
