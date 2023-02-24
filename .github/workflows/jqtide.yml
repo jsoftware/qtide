@@ -197,6 +197,7 @@ jobs:
 # freebsd --------------------------------------------------------------
  jqtfreebsd:
   name: JQtide (FreeBSD vmactions)
+  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
@@ -238,7 +239,6 @@ jobs:
 # freebsd --------------------------------------------------------------
  jqtfreebsd2:
   name: JQtide (FreeBSD cross-platform-actions)
-  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
@@ -312,7 +312,7 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd, jqtopenbsd]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
