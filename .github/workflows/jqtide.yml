@@ -211,7 +211,7 @@ jobs:
       sync: sshfs
       prepare: |
        rdate time.cloudflare.com || true
-       pkg install -y curl zip gmake
+       pkg install -y curl zip gmake sudo
 
       run: |
        rm -f jobdone
