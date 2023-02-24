@@ -211,12 +211,12 @@ jobs:
       sync: sshfs
       prepare: |
        rdate time.cloudflare.com || true
-       pkg_add curl zip gmake
+       pkg install -y curl zip gmake
 
       run: |
        rm -f jobdone
-       sudo pkg install -y curl zip gmake
-       sudo rdate time.cloudflare.com || true
+       pkg install -y curl zip gmake
+       rdate time.cloudflare.com || true
        export CC=clang
        script/installqt.sh freebsd || exit 1
        script/makelinux.sh '5.15.7' freebsd || exit 1
