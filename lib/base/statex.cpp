@@ -183,6 +183,7 @@ void Config::userkeys_init()
 QStringList Config::userkeys_split(QString s)
 {
   QChar c;
+  s=s.trimmed();
   for (int i=0; i<s.length(); i++) {
     c=s.at(i);
     if (!(c.isLetter() || c.isDigit() || c=='+')) break;
