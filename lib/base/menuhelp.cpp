@@ -240,7 +240,7 @@ void Term::on_helplabschaptersAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helprelnotesAct_triggered()
 {
-  wiki("System/ReleaseNotes/J904");
+  wiki("System/ReleaseNotes/J9.4");
 }
 
 // ---------------------------------------------------------------------
