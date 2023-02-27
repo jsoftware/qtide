@@ -40,4 +40,3 @@ RD /S /Q release
 RD /S /Q bin
 RD /S /Q lib\build
 RD /S /Q main\build
-

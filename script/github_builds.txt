@@ -30,4 +30,3 @@ To see the status of a run, login to github and visit
 Recent runs are shown with a status mark. Drill down into a run name for the compile logs.
 
 Github actions are documented at https://docs.github.com/en/actions.
-
