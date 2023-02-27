@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
 
-#
 # arg is Qt version, e.g. "5.15.2"
 
 export QMAKESPEC=macx-clang
@@ -25,7 +24,9 @@ run() {
  mv bin/mac-x86_64/release $1
  mv $1/jqt.app/Contents/MacOS/jqt $1
  rm -rf $1/jqt.app
- zip --symlinks -r $1.zip $1
+ cd $1
+ zip --symlinks -r ../$1.zip *
+ cd ..
 }
 
 run jqt-mac

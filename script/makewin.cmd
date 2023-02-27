@@ -12,7 +12,10 @@ qmake
 nmake
 cd ..
 move bin\win-x86_64\release jqt-win
-powershell Compress-Archive jqt-win jqt-win.zip
+
+cd jqt-win
+powershell Compress-Archive * ..\jqt-win.zip
+cd ..
 
 RD /S /Q release
 RD /S /Q bin
@@ -28,7 +31,10 @@ qmake
 nmake
 cd ..
 move bin\win-x86_64\release jqt-win-slim
-powershell Compress-Archive jqt-win-slim jqt-win-slim.zip
+
+cd jqt-win-slim
+powershell Compress-Archive * ..\jqt-win-slim.zip
+cd ..
 
 RD /S /Q release
 RD /S /Q bin

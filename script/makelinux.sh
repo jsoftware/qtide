@@ -23,6 +23,12 @@ elif [ "$2" = "freebsd" ]; then
  export JQTWEBKIT=JQTWEBKIT
 fi
 
+maketar() {
+ cd $1
+ tar -czvf ../"$1".tar.gz *
+ cd ..
+}
+
 run() {
 QM="${QM:=qmake}"
 hash $QM &> /dev/null
@@ -39,25 +45,25 @@ $QM && make
 cd ..
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
- tar -czvf "$1".tar.gz $1
+ maketar $1
 elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry32" ]; then
  mv bin/linux-"`uname -m`"/release $1
  mkdir -p output
- tar -czvf output/"$1".tar.gz $1
+ maketar $1
 elif [ "$2" = "openbsd" ]; then
  if [ "`uname -m`" = "amd64" ]; then
  mv bin/openbsd-x86_64/release $1
  else
  mv bin/openbsd-aarch64/release $1
  fi
- tar -czvf "$1".tar.gz $1
+ maketar $1
 elif [ "$2" = "freebsd" ]; then
  if [ "`uname -m`" = "amd64" ]; then
  mv bin/freebsd-x86_64/release $1
  else
  mv bin/freebsd-aarch64/release $1
  fi
- tar -czvf "$1".tar.gz $1
+ maketar $1
 fi
 ls -l "$1"
 rm -rf "$1"
