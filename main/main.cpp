@@ -24,8 +24,8 @@ extern "C" char * jepath1(char* arg);
 extern int initexeserver();
 extern int reg(int set, char* keys);
 
-static void *hjdll;
-static void *pjst;
+void *hjdll;
+void *pjst;
 static uintptr_t cstackinit;
 
 extern "C" int staterun(int argc, char *arg1, int arg2)
