@@ -87,6 +87,7 @@ jobs:
       commands: |
        script/installqt.sh raspberry
        export CC=clang
+       mkdir -p output
        script/makelinux.sh '5.15.2' raspberry
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;

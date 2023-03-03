@@ -48,8 +48,9 @@ if [ "$2" = "linux" ]; then
  maketar $1
 elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry-arm32" ]; then
  mv bin/linux-"`uname -m`"/release $1
- mkdir -p output
  maketar $1
+ mkdir -p output
+ mv "$1".tar.gz output/.
 elif [ "$2" = "openbsd" ]; then
  if [ "`uname -m`" = "amd64" ]; then
  mv bin/openbsd-x86_64/release $1
