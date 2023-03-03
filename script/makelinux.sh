@@ -3,7 +3,7 @@ set -e
 
 #
 # arg is Qt version, e.g. "5.15.2"
-#        linux/raspberry/raspberry32/openbsd/freebsd
+#        linux/raspberry/raspberry-arm32/openbsd/freebsd
 
 export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
 
@@ -26,7 +26,7 @@ fi
 maketar() {
  cd $1
  tar -czvf ../"$1".tar.gz *
- cd ..
+ cd -
 }
 
 run() {
@@ -46,7 +46,7 @@ cd ..
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
  maketar $1
-elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry32" ]; then
+elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry-arm32" ]; then
  mv bin/linux-"`uname -m`"/release $1
  mkdir -p output
  maketar $1

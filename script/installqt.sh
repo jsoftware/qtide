@@ -19,7 +19,7 @@ f qtmultimedia5-dev libqt5multimediawidgets5
 f libqt5opengl5 libqt5opengl5-dev
 f libqt5svg5 libqt5svg5-dev
 f qtwebengine5-dev libqt5websockets5-dev
-elif [ "$1" = "raspberry32" ] ; then
+elif [ "$1" = "raspberry-arm32" ] ; then
 f libqt4-dev libqt4-opengl-dev libqt4-svg
 elif [ "$1" = "openbsd" ] ; then
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets

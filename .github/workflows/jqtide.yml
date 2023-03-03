@@ -107,7 +107,7 @@ jobs:
 
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
-  name: JQtide (Raspberry32)
+  name: JQtide (Raspberry-arm32)
   if: ${{ false }}
   runs-on: ubuntu-20.04
   steps:
@@ -122,12 +122,12 @@ jobs:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
       base_image: raspbian_lite:2020-02-13
-      image_additional_mb: 1024
+      image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       script/installqt.sh raspberry32
-       script/makelinux.sh '5.15.2' raspberry32
+       script/installqt.sh raspberry-arm32
+       script/makelinux.sh '5.15.2' raspberry-arm32
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
@@ -140,7 +140,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-raspberry32.tar.gz,jqt-raspberry32-slim.tar.gz"
+      artifacts: "jqt-raspberry-arm32.tar.gz,jqt-raspberry-arm32-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
