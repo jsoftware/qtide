@@ -19,5 +19,12 @@ bin/mac-aarch64/release/jqt.app/Contents/MacOS/jqt \
 -create -output bin/jqt
 fi
 
+if [ -f bin/mac-x86_64/release/jqta.app/Contents/MacOS/jqta ] && [ -f bin/mac-aarch64/release/jqta.app/Contents/MacOS/jqta ] ; then
+lipo \
+bin/mac-x86_64/release/jqta.app/Contents/MacOS/jqta \
+bin/mac-aarch64/release/jqta.app/Contents/MacOS/jqta \
+-create -output bin/jqta
+fi
+
 fi
 

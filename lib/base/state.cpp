@@ -704,7 +704,7 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
-int state_run(int argc, char *argv[], char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit)
+int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit)
 {
   if (-1==argc) {
     return state_fini();  // the 2nd time state_run is called

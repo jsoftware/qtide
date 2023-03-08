@@ -13,6 +13,7 @@ fi
 rm -rf $S/bin/mac-$CPU
 rm -rf $S/lib/build/mac-$CPU
 rm -rf $S/main/build/mac-$CPU
+rm -rf $S/amalgam/build/mac-$CPU
 else
 if [ "$CPU" = "arm64" ] ; then
 CPU=aarch64
@@ -22,4 +23,5 @@ fi
 rm -rf $S/bin/$UNAME-$CPU
 rm -rf $S/lib/build/$UNAME-$CPU
 rm -rf $S/main/build/$UNAME-$CPU
+rm -rf $S/amalgam/build/$UNAME-$CPU
 fi

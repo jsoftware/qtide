@@ -23,6 +23,7 @@ if [ $PLATFORM = "mac" ] ; then
 SUDO=
 SLIB=lib
 JQTAPP=jqt.app/Contents/MacOS
+JQTAAPP=jqta.app/Contents/MacOS
 EXT=.dylib
 VEXT=.$JQTVER.dylib
 if [ $CPU = "arm64" ] ; then
@@ -38,22 +39,40 @@ else
 SLIB=lib/x86_64-linux-gnu
 fi
 JQTAPP=
+JQTAAPP=
 EXT=.so
 VEXT=.so.$JQTVER
 PX=/usr
 fi
 
-$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old || true
-$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old || true
+if [ -f bin/$PLATFORM-$CPU/release/libjqt$EXT ] ; then 
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old.$$ || true
 $SUDO cp bin/$PLATFORM-$CPU/release/libjqt$EXT $PX/$SLIB/libjqt$VEXT
-$SUDO cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
+fi
+if [ -f bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ] ; then 
+$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old.$$ || true
+$SUDO cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/bin/jqt-$VER
+fi
+if [ -f bin/$PLATFORM-$CPU/release/$JQTAAPP/jqta ] ; then 
+$SUDO mv -f $PX/bin/jqta-$VER /tmp/jqta-$VER.old.$$ || true
+$SUDO cp bin/$PLATFORM-$CPU/release/$JQTAAPP/jqta $PX/bin/jqta-$VER
+$SUDO chmod 755 $PX/bin/jqta-$VER
+fi
 
+if [ -f bin/$PLATFORM-$CPU/release/libjqt$EXT ] ; then 
 mv -f ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT.old || true
-mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
 cp bin/$PLATFORM-$CPU/release/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/.
+fi
+if [ -f bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ] ; then 
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
 cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ~/share/jsoftware/j$JVERNUM/bin/.
+fi
+if [ -f bin/$PLATFORM-$CPU/release/$JQTAAPP/jqta ] ; then 
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqta ~/share/jsoftware/j$JVERNUM/bin/jqta.old || true
+cp bin/$PLATFORM-$CPU/release/$JQTAPPA/jqta ~/share/jsoftware/j$JVERNUM/bin/.
+fi
 }
 
 coplipo(){
@@ -66,19 +85,34 @@ EXT=.dylib
 VEXT=.$JQTVER.dylib
 PX=/opt/homebrew
 
-$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old || true
-$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old || true
-echo cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
-echo cp bin/jqt $PX/bin/jqt-$VER
+if [ -f bin/libjqt.$JQTVER$EXT ] ; then 
+$SUDO mv -f $PX/$SLIB/libjqt$VEXT /tmp/libjqt$VEXT.old.$$ || true
 $SUDO cp bin/libjqt.$JQTVER$EXT $PX/$SLIB/libjqt$VEXT
-$SUDO cp bin/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/$SLIB/libjqt$VEXT
+fi
+if [ -f bin/jqt ] ; then 
+$SUDO mv -f $PX/bin/jqt-$VER /tmp/jqt-$VER.old.$$ || true
+$SUDO cp bin/jqt $PX/bin/jqt-$VER
 $SUDO chmod 755 $PX/bin/jqt-$VER
+fi
+if [ -f bin/jqta ] ; then 
+$SUDO mv -f $PX/bin/jqta-$VER /tmp/jqta-$VER.old.$$ || true
+$SUDO cp bin/jqta $PX/bin/jqta-$VER
+$SUDO chmod 755 $PX/bin/jqta-$VER
+fi
 
+if [ -f bin/libjqt.$JQTVER$EXT ] ; then 
 mv -f ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT.old || true
-mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
 cp bin/libjqt.$JQTVER$EXT ~/share/jsoftware/j$JVERNUM/bin/libjqt$EXT
+fi
+if [ -f bin/jqt ] ; then 
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqt ~/share/jsoftware/j$JVERNUM/bin/jqt.old || true
 cp bin/jqt ~/share/jsoftware/j$JVERNUM/bin/.
+fi
+if [ -f bin/jqta ] ; then 
+mv -f ~/share/jsoftware/j$JVERNUM/bin/jqta ~/share/jsoftware/j$JVERNUM/bin/jqta.old || true
+cp bin/jqta ~/share/jsoftware/j$JVERNUM/bin/.
+fi
 }
 
 if [ "`uname`" = "Linux" ] ; then
@@ -93,7 +127,9 @@ cop
 
 elif [ "`uname`" = "Darwin" ] ; then
 
-if [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; then 
+if { [ -f bin/mac-x86_64/release/libjqt.$JQTVER.dylib ] && [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; } || \
+   { [ -d bin/mac-x86_64/release/jqt.app ] && [ -d bin/mac-aarch64/release/jqt.app ] ; } || \
+   { [ -d bin/mac-x86_64/release/jqta.app ] && [ -d bin/mac-aarch64/release/jqta.app ] ; } ; then 
 ./maclipo.sh
 coplipo
 

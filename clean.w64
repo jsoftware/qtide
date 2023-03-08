@@ -5,3 +5,4 @@ S=$(dirname "$0")
 rm -rf $S/bin/win-x86_64
 rm -rf $S/lib/build/win-x86_64
 rm -rf $S/main/build/win-x86_64
+rm -rf $S/amalgam/build/win-x86_64

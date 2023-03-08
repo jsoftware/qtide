@@ -42,6 +42,8 @@ cd lib
 $QM && make
 cd ../main
 $QM && make
+cd ../amalgam
+$QM && make
 cd ..
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1

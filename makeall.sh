@@ -45,3 +45,8 @@ cd ..
 
 cd main
 $QM && make
+cd ..
+
+cd amalgam
+$QM && make
+cd ..

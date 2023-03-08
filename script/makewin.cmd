@@ -15,6 +15,11 @@ qmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+cd ..\amalgam
+qmake
+IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+nmake
+IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..
 move bin\win-x86_64\release jqt-win
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -28,6 +33,7 @@ RD /S /Q release
 RD /S /Q bin
 RD /S /Q lib\build
 RD /S /Q main\build
+RD /S /Q amalgam\build
 
 set JQTSLIM=1
 cd lib
@@ -36,6 +42,11 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..\main
+qmake
+IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+nmake
+IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+cd ..\amalgam
 qmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -53,3 +64,4 @@ RD /S /Q release
 RD /S /Q bin
 RD /S /Q lib\build
 RD /S /Q main\build
+RD /S /Q amalgam\build

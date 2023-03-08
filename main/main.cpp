@@ -17,26 +17,42 @@
 #include <xlocale.h>
 #endif
 
-typedef int (*Run)(int,char **,char *,bool,int,void **,void **,uintptr_t);
+#ifdef JQTAMALGAM
+extern "C" int state_run(int,char **,const char *,bool,int,void **,void **,uintptr_t);
+#else
+typedef int (*Run)(int,char **,const char *,bool,int,void **,void **,uintptr_t);
 static Run state_run;
+#endif
 extern "C" char * jepath1(char* arg);
 
 extern int initexeserver();
 extern int reg(int set, char* keys);
 
+#ifdef JQTAMALGAM
+extern void *hjdll;
+#else
 void *hjdll;
+#endif
 void *pjst;
 static uintptr_t cstackinit;
 
 extern "C" int staterun(int argc, char *arg1, int arg2)
 {
+#ifdef JQTAMALGAM
+  if (argc<0)
+#else
   if (state_run && argc<0)
+#endif
     return state_run(argc,0,arg1,false,arg2,0,0,cstackinit);
   else
     return 0;
 }
 
+#ifdef JQTAMALGAM
+extern char *jqtver;
+#else
 const char *jqtver=JQTVERSION;
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -110,10 +126,15 @@ int main(int argc, char *argv[])
 #endif
 #endif
   }
+#ifdef JQTAMALGAM
+  if (1) {
+    state_run(argc, argv, (char*)"",fhs,(embedding)?0:1, &hjdll, &pjst, cstackinit);
+#else
   QLibrary *lib=new QLibrary(s);
   state_run=(Run) lib->resolve("state_run");
   if (state_run) {
     state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,(embedding)?0:1, &hjdll, &pjst, cstackinit);
+#endif
 #if defined(_WIN32)
     if (embedding)
       if (!initexeserver())
@@ -124,8 +145,10 @@ int main(int argc, char *argv[])
 #endif
   }
 
+#ifndef JQTAMALGAM
   qDebug() << lib->fileName();
   qDebug() << "could not resolve: state_run:\n\n" + lib->errorString();
+#endif
 
   return -1;
 }
