@@ -1,5 +1,5 @@
 
-#include "grid/wgrid.h"
+#include "wgrid.h"
 
 // ---------------------------------------------------------------------
 void WGrid::drawsizes(int sx, int sy, int sw, int sh)

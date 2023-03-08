@@ -1,6 +1,7 @@
 
 # version info
 include(../common.pri)
+message(QMAKESPEC $$QMAKESPEC)
 
 !lessThan(QT_MAJOR_VERSION, 5) {
  DEFINES += QT50
@@ -20,9 +21,6 @@ include(../common.pri)
 TEMPLATE = app
 TARGET = jqt
 
-# contains(DEFINES,QT50): QT += widgets
-
-message(QMAKESPEC $$QMAKESPEC)
 message(original arch $$QMAKE_HOST.arch)
 QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
@@ -31,7 +29,8 @@ linux-cross: QMAKE_TARGET.arch = x86
 win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
 linux-raspi: QMAKE_TARGET.arch = armv6l
-linux-arm*: QMAKE_TARGET.arch = armv6l
+linux-arm*: !linux-arm64: QMAKE_TARGET.arch = armv6l
+linux-arm64: QMAKE_TARGET.arch = aarch64
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
@@ -80,14 +79,14 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-
 macx:CONFIG += c++11
-
 win32-msvc*:TARGET = ../bin/jqt
+win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 DEPENDPATH += .
 INCLUDEPATH += .
+
+DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 # Input
 SOURCES += main.cpp jepath.cpp

@@ -3,6 +3,6 @@
 
 #include <QSyntaxHighlighter>
 #include "../base/base.h"
-#include "high/highj.h"
+#include "highj.h"
 
 #endif

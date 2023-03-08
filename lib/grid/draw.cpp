@@ -2,8 +2,8 @@
 #include <QApplication>
 
 #include "../base/state.h"
-#include "grid/wgrid.h"
-#include "grid/qgrid.h"
+#include "wgrid.h"
+#include "qgrid.h"
 
 // ---------------------------------------------------------------------
 void WGrid::draw()

@@ -1,7 +1,7 @@
 
 # version info
 include(../common.pri)
-message($$QMAKESPEC)
+message(QMAKESPEC $$QMAKESPEC)
 
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
@@ -43,6 +43,7 @@ QT -= webenginewidgets
 QT += webkit webkitwidgets
 }
 lessThan(QT_MAJOR_VERSION, 5): QT += webkit
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
@@ -284,7 +285,7 @@ SOURCES += \
  base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp \
  base/recent.cpp base/rsel.cpp base/run.cpp \
  base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
- base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp  base/textedit.cpp \
+ base/style.cpp base/svr.cpp base/tedit.cpp base/term.cpp base/textedit.cpp \
  base/userkeys.cpp base/util.cpp base/utils.cpp base/qtstate.cpp base/eview.cpp base/widget.cpp \
  grid/cell.cpp grid/cubedata.cpp grid/cubedraw.cpp grid/cubewidget.cpp \
  grid/defs.cpp grid/draw.cpp grid/header.cpp grid/hierdraw.cpp \
@@ -293,7 +294,7 @@ SOURCES += \
  wd/bitmap.cpp wd/browser.cpp wd/button.cpp wd/child.cpp wd/clipboard.cpp wd/cmd.cpp \
  wd/checkbox.cpp wd/combobox.cpp wd/dateedit.cpp wd/dial.cpp wd/dspinbox.cpp wd/dummy.cpp \
  wd/edit.cpp wd/editm.cpp wd/edith.cpp wd/font.cpp \
- wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp  \
+ wd/form.cpp wd/gl2.cpp wd/glz.cpp wd/prtobj.cpp wd/image.cpp \
  wd/isidraw.cpp wd/isigraph.cpp wd/isigraph2.cpp wd/isigrid.cpp \
  wd/layout.cpp wd/lineedit.cpp wd/listbox.cpp wd/mb.cpp \
  wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/radiobutton.cpp \

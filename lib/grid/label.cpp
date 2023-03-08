@@ -1,5 +1,5 @@
 
-#include "grid/wgrid.h"
+#include "wgrid.h"
 
 // ---------------------------------------------------------------------
 void WGrid::drawlabels()

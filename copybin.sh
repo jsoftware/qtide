@@ -9,7 +9,8 @@ cd $S || exit 1
 
 VER=$(grep "^JDLLVER *=" common.pri|cut -d= -f2 | tr -d " ")
 JVER=$VER
-JVERNUM=$(echo $VER|tr "." "0")
+# JVERNUM=$(echo $VER|tr "." "0")
+JVERNUM=$VER
 JQTVER=$(grep "^VERSION *=" common.pri|cut -d= -f2 | tr -d " ")
 echo $JVER
 echo $JVERNUM

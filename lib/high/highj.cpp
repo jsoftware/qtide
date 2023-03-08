@@ -8,8 +8,8 @@
  * words are not valid outside an explicit definition).
  */
 
-#include "base/state.h"
-#include "high/high.h"
+#include "../base/state.h"
+#include "../high/high.h"
 
 // ---------------------------------------------------------------------
 Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
