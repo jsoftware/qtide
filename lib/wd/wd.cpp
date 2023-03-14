@@ -34,6 +34,9 @@
 #include "pane.h"
 #include "tabs.h"
 #include "wd.h"
+#include "gl2.h"
+#include "glz.h"
+#include "ogl2.h"
 
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
@@ -152,13 +155,18 @@ Form *evtform=0;
 Font *fontdef=0;
 Child *isigraph=0;
 Child *opengl=0;
+std::string locale="";
 
 QList<Form *>Forms;
 
 int FormSeq=0;
 int rc;
-static std::string lasterror="";
-static std::string result="";
+std::string lasterror="";
+std::string result="";
+int resulttype=0;   // 0 LIT   1 int   2 I
+std::vector<int> intresult= {};
+std::vector<I> longresult= {};
+int resultshape[2];
 
 static std::string ccmd="";
 
@@ -169,6 +177,7 @@ QStringList defChildStyle=QStringList("flush");
 // ---------------------------------------------------------------------
 int wd(char *s,int slen,char *&res,int &len)
 {
+  locale=jegetlocale();
   rc=0;
   result.clear();
   cmd.init(s,slen);
@@ -1806,4 +1815,397 @@ int translateqkey(int key)
   if (key<0x01100000) return 0xfa00 + ((key & 0x00030000) >> 8) + (key & 0xff);
   // 0x011000xx to FDxx
   return 0xfd00 | (key & 0xff);
+}
+
+#define LOGD(e) qDebug() << (e)
+
+#if defined(_WIN64)||defined(__LP64__)
+#define SZI 8
+#else
+#define SZI 4
+#endif
+
+// ---------------------------------------------------------------------
+// caller should free string
+char * int2utf8(const int *yi, int nc)
+{
+  int i;
+  char *ys = (char *) malloc(1 + (size_t) nc);
+  for (i = 0; i < nc; i++)
+    *(ys + i) = *(yi + i);
+  *(ys + nc) = 0;
+  return ys;
+}
+
+// ---------------------------------------------------------------------
+int uigl2(I t,int *ptr, int ncnt)
+{
+  rc=0;
+  if (t==glsel2_n) {
+    char *g = int2utf8(ptr+2, ncnt-2);
+    rc = glsel2(g);
+    free(g);
+  } else if (t==gl_sel2_n) {
+    char *g = int2utf8(ptr+2, ncnt-2);
+    rc = gl_sel2(g);
+    free(g);
+  } else if (t==glqextent_n || t==glqextentw_n || t==glqpixels_n || t==glqpixelm_n
+             || t==glqprintpaper_n || t==glqprintwh_n || t==glqtextmetrics_n || t==glqtype_n
+             || t==glqwh_n || t==glqhandles_n)
+    rc = glquery(t, ptr+2, ncnt-2);
+  else if (t==gl_qextent_n || t==gl_qextentw_n || t==gl_qpixels_n || t==gl_qpixelm_n
+           || t==gl_qtextmetrics_n || t==gl_qtype_n
+           || t==gl_qwh_n || t==gl_qhandles_n)
+    rc = gl_query(t, ptr+2, ncnt-2);
+  else if (t==glzqextent_n || t==glzqextentw_n
+           || t==glzqtextmetrics_n || t==glzqtype_n
+           || t==glzqwh_n)
+#ifndef QT_NO_PRINTER
+    rc = glzquery(t, ptr+2, ncnt-2);
+#else
+    rc = 1;
+#endif
+  else if (t==glzqresolution_n || t==glzqcolormode_n || t==glzqduplexmode_n || t==glzqorientation_n
+           || t==glzqoutputformat_n || t==glzqpageorder_n || t==glzqpapersize_n || t==glzqpapersource_n
+           || t==glzqmargins_n)
+#ifndef QT_NO_PRINTER
+    rc = glzquery2(t, ptr+2, ncnt-2);
+#else
+    rc = 1;
+#endif
+  else if (t>=1000 && t<=2099)
+    rc = glcmds(ptr, ncnt);
+  else if ((t>=2100 && t<=2199) || t==2312)  // glfontn 2312 hardwired in plot addon
+    rc = gl_cmds(ptr, ncnt);
+  else if (t>=2200 && t<=2299)
+#ifndef QT_NO_PRINTER
+    rc = glzcmds(ptr, ncnt);
+#else
+    rc = 1;
+#endif
+  else
+    rc = 1;
+  return rc;
+}
+
+// ---------------------------------------------------------------------
+int uiwd(I t,I *pinta,void *inarr,I *ointa,char* loc)
+{
+  Q_UNUSED(loc);
+  rc = 0;   // system rc
+  locale = std::string(loc);
+  result.clear();
+  resultshape[0]=resultshape[1]=-1;
+  if(0==t) {
+    if(LIT!=pinta[0]) {
+      LOGD("argument should be string");
+      return rc = 1;
+    }
+    cmd.init((char*)inarr,pinta[3]);
+    wd1();
+    if(rc<0) {
+      ointa[1]=resultshape[0];  // assume LIT rank-1
+      ointa[2]=resultshape[1];
+      ointa[0] = resulttype = 0;
+    }
+    return rc;
+  } else if (t>=1000 && t<=2999) {
+    int *inint=0;
+    if (t==2999) {
+      if (INT!=pinta[0]) {
+        LOGD("argument should be integer");
+        return rc = 1;
+      }
+#if defined(_WIN64)||defined(__LP64__)
+      inint = (int*)malloc(sizeof(int)*(pinta[3]));
+      for (I i=0; i<pinta[3]; i++) inint[i]=((I*)inarr)[i];
+#else
+      inint = (int*)inarr;
+#endif
+      rc = glcmds(inint,pinta[3]);
+#if defined(_WIN64)||defined(__LP64__)
+      free(inint);
+#endif
+    } else if (t==gl_updategl_n) {
+      if (INT!=pinta[0]) {
+        LOGD("argument should be integer");
+        return rc = 1;
+      }
+      if (1!=pinta[3]) {
+        LOGD("argument should be 1 integer");
+        return rc = 1;
+      }
+      rc = gl_updategl((void*)((I*)inarr)[0]);
+    } else if (t==glsel_n) {
+      if (INT!=pinta[0]) {
+        LOGD("argument should be integer");
+        return rc = 1;
+      }
+      if (1!=pinta[3]) {
+        LOGD("argument should be 1 integer");
+        return rc = 1;
+      }
+      rc = glsel((void*)((I*)inarr)[0]);
+    } else if (t==gl_sel_n) {
+      if (INT!=pinta[0]) {
+        LOGD("argument should be integer");
+        return rc = 1;
+      }
+      if (1!=pinta[3]) {
+        LOGD("argument should be 1 integer");
+        return rc = 1;
+      }
+      rc = gl_sel((void*)((I*)inarr)[0]);
+    } else {
+      if (INT==pinta[0]) {
+        inint = (int*)malloc(sizeof(int)*(pinta[3]+2));
+        inint[0]=pinta[3]+2;
+        inint[1]=t;
+        for (I i=0; i<pinta[3]; i++) inint[i+2]=((I*)inarr)[i];
+      } else if (LIT==pinta[0]) {
+        inint = (int*)malloc(sizeof(int)*(pinta[3]+2));
+        inint[0]=pinta[3]+2;
+        inint[1]=t;
+        for (I i=0; i<pinta[3]; i++) inint[i+2]=((char*)inarr)[i];
+      } else {
+        LOGD("argument should be string or integer");
+        return rc = 1;
+      }
+      rc = uigl2(t,inint,pinta[3]+2);
+      free(inint);
+      if(rc<0) {
+        ointa[0] = resulttype;
+        ointa[1] = resultshape[0];
+        ointa[2] = resultshape[1];
+      }
+    }
+  } else if (t==glgetimg_n) {
+    if (INT!=pinta[0] || 0>=pinta[1]  || 0>=pinta[2] || 0==pinta[3] ) {
+      LOGD("argument should be integer rank-2 array");
+      return rc = 1;
+    }
+    uchar *data = (uchar*)malloc(sizeof(uchar)*(pinta[3]));
+    for (int i=0; i<pinta[3]; i++) data[i]=((I*)inarr)[i];
+    int *odata = (int*)wdgetimg(data, pinta[3], resultshape);
+    free(data);
+    if (odata) {
+      ointa[0] = resulttype = 1; // int
+      ointa[1] = resultshape[1];
+      ointa[2] = resultshape[0];
+      intresult.resize(resultshape[0]*resultshape[1]);
+      memcpy(&intresult[0],odata,sizeof(int)*resultshape[0]*resultshape[1]);
+      wdgetimg(0, 0, 0);  // clear temp image
+      rc = -1;
+    } else return rc = 1;
+  } else if (t==glreadimg_n) {
+    if (LIT!=pinta[0] || -1!=pinta[1]  || -1!=pinta[2] || 0==pinta[3] ) {
+      LOGD("argument should be literal rank-1 array");
+      return rc = 1;
+    }
+    char *data = (char*)malloc(1+sizeof(char)*(pinta[3]));
+    for (int i=0; i<pinta[3]; i++) data[i]=((char*)inarr)[i];
+    data[pinta[3]]=0;
+    int *odata = (int*)wdreadimg(data, resultshape);
+    free(data);
+    if (odata) {
+      ointa[0] = resulttype = 1; // int
+      ointa[1] = resultshape[1];
+      ointa[2] = resultshape[0];
+      intresult.resize(resultshape[0]*resultshape[1]);
+      memcpy(&intresult[0],odata,sizeof(int)*resultshape[0]*resultshape[1]);
+      wdreadimg(0, 0);  // clear temp image
+      rc = -1;
+    } else return rc = 1;
+  } else if (t==glputimg_n) {
+    if (BOX!=pinta[0] || -1!=pinta[1]  || -1!=pinta[2] || 3!=pinta[3] ) {
+      LOGD("argument should be box rank-1 array of 4 items");
+      return rc = 1;
+    }
+    A* w1 = (A*)(inarr);
+    if(!(INT&AT(w1[0]) && AN(w1[0]) && 2==ARNK(w1[0]))) {
+      LOGD("first argument should be integer rank-2 array");
+      return rc = 1;
+    }
+    if(!(LIT&AT(w1[1]) && AN(w1[1]) && 2>ARNK(w1[1]))) {
+      LOGD("second argument should be literal rank-1 array");
+      return rc = 1;
+    }
+    if(!(INT&AT(w1[2]) && 1==AN(w1[2]) && 2>ARNK(w1[2]))) {
+      LOGD("third argument should be integer rank-1 array");
+      return rc = 1;
+    }
+    int *data;
+#if defined(_WIN64)||defined(__LP64__)
+    data = (int*)malloc(sizeof(int)*AN(w1[0]));
+    for (int i=0; i<AN(w1[0]); i++) data[i]=(IAV(w1[0]))[i];
+#else
+    data=(int*)IAV(w1[0]);
+#endif
+    char *fmt = (char*)malloc(1+sizeof(char)*AN(w1[1]));
+    for (int i=0; i<AN(w1[1]); i++) fmt[i]=(CAV(w1[1]))[i];
+    fmt[AN(w1[1])]=0;
+    int wh[2];
+    wh[0]= (AS(w1[0]))[1];
+    wh[1]= (AS(w1[0]))[0];
+    int len;
+    uchar *odata = (uchar*)wdputimg((uchar*)data, wh, &len, fmt, (IAV(w1[2])[0]));
+#if defined(_WIN64)||defined(__LP64__)
+    free(data);
+#endif
+    free(fmt);
+    if (odata) {
+      ointa[0] = resulttype = 0; // literal
+      intresult.resize(len);
+      ointa[1]=resultshape[0];  // assume LIT rank-1
+      ointa[2]=resultshape[1];
+      result = std::string((char*)odata,len);
+      wdputimg(0,0,0,0,0);  // clear temp image
+      rc = -1;
+    } else return rc = 1;
+  } else if (t==glwriteimg_n) {
+    if (BOX!=pinta[0] || -1!=pinta[1]  || -1!=pinta[2] || 4!=pinta[3] ) {
+      LOGD("argument should be box rank-1 array of 4 items");
+      return rc = 1;
+    }
+    A* w1 = (A*)(inarr);
+    if(!(INT&AT(w1[0]) && AN(w1[0]) && 2==ARNK(w1[0]))) {
+      LOGD("first argument should be integer rank-2 array");
+      return rc = 1;
+    }
+    if(!(LIT&AT(w1[1]) && AN(w1[1]) && 2>ARNK(w1[1]))) {
+      LOGD("second argument should be literal rank-1 array");
+      return rc = 1;
+    }
+    if(!(LIT&AT(w1[2]) && AN(w1[2]) && 2>ARNK(w1[2]))) {
+      LOGD("third argument should be literal rank-1 array");
+      return rc = 1;
+    }
+    if(!(INT&AT(w1[3]) && 1==AN(w1[3]) && 2>ARNK(w1[3]))) {
+      LOGD("fourth argument should be integer rank-1 array");
+      return rc = 1;
+    }
+    int *data;
+#if defined(_WIN64)||defined(__LP64__)
+    data = (int*)malloc(sizeof(int)*AN(w1[0]));
+    for (int i=0; i<AN(w1[0]); i++) data[i]=(IAV(w1[0]))[i];
+#else
+    data=(int*)IAV(w1[0]);
+#endif
+    char *s = (char*)malloc(1+sizeof(char)*AN(w1[1]));
+    for (int i=0; i<AN(w1[1]); i++) s[i]=(CAV(w1[1]))[i];
+    s[AN(w1[1])]=0;
+    char *fmt = (char*)malloc(1+sizeof(char)*AN(w1[2]));
+    for (int i=0; i<AN(w1[2]); i++) fmt[i]=(CAV(w1[2]))[i];
+    fmt[AN(w1[2])]=0;
+    int wh[2];
+    wh[0]= (AS(w1[0]))[1];
+    wh[1]= (AS(w1[0]))[0];
+    int r1 = wdwriteimg((uchar*)data, wh, s, fmt, (IAV(w1[3])[0]));
+#if defined(_WIN64)||defined(__LP64__)
+    free(data);
+#endif
+    free(s);
+    free(fmt);
+    if (r1) {
+      rc = 0;
+    } else return rc = 1;
+  } else {
+    LOGD("not implemented");
+    return rc = 1;
+  }
+  return rc;
+}
+
+// ---------------------------------------------------------------------
+int _stdcall Jwd(JS jt, int type, A w, A *pz, C*loc)
+{
+  int rc=0;
+  if(jt == 0) {
+    LOGD("failed to get the method id for wd" );
+    return rc = 3;
+  }
+
+// check argument type
+  if (AN(w) && !((INT+LIT+BOX)&AT(w))) {
+    LOGD("argument error" );
+    return rc = 3;
+  }
+  if (rc) {
+    return rc;
+  }
+
+// inta: datatype AN shape0 shape1 .... repeat for each inarr element
+  I pinta[]= {0,-1,-1,0};
+  I ointa[]= {0,-1,-1};
+
+  if (LIT&AT(w) || 0==AN(w)) {
+    pinta[0] = LIT;
+    pinta[3] = AN(w);
+    if (ARNK(w)>1 && AN(w)) {
+      pinta[1] = (AS(w))[0];
+      pinta[2] = (AS(w))[1];
+    }
+  } else if (INT&AT(w)) {
+    pinta[0] = INT;
+    pinta[3] = AN(w);
+    if (ARNK(w)>1) {
+      pinta[1] = (AS(w))[0];
+      pinta[2] = (AS(w))[1];
+    }
+  } else if (BOX&AT(w)) {
+    pinta[0] = BOX;
+    pinta[3] = AN(w);
+    if (ARNK(w)>1) {
+      pinta[1] = (AS(w))[0];
+      pinta[2] = (AS(w))[1];
+    }
+  } else {
+    LOGD("argument data type not supported" );
+    return rc = 3;
+  }
+
+  rc = uiwd(type,pinta,(void*)CAV(w),ointa,(char*)loc);
+
+  if (rc<0) {
+    I otype= ointa[0];
+    I oshape[2];
+    oshape[0]= ointa[1];  // -1 if not rank-2
+    oshape[1]= ointa[2];
+
+    if (otype==0) {   // LIT
+      I len=(int)result.size();
+      C* res=(C*)result.c_str();
+      if (oshape[0]==-1) {
+        oshape[0]=len;
+        *pz=jega(LIT,len,1,oshape);
+      } else {
+        *pz=jega(LIT,len,2,oshape);
+      }
+      memcpy(CAV(*pz),res,len);
+      result.clear();
+    } else if (otype==1 || otype==2) {   // int or I
+      int len = (otype==1) ? intresult.size() : longresult.size();
+      if (oshape[0]==-1) {
+        oshape[0]=len;
+        *pz=jega(INT,len,1,oshape);
+      } else {
+        *pz=jega(INT,len,2,oshape);
+      }
+      if(otype==2) {
+        memcpy(CAV(*pz),&longresult[0],SZI*len);   // 32-bit  int == I
+        longresult.clear();
+      } else if(otype==1) {
+#if defined(_WIN64)||defined(__LP64__)
+        for(int i=0; i<len; i++) (IAV(*pz))[i] = intresult[i];
+#else
+        memcpy(CAV(*pz),&intresult[0],SZI*len);   // 32-bit  int == I
+#endif
+        intresult.clear();
+      }
+    } else {
+      LOGD("result not string or integers");
+      rc=3;
+    }
+  }
+  return (rc>0)?3:rc; // coerce to domain error
 }

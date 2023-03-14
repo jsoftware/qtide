@@ -6,6 +6,7 @@ message(QMAKESPEC $$QMAKESPEC)
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
+# DEFINES += WDCB             # uncomment this line for 11!:x wd interface
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {

@@ -8,6 +8,7 @@ message(QMAKESPEC $$QMAKESPEC)
 DEFINES += JQTAMALGAM
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
+# DEFINES += WDCB             # uncomment this line for 11!:x wd interface
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {

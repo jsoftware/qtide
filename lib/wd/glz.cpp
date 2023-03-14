@@ -259,3 +259,16 @@ int glzinitprinter ()
   Printer=new QPrinter(QPrinter::HighResolution);
   return !Printer;
 }
+
+// ---------------------------------------------------------------------
+int glzqoutputformat ()
+{
+  return 0;
+}
+
+// ---------------------------------------------------------------------
+int glzoutputformat (int n)
+{
+  Q_UNUSED(n);
+  return 0;
+}

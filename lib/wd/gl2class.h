@@ -47,6 +47,9 @@ extern Child *opengl;
   if (!isigraph) return 1; \
   Isigraph2 *w = (Isigraph2 *)isigraph->widget; \
   Q_UNUSED(w);
+#define CHKPAINTER3 if (!isigraph) return 0; \
+  Isigraph2 *w = (Isigraph2 *)isigraph->widget; \
+  if (!w) return 0;
 
 #elif defined(GLOPENGL)
 
@@ -67,6 +70,13 @@ extern Child *opengl;
   if (!opengl) return 1; \
   Opengl2 *w = (Opengl2 *)opengl->widget; \
   Q_UNUSED(w);
+#define CHKPAINTER3 if (!opengl) return 0; \
+  Opengl2 *w = (Opengl2 *)opengl->widget; \
+  if (!w) return 0;
+
+#define glclear2 gl_clear2
+#define glquery gl_query
+#define glquery2 gl_query2
 
 #define glarc gl_arc
 #define glbrush gl_brush
@@ -74,7 +84,6 @@ extern Child *opengl;
 #define glcapture gl_capture
 #define glcaret gl_caret
 #define glclear gl_clear
-#define glclear2 gl_clear2
 #define glclip gl_clip
 #define glclipreset gl_clipreset
 #define glcmds gl_cmds
@@ -95,24 +104,77 @@ extern Child *opengl;
 #define glpixels gl_pixels
 #define glpixelsx gl_pixelsx
 #define glpolygon gl_polygon
-#define glqextent gl_qextent
-#define glqextentw gl_qextentw
-#define glqhandles gl_qhandles
-#define glqpixels gl_qpixels
-#define glqpixelm gl_qpixelm
-#define glqtextmetrics gl_qtextmetrics
-#define glqtype gl_qtype
-#define glqwh gl_qwh
 #define glrect gl_rect
 #define glrgb gl_rgb
 #define glrgba gl_rgba
 #define glsel gl_sel
 #define glsel2 gl_sel2
-#define glsetlocale gl_setlocale
 #define gltext gl_text
 #define gltextcolor gl_textcolor
 #define gltextxy gl_textxy
+#define glwaitgl gl_waitgl
+#define glwaitnative gl_waitnative
 #define glwindoworg gl_windoworg
+#define glupdategl gl_updategl
+#define glsetlocale gl_setlocale
+#define glqhandles gl_qhandles
+#define glqwh gl_qwh
+#define glqpixelm gl_qpixelm
+#define glqpixels gl_qpixels
+#define glqextent gl_qextent
+#define glqextentw gl_qextentw
+#define glqtextmetrics gl_qtextmetrics
+#define glqtype gl_qtype
+
+#define glarc_n gl_arc_n
+#define glbrush_n gl_brush_n
+#define glbrushnull_n gl_brushnull_n
+#define glcapture_n gl_capture_n
+#define glcaret_n gl_caret_n
+#define glclear_n gl_clear_n
+#define glclip_n gl_clip_n
+#define glclipreset_n gl_clipreset_n
+#define glcmds_n gl_cmds_n
+#define glcursor_n gl_cursor_n
+#define glellipse_n gl_ellipse_n
+#define glfill_n gl_fill_n
+#define glfont_n gl_font_n
+#define glfont2_n gl_font2_n
+#define glfontangle_n gl_fontangle_n
+#define glfontextent_n gl_fontextent_n
+#define gllines_n gl_lines_n
+#define glnodblbuf_n gl_nodblbuf_n
+#define glpaint_n gl_paint_n
+#define glpaintx_n gl_paintx_n
+#define glpen_n gl_pen_n
+#define glpie_n gl_pie_n
+#define glpixel_n gl_pixel_n
+#define glpixels_n gl_pixels_n
+#define glpixelsx_n gl_pixelsx_n
+#define glpolygon_n gl_polygon_n
+#define glrect_n gl_rect_n
+#define glrgb_n gl_rgb_n
+#define glrgba_n gl_rgba_n
+#define glsel_n gl_sel_n
+#define glsel2_n gl_sel2_n
+#define gltext_n gl_text_n
+#define gltextcolor_n gl_textcolor_n
+#define gltextxy_n gl_textxy_n
+#define glwaitgl_n gl_waitgl_n
+#define glwaitnative_n gl_waitnative_n
+#define glwindoworg_n gl_windoworg_n
+#define glupdategl_n gl_updategl_n
+#define glsetlocale_n gl_setlocale_n
+#define glqhandles_n gl_qhandles_n
+#define glqwh_n gl_qwh_n
+#define glqpixelm_n gl_qpixelm_n
+#define glqpixels_n gl_qpixels_n
+#define glqextent_n gl_qextent_n
+#define glqextentw_n gl_qextentw_n
+#define glqtextmetrics_n gl_qtextmetrics_n
+#define glwaitgl_n gl_waitgl_n
+#define glwaitnative_n gl_waitnative_n
+#define glqtype_n gl_qtype_n
 
 #elif defined(GLPRINTER)
 
@@ -139,18 +201,21 @@ extern Prtobj *prtobj;
 #define CHKPAINTER2  if ((!Printer) || !Printer->isValid()) return 1; \
   Prtobj *w=prtobj; \
   Q_UNUSED(w);
+#define CHKPAINTER3 if (!Printer) return 0; \
+  Prtobj *w=prtobj; \
+  if(!w) return 0;
+
+#define glclear2 glzclear2
+#define glquery glzquery
+#define glquery2 glzquery2
 
 #define glarc glzarc
 #define glbrush glzbrush
 #define glbrushnull glzbrushnull
-#define glcapture glzcapture
-#define glcaret glzcaret
 #define glclear glzclear
-#define glclear2 glzclear2
 #define glclip glzclip
 #define glclipreset glzclipreset
 #define glcmds glzcmds
-#define glcursor glzcursor
 #define glellipse glzellipse
 #define glfill glzfill
 #define glfont glzfont
@@ -159,54 +224,129 @@ extern Prtobj *prtobj;
 #define glfontextent glzfontextent
 #define gllines glzlines
 #define glnodblbuf glznodblbuf
-#define glpaint glzpaint
-#define glpaintx glzpaintx
 #define glpen glzpen
 #define glpie glzpie
 #define glpixel glzpixel
 #define glpixels glzpixels
 #define glpixelsx glzpixelsx
 #define glpolygon glzpolygon
-#define glqextent glzqextent
-#define glqextentw glzqextentw
-#define glqhandles glzqhandles
-#define glqpixels glzqpixels
-#define glqpixelm glzqpixelm
-#define glqtextmetrics glzqtextmetrics
-#define glqtype glzqtype
-// #define glqwh glzqwh
 #define glrect glzrect
 #define glrgb glzrgb
 #define glrgba glzrgba
-#define glsel glzsel
-#define glsel2 glzsel2
-#define glsetlocale glzsetlocale
 #define gltext glztext
 #define gltextcolor glztextcolor
 #define gltextxy glztextxy
 #define glwindoworg glzwindoworg
+#define glresolution glzresolution
+#define glcolormode glzcolormode
+#define glduplexmode glzduplexmode
+#define glorientation glzorientation
+#define gloutputformat glzoutputformat
+#define glpageorder glzpageorder
+#define glpapersize glzpapersize
+#define glpapersource glzpapersource
+#define glscale glzscale
+#define glabortdoc glzabortdoc
+#define glenddoc glzenddoc
+#define glnewpage glznewpage
+#define glprinter glzprinter
+#define glstartdoc glzstartdoc
+#define glinitprinter glzinitprinter
+#define glqresolution glzqresolution
+#define glqcolormode glzqcolormode
+#define glqduplexmode glzqduplexmode
+#define glqorientation glzqorientation
+#define glqoutputformat glzqoutputformat
+#define glqpageorder glzqpageorder
+#define glqpapersize glzqpapersize
+#define glqpapersource glzqpapersource
+#define glqwh glzqwh
+#define glqmargins glzqmargins
+#define glqextent glzqextent
+#define glqextentw glzqextentw
+#define glqtextmetrics glzqtextmetrics
+#define glcapture glzcapture
+#define glcaret glzcaret
+#define glcursor glzcursor
+#define glqtype glzqtype
+#define glpaint glzpaint
+#define glpaintx glzpaintx
+#define glsetlocale glzsetlocale
+
+#define glarc_n glzarc_n
+#define glbrush_n glzbrush_n
+#define glbrushnull_n glzbrushnull_n
+#define glclear_n glzclear_n
+#define glclip_n glzclip_n
+#define glclipreset_n glzclipreset_n
+#define glcmds_n glzcmds_n
+#define glellipse_n glzellipse_n
+#define glfill_n glzfill_n
+#define glfont_n glzfont_n
+#define glfont2_n glzfont2_n
+#define glfontangle_n glzfontangle_n
+#define glfontextent_n glzfontextent_n
+#define gllines_n glzlines_n
+#define glnodblbuf_n glznodblbuf_n
+#define glpen_n glzpen_n
+#define glpie_n glzpie_n
+#define glpixel_n glzpixel_n
+#define glpixels_n glzpixels_n
+#define glpixelsx_n glzpixelsx_n
+#define glpolygon_n glzpolygon_n
+#define glrect_n glzrect_n
+#define glrgb_n glzrgb_n
+#define glrgba_n glzrgba_n
+#define gltext_n glztext_n
+#define gltextcolor_n glztextcolor_n
+#define gltextxy_n glztextxy_n
+#define glwindoworg_n glzwindoworg_n
+#define glresolution_n glzresolution_n
+#define glcolormode_n glzcolormode_n
+#define glduplexmode_n glzduplexmode_n
+#define glorientation_n glzorientation_n
+#define gloutputformat_n glzoutputformat_n
+#define glpageorder_n glzpageorder_n
+#define glpapersize_n glzpapersize_n
+#define glpapersource_n glzpapersource_n
+#define glscale_n glzscale_n
+#define glabortdoc_n glzabortdoc_n
+#define glenddoc_n glzenddoc_n
+#define glnewpage_n glznewpage_n
+#define glprinter_n glzprinter_n
+#define glstartdoc_n glzstartdoc_n
+#define glinitprinter_n glzinitprinter_n
+#define glqresolution_n glzqresolution_n
+#define glqcolormode_n glzqcolormode_n
+#define glqduplexmode_n glzqduplexmode_n
+#define glqorientation_n glzqorientation_n
+#define glqoutputformat_n glzqoutputformat_n
+#define glqpageorder_n glzqpageorder_n
+#define glqpapersize_n glzqpapersize_n
+#define glqpapersource_n glzqpapersource_n
+#define glqwh_n glzqwh_n
+#define glqmargins_n glzqmargins_n
+#define glqextent_n glzqextent_n
+#define glqextentw_n glzqextentw_n
+#define glqtextmetrics_n glzqtextmetrics_n
+#define glcapture_n glzcapture_n
+#define glcaret_n glzcaret_n
+#define glcursor_n glzcursor_n
+#define glqtype_n glzqtype_n
+#define glpaint_n glzpaint_n
+#define glpaintx_n glzpaintx_n
+#define glsetlocale_n glzsetlocale_n
 
 #endif
 
 extern QList<Form *>Forms;
 
+static int glfont_i(const int *p, int len);
 static int glfont0(void *wid, char *s);
 static int glfont_i(const int *p, int len);
+static int glfontextent_i(const int *p, int len);
 static int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p);
 static int gltext_i(const int *p, int len);
-
-// ---------------------------------------------------------------------
-// caller should free std::string
-static char *
-int2utf8(const int *yi, int nc)
-{
-  int i;
-  char *ys = (char *) malloc(1 + (size_t) nc);
-  for (i = 0; i < nc; i++)
-    *(ys + i) = *(yi + i);
-  *(ys + nc) = 0;
-  return ys;
-}
 
 static void
 qtarcisi(const int *y, const int *y2, int *ang)
@@ -439,8 +579,8 @@ int glqtype(int *type)
   return 0;
 }
 
-// ---------------------------------------------------------------------
 #ifndef GLPRINTER
+// ---------------------------------------------------------------------
 int glqwh(int *wh)
 {
   if (!wh) return 1;
@@ -622,7 +762,7 @@ int glclear()
     delete FontExtent;
     FontExtent=0;
   }
-  CHKPAINTER
+  CHKPAINTER3
 #if defined(GLISIGRAPH)
   return glclear2(w,1);
 #else
@@ -685,7 +825,7 @@ int glfill(const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glfont_i(const int *p, int len)
+static int glfont_i(const int *p, int len)
 {
   char *face = int2utf8(p, len);
   int r = glfont(face);
@@ -694,7 +834,7 @@ int glfont_i(const int *p, int len)
 }
 
 // ---------------------------------------------------------------------
-int glfont0(void *wid, char *s)
+static int glfont0(void *wid, char *s)
 {
   if (!s) return 1;
 #if defined(GLPRINTER)
@@ -752,6 +892,15 @@ int glfontangle(int a)
   CHKPAINTER2
   w->font->angle = a;
   return 0;
+}
+
+// ---------------------------------------------------------------------
+static int glfontextent_i(const int *p, int len)
+{
+  char *s = int2utf8(p, len);
+  int r = glfontextent(s);
+  free(s);
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -823,7 +972,7 @@ int glpixel(const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p)
+static int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p)
 {
   if (!wi || !h || !p) return 1;
 #if defined(GLPRINTER)
@@ -959,143 +1108,12 @@ int glwindoworg(const int *p)
 }
 
 // ---------------------------------------------------------------------
-int glcmds(const int *ptr, int ncnt)
+static int glsetlocale_i(const int *p, int len)
 {
-  int cnt;
-  int p = 0;
-  int rc = 0;
-
-  CHKPAINTER
-
-  while (p < ncnt) {
-    cnt = *(ptr + p);
-    if (2>cnt) return 1;
-    switch (*(ptr + p + 1)) {
-
-    case 2001:		// glarc
-      rc = glarc(ptr + p + 2);
-      break;
-
-    case 2004:		// glbrush
-      rc = glbrush();
-      break;
-
-    case 2005:		// glbrushnull
-      rc = glbrushnull();
-      break;
-
-    case 2062:		//glcapture
-      rc = glcapture(*(ptr + p + 2));
-      break;
-
-    case 2065:		//glcaret
-      rc = glcaret(ptr + p + 2);
-      break;
-
-    case 2007:		//glclear
-      glclear();
-      break;
-
-    case 2078:		//glclip
-      rc = glclip(ptr + p + 2);
-      break;
-
-    case 2079:		//glclipreset
-      rc = glclipreset();
-      break;
-
-    case 2069:		//glcursor
-      rc = glcursor(*(ptr + p + 2));
-      break;
-
-    case 2008:		// glellipse
-      rc = glellipse(ptr + p + 2);
-      break;
-
-    case 2093:		// glfill
-      rc = glfill(ptr + p + 2);
-      break;
-
-    case 2012:		// glfont
-      rc = glfont_i((ptr + p + 2), cnt-2);
-      break;
-
-    case 2312:		// glfont2
-      rc = glfont2((ptr + p + 2), cnt-2);
-      break;
-
-    case 2342:		// glfontangle
-      rc = glfontangle(*(ptr + p + 2));
-      break;
-
-    case 2015:		// gllines
-      rc = gllines((ptr + p + 2), cnt-2);
-      break;
-
-    case 2070:		// glnodblbuf
-      rc = glnodblbuf(*(ptr + p + 2));
-      break;
-
-    case 2022:		// glpen
-      rc = glpen(ptr + p + 2);
-      break;
-
-    case 2023:		// glpie
-      rc = glpie(ptr + p + 2);
-      break;
-
-    case 2024:		// glpixel
-      rc = glpixel(ptr + p + 2);
-      break;
-
-    case 2076:		// glpixels
-      rc = glpixels((ptr + p + 2), cnt-2);
-      break;
-
-    case 2075:		// glpixelsx
-      rc = glpixelsx(ptr + p + 2);
-      break;
-
-    case 2029:		// glpolygon
-      rc = glpolygon((ptr + p + 2), cnt-2);
-      break;
-
-    case 2031:		// glrect
-      rc = glrect(ptr + p + 2);
-      break;
-
-    case 2032:		// glrgb
-      rc = glrgb(ptr + p + 2);
-      break;
-
-    case 2343:		// glrgba
-      rc = glrgba(ptr + p + 2);
-      break;
-
-    case 2038:		// gltext
-      rc = gltext_i(ptr + p + 2, cnt-2);
-      break;
-
-    case 2040:		// gltextcolor
-      rc = gltextcolor();
-      break;
-
-    case 2056:		// gltextxy
-      rc = gltextxy(ptr + p + 2);
-      break;
-
-    case 2045:		//glwindoworg
-      rc = glwindoworg(ptr + p + 2);
-      break;
-
-    default:
-      return 1;
-      break;
-    }
-    if (rc) return rc;
-    p = p + cnt;
-  }
-  return 0;
+  char *s = int2utf8(p, len);
+  int r = glsetlocale(s);
+  free(s);
+  return r;
 }
 
 // ---------------------------------------------------------------------
@@ -1107,4 +1125,442 @@ int glsetlocale(char *c)
   QTwidget->locale = std::string(c);
 #endif
   return 0;
+}
+
+// ---------------------------------------------------------------------
+int glcmds(const int *ptr, int ncnt)
+{
+  int cnt;
+  int p = 0;
+  int rc = 0;
+  char *st1;
+#if defined(GLPRINTER)
+  char *st2;
+  float xy[2];
+  int pn1,pn2;
+#endif
+
+  if (2>ncnt) return 1;  // not enough argument
+  int t=*(ptr + p + 1);
+  cnt = *(ptr + p);
+  if ( (cnt==ncnt)  && (t==glclear_n) ) {
+    CHKPAINTER3 return rc = glclear();
+  } else if ( (cnt==ncnt)  && ( (t==glpaint_n) || (t==glpaintx_n) || (t==glcursor_n) || (t==glfont_n) ||
+                                (t==glfont2_n) || (t==glfontangle_n) || (t==glrgb_n) || (t==glrgba_n) ||
+                                (t==gltextxy_n) || (t==glsetlocale_n) )) {
+    CHKPAINTER2
+  } else {
+    CHKPAINTER
+  }
+
+  while (p < ncnt) {
+    cnt = *(ptr + p);
+    if (2>cnt) return 1;
+    switch (*(ptr + p + 1)) {
+
+    case glpaint_n:
+      rc = glpaint();
+      break;
+
+    case glpaintx_n:
+      rc = glpaintx();
+      break;
+
+    case glarc_n:
+      rc = glarc(ptr + p + 2);
+      break;
+
+    case glbrush_n:
+      rc = glbrush();
+      break;
+
+    case glbrushnull_n:
+      rc = glbrushnull();
+      break;
+
+    case glcapture_n:
+      rc = glcapture(*(ptr + p + 2));
+      break;
+
+    case glcaret_n:
+      rc = glcaret(ptr + p + 2);
+      break;
+
+    case glclear_n:
+      glclear();
+      break;
+
+    case glclip_n:
+      rc = glclip(ptr + p + 2);
+      break;
+
+    case glclipreset_n:
+      rc = glclipreset();
+      break;
+
+    case glcursor_n:
+      rc = glcursor(*(ptr + p + 2));
+      break;
+
+    case glellipse_n:
+      rc = glellipse(ptr + p + 2);
+      break;
+
+    case glfill_n:
+      rc = glfill(ptr + p + 2);
+      break;
+
+    case glfont_n:
+      rc = glfont_i((ptr + p + 2), cnt-2);
+      break;
+
+    case glfont2_n:
+      rc = glfont2((ptr + p + 2), cnt-2);
+      break;
+
+    case glfontangle_n:
+      rc = glfontangle(*(ptr + p + 2));
+      break;
+
+    case gllines_n:
+      rc = gllines((ptr + p + 2), cnt-2);
+      break;
+
+    case glnodblbuf_n:
+      rc = glnodblbuf(*(ptr + p + 2));
+      break;
+
+    case glpen_n:
+      rc = glpen(ptr + p + 2);
+      break;
+
+    case glpie_n:
+      rc = glpie(ptr + p + 2);
+      break;
+
+    case glpixel_n:
+      rc = glpixel(ptr + p + 2);
+      break;
+
+    case glpixels_n:
+      rc = glpixels((ptr + p + 2), cnt-2);
+      break;
+
+    case glpixelsx_n:
+      rc = glpixelsx(ptr + p + 2);
+      break;
+
+    case glpolygon_n:
+      rc = glpolygon((ptr + p + 2), cnt-2);
+      break;
+
+    case glrect_n:
+      rc = glrect(ptr + p + 2);
+      break;
+
+    case glrgb_n:
+      rc = glrgb(ptr + p + 2);
+      break;
+
+    case glrgba_n:
+      rc = glrgba(ptr + p + 2);
+      break;
+
+    case gltext_n:
+      rc = gltext_i(ptr + p + 2, cnt-2);
+      break;
+
+    case gltextcolor_n:
+      rc = gltextcolor();
+      break;
+
+    case gltextxy_n:
+      rc = gltextxy(ptr + p + 2);
+      break;
+
+    case glwindoworg_n:
+      rc = glwindoworg(ptr + p + 2);
+      break;
+
+    case glfontextent_n:
+      rc = glfontextent_i((ptr + p + 2), cnt-2);
+      break;
+
+    case glsetlocale_n:
+      rc = glsetlocale_i((ptr + p + 2), cnt-2);
+      break;
+
+#if defined(GLPRINTER)
+
+    case glzresolution_n:
+      if (1!=cnt-2) return 1;
+      rc = glzresolution(*(ptr + p + 2));
+      break;
+
+    case glzcolormode_n:
+      if (1!=cnt-2) return 1;
+      rc = glzcolormode(*(ptr + p + 2));
+      break;
+
+    case glzduplexmode_n:
+      if (1!=cnt-2) return 1;
+      rc = glzduplexmode(*(ptr + p + 2));
+      break;
+
+    case glzorientation_n:
+      if (1!=cnt-2) return 1;
+      rc = glzorientation(*(ptr + p + 2));
+      break;
+
+    case glzoutputformat_n:
+      if (1!=cnt-2) return 1;
+      rc = glzoutputformat(*(ptr + p + 2));
+      break;
+
+    case glzpageorder_n:
+      if (1!=cnt-2) return 1;
+      rc = glzpageorder(*(ptr + p + 2));
+      break;
+
+    case glzpapersize_n:
+      if (1!=cnt-2) return 1;
+      rc = glzpapersize(*(ptr + p + 2));
+      break;
+
+    case glzpapersource_n:
+      if (1!=cnt-2) return 1;
+      rc = glzpapersource(*(ptr + p + 2));
+      break;
+
+    case glzscale_n:
+      if (2!=cnt-2) return 1;
+      xy[0] = *(ptr + p + 2)/1000.0;
+      xy[1] = *(ptr + p + 2 + 1)/1000.0;
+      rc = glzscale(xy);
+      break;
+
+    case glzabortdoc_n:
+      if (0!=cnt-2) return 1;
+      rc = glzabortdoc();
+      break;
+
+    case glzenddoc_n:
+      if (0!=cnt-2) return 1;
+      rc = glzenddoc();
+      break;
+
+    case glznewpage_n:
+      if (0!=cnt-2) return 1;
+      rc = glznewpage();
+      break;
+
+    case glzprinter_n:
+      st1 = int2utf8((ptr + p + 2), cnt-2);
+      rc = glzprinter(st1);
+      free(st1);
+      break;
+
+    case glzstartdoc_n:
+      if (2>cnt-2) return 1;
+      pn1 = *(ptr + p + 2);
+      if (pn1>cnt-2-1) return 1;
+      st1 = int2utf8((ptr + p + 2 + 1), pn1);
+      pn2 = *(ptr + p + 2 + 1 + pn1);
+      if (pn2>cnt-2-1-pn1-1) return 1;
+      st2 = int2utf8((ptr + p + 2 + 1 + pn1), pn2);
+      rc = glzstartdoc(st1, st2);
+      free(st1);
+      free(st2);
+      break;
+
+    case glzinitprinter_n:
+      if (0!=cnt-2) return 1;
+      rc = glzinitprinter();
+      break;
+#else
+    case glsel2_n:
+      st1 = int2utf8((ptr + p + 2), cnt-2);
+      rc = glsel2(st1);
+      free(st1);
+      break;
+#endif
+
+    default:
+      qDebug() << "glcmds missing " << (*(ptr + p + 1));
+      return 1;
+      break;
+    }
+    if (rc) return rc;
+    p = p + cnt;
+  }
+  return 0;
+}
+
+int glquery(int t, int* ptr, int ncnt)
+{
+  int rc = 0;
+  if(t==glqtype_n) {
+    intresult.resize(1);
+    if(!(rc=glqtype(&intresult[0]))) {
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+#if !defined(GLPRINTER)
+  } else if(t==glqhandles_n) {
+    longresult.resize(2);
+    if(!(rc=glqhandles((void**)&longresult[0]))) {
+      resulttype = 2;
+      rc = -1;
+    } else longresult.clear();
+  } else if(t==glqwh_n) {
+    intresult.resize(2);
+    if(!(rc=glqwh(&intresult[0]))) {
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+#else
+  } else if(t==glqwh_n) {
+    if(1!=ncnt) {
+      qDebug() << "argument not 1 integer";
+      return rc = 1;
+    }
+    float wh[2];
+    if(!(rc=glzqwh(wh,*ptr))) {
+      intresult.resize(2);
+      intresult[0] = 1000.0 * wh[0];
+      intresult[1] = 1000.0 * wh[1];
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+#endif
+  } else if(t==glqtextmetrics_n) {
+    intresult.resize(7);
+    if(!(rc=glqtextmetrics(&intresult[0]))) {
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+  } else if(t==glqextent_n) {
+    char *s=int2utf8(ptr,ncnt);
+    intresult.resize(2);
+    if(!(rc=glqextent(s,&intresult[0]))) {
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+    free(s);
+  } else if(t==glqextentw_n) {
+    char *s=int2utf8(ptr,ncnt);
+    QStringList n=(QString::fromUtf8(s)).split("\n",_KeepEmptyParts);
+    intresult.resize(n.size());
+    if(!(rc=glqextent(s,&intresult[0]))) {
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+    free(s);
+#if !defined(GLPRINTER)
+  } else if(t==glqpixels_n) {
+    if(4!=ncnt) {
+      qDebug() << "argument not 4 integers";
+      return rc = 1;
+    }
+    intresult.resize(*(ptr+2) * *(ptr+3));
+    if(!(rc=glqpixels(ptr,&intresult[0]))) {
+      resulttype = 1;
+//      backward compatible return as rank-1 array
+//        resultshape[0]=*(ptr+2); resultshape[1]=*(ptr+3);
+      rc = -1;
+    } else intresult.clear();
+  } else if(t==glqpixelm_n) {
+    if(4!=ncnt) {
+      qDebug() << "argument not 4 integers";
+      return rc = 1;
+    }
+    intresult.resize(*(ptr+2) * *(ptr+3));
+    int shp[2];
+    if(!(rc=glqpixelm(ptr,shp,&intresult[0]))) {
+      intresult.resize(shp[0]*shp[1]);
+      resultshape[0]=shp[0];
+      resultshape[1]=shp[1];
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+#endif
+  } else {
+    qDebug() << "glq..." << t << ncnt;
+    exit(0);
+    rc = 1;
+  }
+  return rc;
+}
+
+int glquery2(int t, int* ptr, int ncnt)
+{
+#if defined(GLPRINTER)
+  int rc = 0;
+  if(t==glzqresolution_n) {
+    intresult.resize(1);
+    intresult[0]=glzqresolution();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqcolormode_n) {
+    intresult.resize(1);
+    intresult[0]=glzqcolormode();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqduplexmode_n) {
+    intresult.resize(1);
+    intresult[0]=glzqduplexmode();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqorientation_n) {
+    intresult.resize(1);
+    intresult[0]=glzqorientation();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqoutputformat_n) {
+    intresult.resize(1);
+    intresult[0]=glzqoutputformat();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqpageorder_n) {
+    intresult.resize(1);
+    intresult[0]=glzqpageorder();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqpapersize_n) {
+    intresult.resize(1);
+    intresult[0]=glzqpapersize();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqpapersource_n) {
+    intresult.resize(1);
+    intresult[0]=glzqpapersource();
+    resulttype = 1;
+    rc = -1;
+  } else if(t==glzqmargins_n) {
+    if(1!=ncnt) {
+      qDebug() << "argument not 1 integer";
+      return rc = 1;
+    }
+    float f4[4];
+    intresult.resize(4);
+    if(!(rc=glzqmargins(f4,*ptr))) {
+      intresult[0] = f4[0] * 1000.0;
+      intresult[1] = f4[1] * 1000.0;
+      intresult[2] = f4[2] * 1000.0;
+      intresult[3] = f4[3] * 1000.0;
+      resulttype = 1;
+      rc = -1;
+    } else intresult.clear();
+  } else {
+    qDebug() << "glq..." << t << ncnt;
+    exit(0);
+    rc = 1;
+  }
+  return rc;
+#else
+  Q_UNUSED(t);
+  Q_UNUSED(ptr);
+  Q_UNUSED(ncnt);
+  return 0;
+#endif
 }

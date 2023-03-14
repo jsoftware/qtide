@@ -171,7 +171,11 @@ QString Jcon::cmdr(std::string s)
 // ---------------------------------------------------------------------
 int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 {
+#ifdef WDCB
+  void* callbacks[] = {(void*)Joutput,(void*)Jwd,(void*)Jinput,(void*)stackinit,(void*)(SMQT|(SMOPTLOCALE<<8))};
+#else
   void* callbacks[] = {(void*)Joutput,(void*)0,(void*)Jinput,(void*)stackinit,(void*)(SMQT|(SMOPTLOCALE<<8))};
+#endif
   int type;
 
   int i,poslib=0,poslibpath=0,posnorl=0,posprmpt=0; // assume all absent
