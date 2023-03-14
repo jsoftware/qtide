@@ -9,6 +9,8 @@ DEFINES += JQTAMALGAM
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 # DEFINES += WDCB             # uncomment this line for 11!:x wd interface
+# DEFINES += ONEEVENTLOOP     # uncomment this line for single event loop
+# DEFINES += NMDIALOG         # uncomment this line for nonmodal dialogbox
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {
@@ -381,6 +383,8 @@ QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1,2
 }
 wasm*{
 DEFINES += WDCB
+DEFINES += ONEEVENTLOOP
+DEFINES += NMDIALOG
 QMAKE_LFLAGS += -L../wasm/j32 -lj -L../wasm/mpir -lgmp
 QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB

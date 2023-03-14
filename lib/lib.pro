@@ -7,6 +7,8 @@ message(QMAKESPEC $$QMAKESPEC)
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 # DEFINES += WDCB             # uncomment this line for 11!:x wd interface
+# DEFINES += ONEEVENTLOOP     # uncomment this line for single event loop
+# DEFINES += NMDIALOG         # uncomment this line for nonmodal dialogbox
 
 
 !lessThan(QT_MAJOR_VERSION, 5) {
