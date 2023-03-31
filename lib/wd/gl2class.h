@@ -186,68 +186,6 @@ extern Prtobj *prtobj;
 #define gltextxy glztextxy
 #define glwindoworg glzwindoworg
 
-#elif defined(GLPAINTER)
-
-#include "glc.h"
-#include "drawobj.h"
-#define QTWidget2 Drawobj
-#define QTwidget2 drawobj
-
-extern Drawobj *drawobj;
-
-#define CHKPAINTER  if (!drawobj) return 1; \
-  Drawobj *w=drawobj; \
-  Q_UNUSED(w);
-#define CHKPAINTER2  if (!drawobj) return 1; \
-  Drawobj *w=drawobj; \
-  Q_UNUSED(w);
-
-#define glarc glc_arc
-#define glbrush glc_brush
-#define glbrushnull glc_brushnull
-#define glcapture glc_capture
-#define glcaret glc_caret
-#define glclear glc_clear
-#define glclear2 glc_clear2
-#define glclip glc_clip
-#define glclipreset glc_clipreset
-#define glcmds glc_cmds
-#define glcursor glc_cursor
-#define glellipse glc_ellipse
-#define glfill glc_fill
-#define glfont glc_font
-#define glfont2 glc_font2
-#define glfontangle glc_fontangle
-#define glfontextent glc_fontextent
-#define gllines glc_lines
-#define glnodblbuf glc_nodblbuf
-#define glpaint glc_paint
-#define glpaintx glc_paintx
-#define glpen glc_pen
-#define glpie glc_pie
-#define glpixel glc_pixel
-#define glpixels glc_pixels
-#define glpixelsx glc_pixelsx
-#define glpolygon glc_polygon
-#define glqextent glc_qextent
-#define glqextentw glc_qextentw
-#define glqhandles glc_qhandles
-#define glqpixels glc_qpixels
-#define glqpixelm glc_qpixelm
-#define glqtextmetrics glc_qtextmetrics
-#define glqtype glc_qtype
-#define glqwh glc_qwh
-#define glrect glc_rect
-#define glrgb glc_rgb
-#define glrgba glc_rgba
-#define glsel glc_sel
-#define glsel2 glc_sel2
-#define glsetlocale glc_setlocale
-#define gltext glc_text
-#define gltextcolor glc_textcolor
-#define gltextxy glc_textxy
-#define glwindoworg glc_windoworg
-
 #endif
 
 extern QList<Form *>Forms;
@@ -333,7 +271,7 @@ int glqhandles(void **p)
 {
   if (!p) return 1;
   CHKPAINTER2
-#if defined(GLPRINTER) || defined(GLPAINTER)
+#if defined(GLPRINTER)
   return 1;
 #else
   *p = (void *)QTwidget;
@@ -495,8 +433,6 @@ int glqtype(int *type)
   type[0] = 2;
 #elif defined(GLPRINTER)
   type[0] = 3;
-#elif defined(GLPAINTER)
-  type[0] = 4;
 #else
   type[0] = 0;
 #endif
@@ -519,7 +455,7 @@ int glqwh(int *wh)
 int glsel(void *g)
 {
   if (!g) return 1;
-#if (!(defined(GLPRINTER) || defined(GLPAINTER)))
+#if !defined(GLPRINTER)
   Form *f;
   Child *c=(Child *)g;
   for (int i=0; i<Forms.size(); i++) {
@@ -545,7 +481,7 @@ int glsel(void *g)
 int glsel2(char *g)
 {
   if (!g) return 1;
-#if (!(defined(GLPRINTER) || defined(GLPAINTER)))
+#if !defined(GLPRINTER)
   Child *cc;
   std::string p=std::string(g);
   if (p.size()==0) {
@@ -649,8 +585,6 @@ int glclear2(void *p,int clear)
 #if defined(GLPRINTER)
   Q_UNUSED(clear);
   Prtobj *w = (Prtobj *)p;
-#elif defined(GLPAINTER)
-  Drawobj *w = (Drawobj *)p;
 #elif 1
   QTWidget2 *w = (QTWidget2 *)p;
 #endif
@@ -689,7 +623,7 @@ int glclear()
     FontExtent=0;
   }
   CHKPAINTER
-#if (defined(GLISIGRAPH)||defined(GLPAINTER))
+#if defined(GLISIGRAPH)
   return glclear2(w,1);
 #else
   return glclear2(w,0);
@@ -765,8 +699,6 @@ int glfont0(void *wid, char *s)
   if (!s) return 1;
 #if defined(GLPRINTER)
   Prtobj *w = (Prtobj *)wid;
-#elif defined(GLPAINTER)
-  Drawobj *w = (Drawobj *)wid;
 #elif 1
   QTWidget2 *w = (QTWidget2 *)wid;
 #endif
@@ -896,8 +828,6 @@ int glpixels2(void *wid, int x,int y,int wi,int h,const uchar *p)
   if (!wi || !h || !p) return 1;
 #if defined(GLPRINTER)
   Prtobj *w = (Prtobj *)wid;
-#elif defined(GLPAINTER)
-  Drawobj *w = (Drawobj *)wid;
 #elif 1
   QTWidget2 *w = (QTWidget2 *)wid;
 #endif
@@ -1173,7 +1103,7 @@ int glsetlocale(char *c)
 {
   CHKPAINTER2
   Q_UNUSED(c);
-#if (!(defined(GLPRINTER) || defined(GLPAINTER)))
+#if !defined(GLPRINTER)
   QTwidget->locale = std::string(c);
 #endif
   return 0;

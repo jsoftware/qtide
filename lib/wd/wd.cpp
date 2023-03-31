@@ -34,6 +34,7 @@
 #include "pane.h"
 #include "tabs.h"
 #include "wd.h"
+
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
 #include "../base/wscln.h"

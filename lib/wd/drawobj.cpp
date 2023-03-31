@@ -1,7 +1,7 @@
 
 #include "drawobj.h"
 
-extern "C" int glc_clear2 (void *p,int clear);
+// extern "C" int glc_clear2 (void *p,int clear);
 
 // ---------------------------------------------------------------------
 Drawobj::Drawobj()
@@ -10,7 +10,7 @@ Drawobj::Drawobj()
   painter=0;
   font=0;
   pixmap=0;
-  glc_clear2 (this,0);
+//  glc_clear2 (this,0);
 }
 
 // ---------------------------------------------------------------------

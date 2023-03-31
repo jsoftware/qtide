@@ -271,7 +271,7 @@ HEADERS += \
  ../lib/wd/timeedit.h ../lib/wd/toolbar.h ../lib/wd/wd.h \
  ../lib/wd/ogl2.h ../lib/wd/opengl.h ../lib/wd/opengl2.h \
  ../lib/wd/webengineview.h ../lib/wd/webview.h ../lib/wd/quickview1.h ../lib/wd/quickview2.h ../lib/wd/quickwidget.h \
- ../lib/wd/qwidget.h ../lib/wd/scrollarea.h ../lib/wd/scrollbar.h ../lib/wd/gl2class.h ../lib/wd/drawobj.h ../lib/wd/glc.h \
+ ../lib/wd/qwidget.h ../lib/wd/scrollarea.h ../lib/wd/scrollbar.h ../lib/wd/gl2class.h ../lib/wd/drawobj.h \
  ../lib/wd/multimedia.h ../lib/wd/svgview.h ../lib/wd/svgview2.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= ../lib/wd/ogl2.h ../lib/wd/opengl.h ../lib/wd/opengl2.h
@@ -320,7 +320,7 @@ SOURCES += \
  ../lib/wd/timeedit.cpp ../lib/wd/toolbar.cpp ../lib/wd/wd.cpp \
  ../lib/wd/ogl2.cpp ../lib/wd/opengl.cpp ../lib/wd/opengl2.cpp \
  ../lib/wd/webengineview.cpp ../lib/wd/webview.cpp ../lib/wd/quickview1.cpp ../lib/wd/quickview2.cpp ../lib/wd/quickwidget.cpp \
- ../lib/wd/qwidget.cpp ../lib/wd/scrollarea.cpp ../lib/wd/scrollbar.cpp ../lib/wd/drawobj.cpp ../lib/wd/glc.cpp \
+ ../lib/wd/qwidget.cpp ../lib/wd/scrollarea.cpp ../lib/wd/scrollbar.cpp ../lib/wd/drawobj.cpp \
  ../lib/wd/multimedia.cpp ../lib/wd/svgview.cpp ../lib/wd/svgview2.cpp
 
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= ../lib/wd/ogl2.cpp ../lib/wd/opengl.cpp ../lib/wd/opengl2.cpp
