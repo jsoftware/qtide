@@ -30,28 +30,14 @@ static char pathexec[PLEN];
 
 // using namespace std;
 
-typedef void* (_stdcall *JInitType)();
-typedef int (_stdcall *JDoType)(void*, C*);
-typedef void (_stdcall *JInterruptType)(void*);
-typedef A(_stdcall *JGetAType)(void*, I n, C*);
-typedef C*    (_stdcall *JGetLocaleType)(void*);
-typedef void (_stdcall *JSMType)(void*, void*);
-typedef void (_stdcall *JFreeType)(void*);
-typedef A(_stdcall *JgaType)(J jt, I t, I n, I r, I*s);
-typedef int (_stdcall *JSetAType)(void*, I n, C*, I x, C*);
-
-typedef void (_stdcall * outputtype)(J,int,C*);
-typedef int (_stdcall * dowdtype)(J,int, A, A*);
-typedef C* (_stdcall * inputtype)(J,C*);
-
-int _stdcall JDo(J jt,C*);                   /* run sentence */
-void _stdcall JInterrupt(J jt);              /* interrupt */
-C* _stdcall JGetLocale(J jt);                /* get locale */
-J _stdcall JInit();                          /* init instance */
-int _stdcall JFree(J jt);                    /* free instance */
-A _stdcall JGetA(J jt,I n,C* name);          /* get 3!:1 from name */
-I _stdcall JSetA(J jt,I n,C* name,I x,C* d); /* name=:3!:2 data */
-void _stdcall JSM(J jt, void*callbacks[]);  /* set callbacks */
+int _stdcall JDo(JS jt,C*);                   /* run sentence */
+void _stdcall JInterrupt(JS jt);              /* interrupt */
+C* _stdcall JGetLocale(JS jt);                /* get locale */
+JS _stdcall JInit();                          /* init instance */
+int _stdcall JFree(JS jt);                    /* free instance */
+A _stdcall JGetA(JS jt,I n,C* name);          /* get 3!:1 from name */
+I _stdcall JSetA(JS jt,I n,C* name,I x,C* d); /* name=:3!:2 data */
+void _stdcall JSM(JS jt, void*callbacks[]);  /* set callbacks */
 
 A jega(I t, I n, I r, I*s);
 char* jegetlocale();
@@ -59,7 +45,7 @@ extern "C" Dllexport void* jehjdll();
 
 char **adadbreak;
 char inputline[BUFLEN+1];
-J jt=0;
+JS jt=0;
 
 static char path[PLEN];
 static char pathdll[PLEN];
@@ -140,7 +126,7 @@ void* jehjdll()
 
 // ---------------------------------------------------------------------
 // load JE, Jinit, getprocaddresses, JSM
-J jeload(void* callbacks)
+JS jeload(void* callbacks)
 {
 #ifdef _WIN32
   WCHAR wpath[PLEN];
@@ -149,7 +135,7 @@ J jeload(void* callbacks)
   if (!hjdll)return 0;
   jt=((JInitType)GETPROCADDRESS((HMODULE)hjdll,"JInit"))();
   if (!jt) return 0;
-  ((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,callbacks);
+  ((JSMType)GETPROCADDRESS((HMODULE)hjdll,"JSM"))(jt,(void**)callbacks);
   jdo=(JDoType)GETPROCADDRESS((HMODULE)hjdll,"JDo");
   jinterrupt=(JInterruptType)GETPROCADDRESS((HMODULE)hjdll,"JInterrupt");
   jfree=(JFreeType)GETPROCADDRESS((HMODULE)hjdll,"JFree");
@@ -163,7 +149,7 @@ J jeload(void* callbacks)
   if (!hjdll)return 0;
   jt=((JInitType)GETPROCADDRESS(hjdll,"JInit"))();
   if (!jt) return 0;
-  ((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,callbacks);
+  ((JSMType)GETPROCADDRESS(hjdll,"JSM"))(jt,(void**)callbacks);
   jdo=(JDoType)GETPROCADDRESS(hjdll,"JDo");
   jinterrupt=(JInterruptType)GETPROCADDRESS(hjdll,"JInterrupt");
   jfree=(JFreeType)GETPROCADDRESS(hjdll,"JFree");
@@ -390,6 +376,10 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'Win'");
 #elif defined(__MACH__)
   strcat(input,"[UNAME_z_=:'Darwin'");
+#elif defined(__FreeBSD__)
+  strcat(input,"[UNAME_z_=:'FreeBSD'");
+#elif defined(__OpenBSD__)
+  strcat(input,"[UNAME_z_=:'OpenBSD'");
 #else
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif

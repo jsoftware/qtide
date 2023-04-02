@@ -29,9 +29,6 @@
 
 // using namespace std;
 
-C* _stdcall Jinput(J jt, C*);
-void _stdcall Joutput(J jt, int type, C* s);
-
 static QString inputx;
 bool jecallback=false;
 bool runcmd=false;
@@ -174,7 +171,7 @@ QString Jcon::cmdr(std::string s)
 // ---------------------------------------------------------------------
 int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
 {
-  void* callbacks[] = {(void*)Joutput,0,(void*)Jinput,(void*)stackinit,(void*)SMQT};
+  void* callbacks[] = {(void*)Joutput,(void*)0,(void*)Jinput,(void*)stackinit,(void*)(SMQT|(SMOPTLOCALE<<8))};
   int type;
 
   int i,poslib=0,poslibpath=0,posnorl=0,posprmpt=0; // assume all absent
@@ -243,7 +240,7 @@ void Jcon::set(QString s, std::string t)
 
 // ---------------------------------------------------------------------
 // J calls for input (debug suspension and 1!:1[1) and we call for input
-char* _stdcall Jinput(J jt, char* p)
+char* _stdcall Jinput(JS jt, char* p)
 {
   Q_UNUSED(jt);
   Q_ASSERT(tedit);
@@ -292,7 +289,7 @@ char* _stdcall Jinput(J jt, char* p)
 
 // ---------------------------------------------------------------------
 // J calls for output
-void _stdcall Joutput(J jt,int type, char* s)
+void _stdcall Joutput(JS jt,int type, char* s)
 {
   Q_UNUSED(jt);
 
