@@ -25,6 +25,8 @@ Opengl2::Opengl2(Child *c, const QGLFormat& format, QWidget *parent) : QGLWidget
   initialized = false;
   painter=0;
   font=0;
+  insidepaint=false;
+  pendingpaint=false;
   gl_clear2(this,0);
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
@@ -61,11 +63,13 @@ void Opengl2::fill(const int *p)
 // ---------------------------------------------------------------------
 QPixmap Opengl2::getpixmap()
 {
-  QPixmap m;
-  if (painter) return m;
+#ifdef QT50
+  return grab();
+#else
   QPixmap p(size());
   render(&p);
   return p;
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -82,6 +86,11 @@ void Opengl2::initializeGL()
 void Opengl2::paintGL()
 {
   if (!initialized) return;
+  if (insidepaint) {
+    pendingpaint=true;
+    return;
+  }
+  insidepaint=true;
   painter=new QPainter(this);
   pchild->event="paint";
   pchild->pform->signalevent(pchild);
@@ -95,6 +104,11 @@ void Opengl2::paintend()
     painter->end();
     delete painter;
     painter=0;
+  }
+  insidepaint=false;
+  if(pendingpaint) {
+    pendingpaint=false;
+    this->update();
   }
 }
 

@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include <QPainter>
+#include <QPaintDevice>
 #include <QtGui/qmatrix4x4.h>
 
 #include "form.h"
@@ -12,6 +13,8 @@ extern Form *form;
 extern Child *isigraph;
 extern "C" int glclear2 (void *p,int clear);
 
+static bool pixback = true;  // isigraph backed by pixmap
+
 // ---------------------------------------------------------------------
 Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
 {
@@ -20,13 +23,15 @@ Isigraph2::Isigraph2(Child *c, QWidget *parent) : QWidget(parent)
   type=pchild->type;
   painter=0;
   font=0;
-  if (type=="isigraph")
+  insidepaint=false;
+  pendingpaint=false;
+  if (!pixback && type=="isigraph")
     pixmap=0;
   else {
-    pixmap=new QPixmap(1,1);
-    pixmap->fill(QColor(0,0,0,0));
+    pixmap=new QPixmap(size());
     painter=new QPainter(pixmap);
     painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->eraseRect(rect());
   }
   glclear2(this,0);
   this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -42,10 +47,8 @@ Isigraph2::~Isigraph2()
   if (painter) {
     painter->end();
     delete painter;
-    painter=0;
   }
   if (pixmap) delete pixmap;
-  pixmap=0;
 }
 
 // ---------------------------------------------------------------------
@@ -54,7 +57,7 @@ void Isigraph2::fill(const int *p)
   QColor c(*(p), *(p + 1), *(p + 2), *(p + 3));
   if (pixmap)
     pixmap->fill(c);
-  else
+  else if (painter)
     painter->fillRect(0,0,width(),height(),c);
 }
 
@@ -64,10 +67,12 @@ QPixmap Isigraph2::getpixmap()
   QPixmap m;
   if (pixmap && !pixmap->isNull())
     return pixmap->copy(0,0,width(),height());
-  if (painter) return m;
-  QPixmap p(size());
-  render(&p);
-  return p;
+#ifdef QT50
+  return grab();
+#else
+  m.grapWidget(this);
+  return m;
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -91,11 +96,18 @@ void Isigraph2::paintEvent_isidraw()
 // ---------------------------------------------------------------------
 void Isigraph2::paintEvent_isigraph()
 {
-  if (painter) return;
+// qDebug() << "Isigraph2::paintEvent_isigraph()";
+  if (insidepaint) {
+    pendingpaint=true;
+    return;
+  }
+  insidepaint=true;
   form=pchild->pform;
   isigraph=(Child *) this;
-  painter=new QPainter(this);
-  if (painter->isActive()) painter->setRenderHint(QPainter::Antialiasing, true);
+  if (!pixback) {
+    painter=new QPainter(this);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+  }
   pchild->event="paint";
   pchild->pform->signalevent(pchild);
   paintend();
@@ -104,17 +116,27 @@ void Isigraph2::paintEvent_isigraph()
 // ---------------------------------------------------------------------
 void Isigraph2::paintend()
 {
-  if (painter) {
+  if (pixback && pixmap && !pixmap->isNull()) {
+    QPainter p(this);
+    p.drawPixmap(0,0,*pixmap,0,0,width(),height());
+  }
+  if (!pixback && painter) {
     if (painter->isActive()) painter->end();
+    painter->end();
     delete painter;
     painter=0;
+  }
+  insidepaint=false;
+  if(pendingpaint) {
+    pendingpaint=false;
+    this->update();
   }
 }
 
 // ---------------------------------------------------------------------
 void Isigraph2::resizeEvent(QResizeEvent *event)
 {
-  if (type=="isigraph") return;
+  if (!pixback && type=="isigraph") return;
   QSize s=event->size();
   int w=s.width();
   int h=s.height();
@@ -122,18 +144,21 @@ void Isigraph2::resizeEvent(QResizeEvent *event)
     if (w > pixmap->width() || h > pixmap->height()) {
       if (painter) delete painter;
       QPixmap *p=new QPixmap(w+128,h+128);
-      p->fill(QColor(0,0,0,0));
       painter=new QPainter(p);
+      painter->setRenderHint(QPainter::Antialiasing, true);
+      painter->eraseRect(rect());
       painter->drawPixmap(QPoint(0,0),*pixmap);
       delete pixmap;
       pixmap=p;
     }
   } else {
+    if (painter) delete painter;
     pixmap=new QPixmap(w+128,h+128);
-    pixmap->fill(QColor(0,0,0,0));
     painter=new QPainter(pixmap);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->eraseRect(rect());
   }
-  if (painter->isActive()) painter->setRenderHint(QPainter::Antialiasing, true);
+  if (type=="isigraph") return;
   pchild->event="resize";
   pchild->pform->signalevent(pchild);
 }

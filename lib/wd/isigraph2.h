@@ -43,6 +43,8 @@ public:
 
   int brushnull;
   int clipped, textx, texty, orgx, orgy;
+  bool insidepaint;
+  bool pendingpaint;
 
 protected:
   void paintEvent(QPaintEvent *event);

@@ -293,10 +293,16 @@ int glpaint()
 {
   CHKPAINTER2
 #if defined(GLISIGRAPH)
-  if (w->type=="isigraph" && w->painter) return 1;
+  if (w->type=="isigraph" && w->insidepaint) {
+    w->pendingpaint = true;
+    return 0;
+  }
   w->update();
 #elif defined(GLOPENGL)
-  if (w->painter) return 1;
+  if (w->insidepaint) {
+    w->pendingpaint = true;
+    return 0;
+  }
   w->updateGL();
 #endif
   return 0;
@@ -307,10 +313,17 @@ int glpaintx()
 {
   CHKPAINTER2
 #if defined(GLISIGRAPH)
-  if (w->type=="isigraph" && w->painter) return 1;
+  if (w->type=="isigraph" && w->insidepaint) {
+    w->pendingpaint = true;
+    return 0;
+  }
   w->repaint();
 #elif defined(GLOPENGL)
-  return glpaint();
+  if (w->insidepaint) {
+    w->pendingpaint = true;
+    return 0;
+  }
+  w->updateGL();
 #endif
   return 0;
 }
