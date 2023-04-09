@@ -82,7 +82,7 @@ class Qwebengineview : public QWebEngineView
   Q_OBJECT
 
 public:
-  Qwebengineview(Child *c, QWidget *p=0);
+  explicit Qwebengineview(Child *c, QWidget *p=0);
 
 protected:
   void mousePressEvent(QMouseEvent *event);
@@ -93,6 +93,7 @@ protected:
   void focusOutEvent(QFocusEvent *event);
   void keyPressEvent(QKeyEvent *event);
   void wheelEvent(QWheelEvent *event);
+  bool eventFilter(QObject *object, QEvent *event);
 
 private:
   void buttonEvent(QEvent::Type type, QMouseEvent *event);

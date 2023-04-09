@@ -1,4 +1,5 @@
 
+#include <QApplication>
 #include <QDesktopServices>
 #include <QDir>
 #include <QWebChannel>
@@ -177,6 +178,7 @@ Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
   setPage(new Qwebenginepage());    // open urls
+  QApplication::instance()->installEventFilter(this);  // install filter for mouse event
 
 // following avoids rendering problems on Linux Mint 18.3, whereby
 // canvas drawings become corrupted when other web controls are accessed.
@@ -185,6 +187,18 @@ Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
 #if defined( __linux__ ) && defined( QT57 )
   settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, false);
 #endif
+}
+
+// ---------------------------------------------------------------------
+bool Qwebengineview::eventFilter(QObject *object, QEvent *event)
+{
+  if (object->parent() == this) {
+    if (event->type() == QEvent::MouseMove) mouseMoveEvent(static_cast<QMouseEvent *>(event));
+    else if (event->type() == QEvent::MouseButtonPress) mousePressEvent(static_cast<QMouseEvent *>(event));
+    else if (event->type() == QEvent::MouseButtonRelease) mouseReleaseEvent(static_cast<QMouseEvent *>(event));
+    else if (event->type() == QEvent::MouseButtonDblClick) mouseDoubleClickEvent(static_cast<QMouseEvent *>(event));
+  }
+  return false;
 }
 
 // ---------------------------------------------------------------------
