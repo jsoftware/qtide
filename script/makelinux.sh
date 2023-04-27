@@ -77,4 +77,9 @@ run jqt-"$2" "$2"
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
 
+if [ "$2" = "linux" ]; then
+  cat common.pri | grep "^VERSION" > version.txt
+  cat common.pri | grep "^JDLLVER" >> version.txt
+fi
+
 ./clean.l64 || true
