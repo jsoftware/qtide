@@ -6,13 +6,13 @@ Whenever the qtide repo is updated, the linux/macos/windows Jqt binaries are bui
 
 and copied to the J webserver developers download folder:
 
-  https://www.jsoftware.com/download/j9.4/qtidedev
+  https://www.jsoftware.com/download/j9.5/qtidedev
 
 -----------
 Not yet done:
 If the latest commit has a new version number in common.pri, then the binaries are also copied to the user download folder:
 
-  https://www.jsoftware.com/download/j9.4/qtide
+  https://www.jsoftware.com/download/j9.5/qtide
 -----------
 
 The process is defined in the workflow file:
