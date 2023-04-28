@@ -14,7 +14,7 @@ jobs:
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
@@ -39,7 +39,7 @@ jobs:
   runs-on: macos-11
   steps:
    - name: Check Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
@@ -72,7 +72,7 @@ jobs:
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
@@ -113,7 +113,7 @@ jobs:
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
@@ -152,16 +152,16 @@ jobs:
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
    - name: Install Qt, Compile JQtide
-     uses: cross-platform-actions/action@v0.7.0
+     uses: cross-platform-actions/action@v0.10.0
      with:
       operating_system: openbsd
       architecture: x86-64
-      version: '7.1'
+      version: '7.2'
       shell: bash
 
       run: |
@@ -194,7 +194,7 @@ jobs:
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
@@ -235,16 +235,16 @@ jobs:
   runs-on: macos-12
   steps:
    - name: Checkout Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
    - name: Install Qt, Compile JQtide
-     uses: cross-platform-actions/action@v0.7.0
+     uses: cross-platform-actions/action@v0.10.0
      with:
       operating_system: freebsd
       architecture: x86-64
-      version: '13.0'
+      version: '13.1'
       shell: bash
 
       run: |
@@ -276,7 +276,7 @@ jobs:
   runs-on: windows-2019
   steps:
    - name: Check Git repository
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
      with:
       submodules: recursive
 
