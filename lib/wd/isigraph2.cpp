@@ -70,8 +70,12 @@ QPixmap Isigraph2::getpixmap()
 #ifdef QT50
   return grab();
 #else
-  m.grapWidget(this);
-  return m;
+//  m.grapWidget(this);
+//  return m;
+  if (painter) return m;
+  QPixmap p(size());
+  render(&p);
+  return p;
 #endif
 }
 
