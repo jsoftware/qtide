@@ -59,11 +59,12 @@ int main(int argc, char *argv[])
   double y;
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
-  setlocale(LC_ALL, "");
-#if !(defined(_WIN32)||defined(__APPLE__))
-  locale_t loc=0;
-  if ((loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0))) uselocale(loc);
+#if !(defined(_WIN32))
+ locale_t loc=0;
+ if ((loc = newlocale(LC_ALL_MASK, "", (locale_t)0 )))
+  if ((loc = newlocale(LC_NUMERIC_MASK, "C", loc ))) uselocale(loc);
 #else
+  setlocale(LC_ALL, "");
   setlocale(LC_NUMERIC,"C");
 #endif
 #if defined(__APPLE__)
