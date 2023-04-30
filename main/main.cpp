@@ -13,7 +13,7 @@
 #include <stdint.h>
 #endif
 #include <locale.h>
-#ifdef __MACH__
+#ifdef __APPLE__
 #include <xlocale.h>
 #endif
 
@@ -60,13 +60,13 @@ int main(int argc, char *argv[])
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
   setlocale(LC_ALL, "");
-#ifndef _WIN32
+#if !(defined(_WIN32)||defined(__APPLE__))
   locale_t loc=0;
   if ((loc = newlocale(LC_NUMERIC_MASK, "C", (locale_t) 0))) uselocale(loc);
 #else
   setlocale(LC_NUMERIC,"C");
 #endif
-#if defined(__MACH__)
+#if defined(__APPLE__)
 #if !defined(QT50)
   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 ) {
     // fix Mac OS X 10.9 (mavericks) font issue
@@ -102,12 +102,12 @@ int main(int argc, char *argv[])
   QString s= QString::fromUtf8(path)+ "/jqt";
 #else
   QString s= QString::fromUtf8(path)+ "/libjqt";
-#if defined(__MACH__)
+#if defined(__APPLE__)
   if(s.startsWith("/usr/local/bin")||s.startsWith("/opt/homebrew/bin")) {
 #else
   if(s.startsWith("/usr/bin")) {
 #endif
-#if defined(__MACH__)
+#if defined(__APPLE__)
     s= QString("libjqt.")+QString(APP_VERSION)+QString(".dylib");
 #else
     s= QString("libjqt.so")+"."+QString(APP_VERSION);
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
     s=s+".dll";
 #else
-#if defined(__MACH__)
+#if defined(__APPLE__)
     s=s+".dylib";
 #else
     s=s+".so";
