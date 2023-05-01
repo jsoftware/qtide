@@ -26,6 +26,8 @@ WebEngineView::WebEngineView(std::string n, std::string s, Form *f, Pane *p) : C
   QWebChannel *channel = new QWebChannel(this);
   channel->registerObject(QString("qcom"),qcom);
   w->page()->setWebChannel(channel);
+  w->page()->settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
+  w->page()->settings()->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, true);
   if (s == "transparent")
     w->page()->setBackgroundColor(QColor(Qt::transparent));
   else if (s.length())
