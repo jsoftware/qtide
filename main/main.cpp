@@ -60,9 +60,9 @@ int main(int argc, char *argv[])
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
 #if !(defined(_WIN32))
- locale_t loc=0;
- if ((loc = newlocale(LC_ALL_MASK, "", (locale_t)0 )))
-  if ((loc = newlocale(LC_NUMERIC_MASK, "C", loc ))) uselocale(loc);
+  locale_t loc=0;
+  if ((loc = newlocale(LC_ALL_MASK, "", (locale_t)0 )))
+    if ((loc = newlocale(LC_NUMERIC_MASK, "C", loc ))) uselocale(loc);
 #else
   setlocale(LC_ALL, "");
   setlocale(LC_NUMERIC,"C");
