@@ -141,9 +141,9 @@ void WebEngineViewCom::qwrite(QStringList s)
 }
 
 // ---------------------------------------------------------------------
-Qwebenginepage::Qwebenginepage()
+Qwebenginepage::Qwebenginepage(QObject *parent) : QWebEnginePage(parent)
 {
-  ;
+  Q_UNUSED(parent);
 }
 
 // ---------------------------------------------------------------------
@@ -173,13 +173,13 @@ bool Qwebenginepage::acceptNavigationRequest(
 }
 
 // ---------------------------------------------------------------------
-Qwebengineview::Qwebengineview(Child *c, QWidget *parent)
+Qwebengineview::Qwebengineview(Child *c, QWidget *parent) : QWebEngineView(parent)
 {
   Q_UNUSED(parent);
   pchild=c;
   setMouseTracking(true);           // for mmove event
   setFocusPolicy(Qt::StrongFocus);  // for char event
-  setPage(new Qwebenginepage());    // open urls
+  setPage(new Qwebenginepage(parent));    // open urls
   QApplication::instance()->installEventFilter(this);  // install filter for mouse event
 
 // following avoids rendering problems on Linux Mint 18.3, whereby

@@ -67,7 +67,7 @@ class Qwebenginepage : public QWebEnginePage
   Q_OBJECT
 
 public:
-  Qwebenginepage();
+  Qwebenginepage(QObject *parent);
 
 protected:
   bool acceptNavigationRequest(const QUrl &, QWebEnginePage::NavigationType, bool);

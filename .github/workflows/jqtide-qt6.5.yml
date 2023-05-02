@@ -19,16 +19,26 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
+     if: ${{ false }}
      run: script/installqt.sh linux
 
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: 6.5.0
+      target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==2.1.0'
+
    - name: Compile JQtide
-     run: script/makelinux.sh '5.12.8' linux
+     run: script/makelinux.sh "$(version)" linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz,version.txt"
+      artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz,version.txt,linux-Qt.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -46,7 +56,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: 6.5.0
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -61,7 +71,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
+      artifacts: "jqt-mac.zip,jqt-mac-slim.zip,mac-Qt.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -283,7 +293,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: 6.5.0
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -297,7 +307,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-win.zip,jqt-win-slim.zip"
+      artifacts: "jqt-win.zip,jqt-win-slim.zip,win-Qt.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
