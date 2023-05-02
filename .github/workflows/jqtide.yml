@@ -3,8 +3,7 @@ name: JQtide
 on:
  push:
   branches:
-   - master
-   - main
+   - 9.4
 
 jobs:
 
@@ -44,9 +43,9 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v2
+     uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -281,9 +280,9 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v2
+     uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
