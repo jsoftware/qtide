@@ -61,7 +61,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
+      artifacts: "jqt-mac.zip,jqt-mac-slim.zip,mac-Qt.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -297,7 +297,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-win.zip,jqt-win-slim.zip"
+      artifacts: "jqt-win.zip,jqt-win-slim.zip,win-Qt.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -374,7 +374,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-ios-slim.zip"
+      artifacts: "jqt-ios-slim.zip,ios-Qt.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true

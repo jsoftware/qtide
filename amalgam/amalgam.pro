@@ -90,6 +90,8 @@ linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm*: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
+macx-ios*: QT -= printsupport
+wasm*: QT -= printsupport
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
 equals(QMAKE_TARGET.arch , amd64): QMAKE_TARGET.arch = x86_64
