@@ -19,10 +19,20 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
+     if: ${{ false }}
      run: script/installqt.sh linux
 
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: 6.5.0
+      target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==2.1.0'
+
    - name: Compile JQtide
-     run: script/makelinux.sh '5.12.8' linux
+     run: script/makelinux.sh $(version) linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -44,9 +54,9 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v2
+     uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: 6.5.0
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -109,7 +119,6 @@ jobs:
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
   name: JQtide (Raspberry-arm32)
-  if: ${{ false }}
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
@@ -281,9 +290,9 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v2
+     uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: 6.5.0
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
