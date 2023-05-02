@@ -7,7 +7,9 @@
 #include <QEventLoop>
 #include <QFont>
 #include <QPoint>
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
 #include <QProcess>
+#endif
 #include <QUrl>
 #include <QWidget>
 #ifdef TABCOMPLETION
@@ -338,9 +340,12 @@ bool gitavailable()
 // git gui
 void gitgui(QString path)
 {
+  Q_UNUSED(path);
   if (config.ifGit) {
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
     QProcess p;
     p.startDetached("git",QStringList() << "gui",path);
+#endif
   }
 }
 
@@ -501,6 +506,7 @@ void projectfilemanager()
     info("FileManager","The FileManager command should be defined in qtide.cfg.");
     return;
   }
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -516,6 +522,7 @@ void projectfilemanager()
 #endif
   a << d;
   p.startDetached(config.FileManager,a,d);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -553,6 +560,7 @@ void projectterminal()
     info("Terminal","The Terminal command should be defined in qtide.cfg.");
     return;
   }
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -571,6 +579,7 @@ void projectterminal()
   a << d;
 #endif
   p.startDetached(config.Terminal,a,d);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -618,7 +627,10 @@ void setxywh(QWidget *w, QString s)
 // return standard output, standard error
 QStringList shell(QString cmd, QString dir)
 {
-  QStringList r;
+  Q_UNUSED(cmd);
+  Q_UNUSED(dir);
+  QStringList r=QStringList();
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
   QProcess p;
   if (!dir.isEmpty())
     p.setWorkingDirectory(dir);
@@ -637,6 +649,7 @@ QStringList shell(QString cmd, QString dir)
     return r;
   r.append((QString)p.readAllStandardOutput());
   r.append((QString)p.readAllStandardError());
+#endif
   return r;
 }
 
@@ -830,12 +843,16 @@ void writewinstate(QWidget *w)
 // ---------------------------------------------------------------------
 void xdiff(QString s,QString t)
 {
+  Q_UNUSED(s);
+  Q_UNUSED(t);
   if (config.XDiff.size()==0) {
     info("External Diff","First define XDiff in the config");
     return;
   }
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
   QStringList a;
   a << s << t;
   QProcess p;
   p.startDetached(config.XDiff,a);
+#endif
 }
