@@ -75,6 +75,9 @@ QEventLoop *jevloop;
 int readTabWidth(QString);
 QString writeTabWidth(int);
 
+static int m_argc;
+static char **m_argv;
+
 // ---------------------------------------------------------------------
 void Config::case_init()
 {
@@ -728,7 +731,13 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
 #ifdef _WIN32
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif
-  app = new QApplication(argc, argv);
+
+/* QCoreApplication requires argc argv is valid throughout entire life of the process */
+  m_argc=argc;
+  m_argv = (char**)malloc(argc * sizeof(char*));
+  for (int i=0; i<argc; i++){m_argv[i]= (char*)malloc(1+strlen(argv[i])); strcpy(m_argv[i],argv[i]);}
+
+  app = new QApplication(m_argc, m_argv);
   evloop=new QEventLoop();
   jevloop=new QEventLoop();
 
