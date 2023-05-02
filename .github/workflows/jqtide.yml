@@ -46,7 +46,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -283,7 +283,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.2.4
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -305,6 +305,7 @@ jobs:
 # wasm -----------------------------------------------------------------
  jqtwasm:
   name: JQtide (wasm)
+  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Check Git repository
@@ -315,7 +316,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.5.0
+      version: '6.5.0'
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}/qt/'
@@ -325,7 +326,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: script/makelinux.sh "$(version)" wasm
+     run: script/makelinux.sh '6.5.0' wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -349,7 +350,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: 6.5.0
+      version: '6.5.0'
       target: 'ios'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -358,7 +359,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: script/makelinux.sh "$(version)" ios
+     run: script/makelinux.sh '6.5.0' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
