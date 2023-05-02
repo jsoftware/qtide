@@ -86,8 +86,10 @@ if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 run jqt-"$2" "$2"
 fi
 
+if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
+fi
 
 if [ "$2" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt

@@ -140,7 +140,7 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-macx*:CONFIG += c++11
+macx:CONFIG += c++11
 # win32:CONFIG += dll console
 win32-msvc*:TARGET = ../bin/jqtamalgam
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
@@ -246,8 +246,8 @@ win32:SOURCES += ../main/dllsrc/jdllcomx.cpp
 win32:HEADERS += ../main/dllsrc/jexe.h ../main/dllsrc/jdllcom.h ../main/dllsrc/jdlltype.h
 
 # macOS-specific sources (Objective-C).
-macx*:OBJECTIVE_SOURCES += ../main/disableWindowTabbing.mm
-macx*:LIBS += -framework AppKit
+macx:OBJECTIVE_SOURCES += ../main/disableWindowTabbing.mm
+macx:LIBS += -framework AppKit
 
 
 # lib

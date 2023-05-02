@@ -75,9 +75,11 @@ int main(int argc, char *argv[])
     QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
   }
 #endif
+#if !TARGET_OS_IPHONE
   // Disable (unsupported) macOS Sierra tab bar functionality if necessary.
   extern void disableWindowTabbing();
   disableWindowTabbing();
+#endif
 #endif
 
   char *path=jepath1(argv[0]);     // get path to JFE folder
