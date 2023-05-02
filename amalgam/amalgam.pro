@@ -117,6 +117,7 @@ macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
+macx-ios*: arch = ios-$$QMAKE_TARGET.arch
 
 # uncomment the next to open windows console to display qDebug() messages
 # win32:CONFIG += console
@@ -139,7 +140,7 @@ MOC_DIR = $$BUILDROOT/moc
 RCC_DIR = $$BUILDROOT/rcc
 UI_DIR = $$BUILDROOT/ui
 
-macx:CONFIG += c++11
+macx*:CONFIG += c++11
 # win32:CONFIG += dll console
 win32-msvc*:TARGET = ../bin/jqtamalgam
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
@@ -245,8 +246,8 @@ win32:SOURCES += ../main/dllsrc/jdllcomx.cpp
 win32:HEADERS += ../main/dllsrc/jexe.h ../main/dllsrc/jdllcom.h ../main/dllsrc/jdlltype.h
 
 # macOS-specific sources (Objective-C).
-macx:OBJECTIVE_SOURCES += ../main/disableWindowTabbing.mm
-macx:LIBS += -framework AppKit
+macx*:OBJECTIVE_SOURCES += ../main/disableWindowTabbing.mm
+macx*:LIBS += -framework AppKit
 
 
 # lib
@@ -355,6 +356,6 @@ win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
-macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
-macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
+macx*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
+macx*:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = ../main/jqt.rc
