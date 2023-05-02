@@ -44,7 +44,7 @@ $QM && make
 cd ../main
 $QM && make
 else
-cd ../amalgam
+cd amalgam
 $QM && make
 fi
 cd ..
@@ -70,6 +70,8 @@ elif [ "$2" = "freebsd" ]; then
  mv bin/freebsd-aarch64/release $1
  fi
  maketar $1
+elif [ "$2" = "ios" ]; then
+ ls bin/*
 fi
 ls -l "$1"
 rm -rf "$1"
