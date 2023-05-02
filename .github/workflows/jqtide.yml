@@ -32,7 +32,7 @@ jobs:
       aqtversion: '==2.1.0'
 
    - name: Compile JQtide
-     run: script/makelinux.sh $(version) linux
+     run: script/makelinux.sh "$(version)" linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -131,7 +131,7 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspbian_lite:2020-02-13
+      base_image: raspios_lite:2021-03-04
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
