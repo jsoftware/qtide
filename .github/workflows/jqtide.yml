@@ -351,6 +351,15 @@ jobs:
      uses: jurplel/install-qt-action@v3
      with:
       version: '6.5.0'
+      target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==3.1.0'
+
+   - name: Install Qt from source ios
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: '6.5.0'
       target: 'ios'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
