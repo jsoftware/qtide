@@ -42,8 +42,8 @@ cd lib
 $QM && make
 cd ../main
 $QM && make
-cd ../amalgam
-$QM && make
+# cd ../amalgam
+# $QM && make
 cd ..
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
@@ -72,10 +72,12 @@ ls -l "$1"
 rm -rf "$1"
 }
 
+cd qt && tar -czf ../linux-Qt.tar.gz Qt
+cd -
 run jqt-"$2" "$2"
 
-export JQTSLIM=1
-run jqt-"$2"-slim "$2"
+# export JQTSLIM=1
+# run jqt-"$2"-slim "$2"
 
 if [ "$2" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt

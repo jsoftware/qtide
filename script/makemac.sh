@@ -20,13 +20,13 @@ run() {
  cd ../main
  qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
  make
- cd ../amalgam
- qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
- make
+ # cd ../amalgam
+ # qmake QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
+ # make
  cd ..
  mv bin/mac-x86_64/release $1
  mv $1/jqt.app/Contents/MacOS/jqt $1
- mv $1/jqta.app/Contents/MacOS/jqta $1
+ mv $1/jqta.app/Contents/MacOS/jqta $1 || true
  rm -rf $1/jqt.app
  rm -rf $1/jqta.app
  cd $1
@@ -34,9 +34,11 @@ run() {
  cd ..
 }
 
+cd qt && tar -czf ../mac-Qt.tar.gz Qt
+cd -
 run jqt-mac
 
-export JQTSLIM=1
-run jqt-mac-slim
+# export JQTSLIM=1
+# run jqt-mac-slim
 
 ./clean.l64 || true
