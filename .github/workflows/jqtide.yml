@@ -302,6 +302,73 @@ jobs:
       allowUpdates: true
       replacesArtifacts: true
 
+# wasm -----------------------------------------------------------------
+ jqtwasm:
+  name: JQtide (wasm)
+  runs-on: macos-12
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v3
+     with:
+      submodules: recursive
+
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: 6.5.0
+      target: 'desktop'
+      arch: 'wasm-multithread'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==2.1.0'
+
+   - name: Compile JQtide
+     env:
+      CC: clang
+     run: script/makelinux.sh "$(version)" wasm
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-wasm-slim.zip"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# ios ------------------------------------------------------------------
+ jqtios:
+  name: JQtide (ios)
+  runs-on: macos-12
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v3
+     with:
+      submodules: recursive
+
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: 6.5.0
+      target: 'ios'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==2.1.0'
+
+   - name: Compile JQtide
+     env:
+      CC: clang
+     run: script/makelinux.sh "$(version)" ios
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-ios-slim.zip"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04

@@ -38,12 +38,15 @@ if [ $? -eq 1 ]; then
 fi
 ./clean.l64
 rm -rf "$1"
+if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 cd lib
 $QM && make
 cd ../main
 $QM && make
-# cd ../amalgam
-# $QM && make
+else
+cd ../amalgam
+$QM && make
+fi
 cd ..
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
@@ -73,13 +76,16 @@ rm -rf "$1"
 }
 
 if [ -d qt ] ; then
-cd qt && tar -czf ../linux-Qt.tar.gz Qt
+cd qt && tar -czf ../$2-Qt.tar.gz Qt
 cd -
 fi
-run jqt-"$2" "$2"
 
-# export JQTSLIM=1
-# run jqt-"$2"-slim "$2"
+if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
+run jqt-"$2" "$2"
+fi
+
+export JQTSLIM=1
+run jqt-"$2"-slim "$2"
 
 if [ "$2" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt
