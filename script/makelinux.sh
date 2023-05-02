@@ -72,8 +72,10 @@ ls -l "$1"
 rm -rf "$1"
 }
 
+if [ -d qt ] ; then
 cd qt && tar -czf ../linux-Qt.tar.gz Qt
 cd -
+fi
 run jqt-"$2" "$2"
 
 # export JQTSLIM=1

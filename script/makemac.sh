@@ -34,8 +34,10 @@ run() {
  cd ..
 }
 
+if [ -d qt ] ; then
 cd qt && tar -czf ../mac-Qt.tar.gz Qt
 cd -
+fi
 run jqt-mac
 
 # export JQTSLIM=1
