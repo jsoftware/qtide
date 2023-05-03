@@ -106,7 +106,7 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx:!openbsd:!freebsd: {
+equals(QMAKE_TARGET.arch , aarch64):!macx*:!openbsd:!freebsd: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
@@ -118,6 +118,7 @@ unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 macx-ios*: arch = ios-$$QMAKE_TARGET.arch
+wasm*: arch = wasm-$$QMAKE_TARGET.arch
 
 # uncomment the next to open windows console to display qDebug() messages
 # win32:CONFIG += console

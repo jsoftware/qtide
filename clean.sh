@@ -2,7 +2,6 @@
 set -e
 
 S=$(dirname "$0")
-cd $S
-
-$S/astyle.sh
+cd lib && ../astyle.sh && cd -
+cd main && ../astyle.sh && cd -
 

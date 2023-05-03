@@ -5,6 +5,11 @@ set -e
 
 S=$(dirname "$0")
 
+if [ "$1" != "noclean" ] ; then
+./clean.sh || true
+./clean.l64
+fi
+
 if [ "x$MAKEFLAGS" = x'' ] ; then
 if [ `uname` = "Linux" ] ; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
 export MAKEFLAGS=-j$par
@@ -16,6 +21,10 @@ echo "MAKEFLAGS=$MAKEFLAGS"
 
 if [ "`uname`" = "Darwin" ] && [ "$QMAKESPEC"x = "x" ] ; then
  export QMAKESPEC=macx-clang
+fi
+
+if [ $QMAKESPEC = "macx-clang" ] ; then
+ qmflag=QMAKE_APPLE_DEVICE_ARCHS=x86_64\ arm64
 fi
 
 if [ "`uname`" = "FreeBSD" ] && [ "$QMAKESPEC"x = "x" ] ; then
@@ -35,18 +44,20 @@ if [ $? -eq 1 ]; then
   QM=qmake-qt5
 fi
 
-# old version of astyle in raspbian
-./clean.sh || true
-./clean.l64
+if [ $QMAKESPEC != "macx-ios-clang" ] && [ $QMAKESPEC != "wasm-emscripten" ] ; then
 
 cd lib
-$QM && make
-cd ..
+$QM "$qmflag" && make
+cd -
 
 cd main
-$QM && make
-cd ..
+$QM "$qmflag" && make
+cd -
+
+else
 
 cd amalgam
-$QM && make
-cd ..
+$QM "$qmflag" && make
+cd -
+
+fi

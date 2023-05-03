@@ -55,7 +55,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: script/makemac.sh $(version)
+     run: script/makemac.sh ${version} mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -291,7 +291,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd $(version)
+     run: script\makewin.cmd ${version}
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -305,7 +305,6 @@ jobs:
 # wasm -----------------------------------------------------------------
  jqtwasm:
   name: JQtide (wasm)
-  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Check Git repository
@@ -318,6 +317,15 @@ jobs:
      with:
       version: '6.5.0'
       target: 'desktop'
+      dir: '${{github.workspace}}/qt/'
+      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      aqtversion: '==3.1.0'
+
+   - name: Install Qt from source wasm
+     uses: jurplel/install-qt-action@v3
+     with:
+      version: '6.5.0'
+      target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -326,13 +334,13 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: script/makelinux.sh '6.5.0' wasm
+     run: QM=${{github.workspace}}/qt/Qt/${version}/wasm/bin/qmake script/makemac.sh ${version} wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-wasm-slim.zip"
+      artifacts: "jqt-wasm-slim.zip,wasm-Qt.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -368,7 +376,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: script/makelinux.sh '6.5.0' ios
+     run: QM=${{github.workspace}}/qt/Qt/${version}/ios/bin/qmake script/makemac.sh ${version} ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1

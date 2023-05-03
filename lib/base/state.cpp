@@ -732,10 +732,13 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif
 
-/* QCoreApplication requires argc argv is valid throughout entire life of the process */
+  /* QCoreApplication requires argc argv is valid throughout entire life of the process */
   m_argc=argc;
   m_argv = (char**)malloc(argc * sizeof(char*));
-  for (int i=0; i<argc; i++){m_argv[i]= (char*)malloc(1+strlen(argv[i])); strcpy(m_argv[i],argv[i]);}
+  for (int i=0; i<argc; i++) {
+    m_argv[i]= (char*)malloc(1+strlen(argv[i]));
+    strcpy(m_argv[i],argv[i]);
+  }
 
   app = new QApplication(m_argc, m_argv);
   evloop=new QEventLoop();

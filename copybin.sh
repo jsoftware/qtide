@@ -19,6 +19,7 @@ echo $JQTVER
 cop(){
 # $1 PLATFORM
 # $2 CPU
+echo $PLATFORM-$CPU
 if [ $PLATFORM = "mac" ] ; then
 SUDO=
 SLIB=lib
@@ -26,7 +27,7 @@ JQTAPP=jqt.app/Contents/MacOS
 JQTAAPP=jqta.app/Contents/MacOS
 EXT=.dylib
 VEXT=.$JQTVER.dylib
-if [ $CPU = "arm64" ] ; then
+if [ $CPU = "aarch64" ] ; then
 PX=/opt/homebrew
 else
 PX=/usr/local
@@ -71,13 +72,14 @@ cp bin/$PLATFORM-$CPU/release/$JQTAPP/jqt ~/share/jsoftware/j$JVERNUM/bin/.
 fi
 if [ -f bin/$PLATFORM-$CPU/release/$JQTAAPP/jqta ] ; then 
 mv -f ~/share/jsoftware/j$JVERNUM/bin/jqta ~/share/jsoftware/j$JVERNUM/bin/jqta.old || true
-cp bin/$PLATFORM-$CPU/release/$JQTAPPA/jqta ~/share/jsoftware/j$JVERNUM/bin/.
+cp bin/$PLATFORM-$CPU/release/$JQTAAPP/jqta ~/share/jsoftware/j$JVERNUM/bin/.
 fi
 }
 
 coplipo(){
 # $1 PLATFORM
 # $2 CPU
+echo $PLATFORM-$CPU
 
 SUDO=
 SLIB=lib
@@ -143,7 +145,7 @@ fi
 
 if [ -f bin/mac-aarch64/release/libjqt.$JQTVER.dylib ] ; then 
 PLATFORM=mac
-CPU=arm64
+CPU=aarch64
 cop
 fi
 

@@ -38,16 +38,12 @@ if [ $? -eq 1 ]; then
 fi
 ./clean.l64
 rm -rf "$1"
-if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 cd lib
 $QM && make
-cd ../main
+cd -
+cd main
 $QM && make
-else
-cd amalgam
-$QM && make
-fi
-cd ..
+cd -
 if [ "$2" = "linux" ]; then
  mv bin/linux-x86_64/release $1
  maketar $1
@@ -70,8 +66,6 @@ elif [ "$2" = "freebsd" ]; then
  mv bin/freebsd-aarch64/release $1
  fi
  maketar $1
-elif [ "$2" = "ios" ]; then
- ls bin/*
 fi
 ls -l "$1"
 rm -rf "$1"
@@ -82,14 +76,10 @@ cd qt && tar -czf ../$2-Qt.tar.gz Qt
 cd -
 fi
 
-if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 run jqt-"$2" "$2"
-fi
 
-if [ "$2" != "wasm" ] &&  [ "$2" != "ios" ]; then
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
-fi
 
 if [ "$2" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt
