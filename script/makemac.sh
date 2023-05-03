@@ -24,7 +24,7 @@ QM="${QM:=qmake}"
 
 run() {
  ./clean.l64
-if [ $QMAKESPEC != "macx-ios-clang" ] && [ $QMAKESPEC != "wasm-emscripten" ] ; then
+if [ "$QMAKESPEC" != "macx-ios-clang" ] && [ "$QMAKESPEC" != "wasm-emscripten" ] ; then
 
 # If you use quotes, qmake considers the whole string as a single arch and that breaks some internal logic.
  cd lib
@@ -57,7 +57,7 @@ fi
 }
 
 if [ -d qt ] ; then
-if [ $QMAKESPEC = "macx-ios-clang" ] || [ $QMAKESPEC = "wasm-emscripten" ] ; then
+if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
 find qt -name 'macos' -type d -delete || true
 cd qt && tar -czf ../"$2"-Qt.tar.gz Qt
 else
@@ -66,7 +66,7 @@ cd -
 fi
 fi
 
-if [ $QMAKESPEC = "macx-ios-clang" ] || [ $QMAKESPEC = "wasm-emscripten" ] ; then
+if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
 else
