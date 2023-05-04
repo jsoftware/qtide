@@ -206,7 +206,9 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
     char m[1000];
     jefail(m);
     fputs(m,stderr);
+#if !TARGET_OS_IPHONE && !defined(__wasm__)
     exit(1);
+#endif
   }
 
   adadbreak=(char**)jt; // first address in jt is address of breakdata

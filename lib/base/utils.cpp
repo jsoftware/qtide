@@ -327,7 +327,7 @@ std::string getversion()
 // return if git available
 bool gitavailable()
 {
-#if defined(__MACH__) || defined(Q_OS_LINUX)
+#if defined(__APPLE__) || defined(Q_OS_LINUX)
   QStringList r=shell("which git","");
   if(!r.length()) return false;
   return !r.at(0).isEmpty();
@@ -575,7 +575,7 @@ void projectterminal()
   if (config.Terminal=="cmd" || config.Terminal=="cmd.exe")
     a << "/K" << "start";
 #endif
-#ifdef __MACH__
+#ifdef __APPLE__
   a << d;
 #endif
   p.startDetached(config.Terminal,a,d);

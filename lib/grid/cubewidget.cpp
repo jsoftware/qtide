@@ -109,7 +109,7 @@ void CubeMargin::dropEvent(QDropEvent *e)
   }
 
 // timeout crashes OSX (10.11.1, qt5.5), but interval works
-#ifdef __MACH__
+#ifdef __APPLE__
   QTimer::singleShot(150,p,SLOT(redraw()));
 #else
   QTimer *timer = new QTimer(this);

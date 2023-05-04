@@ -43,7 +43,7 @@ Opengl::Opengl(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 //    qDebug() << QString::number(ver1) << QString::number(ver2);
     qglFormat.setVersion(ver1,ver2);
   } else {
-#ifdef __MACH__
+#ifdef __APPLE__
     qglFormat.setVersion(4,1);
 #endif
   }

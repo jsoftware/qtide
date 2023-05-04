@@ -1,5 +1,5 @@
 #!/bin/sh
-set -evx
+set -e
 
 # arg is Qt version, e.g. "5.15.2"
 #        mac/ios/wasm
@@ -9,6 +9,7 @@ echo "parameters $1 $2"
 
 if [ "$2" = "mac" ]; then
 export QMAKESPEC=macx-clang
+# If you use quotes, qmake considers the whole string as a single arch and that breaks some internal logic.
 qmflag=QMAKE_APPLE_DEVICE_ARCHS=x86_64\ arm64
 elif [ "$2" = "ios" ]; then
 export QMAKESPEC=macx-ios-clang
@@ -27,9 +28,7 @@ QM="${QM:=qmake}"
 
 run() {
  ./clean.l64
-if [ "$QMAKESPEC" != "macx-ios-clang" ] && [ "$QMAKESPEC" != "wasm-emscripten" ] ; then
-
-# If you use quotes, qmake considers the whole string as a single arch and that breaks some internal logic.
+if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
  cd lib
  $QM "$qmflag"
  make
@@ -45,17 +44,9 @@ else
  cd -
 fi
 
+mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
+
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
- mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
-else
- ls -l bin
- ls -l bin/$2-x86_64/release || true
- ls -l bin/$2-aarch64/release || true
- mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
-fi
-if [ $2 = "ios" ] ; then
- ls -l $1 || true
-else
  mv $1/jqt.app/Contents/MacOS/jqt $1 || true
  mv $1/jqta.app/Contents/MacOS/jqta $1 || true
  rm -rf $1/jqt.app
@@ -63,22 +54,28 @@ else
  cd $1
  zip --symlinks -r ../$1.zip *
  cd -
+else
+ cd $1
+ zip --symlinks -r ../$1.zip *
+ cd -
 fi
+ls -l "$1" || true
+rm -rf "$1"
 }
 
-if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
+if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
+run jqt-"$2" "$2"
+
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
 else
-run jqt-"$2" "$2"
-
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
 fi
 
 if [ -d Qt ] ; then
-if [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
-# macx-ios-clang size 8.6G !!!
+if [ $2 = "wasm" ] ; then
+# ios size 8.6G !!!
 find Qt/"$1" -name 'macos' -type d -delete || true
 tar -czf "$2"-Qt.tar.gz Qt
 else

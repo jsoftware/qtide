@@ -1,5 +1,5 @@
 #!/bin/sh
-set -evx
+set -e
 
 #
 # arg is Qt version, e.g. "5.15.2"
@@ -70,7 +70,7 @@ elif [ "$2" = "freebsd" ]; then
  fi
  maketar $1
 fi
-ls -l "$1"
+ls -l "$1" || true
 rm -rf "$1"
 }
 

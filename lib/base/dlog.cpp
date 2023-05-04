@@ -143,7 +143,7 @@ void SlogList::keyPressEvent(QKeyEvent *event)
   if (event->key()==Qt::Key_Escape || ischaracter(event->key()))
     event->ignore();
   else {
-#ifdef __MACH__
+#ifdef __APPLE__
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
       emit itemActivated(currentItem());
       return event->accept();

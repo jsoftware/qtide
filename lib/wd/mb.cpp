@@ -249,7 +249,7 @@ QString mbfont()
     if (s=="underline")
       def.setUnderline(true);
   }
-#ifdef __MACH__
+#ifdef __APPLE__
   font=QFontDialog::getFont(&ok,def,getmbparent(),title, QFontDialog::DontUseNativeDialog);
 #else
   font=QFontDialog::getFont(&ok,def,getmbparent(),title);
@@ -402,7 +402,7 @@ QString mbprint(bool iftext)
     d->setPageSize(QSizeF(config.Printer->pageRect().size()));
 #endif
 
-#ifdef __MACH__
+#ifdef __APPLE__
 #if !defined(QT60)
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {
@@ -420,7 +420,7 @@ QString mbprint(bool iftext)
     dialogprint(getmbparent(),d);
     delete d;
   } else {
-#ifdef __MACH__
+#ifdef __APPLE__
 #if !defined(QT60)
     QSysInfo qsi;
     if (qsi.MacintoshVersion < QSysInfo::MV_10_7) {

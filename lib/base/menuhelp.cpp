@@ -74,7 +74,7 @@ void Menu::createhelpMenu()
   m->addAction(helpdemowdAct);
   helpMenu->addSeparator();
   helpMenu->addAction(helpcontextAct);
-#ifndef __MACH__
+#ifndef __APPLE__
   helpMenu->addSeparator();
 #endif
   helpMenu->addAction(helpaboutAct);

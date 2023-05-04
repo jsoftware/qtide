@@ -292,7 +292,7 @@ void Config::initide()
   QString filemanager="nautilus";
   QString terminal="gnome-terminal";
 
-#ifdef __MACH__
+#ifdef __APPLE__
   filemanager="open";
   font="Menlo";
   fontsize=14;

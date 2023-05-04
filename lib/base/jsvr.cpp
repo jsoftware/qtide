@@ -14,13 +14,16 @@
 #include <sys/stat.h>
 #endif
 
-#ifdef __MACH__
+#ifdef __APPLE__
 #include <mach-o/dyld.h>
 #endif
 
 #include "base.h"
 #include "jsvr.h"
 #include "util.h"
+#if defined(__EMSCRIPTEN__)
+#include <emscripten/emscripten.h>
+#endif
 
 void * hjdll=0;
 
@@ -128,7 +131,19 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 JS jeload(void* callbacks)
 {
-#ifdef _WIN32
+#if 0 // TARGET_OS_IPHONE || defined(__wasm__)
+  jt=JInit();
+  if (!jt) return 0;
+  JSM(jt,(void**)callbacks);
+  jdo=JDo;
+  jinterrupt=JInterrupt;
+  jfree=JFree;
+  jga=Jga;
+  jgeta=JGetA;
+  jgetlocale=JGetLocale;
+  jseta=JSetA;
+  return jt;
+#elif defined(_WIN32)
   WCHAR wpath[PLEN];
   MultiByteToWideChar(CP_UTF8,0,pathdll,1+(int)strlen(pathdll),wpath,PLEN);
   hjdll=LoadLibraryW(wpath);
@@ -183,7 +198,7 @@ void jepath(char* arg, char* lib)
 // fprintf(stderr,"arg0 %s\n",arg);
 // try host dependent way to get path to executable
 // use arg if they fail (arg command in PATH won't work)
-#ifdef __MACH__
+#ifdef __APPLE__
   uint32_t len=sz;
   n=_NSGetExecutablePath(arg2,&len);
   if (0!=n) strcat(arg2,arg);
@@ -372,9 +387,11 @@ int jefirst(int type,char* arg)
 #ifdef RASPI
   strcat(input,"[IFRASPI_z_=:1");
 #endif
-#if defined(_WIN32)
+#if defined(__wasm__)
+  strcat(input,"[UNAME_z_=:'Wasm'");
+#elif defined(_WIN32)
   strcat(input,"[UNAME_z_=:'Win'");
-#elif defined(__MACH__)
+#elif defined(__APPLE__)
   strcat(input,"[UNAME_z_=:'Darwin'");
 #elif defined(__FreeBSD__)
   strcat(input,"[UNAME_z_=:'FreeBSD'");
@@ -384,17 +401,11 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif
   strcat(input,"[BINPATH_z_=:'");
+#if TARGET_OS_IPHONE || defined(__wasm__)
+  strcat(input,"/jlibrary/bin");
+#else
   if(!FHS) {
     p=path;
-    q=input+strlen(input);
-    while (*p) {
-      if (*p=='\'') *q++='\'';	// 's doubled
-      *q++=*p++;
-    }
-    *q=0;
-    strcat(input,"'");
-    strcat(input,"[LIBFILE_z_=:'");
-    p=pathdll;
     q=input+strlen(input);
     while (*p) {
       if (*p=='\'') *q++='\'';	// 's doubled
@@ -408,6 +419,19 @@ int jefirst(int type,char* arg)
       strcat(input,"/bin");
     }
   }
+#endif
+  strcat(input,"'");
+
+  strcat(input,"[LIBFILE_z_=:'");
+#if !defined(JAMALGAM) && !TARGET_OS_IPHONE && !defined(__wasm__)
+  p=pathdll;
+  q=input+strlen(input);
+  while (*p) {
+    if (*p=='\'') *q++='\'';	// 's doubled
+    *q++=*p++;
+  }
+  *q=0;
+#endif
   strcat(input,"'");
   if (!FHS)
     strcat(input,"[FHS_z_=:0");

@@ -47,7 +47,7 @@ Fiw::Fiw(int p, QString s)
   readwin();
 
   int checkboxspacing;
-#ifdef __MACH__
+#ifdef __APPLE__
   checkboxspacing=4;
 #else
   checkboxspacing=0;

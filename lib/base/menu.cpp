@@ -147,7 +147,7 @@ void Menu::createActions()
   toolspacmanAct = makeact("toolspacmanAct","&Package Manager","");
   toolsfkeysAct = makeact("toolsfkeysAct","Function Keys","");
   toselcommentAct = makeact("toselcommentAct","Toggle &Comment","Ctrl+/");
-#ifdef __MACH__
+#ifdef __APPLE__
   toselnoteAct = makeact("toselnoteAct","Toggle &Note","Alt+Ctrl+/");
 #else
   toselnoteAct = makeact("toselnoteAct","Toggle &Note","Ctrl+Shift+/");

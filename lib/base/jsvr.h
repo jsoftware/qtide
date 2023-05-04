@@ -1,7 +1,7 @@
 #ifndef JFE_H
 #define JFE_H
 
-// define _WIN32 for Windows, __MACH__ for MAC, J64 for 64-bit
+// define _WIN32 for Windows, __APPLE__ for MAC, J64 for 64-bit
 // JE is loaded from current working directory
 
 #ifdef _WIN32
@@ -21,7 +21,7 @@
 #include <dlfcn.h>
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
 #define JDLLNAME "libj"
-#ifdef __MACH__
+#ifdef __APPLE__
 #define JDLLEXT ".dylib"
 #else
 #include <sys/utsname.h>

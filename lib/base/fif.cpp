@@ -31,7 +31,7 @@ Fif::Fif(QString s, bool ifname)
   Title="Find in Files";
 
   int layoutcmv,checkboxcmv,checkboxspacing;
-#ifdef __MACH__
+#ifdef __APPLE__
   layoutcmv=5;
   checkboxcmv=2;
   checkboxspacing=4;
