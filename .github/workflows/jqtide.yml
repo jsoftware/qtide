@@ -333,7 +333,6 @@ jobs:
 
    - name: Install emsdk
      uses: mymindstorm/setup-emsdk@v11
-     run: emcc -v
 
    - name: Compile JQtide
      env:
