@@ -37,8 +37,6 @@ jobs:
  jqtmacos:
   name: JQtide (macOS)
   runs-on: macos-11
-  variables:
-   qtversion: '6.2.4'
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -48,7 +46,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -57,7 +55,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/qt/Qt/$(qtversion)/macos/bin/qmake script/makemac.sh $(qtversion) mac
+     run: QM=${{github.workspace}}/qt/Qt/6.2.4/macos/bin/qmake script/makemac.sh '6.2.4' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -276,8 +274,6 @@ jobs:
  jqtwin:
   name: JQtide (Windows)
   runs-on: windows-2019
-  variables:
-   qtversion: '6.2.4'
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -287,7 +283,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.2.4'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -310,8 +306,6 @@ jobs:
  jqtwasm:
   name: JQtide (wasm)
   runs-on: macos-12
-  variables:
-   qtversion: '6.5.0'
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -321,7 +315,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.5.0'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -330,7 +324,7 @@ jobs:
    - name: Install Qt from source wasm
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.5.0'
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}/qt/'
@@ -340,7 +334,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/qt/Qt/$(qtversion)/wasm/bin/qmake script/makemac.sh $(qtversion) wasm
+     run: QM=${{github.workspace}}/qt/Qt/6.5.0/wasm/bin/qmake script/makemac.sh '6.5.0' wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -355,8 +349,6 @@ jobs:
  jqtios:
   name: JQtide (ios)
   runs-on: macos-12
-  variables:
-   qtversion: '6.5.0'
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -366,7 +358,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.5.0'
       target: 'desktop'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -375,7 +367,7 @@ jobs:
    - name: Install Qt from source ios
      uses: jurplel/install-qt-action@v3
      with:
-      version: $(qtversion)
+      version: '6.5.0'
       target: 'ios'
       dir: '${{github.workspace}}/qt/'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -384,7 +376,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/qt/Qt/$(qtversion)/ios/bin/qmake script/makemac.sh $(qtversion) ios
+     run: QM=${{github.workspace}}/qt/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
