@@ -4,8 +4,8 @@ set -evx
 # arg is Qt version, e.g. "5.15.2"
 #        mac/ios/wasm
 
-echo 'pwd $(pwd)'
-echo 'parameters $1 $2'
+echo "pwd $(pwd)"
+echo "parameters $1 $2"
 
 if [ "$2" = "mac" ]; then
 export QMAKESPEC=macx-clang
@@ -61,7 +61,7 @@ fi
 
 if [ -d Qt ] ; then
 if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
-find qt -name 'macos' -type d -delete || true
+find Qt -name 'macos' -type d -delete || true
 tar -czf "$2"-Qt.tar.gz Qt
 else
 tar -czf "$2"-Qt.tar.gz Qt

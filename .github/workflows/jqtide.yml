@@ -334,7 +334,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.5.0/wasm/bin/qmake script/makemac.sh '6.5.0' wasm
+     run: QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1

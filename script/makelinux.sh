@@ -5,8 +5,8 @@ set -evx
 # arg is Qt version, e.g. "5.15.2"
 #        linux/raspberry/raspberry-arm32/openbsd/freebsd
 
-echo 'pwd $(pwd)'
-echo 'parameters $1 $2'
+echo "pwd $(pwd)"
+echo "parameters $1 $2"
 
 export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
