@@ -84,7 +84,9 @@ void WsSvr::onNewConnection()
   QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChanged(QAbstractSocket::SocketState)));
   QObject::connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
+#ifndef __wasm__
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onSslErrors(const QList<QSslError>&)));
+#endif
 #ifdef QT50
   QObject::connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
   QObject::connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
@@ -175,6 +177,7 @@ void WsSvr::onError(QAbstractSocket::SocketError error)
 
 }
 
+#ifndef __wasm__
 // ---------------------------------------------------------------------
 void WsSvr::onSslErrors(const QList<QSslError>& errors)
 {
@@ -195,6 +198,7 @@ void WsSvr::onSslErrors(const QList<QSslError>& errors)
   wssvr_handler((void *)ONSSLERROR, socket);
 
 }
+#endif
 
 // ---------------------------------------------------------------------
 void WsSvr::onStateChanged(QAbstractSocket::SocketState socketState)

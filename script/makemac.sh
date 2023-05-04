@@ -49,12 +49,12 @@ if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
  mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
 else
  ls -l bin
- ls -l bin/$2-x86_64
- ls -l bin/$2-aarch64
+ ls -l bin/$2-x86_64/release || true
+ ls -l bin/$2-aarch64/release || true
  mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
 fi
 if [ $2 = "ios" ] ; then
- ls -l $1
+ ls -l $1 || true
 else
  mv $1/jqt.app/Contents/MacOS/jqt $1 || true
  mv $1/jqta.app/Contents/MacOS/jqta $1 || true

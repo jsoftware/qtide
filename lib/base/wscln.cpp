@@ -77,7 +77,9 @@ void * WsCln::openurl(QString url)
   QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChanged(QAbstractSocket::SocketState)));
   QObject::connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
+#ifndef __wasm__
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onSslErrors(const QList<QSslError>&)));
+#endif
 #ifdef QT50
   QObject::connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
   QObject::connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
@@ -201,6 +203,7 @@ void WsCln::onError(QAbstractSocket::SocketError error)
   wscln_handler((void *)ONERROR,socket);
 }
 
+#ifndef __wasm__
 // ---------------------------------------------------------------------
 void WsCln::onSslErrors(const QList<QSslError> &errors)
 {
@@ -220,6 +223,7 @@ void WsCln::onSslErrors(const QList<QSslError> &errors)
   jsetc((char *)"wsc1_jrx_",(C*)"text", 4);
   wscln_handler((void *)ONSSLERROR,socket);
 }
+#endif
 
 // ---------------------------------------------------------------------
 void WsCln::onStateChanged(QAbstractSocket::SocketState socketState)

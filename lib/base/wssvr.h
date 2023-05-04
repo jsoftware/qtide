@@ -42,7 +42,9 @@ private Q_SLOTS:
   void onTextMessageReceived(QString message);
   void onBinaryMessageReceived(QByteArray message);
   void onError(QAbstractSocket::SocketError error);
+#ifndef __wasm__
   void onSslErrors(const QList<QSslError>& errors);
+#endif
   void onStateChanged(QAbstractSocket::SocketState socketState);
   void onPong(quint64 elapsedTime, const QByteArray & payload);
 #ifdef QT50
