@@ -48,8 +48,14 @@ fi
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
  mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
 else
+ ls -l bin
+ ls -l bin/$2-x86_64
+ ls -l bin/$2-aarch64
  mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || true
 fi
+if [ $2 = "ios" ] ; then
+ ls -l $1
+else
  mv $1/jqt.app/Contents/MacOS/jqt $1 || true
  mv $1/jqta.app/Contents/MacOS/jqta $1 || true
  rm -rf $1/jqt.app
@@ -57,16 +63,8 @@ fi
  cd $1
  zip --symlinks -r ../$1.zip *
  cd -
+fi
 }
-
-if [ -d Qt ] ; then
-if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
-find Qt -name 'macos' -type d -delete || true
-tar -czf "$2"-Qt.tar.gz Qt
-else
-tar -czf "$2"-Qt.tar.gz Qt
-fi
-fi
 
 if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
 export JQTSLIM=1
@@ -76,6 +74,16 @@ run jqt-"$2" "$2"
 
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
+fi
+
+if [ -d Qt ] ; then
+if [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
+# macx-ios-clang size 8.6G !!!
+find Qt/"$1" -name 'macos' -type d -delete || true
+tar -czf "$2"-Qt.tar.gz Qt
+else
+tar -czf "$2"-Qt.tar.gz Qt
+fi
 fi
 
 ./clean.l64 || true

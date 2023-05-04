@@ -5,9 +5,6 @@ set PATH=C:\$GITHUB_WORKSPACE\Qt\%1\win64_msvc2019_64\bin;%PATH%
 CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
-powershell Compress-Archive Qt win-Qt.zip
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-
 cd lib
 qmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -62,6 +59,9 @@ cd jqt-win-slim
 powershell Compress-Archive * ..\jqt-win-slim.zip
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..
+
+powershell Compress-Archive Qt win-Qt.zip
+IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
 RD /S /Q release
 RD /S /Q bin

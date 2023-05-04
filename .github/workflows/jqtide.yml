@@ -332,8 +332,8 @@ jobs:
       aqtversion: '==3.1.5'
 
    - name: Install emsdk
-      uses: mymindstorm/setup-emsdk@v11
-      run: emcc -v
+     uses: mymindstorm/setup-emsdk@v11
+     run: emcc -v
 
    - name: Compile JQtide
      env:
@@ -386,7 +386,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-ios-slim.zip,ios-Qt.tar.gz"
+      artifacts: "jqt-ios-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true

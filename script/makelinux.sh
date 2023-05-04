@@ -74,14 +74,14 @@ ls -l "$1"
 rm -rf "$1"
 }
 
-if [ -d Qt ] ; then
-tar -czf "$2"-Qt.tar.gz Qt
-fi
-
 run jqt-"$2" "$2"
 
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
+
+if [ -d Qt ] ; then
+tar -czf "$2"-Qt.tar.gz Qt
+fi
 
 if [ "$2" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt
