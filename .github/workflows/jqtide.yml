@@ -331,6 +331,10 @@ jobs:
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
       aqtversion: '==3.1.5'
 
+   - name: Install emsdk
+      uses: mymindstorm/setup-emsdk@v11
+      run: emcc -v
+
    - name: Compile JQtide
      env:
       CC: clang
