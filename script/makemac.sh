@@ -1,8 +1,11 @@
 #!/bin/sh
-set -e
+set -evx
 
 # arg is Qt version, e.g. "5.15.2"
-#        mac/ios/masm
+#        mac/ios/wasm
+
+echo 'pwd $(pwd)'
+echo 'parameters $1 $2'
 
 if [ "$2" = "mac" ]; then
 export QMAKESPEC=macx-clang
@@ -13,7 +16,7 @@ elif [ "$2" = "wasm" ]; then
 export QMAKESPEC=wasm-emscripten
 fi
 
-export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/clang_64/bin:$PATH
+export PATH=$GITHUB_WORKSPACE/Qt/$1/clang_64/bin:$PATH
 
 if [ "x$MAKEFLAGS" = x'' ] ; then
 if [ `uname` == "linux" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
@@ -56,13 +59,12 @@ fi
  cd -
 }
 
-if [ -d qt ] ; then
+if [ -d Qt ] ; then
 if [ "$QMAKESPEC" = "macx-ios-clang" ] || [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
 find qt -name 'macos' -type d -delete || true
-cd qt && tar -czf ../"$2"-Qt.tar.gz Qt
+tar -czf "$2"-Qt.tar.gz Qt
 else
-cd qt && tar -czf ../"$2"-Qt.tar.gz Qt
-cd -
+tar -czf "$2"-Qt.tar.gz Qt
 fi
 fi
 

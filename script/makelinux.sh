@@ -1,11 +1,14 @@
 #!/bin/sh
-set -e
+set -evx
 
 #
 # arg is Qt version, e.g. "5.15.2"
 #        linux/raspberry/raspberry-arm32/openbsd/freebsd
 
-export PATH=$GITHUB_WORKSPACE/qt/Qt/$1/gcc_64/bin:$PATH
+echo 'pwd $(pwd)'
+echo 'parameters $1 $2'
+
+export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
 if [ "x$MAKEFLAGS" = x'' ] ; then
 if [ `uname`  = "Linux" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
@@ -71,9 +74,8 @@ ls -l "$1"
 rm -rf "$1"
 }
 
-if [ -d qt ] ; then
-cd qt && tar -czf ../$2-Qt.tar.gz Qt
-cd -
+if [ -d Qt ] ; then
+tar -czf "$2"-Qt.tar.gz Qt
 fi
 
 run jqt-"$2" "$2"
