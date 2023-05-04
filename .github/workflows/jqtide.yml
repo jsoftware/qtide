@@ -37,7 +37,7 @@ jobs:
  jqtmacos:
   name: JQtide (macOS)
   runs-on: macos-11
-  variable:
+  variables:
    qtversion: '6.2.4'
   steps:
    - name: Check Git repository
@@ -276,7 +276,7 @@ jobs:
  jqtwin:
   name: JQtide (Windows)
   runs-on: windows-2019
-  variable:
+  variables:
    qtversion: '6.2.4'
   steps:
    - name: Check Git repository
@@ -310,7 +310,7 @@ jobs:
  jqtwasm:
   name: JQtide (wasm)
   runs-on: macos-12
-  variable:
+  variables:
    qtversion: '6.5.0'
   steps:
    - name: Check Git repository
@@ -355,7 +355,7 @@ jobs:
  jqtios:
   name: JQtide (ios)
   runs-on: macos-12
-  variable:
+  variables:
    qtversion: '6.5.0'
   steps:
    - name: Check Git repository
