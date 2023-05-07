@@ -360,3 +360,4 @@ win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
 macx*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx*:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = ../main/jqt.rc
+macx-ios*:QMAKE_LFLAGS += -L../ios/iphonesimulator/ -lj

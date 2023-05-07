@@ -131,7 +131,7 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 JS jeload(void* callbacks)
 {
-#if 0 // TARGET_OS_IPHONE || defined(__wasm__)
+#if TARGET_OS_IPHONE || defined(__wasm__)
   jt=JInit();
   if (!jt) return 0;
   JSM(jt,(void**)callbacks);

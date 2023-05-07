@@ -337,7 +337,18 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
+     run: |
+      cd ~/
+      wget https://github.com/jsoftware/jsource/releases/download/build/wasm32.zip
+      unzip wasm32.zip
+      cd -
+      rm -rf wasm
+      mkdir -p wasm
+      cp -r ~/j32 wasm
+      ls -l wasm/j32 || true
+      rm -rf wasm32.zip
+      rm -rf ~/j32
+      QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -379,7 +390,19 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
+     run: |
+      cd ~/
+      wget https://github.com/jsoftware/jsource/releases/download/build/m64.zip
+      unzip m64.zip
+      cd -
+      rm -rf ios
+      cp -r ~/j64/ios .
+      ls -l iso || true
+      ls -l iso/j64iphoneos || true
+      ls -l iso/j64iphonesimulator || true
+      rm -rf m64.zip
+      rm -rf ~/j64
+      QM=${{github.workspace}}/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
