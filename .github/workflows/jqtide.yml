@@ -61,7 +61,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-mac.zip,jqt-mac-slim.zip,mac-Qt.tar.gz"
+      artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -297,7 +297,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-win.zip,jqt-win-slim.zip,win-Qt.zip"
+      artifacts: "jqt-win.zip,jqt-win-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -354,7 +354,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-wasm-slim.zip,wasm-Qt.tar.gz"
+      artifacts: "jqt-wasm-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -397,9 +397,9 @@ jobs:
       cd -
       rm -rf ios
       cp -r ~/j64/ios .
-      ls -l iso || true
-      ls -l iso/j64iphoneos || true
-      ls -l iso/j64iphonesimulator || true
+      ls -l ios || true
+      ls -l ios/j64iphoneos || true
+      ls -l ios/j64iphonesimulator || true
       rm -rf m64.zip
       rm -rf ~/j64
       QM=${{github.workspace}}/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
