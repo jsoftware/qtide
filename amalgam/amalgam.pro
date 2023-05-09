@@ -352,6 +352,15 @@ RESOURCES += ../lib/styles/qdarkstyle/darkstyle.qrc
 win32:VERSION =
 unix:!openbsd:LIBS += -ldl
 
+ios{
+deployment.files = ../jlibrary
+deployment.path = Contents
+# QMAKE_BUNDLE_DATA += deployment
+}
+CONFIG(iphoneos,iphoneos|iphonesimulator):message(ios iphoneos)
+CONFIG(iphonesimulator,iphoneos|iphonesimulator):message(ios iphonesimulator)
+CONFIG(iphoneos,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphoneos -lj
+CONFIG(iphonesimulator,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphonesimulator -lj
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
@@ -360,7 +369,6 @@ win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
 macx*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx*:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = ../main/jqt.rc
-macx-ios*:QMAKE_LFLAGS += -L../ios/iphonesimulator -lj
 wasm*:QMAKE_LFLAGS += -L../wasm/j32 -lj
 wasm*:QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 wasm*:QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB

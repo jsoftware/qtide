@@ -345,8 +345,7 @@ jobs:
       rm -rf wasm
       mkdir -p wasm
       cp -r ~/j32 wasm
-      ls -l wasm/j32 || true
-      rm -rf wasm32.zip
+      rm -rf ~/wasm32.zip
       rm -rf ~/j32
       QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
 
@@ -397,10 +396,7 @@ jobs:
       cd -
       rm -rf ios
       cp -r ~/j64/ios .
-      ls -l ios || true
-      ls -l ios/j64iphoneos || true
-      ls -l ios/j64iphonesimulator || true
-      rm -rf m64.zip
+      rm -rf ~/m64.zip
       rm -rf ~/j64
       QM=${{github.workspace}}/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
 

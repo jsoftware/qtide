@@ -7,6 +7,18 @@ CPU=$(uname -m)
 
 
 if [ "$UNAME" = "darwin" ] ; then
+if [ "$QMAKESPEC" = "macx-ios-clang" ] ; then
+rm -rf $S/bin/ios-aarch64
+rm -rf $S/bin/ios-x86_64
+rm -rf $S/amalgam/build/ios-aarch64
+rm -rf $S/amalgam/build/ios-x86_64
+rm -rf $S/amalgam/Release-iphonesimulator
+rm -rf $S/amalgam/Release-iphoneos
+rm -rf $S/amalgam/jqta.xcodeproj
+elif [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
+rm -rf $S/bin/wasm-aarch64
+rm -rf $S/amalgam/build/wasm-aarch64
+else
 if [ "$CPU" = "arm64" ] ; then
 CPU=aarch64
 fi
@@ -14,6 +26,7 @@ rm -rf $S/bin/mac-$CPU
 rm -rf $S/lib/build/mac-$CPU
 rm -rf $S/main/build/mac-$CPU
 rm -rf $S/amalgam/build/mac-$CPU
+fi
 else
 if [ "$CPU" = "arm64" ] ; then
 CPU=aarch64
