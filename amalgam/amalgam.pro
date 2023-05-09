@@ -91,7 +91,7 @@ linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm*: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
-macx-ios*: QT -= printsupport
+ios: QT -= printsupport
 wasm*: QT -= printsupport
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
@@ -118,7 +118,7 @@ macx: arch = mac-$$QMAKE_TARGET.arch
 unix:!macx: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
-macx-ios*: arch = ios-$$QMAKE_TARGET.arch
+ios: arch = ios-$$QMAKE_TARGET.arch
 wasm*: arch = wasm-$$QMAKE_TARGET.arch
 
 # uncomment the next to open windows console to display qDebug() messages
@@ -354,14 +354,33 @@ win32:VERSION =
 unix:!openbsd:LIBS += -ldl
 
 ios{
-deployment.files = ../jlibrary
-deployment.path = Contents
-# QMAKE_BUNDLE_DATA += deployment
-}
+DEFINES += WDCB
+RESOURCES += ../jlibrary.qrc
 CONFIG(iphoneos,iphoneos|iphonesimulator):message(ios iphoneos)
 CONFIG(iphonesimulator,iphoneos|iphonesimulator):message(ios iphonesimulator)
 CONFIG(iphoneos,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphoneos -lj
 CONFIG(iphonesimulator,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphonesimulator -lj
+QMAKE_IOS_DEPLOYMENT_TARGET = 13.0
+disable_warning.name = GCC_WARN_64_TO_32_BIT_CONVERSION
+disable_warning.value = NO
+QMAKE_MAC_XCODE_SETTINGS += disable_warning
+# ios_signature.pri contains private information including the following
+#   QMAKE_XCODE_CODE_SIGN_IDENTITY = "iPhone Developer"
+#   development_team.name = DEVELOPMENT_TEAM
+#   development_team.value = <developer id>
+#   QMAKE_MAC_XCODE_SETTINGS += development_team
+include(../ios_signature.pri)
+# Note for devices: 1=iPhone, 2=iPad, 1,2=Universal.
+QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1,2
+}
+wasm*{
+DEFINES += WDCB
+QMAKE_LFLAGS += -L../wasm/j32 -lj
+QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
+QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
+QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1
+# QMAKE_LFLAGS += --preload-file ../jlibrary/ --preload-file ../test/
+}
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
@@ -370,8 +389,3 @@ win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
 macx*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx*:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = ../main/jqt.rc
-wasm*:QMAKE_LFLAGS += -L../wasm/j32 -lj
-wasm*:QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
-wasm*:QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
-wasm*:QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1
-# wasm*:QMAKE_LFLAGS += --preload-file ../jlibrary/ --preload-file ../test/

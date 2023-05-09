@@ -856,3 +856,26 @@ void xdiff(QString s,QString t)
   p.startDetached(config.XDiff,a);
 #endif
 }
+
+//copy whole <from> directory to the folder <to>
+void copyDirectoryNested(QString from,QString to)
+{
+  QDirIterator it(from, QDirIterator::Subdirectories);
+  while (it.hasNext()) {
+    QString file_in = it.next();
+    QFileInfo file_info = QFileInfo(file_in);
+    QString file_out = file_in;
+    file_out.replace(from,to);
+    if(file_info.isFile()) {
+      //is file copy
+      qDebug() << QFile::copy(file_in, file_out);
+      qDebug() << file_in << "<----" << file_out;
+    }
+    if(file_info.isDir()) {
+      //dir mkdir
+      QDir dir(file_out);
+      if (!dir.exists())
+        qDebug() << "mkpath"<< dir.mkpath(".");
+    }
+  }
+}

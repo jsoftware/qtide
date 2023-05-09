@@ -64,6 +64,7 @@ QString win2lower(QString s);
 QList<int> winpos_get(QWidget *w);
 void winpos_set(QWidget *w,QList<int>p);
 void xdiff(QString s,QString t);
+void copyDirectoryNested(QString from,QString to);
 
 extern bool ShowIde;
 

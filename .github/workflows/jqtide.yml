@@ -391,6 +391,19 @@ jobs:
       CC: clang
      run: |
       cd ~/
+      wget https://www.jsoftware.com/download/j9.5/install/j9.5_mac64.zip
+      unzip j9.5_mac64.zip
+      find j9.5 -type f -name 'jconsole' -exec chmod 755 {} \;
+      j9.5/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
+      cd -
+      rm -rf jlibrary
+      mkdir -p jlibrary/bin
+      cp -r ~/j9.5/addons jlibrary/.
+      cp -r ~/j9.5/system jlibrary/.
+      cp ~/j9.5/bin/profile.ijs jlibrary/bin/.
+      rm -rf ~/j9.5
+      rm -rf ~/j9.5-user
+      cd ~/
       wget https://github.com/jsoftware/jsource/releases/download/build/m64.zip
       unzip m64.zip
       cd -
@@ -398,6 +411,10 @@ jobs:
       cp -r ~/j64/ios .
       rm -rf ~/m64.zip
       rm -rf ~/j64
+      echo "QMAKE_XCODE_CODE_SIGN_IDENTITY = \"iPhone Developer\"" > ios_signature.pri
+      echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
+      echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
+      echo "QMAKE_MAC_XCODE_SETTINGS += development_team" >> ios_signature.pri
       QM=${{github.workspace}}/Qt/6.5.0/ios/bin/qmake script/makemac.sh '6.5.0' ios
 
    - name: Release JQtide

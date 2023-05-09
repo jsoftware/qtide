@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDataStream>
+#include <QStandardPaths>
 
 #include <csignal>
 #include <assert.h>
@@ -64,6 +65,7 @@ static JSetAType jseta;
 extern QString LibName;
 bool FHS;
 bool standAlone=false;
+QString documentsPath;
 
 // ---------------------------------------------------------------------
 void addargv(int argc, char* argv[], C* d)
@@ -131,6 +133,7 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 JS jeload(void* callbacks)
 {
+  documentsPath=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 #if TARGET_OS_IPHONE || defined(__wasm__)
   jt=JInit();
   if (!jt) return 0;
@@ -142,6 +145,21 @@ JS jeload(void* callbacks)
   jgeta=JGetA;
   jgetlocale=JGetLocale;
   jseta=JSetA;
+#if TARGET_OS_IPHONE
+  QString file1 = documentsPath+"/version.txt";
+  if(!QFileInfo::exists(file1)) {
+    QFile file2(file1);
+    if (file2.open(QIODevice::ReadWrite)) {
+      QTextStream stream(&file2);
+      stream << JQTVERSION << Qt::endl;
+    }
+    file2.close();
+    QDir(documentsPath+"/j/bin").removeRecursively();
+    QDir(documentsPath+"/j/system").removeRecursively();
+    QDir(documentsPath+"/j/addons/ide/qt").removeRecursively();
+    copyDirectoryNested(":/j/jlibrary",q2s(documentsPath+"/j").c_str());
+  }
+#endif
   return jt;
 #elif defined(_WIN32)
   WCHAR wpath[PLEN];
@@ -401,7 +419,10 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif
   strcat(input,"[BINPATH_z_=:'");
-#if TARGET_OS_IPHONE || defined(__wasm__)
+#if TARGET_OS_IPHONE
+  strcat(input,q2s(documentsPath).c_str());
+  strcat(input,"/j/bin");
+#elif defined(__wasm__)
   strcat(input,"/jlibrary/bin");
 #else
   if(!FHS) {
@@ -438,6 +459,9 @@ int jefirst(int type,char* arg)
   else
     strcat(input,"[FHS_z_=:1");
   strcat(input,"[IFQT_z_=:1");
+#if TARGET_OS_IPHONE
+  strcat(input,"[IFIOS_z_=:1");
+#endif
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());
   strcat(input,"'");

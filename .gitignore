@@ -5,6 +5,15 @@ dist/
 images/
 jwd/
 libs/
+Qt/
+jlibrary/
+test/
+jlibrary
+test
+Release-iphonesimulator/
+Release-iphoneos/
+*.xcodeproj/
+*_plugin_import.cpp
 
 .DS_Store
 cleancdb.sh
@@ -13,6 +22,9 @@ makebill.sh
 makecdb.sh
 makegem.sh
 makegrid.sh
+makeios.sh
+makewasm.sh
+makemac.sh
 Makefile*
 makeosx.
 makewincdb.sh
@@ -23,6 +35,7 @@ jqt-mac-64
 jqt.xcodeproj
 Info.plist
 jqt_resource.rc
+ios_signature.pri
 
 *.a
 *.command
