@@ -362,6 +362,7 @@ macx*:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 win32:RC_FILE = ../main/jqt.rc
 macx-ios*:QMAKE_LFLAGS += -L../ios/iphonesimulator -lj
 wasm*:QMAKE_LFLAGS += -L../wasm/j32 -lj
+wasm*:QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 wasm*:QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
 wasm*:QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1
 # wasm*:QMAKE_LFLAGS += --preload-file ../jlibrary/ --preload-file ../test/
