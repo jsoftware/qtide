@@ -1,7 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="j">
 <file>jlibrary/bin/profile.ijs</file>
-<file>jlibrary/bin/tsu1.ijs</file>
 <file>jlibrary/addons/arc/zlib/manifest.ijs</file>
 <file>jlibrary/addons/arc/zlib/readme.txt</file>
 <file>jlibrary/addons/arc/zlib/zlib.ijs</file>
