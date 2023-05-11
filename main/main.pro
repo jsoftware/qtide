@@ -91,6 +91,7 @@ INCLUDEPATH += .
 
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += BUILD_VERSION=\\\"$$BUILDVERSION\\\"
 
 # Input
 SOURCES += main.cpp jepath.cpp

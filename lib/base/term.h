@@ -133,6 +133,7 @@ public slots:
   void on_projectopenAct_triggered();
   void on_runclipAct_triggered();
   void on_rundebugAct_triggered();
+  void on_runlabadvAct_triggered();
   void on_runprojectAct_triggered();
   void on_runselectAct_triggered();
   void on_runtestAct_triggered();

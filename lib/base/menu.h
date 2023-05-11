@@ -21,6 +21,7 @@ public:
 
   QAction *projectcloseAct;
   QAction *rundebugAct;
+  QAction *runlabadvAct;
   QAction *runlineadvanceshowAct;
   QAction *runlineshowAct;
   QAction *runprojectAct;

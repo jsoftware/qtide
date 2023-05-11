@@ -151,6 +151,7 @@ INCLUDEPATH += .
 
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += BUILD_VERSION=\\\"$$BUILDVERSION\\\"
 
 !contains(QT,webenginewidgets) {
   DEFINES += QT_NO_WEBENGINE
@@ -356,10 +357,15 @@ unix:!openbsd:LIBS += -ldl
 ios{
 DEFINES += WDCB
 RESOURCES += ../jlibrary.qrc
+RESOURCES += ../test.qrc
+OBJECTIVE_HEADERS += ../main/redminedevicehelper.h
+OBJECTIVE_SOURCES += ../main/redminedevicehelper.mm
+LIBS += -framework Foundation -framework CoreFoundation -framework UIKit
+# macOS-specific sources (Objective-C).
 CONFIG(iphoneos,iphoneos|iphonesimulator):message(ios iphoneos)
 CONFIG(iphonesimulator,iphoneos|iphonesimulator):message(ios iphonesimulator)
-CONFIG(iphoneos,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphoneos -lj
-CONFIG(iphonesimulator,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphonesimulator -lj
+CONFIG(iphoneos,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphoneos -lj -L../ios/mpir -lgmp
+CONFIG(iphonesimulator,iphoneos|iphonesimulator):QMAKE_LFLAGS += -L../ios/j64iphonesimulator -lj -L../ios/mpir -lgmp
 QMAKE_IOS_DEPLOYMENT_TARGET = 13.0
 disable_warning.name = GCC_WARN_64_TO_32_BIT_CONVERSION
 disable_warning.value = NO
@@ -375,7 +381,7 @@ QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1,2
 }
 wasm*{
 DEFINES += WDCB
-QMAKE_LFLAGS += -L../wasm/j32 -lj
+QMAKE_LFLAGS += -L../wasm/j32 -lj -L../wasm/mpir -lgmp
 QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
 QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1

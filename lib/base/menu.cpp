@@ -30,6 +30,7 @@
 #include "term.h"
 
 // using namespace std;
+extern void helplabsadvance();
 
 // ---------------------------------------------------------------------
 QAction *Menu::makeact(QString id, QString text, QString shortcut)
@@ -129,6 +130,7 @@ void Menu::createActions()
   runalllines2Act = makeact("runalllines2Act","Clear Terminal, Run All Lines","Ctrl+Shift+F10");
   runclipAct = makeact("runclipAct","&Clipboard","F8");
   rundebugAct = makeact("rundebugAct","&Debug...","Ctrl+K");
+  runlabadvAct = makeact("runlabadvAct","Lab Advance","Ctrl+J");
   runlineAct = makeact("runlineAct","Line","Ctrl+R");
   runlineadvanceAct = makeact("runlineadvanceAct","Line and &Advance","Ctrl+Return");
   runlineadvanceshowAct = makeact("runlineadvanceshowAct","Line Advance &Show","Ctrl+Shift+Return");
@@ -451,6 +453,10 @@ void Menu::createrunMenu(QString s)
   runMenu->addAction(runprojectAct);
   runMenu->addSeparator();
   runMenu->addAction(rundebugAct);
+#if TARGET_OS_IPHONE || defined(__wasm__)
+  runMenu->addSeparator();
+  runMenu->addAction(runlabadvAct);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -985,6 +991,12 @@ void Note::on_runclipAct_triggered()
 void Note::on_rundebugAct_triggered()
 {
   term->on_rundebugAct_triggered();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_runlabadvAct_triggered()
+{
+  term->on_runlabadvAct_triggered();
 }
 
 // ---------------------------------------------------------------------
@@ -1540,6 +1552,12 @@ void Term::on_runclipAct_triggered()
 void Term::on_rundebugAct_triggered()
 {
   tedit->docmds("dbg_z_ 1", false);
+}
+
+// ---------------------------------------------------------------------
+void Term::on_runlabadvAct_triggered()
+{
+  helplabsadvance();
 }
 
 // ---------------------------------------------------------------------

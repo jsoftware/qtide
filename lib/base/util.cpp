@@ -98,7 +98,7 @@ QString cfcase(QString s)
 {
 #if defined(_WIN32)
   return win2lower(s);
-#elif defined(__APPLE__)
+#elif defined(__APPLE__) && !TARGET_OS_IPHONE
   return s.toLower();
 #else
   return s;

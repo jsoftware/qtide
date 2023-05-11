@@ -18,6 +18,9 @@
 #ifdef __APPLE__
 #include <mach-o/dyld.h>
 #endif
+#if TARGET_OS_IPHONE
+#include "../../main/redminedevicehelper.h"
+#endif
 
 #include "base.h"
 #include "jsvr.h"
@@ -146,18 +149,28 @@ JS jeload(void* callbacks)
   jgetlocale=JGetLocale;
   jseta=JSetA;
 #if TARGET_OS_IPHONE
-  QString file1 = documentsPath+"/version.txt";
-  if(!QFileInfo::exists(file1)) {
-    QFile file2(file1);
-    if (file2.open(QIODevice::ReadWrite)) {
-      QTextStream stream(&file2);
-      stream << JQTVERSION << Qt::endl;
+  bool overwrite=true;
+  QFile f(documentsPath+"/build.txt");
+  if(f.exists()) {
+    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
+      QTextStream in(&f);
+      int oldver = in.readLine().split(" ")[0].toInt();
+      if (oldver>=QString(BUILD_VERSION).toInt()) overwrite=false;
+      f.close();
     }
-    file2.close();
+  }
+  if(overwrite) {
+    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
+      QTextStream out(&f);
+      out << BUILD_VERSION << Qt::endl;
+      f.close();
+    }
     QDir(documentsPath+"/j/bin").removeRecursively();
     QDir(documentsPath+"/j/system").removeRecursively();
     QDir(documentsPath+"/j/addons/ide/qt").removeRecursively();
     copyDirectoryNested(":/j/jlibrary",q2s(documentsPath+"/j").c_str());
+    QDir(documentsPath+"/j/test").removeRecursively();
+    copyDirectoryNested(":/jtest",q2s(documentsPath+"/j").c_str());
   }
 #endif
   return jt;
@@ -461,6 +474,10 @@ int jefirst(int type,char* arg)
   strcat(input,"[IFQT_z_=:1");
 #if TARGET_OS_IPHONE
   strcat(input,"[IFIOS_z_=:1");
+  strcat(input,"[IFIPAD_z_=:");
+  strcat(input,isPad?"1":"0");
+  strcat(input,"[IFRETINA_z_=:");
+  strcat(input,isRetina?"1":"0");
 #endif
   strcat(input,"[libjqt_z_=:'");
   strcat(input,LibName.toUtf8().constData());

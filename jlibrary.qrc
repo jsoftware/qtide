@@ -500,6 +500,12 @@
 <file>jlibrary/addons/labs/labs/system/special_searches.ijt</file>
 <file>jlibrary/addons/math/calculus/calculus.ijs</file>
 <file>jlibrary/addons/math/calculus/manifest.ijs</file>
+<file>jlibrary/addons/math/deoptim/manifest.ijs</file>
+<file>jlibrary/addons/math/deoptim/deoptim.ijs</file>
+<file>jlibrary/addons/math/deoptim/test/test_deoptim.ijs</file>
+<file>jlibrary/addons/math/deoptim/demo/eg_deoptim.ijs</file>
+<file>jlibrary/addons/math/eigenpic/manifest.ijs</file>
+<file>jlibrary/addons/math/eigenpic/eigenpic.ijs</file>
 <file>jlibrary/addons/math/misc/amoeba.ijs</file>
 <file>jlibrary/addons/math/misc/bigpi.ijs</file>
 <file>jlibrary/addons/math/misc/brent.ijs</file>

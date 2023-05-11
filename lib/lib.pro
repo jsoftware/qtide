@@ -146,6 +146,7 @@ INCLUDEPATH += .
 
 DEFINES += JDLLVER=\\\"$$JDLLVER\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += BUILD_VERSION=\\\"$$BUILDVERSION\\\"
 
 !contains(QT,webenginewidgets) {
   DEFINES += QT_NO_WEBENGINE

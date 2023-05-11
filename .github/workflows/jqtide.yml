@@ -347,6 +347,10 @@ jobs:
       cp -r ~/j32 wasm
       rm -rf ~/wasm32.zip
       rm -rf ~/j32
+      mkdir -p wasm/mpir
+      cd wasm/mpir
+      wget https://www.jsoftware.com/download/jengine/mpir/linux/wasm32/libgmp.a
+      cd -
       QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
 
    - name: Release JQtide
@@ -411,6 +415,10 @@ jobs:
       cp -r ~/j64/ios .
       rm -rf ~/m64.zip
       rm -rf ~/j64
+      mkdir -p ios/mpir
+      cd ios/mpir
+      wget https://www.jsoftware.com/download/jengine/mpir/apple/ios/libgmp.a
+      cd -
       echo "QMAKE_XCODE_CODE_SIGN_IDENTITY = \"iPhone Developer\"" > ios_signature.pri
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
