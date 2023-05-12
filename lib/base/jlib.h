@@ -44,7 +44,7 @@ typedef struct AREP_RECORD {
 #define B01             ((I)1L<<0)           // B  boolean
 #define LIT             ((I)1L<<1)           // C  literal (character)
 #if defined(_MSC_VER) && !defined(__clang__)
-# INT conflict with windows kits minwindef.h
+// INT conflict with windows kits minwindef.h
 #else
 #define INT             ((I)1L<<2)           // I  integer
 #endif
