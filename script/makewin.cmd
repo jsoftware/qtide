@@ -2,6 +2,7 @@
 @REM argument is Qt version, e.g. "5.15.2"
 
 set PATH=C:\$GITHUB_WORKSPACE\Qt\%1\win64_msvc2019_64\bin;%PATH%
+echo %PATH%
 CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 

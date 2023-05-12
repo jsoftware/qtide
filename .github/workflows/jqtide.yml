@@ -8,6 +8,32 @@ on:
 
 jobs:
 
+# create tarball -------------------------------------------------------
+ tarball:
+  name: Tarball
+  runs-on: ubuntu-20.04
+  steps:
+   - name: Checkout Git repository
+     uses: actions/checkout@v3
+
+   - name: Test JE (Linux)
+     run: |
+      cd ..
+      zip -r jqtide.zip jqtide -x "jqtide/.*"
+      tar -czv --exclude ".*" -f jqtide.tar.gz jqtide
+      cd -
+      mv ../jqtide.zip .
+      mv ../jqtide.tar.gz .
+
+   - name: Release Tarball
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqtide.zip,jqtide.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
 # linux ----------------------------------------------------------------
  jqtlinux:
   name: JQtide (Linux)
@@ -291,7 +317,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd $(version)
+     run: script\makewin.cmd '6.2.4'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -351,6 +377,13 @@ jobs:
       cd wasm/mpir
       wget https://www.jsoftware.com/download/jengine/mpir/linux/wasm32/libgmp.a
       cd -
+      cd ~/
+      wget https://github.com/jsoftware/jsource/releases/download/build/jsource.zip
+      unzip jsource.zip
+      cd -
+      rm -rf test
+      cp -r ~/jsource/test .
+      rm -rf ~/jsource
       QM=${{github.workspace}}/Qt/6.5.0/wasm_multithread/bin/qmake script/makemac.sh '6.5.0' wasm
 
    - name: Release JQtide
@@ -419,6 +452,13 @@ jobs:
       cd ios/mpir
       wget https://www.jsoftware.com/download/jengine/mpir/apple/ios/libgmp.a
       cd -
+      cd ~/
+      wget https://github.com/jsoftware/jsource/releases/download/build/jsource.zip
+      unzip jsource.zip
+      cd -
+      rm -rf test
+      cp -r ~/jsource/test .
+      rm -rf ~/jsource
       echo "QMAKE_XCODE_CODE_SIGN_IDENTITY = \"iPhone Developer\"" > ios_signature.pri
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
