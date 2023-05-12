@@ -18,6 +18,7 @@ jobs:
 
    - name: Prepare Tarball
      run: |
+      cd ..
       zip -r qtide.zip qtide -x "qtide/.*"
       tar -czv --exclude ".*" -f qtide.tar.gz qtide
       cd -
