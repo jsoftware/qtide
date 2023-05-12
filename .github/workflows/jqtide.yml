@@ -306,6 +306,11 @@ jobs:
      with:
       submodules: recursive
 
+   - name: Setup Environment (Windows)
+     uses: ilammy/msvc-dev-cmd@v1
+     with:
+      arch: amd64
+
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
