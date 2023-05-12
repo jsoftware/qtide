@@ -18,7 +18,9 @@ jobs:
 
    - name: Test JE (Linux)
      run: |
+      ls || true
       cd ..
+      ls || true
       zip -r jqtide.zip jqtide -x "jqtide/.*"
       tar -czv --exclude ".*" -f jqtide.tar.gz jqtide
       cd -
