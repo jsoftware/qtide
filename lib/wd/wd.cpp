@@ -89,6 +89,7 @@ static void wdgrid();
 static void wdgroupbox(std::string c);
 static void wdide();
 static void wdimmexj();
+static void wdlogcat();
 static void wdline(std::string);
 static void wdmb();
 static void wdmenu(std::string);
@@ -253,6 +254,8 @@ void wd1()
       wdide();
     else if (c=="immexj")
       wdimmexj();
+    else if (c=="logcat")
+      wdlogcat();
     else if (c.substr(0,4)=="line")
       wdline(c);
     else if (c.substr(0,2)=="mb")
@@ -610,6 +613,13 @@ void wdimmexj()
 {
   std::string p=cmd.getparms();
   immexj(p.c_str());
+}
+
+// ---------------------------------------------------------------------
+void wdlogcat()
+{
+  std::string p=cmd.getparms();
+  qDebug() << s2q(p);
 }
 
 // ---------------------------------------------------------------------
