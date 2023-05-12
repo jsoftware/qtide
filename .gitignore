@@ -52,3 +52,4 @@ ios_signature.pri
 moc_*
 object_script.*
 qrc_*
+jqta.js_plugin_import.cpp

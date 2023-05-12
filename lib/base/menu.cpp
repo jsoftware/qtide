@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -453,7 +454,7 @@ void Menu::createrunMenu(QString s)
   runMenu->addAction(runprojectAct);
   runMenu->addSeparator();
   runMenu->addAction(rundebugAct);
-#if TARGET_OS_IPHONE || defined(__wasm__)
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
   runMenu->addSeparator();
   runMenu->addAction(runlabadvAct);
 #endif

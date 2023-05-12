@@ -77,7 +77,7 @@ void * WsCln::openurl(QString url)
   QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
   QObject::connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onStateChanged(QAbstractSocket::SocketState)));
   QObject::connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
-#ifndef __wasm__
+#if !defined(Q_OS_WASM)
   QObject::connect(socket, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(onSslErrors(const QList<QSslError>&)));
 #endif
 #ifdef QT50
@@ -203,7 +203,7 @@ void WsCln::onError(QAbstractSocket::SocketError error)
   wscln_handler((void *)ONERROR,socket);
 }
 
-#ifndef __wasm__
+#if !defined(Q_OS_WASM)
 // ---------------------------------------------------------------------
 void WsCln::onSslErrors(const QList<QSslError> &errors)
 {

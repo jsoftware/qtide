@@ -1,4 +1,5 @@
 /* Copyright 1990-2019, Jsoftware Inc.  All rights reserved. */
+#include <QtGlobal>
 #define PLEN 1000 // path length
 #ifdef _WIN32
 #include <windows.h>
@@ -14,8 +15,10 @@
 #include <string.h>
 #include <inttypes.h>
 #include <unistd.h>
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
 #include <dlfcn.h>
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
+#endif
 #define _stdcall
 #define filesep '/'
 #define filesepx "/"

@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QApplication>
 #include <QDateTime>
 #include <QDesktopServices>

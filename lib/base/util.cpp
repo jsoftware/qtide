@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QApplication>
 #include <QMessageBox>
 #include <QDateTime>
@@ -19,7 +20,15 @@ int NoEvents=0;
 // ---------------------------------------------------------------------
 void about(QString t,QString s)
 {
+#ifndef NMDIALOG
   QMessageBox::about(getmbparent(), t, s);
+#else
+  QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Information,t, s, QMessageBox::Button::Ok, getmbparent());
+  message->open();
+  QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
+    message->deleteLater();
+  });
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -98,7 +107,7 @@ QString cfcase(QString s)
 {
 #if defined(_WIN32)
   return win2lower(s);
-#elif defined(__APPLE__) && !TARGET_OS_IPHONE
+#elif defined(__APPLE__) && !defined(Q_OS_IOS)
   return s.toLower();
 #else
   return s;

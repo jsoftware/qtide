@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QDebug>
 #include <QSysInfo>
 #include <QFile>
@@ -75,7 +76,7 @@ int main(int argc, char *argv[])
     QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
   }
 #endif
-#if !TARGET_OS_IPHONE
+#if !defined(Q_OS_IOS)
   // Disable (unsupported) macOS Sierra tab bar functionality if necessary.
   extern void disableWindowTabbing();
   disableWindowTabbing();

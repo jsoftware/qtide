@@ -1,5 +1,21 @@
 
-class QPrinter;
+#include <QObject>
+#include <QString>
+#ifndef QT_NO_PRINTER
+#ifdef QT50
+#include <QtPrintSupport/QPrinter>
+#ifndef QT_NO_PRINTDIALOG
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrintPreviewDialog>
+#endif
+#else
+#include <QPrinter>
+#ifndef QT_NO_PRINTDIALOG
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#endif
+#endif
+#endif
 class QTextDocument;
 class PlainTextEdit;
 

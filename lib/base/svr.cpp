@@ -1,5 +1,6 @@
 /* J svr */
 
+#include <QtGlobal>
 #include <QApplication>
 #include <QDataStream>
 #include <QEventLoop>
@@ -97,10 +98,14 @@ void Jcon::cmddo(std::string s)
 #endif
   runcmd=false;
   Sentence.push_back(s);
+#ifndef ONEEVENTLOOP
   if (jecallback)
     jevloop->exit();
   else
     cmdSentences();
+#else
+  cmdSentences();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -111,7 +116,9 @@ void Jcon::cmddop(std::string s)
 {
   runcmd=false;
   cmdSentence(s);
+#ifndef ONEEVENTLOOP
   jevloop->exit();
+#endif
   cmddos();
 }
 
@@ -119,6 +126,7 @@ void Jcon::cmddop(std::string s)
 // run all Sentence after timeout
 void Jcon::cmddos()
 {
+#ifndef ONEEVENTLOOP
   if (jecallback)
     jevloop->exit();
   else {
@@ -127,6 +135,7 @@ void Jcon::cmddos()
     connect(timer, SIGNAL(timeout()), jcon, SLOT(cmdSentences()));
     timer->start();
   }
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -210,7 +219,7 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
     char m[1000];
     jefail(m);
     fputs(m,stderr);
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
     exit(1);
 #endif
   }
@@ -271,7 +280,9 @@ char* _stdcall Jinput(JS jt, char* p)
   qDebug() << "jcon Jinput loop begin";
 #endif
   if (jcon->Sentence.empty()) {
+#ifndef ONEEVENTLOOP
     jevloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+#endif
   }
 #ifdef DEBUG_JDO
   qDebug() << "jcon Jinput loop end";
@@ -301,7 +312,11 @@ void _stdcall Joutput(JS jt,int type, char* s)
 
   if (MTYOEXIT==type) {
     state_quit();
+#ifndef ONEEVENTLOOP
     evloop->exit((intptr_t)s);
+#else
+    QApplication::exit((intptr_t)s);
+#endif
 //#ifdef _WIN32
     jefree();
     exit((intptr_t)s);

@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>

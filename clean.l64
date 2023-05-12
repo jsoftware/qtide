@@ -16,8 +16,8 @@ rm -rf $S/amalgam/Release-iphonesimulator
 rm -rf $S/amalgam/Release-iphoneos
 rm -rf $S/amalgam/jqta.xcodeproj
 elif [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
-rm -rf $S/bin/wasm-aarch64
-rm -rf $S/amalgam/build/wasm-aarch64
+rm -rf $S/bin/wasm-wasm32
+rm -rf $S/amalgam/build/wasm-wasm32
 else
 if [ "$CPU" = "arm64" ] ; then
 CPU=aarch64

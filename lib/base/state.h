@@ -201,8 +201,10 @@ void state_init_resource();
 void state_quit();
 void state_reinit();
 
+#ifndef ONEEVENTLOOP
 extern QEventLoop *evloop;
 extern QEventLoop *jevloop;
+#endif
 
 extern "C" {
   Dllexport int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit);

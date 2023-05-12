@@ -18,8 +18,10 @@
 #else
 #define _stdcall
 #include <unistd.h>
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
 #include <dlfcn.h>
 #define GETPROCADDRESS(h,p)	dlsym(h,p)
+#endif
 #define JDLLNAME "libj"
 #ifdef __APPLE__
 #define JDLLEXT ".dylib"

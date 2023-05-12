@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
@@ -15,10 +16,10 @@
 #include <sys/stat.h>
 #endif
 
-#ifdef __APPLE__
-#include <mach-o/dyld.h>
+#ifdef __MACH__
+#include <mach-o/dyld.h>    // NSGetExecutablePath
 #endif
-#if TARGET_OS_IPHONE
+#if defined(Q_OS_IOS)
 #include "../../main/redminedevicehelper.h"
 #endif
 
@@ -32,8 +33,10 @@
 void * hjdll=0;
 
 static char pathetcpx[PLEN];
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
 static char pathexec0[PLEN];
 static char pathexec[PLEN];
+#endif
 
 // using namespace std;
 
@@ -136,8 +139,12 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 JS jeload(void* callbacks)
 {
+#if defined(Q_OS_IOS)
   documentsPath=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#if TARGET_OS_IPHONE || defined(__wasm__)
+#else
+  documentsPath=QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+#endif
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
   jt=JInit();
   if (!jt) return 0;
   JSM(jt,(void**)callbacks);
@@ -148,7 +155,6 @@ JS jeload(void* callbacks)
   jgeta=JGetA;
   jgetlocale=JGetLocale;
   jseta=JSetA;
-#if TARGET_OS_IPHONE
   bool overwrite=true;
   QFile f(documentsPath+"/build.txt");
   if(f.exists()) {
@@ -172,7 +178,6 @@ JS jeload(void* callbacks)
     QDir(documentsPath+"/j/test").removeRecursively();
     copyDirectoryNested(":/jtest",q2s(documentsPath+"/j").c_str());
   }
-#endif
   return jt;
 #elif defined(_WIN32)
   WCHAR wpath[PLEN];
@@ -215,7 +220,9 @@ void jepath(char* arg, char* lib)
 {
   Q_UNUSED(arg);
 
-#ifdef _WIN32
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
+  path[0]=0;
+#elif defined(_WIN32)
   WCHAR wpath[PLEN];
   GetModuleFileNameW(0,wpath,_MAX_PATH);
   *(wcsrchr(wpath, '\\')) = 0;
@@ -229,7 +236,7 @@ void jepath(char* arg, char* lib)
 // fprintf(stderr,"arg0 %s\n",arg);
 // try host dependent way to get path to executable
 // use arg if they fail (arg command in PATH won't work)
-#ifdef __APPLE__
+#ifdef __MACH__
   uint32_t len=sz;
   n=_NSGetExecutablePath(arg2,&len);
   if (0!=n) strcat(arg2,arg);
@@ -277,7 +284,7 @@ void jepath(char* arg, char* lib)
   strcat(pathdll,JDLLNAME);
   strcat(pathdll,JDLLEXT);
 
-#if !defined(_WIN32)
+#if !defined(_WIN32) && !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   if(stat(pathdll,&st)||strncmp(pathexec0,"/usr/bin/",9)||strncmp(pathexec0,"/usr/local/bin/",15)||strncmp(pathexec0,"/opt/homebrew/bin/",18)) {
     char pathpx[PLEN];
     if('/'==*pathexec) {
@@ -369,7 +376,9 @@ void jefail(char* msg)
 int jefirst(int type,char* arg)
 {
   int r;
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   char* p,*q;
+#endif
   char* input=(char *)malloc(2000+strlen(arg));
 
   *input=0;
@@ -418,7 +427,7 @@ int jefirst(int type,char* arg)
 #ifdef RASPI
   strcat(input,"[IFRASPI_z_=:1");
 #endif
-#if defined(__wasm__)
+#if defined(Q_OS_WASM)
   strcat(input,"[UNAME_z_=:'Wasm'");
 #elif defined(_WIN32)
   strcat(input,"[UNAME_z_=:'Win'");
@@ -432,11 +441,9 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif
   strcat(input,"[BINPATH_z_=:'");
-#if TARGET_OS_IPHONE
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
   strcat(input,q2s(documentsPath).c_str());
   strcat(input,"/j/bin");
-#elif defined(__wasm__)
-  strcat(input,"/jlibrary/bin");
 #else
   if(!FHS) {
     p=path;
@@ -457,7 +464,7 @@ int jefirst(int type,char* arg)
   strcat(input,"'");
 
   strcat(input,"[LIBFILE_z_=:'");
-#if !defined(JAMALGAM) && !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(JAMALGAM) && !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   p=pathdll;
   q=input+strlen(input);
   while (*p) {
@@ -472,7 +479,7 @@ int jefirst(int type,char* arg)
   else
     strcat(input,"[FHS_z_=:1");
   strcat(input,"[IFQT_z_=:1");
-#if TARGET_OS_IPHONE
+#if defined(Q_OS_IOS)
   strcat(input,"[IFIOS_z_=:1");
   strcat(input,"[IFIPAD_z_=:");
   strcat(input,isPad?"1":"0");

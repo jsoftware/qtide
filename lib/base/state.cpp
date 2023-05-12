@@ -69,8 +69,10 @@ QString LibName;
 QApplication *app=0;
 
 const char *jqtver=JQTVERSION;
+#ifndef ONEEVENTLOOP
 QEventLoop *evloop;
 QEventLoop *jevloop;
+#endif
 
 int readTabWidth(QString);
 QString writeTabWidth(int);
@@ -645,7 +647,11 @@ void state_appname()
 // ---------------------------------------------------------------------
 int state_fini()
 {
+#ifndef ONEEVENTLOOP
   int rc=evloop->exec(QEventLoop::AllEvents|QEventLoop::WaitForMoreEvents);
+#else
+  int rc=QApplication::exec();
+#endif
 #ifndef _WIN32
   jefree();
   app->quit();
@@ -741,8 +747,10 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   }
 
   app = new QApplication(m_argc, m_argv);
+#ifndef ONEEVENTLOOP
   evloop=new QEventLoop();
   jevloop=new QEventLoop();
+#endif
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);

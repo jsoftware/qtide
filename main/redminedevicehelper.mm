@@ -1,3 +1,4 @@
+#include "redminedevicehelper.h"
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
@@ -11,3 +12,5 @@ float ios_scale = (float)([UIScreen mainScreen].scale);
 
 //Type of device display 
 bool isRetina = ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? true : false;
+
+QString ios_model = QString::fromNSString([[UIDevice currentDevice] model]);

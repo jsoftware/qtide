@@ -1,5 +1,6 @@
 /* utils - app specific utils */
 
+#include <QtGlobal>
 #include <QApplication>
 #include <QCompleter>
 #include <QCryptographicHash>
@@ -7,7 +8,7 @@
 #include <QEventLoop>
 #include <QFont>
 #include <QPoint>
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
 #include <QProcess>
 #endif
 #include <QUrl>
@@ -327,7 +328,7 @@ std::string getversion()
 // return if git available
 bool gitavailable()
 {
-#if (defined(__APPLE__) && !TARGET_OS_IPHONE) || defined(Q_OS_LINUX)
+#if (defined(__APPLE__) && !defined(Q_OS_IOS)) || defined(Q_OS_LINUX)
   QStringList r=shell("which git","");
   if(!r.length()) return false;
   return !r.at(0).isEmpty();
@@ -342,7 +343,7 @@ void gitgui(QString path)
 {
   Q_UNUSED(path);
   if (config.ifGit) {
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
     QProcess p;
     p.startDetached("git",QStringList() << "gui",path);
 #endif
@@ -506,7 +507,7 @@ void projectfilemanager()
     info("FileManager","The FileManager command should be defined in qtide.cfg.");
     return;
   }
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -560,7 +561,7 @@ void projectterminal()
     info("Terminal","The Terminal command should be defined in qtide.cfg.");
     return;
   }
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -630,7 +631,7 @@ QStringList shell(QString cmd, QString dir)
   Q_UNUSED(cmd);
   Q_UNUSED(dir);
   QStringList r=QStringList();
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   QProcess p;
   if (!dir.isEmpty())
     p.setWorkingDirectory(dir);
@@ -849,7 +850,7 @@ void xdiff(QString s,QString t)
     info("External Diff","First define XDiff in the config");
     return;
   }
-#if !TARGET_OS_IPHONE && !defined(__wasm__)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
   QStringList a;
   a << s << t;
   QProcess p;
@@ -868,14 +869,15 @@ void copyDirectoryNested(QString from,QString to)
     file_out.replace(from,to);
     if(file_info.isFile()) {
       //is file copy
-      qDebug() << QFile::copy(file_in, file_out);
-      qDebug() << file_in << "<----" << file_out;
+      QFile::copy(file_in, file_out);
+//      qDebug() << file_in << "<----" << file_out;
     }
     if(file_info.isDir()) {
       //dir mkdir
       QDir dir(file_out);
       if (!dir.exists())
-        qDebug() << "mkpath"<< dir.mkpath(".");
+        dir.mkpath(".");
+//        qDebug() << "mkpath"<< dir;
     }
   }
 }

@@ -4,6 +4,7 @@
 // #include <QtCore>
 // #include <QtNetwork>
 
+#include <QtGlobal>
 #ifdef QT50
 #include <QtWebSockets/QtWebSockets>
 #else
@@ -42,7 +43,7 @@ private Q_SLOTS:
   void onTextMessageReceived(QString message);
   void onBinaryMessageReceived(QByteArray message);
   void onError(QAbstractSocket::SocketError error);
-#ifndef __wasm__
+#if !defined(Q_OS_WASM)
   void onSslErrors(const QList<QSslError>& errors);
 #endif
   void onStateChanged(QAbstractSocket::SocketState socketState);

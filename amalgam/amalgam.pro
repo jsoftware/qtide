@@ -93,6 +93,7 @@ linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm*: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
 linux-aarch64*: QMAKE_TARGET.arch = aarch64
+wasm*: QMAKE_TARGET.arch = wasm32
 ios: QT -= printsupport
 wasm*: QT -= printsupport
 
@@ -352,11 +353,11 @@ contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= ../lib/wd/svgview.cpp ../lib/wd/svgv
 RESOURCES += ../lib/lib.qrc
 RESOURCES += ../lib/styles/qdarkstyle/darkstyle.qrc
 
-
 win32:VERSION =
 unix:!openbsd:LIBS += -ldl
 
 ios{
+LIBS -= -ldl
 DEFINES += WDCB
 RESOURCES += ../jlibrary.qrc
 RESOURCES += ../test.qrc
@@ -382,9 +383,12 @@ include(../ios_signature.pri)
 QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1,2
 }
 wasm*{
+LIBS -= -ldl
 DEFINES += WDCB
 DEFINES += ONEEVENTLOOP
 DEFINES += NMDIALOG
+RESOURCES += ../jlibrary.qrc
+RESOURCES += ../test.qrc
 QMAKE_LFLAGS += -L../wasm/j32 -lj -L../wasm/mpir -lgmp
 QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
