@@ -16,22 +16,19 @@ jobs:
    - name: Checkout Git repository
      uses: actions/checkout@v3
 
-   - name: Test JE (Linux)
+   - name: Prepare Tarball
      run: |
-      ls || true
-      cd ..
-      ls || true
-      zip -r jqtide.zip jqtide -x "jqtide/.*"
-      tar -czv --exclude ".*" -f jqtide.tar.gz jqtide
+      zip -r qtide.zip qtide -x "qtide/.*"
+      tar -czv --exclude ".*" -f qtide.tar.gz qtide
       cd -
-      mv ../jqtide.zip .
-      mv ../jqtide.tar.gz .
+      mv ../qtide.zip .
+      mv ../qtide.tar.gz .
 
    - name: Release Tarball
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqtide.zip,jqtide.tar.gz"
+      artifacts: "qtide.zip,qtide.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -319,7 +316,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd '6.2.4'
+     run: script\makewin.cmd 6.2.4
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
