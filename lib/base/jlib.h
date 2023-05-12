@@ -43,7 +43,11 @@ typedef struct AREP_RECORD {
 #define AS(x)           ((x)->s)
 #define B01             ((I)1L<<0)           // B  boolean
 #define LIT             ((I)1L<<1)           // C  literal (character)
+#if defined(_MSC_VER) && !defined(__clang__)
+// INT conflict with windows kits minwindef.h
+#else
 #define INT             ((I)1L<<2)           // I  integer
+#endif
 #define FL              ((I)1L<<3)           // D  double (IEEE floating point)
 #define CMPX            ((I)1L<<4)           // Z  complex
 #define BOX             ((I)1L<<5)           // A  boxed
