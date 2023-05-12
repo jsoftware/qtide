@@ -64,6 +64,10 @@ extern "C" Dllexport void openj(const char *s);
 
 #define max(a,b)    (((a) > (b)) ? (a) : (b))
 #include "math.h"
+#if defined(_MSC_VER) && !defined(__clang__)
+#undef INT
+#define INT 4
+#endif
 
 static void wd1();
 static void wdbeep();
@@ -2184,7 +2188,7 @@ int _stdcall Jwd(JS jt, int type, A w, A *pz, C*loc)
       memcpy(CAV(*pz),res,len);
       result.clear();
     } else if (otype==1 || otype==2) {   // int or I
-      int len = (otype==1) ? intresult.size() : longresult.size();
+      int len = (otype==1) ? (int)intresult.size() : (int)longresult.size();
       if (oshape[0]==-1) {
         oshape[0]=len;
         *pz=jega(INT,len,1,oshape);
