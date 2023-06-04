@@ -495,7 +495,7 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
