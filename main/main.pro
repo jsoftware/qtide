@@ -18,6 +18,9 @@ message(QMAKESPEC $$QMAKESPEC)
  DEFINES += QT515
 }
 
+# export JQTRPATH=JQTRPATH to enable runpath on linux
+JQTRPATH = $$(JQTRPATH)
+
 TEMPLATE = app
 TARGET = jqt
 
@@ -109,4 +112,9 @@ win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
+linux*:!isEmpty(JQTRPATH) {
+QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
+}
+!isEmpty($$QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
+
 win32:RC_FILE = jqt.rc

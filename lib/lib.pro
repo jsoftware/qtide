@@ -31,6 +31,9 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 # use webkit instead of webengine
 JQTWEBKIT = $$(JQTWEBKIT)
 
+# export JQTRPATH=JQTRPATH to enable runpath on linux
+JQTRPATH = $$(JQTRPATH)
+
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57) QT += websockets
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
@@ -344,4 +347,8 @@ win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-msvc*:QMAKE_LFLAGS +=
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR += @executable_path/../Qt/Frameworks
+linux*:!isEmpty(JQTRPATH) {
+QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
+}
+!isEmpty($$QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
 # unix:QMAKE_CXXFLAGS += -fno-sized-deallocation
