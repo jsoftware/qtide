@@ -75,6 +75,7 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   w->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
   w->horizontalHeader()->setHighlightSections(false);
   w->horizontalHeader()->setVisible(false);
+  w->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
   if (opt.contains("nostretchlast"))
     w->horizontalHeader()->setStretchLastSection(false);
