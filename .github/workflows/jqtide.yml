@@ -72,7 +72,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.2.4'
+      version: '6.5.2'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -81,7 +81,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.2.4/macos/bin/qmake script/makemac.sh '6.2.4' mac
+     run: QM=${{github.workspace}}/Qt/6.5.2/macos/bin/qmake script/makemac.sh '6.5.2' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -314,7 +314,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.2.4'
+      version: '6.5.2'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -322,7 +322,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.2.4
+     run: script\makewin.cmd 6.5.2
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
