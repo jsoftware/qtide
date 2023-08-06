@@ -10,6 +10,7 @@ and copied to the J webserver developers download folder:
 
 -----------
 Not yet done:
+
 If the latest commit has a new version number in common.pri, then the binaries are also copied to the user download folder:
 
   https://www.jsoftware.com/download/j9.5/qtide
