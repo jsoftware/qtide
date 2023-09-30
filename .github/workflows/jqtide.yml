@@ -72,7 +72,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -81,7 +81,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.5.2/macos/bin/qmake script/makemac.sh '6.5.2' mac
+     run: QM=${{github.workspace}}/Qt/6.5.3/macos/bin/qmake script/makemac.sh '6.5.3' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -314,7 +314,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -322,7 +322,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.5.2
+     run: script\makewin.cmd 6.5.3
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -346,7 +346,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -355,7 +355,7 @@ jobs:
    - name: Install Qt from source wasm
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
@@ -402,7 +402,7 @@ jobs:
       rm -rf test
       cp -r ~/jsource/test .
       rm -rf ~/jsource
-      QM=${{github.workspace}}/Qt/6.5.2/wasm_multithread/bin/qmake script/makemac.sh '6.5.2' wasm
+      QM=${{github.workspace}}/Qt/6.5.3/wasm_multithread/bin/qmake script/makemac.sh '6.5.3' wasm
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -426,7 +426,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -435,7 +435,7 @@ jobs:
    - name: Install Qt from source ios
      uses: jurplel/install-qt-action@v3
      with:
-      version: '6.5.2'
+      version: '6.5.3'
       target: 'ios'
       dir: '${{github.workspace}}'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -481,7 +481,7 @@ jobs:
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
       echo "QMAKE_MAC_XCODE_SETTINGS += development_team" >> ios_signature.pri
-      QM=${{github.workspace}}/Qt/6.5.2/ios/bin/qmake script/makemac.sh '6.5.2' ios
+      QM=${{github.workspace}}/Qt/6.5.3/ios/bin/qmake script/makemac.sh '6.5.3' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
