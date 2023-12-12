@@ -332,6 +332,10 @@ bool gitavailable()
   QStringList r=shell("which git","");
   if(!r.length()) return false;
   return !r.at(0).isEmpty();
+#elif defined(_WIN32)
+  QStringList r=shell("git --version","");
+  if(!r.length()) return false;
+  return r.at(0).startswith("git version ");
 #else
   return false;
 #endif
