@@ -337,6 +337,7 @@ jobs:
 
 # wasm -----------------------------------------------------------------
  jqtwasm:
+  if: ${{ false }}
   name: JQtide (wasm)
   runs-on: macos-12
   steps:
@@ -497,7 +498,8 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
+  #needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
