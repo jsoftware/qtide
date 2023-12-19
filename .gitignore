@@ -3,6 +3,7 @@ build/
 config/
 dist/
 images/
+!lib/images/
 jwd/
 libs/
 Qt/
