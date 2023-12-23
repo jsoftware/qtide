@@ -321,12 +321,15 @@ void jepath(char* arg, char* lib)
       }
     }
     if (FHS) {
-      strcpy(pathdll,JDLLNAME);
 #if defined(__APPLE__)
+      strcpy(pathdll,pathetcpx);
+      strcat(pathdll,"/lib/");
+      strcat(pathdll,JDLLNAME);
       strcat(pathdll,".");
       strcat(pathdll,JDLLVER);
       strcat(pathdll,JDLLEXT);
 #else
+      strcpy(pathdll,JDLLNAME);
       strcat(pathdll,JDLLEXT);
       strcat(pathdll,".");
       strcat(pathdll,JDLLVER);
