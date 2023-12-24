@@ -27,7 +27,6 @@
 class QPrinter;
 class QPainter;
 
-
 class SvgView2 : public QWidget
 {
   Q_OBJECT
@@ -86,7 +85,5 @@ private:
   void setFini();
 
 };
-
-
 
 #endif

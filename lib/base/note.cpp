@@ -337,7 +337,6 @@ void Note::scriptglobals()
   textview("Script Globals","in script: " + e->sname,n.join("\n"));
 }
 
-
 // ---------------------------------------------------------------------
 void Note::selectline(int linenum)
 {

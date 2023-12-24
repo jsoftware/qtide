@@ -31,13 +31,11 @@ QWsFrame::QWsFrame() :
   payloadLength(0)
 {}
 
-
 void QWsFrame::clear()
 {
   payload.clear();
   readingState = HeaderPending;
 }
-
 
 QByteArray QWsFrame::data() const
 {

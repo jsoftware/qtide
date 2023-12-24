@@ -50,7 +50,7 @@ jobs:
      run: script/installqt.sh linux
 
    - name: Compile JQtide
-     run: script/makelinux.sh '5.12.8' linux
+     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1

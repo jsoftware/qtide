@@ -1303,7 +1303,6 @@ void Term::on_cfgfoldersAct_triggered()
   openconfig("folders.cfg");
 }
 
-
 // ---------------------------------------------------------------------
 void Term::on_cfglaunchpadAct_triggered()
 {
@@ -1646,4 +1645,3 @@ void Term::on_viewsidebarAct_triggered()
 {
   notyet("viewsidebarAct");
 }
-

@@ -82,7 +82,6 @@ void QuickWidget::statusChanged(QQuickWidget::Status status)
   }
 }
 
-
 // ---------------------------------------------------------------------
 void QuickWidget::sceneGraphError(QQuickWindow::SceneGraphError, const QString &message)
 {

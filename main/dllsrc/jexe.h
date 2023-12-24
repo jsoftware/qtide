@@ -1,7 +1,5 @@
 
-
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
-
 
 /* File created by MIDL compiler version 8.00.0603 */
 /* at Thu Apr 20 10:26:48 2017
@@ -18,7 +16,6 @@
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
 
-
 /* verify that the <rpcndr.h> version is high enough to compile this file*/
 #ifndef __REQUIRED_RPCNDR_H_VERSION__
 #define __REQUIRED_RPCNDR_H_VERSION__ 475
@@ -30,7 +27,6 @@
 #ifndef __RPCNDR_H_VERSION__
 #error this stub requires an updated version of <rpcndr.h>
 #endif // __RPCNDR_H_VERSION__
-
 
 #ifndef __jexe_h__
 #define __jexe_h__
@@ -47,7 +43,6 @@ typedef interface IJEXEServer IJEXEServer;
 
 #endif 	/* __IJEXEServer_FWD_DEFINED__ */
 
-
 #ifndef __JEXEServer_FWD_DEFINED__
 #define __JEXEServer_FWD_DEFINED__
 
@@ -59,20 +54,15 @@ typedef struct JEXEServer JEXEServer;
 
 #endif 	/* __JEXEServer_FWD_DEFINED__ */
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
 
 #ifndef __JEXEServerLib_LIBRARY_DEFINED__
 #define __JEXEServerLib_LIBRARY_DEFINED__
 
 /* library JEXEServerLib */
 /* [custom][custom][helpstring][version][uuid] */
-
-
 
 EXTERN_C const IID LIBID_JEXEServerLib;
 
@@ -81,7 +71,6 @@ EXTERN_C const IID LIBID_JEXEServerLib;
 
 /* interface IJEXEServer */
 /* [object][oleautomation][dual][helpstring][uuid] */
-
 
 EXTERN_C const IID IID_IJEXEServer;
 
@@ -180,7 +169,6 @@ public:
     /* [retval][out] */ long *r) = 0;
 
 };
-
 
 #else 	/* C style interface */
 
@@ -351,10 +339,7 @@ interface IJEXEServer
   CONST_VTBL struct IJEXEServerVtbl *lpVtbl;
 };
 
-
-
 #ifdef COBJMACROS
-
 
 #define IJEXEServer_QueryInterface(This,riid,ppvObject)	\
     ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) )
@@ -364,7 +349,6 @@ interface IJEXEServer
 
 #define IJEXEServer_Release(This)	\
     ( (This)->lpVtbl -> Release(This) )
-
 
 #define IJEXEServer_GetTypeInfoCount(This,pctinfo)	\
     ( (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo) )
@@ -377,7 +361,6 @@ interface IJEXEServer
 
 #define IJEXEServer_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
     ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) )
-
 
 #define IJEXEServer_Do(This,input,r)	\
     ( (This)->lpVtbl -> Do(This,input,r) )
@@ -438,14 +421,9 @@ interface IJEXEServer
 
 #endif /* COBJMACROS */
 
-
 #endif 	/* C style interface */
 
-
-
-
 #endif 	/* __IJEXEServer_INTERFACE_DEFINED__ */
-
 
 EXTERN_C const CLSID CLSID_JEXEServer;
 
@@ -465,5 +443,3 @@ class DECLSPEC_UUID("21EB05E0-1AB3-11CF-A2AC-8FF70874C460")
 #endif
 
 #endif
-
-

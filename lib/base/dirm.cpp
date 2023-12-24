@@ -533,7 +533,6 @@ void Dirm::on_target_currentIndexChanged(int dummy)
   match_refresh(true);
 };
 
-
 // ---------------------------------------------------------------------
 void Dirm::on_tocopysrcAct_triggered()
 {

@@ -38,5 +38,4 @@ private:
   QLineEdit *other;
 };
 
-
 #endif

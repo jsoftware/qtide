@@ -67,7 +67,6 @@ void Bedit::homeshift()
   setselect(cur-pos+mov,pos-mov);
 }
 
-
 // ---------------------------------------------------------------------
 int Bedit::readcurpos()
 {
@@ -174,7 +173,6 @@ void Bedit::settop(int p)
     c.movePosition(QTextCursor::Up,QTextCursor::MoveAnchor);
   setTextCursor(c);
 }
-
 
 #ifdef TABCOMPLETION
 // ---------------------------------------------------------------------

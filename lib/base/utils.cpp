@@ -225,7 +225,6 @@ QTextCursor getcursor(QWidget *w)
   return ((Bedit *)w)->textCursor();
 }
 
-
 // ---------------------------------------------------------------------
 QTextDocument *getdocument(QWidget *w)
 {

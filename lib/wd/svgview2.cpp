@@ -131,7 +131,6 @@ void SvgView2::paintEvent(QPaintEvent *event)
   m_renderer->render(&painter);
 }
 
-
 // ---------------------------------------------------------------------
 QRectF SvgView2::getViewBox(QPointF viewBoxCenter)
 {
@@ -152,7 +151,6 @@ void SvgView2::updateImageScale()
   m_viewBoxSize.setWidth((qreal)width() * m_imageScale);
   m_viewBoxSize.setHeight((qreal)height() * m_imageScale);
 }
-
 
 // ---------------------------------------------------------------------
 void SvgView2::resizeEvent ( QResizeEvent * event )
@@ -198,7 +196,6 @@ void SvgView2::setZoom(int newZoom)
   m_zoomSlider->setValue(newZoom);
   update();
 }
-
 
 // ---------------------------------------------------------------------
 QPoint SvgView2::getOrigin()
@@ -377,4 +374,3 @@ void SvgView2::keyPressEvent(QKeyEvent *event)
   }
   QWidget::keyPressEvent(event);
 }
-

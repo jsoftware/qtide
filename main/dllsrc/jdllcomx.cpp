@@ -337,7 +337,6 @@ STDMETHODIMP CJServer::DoR(BSTR input, VARIANT* v, long *pr)
   return NOERROR;
 }
 
-
 STDMETHODIMP CJServer::Break(long *pr)
 {
   *pr = JBreak(m_pjst);
@@ -407,7 +406,6 @@ STDMETHODIMP CJServer::DoR(BSTR input, VARIANT* v, long* pr)
   outputvariant = 0;	// turn off capture
   return NOERROR;
 }
-
 
 STDMETHODIMP CJServer::Break(long *pr)
 {
@@ -716,7 +714,6 @@ int reg(BOOL set, LPSTR keys)
   r=SetKeyAndValue(set, keys, path, 0, 0);
   if(r) return r;
 
-
 //HKEY_CLASSES_ROOT\JServer.Object.1 = J Server (Ver 1.0)
   r=SetKeyAndValue(set, keys, progidcur, 0, progidcurtext);
   if(r) return r;
@@ -845,7 +842,6 @@ void ObjectDestroyed(void)
   return;
 }
 
-
 CJServerFactory::CJServerFactory(void)
 {
   m_cRef=0L;
@@ -937,7 +933,6 @@ HRESULT APIENTRY DllGetClassObject(REFCLSID rclsid, REFIID riid, PPVOID ppv)
   return hr;
 }
 
-
 STDAPI DllCanUnloadNow(void)
 {
   SCODE   sc;
@@ -978,7 +973,6 @@ static DWORD	dwRegCO;
 static BOOL coregflag=0;
 
 BOOL quitflag=0;
-
 
 int registerserver(void)
 {

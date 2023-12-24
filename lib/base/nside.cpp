@@ -245,7 +245,6 @@ void Nside::file_refresh()
   path->setText(remtilde(tofoldername(Path)));
 }
 
-
 // ---------------------------------------------------------------------
 void Nside::path_returnPressed()
 {

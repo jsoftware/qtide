@@ -37,12 +37,10 @@ class QWsFrame
 public:
   QWsFrame();
 
-
   /*!
    * Clears the payload
    */
   void clear();
-
 
   /*!
    * Performs various checks on the integrity of the frame as required by
@@ -55,12 +53,10 @@ public:
    */
   QByteArray data() const;
 
-
   /*!
    * Returns true if the opcode is a control code
    */
   bool controlFrame() const;
-
 
   /*!
    * Tells us how many of the data fields have already been initialized
