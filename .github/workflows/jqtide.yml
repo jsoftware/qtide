@@ -373,18 +373,18 @@ jobs:
       CC: clang
      run: |
       cd ~/
-      wget https://www.jsoftware.com/download/j9.5/install/j9.5_mac64.zip
-      unzip j9.5_mac64.zip
-      find j9.5 -type f -name 'jconsole' -exec chmod 755 {} \;
-      j9.5/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
+      wget https://www.jsoftware.com/download/j9.6/install/j9.6_mac64.zip
+      unzip j9.6_mac64.zip
+      find j9.6 -type f -name 'jconsole' -exec chmod 755 {} \;
+      j9.6/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
       cd -
       rm -rf jlibrary
       mkdir -p jlibrary/bin
-      cp -r ~/j9.5/addons jlibrary/.
-      cp -r ~/j9.5/system jlibrary/.
-      cp ~/j9.5/bin/profile.ijs jlibrary/bin/.
-      rm -rf ~/j9.5
-      rm -rf ~/j9.5-user
+      cp -r ~/j9.6/addons jlibrary/.
+      cp -r ~/j9.6/system jlibrary/.
+      cp ~/j9.6/bin/profile.ijs jlibrary/bin/.
+      rm -rf ~/j9.6
+      rm -rf ~/j9.6-user
       cd ~/
       wget https://github.com/jsoftware/jsource/releases/download/build/wasm32.zip
       unzip wasm32.zip
@@ -449,18 +449,18 @@ jobs:
       CC: clang
      run: |
       cd ~/
-      wget https://www.jsoftware.com/download/j9.5/install/j9.5_mac64.zip
-      unzip j9.5_mac64.zip
-      find j9.5 -type f -name 'jconsole' -exec chmod 755 {} \;
-      j9.5/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
+      wget https://www.jsoftware.com/download/j9.6/install/j9.6_mac64.zip
+      unzip j9.6_mac64.zip
+      find j9.6 -type f -name 'jconsole' -exec chmod 755 {} \;
+      j9.6/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
       cd -
       rm -rf jlibrary
       mkdir -p jlibrary/bin
-      cp -r ~/j9.5/addons jlibrary/.
-      cp -r ~/j9.5/system jlibrary/.
-      cp ~/j9.5/bin/profile.ijs jlibrary/bin/.
-      rm -rf ~/j9.5
-      rm -rf ~/j9.5-user
+      cp -r ~/j9.6/addons jlibrary/.
+      cp -r ~/j9.6/system jlibrary/.
+      cp ~/j9.6/bin/profile.ijs jlibrary/bin/.
+      rm -rf ~/j9.6
+      rm -rf ~/j9.6-user
       cd ~/
       wget https://github.com/jsoftware/jsource/releases/download/build/m64.zip
       unzip m64.zip
