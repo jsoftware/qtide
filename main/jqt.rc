@@ -13,8 +13,8 @@ IDI_ICON1 ICON DISCARDABLE "jgreen.ico"
 1 typelib jexe.tlb
 
 VS_VERSION_INFO     VERSIONINFO
-  FILEVERSION       904
-  PRODUCTVERSION    904
+  FILEVERSION       906
+  PRODUCTVERSION    906
   FILEFLAGSMASK     VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
   FILEFLAGS         VS_FF_DEBUG|VS_FF_PRIVATEBUILD|VS_FF_PRERELEASE
@@ -27,17 +27,17 @@ VS_VERSION_INFO     VERSIONINFO
 BEGIN
 	BLOCK "StringFileInfo"
 	BEGIN
-		BLOCK "040904E4" // Lang=US English, CharSet=Windows Multilingual
+		BLOCK "040906E4" // Lang=US English, CharSet=Windows Multilingual
 		BEGIN
 			VALUE "CompanyName",     "Jsoftware Inc.\0"
 			VALUE "FileDescription", "J\0"
-			VALUE "FileVersion",     "904\0"
+			VALUE "FileVersion",     "906\0"
 			VALUE "InternalName",    "J\0"
-			VALUE "LegalCopyright",  "Copyright Jsoftware Inc. 2022\0"
+			VALUE "LegalCopyright",  "Copyright Jsoftware Inc. 2024\0"
 			VALUE "LegalTrademarks", "J\0"
 			VALUE "OriginalFilename","J\0"
 			VALUE "ProductName",     "J\0"
-			VALUE "ProductVersion",  "904\0"
+			VALUE "ProductVersion",  "906\0"
 			VALUE "OLESelfRegister", "\0"
 		END
 	END
