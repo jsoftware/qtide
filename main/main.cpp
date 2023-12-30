@@ -105,19 +105,19 @@ int main(int argc, char *argv[])
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
 #else
-  QString s= QString::fromUtf8(path)+ "/libjqt";
+  QString s= QString::fromUtf8(path);
 #if defined(__APPLE__)
   if(s.startsWith("/usr/local/bin")||s.startsWith("/opt/homebrew/bin")) {
-#else
-  if(s.startsWith("/usr/bin")) {
-#endif
-#if defined(__APPLE__)
-    s= QString("libjqt.")+QString(APP_VERSION)+QString(".dylib");
-#else
-    s= QString("libjqt.so")+"."+QString(APP_VERSION);
-#endif
+    s= s+QString("/../lib/")+QString("libjqt.")+QString(APP_VERSION)+QString(".dylib");
     fhs = true;
   }
+#else
+  if(s.startsWith("/usr/local/bin")||s.startsWith("/usr/bin")) {
+    s= QString("libjqt.so")+"."+QString(APP_VERSION);
+    fhs = true;
+  }
+#endif
+  else s= s+ "/libjqt";
 #endif
   if(!fhs) {
 #ifdef _WIN32
