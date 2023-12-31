@@ -37,10 +37,17 @@ Slog::Slog()
   resize(qMax(300,d[2]),qMax(300,d[3]));
 #endif
   s = new SlogList(this);
+#ifdef Q_OS_ANDROID
+  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
+          this,SLOT(itemActivated()));
+  connect(s, SIGNAL(itemClicked(QListWidgetItem*)),
+          tedit,SLOT(itemActivated(QListWidgetItem*)));
+#else
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           this,SLOT(itemActivated()));
   connect(s, SIGNAL(itemActivated(QListWidgetItem*)),
           tedit,SLOT(itemActivated(QListWidgetItem*)));
+#endif
   t=new QLabel();
   t->hide();
   QVBoxLayout *b = new QVBoxLayout;

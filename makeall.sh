@@ -3,7 +3,7 @@
 # run in jqt directory
 set -e
 
-S=$(dirname "$0")
+cd "$(dirname "$0")"
 
 if [ "$1" != "noclean" ] ; then
 ./clean.sh || true
@@ -44,7 +44,7 @@ if [ $? -eq 1 ]; then
   QM=qmake-qt5
 fi
 
-if [ $QMAKESPEC != "macx-ios-clang" ] && [ $QMAKESPEC != "wasm-emscripten" ] ; then
+if [ $QMAKESPEC != "macx-ios-clang" ] && [ $QMAKESPEC != "wasm-emscripten" ] && [ $QMAKESPEC != "android-clang" ] ; then
 
 cd lib
 $QM "$qmflag" && make
@@ -56,8 +56,34 @@ cd -
 
 else
 
+if [ "$QMAKESPEC" != "android-clang" ] ; then
 cd amalgam
 $QM "$qmflag" && make
+
+else
+
+rm -rf android-build/assets && \
+mkdir -p android-build/assets && \
+cp -r android/assets/jlibrary android-build/assets/. && \
+mkdir -p android-build/libs/$ABI && \
+cp android/libs/$ABI/*.so android-build/libs/$ABI/. && \
+cd amalgam && \
+$QM "$qmflag" && make && \
+cp ../bin/android-$ABI/release/libjqta_$ABI.so ../android-build/libs/$ABI && \
+make apk_install_target ../android-build && \
+unset JAVA_HOME && \
+$HOME/Qt/$VER/macos/bin/androiddeployqt \
+ --output ../android-build \
+ --input ./android-jqta-deployment-settings.json \
+ --android-platform android-22 \
+ --release \
+ --sign $HOME/.android/release-key.keystore jandroid --storepass $JANDROIDSTOREPASS --keypass $JANDROIDKEYPASS && \
+cd - && \
+mkdir -p bin/android-$ABI/release && \
+cp android-build/build/outputs/apk/release/android-build-release-signed.apk bin/android-$ABI/release/jqta.apk
+
+fi
+
 cd -
 
 fi

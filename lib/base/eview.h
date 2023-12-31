@@ -27,6 +27,7 @@ private:
   void closeEvent(QCloseEvent *event);
   void help();
   void keyPressEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *e);
   void reject();
   void savepos();
   void togglemax();

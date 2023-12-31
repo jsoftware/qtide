@@ -10,8 +10,8 @@ class Dirm;
 class QTableWidget;
 class QMenuBar;
 class QCheckBox;
-class QComboBox;
-class QComboBox;
+class PComboBox;
+class PComboBox;
 class QLabel;
 class QListWidget;
 class QTableWidget;
@@ -60,8 +60,8 @@ public:
   Dirm(QString s);
   void dmsetdirs(QString,QString, bool);
 
-  QComboBox *source;
-  QComboBox *target;
+  PComboBox *source;
+  PComboBox *target;
 
 private slots:
   void on_compare_clicked();
@@ -150,7 +150,7 @@ private:
   QCheckBox *timestamp;
   QCheckBox *subdir;
 
-  QComboBox *type;
+  PComboBox *type;
 
   QLabel *lsource;
   QLabel *ltarget;

@@ -20,6 +20,15 @@ Bedit::Bedit(QWidget *parent) : PlainTextEditLn(parent)
 #ifdef TABCOMPLETION
   c= 0 ;
 #endif
+#ifdef Q_OS_ANDROID
+  cu0 = textCursor();
+#endif
+  lineNumberArea = new LineNumberArea(this);
+  document()->setDocumentMargin(0);
+
+  connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+  connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+  connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
   settabwidth();
   if (config.LineWrap)
@@ -30,6 +39,28 @@ Bedit::Bedit(QWidget *parent) : PlainTextEditLn(parent)
 Bedit::~Bedit()
 {
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Bedit::copy()
+{
+  QTextCursor cu = textCursor();
+  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
+  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
+  setTextCursor(cu);
+  PlainTextEdit::copy();
+}
+
+// ---------------------------------------------------------------------
+void Bedit::cut()
+{
+  QTextCursor cu = textCursor();
+  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
+  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
+  setTextCursor(cu);
+  PlainTextEdit::cut();
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Bedit::home()

@@ -43,6 +43,9 @@ Form::Form(std::string s, std::string p, std::string loc, QWidget *parent) : QWi
   savepos=false;
   shown=false;
   lastfocus="";
+#ifdef Q_OS_ANDROID
+  backButtonPressed=false;
+#endif
   setAttribute(Qt::WA_DeleteOnClose);
   QStringList m=s2q(p).split(' ',_SkipEmptyParts);
   if (invalidopt(s,m,"escclose closeok dialog popup minbutton maxbutton closebutton ptop owner nosize activeonly")) return;
@@ -62,6 +65,9 @@ Form::Form(std::string s, std::string p, std::string loc, QWidget *parent) : QWi
     setWindowModality(Qt::WindowModal);
   }
   if (fontdef) setFont(fontdef->font);
+#ifdef Q_OS_ANDROID
+  if (!fontdef) setFont(QApplication::font());
+#endif
   setWindowFlags(flags);
 
   layout=new QVBoxLayout(this);
@@ -85,6 +91,12 @@ Form::~Form()
   if (this==evtform) evtform = 0;
   Forms.removeOne(this);
   if (Forms.isEmpty()) form=0;
+#ifdef Q_OS_ANDROID
+  if (!Forms.isEmpty()) {
+    form=Forms.last();
+    wdactivateform();
+  }
+#endif
   if (Forms.isEmpty() && (!ShowIde)) {
     jcon->cmd("2!:55[0");
   }
@@ -119,6 +131,19 @@ Pane *Form::addpane(int n)
   panes.append(pane);
   return pane;
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Form::backButtonTimer()
+{
+  backButtonPressed=false;
+  if (2>Forms.size()) return;
+  Forms.removeOne(this);
+  Forms.prepend(this);
+  form=Forms.last();
+  wdactivateform();
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Form::buttonClicked(QWidget *w)
@@ -357,6 +382,12 @@ void Form::keyPressEvent(QKeyEvent *e)
 {
   int k=e->key();
   if (ismodifier(k)) return;
+#ifdef Q_OS_ANDROID
+  if (k==Qt::Key_Back) {
+    QWidget::keyPressEvent(e);
+    return;
+  }
+#endif
   if (k==Qt::Key_Escape) {
     e->ignore();
     if (closed) return;
@@ -389,6 +420,31 @@ void Form::keyPressEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
+void Form::keyReleaseEvent(QKeyEvent *e)
+{
+#ifdef Q_OS_ANDROID
+  if (e->key()==Qt::Key_Back) {
+    if (!(backButtonPressed||(Qt::NonModal!=windowModality()))) {
+      backButtonPressed=true;
+      QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
+    } else {
+      if (closed) return;
+      if (closeok) {
+        closed=true;
+        close();
+      } else {
+        event="close";
+        fakeid="";
+        form=this;
+        signalevent(0);
+      }
+    }
+  } else QWidget::keyReleaseEvent(e);
+#else
+  QWidget::keyReleaseEvent(e);
+#endif
+}
+
 void Form::resizeEvent(QResizeEvent *e)
 {
   Q_UNUSED(e);
@@ -510,6 +566,11 @@ void Form::settimer(std::string p)
 void Form::showit(std::string p)
 {
   if (!shown) {
+#ifdef Q_OS_ANDROID
+// showide(false);
+    if (Forms.size()>1)
+      (Forms.at(Forms.size()-2))->setVisible(false);
+#endif
     for (int i=tabs.size()-1; i>=0; i--)
       tabs.last()->tabend();
     for (int i=panes.size()-1; i>=0; i--)
@@ -537,6 +598,28 @@ void Form::showit(std::string p)
     activateWindow();
     raise();
   }
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
+  if (p=="") {
+    if (!isVisible()) setVisible(true);
+  } else if (p=="hide") {
+    if (isVisible()) setVisible(false);
+  } else if (p=="fullscreen") {
+    if (shown) showFullScreen();
+  } else if (p=="maximized") {
+    if (shown) showMaximized();
+  } else if (p=="minimized") {
+    if (shown) showMinimized();
+  } else if (p=="normal") {
+    if (shown) showNormal();
+  } else {
+    shown=true;
+    error("unrecognized style: " + p);
+  }
+  shown=true;
+
+  if (!ini && jdllproc && 1==Forms.size())
+    evloop->exec(QEventLoop::AllEvents);
+#endif
 }
 
 // ---------------------------------------------------------------------

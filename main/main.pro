@@ -18,6 +18,17 @@ message(QMAKESPEC $$QMAKESPEC)
  DEFINES += QT515
 }
 
+
+android {
+  CONFIG += mobility
+  MOBILITY +=
+  TEMPLATE = lib
+  TARGET = qtide
+  !contains(DEFINES,QT62): error(requires Qt6.2)
+} else {
+  TEMPLATE = app
+  TARGET = jqt
+}
 # export JQTRPATH=JQTRPATH to enable runpath on linux
 JQTRPATH = $$(JQTRPATH)
 
@@ -31,6 +42,7 @@ linux-g++-64: QMAKE_TARGET.arch = x86_64
 linux-cross: QMAKE_TARGET.arch = x86
 win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
+# android: QMAKE_TARGET.arch = arm64
 linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
@@ -44,6 +56,9 @@ equals(QMAKE_TARGET.arch , arm64): QMAKE_TARGET.arch = aarch64
 message(adjusted arch $$QMAKE_TARGET.arch)
 
 ABI=$$(ABI)
+android {
+!isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
+}
 
 equals(QMAKE_TARGET.arch , armv6l): {
   message(building raspberry pi jqt)
@@ -51,15 +66,16 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!openbsd:!freebsd: {
+equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
 
 win32: arch = win-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
-unix:!macx: arch = linux-$$QMAKE_TARGET.arch
+unix:!macx:!andrid: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 macx-ios: arch = ios-$$QMAKE_TARGET.arch

@@ -26,6 +26,10 @@
 #include "tedit.h"
 #include "term.h"
 
+#ifdef Q_OS_ANDROID
+extern "C" void android_exec_host(char*,char*,char*,int);
+#endif
+
 // using namespace std;
 
 Note *note=0;
@@ -208,6 +212,18 @@ void Note::keyPressEvent(QKeyEvent *event)
 }
 
 // ---------------------------------------------------------------------
+void Note::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key() == Qt::Key_Back) {
+    term->activate();
+  } else QWidget::keyReleaseEvent(event);
+#else
+  QWidget::keyReleaseEvent(event);
+#endif
+}
+
+// ---------------------------------------------------------------------
 void Note::loadscript(QString s,bool show)
 {
   if (note->saveall())
@@ -241,6 +257,25 @@ void Note::on_runallAct_triggered()
 {
   runlines(true);
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Note::on_xeditAct_triggered()
+{
+  savecurrent();
+  QString fn=editFile();
+  if (fn.isEmpty()) return;
+  android_exec_host((char *)"android.intent.action.VIEW",fn.prepend("file://").toUtf8().data(),(char *)"text/plain",0);
+}
+
+// ---------------------------------------------------------------------
+void Note::on_markCursorAct_triggered()
+{
+  if (tabs->count()==0) return;
+  Nedit *ned=((Nedit *)tabs->currentWidget());
+  ned->cu0 = ned->textCursor();
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Note::prettyprint()

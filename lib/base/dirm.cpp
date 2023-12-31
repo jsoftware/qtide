@@ -16,6 +16,7 @@
 #include "dirm.h"
 #include "eview.h"
 #include "note.h"
+#include "pcombobox.h"
 #include "proj.h"
 #include "recent.h"
 #include "snap.h"

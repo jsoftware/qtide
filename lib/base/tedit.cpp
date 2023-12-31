@@ -25,6 +25,9 @@ Tedit::Tedit()
   smprompt="";
   type=0;
   ifResized=Tw=Th=0;
+#ifdef Q_OS_ANDROID
+  backButtonPressed=0;
+#endif
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
   setLineWrapMode(TextEdit::NoWrap);
@@ -52,6 +55,14 @@ void Tedit::append_smoutput(QString s)
   else
     appendPlainText(getprompt());
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Tedit::backButtonTimer()
+{
+  backButtonPressed=0;
+}
+#endif
 
 // ---------------------------------------------------------------------
 void Tedit::docmd(QString t)
@@ -109,7 +120,11 @@ void Tedit::docmds(QString s,bool show,bool same,bool term)
   runterm=(show || term) ? 1 : 0;
   std::string f=show ? "0!:101" : "0!:100";
   jcon->set("inputx_jrx_",q2s(s));
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WASM)
+  jcon->cmddo(f + " inputx_jrx_");
+#else
   jcon->immex(f + " inputx_jrx_");
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -239,6 +254,28 @@ void Tedit::keyPressEvent(QKeyEvent *e)
 }
 
 // ---------------------------------------------------------------------
+void Tedit::keyReleaseEvent(QKeyEvent *event)
+{
+// separate ANDROID code avoids compiler warnings
+#ifdef Q_OS_ANDROID
+  switch (event->key()) {
+  case Qt::Key_Back:
+    if (2>backButtonPressed) {
+      if (0==backButtonPressed) QTimer::singleShot(2000, this, SLOT(backButtonTimer()));
+      backButtonPressed++;
+    } else {
+      if (!term->filequit(true))
+        event->accept();
+    }
+    break;
+  default:
+    TextEdit::keyReleaseEvent(event);
+  }
+#else
+  TextEdit::keyReleaseEvent(event);
+#endif
+}
+
 void Tedit::load(QString s, bool d)
 {
   docmdx((loadcmd(s,d)));

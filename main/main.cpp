@@ -18,6 +18,18 @@
 #include <xlocale.h>
 #endif
 
+#ifdef Q_OS_ANDROID
+#include <jni.h>
+#include <android/log.h>
+#include <pthread.h>
+#include <unistd.h>
+
+static int start_logger(void);
+static int pfd[2];
+static pthread_t thr;
+static const char *logtag = "libj";
+#endif
+
 #ifdef JQTAMALGAM
 extern "C" int state_run(int,char **,const char *,bool,int,void **,void **,uintptr_t);
 #else
@@ -32,7 +44,11 @@ extern int reg(int set, char* keys);
 #ifdef JQTAMALGAM
 extern void *hjdll;
 #else
+#ifdef Q_OS_ANDROID
+extern void *hjdll;
+#else
 void *hjdll;
+#endif
 #endif
 void *pjst;
 static uintptr_t cstackinit;
@@ -52,7 +68,11 @@ extern "C" int staterun(int argc, char *arg1, int arg2)
 #ifdef JQTAMALGAM
 extern char *jqtver;
 #else
+#ifdef Q_OS_ANDROID
+extern char *jqtver;
+#else
 const char *jqtver=JQTVERSION;
+#endif
 #endif
 
 int main(int argc, char *argv[])
@@ -81,6 +101,10 @@ int main(int argc, char *argv[])
   extern void disableWindowTabbing();
   disableWindowTabbing();
 #endif
+#endif
+
+#if defined(Q_OS_ANDROID)
+  start_logger();
 #endif
 
   char *path=jepath1(argv[0]);     // get path to JFE folder
@@ -157,3 +181,47 @@ int main(int argc, char *argv[])
   return -1;
 }
 
+#ifdef Q_OS_ANDROID
+JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void*)
+{
+  JNIEnv *jnienv;
+  if (vm->GetEnv(reinterpret_cast<void**>(&jnienv), JNI_VERSION_1_6) != JNI_OK) {
+    qCritical() << "JNI_OnLoad GetEnv Failed";
+    return -1;
+  }
+//  javaOnLoad(vm, jnienv);
+
+  return JNI_VERSION_1_6;
+}
+
+static void *thread_func(void*)
+{
+  ssize_t rdsz;
+  char buf[128];
+  while((rdsz = read(pfd[0], buf, sizeof buf - 1)) > 0) {
+    if(buf[rdsz - 1] == '\n') --rdsz;
+    buf[rdsz] = 0;  /* add null-terminator */
+    __android_log_write(ANDROID_LOG_DEBUG, logtag, buf);
+  }
+  return 0;
+}
+
+static int start_logger(void)
+{
+  /* make stdout and stderr unbuffered */
+  setvbuf(stdout, 0, _IONBF, 0);
+  setvbuf(stderr, 0, _IONBF, 0);
+
+  /* create the pipe and redirect stdout and stderr */
+  pipe(pfd);
+  dup2(pfd[1], 1);
+  dup2(pfd[1], 2);
+
+  /* spawn the logging thread */
+  if(pthread_create(&thr, 0, thread_func, 0) == -1)
+    return -1;
+  pthread_detach(thr);
+  return 0;
+}
+
+#endif

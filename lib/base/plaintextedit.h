@@ -16,8 +16,12 @@ class PlainTextEdit : public QPlainTextEdit
 
 public:
   PlainTextEdit(QWidget *parent = 0);
-  QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
+  bool acceptKeyBack;
   void updatetext(QString s);
+
+protected:
+  void keyReleaseEvent(QKeyEvent *event);
+  QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
 
 #ifndef QT_NO_PRINTER
 public slots:
@@ -43,6 +47,7 @@ public:
 
   bool showNos;
   QString type;
+  QWidget *lineNumberArea;
 
 public slots:
   void highlightCurrentLine();
@@ -53,7 +58,6 @@ protected:
   void resizeEvent(QResizeEvent *event);
 
 private:
-  QWidget *lineNumberArea;
 
 };
 

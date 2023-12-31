@@ -34,6 +34,7 @@
 
 extern "C" {
   Dllexport int gethash(const char *, const char *, const int, char *&, int &);
+  Dllexport void logcat(const char *s);
   Dllexport void openj(const char *s);
 }
 
@@ -327,7 +328,7 @@ std::string getversion()
 // return if git available
 bool gitavailable()
 {
-#if (defined(__APPLE__) && !defined(Q_OS_IOS)) || defined(Q_OS_LINUX)
+#if (defined(__APPLE__) && !defined(Q_OS_IOS)) || defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
   QStringList r=shell("which git","");
   if(!r.length()) return false;
   return !r.at(0).isEmpty();
@@ -407,6 +408,13 @@ void helpabout()
 bool ismodifier(int key)
 {
   return Modifiers.contains(key);
+}
+
+// ---------------------------------------------------------------------
+void logcat(const char *s)
+{
+// for debug android standalone app
+  qDebug () /* do not comment this line */ << QString::fromUtf8(s);
 }
 
 // ---------------------------------------------------------------------
@@ -872,6 +880,7 @@ void copyDirectoryNested(QString from,QString to)
     file_out.replace(from,to);
     if(file_info.isFile()) {
       //is file copy
+      if(QFile::exists(file_out))QFile::remove(file_out);
       QFile::copy(file_in, file_out);
 //      qDebug() << file_in << "<----" << file_out;
     }

@@ -7,6 +7,7 @@ bin   - binaries, demo files
 config - example configs
 lib   - source for libjqt.so (in subdirs base, grid, high and wd)
 main  - source for jqt
+android - source for android
 
 Build:
 

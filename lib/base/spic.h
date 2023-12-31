@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-class QComboBox;
+class PComboBox;
 class QPushButton;
 class QListWidget;
 class PlainTextEdit;
@@ -34,8 +34,9 @@ private:
   QStringList pic_files();
   void tcompare(int n);
   QString unstamp(QString);
+  void keyReleaseEvent(QKeyEvent *e);
 
-  QComboBox *sfile;
+  PComboBox *sfile;
   QString File;
   QString FilePath;
   QString SnapPath;

@@ -68,12 +68,39 @@ void QuickView2::sceneGraphError(QQuickWindow::SceneGraphError, const QString &m
 // ---------------------------------------------------------------------
 void QuickView2::keyPressEvent(QKeyEvent *event)
 {
+#ifdef Q_OS_ANDROID
+  int key=event->key();
+  if (key==Qt::Key_Back) {
+    QQuickView::keyPressEvent(event);
+    return;
+  }
+#endif
   QQuickView::keyPressEvent(event);
+}
+
+// ---------------------------------------------------------------------
+void QuickView2::keyReleaseEvent(QKeyEvent *e)
+{
+#ifdef Q_OS_ANDROID
+  if (e->key()==Qt::Key_Back) {
+    showide(true);
+    if (Forms.size()>0)
+      (Forms.at(Forms.size()-1))->setVisible(true);
+    close();
+  } else QQuickView::keyReleaseEvent(e);
+#else
+  QQuickView::keyReleaseEvent(e);
+#endif
 }
 
 // ---------------------------------------------------------------------
 void QuickView2::closeview ()
 {
+#ifdef Q_OS_ANDROID
+  showide(true);
+  if (Forms.size()>0)
+    (Forms.at(Forms.size()-1))->setVisible(true);
+#endif
   close();
 }
 

@@ -65,6 +65,9 @@ public:
   QStringList AllFolderValues;
   QString AppName;
   bool Ascii;
+#ifdef Q_OS_ANDROID
+  QString FontFile;
+#endif
   QDir BinPath;
   int BoxForm;
   QStringList CasePaths;
@@ -183,6 +186,9 @@ public:
 
 extern QList<QWidget*> ActiveWindows;
 extern Config config;
+#ifdef Q_OS_ANDROID
+extern int androidVfuncPos;
+#endif
 
 QSyntaxHighlighter *highlight(QTextDocument *);
 

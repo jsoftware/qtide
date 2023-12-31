@@ -31,10 +31,20 @@ public:
 
   QSyntaxHighlighter* (*highlighter)(QTextDocument *d);
 
+#ifdef Q_OS_ANDROID
+  QTextCursor cu0;
+#endif
+
 #ifndef QT_NO_PRINTER
 public slots:
   void print(QPrinter *printer);
   void printPreview(QPrinter *printer);
+#endif
+
+#ifdef Q_OS_ANDROID
+public slots:
+  void copy();
+  void cut();
 #endif
 
 private:

@@ -219,6 +219,7 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
     char m[1000];
     jefail(m);
     fputs(m,stderr);
+    qDebug() << QString(m);
 #if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
     exit(1);
 #endif
@@ -227,6 +228,12 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
   adadbreak=(char**)jt; // first address in jt is address of breakdata
   signal(SIGINT,sigint);
 
+#if defined(Q_OS_ANDROID)
+  Q_UNUSED(argc);
+  Q_UNUSED(type);
+  *inputline=0;
+  jefirst(0,(char *)",<'jqt'");
+#else
   if (argc==2&&!strcmp(argv[1],"-jprofile"))
     type=3;
   else if (argc>2&&!strcmp(argv[1],"-jprofile"))
@@ -235,6 +242,7 @@ int Jcon::init(int argc, char* argv[], uintptr_t stackinit)
     type=0;
   addargv(argc,argv,inputline+strlen(inputline));
   jefirst(type,inputline);
+#endif
 
   return 0;
 }

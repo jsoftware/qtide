@@ -18,6 +18,9 @@
 #include <QPrinterInfo>
 #endif
 #endif
+#ifdef Q_OS_ANDROID
+#include <QFontDatabase>
+#endif
 #ifndef QT_NO_OPENGL
 #ifdef QT50
 #include <QOpenGLContext>
@@ -34,6 +37,9 @@
 #include "pane.h"
 #include "tabs.h"
 #include "wd.h"
+#ifdef Q_OS_ANDROID
+#include "../base/androidextras.h"
+#endif
 #include "gl2.h"
 #include "glz.h"
 #include "ogl2.h"
@@ -83,6 +89,9 @@ static void wddefprint();
 static void wddirmatch();
 static void wdend();
 static void wdfontdef();
+#ifdef Q_OS_ANDROID
+static void wdfontfile();
+#endif
 static void wdget();
 static void wdgetp();
 static void wdgrid();
@@ -242,6 +251,10 @@ void wd1()
       wdend();
     else if (c=="fontdef")
       wdfontdef();
+#ifdef Q_OS_ANDROID
+    else if (c=="fontfile")
+      wdfontfile();
+#endif
     else if (c=="get")
       wdget();
     else if (c=="getp")
@@ -545,6 +558,17 @@ void wdfontdef()
   }
 }
 
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void wdfontfile()
+{
+  std::string p=remquotes(cmd.getparms());
+  int id=QFontDatabase::addApplicationFont(s2q(p));
+  result=i2s(id);
+  rc=-1;
+}
+#endif
+
 // ---------------------------------------------------------------------
 void wdget()
 {
@@ -758,6 +782,9 @@ void wdpactive()
     return;
   }
   if (noform()) return;
+#ifdef Q_OS_ANDROID
+  if(form!=Forms.last()) return;
+#endif
   form->activateWindow();
   form->raise();
 }
@@ -826,6 +853,7 @@ void wdpcenter()
     return;
   }
   if (noform()) return;
+#ifndef Q_OS_ANDROID
 #if defined(QT57)
   QRect screenGeometry = app->primaryScreen()->geometry();
 #else
@@ -839,6 +867,7 @@ void wdpcenter()
   int x=(sw-w)/2;
   int y=(sh-h)/2;
   form->move((x<0)?0:x,(y<0)?0:y);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -889,8 +918,10 @@ void wdpmove1(std::string p)
   if (n.size()!=4)
     error("pmove requires 4 numbers: " + p);
   else {
+#ifndef Q_OS_ANDROID
     if (c_strtoi(q2s(n.at(0)))!=-1 && c_strtoi(q2s(n.at(1)))!=-1)
       form->move(c_strtoi(q2s(n.at(0))),c_strtoi(q2s(n.at(1))));
+#endif
     if (c_strtoi(q2s(n.at(2)))!=-1 && c_strtoi(q2s(n.at(3)))!=-1)
       form->resize(c_strtoi(q2s(n.at(2))),c_strtoi(q2s(n.at(3))));
   }
@@ -961,6 +992,9 @@ void wdptop()
 {
   std::string p=remquotes(cmd.getparms());
   if (noform()) return;
+#ifdef Q_OS_ANDROID
+  if(form!=Forms.last()) return;
+#endif
   Qt::WindowFlags f=form->windowFlags();
   form->setWindowFlags(f|Qt::WindowStaysOnTopHint);
   form->show();
@@ -1043,19 +1077,30 @@ void wdqueries(std::string s)
       error("command failed: no QApplication");
       return;
     }
-#if defined(QT57)
     QScreen *dw = app->primaryScreen();
+#ifdef Q_OS_ANDROID
+    android_getdisplaymetrics();
+//    int dpix=DM_xdpi;
+//    int dpiy=DM_ydpi;
+//    int w=DM_widthPixels;
+//    int h=DM_heightPixels;
+    int dpix=160;
+    int dpiy=160;
+    int w=DM_widthPixels/DM_scaledDensity;
+    int h=DM_heightPixels/DM_scaledDensity;
+#elif defined(QT57)
     QRect screenGeometry = dw->geometry();
     int dpix=dw->logicalDotsPerInchX();
     int dpiy=dw->logicalDotsPerInchX();
+    int w=screenGeometry.width();
+    int h=screenGeometry.height();
 #else
-    QDesktopWidget* dw=app->desktop();
     QRect screenGeometry = dw->screenGeometry(-1);
     int dpix=dw->logicalDpiX();
     int dpiy=dw->logicalDpiY();
-#endif
     int w=screenGeometry.width();
     int h=screenGeometry.height();
+#endif
     int mmx=25.4*w/dpix;
     int mmy=25.4*h/dpiy;
     int dia=sqrt((float)dpix*dpix+dpiy*dpiy);
@@ -1201,8 +1246,17 @@ void wdquickview1()
     if (n.size()>2 && (n.at(2)=="0"||n.at(2)=="1")) mode=!!c_strtoi(q2s(n.at(2)));
     if (quickview1) quickview1->close();
     quickview1=new QuickView1(t,f,mode);
+#ifdef Q_OS_ANDROID
+    quickview1->showFullScreen();
+#else
     quickview1->show();
+#endif
     quickview1->raise();
+#ifdef Q_OS_ANDROID
+    showide(false);
+    if (Forms.size()>0)
+      (Forms.at(Forms.size()-1))->setVisible(false);
+#endif
   }
 }
 
@@ -1242,10 +1296,19 @@ void wdquickview2()
     }
     if (quickview2) quickview2->close();
     quickview2=new QuickView2(t,f,mode,glver);
+#ifdef Q_OS_ANDROID
+    quickview2->showFullScreen();
+#else
     quickview2->show();
+#endif
     quickview2->raise();
 #ifdef QT50
     quickview2->requestActivate();
+#ifdef Q_OS_ANDROID
+    showide(false);
+    if (Forms.size()>0)
+      (Forms.at(Forms.size()-1))->setVisible(false);
+#endif
 #endif
   }
 }
@@ -1915,6 +1978,9 @@ int uiwd(I t,I *pinta,void *inarr,I *ointa,char* loc)
       LOGD("argument should be string");
       return rc = 1;
     }
+#if defined(Q_OS_ANDROID)
+    qDebug() << "wd cmd:" << s2q(std::string((char*)inarr,pinta[3]));
+#endif
     cmd.init((char*)inarr,pinta[3]);
     wd1();
     if(rc<0) {

@@ -53,6 +53,19 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
+android  {
+  !contains(DEFINES,QT62): error(requires Qt6.2)
+  CONFIG += mobility
+  MOBILITY +=
+  QT += opengl
+  DEFINES += QT_NO_PRINTER
+  DEFINES += SMALL_SCREEN
+  ANDROID_PACKAGE_SOURCE_DIR = $$PWD/../android
+}
+contains(DEFINES,QT56) {
+  QT += webengine
+  QT -= webkit
+}
 TEMPLATE = lib
 TARGET = jqt
 
@@ -91,6 +104,7 @@ linux-g++-64: QMAKE_TARGET.arch = x86_64
 linux-cross: QMAKE_TARGET.arch = x86
 win32-cross-32: QMAKE_TARGET.arch = x86
 win32-cross: QMAKE_TARGET.arch = x86_64
+# android: QMAKE_TARGET.arch = arm64
 linux-raspi: QMAKE_TARGET.arch = armv6l
 linux-arm: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
@@ -104,6 +118,9 @@ equals(QMAKE_TARGET.arch , arm64): QMAKE_TARGET.arch = aarch64
 message(adjusted arch $$QMAKE_TARGET.arch)
 
 ABI=$$(ABI)
+android {
+!isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
+}
 
 equals(QMAKE_TARGET.arch , armv6l): {
   message(building raspberry pi jqt)
@@ -111,15 +128,16 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!openbsd:!freebsd: {
+equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
 
 win32: arch = win-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
-unix:!macx: arch = linux-$$QMAKE_TARGET.arch
+unix:!macx:!android: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 macx-ios: arch = ios-$$QMAKE_TARGET.arch
@@ -162,6 +180,9 @@ DEFINES += BUILD_VERSION=\\\"$$BUILDVERSION\\\"
   DEFINES += QT_WEBENGINE
 }
 
+contains(DEFINES,QT54) {
+  android: DEFINES += QT_OPENGL_ES_2
+}
 !contains(QT,webkit) {
   DEFINES += QT_NO_WEBKIT
   DEFINES -= QT_WEBKIT
@@ -182,6 +203,7 @@ contains(DEFINES,QT57) {
   DEFINES -= QT_OPENGL
   QT -= openglwidgets
 } else {
+  android: DEFINES += QT_OPENGL_ES_2
   DEFINES -= QT_NO_OPENGL
   DEFINES += QT_OPENGL
 }
@@ -247,7 +269,7 @@ HEADERS += \
  base/base.h base/bedit.h base/comp.h base/dialog.h base/dirm.h base/dlog.h \
  base/fif.h base/fiw.h base/jsvr.h base/menu.h \
  base/nedit.h base/nmain.h base/note.h base/nside.h base/ntabs.h \
- base/plaintextedit.h \
+ base/plaintextedit.h base/pcombobox.h \
  base/pnew.h base/proj.h base/psel.h base/qmlje.h base/recent.h base/rsel.h \
  base/snap.h base/spic.h base/state.h base/style.h base/svr.h \
  base/tedit.h base/term.h base/textedit.h base/util.h base/utils.h base/qtstate.h \
@@ -268,6 +290,8 @@ HEADERS += \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
+android: HEADERS += base/androidextras.h
+
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 contains(DEFINES,QT_NO_WEBKIT): HEADERS -= wd/webview.h
 contains(DEFINES,QT_NO_WEBENGINE): HEADERS -= wd/webengine.h wd/webengineview.h
@@ -284,6 +308,7 @@ contains(DEFINES,QT_NO_MULTIMEDIA): HEADERS -= wd/multimedia.h
 contains(DEFINES,QT_NO_PRINTER): HEADERS -= wd/glz.h wd/prtobj.h
 contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): HEADERS += QtWebsocket/compat.h QtWebsocket/QWsServer.h QtWebsocket/QWsSocket.h QtWebsocket/QWsHandshake.h QtWebsocket/QWsFrame.h QtWebsocket/QTlsServer.h QtWebsocket/functions.h QtWebsocket/WsEnums.h
 contains(DEFINES,QTWEBSOCKET): HEADERS += base/wssvr.h base/wscln.h
+android:HEADERS += base/androidextras.h base/qtjni.h
 contains(DEFINES,QT_NO_SVGVIEW): HEADERS -= wd/svgview.h wd/svgview2.h
 
 SOURCES += \
@@ -292,7 +317,7 @@ SOURCES += \
  base/fif.cpp base/fifx.cpp base/fiw.cpp base/jsvr.cpp \
  base/menu.cpp base/menuhelp.cpp \
  base/nedit.cpp base/nmain.cpp base/note.cpp base/nside.cpp base/ntabs.cpp \
- base/plaintextedit.cpp \
+ base/plaintextedit.cpp base/pcombobox.cpp \
  base/pnew.cpp base/proj.cpp base/psel.cpp base/qmlje.cpp \
  base/recent.cpp base/rsel.cpp base/run.cpp \
  base/snap.cpp base/spic.cpp base/state.cpp base/statex.cpp \
@@ -317,6 +342,8 @@ SOURCES += \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \
  wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
 
+android: SOURCES += base/androidextras.cpp
+
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp
 contains(DEFINES,QT_NO_WEBKIT): SOURCES -= wd/webview.cpp
 contains(DEFINES,QT_NO_WEBENGINE): SOURCES -= wd/webengineview.cpp
@@ -333,6 +360,7 @@ contains(DEFINES,QT_NO_MULTIMEDIA): SOURCES -= wd/multimedia.cpp
 contains(DEFINES,QT_NO_PRINTER): SOURCES -= wd/glz.cpp wd/prtobj.cpp
 contains(DEFINES,QTWEBSOCKET): !contains(QT,websockets): SOURCES += QtWebsocket/QWsServer.cpp QtWebsocket/QWsSocket.cpp QtWebsocket/QWsHandshake.cpp QtWebsocket/QWsFrame.cpp QtWebsocket/QTlsServer.cpp QtWebsocket/functions.cpp
 contains(DEFINES,QTWEBSOCKET): SOURCES += base/wssvr.cpp base/wscln.cpp wd/ws.cpp
+android:SOURCES += base/androidextras.cpp base/qtjni.cpp ../main/main.cpp ../main/jepath.cpp
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
 
 RESOURCES += lib.qrc
@@ -341,6 +369,7 @@ RESOURCES += styles/qdarkstyle/darkstyle.qrc
 win32:VERSION =
 win32:!win32-msvc*:LIBS += -shared
 unix:!openbsd:LIBS += -ldl
+android:LIBS += -ldl
 
 win32:!win32-msvc*:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_CXXFLAGS += -WX

@@ -1,6 +1,5 @@
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -11,6 +10,7 @@
 #include "eview.h"
 #include "fif.h"
 #include "note.h"
+#include "pcombobox.h"
 #include "proj.h"
 #include "recent.h"
 #include "rsel.h"
@@ -100,7 +100,15 @@ Fif::Fif(QString s, bool ifname)
   e->setSpacing(0);
   find=makebutton("&Find");
   e->addWidget(find,0);
+#ifndef Q_OS_ANDROID
   e->addStretch(1);
+#else
+  view=makebutton("View");
+  e->addWidget(view,0);
+  e->addStretch(1);
+  cancel=makebutton("Cancel");
+  e->addWidget(cancel,0);
+#endif
   h->addLayout(e,0);
   searchfor->setFocus();
   v->addLayout(h,0);
@@ -196,6 +204,22 @@ void Fif::on_find_clicked()
   search();
 }
 
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void Fif::on_view_clicked()
+{
+  on_found_itemActivated(found->currentItem());
+}
+
+// ---------------------------------------------------------------------
+void Fif::on_cancel_clicked()
+{
+  reject();
+  term->vieweditor();
+  fif=0;
+}
+#endif
+
 // ---------------------------------------------------------------------
 void Fif::on_found_itemActivated(QListWidgetItem * item)
 {
@@ -287,6 +311,19 @@ void Fif::reject()
     Pos[3]=size().height();
   config.winpos_save1(Pos,"Fif","");
   QDialog::reject();
+}
+
+// ---------------------------------------------------------------------
+void Fif::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+//    reject();
+    hide();
+  } else QDialog::keyReleaseEvent(event);
+#else
+  QDialog::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------

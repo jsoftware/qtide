@@ -5,6 +5,9 @@
 #include <QFile>
 #include <QDir>
 #include <QDirIterator>
+#ifdef Q_OS_ANDROID
+#include <QProcess>
+#endif
 
 #include <sstream>
 #include <math.h>
@@ -461,7 +464,11 @@ bool ifshift()
 // ---------------------------------------------------------------------
 void info(QString t,QString s)
 {
+#ifdef Q_OS_ANDROID
+  QMessageBox::about(getmbparent(), t, s);
+#else
   QMessageBox::information(getmbparent(), t, s);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -967,3 +974,18 @@ double c_strtod(std::string s)
   return strtod(p.c_str(),NULL);
 }
 
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+QString scrollbarstyle(float n)
+{
+  QString st = "QScrollBar:vertical { width: 99px; } QScrollBar:horizontal { height: 99px; }";
+  return st.replace("99",QString::number((int)floor(n)));
+}
+
+// ---------------------------------------------------------------------
+QString checkboxstyle(float n)
+{
+  QString st = "QCheckBox::indicator { width: 99px; height: 99px; }";
+  return st.replace("99",QString::number((int)floor(n)));
+}
+#endif

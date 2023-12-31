@@ -1,8 +1,8 @@
 
 #include <QCheckBox>
-#include <QComboBox>
 #include <QPushButton>
 
+#include "pcombobox.h"
 #include "state.h"
 
 // ---------------------------------------------------------------------
@@ -27,9 +27,9 @@ QCheckBox *makecheckbox(QString text, QString id="")
 }
 
 // ---------------------------------------------------------------------
-QComboBox *makecombobox(QString id)
+PComboBox *makecombobox(QString id)
 {
-  QComboBox *p=new QComboBox();
+  PComboBox *p=new PComboBox();
   p->setMaxVisibleItems(config.MaxVisibleItems);
   p->setEditable(true);
   p->setCompleter(0);

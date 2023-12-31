@@ -94,6 +94,8 @@ linux-arm: !linux-arm64: QMAKE_TARGET.arch = armv6l
 linux-arm64: QMAKE_TARGET.arch = aarch64
 linux-aarch64: QMAKE_TARGET.arch = aarch64
 wasm: QMAKE_TARGET.arch = wasm32
+android: QMAKE_TARGET.arch = $$(ABI)
+android: QT -= printsupport
 ios: QT -= printsupport
 wasm: QT -= printsupport
 
@@ -103,6 +105,9 @@ equals(QMAKE_TARGET.arch , arm64): QMAKE_TARGET.arch = aarch64
 message(adjusted arch $$QMAKE_TARGET.arch)
 
 ABI=$$(ABI)
+android {
+  !isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
+}
 
 equals(QMAKE_TARGET.arch , armv6l): {
   message(building raspberry pi jqt)
@@ -110,11 +115,13 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!openbsd:!freebsd: {
+equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!android:!openbsd:!freebsd: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
 }
+
+isEmpty(QMAKE_TARGET.arch): error(empty target arch)
 
 win32: arch = win-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
@@ -123,6 +130,8 @@ freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 ios: arch = ios-$$QMAKE_TARGET.arch
 wasm: arch = wasm-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
+message(arch $$arch)
 
 # uncomment the next to open windows console to display qDebug() messages
 # win32:CONFIG += console
@@ -262,7 +271,7 @@ HEADERS += \
  ../lib/base/base.h ../lib/base/bedit.h ../lib/base/comp.h ../lib/base/dialog.h ../lib/base/dirm.h ../lib/base/dlog.h \
  ../lib/base/fif.h ../lib/base/fiw.h ../lib/base/jsvr.h ../lib/base/menu.h \
  ../lib/base/nedit.h ../lib/base/nmain.h ../lib/base/note.h ../lib/base/nside.h ../lib/base/ntabs.h \
- ../lib/base/plaintextedit.h \
+ ../lib/base/plaintextedit.h ../lib/base/pcombobox.h \
  ../lib/base/pnew.h ../lib/base/proj.h ../lib/base/psel.h ../lib/base/qmlje.h ../lib/base/recent.h ../lib/base/rsel.h \
  ../lib/base/snap.h ../lib/base/spic.h ../lib/base/state.h ../lib/base/style.h ../lib/base/svr.h \
  ../lib/base/tedit.h ../lib/base/term.h ../lib/base/textedit.h ../lib/base/util.h ../lib/base/utils.h ../lib/base/qtstate.h \
@@ -282,6 +291,7 @@ HEADERS += \
  ../lib/wd/webengineview.h ../lib/wd/webview.h ../lib/wd/quickview1.h ../lib/wd/quickview2.h ../lib/wd/quickwidget.h \
  ../lib/wd/qwidget.h ../lib/wd/scrollarea.h ../lib/wd/scrollbar.h ../lib/wd/gl2class.h ../lib/wd/drawobj.h \
  ../lib/wd/multimedia.h ../lib/wd/svgview.h ../lib/wd/svgview2.h
+android:HEADERS += ../lib/base/androidextras.h ../lib/base/qtjni.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= ../lib/wd/ogl2.h ../lib/wd/opengl.h ../lib/wd/opengl2.h
 contains(DEFINES,QT_NO_WEBKIT): HEADERS -= ../lib/wd/webview.h
@@ -307,7 +317,7 @@ SOURCES += \
  ../lib/base/fif.cpp ../lib/base/fifx.cpp ../lib/base/fiw.cpp ../lib/base/jsvr.cpp \
  ../lib/base/menu.cpp ../lib/base/menuhelp.cpp \
  ../lib/base/nedit.cpp ../lib/base/nmain.cpp ../lib/base/note.cpp ../lib/base/nside.cpp ../lib/base/ntabs.cpp \
- ../lib/base/plaintextedit.cpp \
+ ../lib/base/plaintextedit.cpp ../lib/base/pcombobox.cpp \
  ../lib/base/pnew.cpp ../lib/base/proj.cpp ../lib/base/psel.cpp ../lib/base/qmlje.cpp \
  ../lib/base/recent.cpp ../lib/base/rsel.cpp ../lib/base/run.cpp \
  ../lib/base/snap.cpp ../lib/base/spic.cpp ../lib/base/state.cpp ../lib/base/statex.cpp \
@@ -331,6 +341,7 @@ SOURCES += \
  ../lib/wd/webengineview.cpp ../lib/wd/webview.cpp ../lib/wd/quickview1.cpp ../lib/wd/quickview2.cpp ../lib/wd/quickwidget.cpp \
  ../lib/wd/qwidget.cpp ../lib/wd/scrollarea.cpp ../lib/wd/scrollbar.cpp ../lib/wd/drawobj.cpp \
  ../lib/wd/multimedia.cpp ../lib/wd/svgview.cpp ../lib/wd/svgview2.cpp
+android:SOURCES += ../lib/base/androidextras.cpp ../lib/base/qtjni.cpp
 
 contains(DEFINES,QT_NO_OPENGL): SOURCES -= ../lib/wd/ogl2.cpp ../lib/wd/opengl.cpp ../lib/wd/opengl2.cpp
 contains(DEFINES,QT_NO_WEBKIT): SOURCES -= ../lib/wd/webview.cpp
@@ -382,7 +393,7 @@ include(../ios_signature.pri)
 # Note for devices: 1=iPhone, 2=iPad, 1,2=Universal.
 QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1,2
 }
-wasm{
+wasm {
 LIBS -= -ldl
 DEFINES += WDCB
 DEFINES += ONEEVENTLOOP
@@ -394,6 +405,38 @@ QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
 QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1
 # QMAKE_LFLAGS += --preload-file ../jlibrary/ --preload-file ../test/
+}
+android {
+!contains(DEFINES,QT62): error(requires Qt6.2)
+CONFIG += mobility
+ANDROID_TARGET_SDK_VERSION = 23
+ANDROID_TARGET_ARCH = $$(ABI)
+
+ANDROID_EXTRA_LIBS += $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libgmp.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libjpcre2.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libtsdll.so
+LIBS += $$PWD/../android/lib/$$ANDROID_TARGET_ARCH/libj.a
+
+message(ANDROID_EXTRA_LIBS  $$ANDROID_EXTRA_LIBS)
+message(LIBS  $$LIBS)
+DEPLOYMENTFOLDERS += assets 
+
+QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/6.6.1/android_$$ANDROID_TARGET_ARCH/src/android
+message(QT_ANDROID_PACKAGE_SOURCE_DIR $$QT_ANDROID_PACKAGE_SOURCE_DIR)
+
+equals(ANDROID_TARGET_ARCH  , arm64-v8a ): QMAKE_CXXFLAGS += -march=armv8-a+crc
+equals(ANDROID_TARGET_ARCH  , armeabi-v7a ): QMAKE_CXXFLAGS += -march=armv7-a -mfloat-abi=softfp
+equals(ANDROID_TARGET_ARCH  , x86_64 ): QMAKE_CXXFLAGS += -march=x86-64 -msse4.2
+equals(ANDROID_TARGET_ARCH  , x86 ): QMAKE_CXXFLAGS += -march=i686 -mssse3 -mfpmath=sse
+QMAKE_LFLAGS += -fopenmp -static-openmp
+
+QT += opengl
+DEFINES += QT_OPENGL_ES_2
+DEFINES += WDCB
+DEFINES += ONEEVENTLOOP
+DEFINES += NMDIALOG
+DEFINES += QT_NO_PRINTER
+DEFINES += SMALL_SCREEN
+RESOURCES += ../jlibrary.qrc
+RESOURCES += ../test.qrc
 }
 win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS

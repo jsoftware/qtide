@@ -10,7 +10,7 @@
 #endif
 
 class QCheckBox;
-class QComboBox;
+class PComboBox;
 class QLabel;
 class QListWidget;
 class QListWidgetItem;
@@ -33,6 +33,10 @@ private slots:
   void on_nameonly_clicked();
   void on_regex_clicked();
   void on_subdir_clicked();
+#ifdef Q_OS_ANDROID
+  void on_view_clicked();
+  void on_cancel_clicked();
+#endif
 
 private:
 
@@ -44,6 +48,7 @@ private:
   void read();
   void refresh();
   void reject();
+  void keyReleaseEvent(QKeyEvent *e);
   QList<int> removedups(QList<int> n);
   void research();
   void search();
@@ -66,12 +71,16 @@ private:
   QCheckBox *regex;
   QCheckBox *subdir;
 
-  QComboBox *searchfor;
-  QComboBox *infolder;
-  QComboBox *filetypes;
+  PComboBox *searchfor;
+  PComboBox *infolder;
+  PComboBox *filetypes;
 
   QListWidget *found;
   QPushButton *find;
+#ifdef Q_OS_ANDROID
+  QPushButton *view;
+  QPushButton *cancel;
+#endif
 
   QList<int>Pos;
 

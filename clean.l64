@@ -18,6 +18,10 @@ rm -rf $S/amalgam/jqta.xcodeproj
 elif [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
 rm -rf $S/bin/wasm-wasm32
 rm -rf $S/amalgam/build/wasm-wasm32
+elif [ "$QMAKESPEC" = "android-clang" ] ; then
+rm -rf $S/amalgam/build/android-$ABI
+rm -rf $S/amalgam/android-build/libs/$ABI/libjqta_$ABI.so
+rm -rf $S/android-build/libs/$ABI/libjqta_$ABI.so
 else
 if [ "$CPU" = "arm64" ] ; then
 CPU=aarch64

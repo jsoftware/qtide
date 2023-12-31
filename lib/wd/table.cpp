@@ -1,7 +1,6 @@
 
 #include <QBoxLayout>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QHeaderView>
 #include <QTableWidget>
 #include <QPushButton>
@@ -12,6 +11,7 @@
 #include "pane.h"
 #include "table.h"
 #include "wd.h"
+#include "../base/pcombobox.h"
 #include "../base/plaintextedit.h"
 #include "../base/state.h"
 
@@ -275,7 +275,7 @@ std::string Table::readcell(int row,int col)
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
-    return (!g)?"":i2s(((QComboBox *)g)->currentIndex());
+    return (!g)?"":i2s(((PComboBox *)g)->currentIndex());
   else
     return "";
 }
@@ -294,7 +294,7 @@ std::string Table::readcellvalue(int row,int col)
   else if (100==celltype[p])
     return (!g)?"":((QCheckBox *)g)->isChecked()?"1":"0";
   else if ((200==celltype[p]) || (300==celltype[p]))
-    return (!g)?"":q2s(((QComboBox *)g)->currentText());
+    return (!g)?"":q2s(((PComboBox *)g)->currentText());
   else
     return "";
 }
@@ -608,6 +608,9 @@ void Table::set_cell(int r,int c,QString v)
     if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
       QCheckBox *cb=new QCheckBox();
+#ifdef Q_OS_ANDROID
+      cb->setStyleSheet(checkboxstyle(20*DM_density));
+#endif
       cb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) cb;
       QWidget *m=new QWidget();
@@ -629,9 +632,9 @@ void Table::set_cell(int r,int c,QString v)
   } else if ((200==celltype[p]) || (300==celltype[p])) {
     if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];
-    if (!(g && QString("QComboBox")==g->metaObject()->className())) {
+    if (!(g && QString("PComboBox")==g->metaObject()->className())) {
       if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
-      QComboBox *cm=new QComboBox();
+      PComboBox *cm=new PComboBox();
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
         cm->setEditable(true);
@@ -650,16 +653,16 @@ void Table::set_cell(int r,int c,QString v)
     dat= qsplit(q2s(v));
     if (1==dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
-      ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
+      ((PComboBox *)cellwidget[p])->setCurrentIndex(cmind);
       return;
     }
     if (1<dat.size() && isint(q2s(dat.at(0)))) {
       cmind=c_strtoi(q2s(dat.at(0)));
       dat.removeFirst();
     }
-    ((QComboBox *)cellwidget[p])->clear();
-    ((QComboBox *)cellwidget[p])->addItems(dat);
-    ((QComboBox *)cellwidget[p])->setCurrentIndex(cmind);
+    ((PComboBox *)cellwidget[p])->clear();
+    ((PComboBox *)cellwidget[p])->addItems(dat);
+    ((PComboBox *)cellwidget[p])->setCurrentIndex(cmind);
   } else if (400==celltype[p]) {
     if (w->item(r,c)) delete w->item(r,c);
     QWidget *g=cellwidget[p];

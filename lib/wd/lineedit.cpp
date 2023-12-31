@@ -17,6 +17,12 @@ void LineEdit::keyPressEvent(QKeyEvent *event)
   int key1=0;
   int key=event->key();
   if (ismodifier(key)) return;
+#ifdef Q_OS_ANDROID
+  if (key==Qt::Key_Back) {
+    QLineEdit::keyPressEvent(event);
+    return;
+  }
+#endif
   if (!(event->modifiers() & Qt::CTRL) && !(event->modifiers() & Qt::SHIFT)) {
     switch (key) {
     case Qt::Key_Enter:

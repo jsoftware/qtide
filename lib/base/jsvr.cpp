@@ -30,10 +30,15 @@
 #include <emscripten/emscripten.h>
 #endif
 
+#ifdef Q_OS_ANDROID
+#include <QDir>
+#include <sys/stat.h>
+extern QString AndroidPackage;
+#endif
 void * hjdll=0;
 
 static char pathetcpx[PLEN];
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM) && !defined(Q_OS_ANDROID)
 static char pathexec0[PLEN];
 static char pathexec[PLEN];
 #endif
@@ -69,9 +74,11 @@ static JGetLocaleType jgetlocale;
 static JSetAType jseta;
 
 extern QString LibName;
-bool FHS;
+bool FHS=false;
 bool standAlone=false;
 QString documentsPath;
+QString homePath;
+QString installPath;
 
 // ---------------------------------------------------------------------
 void addargv(int argc, char* argv[], C* d)
@@ -139,12 +146,7 @@ void* jehjdll()
 // load JE, Jinit, getprocaddresses, JSM
 JS jeload(void* callbacks)
 {
-#if defined(Q_OS_IOS)
-  documentsPath=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#else
-  documentsPath=QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-#endif
-#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM) || defined(Q_OS_ANDROID)
   jt=JInit();
   if (!jt) return 0;
   JSM(jt,(void**)callbacks);
@@ -155,29 +157,6 @@ JS jeload(void* callbacks)
   jgeta=JGetA;
   jgetlocale=JGetLocale;
   jseta=JSetA;
-  bool overwrite=true;
-  QFile f(documentsPath+"/build.txt");
-  if(f.exists()) {
-    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
-      QTextStream in(&f);
-      int oldver = in.readLine().split(" ")[0].toInt();
-      if (oldver>=QString(BUILD_VERSION).toInt()) overwrite=false;
-      f.close();
-    }
-  }
-  if(overwrite) {
-    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
-      QTextStream out(&f);
-      out << BUILD_VERSION << Qt::endl;
-      f.close();
-    }
-    QDir(documentsPath+"/j/bin").removeRecursively();
-    QDir(documentsPath+"/j/system").removeRecursively();
-    QDir(documentsPath+"/j/addons/ide/qt").removeRecursively();
-    copyDirectoryNested(":/j/jlibrary",q2s(documentsPath+"/j").c_str());
-    QDir(documentsPath+"/j/test").removeRecursively();
-    copyDirectoryNested(":/jtest",q2s(documentsPath+"/j").c_str());
-  }
   return jt;
 #elif defined(_WIN32)
   WCHAR wpath[PLEN];
@@ -220,7 +199,7 @@ void jepath(char* arg, char* lib)
 {
   Q_UNUSED(arg);
 
-#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM) || defined(Q_OS_ANDROID)
   path[0]=0;
 #elif defined(_WIN32)
   WCHAR wpath[PLEN];
@@ -279,42 +258,47 @@ void jepath(char* arg, char* lib)
   if ('/'==*snk) *snk=0;
 #endif
 
+#if defined(Q_OS_ANDROID)
+  strcpy(pathdll,JDLLNAME);
+  strcat(pathdll,JDLLEXT);
+#else
   strcpy(pathdll,path);
   strcat(pathdll,filesepx);
   strcat(pathdll,JDLLNAME);
   strcat(pathdll,JDLLEXT);
+#endif
 
-#if !defined(_WIN32) && !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(_WIN32) && !defined(Q_OS_IOS) && !defined(Q_OS_WASM) && !defined(Q_OS_ANDROID)
   if(stat(pathdll,&st)||strncmp(pathexec0,"/usr/bin/",9)||strncmp(pathexec0,"/usr/local/bin/",15)||strncmp(pathexec0,"/opt/homebrew/bin/",18)) {
     char pathpx[PLEN];
     if('/'==*pathexec) {
       if(!strncmp(pathexec,"/opt/homebrew/bin/",strlen("/opt/homebrew/bin/"))) {
-        FHS=1;
+        FHS=true;
         strcat(pathetcpx,"/opt/homebrew");
       } else if(!strncmp(pathexec,"/usr/local/bin/",strlen("/usr/local/bin/"))) {
-        FHS=1;
+        FHS=true;
         strcat(pathetcpx,"/usr/local");
       } else if(!strncmp(pathexec,"/usr/bin/",strlen("/usr/bin/"))) {
-        FHS=1;
+        FHS=true;
         pathetcpx[0]=0;
       }
     } else {
       strcpy(pathpx,"/opt/homebrew/bin/");
       strcat(pathpx,pathexec);
       if(!stat(pathpx,&st)) {
-        FHS=1;
+        FHS=true;
         strcat(pathetcpx,"/opt/homebrew");
       } else {
         strcpy(pathpx,"/usr/local/bin/");
         strcat(pathpx,pathexec);
         if(!stat(pathpx,&st)) {
-          FHS=1;
+          FHS=true;
           strcat(pathetcpx,"/usr/local");
         } else {
           strcpy(pathpx,"/usr/bin/");
           strcat(pathpx,pathexec);
           if(!stat(pathpx,&st)) {
-            FHS=1;
+            FHS=true;
             pathetcpx[0]=0;
           }
         }
@@ -379,10 +363,63 @@ void jefail(char* msg)
 int jefirst(int type,char* arg)
 {
   int r;
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM) && !defined(Q_OS_ANDROID)
   char* p,*q;
 #endif
   char* input=(char *)malloc(2000+strlen(arg));
+
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM) || defined(Q_OS_ANDROID)
+  bool overwrite=true;
+  documentsPath=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+//  documentsPath=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).section('/',0,-2);  // up 1 folder level
+  homePath=QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+  qDebug() << "documentsPath " << documentsPath ;
+  qDebug() << "homePath " << homePath ;
+  installPath=homePath + "/j";
+  qDebug() << "installPath " << installPath;
+  QFile f(installPath+"/build.txt");
+  if(f.exists()) {
+    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
+      QTextStream in(&f);
+      int oldver = in.readLine().split(" ")[0].toInt();
+      if (oldver>=QString(BUILD_VERSION).toInt()) overwrite=false;
+      f.close();
+    }
+  }
+  if(1 || overwrite) {
+    if (f.open(QIODevice::ReadWrite | QFile::Text)) {
+      QTextStream out(&f);
+      out << BUILD_VERSION << Qt::endl;
+      f.close();
+    }
+    QDir(installPath+"/bin").removeRecursively();
+    QDir(installPath+"/system").removeRecursively();
+    QDir(installPath+"/addons/ide/qt").removeRecursively();
+#if defined(Q_OS_WASM) || defined(Q_OS_IOS)
+    copyDirectoryNested(":/j/jlibrary",q2s(installPath).c_str());
+    QDir(installPath+"/j/test").removeRecursively();
+    copyDirectoryNested(":/jtest",q2s(installPath).c_str());
+#elif defined(Q_OS_ANDROID)
+    copyDirectoryNested("assets:/jlibrary",q2s(installPath).c_str());
+    QDir::setCurrent(installPath);
+    setenv("HOME",homePath.toUtf8().constData(),1);
+    qDebug() << "j HOME path " << QString::fromUtf8(getenv("HOME"));
+    if(!QFile(homePath+"/tmp").exists())
+      mkdir((homePath+"/tmp").toUtf8().constData(), S_IRWXU | S_IRWXG | S_IRWXO);
+    QFile::setPermissions(homePath+"/tmp",(QFile::Permission)0x7777);
+    setenv("TMPDIR",(homePath+"/tmp").toUtf8().constData(),1);
+    qDebug() << "TMPDIR: " << QString::fromUtf8(getenv("TMPDIR"));
+#endif
+    QDir::setCurrent(installPath);
+    qDebug() << "application current path: " << QDir::currentPath();
+  }
+#endif
+
+  if (QFile("assets:/welcome.ijs").exists()) {
+    QFile("welcome.ijs").remove();
+    QFile("assets:/welcome.ijs").copy("welcome.ijs");
+    QFile::setPermissions("welcome.ijs",(QFile::Permission)0x6644);
+  }
 
   *input=0;
   QFile sprofile(":/standalone/profile.ijs");
@@ -409,7 +446,11 @@ int jefirst(int type,char* arg)
   } else {
     if (0==type) {
       if (!FHS) {
+#if defined(Q_OS_ANDROID)
+        strcat(input,"(3 : '0!:0 y')<INSTALLROOT,'/bin");
+#else
         strcat(input,"(3 : '0!:0 y')<BINPATH,'");
+#endif
       } else {
         strcat(input,"(3 : '0!:0 y')<'");
         strcat(input,pathetcpx);
@@ -440,13 +481,22 @@ int jefirst(int type,char* arg)
   strcat(input,"[UNAME_z_=:'FreeBSD'");
 #elif defined(__OpenBSD__)
   strcat(input,"[UNAME_z_=:'OpenBSD'");
+#elif defined(Q_OS_ANDROID)
+  strcat(input,"[UNAME_z_=:'Android'");
 #else
   strcat(input,"[UNAME_z_=:'Linux'");
 #endif
   strcat(input,"[BINPATH_z_=:'");
-#if defined(Q_OS_IOS) || defined(Q_OS_WASM)
-  strcat(input,q2s(documentsPath).c_str());
-  strcat(input,"/j/bin");
+#if defined(Q_OS_IOS) || defined(Q_OS_WASM) || defined(Q_OS_ANDROID)
+  strcat(input,q2s(installPath+"/bin").c_str());
+  strcat(input,"'");
+  strcat(input,"[INSTALLROOT_z_=:'");
+  strcat(input,q2s(installPath).c_str());
+#if defined(Q_OS_ANDROID)
+  strcat(input,"'");
+  strcat(input,"[AndroidPackage_z_=:'");
+  strcat(input,q2s(AndroidPackage).c_str());
+#endif
 #else
   if(!FHS) {
     p=path;
@@ -467,7 +517,7 @@ int jefirst(int type,char* arg)
   strcat(input,"'");
 
   strcat(input,"[LIBFILE_z_=:'");
-#if !defined(JAMALGAM) && !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM) && !defined(Q_OS_ANDROID)
   p=pathdll;
   q=input+strlen(input);
   while (*p) {
@@ -490,11 +540,11 @@ int jefirst(int type,char* arg)
   strcat(input,isRetina?"1":"0");
 #endif
   strcat(input,"[libjqt_z_=:'");
-  strcat(input,LibName.toUtf8().constData());
+  strcat(input,q2s(LibName).c_str());
   strcat(input,"'");
+  qDebug() << "j first line" << QString(input);
   r=jedo(input);
   if (r) {
-    qDebug() << QString(input);
     qDebug() << "j first line error: " << QString::number(r);
   }
   free(input);

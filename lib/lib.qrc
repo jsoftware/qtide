@@ -17,5 +17,6 @@
 <file>images/undo.png</file>
 <file>images/view-refresh.png</file>
 <file>images/jgreen.png</file>
+<file>standalone/profile.ijs</file>
 </qresource>
 </RCC>

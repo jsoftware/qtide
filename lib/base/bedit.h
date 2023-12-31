@@ -40,6 +40,13 @@ public:
 
   int type;
 
+#ifdef Q_OS_ANDROID
+  QTextCursor cu0;
+public slots:
+  void copy();
+  void cut();
+#endif
+
 protected:
 #ifdef TABCOMPLETION
   void keyPressEvent(QKeyEvent *e);

@@ -183,6 +183,9 @@ bool Pane::addchild(std::string n,std::string c,std::string p)
   }
   Q_ASSERT(child);
   if (fontdef && child->widget) child->widget->setFont(fontdef->font);
+#ifdef Q_OS_ANDROID
+  if (!fontdef && child->widget) child->widget->setFont(QApplication::font());
+#endif
   layout->addWidget(child->widget);   // must call even if widget==0
   child->setmaxwh(maxsizew,maxsizeh);
   child->setminwh(minsizew,minsizeh);

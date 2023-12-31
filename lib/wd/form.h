@@ -94,11 +94,18 @@ protected:
   void changeEvent(QEvent *);
   void closeEvent(QCloseEvent *);
   void keyPressEvent(QKeyEvent *e);
+  void keyReleaseEvent(QKeyEvent *e);
   void resizeEvent(QResizeEvent *event);
 
 private slots:
+#ifdef Q_OS_ANDROID
+  void backButtonTimer();
+#endif
 
 private:
+#ifdef Q_OS_ANDROID
+  bool backButtonPressed;
+#endif
   bool closeok;
   bool escclose;
   std::string fakeid;

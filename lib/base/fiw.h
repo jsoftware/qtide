@@ -4,7 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
-class QComboBox;
+class PComboBox;
 class QLabel;
 class QListWidget;
 
@@ -30,11 +30,16 @@ private slots:
   void on_replace_clicked();
   void on_replaceforward_clicked();
   void on_undolast_clicked();
+#ifdef Q_OS_ANDROID
+  void on_view_clicked();
+  void on_cancel_clicked();
+#endif
 
 private:
   bool eventFilter(QObject *, QEvent *);
   void finfo(QString s);
   void keyPressEvent(QKeyEvent *);
+  void keyReleaseEvent(QKeyEvent *);
   void open_replace();
   void read();
   void readtext();
@@ -61,8 +66,8 @@ private:
   QCheckBox *matchcase;
   QCheckBox *assigned;
   QCheckBox *nameonly;
-  QComboBox *searchfor;
-  QComboBox *replaceby;
+  PComboBox *searchfor;
+  PComboBox *replaceby;
   QLabel *lsearchfor;
   QLabel *lreplaceby;
   QListWidget *flist;
@@ -72,6 +77,10 @@ private:
   QPushButton *replace;
   QPushButton *replaceforward;
   QPushButton *undolast;
+#ifdef Q_OS_ANDROID
+  QPushButton *view;
+  QPushButton *cancel;
+#endif
 
   QList<int>Pos;
 

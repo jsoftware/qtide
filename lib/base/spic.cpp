@@ -1,5 +1,4 @@
 #include <QBoxLayout>
-#include <QComboBox>
 #include <QDate>
 #include <QFormLayout>
 #include <QLabel>
@@ -11,6 +10,7 @@
 #include "comp.h"
 #include "eview.h"
 #include "note.h"
+#include "pcombobox.h"
 #include "plaintextedit.h"
 #include "recent.h"
 #include "snap.h"
@@ -234,6 +234,18 @@ void Picm::reject()
 {
   closeit();
   QDialog::reject();
+}
+
+// ---------------------------------------------------------------------
+void Picm::keyReleaseEvent(QKeyEvent *event)
+{
+#ifdef Q_OS_ANDROID
+  if (event->key()==Qt::Key_Back) {
+    reject();
+  } else QDialog::keyReleaseEvent(event);
+#else
+  QDialog::keyReleaseEvent(event);
+#endif
 }
 
 // ---------------------------------------------------------------------

@@ -13,6 +13,9 @@ CheckBox::CheckBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f
 {
   type="checkbox";
   QCheckBox *w=new QCheckBox;
+#ifdef Q_OS_ANDROID
+  w->setStyleSheet(checkboxstyle(20*DM_density));
+#endif
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);

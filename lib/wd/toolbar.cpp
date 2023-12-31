@@ -9,6 +9,10 @@
 #include "toolbar.h"
 #include "wd.h"
 
+#ifdef Q_OS_ANDROID
+extern float DM_density;
+#endif
+
 // ---------------------------------------------------------------------
 ToolBar::ToolBar(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {

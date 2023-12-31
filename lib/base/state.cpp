@@ -21,6 +21,10 @@
 #include <QSettings>
 #include <QSyntaxHighlighter>
 #include <QTemporaryFile>
+#ifdef Q_OS_ANDROID
+#include <QDirIterator>
+#include <QFontDatabase>
+#endif
 #include <QPoint>
 #include <QSize>
 #include <QScreen>
@@ -49,6 +53,15 @@ Drawobj *drawobj;
 Prtobj *prtobj;
 #endif
 
+#ifdef Q_OS_ANDROID
+#include <jni.h>
+extern "C" void javaOnLoad(JavaVM * vm, JNIEnv * env);
+QString AndroidPackage;
+extern "C" void android_getdisplaymetrics();
+extern int DM_heightPixels;
+extern int DM_widthPixels;
+int androidVfuncPos=2;
+#endif
 #if !(defined(QT_NO_QUICKVIEW1)&&defined(QT_NO_QUICKVIEW2)&&defined(QT_NO_QUICKWIDGET))
 #include "qmlje.h"
 QmlJE qmlje;
@@ -149,6 +162,11 @@ void Config::folder_init()
 // run before svr init
 void Config::ini0()
 {
+#ifdef Q_OS_ANDROID
+  android_getdisplaymetrics();
+  ScreenWidth=DM_widthPixels;
+  ScreenHeight=DM_heightPixels;
+#endif
 #if defined(QT57)
   QRect screenGeometry = app->primaryScreen()->geometry();
 #else
@@ -294,6 +312,11 @@ void Config::initide()
   QString filemanager="nautilus";
   QString terminal="gnome-terminal";
 
+#ifdef Q_OS_ANDROID
+  font="Droid Sans Mono";
+  fontsize=16;
+  terminal="";
+#endif
 #ifdef __APPLE__
   filemanager="open";
   font="Menlo";
@@ -306,6 +329,15 @@ void Config::initide()
   terminal="cmd";
 #endif
 
+#ifdef Q_OS_ANDROID
+  QDirIterator dir("assets:/fonts", QDir::Files, QDirIterator::Subdirectories);
+  while(dir.hasNext()) {
+    dir.next();
+    QFontDatabase::addApplicationFont(dir.fileInfo().absoluteFilePath());
+  }
+  QStringList ff = s->value("Session/FontFile",FontFile).toString().split(":",Qt::SkipEmptyParts);
+  foreach (QString f,ff) QFontDatabase::addApplicationFont(ConfigPath.filePath(f));
+#endif
 #ifdef TABCOMPLETION
   Completion = s->value("Session/Completion",false).toBool();
   CompletionFile = s->value("Session/CompletionFile","stdlib.txt").toString();
@@ -384,6 +416,9 @@ void Config::initide()
   temp.close();
 #endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
+#ifdef Q_OS_ANDROID
+  s->setValue("Session/FontFile",FontFile);
+#endif
 #ifdef TABCOMPLETION
   s->setValue("Session/Completion",Completion);
   s->setValue("Session/CompletionFile",CompletionFile);
@@ -558,6 +593,9 @@ QList<int> Config::initposX(QList<int> p, QList<int> d)
 // ---------------------------------------------------------------------
 void Config::noprofile()
 {
+#ifdef Q_OS_ANDROID
+  FontFile = "";
+#endif
 #ifdef TABCOMPLETION
   Completion = false;
   CompletionFile = "stdlib.txt";
@@ -566,8 +604,13 @@ void Config::noprofile()
   ConfirmSave = false;
   DebugDissect = false;
   Font.setStyleHint(QFont::TypeWriter);
+#ifdef Q_OS_ANDROID
+  Font.setFamily("Droid Sans Mono");
+  Font.setPointSize(16);
+#else
   Font.setFamily("Monospace");
   Font.setPointSize(12);
+#endif
   TermBack.color = QColor("mistyrose");
   TermFore.color = QColor("black");
   TermHigh.color = QColor("gainsboro");
@@ -754,6 +797,33 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
 
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
+#ifdef Q_OS_ANDROID
+  LibName=QCoreApplication::applicationFilePath();
+// assume LibName is in the following formats
+//      /data/data/com.jsoftware.android.qtide/lib/libjqt.so
+//  4.3 /data/app-lib/com.jsoftware.android.qtide-1/libjqt.so
+//      /mnt/asec/com.jsoftware.android.qtide-2/lib/libjq.so
+  qDebug() << "LibName" << LibName;
+  QStringList p=LibName.split("/");
+  qDebug()<<p;
+  AndroidPackage = p.at(3);
+  int p1;
+  if (-1!=(p1=AndroidPackage.lastIndexOf("-")))
+    AndroidPackage=AndroidPackage.mid(0,p1);
+  qDebug() << "AndroidPackage" << AndroidPackage;
+// symlink of libjqt.so under /data/data
+  LibName="/data/data/" + AndroidPackage + "/lib/libjqt.so";
+  android_getdisplaymetrics();
+#endif
+  if (FHS) {
+#ifdef _WIN32
+    jdllver=LibName.mid(5+LibName.lastIndexOf(".dll."));
+#elif defined(__MACH__)
+    jdllver=LibName.mid(8+LibName.indexOf("/libjqt."),LibName.length()-LibName.lastIndexOf(".dylib")-2);
+#else
+    QString jdllver=LibName.mid(4+LibName.lastIndexOf(".so."));
+#endif
+  }
 #if !defined(QT515)
 #ifdef QTWEBSOCKET
   qsrand(QDateTime::currentMSecsSinceEpoch());
@@ -771,7 +841,14 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   regQmlJE();
 #endif
 #endif
+#ifdef Q_OS_ANDROID
+  if (AndroidPackage=="org.qtproject.example.jqta")
+    showide(true);
+  else
+    showide(false);
+#else
   if ((!ShowIde) && Forms.isEmpty()) return 0;
+#endif
   term->fini();
   return 0;
 }

@@ -177,3 +177,25 @@ void TextEdit::settabwidth()
     w=config.TabWidth * QFontMetrics(font()).averageCharWidth();
   setTabStopWidth(w);
 }
+
+#ifdef Q_OS_ANDROID
+// ---------------------------------------------------------------------
+void TextEdit::copy()
+{
+  QTextCursor cu = textCursor();
+  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
+  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
+  setTextCursor(cu);
+  QTextEdit::copy();
+}
+
+// ---------------------------------------------------------------------
+void TextEdit::cut()
+{
+  QTextCursor cu = textCursor();
+  cu.setPosition(cu.position(),QTextCursor::MoveAnchor);
+  cu.setPosition(cu0.position(),QTextCursor::KeepAnchor);
+  setTextCursor(cu);
+  QTextEdit::cut();
+}
+#endif
