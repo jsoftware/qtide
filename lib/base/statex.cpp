@@ -242,10 +242,10 @@ void Config::winpos_save1(QList<int>d,QString id,QString group)
 {
   QString r;
   r.append(
-     QString::number(d[0]) + " " +
-     QString::number(d[1]) + " " +
-     QString::number(d[2]) + " " +
-     QString::number(d[3]));
+    QString::number(d[0]) + " " +
+    QString::number(d[1]) + " " +
+    QString::number(d[2]) + " " +
+    QString::number(d[3]));
   QSettings s(ConfigPath.filePath("winpos.dat"),QSettings::IniFormat);
   if (group.length() == 0) {
     WinPos[id]=d;

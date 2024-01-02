@@ -23,7 +23,7 @@ Edit::Edit(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   widget=(QWidget*) w;
   QString qn=s2q(n);
   QStringList opt=qsplit(s);
-  if (invalidopt(n,opt,"password readonly left right center uppercase")) return;
+  if (invalidopt(n,opt,"password readonly clearbutton left right center uppercase")) return;
   if (1<(opt.contains("left")?1:0) + (opt.contains("right")?1:0) + (opt.contains("center")?1:0)) {
     error("conflicting child style: " + n + " " + q2s(opt.join(" ")));
     return;
@@ -39,6 +39,9 @@ Edit::Edit(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 
   if (opt.contains("readonly"))
     w->setReadOnly(true);
+
+  if (opt.contains("clearbutton"))
+    w->setClearButtonEnabled(true);
 
   if (opt.contains("left"))
     w->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
