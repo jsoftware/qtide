@@ -115,6 +115,6 @@ macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
 linux*:!isEmpty(JQTRPATH) {
 QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
 }
-!isEmpty($$QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
+!isEmpty(QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
 
 win32:RC_FILE = jqt.rc
