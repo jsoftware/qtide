@@ -2,9 +2,7 @@ name: JQtide
 
 on:
  push:
-  branches:
-   - master
-   - main
+  branches: [ 9.5 ]
 
 # if: ${{ false }}
 
@@ -30,7 +28,7 @@ jobs:
    - name: Release Tarball
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "qtide.zip,qtide.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -55,7 +53,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz,version.txt"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -88,7 +86,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-mac.zip,jqt-mac-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -128,7 +126,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -168,7 +166,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-raspberry-arm32.tar.gz,jqt-raspberry-arm32-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -209,7 +207,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-openbsd.tar.gz,jqt-openbsd-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -251,7 +249,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-freebsd.tar.gz,jqt-freebsd-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -292,7 +290,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-freebsd.tar.gz,jqt-freebsd-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -329,7 +327,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-win.zip,jqt-win-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -410,7 +408,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-wasm-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
@@ -489,7 +487,7 @@ jobs:
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
-      tag: build
+      tag: build95
       artifacts: "jqt-ios-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
