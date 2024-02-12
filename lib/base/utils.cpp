@@ -6,9 +6,10 @@
 #include <QCryptographicHash>
 #include <QDirIterator>
 #include <QEventLoop>
+#include <QFileDialog>
 #include <QFont>
 #include <QPoint>
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
 #include <QProcess>
 #endif
 #include <QUrl>
@@ -347,7 +348,7 @@ void gitgui(QString path)
 {
   Q_UNUSED(path);
   if (config.ifGit) {
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
     QProcess p;
     p.startDetached("git",QStringList() << "gui",path);
 #endif
@@ -462,9 +463,45 @@ QString newtempscript()
 // ---------------------------------------------------------------------
 void openfile(QWidget *w,QString type)
 {
+#ifndef NMDIALOG
   QString f = dialogfileopen(w,type);
   if (f.isEmpty()) return;
   openfile1(f);
+#else
+  QString d;
+  if (type=="open")
+    d=getfilepath();
+  else if (type=="addons")
+    d=config.AddonsPath.absolutePath();
+  else if (type=="current")
+    d=jcon->cmdr("1!:43''");
+  else if (type=="home")
+    d=config.HomePath.absolutePath();
+  else if (type=="last") {
+    d=cfpath(config.LastFileOpen);
+    if (d.isEmpty())
+      d=config.TempPath.absolutePath();
+  } else if (type=="system")
+    d=config.SystemPath.absolutePath();
+  else if (type=="temp")
+    d=config.TempPath.absolutePath();
+  else if (type=="user")
+    d=config.UserPath.absolutePath();
+  else if (config.AppName=="jqt")
+    d=config.SystemPath.absolutePath();
+  else
+    d=cpath("~qhome");
+//  return QFileDialog::getOpenFileName(w,t,d,config.FilePatterns);
+  QFileDialog *dlg=new QFileDialog(w,type,d,config.FilePatterns);
+  dlg->setFileMode(QFileDialog::ExistingFile);
+  dlg->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+  QObject::connect(dlg, &QFileDialog::fileSelected, w, [dlg](QString f) {
+    if (f.isEmpty()) return;
+    openfile1(f);
+    dlg->deleteLater();
+  });
+  dlg->show();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -518,7 +555,7 @@ void projectfilemanager()
     info("FileManager","The FileManager command should be defined in qtide.cfg.");
     return;
   }
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -572,7 +609,7 @@ void projectterminal()
     info("Terminal","The Terminal command should be defined in qtide.cfg.");
     return;
   }
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
   QString d;
   if (project.Id.isEmpty()) {
     if (note->editIndex()<0)
@@ -642,7 +679,7 @@ QStringList shell(QString cmd, QString dir)
   Q_UNUSED(cmd);
   Q_UNUSED(dir);
   QStringList r=QStringList();
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
   QProcess p;
   if (!dir.isEmpty())
     p.setWorkingDirectory(dir);
@@ -861,7 +898,7 @@ void xdiff(QString s,QString t)
     info("External Diff","First define XDiff in the config");
     return;
   }
-#if !defined(Q_OS_IOS) && !defined(Q_OS_WASM)
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
   QStringList a;
   a << s << t;
   QProcess p;

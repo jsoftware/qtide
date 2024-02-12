@@ -58,6 +58,7 @@ public:
   std::string getsysmodifiers();
   std::string getsysmodifiers(Qt::KeyboardModifiers);
   std::string getfocus();
+  void qmessagebox(std::string s,std::string t);
 
   bool closed;
   int maxvisibleitems;

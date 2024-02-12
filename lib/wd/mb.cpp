@@ -58,6 +58,8 @@
 #include "../base/dialog.h"
 #include "../base/state.h"
 
+extern Form *form;
+
 QString mb(std::string,std::string);
 static QString mbabout();
 static QString mbcolor();
@@ -127,7 +129,7 @@ QString mb(std::string c,std::string p)
 // ---------------------------------------------------------------------
 QString mbmsg()
 {
-  int r;
+  int r=0;
   QString t,m;
 
   QMessageBox::StandardButton button1=getdefaultbutton();
@@ -153,15 +155,61 @@ QString mbmsg()
   buttons|=button1;
 
   if (type=="query") {
+#ifndef NMDIALOG
     r=QMessageBox::question(getmbparent(),t,m,buttons,defbutton);
+#else
+    {
+      QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Question,t, m, buttons, getmbparent());
+      message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+      QObject::connect(message, &QDialog::finished, getmbparent(), [message,t](int r) {
+//    qDebug() << "query result" << getname(r);
+        if(form)form->qmessagebox(q2s(getname(r)),q2s(t));
+        message->deleteLater();
+      });
+      message->show();
+    }
+#endif
     return getname(r);
   }
   if (type=="critical")
+#ifndef NMDIALOG
     QMessageBox::critical(getmbparent(),t,m,buttons,button1);
+#else
+  {
+    QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Critical,t, m, button1, getmbparent());
+    message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+    QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
+      message->deleteLater();
+    });
+    message->show();
+  }
+#endif
   else if (type=="info")
+#ifndef NMDIALOG
     QMessageBox::information(getmbparent(),t,m,buttons,button1);
+#else
+  {
+    QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Information,t, m, button1, getmbparent());
+    message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+    QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
+      message->deleteLater();
+    });
+    message->show();
+  }
+#endif
   else if (type=="warn")
+#ifndef NMDIALOG
     QMessageBox::warning(getmbparent(),t,m,buttons,button1);
+#else
+  {
+    QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Warning,t, m, button1, getmbparent());
+    message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+    QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
+      message->deleteLater();
+    });
+    message->show();
+  }
+#endif
   return "";
 }
 

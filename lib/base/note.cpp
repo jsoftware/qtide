@@ -217,6 +217,8 @@ void Note::keyReleaseEvent(QKeyEvent *event)
 #ifdef Q_OS_ANDROID
   if (event->key() == Qt::Key_Back) {
     term->activate();
+    term->show();
+    hide();
   } else QWidget::keyReleaseEvent(event);
 #else
   QWidget::keyReleaseEvent(event);

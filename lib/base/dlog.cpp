@@ -57,7 +57,11 @@ Slog::Slog()
   b->addWidget(t);
   setLayout(b);
   showlist();
+#ifndef NMDIALOG
   exec();
+#else
+  show();
+#endif
 }
 
 // ---------------------------------------------------------------------

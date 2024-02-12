@@ -673,7 +673,11 @@ Favs::Favs(Dirm *d)
 
   connect(w,SIGNAL(cellActivated(int,int)),
           this,SLOT(cellActivated(int)));
+#ifndef NMDIALOG
   exec();
+#else
+  show();
+#endif
 };
 
 // ---------------------------------------------------------------------

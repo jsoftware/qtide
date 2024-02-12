@@ -1,5 +1,6 @@
 #include <QBoxLayout>
 #include <QCheckBox>
+#include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
@@ -108,9 +109,22 @@ QWidget *Pnew::createscriptspanel()
 // ---------------------------------------------------------------------
 void Pnew::on_browse_clicked()
 {
+#ifndef NMDIALOG
   QString s=dialogdirectory(this,Title,Path);
   if (s.size())
     folder->setText(tofoldername(s)+"/");
+#else
+  QFileDialog *dlg=new QFileDialog(this,Title,Path);
+  dlg->setFileMode(QFileDialog::Directory);
+  dlg->setOption(QFileDialog::ShowDirsOnly);
+  QObject::connect(dlg, &QFileDialog::fileSelected, this, [dlg,this](QString s) {
+    if (s.size())
+      folder->setText(tofoldername(s)+"/");
+    dlg->deleteLater();
+  });
+  dlg->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+  dlg->show();
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -183,5 +197,9 @@ void Pnew::on_create_clicked()
 // ---------------------------------------------------------------------
 bool Pnew::run()
 {
+#ifndef NMDIALOG
   return QDialog::Accepted==exec();
+#else
+  return false;
+#endif
 }

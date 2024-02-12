@@ -27,10 +27,11 @@ void about(QString t,QString s)
   QMessageBox::about(getmbparent(), t, s);
 #else
   QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Information,t, s, QMessageBox::Button::Ok, getmbparent());
-  message->open();
+  message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
   QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
     message->deleteLater();
   });
+  message->show();
 #endif
 }
 
@@ -464,10 +465,15 @@ bool ifshift()
 // ---------------------------------------------------------------------
 void info(QString t,QString s)
 {
-#ifdef Q_OS_ANDROID
-  QMessageBox::about(getmbparent(), t, s);
-#else
+#ifndef NMDIALOG
   QMessageBox::information(getmbparent(), t, s);
+#else
+  QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Information,t, s);
+  message->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+  QObject::connect(message, &QDialog::finished, getmbparent(), [message] {
+    message->deleteLater();
+  });
+  message->show();
 #endif
 }
 

@@ -1231,6 +1231,10 @@ void Note::on_viewsidebarAct_triggered()
 void Note::on_viewterminalAct_triggered()
 {
   term->activate();
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WASM)
+  term->show();
+  if(note&&!config.SingleWin)note->hide();
+#endif
 }
 
 // ---------------------------------------------------------------------

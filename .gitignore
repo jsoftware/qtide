@@ -9,8 +9,8 @@ libs/
 Qt/
 jlibrary/
 test/
-jlibrary
-test
+jlibrary.qrc
+test.qrc
 Release-iphonesimulator/
 Release-iphoneos/
 *.xcodeproj/
@@ -24,8 +24,8 @@ makecdb.sh
 makegem.sh
 makegrid.sh
 makeios.sh
-makewasm.sh
 makemac.sh
+makewasm.sh
 Makefile*
 makeosx.
 makewincdb.sh

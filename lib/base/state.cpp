@@ -706,6 +706,9 @@ int state_fini()
 bool state_init(int argc, char *argv[], uintptr_t stackinit)
 {
   state_init_args(&argc,argv);
+#ifdef Q_OS_WASM
+  config.SingleWin=true;
+#endif
   config.ini0();
   svr_init(argc,argv,stackinit);
   config.init();

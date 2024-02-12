@@ -56,11 +56,18 @@ cd -
 
 else
 
-if [ "$QMAKESPEC" != "android-clang" ] ; then
-cd amalgam
-$QM "$qmflag" && make
+if [ "$QMAKESPEC" = "macx-ios-clang" ] ; then
+cd amalgam && \
+$QM "$qmflag" && make && \
+cd ..
 
-else
+elif [ "$QMAKESPEC" = "wasm-emscripten" ] ; then
+cd amalgam && \
+$QM "$qmflag" && make && \
+cd .. && \
+cp main/jgreen.ico bin/wasm-wasm32/release/favicon.ico
+
+elif [ "$QMAKESPEC" = "android-clang" ] ; then
 
 rm -rf android-build/assets && \
 mkdir -p android-build/assets && \
@@ -78,12 +85,10 @@ $HOME/Qt/$VER/macos/bin/androiddeployqt \
  --android-platform android-22 \
  --release \
  --sign $HOME/.android/release-key.keystore jandroid --storepass $JANDROIDSTOREPASS --keypass $JANDROIDKEYPASS && \
-cd - && \
+cd .. && \
 mkdir -p bin/android-$ABI/release && \
 cp android-build/build/outputs/apk/release/android-build-release-signed.apk bin/android-$ABI/release/jqta.apk
 
 fi
-
-cd -
 
 fi

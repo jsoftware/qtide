@@ -83,7 +83,11 @@ Psel::Psel()
   connect(b, SIGNAL(released()),
           this, SLOT(itemActivated()));
 
+#ifndef NMDIALOG
   exec();
+#else
+  show();
+#endif
 }
 
 // ---------------------------------------------------------------------

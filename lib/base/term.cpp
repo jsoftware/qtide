@@ -46,9 +46,15 @@ QTimer *timer=0;
 OneWin::OneWin()
 {
   note = new Note();
+#ifdef Q_OS_WASM
+  split=new QSplitter(Qt::Horizontal);
+  split->addWidget(makeframe((QWidget *)term));
+  split->addWidget(makeframe((QWidget *)note));
+#else
   split=new QSplitter(Qt::Vertical);
   split->addWidget(makeframe((QWidget *)note));
   split->addWidget(makeframe((QWidget *)term));
+#endif
   QList<int> n;
   n << 0 << 1;
   //split->setSizes(n);
@@ -227,8 +233,21 @@ void Term::fini()
     new OneWin();
   else if (ShowIde)
     show();
+#ifdef Q_OS_WASM
+  if (!config.SingleWin) {
+#if defined(QT57)
+    QRect s=qApp->primaryScreen()->geometry();
+#else
+    QDesktopWidget *d=qApp->desktop();
+    QRect s=d->screenGeometry();
+#endif
+    move(0,0);
+    resize(s.width(),s.height());
+  }
+#else
   if(config.TermPosX.length()>1) move(config.TermPosX[0],config.TermPosX[1]);
   if(config.TermPosX.length()>3) resize(config.TermPosX[2],config.TermPosX[3]);
+#endif
 }
 
 // ---------------------------------------------------------------------
@@ -321,6 +340,10 @@ void Term::vieweditor()
 {
   if (note) {
     note->activate();
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WASM)
+    note->show();
+    if (!config.SingleWin) hide();
+#endif
   } else {
     note = new Note();
     if (recent.ProjectOpen)

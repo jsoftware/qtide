@@ -34,10 +34,15 @@ QString dialogdirectory(QWidget *w,QString t,QString p)
   QFileDialog *d=new QFileDialog(w,t,p);
   d->setFileMode(QFileDialog::Directory);
   d->setOption(QFileDialog::ShowDirsOnly);
+#ifndef NMDIALOG
   if (d->exec())
     return d->selectedFiles().at(0);
   else
     return "";
+#else
+  d->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
+  d->show();
+#endif
 }
 
 // ---------------------------------------------------------------------
