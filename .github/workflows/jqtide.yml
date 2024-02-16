@@ -352,7 +352,7 @@ jobs:
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'qt5compat qtcharts qtdatavis3d qtgrpc qthttpserver qtimageformats qtlottie qtmultimedia qtquick3d qtquick3dphysics qtquicktimeline qtscxml qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebsockets'
+      modules: 'qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview'
       aqtversion: '==3.1.0'
 
    - name: Install Qt from source wasm
@@ -362,11 +362,17 @@ jobs:
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
-      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
+#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
+      modules: 'qt5compat qtcharts qtdatavis3d qtgrpc qthttpserver qtimageformats qtlottie qtmultimedia qtquick3d qtquick3dphysics qtquicktimeline qtscxml qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebsockets'
       aqtversion: '==3.1.5'
 
    - name: Install emsdk
-     uses: mymindstorm/setup-emsdk@v11
+     uses: mymindstorm/setup-emsdk@v14
+     with:
+      version: '3.1.32'
+
+   - name: Verify
+     run: emcc -v
 
    - name: Compile JQtide
      env:
