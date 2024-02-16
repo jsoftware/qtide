@@ -616,9 +616,11 @@ void Form::showit(std::string p)
   }
   shown=true;
 
+#if 0
 #if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
   if (!ini && jdllproc && 1==Forms.size())
     evloop->exec(QEventLoop::AllEvents);
+#endif
 #endif
 }
 

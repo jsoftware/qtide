@@ -820,9 +820,9 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
 #endif
   if (FHS) {
 #ifdef _WIN32
-    jdllver=LibName.mid(5+LibName.lastIndexOf(".dll."));
+    QString jdllver=LibName.mid(5+LibName.lastIndexOf(".dll."));
 #elif defined(__MACH__)
-    jdllver=LibName.mid(8+LibName.indexOf("/libjqt."),LibName.length()-LibName.lastIndexOf(".dylib")-2);
+    QString jdllver=LibName.mid(8+LibName.indexOf("/libjqt."),LibName.length()-LibName.lastIndexOf(".dylib")-2);
 #else
     QString jdllver=LibName.mid(4+LibName.lastIndexOf(".so."));
 #endif
