@@ -422,7 +422,7 @@ int jefirst(int type,char* arg)
   }
 
   *input=0;
-  QFile sprofile(":/standalone/profile.ijs");
+  QFile sprofile(":/standalone/profile.txt");
   QFileInfo info=QFileInfo(sprofile);
   if (info.exists() && info.isFile() && info.size()>0) standAlone=true;
   if (standAlone) {
