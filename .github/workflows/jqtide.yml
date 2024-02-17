@@ -357,6 +357,7 @@ jobs:
       JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.5.3/wasm_multithread/bin/qmake ./makeall.sh
       rm -rf j32
       mkdir j32
+      ls -l bin/wasm-wasm32/release
       cp bin/wasm-wasm32/release/* j32/.
       zip -r jqt-wasm-slim.zip j32
 
