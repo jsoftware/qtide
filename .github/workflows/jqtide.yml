@@ -10,32 +10,6 @@ on:
 
 jobs:
 
-# create tarball -------------------------------------------------------
- tarball:
-  name: Tarball
-  runs-on: ubuntu-20.04
-  steps:
-   - name: Checkout Git repository
-     uses: actions/checkout@v3
-
-   - name: Prepare Tarball
-     run: |
-      cd ..
-      zip -r qtide.zip qtide -x "qtide/.*"
-      tar -czv --exclude ".*" -f qtide.tar.gz qtide
-      cd -
-      mv ../qtide.zip .
-      mv ../qtide.tar.gz .
-
-   - name: Release Tarball
-     uses: ncipollo/release-action@v1
-     with:
-      tag: build
-      artifacts: "qtide.zip,qtide.tar.gz"
-      token: ${{ secrets.GITHUB_TOKEN }}
-      allowUpdates: true
-      replacesArtifacts: true
-
 # linux ----------------------------------------------------------------
  jqtlinux:
   name: JQtide (Linux)
@@ -241,7 +215,7 @@ jobs:
        rdate time.cloudflare.com || true
        export CC=clang
        script/installqt.sh freebsd || exit 1
-       script/makelinux.sh '5.15.7' freebsd || exit 1
+       script/makelinux.sh '5.15.12' freebsd || exit 1
        touch jobdone
 
    - name: Check Status
@@ -282,7 +256,7 @@ jobs:
        sudo rdate time.cloudflare.com || true
        export CC=clang
        script/installqt.sh freebsd || exit 1
-       script/makelinux.sh '5.15.7' freebsd || exit 1
+       script/makelinux.sh '5.15.12' freebsd || exit 1
        touch jobdone
 
    - name: Check Status
@@ -346,14 +320,15 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
+     if: ${{ false }}
      uses: jurplel/install-qt-action@v3
      with:
       version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
-#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview'
-      aqtversion: '==3.1.0'
+      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      modules: 'qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview'
+      aqtversion: '==3.1.5'
 
    - name: Install Qt from source wasm
      uses: jurplel/install-qt-action@v3
@@ -362,8 +337,8 @@ jobs:
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
-#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
-      modules: 'qt5compat qtcharts qtdatavis3d qtgrpc qthttpserver qtimageformats qtlottie qtmultimedia qtquick3d qtquick3dphysics qtquicktimeline qtscxml qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebsockets'
+      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
+#      modules: 'qt5compat qtcharts qtdatavis3d qtgrpc qthttpserver qtimageformats qtlottie qtmultimedia qtquick3d qtquick3dphysics qtquicktimeline qtscxml qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebsockets'
       aqtversion: '==3.1.5'
 
    - name: Install emsdk
@@ -412,7 +387,7 @@ jobs:
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      aqtversion: '==3.1.0'
+      aqtversion: '==3.1.5'
 
    - name: Install Qt from source ios
      uses: jurplel/install-qt-action@v3
@@ -421,7 +396,7 @@ jobs:
       target: 'ios'
       dir: '${{github.workspace}}'
       modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      aqtversion: '==3.1.0'
+      aqtversion: '==3.1.5'
 
    - name: Compile JQtide
      env:
@@ -453,12 +428,12 @@ jobs:
       wget https://www.jsoftware.com/download/jengine/mpir/apple/ios/libgmp.a
       cd -
       cd ~/
-      wget https://github.com/jsoftware/jsource/releases/download/build/jsource.zip
-      unzip jsource.zip
+      wget https://github.com/jsoftware/jsource/archive/master.tar.gz
+      tar -xzf master.tar.gz
       cd -
       rm -rf test
-      cp -r ~/jsource/test .
-      rm -rf ~/jsource
+      cp -r ~/jsource-master/test .
+      rm -rf ~/jsource-master
       echo "QMAKE_XCODE_CODE_SIGN_IDENTITY = \"iPhone Developer\"" > ios_signature.pri
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri

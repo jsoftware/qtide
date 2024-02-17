@@ -23,7 +23,7 @@ if [ "$2" = "openbsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
 elif [ "$2" = "freebsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
- export JQTWEBKIT=JQTWEBKIT
+# export JQTWEBKIT=JQTWEBKIT
 fi
 
 maketar() {
