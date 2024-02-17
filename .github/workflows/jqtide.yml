@@ -320,7 +320,6 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     if: ${{ false }}
      uses: jurplel/install-qt-action@v3
      with:
       version: '6.5.3'
