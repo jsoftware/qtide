@@ -31,6 +31,7 @@ load 'pacman'
 REQ=: <;._2 [ 0 : 0
 demos/qtdemo
 demos/wd
+labs/labs
 )
 
 'update'jpkg''
