@@ -68,6 +68,13 @@ std::string c2s(const char *c)
 }
 
 // ---------------------------------------------------------------------
+bool cdexist(QString s)
+{
+  QDir d(s);
+  return d.exists();
+}
+
+// ---------------------------------------------------------------------
 bool cderase(QString name)
 {
   bool r;

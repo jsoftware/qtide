@@ -7,6 +7,7 @@ class QFile;
 class QString;
 
 bool cderase(QString name);
+bool cdexist(QString s);
 int cfappend(QFile *, QString);
 int cfappend(QFile *, QByteArray);
 QString cfcase(QString s);

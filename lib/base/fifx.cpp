@@ -38,6 +38,17 @@ QStringList Fif::searchdo()
   QStringList r;
 
   QString p=cpath(Path);
+
+  if (0 == p.length()) {
+    info("Find in Files","Folder must be given");
+    return r;
+  }
+
+  if (!cdexist(p)) {
+    info("Find in Files","Folder not found: " + Path);
+    return r;
+  }
+
   QStringList files=folder_tree(p,Type,Subdir);
 
   if (files.isEmpty())
