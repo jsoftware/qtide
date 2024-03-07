@@ -159,7 +159,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt, Compile JQtide
-     uses: cross-platform-actions/action@v0.10.0
+     uses: cross-platform-actions/action@v0.23.0
      with:
       operating_system: openbsd
       architecture: x86-64
@@ -242,11 +242,11 @@ jobs:
       submodules: recursive
 
    - name: Install Qt, Compile JQtide
-     uses: cross-platform-actions/action@v0.10.0
+     uses: cross-platform-actions/action@v0.23.0
      with:
       operating_system: freebsd
       architecture: x86-64
-      version: '13.1'
+      version: '13.2'
       shell: bash
 
       run: |
