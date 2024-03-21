@@ -101,7 +101,9 @@ std::string Cmd::getparms(bool star)
   if (pos==len)
     return "";
 
-  if (str[pos]==';') {
+  bool nostar = !ifstarred(str.substr(pos));
+
+  if (nostar && str[pos]==';') {
     pos++;
     return "";
   }
@@ -117,9 +119,9 @@ std::string Cmd::getparms(bool star)
   bgn=pos;
   while (pos<len) {
     c=str[pos];
-    if (c==';') break;
+    if (nostar && c==';') break;
     pos++;
-    if (c=='"' || c==DEL) {
+    if (nostar && (c=='"' || c==DEL)) {
       skippast(c);
       continue;
     }
