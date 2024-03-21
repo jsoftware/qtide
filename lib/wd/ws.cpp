@@ -135,26 +135,6 @@ std::string wsquery()
   return r;
 }
 
-#ifdef QT50
-// ---------------------------------------------------------------------
-std::string wsstate()
-{
-  I socket=0;
-  std::string r="";
-  if (arg.size()==0) {
-    error("Need socket: "+argjoin);
-    return "";
-  }
-  socket=c_strtol(arg.at(0));
-  if ((wssvr) && wssvr->hasSocket((void *)socket)) {
-    r=wssvr->state((void *)socket);
-  } else if ((wscln) && wscln->hasSocket((void *)socket)) {
-    r=wscln->state((void *)socket);
-  }
-  return r;
-}
-#endif
-
 // ---------------------------------------------------------------------
 std::string wssend(int binary)
 {
@@ -184,4 +164,25 @@ std::string wssend(int binary)
   }
   return r;
 }
+
+#ifdef QT50
+// ---------------------------------------------------------------------
+std::string wsstate()
+{
+  I socket=0;
+  std::string r="";
+  if (arg.size()==0) {
+    error("Need socket: "+argjoin);
+    return "";
+  }
+  socket=c_strtol(arg.at(0));
+  if ((wssvr) && wssvr->hasSocket((void *)socket)) {
+    r=wssvr->state((void *)socket);
+  } else if ((wscln) && wscln->hasSocket((void *)socket)) {
+    r=wscln->state((void *)socket);
+  }
+  return r;
+}
+#endif
+
 
