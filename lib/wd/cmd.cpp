@@ -139,7 +139,7 @@ bool Cmd::ifstarred(std::string s)
   for (int i=0; i<n; i++) {
     c=s[i];
     if (c=='*') return true;
-    if (c==LF || c==SOH) return false;
+    if (c==LF || c==SOH || c==';') return false;
     if (c=='"' || c==DEL)
       while (s[++i]!=c)
         if (s[i]==SOH) return false;
