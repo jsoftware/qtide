@@ -94,10 +94,11 @@ void Menu::createActions()
 #endif
   editredoAct = makeact("editredoAct","&Redo","Ctrl+Y");
   editundoAct = makeact("editundoAct","&Undo","Ctrl+Z");
-  filecloseAct = makeact("filecloseAct","&Close","Ctrl+W");
-  filedeleteAct = makeact("filedeleteAct","&Delete","");
   filecloseallAct = makeact("filecloseallAct","C&lose All","");
+  filecloseeditAct = makeact("filequitAct","&Close Edit","Ctrl+Q");
   filecloseotherAct = makeact("filecloseotherAct","Close &Other","Ctrl+Shift+W");
+  fileclosetabAct = makeact("fileclosetabAct","&Close Tab","Ctrl+W");
+  filedeleteAct = makeact("filedeleteAct","&Delete","");
   filesaveallAct = makeact("filesaveallAct","Save A&ll","Ctrl+Shift+S");
   filesaveasAct = makeact("filesaveasAct","Save &As","");
   filenewAct = makeact("filenewAct","&New","");
@@ -202,7 +203,7 @@ void Menu::createActions()
                 << winsourceAct << wintextAct << winfileclosexAct;
 
   ScriptEnable << clipcopyAct << clipcutAct << clippasteAct
-               << editfiwAct << filecloseAct << filecloseallAct << filecloseotherAct
+               << editfiwAct << fileclosetabAct << filecloseallAct << filecloseotherAct
                << filedeleteAct
 #ifndef QT_NO_PRINTER
                << fileprintAct << fileprintpreviewAct << fileprintallAct
@@ -325,11 +326,13 @@ void Menu::createfileMenu(QString s)
     fileMenu->addAction(fileprintallAct);
 #endif
     fileMenu->addSeparator();
-    fileMenu->addAction(filecloseAct);
+    fileMenu->addAction(fileclosetabAct);
     fileMenu->addAction(filecloseotherAct);
     fileMenu->addAction(filecloseallAct);
     fileMenu->addSeparator();
     fileMenu->addAction(filedeleteAct);
+    fileMenu->addSeparator();
+    fileMenu->addAction(filecloseeditAct);
   } else {
     fileMenu->addAction(filenewtempAct);
     fileMenu->addSeparator();
@@ -345,10 +348,9 @@ void Menu::createfileMenu(QString s)
     fileMenu->addAction(fileprintAct);
     fileMenu->addAction(fileprintpreviewAct);
 #endif
+    fileMenu->addSeparator();
+    fileMenu->addAction(filequitAct);
   }
-
-  fileMenu->addSeparator();
-  fileMenu->addAction(filequitAct);
 }
 
 // ---------------------------------------------------------------------
@@ -767,23 +769,6 @@ void Note::on_editundoAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_filecloseAct_triggered()
-{
-  tabclose(editIndex());
-}
-
-// ---------------------------------------------------------------------
-void Note::on_filedeleteAct_triggered()
-{
-  QString m="OK to delete: " + toprojectname(editPage()->fname) + "?";
-  if (!queryOK("File Delete",m)) return;
-  QString f=editPage()->fname;
-  tabclose(editIndex());
-  cfdelete(f);
-  tabs->tabsetindex(editIndex());
-}
-
-// ---------------------------------------------------------------------
 void Note::on_filecloseallAct_triggered()
 {
   tabs->tabcloseall();
@@ -799,6 +784,29 @@ void Note::on_filecloseotherAct_triggered()
     tabclose(0);
   for (i=1; i<count-index; i++)
     tabclose(1);
+}
+
+// ---------------------------------------------------------------------
+void Note::on_filecloseeditAct_triggered()
+{
+  tabclose(editIndex());
+}
+
+// ---------------------------------------------------------------------
+void Note::on_fileclosetabAct_triggered()
+{
+  note->close();
+}
+
+// ---------------------------------------------------------------------
+void Note::on_filedeleteAct_triggered()
+{
+  QString m="OK to delete: " + toprojectname(editPage()->fname) + "?";
+  if (!queryOK("File Delete",m)) return;
+  QString f=editPage()->fname;
+  tabclose(editIndex());
+  cfdelete(f);
+  tabs->tabsetindex(editIndex());
 }
 
 // ---------------------------------------------------------------------
@@ -888,12 +896,6 @@ void Note::on_fileprintallAct_triggered()
     tabs->tabprintall();
 }
 #endif
-
-// ---------------------------------------------------------------------
-void Note::on_filequitAct_triggered()
-{
-  note->close();
-}
 
 // ---------------------------------------------------------------------
 void Note::on_filerecentAct_triggered()

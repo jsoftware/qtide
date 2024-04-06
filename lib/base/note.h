@@ -94,10 +94,11 @@ public slots:
 #endif
   void on_editredoAct_triggered();
   void on_editundoAct_triggered();
-  void on_filecloseAct_triggered();
-  void on_filedeleteAct_triggered();
   void on_filecloseallAct_triggered();
+  void on_filecloseeditAct_triggered();
   void on_filecloseotherAct_triggered();
+  void on_fileclosetabAct_triggered();
+  void on_filedeleteAct_triggered();
   void on_filesaveallAct_triggered();
   void on_filesaveasAct_triggered();
   void on_filenewAct_triggered();

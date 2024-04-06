@@ -103,9 +103,10 @@ private:
 #endif
   QAction *editredoAct;
   QAction *editundoAct;
-  QAction *filecloseAct;
   QAction *filecloseallAct;
+  QAction *filecloseeditAct;
   QAction *filecloseotherAct;
+  QAction *fileclosetabAct;
   QAction *filedeleteAct;
   QAction *filenewAct;
   QAction *filenewtempAct;
