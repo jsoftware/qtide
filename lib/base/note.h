@@ -117,7 +117,6 @@ public slots:
   void on_fileprintpreviewAct_triggered();
   void on_fileprintallAct_triggered();
 #endif
-  void on_filequitAct_triggered();
   void on_filerecentAct_triggered();
   void on_scriptrestoreAct_triggered();
   void on_filesaveAct_triggered();

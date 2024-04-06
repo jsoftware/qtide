@@ -95,7 +95,7 @@ void Menu::createActions()
   editredoAct = makeact("editredoAct","&Redo","Ctrl+Y");
   editundoAct = makeact("editundoAct","&Undo","Ctrl+Z");
   filecloseallAct = makeact("filecloseallAct","C&lose All","");
-  filecloseeditAct = makeact("filequitAct","&Close Edit","Ctrl+Q");
+  filecloseeditAct = makeact("filecloseeditAct","&Close Edit","Ctrl+Q");
   filecloseotherAct = makeact("filecloseotherAct","Close &Other","Ctrl+Shift+W");
   fileclosetabAct = makeact("fileclosetabAct","&Close Tab","Ctrl+W");
   filedeleteAct = makeact("filedeleteAct","&Delete","");
@@ -775,6 +775,12 @@ void Note::on_filecloseallAct_triggered()
 }
 
 // ---------------------------------------------------------------------
+void Note::on_filecloseeditAct_triggered()
+{
+  note->close();
+}
+
+// ---------------------------------------------------------------------
 void Note::on_filecloseotherAct_triggered()
 {
   int count,i,index;
@@ -787,15 +793,9 @@ void Note::on_filecloseotherAct_triggered()
 }
 
 // ---------------------------------------------------------------------
-void Note::on_filecloseeditAct_triggered()
-{
-  tabclose(editIndex());
-}
-
-// ---------------------------------------------------------------------
 void Note::on_fileclosetabAct_triggered()
 {
-  note->close();
+  tabclose(editIndex());
 }
 
 // ---------------------------------------------------------------------
