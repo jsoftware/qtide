@@ -284,7 +284,7 @@ HEADERS += \
  wd/menus.h wd/pane.h wd/progressbar.h wd/radiobutton.h \
  wd/slider.h wd/spinbox.h wd/static.h wd/statusbar.h wd/table.h \
  wd/tabs.h wd/tabwidget.h \
- wd/timeedit.h wd/toolbar.h wd/wd.h \
+ wd/timeedit.h wd/toolbar.h wd/treeview.h wd/wd.h \
  wd/ogl2.h wd/opengl.h wd/opengl2.h \
  wd/webengineview.h wd/webview.h wd/quickview1.h wd/quickview2.h wd/quickwidget.h \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h \
@@ -336,7 +336,7 @@ SOURCES += \
  wd/menus.cpp wd/pane.cpp wd/progressbar.cpp wd/radiobutton.cpp \
  wd/slider.cpp wd/sm.cpp wd/spinbox.cpp wd/static.cpp wd/statusbar.cpp \
  wd/table.cpp wd/tabs.cpp wd/tabwidget.cpp \
- wd/timeedit.cpp wd/toolbar.cpp wd/wd.cpp \
+ wd/timeedit.cpp wd/toolbar.cpp wd/treeview.cpp wd/wd.cpp \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \

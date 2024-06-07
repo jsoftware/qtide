@@ -48,6 +48,7 @@
 #include "tabs.h"
 #include "timeedit.h"
 #include "toolbar.h"
+#include "treeview.h"
 #include "wd.h"
 #ifndef QT_NO_MULTIMEDIA
 #include "multimedia.h"
@@ -163,6 +164,8 @@ bool Pane::addchild(std::string n,std::string c,std::string p)
     child=(Child *) new TimeEdit(n,p,pform,this);
   else if (c=="toolbar")
     child=(Child *) new ToolBar(n,p,pform,this);
+  else if (c=="treeview")
+    child=(Child *) new TreeView(n,p,pform,this);
 #ifndef QT_NO_WEBKIT
   else if (c=="webview")
     child=(Child *) new WebView(n,p,pform,this);
