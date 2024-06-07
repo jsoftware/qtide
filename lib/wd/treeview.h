@@ -31,7 +31,9 @@ public:
   std::string state();
 
 private:
+  void collapseall();
   void draw();
+  void expandall();
   std::string getselection();
   std::string getselectionindex();
   void setedges(std::string v);

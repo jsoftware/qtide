@@ -21,6 +21,8 @@
 
 static QStringList Names;
 static QVector<int> Edges;
+static QVector<QTreeWidgetItem *> Nodes;
+
 extern int rc;
 
 // ---------------------------------------------------------------------
@@ -44,17 +46,34 @@ TreeView::TreeView(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f
   w->setColumnCount(1);
   w->setSelectionMode(QAbstractItemView::SingleSelection);
 
-  connect(w,SIGNAL(itemActivated(QTreeWidgetItem*)),
-          this,SLOT(itemActivated()));
-  connect(w,SIGNAL(itemSelectionChanged()),
-          this,SLOT(itemSelectionChanged()));
+  connect(w,&QTreeWidget::itemActivated,
+          this,&TreeView::itemActivated);
+  connect(w,&QTreeWidget::itemSelectionChanged,
+          this,&TreeView::itemSelectionChanged);
+}
+
+// ---------------------------------------------------------------------
+void TreeView::collapseall()
+{
+  QTreeWidget *w=(QTreeWidget*) widget;
+  int len = Nodes.size();
+  for (int i=0; i<len; i++)
+    w->collapseItem(Nodes[i]);
+}
+
+// ---------------------------------------------------------------------
+void TreeView::expandall()
+{
+  QTreeWidget *w=(QTreeWidget*) widget;
+  int len = Nodes.size();
+  for (int i=0; i<len; i++)
+    w->expandItem(Nodes[i]);
 }
 
 // ---------------------------------------------------------------------
 void TreeView::draw()
 {
   QTreeWidget *w=(QTreeWidget*) widget;
-  QVector<QTreeWidgetItem *> nodes;
   QVector<int>children;
   QVector<int>parents;
 
@@ -64,7 +83,7 @@ void TreeView::draw()
   int clen = elen/2;
 
   for (int i=0; i<nlen; i++)
-    nodes.append(new QTreeWidgetItem({Names[i]}));
+    Nodes.append(new QTreeWidgetItem({Names[i]}));
   for (int i=0; i<clen; i++) {
     children.append(Edges[1 + 2 * i]);
   }
@@ -73,9 +92,9 @@ void TreeView::draw()
       parents.append(i);
   }
   for (int i=0; i<parents.size(); i++)
-    w->addTopLevelItem(nodes[parents[i]]);
+    w->addTopLevelItem(Nodes[parents[i]]);
   for (int i=0; i<clen; i++)
-    nodes[Edges[i*2]]->addChild(nodes[Edges[1+i*2]]);
+    Nodes[Edges[i*2]]->addChild(Nodes[Edges[1+i*2]]);
 }
 
 // ---------------------------------------------------------------------
@@ -122,7 +141,11 @@ void TreeView::itemSelectionChanged()
 // ---------------------------------------------------------------------
 void TreeView::set(std::string p,std::string v)
 {
-  if (p=="names")
+  if (p=="collapseall")
+    collapseall();
+  else if (p=="expandall")
+    expandall();
+  else if (p=="names")
     setnames(v);
   else if (p == "edges")
     setedges(v);
