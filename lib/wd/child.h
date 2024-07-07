@@ -29,6 +29,7 @@ public:
 
   virtual void setform();
   virtual void setfocuspolicy(std::string p);
+  virtual void setretainsize(std::string p);
   virtual void setsizepolicy(std::string p);
   virtual std::string state()=0;
 

@@ -223,6 +223,8 @@ void Child::set(std::string p,std::string v)
     if (widget) widget->update();
   } else if (p=="nofocus") {
     if (widget) widget->setFocusPolicy(Qt::NoFocus);
+  } else if (p=="retainsize") {
+    setretainsize(v);
   } else if (p=="show"||p=="visible") {
     if (widget) widget->setVisible(remquotes(v)!="0");
   } else if (p=="sizepolicy") {
@@ -252,6 +254,16 @@ void Child::setform()
 {
   form=pform;
   form->child=this;
+}
+
+// ---------------------------------------------------------------------
+void Child::setretainsize(std::string v)
+{
+  if (widget) {
+    QSizePolicy p=widget->sizePolicy();
+    p.setRetainSizeWhenHidden(remquotes(v)!="0");
+    widget->setSizePolicy(p);
+  }
 }
 
 // ---------------------------------------------------------------------
