@@ -38,7 +38,7 @@ jobs:
 # macOS ----------------------------------------------------------------
  jqtmacos:
   name: JQtide (macOS)
-  runs-on: macos-11
+  runs-on: macos-12
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -353,7 +353,7 @@ jobs:
       CC: clang
      run: |
       ./cpjlib.sh
-      ./cplibjtest.sh 
+      ./cplibjtest.sh
       JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.5.3/wasm_multithread/bin/qmake ./makeall.sh
       rm -rf j32
       mkdir j32
@@ -452,7 +452,9 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
+# 7 jul 2024 - ios/wasm builds fail
+#  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
