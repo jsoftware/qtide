@@ -43,7 +43,7 @@ private:
   void settogglexp();
   int CurrentIndex;
   QStringList Names;
-  QVector<int> Edges;
+  QList<int> Edges;
   QVector<QTreeWidgetItem *> Nodes;
   QVector<int> Children;
   QVector<int> Parents;

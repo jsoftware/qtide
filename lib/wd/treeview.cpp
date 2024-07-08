@@ -233,7 +233,7 @@ void TreeView::set(std::string p,std::string v)
 // ---------------------------------------------------------------------
 void TreeView::setedges(std::string v)
 {
-  Edges = QVector::fromList(qs2intlist(s2q(v)));
+  Edges = qs2intlist(s2q(v));
   draw();
 }
 
