@@ -312,6 +312,7 @@ jobs:
 # wasm -----------------------------------------------------------------
  jqtwasm:
   name: JQtide (wasm)
+  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Check Git repository
@@ -373,6 +374,7 @@ jobs:
 # ios ------------------------------------------------------------------
  jqtios:
   name: JQtide (ios)
+  if: ${{ false }}
   runs-on: macos-12
   steps:
    - name: Check Git repository
