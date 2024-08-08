@@ -36,12 +36,13 @@ private:
   void draw();
   void expand(std::string v);
   void expandall();
+  int getparent(int);
   void setedges(std::string v);
   void setindent(std::string v);
   void setnames(std::string v);
   void setselect(std::string v);
-  void settogglexp();
   int CurrentIndex;
+  int LastChild;
   QStringList Names;
   QList<int> Edges;
   QVector<QTreeWidgetItem *> Nodes;

@@ -7,8 +7,15 @@
 //
 // tree data given as:
 // Names - list of names in tree
-// Parents - list of parent names in tree
+// Parents - list of parent indices in tree
 // Edges - two column table of parent/child edges, indices into names
+//
+// also
+// Nodes - list of TreeWidgetItems
+// Children - integer list of children
+// CurrentIndex - used to ignore collapse/expand where another parent is selected
+//              - could use blockSignals to same effect?
+// LastChild - last selected child, used when parent is collapsed, then expanded
 
 #include <QTreeWidget>
 
@@ -88,12 +95,7 @@ void TreeView::collapseall()
   }
   clearselections();
   if (sel < 0) return;
-  len = Edges.size() / 2;
-  for (int i=0; i<len; i++)
-    if (sel == Edges[1+i*2]) {
-      sel = Edges[i*2];
-      break;
-    }
+  sel = getparent(sel);
   Nodes[sel]->setSelected(true);
 }
 
@@ -105,6 +107,7 @@ void TreeView::draw()
   Parents.clear();
   Nodes.clear();
   CurrentIndex=-1;
+  LastChild=-1;
 
   int nlen = Names.size();
   int elen = Edges.size();
@@ -138,9 +141,11 @@ void TreeView::expand(std::string v)
 }
 
 // ---------------------------------------------------------------------
+// sets focus on the parent of previously selected child
 void TreeView::expandall()
 {
   QTreeWidget *w=(QTreeWidget*) widget;
+  w->blockSignals(true);
   int len = Nodes.size();
   int sel = -1;
   for (int i=0; i<len; i++)
@@ -151,18 +156,33 @@ void TreeView::expandall()
       w->expandItem(Nodes[i]);
   }
   clearselections();
-  if (sel >= 0) Nodes[sel]->setSelected(true);
+  if (sel >= 0) Nodes[getparent(sel)]->setSelected(true);
+  w->blockSignals(false);
 }
 
 // ---------------------------------------------------------------------
+int TreeView::getparent(int sel)
+{
+  int len = Edges.size() / 2;
+  for (int i=0; i<len; i++) {
+    if (sel == Edges[1+i*2])
+      sel = Edges[i*2];
+  }
+  return sel;
+}
+
+// ---------------------------------------------------------------------
+// activated = double click, enter
 void TreeView::itemActivated()
 {
-  event="button";
-  pform->signalevent(this);
+  QTreeWidget *w=(QTreeWidget*) widget;
+  QTreeWidgetItem* sel = w->currentItem();
+  if (sel->childCount() == 0) return;
+  sel->setExpanded(!sel->isExpanded());
 }
 
 // ---------------------------------------------------------------------
-// select parent only if there is a selected child
+// select parent only if there is a sel child
 void TreeView::itemCollapsed(QTreeWidgetItem *p)
 {
   CurrentIndex = Nodes.indexOf(p);
@@ -178,7 +198,7 @@ void TreeView::itemCollapsed(QTreeWidgetItem *p)
 }
 
 // ---------------------------------------------------------------------
-// auto select first item if no other child selected
+// auto select first item or LastChild if no other child selected
 void TreeView::itemExpanded(QTreeWidgetItem *p)
 {
   CurrentIndex = Nodes.indexOf(p);
@@ -191,7 +211,12 @@ void TreeView::itemExpanded(QTreeWidgetItem *p)
     QTreeWidgetItem *n = Nodes[Children[i]];
     if (n->isSelected() && n->parent()->isExpanded()) return;
   }
-  QTreeWidgetItem *c = p->child(0);
+  int sel = 0;
+  len = p->childCount();
+  int ndx = Nodes.indexOf(p);
+  for (int i=0; i<len; i++)
+    if (LastChild == ndx + i + 1) sel = i;
+  QTreeWidgetItem *c = p->child(sel);
   clearselections();
   w->setCurrentItem(c);
   c->setSelected(true);
@@ -200,7 +225,19 @@ void TreeView::itemExpanded(QTreeWidgetItem *p)
 // ---------------------------------------------------------------------
 void TreeView::itemSelectionChanged()
 {
-  if (event == "collapsed") return;
+  QTreeWidget *w=(QTreeWidget*) widget;
+  QTreeWidgetItem* sel = w->currentItem();
+  CurrentIndex = -1;
+  int ndx = Nodes.indexOf(sel);
+  if (!Parents.contains(ndx))
+    LastChild = ndx;
+  else {
+    int len = sel->childCount();
+    int cnt = 0;
+    for (int i=0; i<len; i++)
+      if (LastChild == ndx + i + 1) cnt += 1;
+    if (cnt == 0) LastChild = -1;
+  }
   event="select";
   pform->signalevent(this);
 }
@@ -220,8 +257,6 @@ void TreeView::set(std::string p,std::string v)
     setindent(v);
   else if (p=="select")
     setselect(v);
-  else if (p == "togglexp")
-    settogglexp();
   else if (p=="names")
     setnames(v);
   else if (p == "edges")
@@ -255,28 +290,21 @@ void TreeView::setnames(std::string v)
 // -1 means clear selections
 void TreeView::setselect(std::string v)
 {
+  if (0 == v.length()) return;
   int i=c_strtoi(v);
   if (i < -1 || i >= Nodes.size()) return;
   clearselections();
   if (i == -1) return;
   QTreeWidgetItem *n=Nodes[i];
   QTreeWidget *w=(QTreeWidget*) widget;
+  QTreeWidgetItem *p = n->parent();
   while (true) {
-    n = n->parent();
-    if (!n || n->isExpanded()) break;
-    w->expandItem(n);
+    if (!p || p->isExpanded()) break;
+    w->expandItem(p);
+    p=p->parent();
   }
   n->setSelected(true);
   w->setCurrentItem(n);
-}
-
-// ---------------------------------------------------------------------
-void TreeView::settogglexp()
-{
-  QTreeWidget *w=(QTreeWidget*) widget;
-  QTreeWidgetItem* selected = w->currentItem();
-  if (selected->childCount() == 0) return;
-  selected->setExpanded(!selected->isExpanded());
 }
 
 // ---------------------------------------------------------------------
