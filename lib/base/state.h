@@ -184,6 +184,15 @@ public:
   Style verbStyle;
 };
 
+class Quitter : public QObject
+{
+
+  Q_OBJECT
+
+public:
+  void quitting();
+};
+
 extern QList<QWidget*> ActiveWindows;
 extern Config config;
 #ifdef Q_OS_ANDROID

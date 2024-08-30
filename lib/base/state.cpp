@@ -80,6 +80,7 @@ QList<QWidget*> ActiveWindows;
 Config config;
 QString LibName;
 QApplication *app=0;
+Quitter quitter;
 
 const char *jqtver=JQTVERSION;
 #ifndef ONEEVENTLOOP
@@ -637,6 +638,15 @@ void Config::toggleascii()
 }
 
 // ---------------------------------------------------------------------
+void Quitter::quitting()
+{
+  srand(time(0));
+  QString randnum = s2q(i2s(rand() % 100));
+  cfwrite("/home/chris/t6.txt","hello " + randnum);
+  qDebug() << "about to quit" << randnum;
+}
+
+// ---------------------------------------------------------------------
 void delactivewindow(QWidget* w)
 {
   ActiveWindows.removeOne(w);
@@ -793,6 +803,11 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   }
 
   app = new QApplication(m_argc, m_argv);
+
+  qDebug() << "connect";
+  QMetaObject::Connection ret1 = QObject::connect(app,&QApplication::aboutToQuit,&quitter,&Quitter::quitting);
+  QMetaObject::Connection ret2 = QObject::connect(app,&QApplication::focusChanged,&quitter,&Quitter::quitting);
+  qDebug() << "connect valid" << ret1 << ret2;
 #ifndef ONEEVENTLOOP
   evloop=new QEventLoop();
   jevloop=new QEventLoop();

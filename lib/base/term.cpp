@@ -183,6 +183,7 @@ void Term::displayform(int p)
 // ---------------------------------------------------------------------
 bool Term::filequit(bool ignoreconfirm)
 {
+  qDebug() << "filequit";
   dlog_write();
   if (note && (!note->saveall())) return false;
   if (note2 && (!note2->saveall())) return false;
