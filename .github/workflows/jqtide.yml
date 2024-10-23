@@ -38,7 +38,7 @@ jobs:
 # macOS ----------------------------------------------------------------
  jqtmacos:
   name: JQtide (macOS)
-  runs-on: macos-12
+  runs-on: macos-13
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -151,7 +151,7 @@ jobs:
 # openbsd --------------------------------------------------------------
  jqtopenbsd:
   name: JQtide (OpenBSD cross-platform-actions)
-  runs-on: macos-12
+  runs-on: macos-13
   steps:
    - name: Checkout Git repository
      uses: actions/checkout@v3
@@ -193,7 +193,7 @@ jobs:
  jqtfreebsd:
   name: JQtide (FreeBSD vmactions)
   if: ${{ false }}
-  runs-on: macos-12
+  runs-on: macos-13
   steps:
    - name: Checkout Git repository
      uses: actions/checkout@v3
@@ -313,7 +313,7 @@ jobs:
  jqtwasm:
   name: JQtide (wasm)
   if: ${{ false }}
-  runs-on: macos-12
+  runs-on: macos-13
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
@@ -375,7 +375,7 @@ jobs:
  jqtios:
   name: JQtide (ios)
   if: ${{ false }}
-  runs-on: macos-12
+  runs-on: macos-13
   steps:
    - name: Check Git repository
      uses: actions/checkout@v3
