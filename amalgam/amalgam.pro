@@ -23,6 +23,7 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 !lessThan(QT_MAJOR_VERSION, 6) {
  DEFINES += QT60
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
+ !lessThan(QT_MINOR_VERSION,8): DEFINES += QT68
  DEFINES += QT57
  DEFINES += QT512
  DEFINES += QT515
@@ -286,7 +287,7 @@ HEADERS += \
  ../lib/wd/menus.h ../lib/wd/pane.h ../lib/wd/progressbar.h ../lib/wd/radiobutton.h \
  ../lib/wd/slider.h ../lib/wd/spinbox.h ../lib/wd/static.h ../lib/wd/statusbar.h ../lib/wd/table.h \
  ../lib/wd/tabs.h ../lib/wd/tabwidget.h \
- ../lib/wd/timeedit.h ../lib/wd/toolbar.h ../lib/wd/wd.h \
+ ../lib/wd/timeedit.h ../lib/wd/treeview.h ../lib/wd/toolbar.h ../lib/wd/wd.h \
  ../lib/wd/ogl2.h ../lib/wd/opengl.h ../lib/wd/opengl2.h \
  ../lib/wd/webengineview.h ../lib/wd/webview.h ../lib/wd/quickview1.h ../lib/wd/quickview2.h ../lib/wd/quickwidget.h \
  ../lib/wd/qwidget.h ../lib/wd/scrollarea.h ../lib/wd/scrollbar.h ../lib/wd/gl2class.h ../lib/wd/drawobj.h \
@@ -336,7 +337,7 @@ SOURCES += \
  ../lib/wd/menus.cpp ../lib/wd/pane.cpp ../lib/wd/progressbar.cpp ../lib/wd/radiobutton.cpp \
  ../lib/wd/slider.cpp ../lib/wd/sm.cpp ../lib/wd/spinbox.cpp ../lib/wd/static.cpp ../lib/wd/statusbar.cpp \
  ../lib/wd/table.cpp ../lib/wd/tabs.cpp ../lib/wd/tabwidget.cpp \
- ../lib/wd/timeedit.cpp ../lib/wd/toolbar.cpp ../lib/wd/wd.cpp \
+ ../lib/wd/timeedit.cpp ../lib/wd/treeview.cpp ../lib/wd/toolbar.cpp ../lib/wd/wd.cpp \
  ../lib/wd/ogl2.cpp ../lib/wd/opengl.cpp ../lib/wd/opengl2.cpp \
  ../lib/wd/webengineview.cpp ../lib/wd/webview.cpp ../lib/wd/quickview1.cpp ../lib/wd/quickview2.cpp ../lib/wd/quickwidget.cpp \
  ../lib/wd/qwidget.cpp ../lib/wd/scrollarea.cpp ../lib/wd/scrollbar.cpp ../lib/wd/drawobj.cpp \
