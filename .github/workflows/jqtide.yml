@@ -46,7 +46,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'desktop'
@@ -288,7 +288,7 @@ jobs:
       arch: amd64
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'desktop'
@@ -320,7 +320,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'desktop'
@@ -330,7 +330,7 @@ jobs:
       aqtversion: '==3.1.5'
 
    - name: Install Qt from source wasm
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'desktop'
@@ -381,7 +381,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'desktop'
@@ -390,7 +390,7 @@ jobs:
       aqtversion: '==3.1.5'
 
    - name: Install Qt from source ios
-     uses: jurplel/install-qt-action@v3
+     uses: jurplel/install-qt-action@v4
      with:
       version: '6.5.3'
       target: 'ios'
