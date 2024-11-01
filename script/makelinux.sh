@@ -42,7 +42,7 @@ fi
 ./clean.l64
 rm -rf "$1"
 cd lib
-$QM && make
+$QM && make NO_OPENGL=1
 cd -
 cd main
 $QM && make

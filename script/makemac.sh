@@ -31,7 +31,7 @@ run() {
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
  cd lib
  $QM "$qmflag"
- make
+ make NO_OPENGL=1
  cd -
  cd main
  $QM "$qmflag"
@@ -40,7 +40,7 @@ if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
 else
  cd amalgam
  $QM "$qmflag"
- make
+ make NO_OPENGL=1
  cd -
 fi
 

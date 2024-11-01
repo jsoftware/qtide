@@ -9,7 +9,7 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd lib
 qmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-nmake
+nmake NO_OPENGL=1
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..\main
 qmake
