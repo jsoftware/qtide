@@ -1928,7 +1928,6 @@ int uigl2(I t,int *ptr, int ncnt)
     rc = gl_sel2(g);
     free(g);
 #else
-    LOGD("missing OpenGL feature");
     return rc = 1;
 #endif
   } else if (t==glqextent_n || t==glqextentw_n || t==glqpixels_n || t==glqpixelm_n
@@ -1941,7 +1940,6 @@ int uigl2(I t,int *ptr, int ncnt)
 #ifndef QT_NO_OPENGL
     rc = gl_query(t, ptr+2, ncnt-2);
 #else
-    LOGD("missing OpenGL feature");
     return rc = 1;
 #endif
   else if (t==glzqextent_n || t==glzqextentw_n
@@ -1950,7 +1948,6 @@ int uigl2(I t,int *ptr, int ncnt)
 #ifndef QT_NO_PRINTER
     rc = glzquery(t, ptr+2, ncnt-2);
 #else
-    LOGD("missing printer feature");
     rc = 1;
 #endif
   else if (t==glzqresolution_n || t==glzqcolormode_n || t==glzqduplexmode_n || t==glzqorientation_n
@@ -1959,7 +1956,6 @@ int uigl2(I t,int *ptr, int ncnt)
 #ifndef QT_NO_PRINTER
     rc = glzquery2(t, ptr+2, ncnt-2);
 #else
-    LOGD("missing printer feature");
     rc = 1;
 #endif
   else if (t>=1000 && t<=2099)
@@ -1968,14 +1964,12 @@ int uigl2(I t,int *ptr, int ncnt)
 #ifndef QT_NO_OPENGL
     rc = gl_cmds(ptr, ncnt);
 #else
-    LOGD("missing OpenGL feature");
     return rc = 1;
 #endif
   else if (t>=2200 && t<=2299)
 #ifndef QT_NO_PRINTER
     rc = glzcmds(ptr, ncnt);
 #else
-    LOGD("missing printer feature");
     rc = 1;
 #endif
   else
@@ -2036,7 +2030,6 @@ int uiwd(I t,I *pinta,void *inarr,I *ointa,char* loc)
 #ifndef QT_NO_OPENGL
       rc = gl_updategl((void*)((I*)inarr)[0]);
 #else
-      LOGD("missing OpenGL feature");
       return rc = 1;
 #endif
     } else if (t==glsel_n) {
@@ -2061,7 +2054,6 @@ int uiwd(I t,I *pinta,void *inarr,I *ointa,char* loc)
 #ifndef QT_NO_OPENGL
       rc = gl_sel((void*)((I*)inarr)[0]);
 #else
-      LOGD("missing OpenGL feature");
       return rc = 1;
 #endif
     } else {
