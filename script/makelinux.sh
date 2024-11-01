@@ -42,7 +42,7 @@ fi
 ./clean.l64
 rm -rf "$1"
 cd lib
-$QM && make NO_OPENGL=1
+$QM && make
 cd -
 cd main
 $QM && make
@@ -74,6 +74,7 @@ ls -l "$1" || true
 rm -rf "$1"
 }
 
+export NO_OPENGL=1
 run jqt-"$2" "$2"
 
 export JQTSLIM=1

@@ -31,7 +31,7 @@ run() {
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
  cd lib
  $QM "$qmflag"
- make NO_OPENGL=1
+ make
  cd -
  cd main
  $QM "$qmflag"
@@ -40,7 +40,7 @@ if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
 else
  cd amalgam
  $QM "$qmflag"
- make NO_OPENGL=1
+ make
  cd -
 fi
 
@@ -64,6 +64,7 @@ rm -rf "$1"
 }
 
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
+export NO_OPENGL=1
 run jqt-"$2" "$2"
 
 export JQTSLIM=1
