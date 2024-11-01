@@ -41,12 +41,8 @@
 #include "../base/androidextras.h"
 #endif
 #include "gl2.h"
-#ifndef QT_NO_PRINTER
 #include "glz.h"
-#endif
-#ifndef QT_NO_OPENGL
 #include "ogl2.h"
-#endif
 
 #ifdef QTWEBSOCKET
 #include "../base/wssvr.h"
