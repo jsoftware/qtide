@@ -6,7 +6,7 @@
 echo %PATH%
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
-set NO_OPENGL=1
+@rem set NO_OPENGL=1
 cd lib
 qmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%

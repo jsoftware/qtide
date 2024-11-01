@@ -64,7 +64,7 @@ rm -rf "$1"
 }
 
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
-export NO_OPENGL=1
+# export NO_OPENGL=1
 run jqt-"$2" "$2"
 
 export JQTSLIM=1
