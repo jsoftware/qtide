@@ -199,6 +199,15 @@ contains(DEFINES,QT57) {
   DEFINES += QT_OPENGL
 }
 
+# export NO_OPENGL before qmake
+NO_OPENGL = $$(NO_OPENGL)
+!isEmpty(NO_OPENGL) {
+  message(disable opengl feature)
+  DEFINES += QT_NO_OPENGL
+  DEFINES -= QT_OPENGL QT_OPENGL_ES_2
+  QT -= openglwidgets
+}
+
 # QT50 or later
   !contains(QT,quick) {
     DEFINES += QT_NO_QUICKVIEW2

@@ -61,7 +61,7 @@ extern "C" {
   Dllexport int gl_clear2 (void *,int);
   Dllexport int gl_clip (const int *);
   Dllexport int gl_clipreset ();
-  Dllexport int gl_cmds (const int *, const int);
+  Dllexport int gl_cmds (const int *, int);
   Dllexport int gl_cursor (int a);
   Dllexport int gl_ellipse (const int *p);
   Dllexport int gl_fill (const int *p);
