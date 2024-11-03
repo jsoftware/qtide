@@ -776,6 +776,9 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
     return 0;
   }
 
+#ifdef _WIN32
+  qDebug() << "state_run a01";
+#endif
   ShowIde=!!fshowide;
 #ifdef QT50
   QLoggingCategory::setFilterRules("*.debug=true\nqt.*.debug=false");
@@ -800,6 +803,9 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   jevloop=new QEventLoop();
 #endif
 
+#ifdef _WIN32
+  qDebug() << "state_run a02";
+#endif
   FHS=fhs;
   LibName=QString::fromUtf8(lib);
 #ifdef Q_OS_ANDROID
@@ -834,6 +840,9 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   qsrand(QDateTime::currentMSecsSinceEpoch());
 #endif
 #endif
+#ifdef _WIN32
+  qDebug() << "state_run a03";
+#endif
   state_init_resource();
   state_appname();
   term = new Term;
@@ -853,6 +862,9 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
     showide(false);
 #else
   if ((!ShowIde) && Forms.isEmpty()) return 0;
+#endif
+#ifdef _WIN32
+  qDebug() << "state_run a04";
 #endif
   term->fini();
   return 0;
