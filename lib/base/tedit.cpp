@@ -31,6 +31,13 @@ Tedit::Tedit()
   hScroll=horizontalScrollBar();
   ensureCursorVisible();
   setLineWrapMode(TextEdit::NoWrap);
+  // Set margins to solve annoying scroll bar behaviour in last line (macOS).
+  auto format = document()->rootFrame()->frameFormat();
+  format.setBottomMargin(10);
+  format.setTopMargin(2);
+  format.setLeftMargin(2);
+  format.setRightMargin(2);
+  document()->rootFrame()->setFrameFormat(format);
 }
 
 // ---------------------------------------------------------------------
@@ -153,11 +160,16 @@ void Tedit::enter()
       QString hdr(pad,' ');
       txt=hdr + txt;
     }
-    if (config.KeepCursorPosOnRecall)
+    if (config.KeepCursorPosOnRecall) {
       pos=getpositioninblock(c) + pad;
+    }
     promptreplace(txt,pos);
-  } else
+  } else {
     docmd(txt);
+  }
+ 
+  // Scroll to very bottom to prevent scroll bar covering last line (macOS).
+  verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
 // ---------------------------------------------------------------------
