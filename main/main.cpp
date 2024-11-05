@@ -80,9 +80,6 @@ int main(int argc, char *argv[])
   double y;
   cstackinit=(uintptr_t)&y;
   Q_UNUSED(jqtver);
-#ifdef _WIN32
-  qDebug() << "main a01";
-#endif
 #if !(defined(_WIN32))
   locale_t loc=0;
   if ((loc = newlocale(LC_ALL_MASK, "", (locale_t)0 )))
@@ -106,9 +103,6 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-#ifdef _WIN32
-  qDebug() << "main a02";
-#endif
 #if defined(Q_OS_ANDROID)
   start_logger();
 #endif
@@ -119,9 +113,6 @@ int main(int argc, char *argv[])
   int embedding=0;
 #ifdef _WIN32
   int regn=-1;
-#ifdef _WIN32
-  qDebug() << "main a03";
-#endif
   if (argc>1 && (!strcmp(argv[1],"-regserver") || !strcmp(argv[1],"/regserver")))
     regn=1;
   else if (argc>1 && (!strcmp(argv[1],"-unregserver") || !strcmp(argv[1],"/unregserver")))
@@ -137,9 +128,6 @@ int main(int argc, char *argv[])
     strcpy(argv[1],"-jprofile");  // no buffer overflow
   }
   QString s= QString::fromUtf8(path)+ "/jqt";
-#ifdef _WIN32
-  qDebug() << "main a04";
-#endif
 #else
   QString s= QString::fromUtf8(path);
 #if defined(__APPLE__)
@@ -166,36 +154,21 @@ int main(int argc, char *argv[])
 #endif
 #endif
   }
-#ifdef _WIN32
-  qDebug() << "main a05";
-#endif
 #ifdef JQTAMALGAM
   if (1) {
     state_run(argc, argv, (char*)"",fhs,(embedding)?0:1, &hjdll, &pjst, cstackinit);
 #else
-#ifdef _WIN32
-  qDebug() << "main a06";
-#endif
   QLibrary *lib=new QLibrary(s);
   state_run=(Run) lib->resolve("state_run");
   if (state_run) {
-#ifdef _WIN32
-  qDebug() << "main a07";
-#endif
     state_run(argc, argv, lib->fileName().toUtf8().data(),fhs,(embedding)?0:1, &hjdll, &pjst, cstackinit);
 #endif
 #if defined(_WIN32)
     if (embedding)
       if (!initexeserver())
         return -1;
-#ifdef _WIN32
-  qDebug() << "main a08";
-#endif
     return staterun(-1,0,0);
 #else
-#ifdef _WIN32
-  qDebug() << "main a09";
-#endif
     return state_run(-1,0,0,false,0,0,0,cstackinit);
 #endif
   }
