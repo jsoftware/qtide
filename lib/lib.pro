@@ -129,7 +129,7 @@ equals(QMAKE_TARGET.arch , armv6l): {
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android:!win32 {
+equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android:!win32: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
