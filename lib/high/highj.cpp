@@ -136,11 +136,8 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   rule.format = functionFormat;
   highlightingRules.append(rule);
 
-  rule.pattern = QRegExp("\\bNB\\.[^\n]*");
-  NBPattern = rule.pattern;
-  rule.format = singleLineCommentFormat;
-  highlightingRules.append(rule);
-
+  NBPattern = QRegExp("\\bNB\\.[^\n]*");
+ 
   noundefStartExpression = QRegExp("\\b(0\\s+:\\s*0|noun\\s+define)\\b.*$");
   noundefEndExpression = QRegExp("^\\s*\\)\\s*$");
 
@@ -148,8 +145,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   commentEndExpression = QRegExp("^\\s*\\)\\s*$");
 }
 
-// ---------------------------------------------------------------------
-void Highj::highlightBlock(const QString &text)
+void Highj::highlightBasicTokens(const QString &text)
 {
   foreach (const HighlightingRule &rule, highlightingRules) {
     QRegExp expression(rule.pattern);
@@ -160,6 +156,44 @@ void Highj::highlightBlock(const QString &text)
       index = expression.indexIn(text, index + length);
     }
   }
+}
+
+void Highj::highlightNB(const QString &text)
+{
+ // Handle highlighting of NB., but do not highlight when NB. inside string e.g. 'NB.'.
+ // The solution is to highlight NB. only if even number of ' occurs before it in the line.
+ 
+ HighlightingRule commentedLine, notaBene;
+ 
+ commentedLine.pattern = QRegExp("^[^']*('[^']*'[^']*)*\\bNB\\.");
+ notaBene.pattern = QRegExp("NB\\.[^\n]*$");
+ notaBene.format = singleLineCommentFormat;
+ QRegExp commentedLineExp(commentedLine.pattern);
+ QRegExp notaBeneExp(notaBene.pattern);
+ 
+ // Default greedy algorithm works incorrectly e.g. NB. NB..
+ // Use minimal algorithm.
+ commentedLineExp.setMinimal(true);
+ 
+ int index = commentedLineExp.indexIn(text);
+ while (index >= 0) {
+   int length = commentedLineExp.matchedLength();
+   // Comment starts in index + length - 3.
+   index = notaBeneExp.indexIn(text, index + length - 3); // Start of comment.
+   length = notaBeneExp.matchedLength(); // Length of comment.
+   setFormat(index, length, notaBene.format);
+   // Search next line with comment.
+   index = commentedLineExp.indexIn(text, index + length);
+ }
+}
+
+// ---------------------------------------------------------------------
+void Highj::highlightBlock(const QString &text)
+{
+  highlightBasicTokens(text);
+  highlightNB(text);
+
+  // Highlight mulitline nouns defined with 0 : 0, but keep highlighted comments in 0 : 0 NB..
   setCurrentBlockState(0);
 
   int startIndex = 0;
