@@ -207,7 +207,7 @@ NO_OPENGL = $$(NO_OPENGL)
   message(disable opengl feature)
   DEFINES += QT_NO_OPENGL
   DEFINES -= QT_OPENGL QT_OPENGL_ES_2
-  QT -= openglwidgets
+  QT -= openglwidgets opengl
 }
 
 # QT50 or later
