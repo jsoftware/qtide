@@ -167,7 +167,7 @@ void Tedit::enter()
   } else {
     docmd(txt);
   }
- 
+
   // Scroll to very bottom to prevent scroll bar covering last line (macOS).
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }

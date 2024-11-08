@@ -137,7 +137,7 @@ Highj::Highj(QTextDocument *parent) : QSyntaxHighlighter(parent)
   highlightingRules.append(rule);
 
   NBPattern = QRegExp("\\bNB\\.[^\n]*");
- 
+
   noundefStartExpression = QRegExp("\\b(0\\s+:\\s*0|noun\\s+define)\\b.*$");
   noundefEndExpression = QRegExp("^\\s*\\)\\s*$");
 
@@ -160,31 +160,31 @@ void Highj::highlightBasicTokens(const QString &text)
 
 void Highj::highlightNB(const QString &text)
 {
- // Handle highlighting of NB., but do not highlight when NB. inside string e.g. 'NB.'.
- // The solution is to highlight NB. only if even number of ' occurs before it in the line.
- 
- HighlightingRule commentedLine, notaBene;
- 
- commentedLine.pattern = QRegExp("^[^']*('[^']*'[^']*)*\\bNB\\.");
- notaBene.pattern = QRegExp("NB\\.[^\n]*$");
- notaBene.format = singleLineCommentFormat;
- QRegExp commentedLineExp(commentedLine.pattern);
- QRegExp notaBeneExp(notaBene.pattern);
- 
- // Default greedy algorithm works incorrectly e.g. NB. NB..
- // Use minimal algorithm.
- commentedLineExp.setMinimal(true);
- 
- int index = commentedLineExp.indexIn(text);
- while (index >= 0) {
-   int length = commentedLineExp.matchedLength();
-   // Comment starts in index + length - 3.
-   index = notaBeneExp.indexIn(text, index + length - 3); // Start of comment.
-   length = notaBeneExp.matchedLength(); // Length of comment.
-   setFormat(index, length, notaBene.format);
-   // Search next line with comment.
-   index = commentedLineExp.indexIn(text, index + length);
- }
+// Handle highlighting of NB., but do not highlight when NB. inside string e.g. 'NB.'.
+// The solution is to highlight NB. only if even number of ' occurs before it in the line.
+
+  HighlightingRule commentedLine, notaBene;
+
+  commentedLine.pattern = QRegExp("^[^']*('[^']*'[^']*)*\\bNB\\.");
+  notaBene.pattern = QRegExp("NB\\.[^\n]*$");
+  notaBene.format = singleLineCommentFormat;
+  QRegExp commentedLineExp(commentedLine.pattern);
+  QRegExp notaBeneExp(notaBene.pattern);
+
+// Default greedy algorithm works incorrectly e.g. NB. NB..
+// Use minimal algorithm.
+  commentedLineExp.setMinimal(true);
+
+  int index = commentedLineExp.indexIn(text);
+  while (index >= 0) {
+    int length = commentedLineExp.matchedLength();
+    // Comment starts in index + length - 3.
+    index = notaBeneExp.indexIn(text, index + length - 3); // Start of comment.
+    length = notaBeneExp.matchedLength(); // Length of comment.
+    setFormat(index, length, notaBene.format);
+    // Search next line with comment.
+    index = commentedLineExp.indexIn(text, index + length);
+  }
 }
 
 // ---------------------------------------------------------------------

@@ -21,7 +21,7 @@ protected:
 private:
   void highlightBasicTokens(const QString &text);
   void highlightNB(const QString &text);
- 
+
   struct HighlightingRule {
     QRegExp pattern;
     QTextCharFormat format;
