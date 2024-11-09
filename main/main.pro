@@ -40,7 +40,6 @@ message(original arch $$QMAKE_HOST.arch)
 QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
-linux-cross: QMAKE_TARGET.arch = x86
 win32-clang*: QMAKE_TARGET.arch = x86_64
 win32-arm64*: QMAKE_TARGET.arch = arm64
 # android: QMAKE_TARGET.arch = arm64
@@ -61,13 +60,13 @@ android {
 !isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
 }
 
-equals(QMAKE_TARGET.arch , armv6l): {
+equals(QMAKE_TARGET.arch , armv6l):linux: {
   message(building raspberry pi jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android:!win32 {
+equals(QMAKE_TARGET.arch , aarch64):linux: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
@@ -76,7 +75,7 @@ equals(QMAKE_TARGET.arch , aarch64):!macx*:!wasm*:!openbsd:!freebsd:!android:!wi
 win32: arch = win-$$QMAKE_TARGET.arch
 android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
-unix:!macx:!andrid: arch = linux-$$QMAKE_TARGET.arch
+linux: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 macx-ios: arch = ios-$$QMAKE_TARGET.arch
@@ -105,9 +104,6 @@ UI_DIR = $$BUILDROOT/ui
 
 macx:CONFIG += c++11
 win32:TARGET = ../bin/jqt
-win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-win32-arm64*:DEFINES += _CRT_SECURE_NO_WARNINGS
-win32-clang-msvc:DEFINES += _CRT_SECURE_NO_WARNINGS
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -124,7 +120,6 @@ win32:HEADERS += dllsrc/jexe.h dllsrc/jdllcom.h dllsrc/jdlltype.h
 macx:OBJECTIVE_SOURCES += disableWindowTabbing.mm
 macx:LIBS += -framework AppKit
 
-win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32-arm64*:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32-clang-msvc:DEFINES += _CRT_SECURE_NO_WARNINGS
@@ -133,9 +128,6 @@ win32-clang-g++:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-arm64*:QMAKE_CXXFLAGS += -WX
 win32-clang-msvc:QMAKE_CXXFLAGS += -WX
-win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
-win32-mrm64*:QMAKE_LFLAGS += /STACK:0xc00000
-win32-clang-msvc:QMAKE_LFLAGS += /STACK:0xc00000
 macx:QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
@@ -144,4 +136,9 @@ QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
 }
 !isEmpty(QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
 
+# executable
+win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32:RC_FILE = jqt.rc
+win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
+win32-arm64*:QMAKE_LFLAGS += /STACK:0xc00000
+win32-clang-msvc:QMAKE_LFLAGS += /STACK:0xc00000

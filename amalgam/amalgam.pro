@@ -33,6 +33,9 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
 # use webkit instead of webengine
 JQTWEBKIT = $$(JQTWEBKIT)
 
+# export JQTRPATH=JQTRPATH to enable runpath on linux
+JQTRPATH = $$(JQTRPATH)
+
 contains(DEFINES,QTWEBSOCKET): contains(DEFINES,QT57) QT += websockets
 contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 5): QT += widgets
@@ -52,6 +55,19 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 !lessThan(QT_MAJOR_VERSION, 6): QT += openglwidgets
 
+android  {
+  !contains(DEFINES,QT62): error(requires Qt6.2)
+  CONFIG += mobility
+  MOBILITY +=
+  QT += opengl
+  DEFINES += QT_NO_PRINTER
+  DEFINES += SMALL_SCREEN
+  ANDROID_PACKAGE_SOURCE_DIR = $$PWD/../android
+}
+contains(DEFINES,QT56) {
+  QT += webengine
+  QT -= webkit
+}
 TEMPLATE = app
 TARGET = jqta
 
@@ -87,7 +103,6 @@ message(original arch $$QMAKE_HOST.arch)
 QMAKE_TARGET.arch = $$QMAKE_HOST.arch
 linux-g++-32: QMAKE_TARGET.arch = x86
 linux-g++-64: QMAKE_TARGET.arch = x86_64
-linux-cross: QMAKE_TARGET.arch = x86
 linux-raspi: QMAKE_TARGET.arch = armv6l
 win32-clang*: QMAKE_TARGET.arch = x86_64
 win32-arm64*: QMAKE_TARGET.arch = arm64
@@ -110,13 +125,13 @@ android {
   !isEmpty(ABI): QMAKE_TARGET.arch = $$ABI
 }
 
-equals(QMAKE_TARGET.arch , armv6l): {
+equals(QMAKE_TARGET.arch , armv6l):linux: {
   message(building raspberry pi jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -marm -march=armv6 -mfloat-abi=hard -mfpu=vfp
 }
 
-equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!android:!openbsd:!freebsd:!win32: {
+equals(QMAKE_TARGET.arch , aarch64):linux: {
   message(building raspberry pi-3 jqt)
   DEFINES += RASPI
   QMAKE_CXXFLAGS += -march=armv8-a+crc
@@ -125,8 +140,9 @@ equals(QMAKE_TARGET.arch , aarch64):!macx:!wasm:!android:!openbsd:!freebsd:!win3
 isEmpty(QMAKE_TARGET.arch): error(empty target arch)
 
 win32: arch = win-$$QMAKE_TARGET.arch
+android: arch = android-$$QMAKE_TARGET.arch
 macx: arch = mac-$$QMAKE_TARGET.arch
-unix:!macx: arch = linux-$$QMAKE_TARGET.arch
+linux: arch = linux-$$QMAKE_TARGET.arch
 freebsd: arch = freebsd-$$QMAKE_TARGET.arch
 openbsd: arch = openbsd-$$QMAKE_TARGET.arch
 ios: arch = ios-$$QMAKE_TARGET.arch
@@ -158,9 +174,6 @@ UI_DIR = $$BUILDROOT/ui
 macx:CONFIG += c++11
 # win32:CONFIG += dll console
 win32:TARGET = ../bin/jqtamalgam
-win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
-win32-arm64*:DEFINES += _CRT_SECURE_NO_WARNINGS
-win32-clang-msvc:DEFINES += _CRT_SECURE_NO_WARNINGS
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -378,6 +391,7 @@ RESOURCES += ../lib/styles/qdarkstyle/darkstyle.qrc
 
 win32:VERSION =
 unix:!openbsd:LIBS += -ldl
+android:LIBS += -ldl
 
 ios{
 LIBS -= -ldl
@@ -449,16 +463,27 @@ DEFINES += SMALL_SCREEN
 RESOURCES += ../jlibrary.qrc
 RESOURCES += ../test.qrc
 }
-win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
+
+win32-msvc*:DEFINES += _CRT_SECURE_NO_WARNINGS
+win32-arm64*:DEFINES += _CRT_SECURE_NO_WARNINGS
+win32-clang-msvc:DEFINES += _CRT_SECURE_NO_WARNINGS
 win32-g++:QMAKE_LFLAGS += -static-libgcc
 win32-clang-g++:QMAKE_LFLAGS += -static-libgcc
 win32-msvc*:QMAKE_CXXFLAGS += -WX
 win32-arm64*:QMAKE_CXXFLAGS += -WX
 win32-clang-msvc:QMAKE_CXXFLAGS += -WX
-win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
-win32-arm64*:QMAKE_LFLAGS += /STACK:0xc00000
-win32-clang-msvc:QMAKE_LFLAGS += /STACK:0xc00000
 macx:QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR +=@executable_path/../Qt/Frameworks
+linux:!isEmpty(JQTRPATH) {
+QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
+}
+!isEmpty(QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
+# unix:QMAKE_CXXFLAGS += -fno-sized-deallocation
+
+# executable
+win32:LIBS += -lole32 -loleaut32 -luuid -ladvapi32
 win32:RC_FILE = ../main/jqt.rc
+win32-msvc*:QMAKE_LFLAGS += /STACK:0xc00000
+win32-arm64*:QMAKE_LFLAGS += /STACK:0xc00000
+win32-clang-msvc:QMAKE_LFLAGS += /STACK:0xc00000

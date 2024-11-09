@@ -194,9 +194,6 @@ int wd(char *s,int slen,char *&res,int &len)
   locale=jegetlocale();
   rc=0;
   result.clear();
-  qDebug() << slen;
-  fprintf(stderr,"wd a1 %d", s[slen]);
-  fprintf(stderr,"%.*s", slen, s);
   cmd.init(s,slen);
   wd1();
   len=(int)result.size();
