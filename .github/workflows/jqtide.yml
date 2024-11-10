@@ -341,7 +341,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.5.3'
+      version: '6.8.0'
       target: 'desktop'
       arch: 'win64_msvc2019_arm64'
       dir: '${{github.workspace}}'
@@ -351,7 +351,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.5.3 arm64
+     run: script\makewin.cmd 6.8.0 arm64
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
