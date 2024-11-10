@@ -81,7 +81,7 @@ qmake
 GOTO L05C
 :L05A
 echo LL01
-qmake -spec win32-arm64-msvc
+D:\a\qtide\qtide\Qt\6.7.3\msvc2019_64\bin\qmake.exe -spec win32-arm64-msvc
 :L05C
 echo LL02
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -95,7 +95,7 @@ IF "%~2"=="arm64" GOTO L06A
 qmake
 GOTO L06C
 :L06A
-qmake -spec win32-arm64-msvc
+D:\a\qtide\qtide\Qt\6.7.3\msvc2019_64\bin\qmake.exe -spec win32-arm64-msvc
 :L06C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
