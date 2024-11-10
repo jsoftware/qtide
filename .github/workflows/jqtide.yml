@@ -20,11 +20,23 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt from distro
-     run: script/installqt.sh linux
+#   - name: Install Qt from distro
+#      run: script/installqt.sh linux
+
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v4
+     with:
+      version: '5.15.2'
+      target: 'desktop'
+      dir: '${{github.workspace}}'
+#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
+      aqtversion: '==3.1.*'
+
 
    - name: Compile JQtide
-     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
+#     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
+     run: QM=${{github.workspace}}/Qt/5.15.2/linux/bin/qmake script/makelinux.sh '5.15.2' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -48,7 +60,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -58,7 +70,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: JQTWEBKIT=JQTWEBKIT QM=${{github.workspace}}/Qt/6.8.0/macos/bin/qmake script/makemac.sh '6.8.0' mac
+     run: QM=${{github.workspace}}/Qt/6.5.3/macos/bin/qmake script/makemac.sh '6.5.3' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -291,7 +303,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -300,13 +312,52 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.8.0
+     run: script\makewin.cmd 6.5.3 x64
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
      with:
       tag: build
       artifacts: "jqt-win.zip,jqt-win-slim.zip"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# windows arm64 --------------------------------------------------------
+ jqtwinarm64:
+  name: JQtide (Windows arm64)
+  runs-on: windows-2019
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v4
+     with:
+      submodules: recursive
+
+   - name: Setup Environment (Windows arm64)
+     uses: ilammy/msvc-dev-cmd@v1
+     with:
+      arch: amd64_arm64
+
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v4
+     with:
+      version: '6.5.3'
+      target: 'desktop'
+      arch: 'win64_msvc2019_arm64'
+      dir: '${{github.workspace}}'
+#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
+      aqtversion: '==3.1.*'
+
+   - name: Compile JQtide
+     shell: cmd
+     run: script\makewin.cmd 6.5.3 arm64
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-winarm64.zip,jqt-winarm64-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -325,22 +376,22 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
-      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-#      modules: 'qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview'
+#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install Qt from source wasm
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'desktop'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
-      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
-#      modules: 'qt5compat qtcharts qtdatavis3d qtgrpc qthttpserver qtimageformats qtlottie qtmultimedia qtquick3d qtquick3dphysics qtquicktimeline qtscxml qtshadertools qtspeech qtvirtualkeyboard qtwebchannel qtwebsockets'
+#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
+      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install emsdk
@@ -357,7 +408,7 @@ jobs:
      run: |
       ./cpjlib.sh
       ./cplibjtest.sh
-      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.8.0/wasm_multithread/bin/qmake ./makeall.sh
+      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.5.3/wasm_multithread/bin/qmake ./makeall.sh
       rm -rf j32
       mkdir j32
       ls -l bin/wasm-wasm32/release
@@ -386,19 +437,21 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
-      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install Qt from source ios
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.0'
+      version: '6.5.3'
       target: 'ios'
       dir: '${{github.workspace}}'
-      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Compile JQtide
@@ -441,7 +494,7 @@ jobs:
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
       echo "QMAKE_MAC_XCODE_SETTINGS += development_team" >> ios_signature.pri
-      QM=${{github.workspace}}/Qt/6.8.0/ios/bin/qmake script/makemac.sh '6.8.0' ios
+      QM=${{github.workspace}}/Qt/6.5.3/ios/bin/qmake script/makemac.sh '6.5.3' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
