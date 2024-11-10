@@ -16,6 +16,8 @@ set NO_WEBENGINE=NO_WEBENGINE
 echo %PATH%
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
+IF "%~2"=="arm64" GOTO L20
+
 @rem set NO_OPENGL=1
 @rem set JQTWEBKIT=JQTWEBKIT
 cd lib
@@ -43,8 +45,8 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 @rem IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 @rem nmake
 @rem IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-
 cd ..
+
 IF "%~2"=="arm64" GOTO L03A
 move bin\win-x86_64\release jqt-win
 GOTO L03C
@@ -69,6 +71,8 @@ RD /S /Q bin
 RD /S /Q lib\build
 RD /S /Q main\build
 @rem RD /S /Q amalgam\build
+
+:L20
 
 set JQTSLIM=1
 cd lib
