@@ -40,7 +40,7 @@ GOTO L01C
 :L01A
 move bin\win-aarch64\release jqt-winarm64
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L0lC
+:L01C
 
 IF "%~2"=="arm64" GOTO L02A
 cd jqt-win
