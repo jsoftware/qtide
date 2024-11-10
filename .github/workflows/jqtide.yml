@@ -305,6 +305,7 @@ jobs:
      with:
       version: '6.5.3'
       target: 'desktop'
+      arch: 'win64_msvc2019_64'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
       modules: 'all'
@@ -339,6 +340,17 @@ jobs:
       arch: amd64_arm64
 
    - name: Install Qt from source
+     uses: jurplel/install-qt-action@v4
+     with:
+      version: '6.7.3'
+      target: 'desktop'
+      arch: 'win64_msvc2019_64'
+      dir: '${{github.workspace}}'
+#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+      modules: 'all'
+      aqtversion: '==3.1.*'
+
+   - name: Install Qt from source arm64
      uses: jurplel/install-qt-action@v4
      with:
       version: '6.7.3'
