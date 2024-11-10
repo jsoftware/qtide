@@ -8,7 +8,7 @@ echo "%~2"
 IF "%~2"=="x86" GOTO L0
 IF "%~2"=="x64" GOTO L0
 IF "%~2" NEQ "arm64" EXIT /b 1
-set NO_WEBENGINE=NO_WEBENGINE
+@rem set NO_WEBENGINE=NO_WEBENGINE
 :L0
 
 @rem set PATH=C:\$GITHUB_WORKSPACE\Qt\%1\win64_msvc2019_64\bin;%PATH%
@@ -80,11 +80,16 @@ IF "%~2"=="arm64" GOTO L05A
 qmake
 GOTO L05C
 :L05A
+echo LL01
 qmake -spec win32-arm64-msvc
 :L05C
+echo LL02
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+echo LL03
 nmake
+echo LL04
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
+echo LL05
 cd ..\main
 IF "%~2"=="arm64" GOTO L06A
 qmake
