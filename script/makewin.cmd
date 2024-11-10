@@ -8,10 +8,9 @@ echo "%~2"
 IF "%~2"=="x86" GOTO L0
 IF "%~2"=="x64" GOTO L0
 IF "%~2" NEQ "arm64" EXIT /b 1
-@rem set NO_WEBENGINE=NO_WEBENGINE
+set PATH=C:\%GITHUB_WORKSPACE%\Qt\%1\win64_msvc2019_64\bin;%PATH%
 :L0
 
-@rem set PATH=C:\$GITHUB_WORKSPACE\Qt\%1\win64_msvc2019_64\bin;%PATH%
 @rem CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 echo %PATH%
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -25,7 +24,7 @@ IF "%~2"=="arm64" GOTO L01A
 qmake
 GOTO L01C
 :L01A
-qmake -spec win32-arm64-msvc
+qmake.exe -spec C:\%GITHUB_WORKSPACE%\Qt\%1\win64_msvc2019_arm64\mkspecs\win32-arm64-msvc
 :L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -35,7 +34,7 @@ IF "%~2"=="arm64" GOTO L02A
 qmake
 GOTO L02C
 :L02A
-qmake -spec win32-arm64-msvc
+qmake.exe -spec C:\%GITHUB_WORKSPACE%\Qt\%1\win64_msvc2019_arm64\mkspecs\win32-arm64-msvc
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -80,22 +79,17 @@ IF "%~2"=="arm64" GOTO L05A
 qmake
 GOTO L05C
 :L05A
-echo LL01
-D:\a\qtide\qtide\Qt\6.7.3\msvc2019_64\bin\qmake.exe -spec win32-arm64-msvc
+qmake.exe -spec C:\%GITHUB_WORKSPACE%\Qt\%1\win64_msvc2019_arm64\mkspecs\win32-arm64-msvc
 :L05C
-echo LL02
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-echo LL03
 nmake
-echo LL04
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-echo LL05
 cd ..\main
 IF "%~2"=="arm64" GOTO L06A
 qmake
 GOTO L06C
 :L06A
-D:\a\qtide\qtide\Qt\6.7.3\msvc2019_64\bin\qmake.exe -spec win32-arm64-msvc
+qmake.exe -spec C:\%GITHUB_WORKSPACE%\Qt\%1\win64_msvc2019_arm64\mkspecs\win32-arm64-msvc
 :L06C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
