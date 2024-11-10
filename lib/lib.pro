@@ -82,6 +82,15 @@ TARGET = jqt
 # to print debug messages for calling JDo,  uncomment the following line
 # DEFINES += DEBUG_JDO
 
+# export NO_WEBENGINE before qmake
+NO_WEBENGINE = $$(NO_WEBENGINE)
+!isEmpty(NO_WEBENGINE) {
+  message(disable webengine feature)
+  DEFINES += QT_NO_WEBENGINE
+  DEFINES -= QT_WEBENGINE
+  QT -= webenginewidgets webengine
+}
+
 # export JQTFAT before qmake
 JQTFAT = $$(JQTFAT)
 !isEmpty(JQTFAT) {

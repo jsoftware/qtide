@@ -36,7 +36,7 @@ jobs:
 
    - name: Compile JQtide
 #     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
-     run: QM=${{github.workspace}}/Qt/5.15.2/linux/bin/qmake script/makelinux.sh '5.15.2' linux
+     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -510,7 +510,7 @@ jobs:
   runs-on: ubuntu-20.04
 # 7 jul 2024 - ios/wasm builds fail
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm]
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2

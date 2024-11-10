@@ -4,8 +4,9 @@
 
 @rem x64 x86 arm64
 IF "%~2"=="x86" GOTO L0
-IF "%~2"=="arm64" GOTO L0
-IF "%~2" NEQ "x64" EXIT /b 1
+IF "%~2"=="x64" GOTO L0
+IF "%~2" NEQ "arm64" EXIT /b 1
+set NO_WEBENGINE=NO_WEBENGINE
 :L0
 
 @rem set PATH=C:\$GITHUB_WORKSPACE\Qt\%1\win64_msvc2019_64\bin;%PATH%
