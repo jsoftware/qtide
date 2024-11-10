@@ -2,6 +2,8 @@
 @REM argument is Qt version, e.g. "5.15.2"
 @REM argument is arch, e.g. "x64"
 
+echo "%~1"
+echo "%~2"
 @rem x64 x86 arm64
 IF "%~2"=="x86" GOTO L0
 IF "%~2"=="x64" GOTO L0
@@ -17,12 +19,22 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 @rem set NO_OPENGL=1
 @rem set JQTWEBKIT=JQTWEBKIT
 cd lib
+IF "%~2"=="arm64" GOTO L01A
 qmake
+GOTO L01C
+:L01A
+qmake -spec win32-arm64-msvc
+:L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..\main
+IF "%~2"=="arm64" GOTO L02A
 qmake
+GOTO L02C
+:L02A
+qmake -spec win32-arm64-msvc
+:L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -33,25 +45,23 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 @rem IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
 cd ..
-IF "%~2"=="arm64" GOTO L01A
+IF "%~2"=="arm64" GOTO L03A
 move bin\win-x86_64\release jqt-win
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-GOTO L01C
-:L01A
+GOTO L03C
+:L03A
 move bin\win-aarch64\release jqt-winarm64
+:L03C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L01C
 
-IF "%~2"=="arm64" GOTO L02A
+IF "%~2"=="arm64" GOTO L04A
 cd jqt-win
 powershell Compress-Archive * ..\jqt-win.zip
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-GOTO L02C
-:L02A
+GOTO L04C
+:L04A
 cd jqt-winarm64
 powershell Compress-Archive * ..\jqt-winarm64.zip
+:L04C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L02C
 cd ..
 
 RD /S /Q release
@@ -62,12 +72,22 @@ RD /S /Q main\build
 
 set JQTSLIM=1
 cd lib
+IF "%~2"=="arm64" GOTO L05A
 qmake
+GOTO L05C
+:L05A
+qmake -spec win32-arm64-msvc
+:L05C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..\main
+IF "%~2"=="arm64" GOTO L06A
 qmake
+GOTO L06C
+:L06A
+qmake -spec win32-arm64-msvc
+:L06C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -78,35 +98,32 @@ IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 @REM IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
 cd ..
-IF "%~2"=="arm64" GOTO L03A
+IF "%~2"=="arm64" GOTO L07A
 move bin\win-x86_64\release jqt-win-slim
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-GOTO L03C
-:L03A
+GOTO L07C
+:L07A
 move bin\win-aarch64\release jqt-winarm64-slim
+:L07C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L03C
 
-IF "%~2"=="arm64" GOTO L04A
+IF "%~2"=="arm64" GOTO L08A
 cd jqt-win-slim
 powershell Compress-Archive * ..\jqt-win-slim.zip
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-GOTO L04C
-:L04A
+GOTO L08C
+:L08A
 cd jqt-winarm64-slim
 powershell Compress-Archive * ..\jqt-winarm64-slim.zip
+:L08C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L04C
 cd ..
 
-IF "%~2"=="arm64" GOTO L05A
+IF "%~2"=="arm64" GOTO L09A
 powershell Compress-Archive Qt win-Qt.zip
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-GOTO L05C
-:L05A
+GOTO L09C
+:L09A
 powershell Compress-Archive Qt winarm64-Qt.zip
+:L09C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-:L05C
 
 RD /S /Q release
 RD /S /Q bin

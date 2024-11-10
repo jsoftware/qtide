@@ -326,7 +326,7 @@ jobs:
 # windows arm64 --------------------------------------------------------
  jqtwinarm64:
   name: JQtide (Windows arm64)
-  runs-on: windows-2019
+  runs-on: windows-2022
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
