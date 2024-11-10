@@ -22,6 +22,7 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
  DEFINES += QT60
  QT += core5compat
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
+ !lessThan(QT_MINOR_VERSION,5): DEFINES += QT65
  !lessThan(QT_MINOR_VERSION,8): DEFINES += QT68
  DEFINES += QT57
  DEFINES += QT512

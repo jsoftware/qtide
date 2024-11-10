@@ -1,7 +1,9 @@
 
 #include <QApplication>
 #include <QStyle>
-
+#ifdef QT65
+#include <QStyleHints>
+#endif
 #include "base.h"
 #include "proj.h"
 #include "recent.h"
@@ -49,6 +51,11 @@ std::string qtstate(std::string p)
   c="style";
   if (all || s.contains(c))
     r+=qpair(c,QApplication::style()->objectName());
+#ifdef QT65
+  c="colorscheme";
+  if (all || s.contains(c))
+    r+=qpair(c,i2s(Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()));
+#endif
   c="version";
   if (all || s.contains(c))
     r+=qpair(c,getversion());
