@@ -58,7 +58,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.8.0/macos/bin/qmake script/makemac.sh '6.8.0' mac
+     run: JQTWEBKIT=JQTWEBKIT QM=${{github.workspace}}/Qt/6.8.0/macos/bin/qmake script/makemac.sh '6.8.0' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
