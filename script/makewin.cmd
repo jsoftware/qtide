@@ -9,12 +9,11 @@ IF "%~2"=="x86" GOTO L0
 IF "%~2"=="x64" GOTO L0
 IF "%~2" NEQ "arm64" EXIT /b 1
 set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2019_64\bin;%PATH%
-CALL "c:\program files\microsoft visual studio\2022\community\vc\auxiliary\build\vcvarsamd64_arm64.bat"
+@rem CALL "c:\program files\microsoft visual studio\2022\community\vc\auxiliary\build\vcvarsamd64_arm64.bat"
 :L0
 
 @rem CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 echo %PATH%
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
 IF "%~2"=="arm64" GOTO L20
 
