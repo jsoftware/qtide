@@ -437,6 +437,7 @@ DEFINES += NMDIALOG
 RESOURCES += ../jlibrary.qrc
 RESOURCES += ../test.qrc
 QMAKE_LFLAGS += -L../wasm/j32 -lj -L../wasm/mpir -lgmp
+QMAKE_LFLAGS += -Wl,-u__wasm_longjmp
 QMAKE_LFLAGS += -Wl,--shared-memory,--no-check-features
 QMAKE_LFLAGS += -s WASM=1 -s ASSERTIONS=1 -s INITIAL_MEMORY=220MB -s TOTAL_MEMORY=600MB -s ALLOW_MEMORY_GROWTH=1 -s STACK_SIZE=984KB
 QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMULATE_FUNCTION_POINTER_CASTS=1 -s NO_EXIT_RUNTIME=1

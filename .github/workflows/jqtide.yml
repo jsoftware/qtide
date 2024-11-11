@@ -347,7 +347,7 @@ jobs:
       arch: 'win64_msvc2019_64'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'all'
+#      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install Qt from source arm64
@@ -392,7 +392,7 @@ jobs:
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'all'
+#      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install Qt from source wasm
@@ -453,7 +453,7 @@ jobs:
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'all'
+#      modules: 'all'
       aqtversion: '==3.1.*'
 
    - name: Install Qt from source ios

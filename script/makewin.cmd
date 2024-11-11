@@ -9,12 +9,11 @@ IF "%~2"=="x86" GOTO L0
 IF "%~2"=="x64" GOTO L0
 IF "%~2" NEQ "arm64" EXIT /b 1
 set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2019_64\bin;%PATH%
-CALL "c:\program files\microsoft visual studio\2022\community\vc\auxiliary\build\vcvarsamd64_arm64.bat"
+@rem CALL "c:\program files\microsoft visual studio\2022\community\vc\auxiliary\build\vcvarsamd64_arm64.bat"
 :L0
 
 @rem CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 echo %PATH%
-IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
 IF "%~2"=="arm64" GOTO L20
 
@@ -25,7 +24,7 @@ IF "%~2"=="arm64" GOTO L01A
 qmake
 GOTO L01C
 :L01A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -35,7 +34,7 @@ IF "%~2"=="arm64" GOTO L02A
 qmake
 GOTO L02C
 :L02A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -80,7 +79,7 @@ IF "%~2"=="arm64" GOTO L05A
 qmake
 GOTO L05C
 :L05A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L05C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -90,7 +89,7 @@ IF "%~2"=="arm64" GOTO L06A
 qmake
 GOTO L06C
 :L06A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L06C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
