@@ -4,6 +4,7 @@
 #ifdef QT65
 #include <QStyleHints>
 #endif
+#include <Qstring>
 #include "base.h"
 #include "proj.h"
 #include "recent.h"
@@ -53,8 +54,15 @@ std::string qtstate(std::string p)
     r+=qpair(c,QApplication::style()->objectName());
 #ifdef QT65
   c="colorscheme";
-  if (all || s.contains(c))
-    r+=qpair(c,i2s(Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()));
+  if (all || s.contains(c)) {
+      if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) {
+         r+=qpair(c,QString("dark"));
+      } else if (Qt::ColorScheme::Light == QGuiApplication::styleHints()->colorScheme()) {
+         r+=qpair(c,QString("light"));
+      } else {
+         r+=qpair(c,QString("unknown"));
+      }
+  }
 #endif
   c="version";
   if (all || s.contains(c))
