@@ -4,7 +4,7 @@
 #ifdef QT65
 #include <QStyleHints>
 #endif
-#include <Qstring>
+#include <QString>
 #include "base.h"
 #include "proj.h"
 #include "recent.h"
