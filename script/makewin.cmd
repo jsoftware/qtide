@@ -24,7 +24,7 @@ IF "%~2"=="arm64" GOTO L01A
 qmake
 GOTO L01C
 :L01A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -34,7 +34,7 @@ IF "%~2"=="arm64" GOTO L02A
 qmake
 GOTO L02C
 :L02A
-qmake -spec win32-arm64-msvc
+qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2019_arm64\bin\target_qt.conf -spec win32-arm64-msvc
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake

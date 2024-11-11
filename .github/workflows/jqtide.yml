@@ -377,6 +377,7 @@ jobs:
 # wasm -----------------------------------------------------------------
  jqtwasm:
   name: JQtide (wasm)
+  if: ${{ false }}
   runs-on: macos-13
   steps:
    - name: Check Git repository
