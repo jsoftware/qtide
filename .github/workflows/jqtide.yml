@@ -97,7 +97,7 @@ jobs:
       cpu: cortex-a53
       cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
       base_image: raspios_lite_arm64:latest
-      image_additional_mb: 4096
+      image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
        script/installqt.sh raspberry
@@ -124,6 +124,7 @@ jobs:
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
   name: JQtide (Raspberry-arm32)
+  if: ${{ false }}
   runs-on: ubuntu-20.04
   steps:
    - name: Check Git repository
@@ -136,8 +137,8 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspios_lite:latest
-#      image_additional_mb: 2048
+      base_image: raspbian_lite:2020-02-13
+      image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
        export CC=gcc
@@ -518,7 +519,7 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtrpi32, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
