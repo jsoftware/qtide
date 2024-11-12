@@ -42,6 +42,7 @@ QString dialogdirectory(QWidget *w,QString t,QString p)
 #else
   d->setAttribute(Qt::WA_DeleteOnClose); // delete pointer after close
   d->show();
+  return "";
 #endif
 }
 
