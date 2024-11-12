@@ -137,7 +137,7 @@ jobs:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
       base_image: raspios_lite:latest
-      image_additional_mb: 4096
+#      image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
        export CC=gcc
