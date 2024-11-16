@@ -13,6 +13,9 @@ extern QCompleter *completer;
 #include <QPrinterInfo>
 #endif
 #endif
+#ifdef QT68
+#include <QStyleHints>
+#endif
 
 #include "base.h"
 #include "ntabs.h"
@@ -507,7 +510,15 @@ int Ntabs::tabsaveOK(int index)
 // ---------------------------------------------------------------------
 void Ntabs::tabsetcolor(int index,bool ifmod)
 {
+#ifdef QT68
+  if(Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) {
+    tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::white);
+  } else {
+    tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::black);
+  }
+#else
   tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::black);
+#endif
 }
 
 // ---------------------------------------------------------------------
