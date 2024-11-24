@@ -337,33 +337,34 @@ jobs:
    - name: Setup Environment (Windows arm64)
      uses: ilammy/msvc-dev-cmd@v1
      with:
-      arch: amd64_arm64
+#      arch: amd64_arm64
+      arch: amd64
 
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.7.3'
+      version: '6.8.0'
       target: 'desktop'
-      arch: 'win64_msvc2019_64'
-      dir: '${{github.workspace}}'
-#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-#      modules: 'all'
-      aqtversion: '==3.1.*'
-
-   - name: Install Qt from source arm64
-     uses: jurplel/install-qt-action@v4
-     with:
-      version: '6.7.3'
-      target: 'desktop'
-      arch: 'win64_msvc2019_arm64'
+      arch: 'win64_msvc2022_arm64_cross_compiled'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
       modules: 'all'
       aqtversion: '==3.1.*'
 
+#   - name: Install Qt from source arm64
+#     uses: jurplel/install-qt-action@v4
+#     with:
+#      version: '6.7.3'
+#      target: 'desktop'
+#      arch: 'win64_msvc2019_arm64'
+#      dir: '${{github.workspace}}'
+#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
+#      modules: 'all'
+#      aqtversion: '==3.1.*'
+
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.7.3 arm64
+     run: script\makewin.cmd 6.8.0 arm64
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
