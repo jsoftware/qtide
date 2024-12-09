@@ -95,7 +95,7 @@ Fiw::Fiw(int p, QString s)
   h->addLayout(d,0);
 
   findback=makebutton("Find &Back");
-  findnext=makebutton("Find &Next");
+  findnext=makebutton("Find N&ext");
   findtop=makebutton("&Find Top");
   replace=makebutton("Re&place");
   replaceforward=makebutton("Replace Forward");

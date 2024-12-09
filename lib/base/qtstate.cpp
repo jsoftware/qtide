@@ -55,13 +55,13 @@ std::string qtstate(std::string p)
 #ifdef QT65
   c="colorscheme";
   if (all || s.contains(c)) {
-      if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) {
-         r+=qpair(c,QString("dark"));
-      } else if (Qt::ColorScheme::Light == QGuiApplication::styleHints()->colorScheme()) {
-         r+=qpair(c,QString("light"));
-      } else {
-         r+=qpair(c,QString("unknown"));
-      }
+    if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) {
+      r+=qpair(c,QString("dark"));
+    } else if (Qt::ColorScheme::Light == QGuiApplication::styleHints()->colorScheme()) {
+      r+=qpair(c,QString("light"));
+    } else {
+      r+=qpair(c,QString("unknown"));
+    }
   }
 #endif
   c="version";
