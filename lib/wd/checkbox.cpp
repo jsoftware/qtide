@@ -8,6 +8,12 @@
 #include "pane.h"
 #include "wd.h"
 
+//6 feb 2025 - replaced stateChanged with toggled which fixed a bug
+//in Jqt where unchecking a checked box in the event handler caused
+//a subsequent check to be ignored.
+//Note - after Qt 6.9, stateChanged is no longer supported, and should
+//be replaced by checkStateChanged
+
 // ---------------------------------------------------------------------
 CheckBox::CheckBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
 {
@@ -24,8 +30,8 @@ CheckBox::CheckBox(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f
   childStyle(opt);
   w->setText(qn);
   iconFile="";
-  connect(w,SIGNAL(stateChanged(int)),
-          this,SLOT(stateChanged()));
+  connect(w,SIGNAL(toggled(bool)),
+          this,SLOT(toggled(bool)));
 }
 
 // ---------------------------------------------------------------------
@@ -97,8 +103,9 @@ std::string CheckBox::state()
 }
 
 // ---------------------------------------------------------------------
-void CheckBox::stateChanged()
+void CheckBox::toggled(bool checked)
 {
+  Q_UNUSED(checked);
   event="button";
   pform->signalevent(this);
 }

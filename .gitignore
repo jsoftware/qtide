@@ -32,6 +32,8 @@ makewincdb.sh
 run.sh
 style.sh
 
+!script/*
+
 jqt-mac-64
 jqt.xcodeproj
 Info.plist

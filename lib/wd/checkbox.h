@@ -19,7 +19,7 @@ public:
   std::string iconFile;
 
 private slots:
-  void stateChanged();
+  void toggled(bool);
 
 };
 
