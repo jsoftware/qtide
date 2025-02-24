@@ -6,12 +6,20 @@ on:
    - master
    - main
 
-# if: false
-
 jobs:
+
+# to run all jobs, enable all
+# for selected jobs, disable all and disable the selected needs
+
+ all:
+  if: false
+  runs-on: ubuntu-latest
+  steps:
+    - run: echo "Runall jobs"
 
 # linux ----------------------------------------------------------------
  jqtlinux:
+#  needs: all
   name: JQtide (Linux)
   runs-on: ubuntu-20.04
   steps:
@@ -26,7 +34,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '5.15.2'
+      version: '5.15.3'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -36,7 +44,7 @@ jobs:
 
    - name: Compile JQtide
 #     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
-     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
+     run: QM=${{github.workspace}}/Qt/5.15.3/gcc_64/bin/qmake script/makelinux.sh '5.15.3' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -49,6 +57,7 @@ jobs:
 
 # macOS ----------------------------------------------------------------
  jqtmacos:
+  needs: all
   name: JQtide (macOS)
   runs-on: macos-13
   steps:
@@ -83,6 +92,7 @@ jobs:
 
 # rpi64 ----------------------------------------------------------------
  jqtrpi64:
+  needs: all
   name: JQtide (Raspberry)
   runs-on: ubuntu-20.04
   steps:
@@ -123,6 +133,7 @@ jobs:
 
 # rpi32 ----------------------------------------------------------------
  jqtrpi32:
+  needs: all
   name: JQtide (Raspberry-arm32)
   if: ${{ false }}
   runs-on: ubuntu-20.04
@@ -163,6 +174,7 @@ jobs:
 
 # openbsd --------------------------------------------------------------
  jqtopenbsd:
+  needs: all
   name: JQtide (OpenBSD cross-platform-actions)
   runs-on: macos-13
   steps:
@@ -204,6 +216,7 @@ jobs:
 
 # freebsd --------------------------------------------------------------
  jqtfreebsd:
+  needs: all
   name: JQtide (FreeBSD vmactions)
   if: ${{ false }}
   runs-on: macos-13
@@ -246,6 +259,7 @@ jobs:
 
 # freebsd --------------------------------------------------------------
  jqtfreebsd2:
+  needs: all
   name: JQtide (FreeBSD cross-platform-actions)
   runs-on: ubuntu-latest
   steps:
@@ -287,6 +301,7 @@ jobs:
 
 # windows --------------------------------------------------------------
  jqtwin:
+  needs: all
   name: JQtide (Windows)
   runs-on: windows-2022
   steps:
@@ -326,6 +341,7 @@ jobs:
 
 # windows arm64 --------------------------------------------------------
  jqtwinarm64:
+  needs: all
   name: JQtide (Windows arm64)
   runs-on: windows-2022
   steps:
@@ -376,6 +392,7 @@ jobs:
 
 # wasm -----------------------------------------------------------------
  jqtwasm:
+  needs: all
   name: JQtide (wasm)
   runs-on: macos-13
   steps:
@@ -437,6 +454,7 @@ jobs:
 
 # ios ------------------------------------------------------------------
  jqtios:
+  needs: all
   name: JQtide (ios)
   runs-on: macos-13
   steps:
