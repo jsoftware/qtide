@@ -34,7 +34,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '5.12.8'
+      version: '5.15.2'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -43,8 +43,8 @@ jobs:
 
 
    - name: Compile JQtide
-#     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
-     run: QM=${{github.workspace}}/Qt/5.12.8/gcc_64/bin/qmake script/makelinux.sh '5.12.8' linux
+#     run: script/makelinux.sh '5.15.2' linux   # previous 5.15.2
+     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
