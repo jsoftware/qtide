@@ -28,23 +28,12 @@ jobs:
      with:
       submodules: recursive
 
-#   - name: Install Qt from distro
-#      run: script/installqt.sh linux
-
-   - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
-     with:
-      version: '5.15.2'
-      target: 'desktop'
-      dir: '${{github.workspace}}'
-#      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-      modules: 'all'
-      aqtversion: '==3.1.*'
-
+   - name: Install Qt from distro
+     run: script/installqt.sh linux
 
    - name: Compile JQtide
-#     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
-     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
+     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
+#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
