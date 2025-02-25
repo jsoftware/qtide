@@ -407,6 +407,7 @@ QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
 }
 !isEmpty(QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
 unix:QMAKE_CXXFLAGS += -fno-sized-deallocation
+linux:QMAKE_CXXFLAGS += -fno-sized-deallocation
 
 # shared library
 win32-g++:LIBS += -shared
