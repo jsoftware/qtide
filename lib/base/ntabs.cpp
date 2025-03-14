@@ -512,10 +512,10 @@ int Ntabs::tabsaveOK(int index)
 void Ntabs::tabsetcolor(int index,bool ifmod)
 {
 #ifdef QT68
-  auto current = QOperatingSystemVersion::current();
-  bool onWin10 =  current >= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10) &&
-                  current <= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10);
-  if((Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) && (!onWin10) ) {
+auto current = QOperatingSystemVersion::current();
+bool onWin10 =  current >= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10) &&
+                 current <= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10);
+  if((Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) && (!onWin10) ){
     tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::white);
   } else {
     tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::black);
