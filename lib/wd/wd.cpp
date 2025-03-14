@@ -151,8 +151,6 @@ static void wdverbose();
 static void wdversion();
 static void wdmaxwh();
 static void wdminwh();
-static void wdpdf();
-extern std::string pdf(std::string p);
 #ifdef QTWEBSOCKET
 static void wdws();
 extern std::string ws(std::string p);
@@ -754,8 +752,6 @@ void wdp(std::string c)
     wdpclose();
   else if (c=="pcenter")
     wdpcenter();
-  else if (c=="pdf")
-    wdpdf();
   else if (c=="picon")
     wdpicon();
   else if (c=="pmove")
@@ -890,22 +886,6 @@ void wdpclose()
   if (noform()) return;
   if (form->closed) return;
   form->closeit();
-}
-
-// ---------------------------------------------------------------------
-void wdpdf()
-{
-  qDebug() << "wdpdf called";
-  std::string p=cmd.getparms();
-  if (!jt) {
-    error("command failed: no interpreter");
-    return;
-  }
-  result=pdf(p);
-  if (1==rc)
-    result="";
-  else
-    rc=-1;
 }
 
 // ---------------------------------------------------------------------

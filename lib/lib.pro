@@ -366,7 +366,7 @@ SOURCES += \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \
- wd/multimedia.cpp wd/pdf.cpp wd/svgview.cpp wd/svgview2.cpp wd/xl.cpp
+ wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp wd/xl.cpp
 
 android: SOURCES += base/androidextras.cpp
 
