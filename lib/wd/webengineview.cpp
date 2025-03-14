@@ -90,9 +90,6 @@ void WebEngineView::set(std::string p,std::string v)
   } else if (p=="html") {
     w->setHtml(s2q(remquotes(v)), baseUrl);
     w->show();
-  } else if (p=="pdf") {
-    QString t = s2q(remquotes(v));
-    w->printToPdf(t);
   } else if (p=="url") {
     w->load(QUrl(s2q(remquotes(v))));
     w->show();
