@@ -1,4 +1,7 @@
 #!/bin/sh
+
+cd $1 > /dev/null
+
 set -e
 
 export LC_ALL=en_US.UTF-8

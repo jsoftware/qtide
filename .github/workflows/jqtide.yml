@@ -3,8 +3,7 @@ name: JQtide
 on:
  push:
   branches:
-   - master
-   - main
+   - excel
 
 jobs:
 
@@ -19,7 +18,7 @@ jobs:
 
 # linux ----------------------------------------------------------------
  jqtlinux:
-#  needs: all
+  needs: all
   name: JQtide (Linux)
   runs-on: ubuntu-20.04
   steps:
@@ -290,7 +289,7 @@ jobs:
 
 # windows --------------------------------------------------------------
  jqtwin:
-  needs: all
+  #needs: all
   name: JQtide (Windows)
   runs-on: windows-2022
   steps:
@@ -523,14 +522,14 @@ jobs:
       allowUpdates: true
       replacesArtifacts: true
 
- webhook:
-  name: Run Webhook
-  runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  steps:
-   - name: update server
-     uses: distributhor/workflow-webhook@v2
-     env:
-      webhook_url: ${{ secrets.WEBHOOK_URL }}
-      webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-      data: '{ "id": "jqtbuild" }'
+ #webhook:
+  #name: Run Webhook
+  #runs-on: ubuntu-20.04
+  #needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
+  #steps:
+   #- name: update server
+     #uses: distributhor/workflow-webhook@v2
+     #env:
+      #webhook_url: ${{ secrets.WEBHOOK_URL }}
+      #webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+      #data: '{ "id": "jqtbuild" }'

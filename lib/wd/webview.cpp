@@ -79,6 +79,9 @@ void WebView::set(std::string p,std::string v)
   } else if (p=="url") {
     w->load(QUrl(s2q(remquotes(v))));
     w->show();
+  } else if (p=="pdf") {
+    QString t = s2q(remquotes(v));
+    w->printToPdf(t);
   } else Child::set(p,v);
 }
 

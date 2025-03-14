@@ -314,6 +314,8 @@ HEADERS += \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
+HEADERS += excel/*
+
 android: HEADERS += base/androidextras.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
@@ -364,7 +366,7 @@ SOURCES += \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \
- wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
+ wd/multimedia.cpp wd/pdf.cpp wd/svgview.cpp wd/svgview2.cpp wd/xl.cpp
 
 android: SOURCES += base/androidextras.cpp
 
@@ -407,8 +409,12 @@ QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
 }
 !isEmpty(QMAKE_RPATHDIR): message(RPATHDIR = $$QMAKE_RPATHDIR)
 # unix:QMAKE_CXXFLAGS += -fno-sized-deallocation
-# linux:QMAKE_CXXFLAGS += -fno-sized-deallocation
 
 # shared library
 win32-g++:LIBS += -shared
 win32-clang-g++:LIBS += -shared
+
+QXLSX_PARENTPATH=./excel/
+QXLSX_HEADERPATH=./excel/header/
+QXLSX_SOURCEPATH=./excel/source/
+include(./excel/QXlsx.pri)
