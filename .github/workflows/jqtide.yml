@@ -7,10 +7,47 @@ on:
 
 jobs:
 
+# to run all jobs, enable all
+# for selected jobs, disable all and disable the selected needs
+
+ all:
+  if: false
+  runs-on: ubuntu-latest
+  steps:
+    - run: echo "Runall jobs"
+
+# linux ----------------------------------------------------------------
+ jqtlinux:
+#  needs: all
+  name: JQtide (Linux)
+  runs-on: ubuntu-22.04
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v4
+     with:
+      submodules: recursive
+
+   - name: Install Qt from distro
+     run: script/installqt.sh linux
+
+   - name: Compile JQtide
+#     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
+     run: script/makelinux.sh '6.2.2' linux
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-linux.tar.gz,jqt-linux-slim.tar.gz,version.txt"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
 # windows --------------------------------------------------------------
  jqtwin:
+  # needs: all
   name: JQtide (Windows)
-  runs-on: windows-2019
+  runs-on: windows-2022
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
