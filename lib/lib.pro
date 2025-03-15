@@ -398,7 +398,7 @@ android:LIBS += -ldl
 
 win32-g++:QMAKE_LFLAGS += -static-libgcc
 win32-clang-g++:QMAKE_LFLAGS += -static-libgcc
-win32-msvc*:QMAKE_CXXFLAGS += -WX
+win32-msvc*:QMAKE_CXXFLAGS += -WX -wd4996 -wd4267 -wd4189 -wd4101
 win32-arm64*:QMAKE_CXXFLAGS += -WX
 win32-clang-msvc:QMAKE_CXXFLAGS += -WX
 macx:QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64

@@ -225,7 +225,6 @@ void wd1()
         if (3==verbose) qDebug() << "wd command: " + s2q(indent+cmdstrparms);
       }
     }
-
     if (c=="q")
       wdq();
     else if (c=="beep")

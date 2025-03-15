@@ -288,7 +288,7 @@ std::string xlformat()
 
   for (int i=0; i<blen; i++) {
     int ndx = i % n;
-    if ( 0 < arg[ndx].count()) {
+    if ( 0 < arg[ndx].size()) {
       formats[i].setNumberFormat(arg[ndx]);
       ifnum[i] = true;
     }
