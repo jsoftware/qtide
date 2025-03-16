@@ -12,14 +12,15 @@ jobs:
 # for selected jobs, disable all and disable the selected needs
 
  all:
-  if: false
+  #if: false
+  if: true
   runs-on: ubuntu-latest
   steps:
     - run: echo "Runall jobs"
 
 # linux ----------------------------------------------------------------
  jqtlinux:
-#  needs: all
+  needs: all
   name: JQtide (Linux)
   runs-on: ubuntu-20.04
   steps:
