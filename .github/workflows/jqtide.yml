@@ -394,24 +394,24 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-#      version: '6.8.2'
-      version: '6.6.3'
+      version: '6.8.2'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 #      modules: 'all'
-      aqtversion: '==3.1.*'
+      aqtversion: '==3.2.*'
 
    - name: Install Qt from source wasm
      uses: jurplel/install-qt-action@v4
      with:
       version: '6.8.2'
-      target: 'desktop'
+      host: 'all_os'
+      target: 'wasm'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
       modules: 'all'
-      aqtversion: '==3.1.*'
+      aqtversion: '==3.2.*'
 
    - name: Install emsdk
      uses: mymindstorm/setup-emsdk@v14
