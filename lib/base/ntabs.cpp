@@ -15,7 +15,9 @@ extern QCompleter *completer;
 #endif
 #ifdef QT68
 #include <QStyleHints>
-#include <QOperatingSystemVersion>
+#include <QApplication>
+#include <QString>
+#include <QLatin1String>
 #endif
 
 #include "base.h"
@@ -512,10 +514,12 @@ int Ntabs::tabsaveOK(int index)
 void Ntabs::tabsetcolor(int index,bool ifmod)
 {
 #ifdef QT68
-auto current = QOperatingSystemVersion::current();
-bool onWin10 =  current >= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10) &&
-                 current <= QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10);
-  if((Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) && (!onWin10) ){
+  QString curstyle = QApplication::style()->objectName();
+  if(curstyle == QLatin1String("windowsvista")) {
+    tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::black);
+    return;
+  }
+  if(Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) {
     tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::white);
   } else {
     tabBar()->setTabTextColor(index,ifmod ? Qt::red : Qt::black);
