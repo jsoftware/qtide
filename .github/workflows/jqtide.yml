@@ -392,7 +392,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
+     uses: Kidev/install-qt-action@v4
      with:
       version: '6.8.2'
       target: 'desktop'
@@ -402,7 +402,7 @@ jobs:
       aqtversion: '==3.2.*'
 
    - name: Install Qt from source wasm
-     uses: jurplel/install-qt-action@v4
+     uses: Kidev/install-qt-action@v4
      with:
       version: '6.8.2'
       host: 'all_os'
