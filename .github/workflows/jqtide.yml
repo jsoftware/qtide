@@ -333,6 +333,7 @@ jobs:
  jqtwinarm64:
   needs: all
   name: JQtide (Windows arm64)
+  if: ${{ false }}
   runs-on: windows-2022
   steps:
    - name: Check Git repository
@@ -384,6 +385,7 @@ jobs:
  jqtwasm:
   needs: all
   name: JQtide (wasm)
+  if: ${{ false }}
   runs-on: macos-13
   steps:
    - name: Check Git repository
@@ -528,7 +530,8 @@ jobs:
  webhook:
   name: Run Webhook
   runs-on: ubuntu-20.04
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
+#  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
