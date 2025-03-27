@@ -122,7 +122,7 @@ linux-aarch64: QMAKE_TARGET.arch = aarch64
 wasm: QMAKE_TARGET.arch = wasm32
 android: QMAKE_TARGET.arch = $$(ABI)
 android: QT -= printsupport
-ios: QT -= printsupport
+ios: QT -= printsupport multimedia multimediawidgets
 wasm: QT -= printsupport
 
 equals(QMAKE_TARGET.arch , i686): QMAKE_TARGET.arch = x86
