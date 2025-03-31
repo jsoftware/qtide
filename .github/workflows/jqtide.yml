@@ -449,6 +449,7 @@ jobs:
  jqtios:
   needs: all
   name: JQtide (ios)
+  if: ${{ false }}
   runs-on: macos-13
   steps:
    - name: Check Git repository
@@ -531,7 +532,7 @@ jobs:
   name: Run Webhook
   runs-on: ubuntu-20.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd, jqtios ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
