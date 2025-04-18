@@ -22,7 +22,7 @@ jobs:
  jqtlinux:
   needs: all
   name: JQtide (Linux)
-  runs-on: ubuntu-20.04
+  runs-on: ubuntu-22.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
  jqtrpi64:
   needs: all
   name: JQtide (Raspberry)
-  runs-on: ubuntu-20.04
+  runs-on: ubuntu-22.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -126,7 +126,7 @@ jobs:
   needs: all
   name: JQtide (Raspberry-arm32)
   if: ${{ false }}
-  runs-on: ubuntu-20.04
+  runs-on: ubuntu-22.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -530,7 +530,7 @@ jobs:
 
  webhook:
   name: Run Webhook
-  runs-on: ubuntu-20.04
+  runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
   needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd ]
   steps:
