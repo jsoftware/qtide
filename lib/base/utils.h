@@ -31,6 +31,7 @@ QWidget* getmbparent();
 QString getplaintext(QWidget *);
 int getpositioninblock(QTextCursor c);
 QString getsha1(QString);
+std::string getmodules();
 std::string getversion();
 bool gitavailable();
 void gitgui(QString path);

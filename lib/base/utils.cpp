@@ -310,6 +310,67 @@ QString getsha1(QString s)
 }
 
 // ---------------------------------------------------------------------
+std::string getmodules()
+{
+  std::string r;
+  r+=" browser";
+  r+=" button";
+  r+=" checkbox";
+  r+=" combobox";
+  r+=" combolist";
+  r+=" dateedit";
+  r+=" dial";
+  r+=" dspinbox";
+  r+=" edit";
+  r+=" edith";
+  r+=" editm";
+  r+=" image";
+  r+=" isidraw";
+  r+=" isigraph";
+  r+=" isigrid";
+  r+=" listbox";
+  r+=" progressbar";
+  r+=" qwidget";
+  r+=" radiobutton";
+  r+=" scrollarea";
+  r+=" scrollbar";
+  r+=" slider";
+  r+=" spinbox";
+  r+=" static";
+  r+=" statusbar";
+  r+=" tab";
+  r+=" table";
+  r+=" timeedit";
+  r+=" toolbar";
+  r+=" treeview";
+#ifndef QT_NO_MULTIMEDIA
+  r+=" multimedia";
+#endif
+#ifndef QT_NO_OPENGL
+  r+=" opengl";
+#endif
+#ifndef QT_NO_PRINTER
+  r+=" printer";
+#endif
+#ifndef QT_NO_QUICKWIDGET
+  r+=" quickwidget";
+#endif
+#ifndef QT_NO_QTWEBSOCKET
+  r+=" websocket";
+#endif
+#ifndef QT_NO_SVGVIEW
+  r+=" svgview";
+#endif
+#ifndef QT_NO_WEBENGINE
+  r+=" webview";
+#endif
+#ifndef QT_NO_WEBKIT
+  r+=" webview";
+#endif
+  return r;
+}
+
+// ---------------------------------------------------------------------
 std::string getversion()
 {
   QString s=QString::fromUtf8(JQTVERSION);

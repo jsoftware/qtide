@@ -102,6 +102,7 @@ static void wdlogcat();
 static void wdline(std::string);
 static void wdmb();
 static void wdmenu(std::string);
+static void wdmodules();
 static void wdmsgs();
 static void wdnb();
 static void wdnotyet();
@@ -275,6 +276,8 @@ void wd1()
       wdmb();
     else if (c.substr(0,4)=="menu")
       wdmenu(c);
+    else if (c=="modules")
+      wdmodules();
     else if (c=="msgs")
       wdmsgs();
     else if (c=="openj")
@@ -695,6 +698,13 @@ void wdmenu(std::string s)
     error("menu command not found");
   }
   if (rc) error("menu command failed");
+}
+
+// ---------------------------------------------------------------------
+void wdmodules()
+{
+  result=getmodules();
+  rc=-1;
 }
 
 // ---------------------------------------------------------------------

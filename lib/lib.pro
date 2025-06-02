@@ -104,7 +104,7 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
-  QT -=  quick qml quickwidgets webengine webenginewidgets webkit webkitwidgets
+  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webenginewidgets webkit webkitwidgets
 }
 
 
