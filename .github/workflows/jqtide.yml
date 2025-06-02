@@ -33,8 +33,8 @@ jobs:
      run: script/installqt.sh linux
 
    - name: Compile JQtide
-     run: script/makelinux.sh '5.15.2' linux   # previous 5.12.8
-#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh '5.15.2' linux
+     run: script/makelinux.sh '6.8.3' linux   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh '6.8.3' linux
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
