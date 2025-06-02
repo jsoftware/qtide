@@ -313,7 +313,7 @@ QString getsha1(QString s)
 std::string getmodules()
 {
   std::string r;
-  r+=" browser";
+  r+="browser";
   r+=" button";
   r+=" checkbox";
   r+=" combobox";
@@ -355,16 +355,13 @@ std::string getmodules()
 #ifndef QT_NO_QUICKWIDGET
   r+=" quickwidget";
 #endif
-#ifndef QT_NO_QTWEBSOCKET
-  r+=" websocket";
-#endif
 #ifndef QT_NO_SVGVIEW
   r+=" svgview";
 #endif
-#ifndef QT_NO_WEBENGINE
-  r+=" webview";
+#ifndef QT_NO_QTWEBSOCKET
+  r+=" websocket";
 #endif
-#ifndef QT_NO_WEBKIT
+#if !defined(QT_NO_WEBENGINE) || !defined(QT_NO_WEBKIT)
   r+=" webview";
 #endif
   return r;
