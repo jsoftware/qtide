@@ -80,10 +80,38 @@ jobs:
       allowUpdates: true
       replacesArtifacts: true
 
+# rpi64arm -------------------------------------------------------------
+ jqtrpi64arm:
+  needs: all
+  name: JQtide (Linux arm)
+  runs-on: ubuntu-22.04-arm
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v4
+     with:
+      submodules: recursive
+
+   - name: Install Qt from distro
+     run: script/installqt.sh raspberry
+
+   - name: Compile JQtide
+     run: script/makelinux.sh '6.8.3' raspberry   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh '6.8.3' linux
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
 # rpi64 ----------------------------------------------------------------
  jqtrpi64:
   needs: all
   name: JQtide (Raspberry)
+  if: ${{ false }}
   runs-on: ubuntu-22.04
   steps:
    - name: Check Git repository
@@ -532,7 +560,7 @@ jobs:
   name: Run Webhook
   runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtfreebsd2, jqtopenbsd ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
