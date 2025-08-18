@@ -19,6 +19,7 @@ elif [ "$1" = "linux6" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libpulse-dev
+f qmake6
 f qt6-base-dev qt6-base-dev-tools
 f qt6-multimedia-dev libqt6multimedia6 libqt6multimediawidgets6
 f libqt6opengl6 libqt6opengl6-dev

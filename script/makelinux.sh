@@ -33,7 +33,7 @@ maketar() {
 }
 
 run() {
-QM="${QM:=qmake}"
+QM="${QM:=qmake6}"
 hash $QM &> /dev/null
 if [ $? -eq 1 ]; then
   echo 'use qmake-qt5' >&2
