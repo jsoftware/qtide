@@ -30,7 +30,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh linux
+     run: script/installqt.sh linux6
 
    - name: Compile JQtide
      run: script/makelinux.sh '6.8.3' linux   # previous 5.15.2
@@ -92,7 +92,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh raspberry
+     run: script/installqt.sh linux5
 
    - name: Compile JQtide
      run: script/makelinux.sh '6.8.3' raspberry   # previous 5.15.2
@@ -128,7 +128,7 @@ jobs:
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
-       script/installqt.sh raspberry
+       script/installqt.sh linux6
        export CC=clang
        mkdir -p output
        script/makelinux.sh '5.15.2' raspberry
@@ -171,7 +171,7 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       script/installqt.sh raspberry-arm32
+       script/installqt.sh linux6
        script/makelinux.sh '5.15.2' raspberry-arm32
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
