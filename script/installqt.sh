@@ -22,8 +22,7 @@ f libpulse-dev
 f qt6-base-dev qt6-base-dev-tools
 f qt6-multimedia-dev libqt6multimedia6 libqt6multimediawidgets6
 f libqt6opengl6 libqt6opengl6-dev
-f qt6-svg-dev libqt6svg6 libqt6svgwidgets6
-f libqt6svg6 libqt6svgwidgets6 qt6-svg-dev
+f libqt6svg6 libqt6svgwidgets6
 f libqt6webenginewidgets6 qt6-webengine-dev qt6-webengine-dev-tools
 elif [ "$1" = "openbsd" ] ; then
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
