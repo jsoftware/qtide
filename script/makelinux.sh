@@ -52,7 +52,7 @@ cd -
 if [ "$2" = "linux" ] || [ "$2" = "raspberry" ] || [ "$2" = "raspberry-arm32" ] ; then
  mv bin/linux-"`uname -m`"/release $1
  maketar $1
- if [ "`uname -m" = "aarch64" -a "$RUNNER_ARCH" != "ARM64" ] || [ "`uname -m" = "x86_64" -a "$RUNNER_ARCH" != "X64" ] || [ "`uname -m" != "armv6l" -a "$2" = "raspberry-arm32" ] ; then
+ if [ "`uname -m`" = "aarch64" -a "$RUNNER_ARCH" != "ARM64" ] || [ "`uname -m`" = "x86_64" -a "$RUNNER_ARCH" != "X64" ] || [ "`uname -m`" != "armv6l" -a "$2" = "raspberry-arm32" ] ; then
   mkdir -p output
   mv "$1".tar.gz output/.
  fi
