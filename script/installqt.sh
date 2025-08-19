@@ -7,8 +7,8 @@ set -evx
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
-echo "`uname -m"
-echo ${RUNNER_ARCH}
+echo "uname -m  $(uname -m)"
+echo "RUNNER_ARCH  $RUNNER_ARCH"
 
 case $2 in
 6*) Qtver1="6" ;;

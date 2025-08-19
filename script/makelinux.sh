@@ -7,8 +7,8 @@ set -evx
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
-echo "`uname -m"
-echo ${RUNNER_ARCH}
+echo "uname -m  $(uname -m)"
+echo "RUNNER_ARCH  $RUNNER_ARCH"
 
 export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
