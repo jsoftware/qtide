@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -evx
 
 #
 # arg is linux/openbsd/freebsd
@@ -39,3 +39,4 @@ elif [ "$1" = "freebsd" ] ; then
 h qt5-qmake qt5-buildtools qt5-core
 h qt5-gui qt5-opengl qt5-printsupport qt5-svg qt5-websockets qt5-multimedia qt5-webengine
 fi
+
