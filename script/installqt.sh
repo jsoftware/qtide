@@ -1,11 +1,14 @@
 #!/bin/sh
-set -evx
+set -e
 
 #
 # arg is linux/openbsd/freebsd
 #        Qt major version, e.g. "5"
 
-case $1 in
+echo "pwd $(pwd)"
+echo "parameters $1 $2"
+
+case $2 in
 6*) Qtver1="6" ;;
 5*) Qtver1="5" ;;
 *) Qtver1="4" ;;

@@ -10,6 +10,12 @@ echo "parameters $1 $2"
 
 export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
+case $1 in
+6*) Qtver1="6" ;;
+5*) Qtver1="5" ;;
+*) Qtver1="4" ;;
+esac
+
 if [ "x$MAKEFLAGS" = x'' ] ; then
 if [ `uname`  = "Linux" ]; then par=`nproc`; else par=`sysctl -n hw.ncpu`; fi
 export MAKEFLAGS=-j$par
@@ -67,12 +73,6 @@ fi
 ls -l "$1" || true
 rm -rf "$1"
 }
-
-case $1 in
-6*) Qtver1="6" ;;
-5*) Qtver1="5" ;;
-*) Qtver1="4" ;;
-esac
 
 if [ $Qtver1 = "6" ]; then
 QM="${QM:=qmake6}"
