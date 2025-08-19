@@ -2,15 +2,15 @@
 set -e
 
 #
+# arg is linux/raspberry/raspberry-arm32/openbsd/freebsd
 # arg is Qt version, e.g. "5.15.2"
-#        linux/raspberry/raspberry-arm32/openbsd/freebsd
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
 
 export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
-case $1 in
+case $2 in
 6*) Qtver1="6" ;;
 5*) Qtver1="5" ;;
 *) Qtver1="4" ;;
@@ -25,9 +25,9 @@ echo "MAKEFLAGS=$MAKEFLAGS"
 # following required on github actions, not needed on desktop:
 cp -r lib/images .
 
-if [ "$2" = "openbsd" ]; then
+if [ "$1" = "openbsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
-elif [ "$2" = "freebsd" ]; then
+elif [ "$1" = "freebsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
 # export JQTWEBKIT=JQTWEBKIT
 fi
@@ -88,16 +88,16 @@ QM="${QM:=qmake}"
 fi
 
 # export NO_OPENGL=1
-run jqt-"$2" "$2"
+run jqt-"$1" "$1"
 
 export JQTSLIM=1
-run jqt-"$2"-slim "$2"
+run jqt-"$1"-slim "$1"
 
 if [ -d Qt ] ; then
-tar -czf "$2"-Qt.tar.gz Qt
+tar -czf "$1"-Qt.tar.gz Qt
 fi
 
-if [ "$2" = "linux" ]; then
+if [ "$1" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt
   cat common.pri | grep "^JDLLVER" >> version.txt
 fi

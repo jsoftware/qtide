@@ -30,11 +30,11 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh linux "6"
+     run: script/installqt.sh linux '6.8.3'
 
    - name: Compile JQtide
-     run: script/makelinux.sh '6.8.3' linux   # previous 5.15.2
-#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh '6.8.3' linux
+     run: script/makelinux.sh linux '6.8.3'   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh linux '6.8.3'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -92,11 +92,11 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh linux "5"
+     run: script/installqt.sh raspberry '6.8.3'
 
    - name: Compile JQtide
-     run: script/makelinux.sh '6.8.3' raspberry   # previous 5.15.2
-#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh '6.8.3' linux
+     run: script/makelinux.sh raspberry '6.8.3'   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh raspberry '6.8.3'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -128,10 +128,10 @@ jobs:
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
-       script/installqt.sh linux "6"
+       script/installqt.sh raspberry '5.15.2'
        export CC=clang
        mkdir -p output
-       script/makelinux.sh '5.15.2' raspberry
+       script/makelinux.sh raspberry '5.15.2'
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
@@ -171,8 +171,8 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       script/installqt.sh linux "6"
-       script/makelinux.sh '5.15.2' raspberry-arm32
+       script/installqt.sh raspberry-arm32 '5.15.2'
+       script/makelinux.sh raspberry-arm32 '5.15.2'
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
@@ -215,8 +215,8 @@ jobs:
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh openbsd "5" || exit 1
-       script/makelinux.sh '5.15.2' openbsd || exit 1
+       script/installqt.sh openbsd '5.15.2' || exit 1
+       script/makelinux.sh openbsd '5.15.2' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -258,8 +258,8 @@ jobs:
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd "5" || exit 1
-       script/makelinux.sh '5.15.12' freebsd || exit 1
+       script/installqt.sh freebsd '5.15.2' || exit 1
+       script/makelinux.sh freebsd '5.15.2' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -300,8 +300,8 @@ jobs:
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd "5" || exit 1
-       script/makelinux.sh '5.15.12' freebsd || exit 1
+       script/installqt.sh freebsd '5.15.2' || exit 1
+       script/makelinux.sh freebsd '5.15.2' || exit 1
        touch jobdone
 
    - name: Check Status

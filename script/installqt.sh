@@ -2,8 +2,8 @@
 set -e
 
 #
-# arg is linux/openbsd/freebsd
-#        Qt major version, e.g. "5"
+# arg is linux/raspberry/raspberry-arm32/openbsd/freebsd
+#        Qt version, e.g. "5.15.2"
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
@@ -18,7 +18,7 @@ f() { sudo apt-get install --no-install-recommends -y "$@"; }
 g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
-if [ "$1" = "linux" ] ; then
+if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] || [ "$1" = "raspberry-arm32" ] ; then
 if [ $Qtver1 = "5" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
