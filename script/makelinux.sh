@@ -68,11 +68,15 @@ ls -l "$1" || true
 rm -rf "$1"
 }
 
-Qtver1= ${"$1":0:1}
+case $1 in
+6*) Qtver1="6" ;;
+5*) Qtver1="5" ;;
+*) Qtver1="4" ;;
+esac
 
-if [ $Qtver1 == "6" ]; then
+if [ $Qtver1 = "6" ]; then
 QM="${QM:=qmake6}"
-elif [ $Qtver1  == "5" ]; then
+elif [ $Qtver1  = "5" ]; then
 QM="${QM:=qmake}"
 hash $QM &> /dev/null
 if [ $? -eq 1 ]; then

@@ -5,7 +5,11 @@ set -evx
 # arg is linux/openbsd/freebsd
 #        Qt major version, e.g. "5"
 
-Qtver1= ${"$1":0:1}
+case $1 in
+6*) Qtver1="6" ;;
+5*) Qtver1="5" ;;
+*) Qtver1="4" ;;
+esac
 
 f() { sudo apt-get install --no-install-recommends -y "$@"; }
 g() { sudo pkg_add "$@"; }
