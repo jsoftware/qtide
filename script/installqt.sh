@@ -21,7 +21,11 @@ g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] || [ "$1" = "raspberry-arm32" ] ; then
-if [ $Qtver1 = "5" ] ; then
+if [ $Qtver1 = "4" ] ; then
+sudo apt-get update -y
+sudo apt-get upgrade -y
+f libqt4-dev libqt4-opengl-dev libqt4-svg
+elif [ $Qtver1 = "5" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libssh-gcrypt-4
@@ -41,7 +45,7 @@ f qt6-multimedia-dev libqt6multimedia6 libqt6multimediawidgets6
 f libqt6opengl6 libqt6opengl6-dev
 f libqt6svg6 libqt6svgwidgets6
 f libqt6webenginewidgets6 qt6-webengine-dev
-f ibqt6core5compat6 qt6-5compat-dev libqt6websockets6 qt6-websockets-dev
+f libqt6core5compat6 libqt6websockets6
 fi
 elif [ "$1" = "openbsd" ] ; then
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
