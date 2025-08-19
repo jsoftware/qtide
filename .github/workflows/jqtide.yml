@@ -153,7 +153,6 @@ jobs:
  jqtrpi32:
   needs: all
   name: JQtide (Raspberry-arm32)
-  if: ${{ false }}
   runs-on: ubuntu-22.04
   steps:
    - name: Check Git repository

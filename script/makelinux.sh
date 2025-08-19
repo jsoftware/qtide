@@ -49,14 +49,13 @@ cd -
 cd main
 $QM && make
 cd -
-if [ "$2" = "linux" ] || [ "$2" = "raspberry" ] ; then
+if [ "$2" = "linux" ] || [ "$2" = "raspberry" ] || [ "$2" = "raspberry-arm32" ] ; then
  mv bin/linux-"`uname -m`"/release $1
  maketar $1
-elif [ "$2" = "raspberry-arm32" ]; then
- mv bin/linux-"`uname -m`"/release $1
- maketar $1
- mkdir -p output
- mv "$1".tar.gz output/.
+ if [ "`uname -m" = "aarch64" -a "$RUNNER_ARCH" != "ARM64" ] || [ "`uname -m" = "x86_64" -a "$RUNNER_ARCH" != "X64" ] || [ "`uname -m" != "armv6l" -a "$2" = "raspberry-arm32" ] ; then
+  mkdir -p output
+  mv "$1".tar.gz output/.
+ fi
 elif [ "$2" = "openbsd" ]; then
  if [ "`uname -m`" = "amd64" ]; then
  mv bin/openbsd-x86_64/release $1
