@@ -165,7 +165,7 @@ jobs:
      with:
       cpu: arm1176
       cpu_info: cpuinfo/raspberrypi_zero2_w
-      base_image: raspbian_lite:2020-02-13
+      base_image: raspios_lite:2023-05-03
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
