@@ -7,6 +7,8 @@ set -evx
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
+echo "`uname -m"
+echo ${RUNNER_ARCH}
 
 export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
 
@@ -47,10 +49,10 @@ cd -
 cd main
 $QM && make
 cd -
-if [ "$2" = "linux" ]; then
- mv bin/linux-x86_64/release $1
+if [ "$2" = "linux" ] || [ "$2" = "raspberry" ] ; then
+ mv bin/linux-"`uname -m`"/release $1
  maketar $1
-elif [ "$2" = "raspberry" ] || [ "$2" = "raspberry-arm32" ]; then
+elif [ "$2" = "raspberry-arm32" ]; then
  mv bin/linux-"`uname -m`"/release $1
  maketar $1
  mkdir -p output
