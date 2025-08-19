@@ -33,12 +33,6 @@ maketar() {
 }
 
 run() {
-QM="${QM:=qmake6}"
-hash $QM &> /dev/null
-if [ $? -eq 1 ]; then
-  echo 'use qmake-qt5' >&2
-  QM=qmake-qt5
-fi
 ./clean.l64
 rm -rf "$1"
 cd lib
@@ -73,6 +67,21 @@ fi
 ls -l "$1" || true
 rm -rf "$1"
 }
+
+Qtver1= ${"$1":0:1}
+
+if [ $Qtver1 == "6" ]; then
+QM="${QM:=qmake6}"
+elif [ $Qtver1  == "5" ]; then
+QM="${QM:=qmake}"
+hash $QM &> /dev/null
+if [ $? -eq 1 ]; then
+  echo 'use qmake-qt5' >&2
+  QM=qmake-qt5
+fi
+else
+QM="${QM:=qmake}"
+fi
 
 # export NO_OPENGL=1
 run jqt-"$2" "$2"
