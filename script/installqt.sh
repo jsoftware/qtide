@@ -39,7 +39,7 @@ f qt6-multimedia-dev libqt6multimedia6 libqt6multimediawidgets6
 f libqt6opengl6 libqt6opengl6-dev
 f libqt6svg6 libqt6svgwidgets6
 f libqt6webenginewidgets6 qt6-webengine-dev
-f qt6-5compat qt6-websockets
+f ibqt6core5compat6 qt6-5compat-dev libqt6websockets6 qt6-websockets-dev
 fi
 elif [ "$1" = "openbsd" ] ; then
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
