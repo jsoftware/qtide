@@ -92,11 +92,11 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh raspberry '6.8.3'
+     run: script/installqt.sh raspberry '5.15.2'
 
    - name: Compile JQtide
-     run: script/makelinux.sh raspberry '6.8.3'   # previous 5.15.2
-#     run: QM=${{github.workspace}}/Qt/6.8.3/gcc_64/bin/qmake script/makelinux.sh raspberry '6.8.3'
+     run: script/makelinux.sh raspberry '5.15.2'   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh raspberry '5.15.2'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
