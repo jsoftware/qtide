@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -evx
 
 #
 # arg is linux/raspberry/raspberry-arm32/openbsd/freebsd
