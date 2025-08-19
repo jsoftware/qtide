@@ -12,7 +12,7 @@ g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] ; then
-if [ $Qtver1 == "5" ]; then
+if [ $Qtver1 = "5" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libssh-gcrypt-4
@@ -22,7 +22,7 @@ f qtmultimedia5-dev libqt5multimediawidgets5
 f libqt5opengl5 libqt5opengl5-dev
 f libqt5svg5 libqt5svg5-dev
 f qtwebengine5-dev libqt5websockets5-dev
-elif [ $Qtver1 == "6" ]; then
+elif [ $Qtver1 = "6" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libpulse-dev

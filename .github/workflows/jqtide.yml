@@ -30,7 +30,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh linux '6'
+     run: script/installqt.sh linux "6"
 
    - name: Compile JQtide
      run: script/makelinux.sh '6.8.3' linux   # previous 5.15.2
@@ -92,7 +92,7 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh linux '5'
+     run: script/installqt.sh linux "5"
 
    - name: Compile JQtide
      run: script/makelinux.sh '6.8.3' raspberry   # previous 5.15.2
@@ -128,7 +128,7 @@ jobs:
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
-       script/installqt.sh linux '6'
+       script/installqt.sh linux "6"
        export CC=clang
        mkdir -p output
        script/makelinux.sh '5.15.2' raspberry
@@ -171,7 +171,7 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       script/installqt.sh linux '6'
+       script/installqt.sh linux "6"
        script/makelinux.sh '5.15.2' raspberry-arm32
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
@@ -215,7 +215,7 @@ jobs:
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh openbsd '5' || exit 1
+       script/installqt.sh openbsd "5" || exit 1
        script/makelinux.sh '5.15.2' openbsd || exit 1
        touch jobdone
 
@@ -258,7 +258,7 @@ jobs:
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd '5' || exit 1
+       script/installqt.sh freebsd "5" || exit 1
        script/makelinux.sh '5.15.12' freebsd || exit 1
        touch jobdone
 
@@ -300,7 +300,7 @@ jobs:
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd '5' || exit 1
+       script/installqt.sh freebsd "5" || exit 1
        script/makelinux.sh '5.15.12' freebsd || exit 1
        touch jobdone
 
