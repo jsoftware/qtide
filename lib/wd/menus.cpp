@@ -29,7 +29,11 @@ QAction *Menus::makeact(std::string id, std::string p)
   r->setObjectName(name);
   r->setMenuRole(QAction::NoRole);
   if (shortcut.size())
+#if defined(__wasm__)
+    r->setShortcut((shortcut==QString("Ctrl+Q"))?QString("Escape"):shortcut);
+#else
     r->setShortcut(shortcut);
+#endif
   items[name]=r;
   return r;
 }

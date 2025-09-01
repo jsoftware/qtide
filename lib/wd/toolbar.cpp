@@ -73,7 +73,11 @@ void ToolBar::makeact(QStringList opt)
     error("invalid icon image: " + q2s(opt.at(2)));
     return;
   }
+#if defined(__wasm__)
+  QAction *a=w->addAction(image,(text==QString("Ctrl+Q"))?QString("Escape"):text);
+#else
   QAction *a=w->addAction(image,text);
+#endif
   a->setObjectName(id);
   acts.append(a);
 }

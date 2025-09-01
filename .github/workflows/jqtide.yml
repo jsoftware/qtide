@@ -413,7 +413,6 @@ jobs:
  jqtwasm:
   needs: all
   name: JQtide (wasm)
-  if: ${{ false }}
   runs-on: macos-13
   steps:
    - name: Check Git repository
@@ -434,7 +433,7 @@ jobs:
    - name: Install Qt from source wasm
      uses: Kidev/install-qt-action@v4.4.2
      with:
-      version: '6.8.3'
+      version: '6.9.2'
       host: 'all_os'
       target: 'wasm'
       arch: 'wasm_multithread'
@@ -446,7 +445,7 @@ jobs:
    - name: Install emsdk
      uses: mymindstorm/setup-emsdk@v14
      with:
-      version: '3.1.56'
+      version: '3.1.70'
 
    - name: Verify
      run: emcc -v
@@ -457,7 +456,7 @@ jobs:
      run: |
       ./cpjlib.sh
       ./cplibjtest.sh
-      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.8.3/wasm_multithread/bin/qmake ./makeall.sh
+      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.9.2/wasm_multithread/bin/qmake ./makeall.sh
       rm -rf j32
       mkdir j32
       ls -l bin/wasm-wasm32/release
