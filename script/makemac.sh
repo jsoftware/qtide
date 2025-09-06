@@ -66,22 +66,19 @@ rm -rf "$1"
 if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
 # export NO_OPENGL=1
 run jqt-"$2" "$2"
+fi
 
 export JQTSLIM=1
 run jqt-"$2"-slim "$2"
-else
-export JQTSLIM=1
-run jqt-"$2"-slim "$2"
-fi
 
-if [ -d Qt ] ; then
-if [ $2 = "wasm" ] ; then
-# ios size 8.6G !!!
-find Qt/"$1" -name 'macos' -type d -delete || true
-tar -czf "$2"-Qt.tar.gz Qt
-else
-tar -czf "$2"-Qt.tar.gz Qt
-fi
-fi
+#if [ -d Qt ] ; then
+#if [ $2 = "wasm" ] ; then
+#ios size 8.6G !!!
+#find Qt/"$1" -name 'macos' -type d -delete || true
+#tar -czf "$2"-Qt.tar.gz Qt
+#else
+#tar -czf "$2"-Qt.tar.gz Qt
+#fi
+#fi
 
 ./clean.l64 || true

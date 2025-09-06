@@ -10,7 +10,8 @@ echo "parameters $1 $2"
 echo "uname -m  $(uname -m)"
 echo "RUNNER_ARCH  $RUNNER_ARCH"
 
-export PATH=$GITHUB_WORKSPACE/Qt/$1/gcc_64/bin:$PATH
+B=$GITHUB_WORKSPACE/Qt/$2/gcc_64/bin
+export PATH=$B:$PATH
 
 case $2 in
 6*) Qtver1="6" ;;
@@ -31,7 +32,13 @@ if [ "$1" = "openbsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
 elif [ "$1" = "freebsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
-# export JQTWEBKIT=JQTWEBKIT
+elif [ "$1" = "linux" ]; then
+ QM=$B/qmake
+# linux Qt 6.8.3 needs icu v73:
+ cd icu
+ tar -xvf icu4c-73_2-Ubuntu22.04-x64.tgz
+ sudo cp -r icu/usr/local/lib/* /usr/lib/x86_64-linux-gnu
+ cd -
 fi
 
 maketar() {
@@ -94,9 +101,9 @@ run jqt-"$1" "$1"
 export JQTSLIM=1
 run jqt-"$1"-slim "$1"
 
-if [ -d Qt ] ; then
-tar -czf "$1"-Qt.tar.gz Qt
-fi
+# if [ -d Qt ] ; then
+# tar -czf "$1"-Qt.tar.gz Qt
+# fi
 
 if [ "$1" = "linux" ]; then
   cat common.pri | grep "^VERSION" > version.txt

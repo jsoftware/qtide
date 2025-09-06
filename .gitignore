@@ -56,3 +56,5 @@ moc_*
 object_script.*
 qrc_*
 jqta.js_plugin_import.cpp
+
+!icu4c-73_2-Ubuntu22.04-x64.tgz
