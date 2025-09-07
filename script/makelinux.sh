@@ -13,9 +13,6 @@ echo "RUNNER_ARCH  $RUNNER_ARCH"
 B=$GITHUB_WORKSPACE/Qt/$2/gcc_64/bin
 export PATH=$B:$PATH
 
-export QMAKESPEC=linux-g++-64
-export JQTRPATH=JQTRPATH
-
 case $2 in
 6*) Qtver1="6" ;;
 5*) Qtver1="5" ;;
@@ -37,6 +34,8 @@ elif [ "$1" = "freebsd" ]; then
  QM=/usr/local/lib/qt5/bin/qmake
 elif [ "$1" = "linux" ]; then
  QM=$B/qmake
+ export QMAKESPEC=linux-g++-64
+ export JQTRPATH=JQTRPATH
 # linux Qt 6.8.3 needs icu v73:
  cd icu
  tar -xvf icu4c-73_2-Ubuntu22.04-x64.tgz
