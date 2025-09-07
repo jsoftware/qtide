@@ -13,6 +13,9 @@ echo "RUNNER_ARCH  $RUNNER_ARCH"
 B=$GITHUB_WORKSPACE/Qt/$2/gcc_64/bin
 export PATH=$B:$PATH
 
+export QMAKESPEC=linux-g++-64
+export JQTRPATH=JQTRPATH
+
 case $2 in
 6*) Qtver1="6" ;;
 5*) Qtver1="5" ;;
