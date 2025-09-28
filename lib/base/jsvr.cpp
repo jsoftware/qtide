@@ -542,6 +542,7 @@ int jefirst(int type,char* arg)
   strcat(input,"[libjqt_z_=:'");
   strcat(input,q2s(LibName).c_str());
   strcat(input,"'");
+  qDebug() << "input: " << input;
   r=jedo(input);
   if (r) {
     qDebug() << "j first line" << QString(input);

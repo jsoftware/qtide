@@ -446,7 +446,7 @@ QMAKE_LFLAGS += -s BINARYEN_EXTRA_PASSES="--pass-arg=max-func-params@80" -s EMUL
 android {
 !contains(DEFINES,QT62): error(requires Qt6.2)
 CONFIG += mobility
-ANDROID_TARGET_SDK_VERSION = 23
+ANDROID_TARGET_SDK_VERSION = 35
 ANDROID_TARGET_ARCH = $$(ABI)
 
 ANDROID_EXTRA_LIBS += $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libgmp.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libjpcre2.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libtsdll.so
@@ -456,7 +456,7 @@ message(ANDROID_EXTRA_LIBS  $$ANDROID_EXTRA_LIBS)
 message(LIBS  $$LIBS)
 DEPLOYMENTFOLDERS += assets 
 
-QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/6.6.1/android_$$ANDROID_TARGET_ARCH/src/android
+QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/6.9.2/android_$$ANDROID_TARGET_ARCH/src/android
 message(QT_ANDROID_PACKAGE_SOURCE_DIR $$QT_ANDROID_PACKAGE_SOURCE_DIR)
 
 equals(ANDROID_TARGET_ARCH  , arm64-v8a ): QMAKE_CXXFLAGS += -march=armv8-a+crc

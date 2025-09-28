@@ -5,6 +5,8 @@ set -e
 
 cd "$(dirname "$0")"
 
+VER=6.9.2
+
 if [ "$1" != "noclean" ] ; then
 ./clean.sh || true
 ./clean.l64
@@ -82,7 +84,7 @@ unset JAVA_HOME && \
 $HOME/Qt/$VER/macos/bin/androiddeployqt \
  --output ../android-build \
  --input ./android-jqta-deployment-settings.json \
- --android-platform android-22 \
+ --android-platform android-35 \
  --release \
  --sign $HOME/.android/release-key.keystore jandroid --storepass $JANDROIDSTOREPASS --keypass $JANDROIDKEYPASS && \
 cd .. && \

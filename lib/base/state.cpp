@@ -785,6 +785,7 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif
 #endif
+  QApplication::setApplicationName("jqt");
 
   /* QCoreApplication requires argc argv is valid throughout entire life of the process */
   m_argc=argc;
