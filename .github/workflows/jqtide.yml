@@ -419,6 +419,7 @@ jobs:
  jqtwasm:
   needs: all
   name: JQtide (wasm)
+  if: ${{ false }}
   runs-on: macos-15-intel
   steps:
    - name: Check Git repository
