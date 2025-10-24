@@ -28,7 +28,13 @@ WebEngineView::WebEngineView(std::string n, std::string s, Form *f, Pane *p) : C
   w->page()->setWebChannel(channel);
   w->page()->settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
   w->page()->settings()->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, true);
-  if (s == "transparent")
+  QStringList opt = qsplit(s);
+  if (opt.contains("clipboard")) {
+    w->page()->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    w->page()->settings()->setAttribute(QWebEngineSettings::JavascriptCanPaste, true);
+    opt.removeAll("clipboard");
+  }
+  if (opt.contains("transparent"))
     w->page()->setBackgroundColor(QColor(Qt::transparent));
   else if (s.length())
     w->page()->setBackgroundColor(QColor(s2q(s)));

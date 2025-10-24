@@ -688,8 +688,12 @@ QList<int> qs2intlist(QString c)
 QList<int> qsl2intlist(QStringList s)
 {
   QList<int> r;
-  for (int i=0; i<s.size(); i++)
-    r.append(s.at(i).toInt());
+  QString n;
+  for (int i=0; i<s.size(); i++) {
+    n = s.at(i);
+    n.replace("_","-");
+    r.append(n.toInt());
+  }
   return r;
 }
 

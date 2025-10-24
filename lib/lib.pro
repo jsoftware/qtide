@@ -3,6 +3,9 @@
 include(../common.pri)
 message(QMAKESPEC $$QMAKESPEC)
 
+# excel
+QT += gui-private
+
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
@@ -24,6 +27,7 @@ DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
  !lessThan(QT_MINOR_VERSION,2): DEFINES += QT62
  !lessThan(QT_MINOR_VERSION,5): DEFINES += QT65
  !lessThan(QT_MINOR_VERSION,8): DEFINES += QT68
+ !lessThan(QT_MINOR_VERSION,10): DEFINES += QT610
  DEFINES += QT57
  DEFINES += QT512
  DEFINES += QT515
@@ -314,7 +318,11 @@ HEADERS += \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
-android: HEADERS += base/androidextras.h
+# excel
+HEADERS += excel/header/*.h
+INCLUDEPATH +=  excel/header
+
+android: HEADERS += base/androidextras.h ../lib/base/qtjni.h
 
 contains(DEFINES,QT_NO_OPENGL): HEADERS -= wd/ogl2.h wd/opengl.h wd/opengl2.h
 contains(DEFINES,QT_NO_WEBKIT): HEADERS -= wd/webview.h
@@ -364,7 +372,10 @@ SOURCES += \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \
- wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
+ wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp wd/xl.cpp
+
+# excel
+SOURCES += excel/source/*.cpp
 
 android: SOURCES += base/androidextras.cpp
 
@@ -396,9 +407,10 @@ android:LIBS += -ldl
 
 win32-g++:QMAKE_LFLAGS += -static-libgcc
 win32-clang-g++:QMAKE_LFLAGS += -static-libgcc
-win32-msvc*:QMAKE_CXXFLAGS += -WX
-win32-arm64*:QMAKE_CXXFLAGS += -WX
+win32-msvc*:QMAKE_CXXFLAGS += -WX -wd4996 -wd4267 -wd4189 -wd4101 -wd4834
+win32-arm64*:QMAKE_CXXFLAGS += -WX -wd4996 -wd4267 -wd4189 -wd4101 -wd4834
 win32-clang-msvc:QMAKE_CXXFLAGS += -WX
+!win32-*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-result
 macx:QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
 macx:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-private-field
 macx:QMAKE_RPATHDIR += @executable_path/../Qt/Frameworks
@@ -412,3 +424,4 @@ QMAKE_RPATHDIR += $ORIGIN/../Qt/lib
 # shared library
 win32-g++:LIBS += -shared
 win32-clang-g++:LIBS += -shared
+

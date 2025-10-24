@@ -17,6 +17,7 @@ public:
   std::string getparms(bool s=false);
   bool ifstarred(std::string);
   void init(char *,int);
+  void init(std::string);
   bool more();
 
   std::string remws(std::string s);
