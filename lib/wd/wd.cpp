@@ -156,6 +156,8 @@ static void wdminwh();
 static void wdws();
 extern std::string ws(std::string p);
 #endif
+static void wdxl();
+extern std::string xl(std::string p);
 
 static bool nochild();
 static bool noform();
@@ -328,6 +330,8 @@ void wd1()
     else if (c=="ws")
       wdws();
 #endif
+    else if (c=="xl")
+      wdxl();
     else if (0) {
       wdnotyet();
     } else
@@ -1527,6 +1531,21 @@ void wdws()
     rc=-1;
 }
 #endif
+
+// ---------------------------------------------------------------------
+void wdxl()
+{
+  std::string p=cmd.getparms();
+  if (!jt) {
+    error("command failed: no interpreter");
+    return;
+  }
+  result=xl(p);
+  if (1==rc)
+    result="";
+  else
+    rc=-1;
+}
 
 // ---------------------------------------------------------------------
 void wdverbose()
