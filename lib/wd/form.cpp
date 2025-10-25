@@ -545,7 +545,7 @@ void Form::settheme(std::string theme)
 {
   if (theme == "dark") {
     QFile f(":qdarkstyle/dark/darkstyle.qss");
-    f.open(QFile::ReadOnly | QFile::Text);
+    std::ignore = f.open(QFile::ReadOnly | QFile::Text);
     QTextStream ts(&f);
     setStyleSheet(ts.readAll());
   } else

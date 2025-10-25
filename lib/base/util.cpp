@@ -327,7 +327,7 @@ QDateTime cftime(QString s)
 bool cftouch(QString s)
 {
   QFile f(s);
-  f.open(QIODevice::Append);
+  std::ignore = f.open(QIODevice::Append);
   return f.exists();
 }
 
