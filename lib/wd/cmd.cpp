@@ -27,14 +27,6 @@ void Cmd::init(char *s,int slen)
 }
 
 // ---------------------------------------------------------------------
-void Cmd::init(std::string s)
-{
-  str=toLF(s);
-  len=str.size();
-  bgn=pos=pos0=0;
-}
-
-// ---------------------------------------------------------------------
 // split on g h m p v s z and remove blanks
 QStringList Cmd::bsplits()
 {
