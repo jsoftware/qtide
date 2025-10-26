@@ -3,9 +3,6 @@
 include(../common.pri)
 message(QMAKESPEC $$QMAKESPEC)
 
-# excel
-QT += gui-private
-
 # DEFINES += TABCOMPLETION # uncomment this line for tab completion
 
 DEFINES += QTWEBSOCKET  # comment this line if QtWebsocket is unwanted
@@ -318,9 +315,59 @@ HEADERS += \
  wd/qwidget.h wd/scrollarea.h wd/scrollbar.h wd/gl2class.h wd/drawobj.h \
  wd/multimedia.h wd/svgview.h wd/svgview2.h
 
+contains(DEFINES,QT60) {
 # excel
-HEADERS += excel/header/*.h
+QT += gui-private
 INCLUDEPATH +=  excel/header
+HEADERS += \
+ excel/header/xlsxabstractooxmlfile_p.h \
+ excel/header/xlsxabstractooxmlfile.h \
+ excel/header/xlsxabstractsheet_p.h \
+ excel/header/xlsxabstractsheet.h \
+ excel/header/xlsxcell_p.h \
+ excel/header/xlsxcell.h \
+ excel/header/xlsxcellformula_p.h \
+ excel/header/xlsxcellformula.h \
+ excel/header/xlsxcelllocation.h \
+ excel/header/xlsxcellrange.h \
+ excel/header/xlsxcellreference.h \
+ excel/header/xlsxchart_p.h \
+ excel/header/xlsxchart.h \
+ excel/header/xlsxchartsheet_p.h \
+ excel/header/xlsxchartsheet.h \
+ excel/header/xlsxcolor_p.h \
+ excel/header/xlsxconditionalformatting_p.h \
+ excel/header/xlsxconditionalformatting.h \
+ excel/header/xlsxcontenttypes_p.h \
+ excel/header/xlsxdatavalidation_p.h \
+ excel/header/xlsxdatavalidation.h \
+ excel/header/xlsxdatetype.h \
+ excel/header/xlsxdocpropsapp_p.h \
+ excel/header/xlsxdocpropscore_p.h \
+ excel/header/xlsxdocument_p.h \
+ excel/header/xlsxdocument.h \
+ excel/header/xlsxdrawing_p.h \
+ excel/header/xlsxdrawinganchor_p.h \
+ excel/header/xlsxformat_p.h \
+ excel/header/xlsxformat.h \
+ excel/header/xlsxglobal.h \
+ excel/header/xlsxmediafile_p.h \
+ excel/header/xlsxnumformatparser_p.h \
+ excel/header/xlsxrelationships_p.h \
+ excel/header/xlsxrichstring_p.h \
+ excel/header/xlsxrichstring.h \
+ excel/header/xlsxsharedstrings_p.h \
+ excel/header/xlsxsimpleooxmlfile_p.h \
+ excel/header/xlsxstyles_p.h \
+ excel/header/xlsxtheme_p.h \
+ excel/header/xlsxutility_p.h \
+ excel/header/xlsxworkbook_p.h \
+ excel/header/xlsxworkbook.h \
+ excel/header/xlsxworksheet_p.h \
+ excel/header/xlsxworksheet.h \
+ excel/header/xlsxzipreader_p.h \
+ excel/header/xlsxzipwriter_p.h
+}
 
 android: HEADERS += base/androidextras.h ../lib/base/qtjni.h
 
@@ -372,10 +419,45 @@ SOURCES += \
  wd/ogl2.cpp wd/opengl.cpp wd/opengl2.cpp \
  wd/webengineview.cpp wd/webview.cpp wd/quickview1.cpp wd/quickview2.cpp wd/quickwidget.cpp \
  wd/qwidget.cpp wd/scrollarea.cpp wd/scrollbar.cpp wd/drawobj.cpp \
- wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp wd/xl.cpp
+ wd/multimedia.cpp wd/svgview.cpp wd/svgview2.cpp
 
+contains(DEFINES,QT60) {
 # excel
-SOURCES += excel/source/*.cpp
+SOURCES += wd/xl.cpp \
+ excel/source/xlsxabstractooxmlfile.cpp \
+ excel/source/xlsxabstractsheet.cpp \
+ excel/source/xlsxcell.cpp \
+ excel/source/xlsxcellformula.cpp \
+ excel/source/xlsxcelllocation.cpp \
+ excel/source/xlsxcellrange.cpp \
+ excel/source/xlsxcellreference.cpp \
+ excel/source/xlsxchart.cpp \
+ excel/source/xlsxchartsheet.cpp \
+ excel/source/xlsxcolor.cpp \
+ excel/source/xlsxconditionalformatting.cpp \
+ excel/source/xlsxcontenttypes.cpp \
+ excel/source/xlsxdatavalidation.cpp \
+ excel/source/xlsxdatetype.cpp \
+ excel/source/xlsxdocpropsapp.cpp \
+ excel/source/xlsxdocpropscore.cpp \
+ excel/source/xlsxdocument.cpp \
+ excel/source/xlsxdrawing.cpp \
+ excel/source/xlsxdrawinganchor.cpp \
+ excel/source/xlsxformat.cpp \
+ excel/source/xlsxmediafile.cpp \
+ excel/source/xlsxnumformatparser.cpp \
+ excel/source/xlsxrelationships.cpp \
+ excel/source/xlsxrichstring.cpp \
+ excel/source/xlsxsharedstrings.cpp \
+ excel/source/xlsxsimpleooxmlfile.cpp \
+ excel/source/xlsxstyles.cpp \
+ excel/source/xlsxtheme.cpp \
+ excel/source/xlsxutility.cpp \
+ excel/source/xlsxworkbook.cpp \
+ excel/source/xlsxworksheet.cpp \
+ excel/source/xlsxzipreader.cpp \
+ excel/source/xlsxzipwriter.cpp
+}
 
 android: SOURCES += base/androidextras.cpp
 

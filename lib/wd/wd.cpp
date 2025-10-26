@@ -156,8 +156,10 @@ static void wdminwh();
 static void wdws();
 extern std::string ws(std::string p);
 #endif
+#if defined(QT60)
 static void wdxl();
 extern std::string xl(std::string p);
+#endif
 
 static bool nochild();
 static bool noform();
@@ -330,8 +332,10 @@ void wd1()
     else if (c=="ws")
       wdws();
 #endif
+#if defined(QT60)
     else if (c=="xl")
       wdxl();
+#endif
     else if (0) {
       wdnotyet();
     } else
@@ -1532,6 +1536,7 @@ void wdws()
 }
 #endif
 
+#if defined(QT60)
 // ---------------------------------------------------------------------
 void wdxl()
 {
@@ -1546,6 +1551,7 @@ void wdxl()
   else
     rc=-1;
 }
+#endif
 
 // ---------------------------------------------------------------------
 void wdverbose()
