@@ -87,11 +87,10 @@ jobs:
       replacesArtifacts: true
 
 # rpi64arm -------------------------------------------------------------
- jqtrpi64arm6:
+ jqtrpi64arm:
   needs: all
   name: JQtide (Linux arm)
-  if: ${{ false }}
-  runs-on: ubuntu-22.04-arm
+  runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -128,9 +127,10 @@ jobs:
       replacesArtifacts: true
 
 # rpi64arm -------------------------------------------------------------
- jqtrpi64arm:
+ jqtrpi64arm5:
   needs: all
   name: JQtide (Linux arm)
+  if: ${{ false }}
   runs-on: ubuntu-22.04-arm
   steps:
    - name: Check Git repository
@@ -259,13 +259,12 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
-       sudo pkg_info -Q qt5
        sudo pkg_info -Q qt6
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh openbsd '5.15.2' || exit 1
-       script/makelinux.sh openbsd '5.15.2' || exit 1
+       script/installqt.sh openbsd '6.6.3' || exit 1
+       script/makelinux.sh openbsd '6.6.3' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -305,7 +304,6 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
-       pkg search 'qt5*' 1>&2
        pkg search 'qt6*' 1>&2
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
@@ -348,13 +346,12 @@ jobs:
        rm -f jobdone
        export IGNORE_OSVERSION=yes
        sudo pkg upgrade -y
-       sudo pkg search 'qt5*' 1>&2
        sudo pkg search 'qt6*' 1>&2
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd '5.15.2' || exit 1
-       script/makelinux.sh freebsd '5.15.2' || exit 1
+       script/installqt.sh freebsd '6.9.3' || exit 1
+       script/makelinux.sh freebsd '6.9.3' || exit 1
        touch jobdone
 
    - name: Check Status
