@@ -99,10 +99,11 @@ jobs:
 
    - name: Setup Environment (Linux arm)
      run: |
+      script/install-rpi.sh
       sudo apt-get update -y
       sudo apt-cache search qt5 1>&2
       sudo apt-cache search qt6 1>&2
- 
+
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
@@ -192,6 +193,37 @@ jobs:
      with:
       tag: build
       artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# rpi32arm -------------------------------------------------------------
+ jqtrpi32arm:
+  needs: all
+  name: JQtide (Linux arm32)
+  runs-on: ubuntu-24.04-arm
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v4
+
+   - name: Setup Environment (Linux arm)
+     run: |
+      script/install-rpi.sh
+      sudo apt-get update -y
+      sudo apt-cache search qt5 1>&2
+      sudo apt-cache search qt6 1>&2
+
+   - name: Install Qt from distro
+     run: script/installqt.sh raspberry-arm32 '6.10.0'
+
+   - name: Compile JQtide
+     run: script/makelinux.sh raspberry-arm32 '6.10.0'   # previous 5.15.2
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-raspberry-arm32.tar.gz,jqt-raspberry-arm32-slim.tar.gz"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -600,7 +632,7 @@ jobs:
   name: Run Webhook
   runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32arm, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2

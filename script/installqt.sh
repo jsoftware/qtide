@@ -16,7 +16,10 @@ case $2 in
 *) Qtver1="4" ;;
 esac
 
-f() { sudo apt-get install --no-install-recommends -y "$@"; }
+f() {
+sudo apt-get install --no-install-recommends -y "$@";
+sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
+}
 g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
@@ -31,21 +34,31 @@ sudo apt-get upgrade -y
 f libssh-gcrypt-4
 f libpulse-dev
 f qtbase5-dev
-f qtmultimedia5-dev libqt5multimediawidgets5
-f libqt5opengl5 libqt5opengl5-dev
-f libqt5svg5 libqt5svg5-dev
-f qtwebengine5-dev libqt5websockets5-dev
+f qtmultimedia5-dev
+f libqt5multimediawidgets5
+f libqt5opengl5
+f libqt5opengl5-dev
+f libqt5svg5
+f libqt5svg5-dev
+f qtwebengine5-dev
+f libqt5websockets5-dev
 elif [ $Qtver1 = "6" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libpulse-dev
 f qmake6
 f qt6-base-dev
-f qt6-multimedia-dev libqt6multimedia6 libqt6multimediawidgets6
-f libqt6opengl6 libqt6opengl6-dev
-f libqt6svg6 libqt6svgwidgets6
-f libqt6webenginewidgets6 qt6-webengine-dev
-f libqt6core5compat6 libqt6websockets6
+f qt6-multimedia-dev
+f libqt6multimedia6
+f libqt6multimediawidgets6
+f libqt6opengl6
+f libqt6opengl6-dev
+f libqt6svg6
+f libqt6svgwidgets6
+f libqt6webenginewidgets6
+f qt6-webengine-dev
+f libqt6core5compat6
+f libqt6websockets6
 fi
 elif [ "$1" = "openbsd" ] ; then
 g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
