@@ -87,9 +87,10 @@ jobs:
       replacesArtifacts: true
 
 # rpi64arm -------------------------------------------------------------
- jqtrpi64arm:
+ jqtrpi64arm6:
   needs: all
   name: JQtide (Linux arm)
+  if: ${{ false }}
   runs-on: ubuntu-22.04-arm
   steps:
    - name: Check Git repository
@@ -110,6 +111,33 @@ jobs:
 
    - name: Compile JQtide
      run: script/makelinux.sh raspberry '6.10.0'
+
+   - name: Release JQtide
+     uses: ncipollo/release-action@v1
+     with:
+      tag: build
+      artifacts: "jqt-raspberry.tar.gz,jqt-raspberry-slim.tar.gz"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+      replacesArtifacts: true
+
+# rpi64arm -------------------------------------------------------------
+ jqtrpi64arm:
+  needs: all
+  name: JQtide (Linux arm)
+  runs-on: ubuntu-22.04-arm
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v4
+     with:
+      submodules: recursive
+
+   - name: Install Qt from distro
+     run: script/installqt.sh raspberry '5.15.2'
+
+   - name: Compile JQtide
+     run: script/makelinux.sh raspberry '5.15.2'   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh raspberry '5.15.2'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -385,7 +413,7 @@ jobs:
    - name: Setup Environment (Windows arm64)
      uses: ilammy/msvc-dev-cmd@v1
      with:
-      arch: amd64_arm64
+      arch: arm64
 
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
