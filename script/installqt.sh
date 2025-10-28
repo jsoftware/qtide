@@ -61,7 +61,9 @@ f libqt6core5compat6
 f libqt6websockets6
 fi
 elif [ "$1" = "openbsd" ] ; then
-g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
+# g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
+g qt6 qt6-qt5compat
+g qt6-qtsvg qt6-qtwebsockets qt6-qtmultimedia qt6-qtwebengine
 elif [ "$1" = "freebsd" ] ; then
 # h qt5-qmake qt5-buildtools qt5-core
 # h qt5-gui qt5-opengl qt5-printsupport qt5-svg qt5-websockets qt5-multimedia qt5-webengine
