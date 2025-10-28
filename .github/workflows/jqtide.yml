@@ -132,7 +132,7 @@ jobs:
   needs: all
   name: JQtide (Linux arm)
   if: ${{ false }}
-  runs-on: ubuntu-22.04-arm
+  runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -160,7 +160,7 @@ jobs:
   needs: all
   name: JQtide (Raspberry)
   if: ${{ false }}
-  runs-on: ubuntu-22.04
+  runs-on: ubuntu-latest
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -233,7 +233,7 @@ jobs:
   needs: all
   name: JQtide (Raspberry-arm32)
   if: ${{ false }}
-  runs-on: ubuntu-22.04
+  runs-on: ubuntu-latest
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -273,12 +273,10 @@ jobs:
  jqtopenbsd:
   needs: all
   name: JQtide (OpenBSD cross-platform-actions)
-  runs-on: macos-15-intel
+  runs-on: ubuntu-latest
   steps:
    - name: Checkout Git repository
      uses: actions/checkout@v4
-     with:
-      submodules: recursive
 
    - name: Install Qt, Compile JQtide
      uses: cross-platform-actions/action@v0.27.0
@@ -291,6 +289,7 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
+       sudo pkg_add -u
        sudo pkg_info -Q qt6
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
@@ -317,7 +316,7 @@ jobs:
   needs: all
   name: JQtide (FreeBSD vmactions)
   if: ${{ false }}
-  runs-on: macos-15-intel
+  runs-on: ubuntu-latest
   steps:
    - name: Checkout Git repository
      uses: actions/checkout@v4
