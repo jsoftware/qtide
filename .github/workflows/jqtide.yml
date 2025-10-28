@@ -253,6 +253,8 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
+       sudo pkg_info -Q qt5
+       sudo pkg_info -Q qt6
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
@@ -296,6 +298,9 @@ jobs:
 
       run: |
        rm -f jobdone
+       export IGNORE_OSVERSION=yes
+       sudo pkg search 'qt5*'
+       sudo pkg search 'qt6*'
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
        export CC=clang
@@ -338,6 +343,8 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
+       sudo pkg search 'qt5*'
+       sudo pkg search 'qt6*'
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
