@@ -33,7 +33,7 @@ jobs:
      uses: jurplel/install-qt-action@v4
      with:
       aqtversion: '==3.3.*'
-      version: 6.8.3
+      version: 6.10.0
       host: 'linux'
       target: 'desktop'
       arch: 'linux_gcc_64'
@@ -41,7 +41,7 @@ jobs:
       modules: 'all'
 
    - name: Compile JQtide
-     run: script/makelinux.sh linux '6.8.3'
+     run: script/makelinux.sh linux '6.10.0'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -66,7 +66,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.3'
+      version: '6.10.0'
       target: 'desktop'
       dir: '${{github.workspace}}'
       modules: 'all'
@@ -75,7 +75,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.8.3/macos/bin/qmake script/makemac.sh '6.8.3' mac
+     run: QM=${{github.workspace}}/Qt/6.10.0/macos/bin/qmake script/makemac.sh '6.10.0' mac
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -383,7 +383,7 @@ jobs:
 #    - name: Install Qt from source
 #      uses: jurplel/install-qt-action@v4
 #      with:
-#       version: '6.8.3'
+#       version: '6.10.0'
 #       target: 'desktop'
 #       arch: 'win64_msvc2022_64'
 #       dir: '${{github.workspace}}'
@@ -430,7 +430,7 @@ jobs:
    - name: Install Qt from source
      uses: Kidev/install-qt-action@v4.4.2
      with:
-      version: '6.8.3'
+      version: '6.10.0'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -494,7 +494,7 @@ jobs:
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.3'
+      version: '6.10.0'
       target: 'desktop'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -504,7 +504,7 @@ jobs:
    - name: Install Qt from source ios
      uses: jurplel/install-qt-action@v4
      with:
-      version: '6.8.3'
+      version: '6.10.0'
       target: 'ios'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
@@ -551,7 +551,7 @@ jobs:
       echo "development_team.name = DEVELOPMENT_TEAM" >> ios_signature.pri
       echo "development_team.value = bill.w.lam@icloud.com" >> ios_signature.pri
       echo "QMAKE_MAC_XCODE_SETTINGS += development_team" >> ios_signature.pri
-      QM=${{github.workspace}}/Qt/6.8.3/ios/bin/qmake script/makemac.sh '6.8.3' ios
+      QM=${{github.workspace}}/Qt/6.10.0/ios/bin/qmake script/makemac.sh '6.10.0' ios
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
