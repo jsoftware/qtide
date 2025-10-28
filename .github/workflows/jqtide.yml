@@ -335,8 +335,6 @@ jobs:
   steps:
    - name: Checkout Git repository
      uses: actions/checkout@v4
-     with:
-      submodules: recursive
 
    - name: Install Qt, Compile JQtide
      uses: cross-platform-actions/action@v0.27.0
@@ -349,6 +347,7 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
+       sudo pkg upgrade -y
        sudo pkg search 'qt5*' 1>&2
        sudo pkg search 'qt6*' 1>&2
        sudo pkg install -y curl zip gmake
