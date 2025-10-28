@@ -98,6 +98,12 @@ jobs:
      with:
       submodules: recursive
 
+   - name: Setup Environment (Linux arm)
+     run: |
+      sudo apt-get update -y
+      sudo apt-cache search qt5 1>&2
+      sudo apt-cache search qt6 1>&2
+ 
    - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
@@ -299,8 +305,8 @@ jobs:
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
-       sudo pkg search 'qt5*'
-       sudo pkg search 'qt6*'
+       pkg search 'qt5*' 1>&2
+       pkg search 'qt6*' 1>&2
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
        export CC=clang
@@ -337,14 +343,14 @@ jobs:
      with:
       operating_system: freebsd
       architecture: x86-64
-      version: '13.2'
+      version: '14.2'
       shell: bash
 
       run: |
        rm -f jobdone
        export IGNORE_OSVERSION=yes
-       sudo pkg search 'qt5*'
-       sudo pkg search 'qt6*'
+       sudo pkg search 'qt5*' 1>&2
+       sudo pkg search 'qt6*' 1>&2
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
