@@ -219,6 +219,7 @@ jobs:
    - name: Compile JQtide
      env:
       CC: arm-linux-gnueabihf-gcc
+      CXX: arm-linux-gnueabihf-g++
      run: script/makelinux.sh raspberry-arm32 '6.10.0'   # previous 5.15.2
 
    - name: Release JQtide
