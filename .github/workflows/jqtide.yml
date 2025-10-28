@@ -97,12 +97,19 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt from distro
-     run: script/installqt.sh raspberry '5.15.2'
+   - name: Install Qt from source
+     uses: jurplel/install-qt-action@v4
+     with:
+      aqtversion: '==3.3.*'
+      version: 6.10.0
+      host: 'linux_arm64'
+      target: 'desktop'
+      arch: 'linux_gcc_arm64'
+      dir: '${{github.workspace}}'
+      modules: 'all'
 
    - name: Compile JQtide
-     run: script/makelinux.sh raspberry '5.15.2'   # previous 5.15.2
-#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh raspberry '5.15.2'
+     run: script/makelinux.sh raspberry '6.10.0'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -343,12 +350,13 @@ jobs:
      uses: jurplel/install-qt-action@v4
      with:
       version: '6.10.0'
+      host: 'windows'
       target: 'desktop'
       arch: 'win64_msvc2022_64'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
       modules: 'all'
-      aqtversion: '==3.1.*'
+      aqtversion: '==3.3.*'
 
    - name: Compile JQtide
      shell: cmd
@@ -367,8 +375,7 @@ jobs:
  jqtwinarm64:
   needs: all
   name: JQtide (Windows arm64)
-  if: ${{ false }}
-  runs-on: windows-2022
+  runs-on: windows-11-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -380,27 +387,17 @@ jobs:
      with:
       arch: amd64_arm64
 
-#    - name: Install Qt from source
-#      uses: jurplel/install-qt-action@v4
-#      with:
-#       version: '6.10.0'
-#       target: 'desktop'
-#       arch: 'win64_msvc2022_64'
-#       dir: '${{github.workspace}}'
-#       modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
-# #      modules: 'all'
-#       aqtversion: '==3.2.*'
-
-   - name: Install Qt from source arm64
+   - name: Install Qt from source
      uses: jurplel/install-qt-action@v4
      with:
       version: '6.10.0'
+      host: 'windows_arm64'
       target: 'desktop'
-      arch: 'win64_msvc2022_arm64_cross_compiled'
+      arch: 'win64_msvc2022_arm64'
       dir: '${{github.workspace}}'
 #      modules: 'qtwebengine qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
       modules: 'all'
-      aqtversion: '==3.2.*'
+      aqtversion: '==3.3.*'
 
    - name: Compile JQtide
      shell: cmd
@@ -410,7 +407,7 @@ jobs:
      uses: ncipollo/release-action@v1
      with:
       tag: build
-      artifacts: "jqt-winarm64-slim.zip"
+      artifacts: "jqt-winarm64.zip,jqt-winarm64-slim.zip"
       token: ${{ secrets.GITHUB_TOKEN }}
       allowUpdates: true
       replacesArtifacts: true
@@ -435,19 +432,19 @@ jobs:
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel qtpositioning'
 #      modules: 'all'
-      aqtversion: '==3.2.*'
+      aqtversion: '==3.3.*'
 
    - name: Install Qt from source wasm
      uses: Kidev/install-qt-action@v4.4.2
      with:
-      version: '6.9.2'
+      version: '6.10.0'
       host: 'all_os'
       target: 'wasm'
       arch: 'wasm_multithread'
       dir: '${{github.workspace}}'
 #      modules: 'qt5compat qtwebsockets qtmultimedia qtwebchannel'
       modules: 'all'
-      aqtversion: '==3.2.*'
+      aqtversion: '==3.3.*'
 
    - name: Install emsdk
      uses: mymindstorm/setup-emsdk@v14
@@ -463,7 +460,7 @@ jobs:
      run: |
       ./cpjlib.sh
       ./cplibjtest.sh
-      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.9.2/wasm_multithread/bin/qmake ./makeall.sh
+      JQTSLIM=JQTSLIM QMAKESPEC=wasm-emscripten QM=${{github.workspace}}/Qt/6.10.0/wasm_multithread/bin/qmake ./makeall.sh
       rm -rf j32
       mkdir j32
       ls -l bin/wasm-wasm32/release
@@ -566,7 +563,7 @@ jobs:
   name: Run Webhook
   runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtfreebsd2, jqtopenbsd ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2

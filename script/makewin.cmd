@@ -1,6 +1,6 @@
 @REM Set up Windows SDK for 64bit
 @REM argument is Qt version, e.g. "5.15.2"
-@REM argument is arch, e.g. "x64"
+@REM argument is arch, e.g. "x64" "arm64"
 
 echo "%~1"
 echo "%~2"
