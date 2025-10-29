@@ -29,6 +29,11 @@ echo "MAKEFLAGS=$MAKEFLAGS"
 QM="${QM:=qmake}"
 
 run() {
+P=jqt-"$1"
+if [ "$JQTSLIM" = "1" ] ; then
+P="$P"-slim
+fi
+
  ./clean.l64
 if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
  cd lib
@@ -46,32 +51,32 @@ else
  cd -
 fi
 
-mv bin/$1-x86_64/release $1 || mv bin/$1-aarch64/release $1 || mv bin/$1-wasm32/release $1 || true
+mv bin/$P-x86_64/release $P || mv bin/$P-aarch64/release $P || mv bin/$P-wasm32/release $P || true
 
 if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
- mv $1/jqt.app/Contents/MacOS/jqt $1 || true
- mv $1/jqta.app/Contents/MacOS/jqta $1 || true
- rm -rf $1/jqt.app
- rm -rf $1/jqta.app
- cd $1
- zip --symlinks -r ../$1.zip *
+ mv $P/jqt.app/Contents/MacOS/jqt $P || true
+ mv $P/jqta.app/Contents/MacOS/jqta $P || true
+ rm -rf $P/jqt.app
+ rm -rf $P/jqta.app
+ cd $P
+ zip --symlinks -r ../$P.zip *
  cd -
 else
- cd $1
- zip --symlinks -r ../$1.zip *
+ cd $P
+ zip --symlinks -r ../$P.zip *
  cd -
 fi
-ls -l "$1" || true
-rm -rf "$1"
+ls -l "$P" || true
+rm -rf "$P"
 }
 
 if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
 # export NO_OPENGL=1
-run jqt-"$1" "$1"
+run "$1"
 fi
 
 export JQTSLIM=1
-run jqt-"$1"-slim "$1"
+run "$1"
 
 #if [ -d Qt ] ; then
 #if [ $1 = "wasm" ] ; then
