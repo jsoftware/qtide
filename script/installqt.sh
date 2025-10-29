@@ -31,9 +31,11 @@ else
 fi
 
 f() {
-sudo apt-get install --no-install-recommends -y "$@";
+sudo apt-get install --no-install-recommends -y "$@" || true ;
 if [ $arch = "armv6l" ] ; then
+if [ "$RUNNER_ARCH" = "ARM64" ] ; then
 sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
+end.
 fi
 }
 g() { sudo pkg_add "$@"; }
@@ -59,14 +61,14 @@ f libqt5opengl5-dev
 f libqt5svg5
 f libqt5svg5-dev
 f qtwebengine5-dev
+f libqt5webkit5-dev
 f libqt5websockets5-dev
 elif [ $Qtver1 = "6" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
 f libpulse-dev
 f qmake6
-f qt6-base-dev
-f qt6-multimedia-dev
+f libqt6core5compat6
 f libqt6multimedia6
 f libqt6multimediawidgets6
 f libqt6opengl6
@@ -74,9 +76,13 @@ f libqt6opengl6-dev
 f libqt6svg6
 f libqt6svgwidgets6
 f libqt6webenginewidgets6
-f qt6-webengine-dev
-f libqt6core5compat6
 f libqt6websockets6
+f qt6-5compat-dev
+f qt6-base-dev
+f qt6-multimedia-dev
+f qt6-svg-dev
+f qt6-webengine-dev
+f qt6-websockets-dev
 fi
 elif [ "$1" = "openbsd" ] ; then
 if [ $Qtver1 = "5" ] ; then
