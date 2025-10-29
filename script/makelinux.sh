@@ -95,6 +95,10 @@ maketar() {
 
 run() {
 P=jqt-"$1""$SUF"
+if [ "$JQTSLIM" = "1" ] ; then
+P="$P"-slim
+fi
+
 ./clean.l64
 rm -rf "$P"
 cd lib
@@ -135,10 +139,10 @@ QM="${QM:=qmake}"
 fi
 
 # export NO_OPENGL=1
-run jqt-"$1" "$1"
+run "$1"
 
 export JQTSLIM=1
-run jqt-"$1"-slim "$1"
+run "$1"
 
 # if [ -d Qt ] ; then
 # tar -czf "$1"-Qt.tar.gz Qt
