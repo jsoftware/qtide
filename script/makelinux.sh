@@ -69,7 +69,6 @@ elif [ $Qtver1 = "5" ]; then
 else
  QM=/usr/local/lib/qt4/bin/qmake
 fi
-fi
 elif [ "$1" = "raspberry" ]; then
 if [ "$2" = "armv6l" ] ; then
  export QMAKESPEC=linux-arm-gnueabi-g++
