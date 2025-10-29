@@ -201,6 +201,7 @@ jobs:
  jqtrpi32arm:
   needs: all
   name: JQtide (Linux arm32)
+  if: ${{ false }}
   runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
@@ -235,13 +236,10 @@ jobs:
  jqtrpi32:
   needs: all
   name: JQtide (Raspberry-arm32)
-  if: ${{ false }}
   runs-on: ubuntu-latest
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
-     with:
-      submodules: recursive
 
    - name: Install Qt, Compile JQtide
      uses: pguyot/arm-runner-action@v2
@@ -253,6 +251,9 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
+       sudo apt-get update -y
+       sudo apt-cache search qt5 1>&2
+       sudo apt-cache search qt6 1>&2
        script/installqt.sh raspberry armv6l '5.15.2'
        script/makelinux.sh raspberry armv6l '5.15.2'
        find output -type d -exec chmod a+rwx {} \;
@@ -634,7 +635,8 @@ jobs:
   name: Run Webhook
   runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32arm, jqtfreebsd2, jqtopenbsd ]
+#  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32arm, jqtfreebsd2, jqtopenbsd ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2
