@@ -51,7 +51,7 @@ else
  cd -
 fi
 
-mv bin/$P-x86_64/release $P || mv bin/$P-aarch64/release $P || mv bin/$P-wasm32/release $P || true
+mv bin/"$1"-x86_64/release $P || mv bin/"$1"-aarch64/release $P || mv "$1"-wasm32/release $P || true
 
 if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
  mv $P/jqt.app/Contents/MacOS/jqt $P || true
