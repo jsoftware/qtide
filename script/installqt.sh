@@ -35,7 +35,7 @@ sudo apt-get install --no-install-recommends -y "$@" || true ;
 if [ $arch = "armv6l" ] ; then
 if [ "$RUNNER_ARCH" = "ARM64" ] ; then
 sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
-end.
+fi
 fi
 }
 g() { sudo pkg_add "$@"; }
