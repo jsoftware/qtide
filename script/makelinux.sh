@@ -26,7 +26,8 @@ else
  arch="`uname -m`"
 fi
 
-B=$GITHUB_WORKSPACE/Qt/$2/gcc_64/bin
+echo "`ls -l $GITHUB_WORKSPACE/Qt/$3`"
+B=$GITHUB_WORKSPACE/Qt/$3/gcc_64/bin
 export PATH=$B:$PATH
 
 case $3 in
