@@ -1,33 +1,51 @@
 #!/bin/sh
 set -evx
 
-#
-# arg is linux/raspberry/raspberry-arm32/openbsd/freebsd
-#        Qt version, e.g. "5.15.2"
+# argument is linux|darwin|raspberry|android|openbsd|freebsd|wasm [x64|x86|arm64|armv6l] Qtver
+# wasm is experimental
+# Qt version, e.g. "5.15.2"
 
 echo "pwd $(pwd)"
-echo "parameters $1 $2"
+echo "parameters $1 $2 $3"
 echo "uname -m  $(uname -m)"
 echo "RUNNER_ARCH  $RUNNER_ARCH"
 
-case $2 in
+case $3 in
 6*) Qtver1="6" ;;
 5*) Qtver1="5" ;;
 *) Qtver1="4" ;;
 esac
 
+if [ "$2" = "x64" ] ; then
+ arch=x86_64
+elif [ "$2" = "x86" ] ; then
+ arch=x86
+elif [ "$2" = "arm64" ] ; then
+ arch=aarch64
+elif [ "$2" = "armv6l" ] ; then
+ arch=armv6l
+elif [ "$1" = "wasm" ]; then
+ arch=wasm32
+else
+ arch="`uname -m`"
+fi
+
 f() {
 sudo apt-get install --no-install-recommends -y "$@";
-sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
+if [ $arch = "armv6l" ] ; then
+sudo apt-get install --no-install-recommends -y "$@":armhf ;
+fi
 }
 g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
-if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] || [ "$1" = "raspberry-arm32" ] ; then
+if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] ; then
 if [ $Qtver1 = "4" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
-f libqt4-dev libqt4-opengl-dev libqt4-svg
+f libqt4-dev
+f libqt4-opengl-dev
+f libqt4-svg
 elif [ $Qtver1 = "5" ] ; then
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -61,13 +79,19 @@ f libqt6core5compat6
 f libqt6websockets6
 fi
 elif [ "$1" = "openbsd" ] ; then
-# g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
+if [ $Qtver1 = "5" ] ; then
+g qtbase qtmultimedia qtsvg qttools qtwebengine qtwebsockets
+else
 g qt6 qt6-qt5compat
 g qt6-qtsvg qt6-qtwebsockets qt6-qtmultimedia qt6-qtwebengine
+fi
 elif [ "$1" = "freebsd" ] ; then
-# h qt5-qmake qt5-buildtools qt5-core
-# h qt5-gui qt5-opengl qt5-printsupport qt5-svg qt5-websockets qt5-multimedia qt5-webengine
+if [ $Qtver1 = "5" ] ; then
+h qt5-qmake qt5-buildtools qt5-core
+h qt5-gui qt5-opengl qt5-printsupport qt5-svg qt5-websockets qt5-multimedia qt5-webengine
+else
 h qt6 qt6-base qt6-5compat
 h qt6-svg qt6-websockets qt6-multimedia qt6-webengine
+fi
 fi
 

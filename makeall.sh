@@ -5,8 +5,6 @@ set -e
 
 cd "$(dirname "$0")"
 
-VER=6.9.2
-
 if [ "$1" != "noclean" ] ; then
 ./clean.sh || true
 ./clean.l64
@@ -81,7 +79,7 @@ $QM "$qmflag" && make && \
 cp ../bin/android-$ABI/release/libjqta_$ABI.so ../android-build/libs/$ABI && \
 make apk_install_target ../android-build && \
 unset JAVA_HOME && \
-$HOME/Qt/$VER/macos/bin/androiddeployqt \
+$HOME/Qt/$QTLIBVER/macos/bin/androiddeployqt \
  --output ../android-build \
  --input ./android-jqta-deployment-settings.json \
  --android-platform android-35 \

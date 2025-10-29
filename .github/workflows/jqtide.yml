@@ -41,7 +41,7 @@ jobs:
       modules: 'all'
 
    - name: Compile JQtide
-     run: script/makelinux.sh linux '6.10.0'
+     run: script/makelinux.sh linux x64 '6.10.0'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -116,7 +116,7 @@ jobs:
       modules: 'all'
 
    - name: Compile JQtide
-     run: script/makelinux.sh raspberry '6.10.0'
+     run: script/makelinux.sh raspberry arm64 '6.10.0'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -140,11 +140,11 @@ jobs:
       submodules: recursive
 
    - name: Install Qt from distro
-     run: script/installqt.sh raspberry '5.15.2'
+     run: script/installqt.sh raspberry arm64 '5.15.2'
 
    - name: Compile JQtide
-     run: script/makelinux.sh raspberry '5.15.2'   # previous 5.15.2
-#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh raspberry '5.15.2'
+     run: script/makelinux.sh raspberry arm64 '5.15.2'   # previous 5.15.2
+#     run: QM=${{github.workspace}}/Qt/5.15.2/gcc_64/bin/qmake script/makelinux.sh raspberry arm64 '5.15.2'
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -176,10 +176,10 @@ jobs:
       image_additional_mb: 2048
       copy_artifact_path: output
       commands: |
-       script/installqt.sh raspberry '5.15.2'
+       script/installqt.sh raspberry arm64 '5.15.2'
        export CC=clang
        mkdir -p output
-       script/makelinux.sh raspberry '5.15.2'
+       script/makelinux.sh raspberry arm64 '5.15.2'
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
@@ -214,13 +214,13 @@ jobs:
       sudo apt-cache search qt6 1>&2
 
    - name: Install Qt from distro
-     run: script/installqt.sh raspberry-arm32 '6.10.0'
+     run: script/installqt.sh raspberry armv6l '6.10.0'
 
    - name: Compile JQtide
      env:
       CC: arm-linux-gnueabihf-gcc
       CXX: arm-linux-gnueabihf-g++
-     run: script/makelinux.sh raspberry-arm32 '6.10.0'   # previous 5.15.2
+     run: script/makelinux.sh raspberry armv6l '6.10.0'   # previous 5.15.2
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -253,8 +253,8 @@ jobs:
       copy_artifact_path: output
       commands: |
        export CC=gcc
-       script/installqt.sh raspberry-arm32 '5.15.2'
-       script/makelinux.sh raspberry-arm32 '5.15.2'
+       script/installqt.sh raspberry armv6l '5.15.2'
+       script/makelinux.sh raspberry armv6l '5.15.2'
        find output -type d -exec chmod a+rwx {} \;
        find output -type f -exec chmod a+rw {} \;
 
@@ -297,8 +297,8 @@ jobs:
        sudo pkg_add curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh openbsd '6.6.3' || exit 1
-       script/makelinux.sh openbsd '6.6.3' || exit 1
+       script/installqt.sh openbsd x64 '6.6.3' || exit 1
+       script/makelinux.sh openbsd x64 '6.6.3' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -342,8 +342,8 @@ jobs:
        pkg install -y curl zip gmake
        rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd '5.15.2' || exit 1
-       script/makelinux.sh freebsd '5.15.2' || exit 1
+       script/installqt.sh freebsd x64 '5.15.2' || exit 1
+       script/makelinux.sh freebsd x64 '5.15.2' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -384,8 +384,8 @@ jobs:
        sudo pkg install -y curl zip gmake
        sudo rdate time.cloudflare.com || true
        export CC=clang
-       script/installqt.sh freebsd '6.9.3' || exit 1
-       script/makelinux.sh freebsd '6.9.3' || exit 1
+       script/installqt.sh freebsd x64 '6.9.3' || exit 1
+       script/makelinux.sh freebsd x64 '6.9.3' || exit 1
        touch jobdone
 
    - name: Check Status
@@ -431,7 +431,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.10.0 x64
+     run: script\makewin.cmd x64 6.10.0
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -472,7 +472,7 @@ jobs:
 
    - name: Compile JQtide
      shell: cmd
-     run: script\makewin.cmd 6.10.0 arm64
+     run: script\makewin.cmd arm64 6.10.0
 
    - name: Release JQtide
      uses: ncipollo/release-action@v1
@@ -488,7 +488,7 @@ jobs:
   needs: all
   name: JQtide (wasm)
   if: ${{ false }}
-  runs-on: macos-15-intel
+  runs-on: macos-15
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4
@@ -552,7 +552,7 @@ jobs:
   needs: all
   name: JQtide (ios)
   if: ${{ false }}
-  runs-on: macos-15-intel
+  runs-on: macos-15
   steps:
    - name: Check Git repository
      uses: actions/checkout@v4

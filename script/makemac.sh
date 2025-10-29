@@ -1,19 +1,21 @@
 #!/bin/sh
 set -e
 
-# arg is Qt version, e.g. "5.15.2"
-#        mac/ios/wasm
+# arg is  mac/ios/wasm Qt version, e.g. "5.15.2"
+#       
 
 echo "pwd $(pwd)"
 echo "parameters $1 $2"
 
-if [ "$2" = "mac" ]; then
+export QTLIBVER="$2"
+
+if [ "$1" = "mac" ]; then
 export QMAKESPEC=macx-clang
 # If you use quotes, qmake considers the whole string as a single arch and that breaks some internal logic.
 qmflag=QMAKE_APPLE_DEVICE_ARCHS=x86_64\ arm64
-elif [ "$2" = "ios" ]; then
+elif [ "$1" = "ios" ]; then
 export QMAKESPEC=macx-ios-clang
-elif [ "$2" = "wasm" ]; then
+elif [ "$1" = "wasm" ]; then
 export QMAKESPEC=wasm-emscripten
 fi
 
@@ -28,7 +30,7 @@ QM="${QM:=qmake}"
 
 run() {
  ./clean.l64
-if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
+if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
  cd lib
  $QM "$qmflag"
  make
@@ -44,9 +46,9 @@ else
  cd -
 fi
 
-mv bin/$2-x86_64/release $1 || mv bin/$2-aarch64/release $1 || mv bin/$2-wasm32/release $1 || true
+mv bin/$1-x86_64/release $1 || mv bin/$1-aarch64/release $1 || mv bin/$1-wasm32/release $1 || true
 
-if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
+if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
  mv $1/jqt.app/Contents/MacOS/jqt $1 || true
  mv $1/jqta.app/Contents/MacOS/jqta $1 || true
  rm -rf $1/jqt.app
@@ -63,21 +65,21 @@ ls -l "$1" || true
 rm -rf "$1"
 }
 
-if [ $2 != "ios" ] && [ $2 != "wasm" ] ; then
+if [ $1 != "ios" ] && [ $1 != "wasm" ] ; then
 # export NO_OPENGL=1
-run jqt-"$2" "$2"
+run jqt-"$1" "$1"
 fi
 
 export JQTSLIM=1
-run jqt-"$2"-slim "$2"
+run jqt-"$1"-slim "$1"
 
 #if [ -d Qt ] ; then
-#if [ $2 = "wasm" ] ; then
+#if [ $1 = "wasm" ] ; then
 #ios size 8.6G !!!
 #find Qt/"$1" -name 'macos' -type d -delete || true
-#tar -czf "$2"-Qt.tar.gz Qt
+#tar -czf "$1"-Qt.tar.gz Qt
 #else
-#tar -czf "$2"-Qt.tar.gz Qt
+#tar -czf "$1"-Qt.tar.gz Qt
 #fi
 #fi
 
