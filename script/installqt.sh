@@ -33,7 +33,7 @@ fi
 f() {
 sudo apt-get install --no-install-recommends -y "$@";
 if [ $arch = "armv6l" ] ; then
-sudo apt-get install --no-install-recommends -y "$@":armhf ;
+sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
 fi
 }
 g() { sudo pkg_add "$@"; }
