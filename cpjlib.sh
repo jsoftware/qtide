@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$0")"
 p=`pwd`
 
-jver="j9.6"
+jver="j9.7"
 
 if ( [ "`uname`" = "Linux" ] )  && ( [ "`uname -m`" = "armv6l" ] ); then
   jf="${jver}_raspi32.tar.gz"
