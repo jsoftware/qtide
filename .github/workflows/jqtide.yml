@@ -236,6 +236,7 @@ jobs:
  jqtrpi32:
   needs: all
   name: JQtide (Raspberry-arm32)
+  if: ${{ false }}
   runs-on: ubuntu-latest
   steps:
    - name: Check Git repository
@@ -636,7 +637,7 @@ jobs:
   runs-on: ubuntu-22.04
 #  needs: [jqtlinux, jqtmacos, jqtrpi64, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd, jqtios, jqtwasm ]
 #  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32arm, jqtfreebsd2, jqtopenbsd ]
-  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtrpi32, jqtfreebsd2, jqtopenbsd ]
+  needs: [jqtlinux, jqtmacos, jqtrpi64arm, jqtwin, jqtwinarm64, jqtfreebsd2, jqtopenbsd ]
   steps:
    - name: update server
      uses: distributhor/workflow-webhook@v2

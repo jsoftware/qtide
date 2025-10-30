@@ -14,6 +14,8 @@ set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2022_64\bin;%PATH%
 
 @rem CALL "C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 echo %PATH%
+set JQTSLIM=
+set
 
 IF "%~1"=="arm64" GOTO L20
 
