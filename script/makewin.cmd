@@ -17,7 +17,7 @@ echo %PATH%
 set JQTSLIM=
 set
 
-IF "%~1"=="arm64" GOTO L20
+@rem IF "%~1"=="arm64" GOTO L20
 
 @rem set NO_OPENGL=1
 @rem set JQTWEBKIT=JQTWEBKIT
