@@ -35,11 +35,11 @@ nmake
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 cd ..\main
 IF "%~1"=="arm64" GOTO L02A
-host-qmake
+qmake
 GOTO L02C
 :L02A
 @rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
-qmake
+host-qmake
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
