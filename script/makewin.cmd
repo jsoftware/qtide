@@ -28,7 +28,7 @@ GOTO L01C
 :L01A
 set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin;%PATH%
 @rem qmake %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
-host-qmake
+qmake
 :L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
@@ -39,7 +39,7 @@ qmake
 GOTO L02C
 :L02A
 @rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
-host-qmake
+qmake
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 nmake
