@@ -1,6 +1,6 @@
 @REM Set up Windows SDK for 64bit
-@REM argument is arch, e.g. "x64" "arm64"
-@REM argument is Qt version, e.g. "5.15.2"
+@REM 1st argument is arch, e.g. "x64" "arm64"
+@REM 2nd argument is Qt version, e.g. "5.15.2"
 
 echo "%~1"
 echo "%~2"
@@ -10,7 +10,7 @@ IF "%~1"=="x64" GOTO L0
 IF "%~1" NEQ "arm64" EXIT /b 1
 @rem CALL "c:\program files\microsoft visual studio\2022\community\vc\auxiliary\build\vcvarsamd64_arm64.bat"
 :L0
-set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2022_64\bin;%PATH%
+set PATH=%GITHUB_WORKSPACE%\Qt\%~2\msvc2022_64\bin;%PATH%
 
 @rem CALL "C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 echo %PATH%
@@ -26,8 +26,8 @@ IF "%~1"=="arm64" GOTO L01A
 qmake
 GOTO L01C
 :L01A
-set PATH=%GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin;%PATH%
-@rem qmake %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
+set PATH=%GITHUB_WORKSPACE%\Qt\%~2\msvc2022_arm64\bin;%PATH%
+@rem qmake %GITHUB_WORKSPACE%\Qt\%~2\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
 qmake
 :L01C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -38,7 +38,7 @@ IF "%~1"=="arm64" GOTO L02A
 qmake
 GOTO L02C
 :L02A
-@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
+@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%~2\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
 qmake
 :L02C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -84,7 +84,7 @@ IF "%~1"=="arm64" GOTO L05A
 qmake
 GOTO L05C
 :L05A
-@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
+@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%~2\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
 qmake
 :L05C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
@@ -95,7 +95,7 @@ IF "%~1"=="arm64" GOTO L06A
 qmake
 GOTO L06C
 :L06A
-@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%1\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
+@rem qmake -qtconf %GITHUB_WORKSPACE%\Qt\%~2\msvc2022_arm64\bin\target_qt.conf -spec win32-arm64-msvc2022
 qmake
 :L06C
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
