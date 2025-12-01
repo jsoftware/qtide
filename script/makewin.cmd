@@ -17,7 +17,8 @@ echo %PATH%
 set JQTSLIM=
 set
 
-@rem IF "%~1"=="arm64" GOTO L20
+@rem webengine not available for windows arm64
+IF "%~1"=="arm64" GOTO L20
 
 @rem set NO_OPENGL=1
 @rem set JQTWEBKIT=JQTWEBKIT
