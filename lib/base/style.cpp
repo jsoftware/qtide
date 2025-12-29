@@ -51,7 +51,7 @@ void Config::initstyle()
   QFile temp(ConfigPath.filePath("style.cfg.0"));
 #else
   QTemporaryFile temp;
-  temp.open();
+  std::ignore = temp.open();
   temp.close();
 #endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);

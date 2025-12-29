@@ -80,7 +80,7 @@ else
     $QM "$qmflag" && make && \
     cp ../bin/android-$ABI/release/libjqta_$ABI.so ../android-build/libs/$ABI && \
     make apk_install_target ../android-build && \
-    unset JAVA_HOME && \
+    unset JAVA_HOME1 && \
     $HOME/Qt/$QTLIBVER/macos/bin/androiddeployqt \
     --output ../android-build \
     --input ./android-jqta-deployment-settings.json \

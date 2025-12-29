@@ -49,6 +49,7 @@ mkdir -p jlibrary/bin
 cp /tmp/jx/${jver}/bin/profile.ijs jlibrary/bin/.
 cp -r /tmp/jx/${jver}/addons jlibrary/.
 cp -r /tmp/jx/${jver}/system jlibrary/.
+find jlibrary -name 'key.pem' -delete
 
 find jlibrary -type f -print > jlib.qrc
 sed -i "" 's/^/<file>/' jlib.qrc

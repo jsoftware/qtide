@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-export QTLIBVER=6.9.2
+export QTLIBVER=6.11.0
 
 export ANDROID_SDK_ROOT=/Users/bill/Library/Android/sdk
 export ANDROID_NDK_HOST=

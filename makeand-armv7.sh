@@ -2,19 +2,19 @@
 set -e
 cd "$(dirname "$0")"
 
-export VER=6.5.3
+export VER=6.11.0
 
 export ANDROID_SDK_ROOT=/Users/bill/Library/Android/sdk
 export ANDROID_NDK_HOST=
 export NDK_TOOLCHAIN_VERSION=
 export ANDROID_NDK_PLATFORM=
 export ANDROID_TARGET_ARCH=
-export ANDROID_NDK_PLATFORM=android-22
+export ANDROID_NDK_PLATFORM=android-28
 export ANDROID_TARGET_ARCH=
 export ANDROID_VERSION_CODE=
-export ANDROID_API_VERSION=22 
-export ANDROID_MIN_SDK_VERSION=22 
-export ANDROID_TARGET_SDK_VERSION=22 
+export ANDROID_API_VERSION=35
+export ANDROID_MIN_SDK_VERSION=10
+export ANDROID_TARGET_SDK_VERSION=35
 
 export QMAKESPEC=android-clang
 export JQTSLIM=JQTSLIM

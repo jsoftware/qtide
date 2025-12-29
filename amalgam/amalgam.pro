@@ -331,55 +331,55 @@ HEADERS += \
 contains(DEFINES,QT60) {
 # excel
 QT += gui-private
-INCLUDEPATH +=  excel/header
+INCLUDEPATH +=  ../lib/excel/header
 HEADERS += \
- excel/header/xlsxabstractooxmlfile_p.h \
- excel/header/xlsxabstractooxmlfile.h \
- excel/header/xlsxabstractsheet_p.h \
- excel/header/xlsxabstractsheet.h \
- excel/header/xlsxcell_p.h \
- excel/header/xlsxcell.h \
- excel/header/xlsxcellformula_p.h \
- excel/header/xlsxcellformula.h \
- excel/header/xlsxcelllocation.h \
- excel/header/xlsxcellrange.h \
- excel/header/xlsxcellreference.h \
- excel/header/xlsxchart_p.h \
- excel/header/xlsxchart.h \
- excel/header/xlsxchartsheet_p.h \
- excel/header/xlsxchartsheet.h \
- excel/header/xlsxcolor_p.h \
- excel/header/xlsxconditionalformatting_p.h \
- excel/header/xlsxconditionalformatting.h \
- excel/header/xlsxcontenttypes_p.h \
- excel/header/xlsxdatavalidation_p.h \
- excel/header/xlsxdatavalidation.h \
- excel/header/xlsxdatetype.h \
- excel/header/xlsxdocpropsapp_p.h \
- excel/header/xlsxdocpropscore_p.h \
- excel/header/xlsxdocument_p.h \
- excel/header/xlsxdocument.h \
- excel/header/xlsxdrawing_p.h \
- excel/header/xlsxdrawinganchor_p.h \
- excel/header/xlsxformat_p.h \
- excel/header/xlsxformat.h \
- excel/header/xlsxglobal.h \
- excel/header/xlsxmediafile_p.h \
- excel/header/xlsxnumformatparser_p.h \
- excel/header/xlsxrelationships_p.h \
- excel/header/xlsxrichstring_p.h \
- excel/header/xlsxrichstring.h \
- excel/header/xlsxsharedstrings_p.h \
- excel/header/xlsxsimpleooxmlfile_p.h \
- excel/header/xlsxstyles_p.h \
- excel/header/xlsxtheme_p.h \
- excel/header/xlsxutility_p.h \
- excel/header/xlsxworkbook_p.h \
- excel/header/xlsxworkbook.h \
- excel/header/xlsxworksheet_p.h \
- excel/header/xlsxworksheet.h \
- excel/header/xlsxzipreader_p.h \
- excel/header/xlsxzipwriter_p.h
+ ../lib/excel/header/xlsxabstractooxmlfile_p.h \
+ ../lib/excel/header/xlsxabstractooxmlfile.h \
+ ../lib/excel/header/xlsxabstractsheet_p.h \
+ ../lib/excel/header/xlsxabstractsheet.h \
+ ../lib/excel/header/xlsxcell_p.h \
+ ../lib/excel/header/xlsxcell.h \
+ ../lib/excel/header/xlsxcellformula_p.h \
+ ../lib/excel/header/xlsxcellformula.h \
+ ../lib/excel/header/xlsxcelllocation.h \
+ ../lib/excel/header/xlsxcellrange.h \
+ ../lib/excel/header/xlsxcellreference.h \
+ ../lib/excel/header/xlsxchart_p.h \
+ ../lib/excel/header/xlsxchart.h \
+ ../lib/excel/header/xlsxchartsheet_p.h \
+ ../lib/excel/header/xlsxchartsheet.h \
+ ../lib/excel/header/xlsxcolor_p.h \
+ ../lib/excel/header/xlsxconditionalformatting_p.h \
+ ../lib/excel/header/xlsxconditionalformatting.h \
+ ../lib/excel/header/xlsxcontenttypes_p.h \
+ ../lib/excel/header/xlsxdatavalidation_p.h \
+ ../lib/excel/header/xlsxdatavalidation.h \
+ ../lib/excel/header/xlsxdatetype.h \
+ ../lib/excel/header/xlsxdocpropsapp_p.h \
+ ../lib/excel/header/xlsxdocpropscore_p.h \
+ ../lib/excel/header/xlsxdocument_p.h \
+ ../lib/excel/header/xlsxdocument.h \
+ ../lib/excel/header/xlsxdrawing_p.h \
+ ../lib/excel/header/xlsxdrawinganchor_p.h \
+ ../lib/excel/header/xlsxformat_p.h \
+ ../lib/excel/header/xlsxformat.h \
+ ../lib/excel/header/xlsxglobal.h \
+ ../lib/excel/header/xlsxmediafile_p.h \
+ ../lib/excel/header/xlsxnumformatparser_p.h \
+ ../lib/excel/header/xlsxrelationships_p.h \
+ ../lib/excel/header/xlsxrichstring_p.h \
+ ../lib/excel/header/xlsxrichstring.h \
+ ../lib/excel/header/xlsxsharedstrings_p.h \
+ ../lib/excel/header/xlsxsimpleooxmlfile_p.h \
+ ../lib/excel/header/xlsxstyles_p.h \
+ ../lib/excel/header/xlsxtheme_p.h \
+ ../lib/excel/header/xlsxutility_p.h \
+ ../lib/excel/header/xlsxworkbook_p.h \
+ ../lib/excel/header/xlsxworkbook.h \
+ ../lib/excel/header/xlsxworksheet_p.h \
+ ../lib/excel/header/xlsxworksheet.h \
+ ../lib/excel/header/xlsxzipreader_p.h \
+ ../lib/excel/header/xlsxzipwriter_p.h
 }
 
 android:HEADERS += ../lib/base/androidextras.h ../lib/base/qtjni.h
@@ -435,40 +435,40 @@ SOURCES += \
 
 contains(DEFINES,QT60) {
 # excel
-SOURCES += wd/xl.cpp \
- excel/source/xlsxabstractooxmlfile.cpp \
- excel/source/xlsxabstractsheet.cpp \
- excel/source/xlsxcell.cpp \
- excel/source/xlsxcellformula.cpp \
- excel/source/xlsxcelllocation.cpp \
- excel/source/xlsxcellrange.cpp \
- excel/source/xlsxcellreference.cpp \
- excel/source/xlsxchart.cpp \
- excel/source/xlsxchartsheet.cpp \
- excel/source/xlsxcolor.cpp \
- excel/source/xlsxconditionalformatting.cpp \
- excel/source/xlsxcontenttypes.cpp \
- excel/source/xlsxdatavalidation.cpp \
- excel/source/xlsxdatetype.cpp \
- excel/source/xlsxdocpropsapp.cpp \
- excel/source/xlsxdocpropscore.cpp \
- excel/source/xlsxdocument.cpp \
- excel/source/xlsxdrawing.cpp \
- excel/source/xlsxdrawinganchor.cpp \
- excel/source/xlsxformat.cpp \
- excel/source/xlsxmediafile.cpp \
- excel/source/xlsxnumformatparser.cpp \
- excel/source/xlsxrelationships.cpp \
- excel/source/xlsxrichstring.cpp \
- excel/source/xlsxsharedstrings.cpp \
- excel/source/xlsxsimpleooxmlfile.cpp \
- excel/source/xlsxstyles.cpp \
- excel/source/xlsxtheme.cpp \
- excel/source/xlsxutility.cpp \
- excel/source/xlsxworkbook.cpp \
- excel/source/xlsxworksheet.cpp \
- excel/source/xlsxzipreader.cpp \
- excel/source/xlsxzipwriter.cpp
+SOURCES += ../lib/wd/xl.cpp \
+ ../lib/excel/source/xlsxabstractooxmlfile.cpp \
+ ../lib/excel/source/xlsxabstractsheet.cpp \
+ ../lib/excel/source/xlsxcell.cpp \
+ ../lib/excel/source/xlsxcellformula.cpp \
+ ../lib/excel/source/xlsxcelllocation.cpp \
+ ../lib/excel/source/xlsxcellrange.cpp \
+ ../lib/excel/source/xlsxcellreference.cpp \
+ ../lib/excel/source/xlsxchart.cpp \
+ ../lib/excel/source/xlsxchartsheet.cpp \
+ ../lib/excel/source/xlsxcolor.cpp \
+ ../lib/excel/source/xlsxconditionalformatting.cpp \
+ ../lib/excel/source/xlsxcontenttypes.cpp \
+ ../lib/excel/source/xlsxdatavalidation.cpp \
+ ../lib/excel/source/xlsxdatetype.cpp \
+ ../lib/excel/source/xlsxdocpropsapp.cpp \
+ ../lib/excel/source/xlsxdocpropscore.cpp \
+ ../lib/excel/source/xlsxdocument.cpp \
+ ../lib/excel/source/xlsxdrawing.cpp \
+ ../lib/excel/source/xlsxdrawinganchor.cpp \
+ ../lib/excel/source/xlsxformat.cpp \
+ ../lib/excel/source/xlsxmediafile.cpp \
+ ../lib/excel/source/xlsxnumformatparser.cpp \
+ ../lib/excel/source/xlsxrelationships.cpp \
+ ../lib/excel/source/xlsxrichstring.cpp \
+ ../lib/excel/source/xlsxsharedstrings.cpp \
+ ../lib/excel/source/xlsxsimpleooxmlfile.cpp \
+ ../lib/excel/source/xlsxstyles.cpp \
+ ../lib/excel/source/xlsxtheme.cpp \
+ ../lib/excel/source/xlsxutility.cpp \
+ ../lib/excel/source/xlsxworkbook.cpp \
+ ../lib/excel/source/xlsxworksheet.cpp \
+ ../lib/excel/source/xlsxzipreader.cpp \
+ ../lib/excel/source/xlsxzipwriter.cpp
 }
 
 android:SOURCES += ../lib/base/androidextras.cpp
@@ -543,7 +543,11 @@ android {
 CONFIG += mobility
 ANDROID_TARGET_SDK_VERSION = 35
 ANDROID_TARGET_ARCH = $$(ABI)
-
+QT_ANDROID_PACKAGE_NAME = com.jsoftware.j.beta.qt
+QT_ANDROID_APP_NAME = jqt
+QT_ANDROID_APP_ICON = @drawable/jgray
+ANDROID_VERSION_NAME = 1.0.1
+ANDROID_VERSION_CODE = 1
 ANDROID_EXTRA_LIBS += $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libgmp.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libjpcre2.so $$PWD/../android/libs/$$ANDROID_TARGET_ARCH/libtsdll.so
 LIBS += $$PWD/../android/lib/$$ANDROID_TARGET_ARCH/libj.a
 
@@ -551,7 +555,7 @@ message(ANDROID_EXTRA_LIBS  $$ANDROID_EXTRA_LIBS)
 message(LIBS  $$LIBS)
 DEPLOYMENTFOLDERS += assets 
 
-QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/6.9.2/android_$$ANDROID_TARGET_ARCH/src/android
+QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/$QTLIBVER/android_$$ANDROID_TARGET_ARCH/src/android
 message(QT_ANDROID_PACKAGE_SOURCE_DIR $$QT_ANDROID_PACKAGE_SOURCE_DIR)
 
 equals(ANDROID_TARGET_ARCH  , arm64-v8a ): QMAKE_CXXFLAGS += -march=armv8-a+crc

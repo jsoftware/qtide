@@ -412,7 +412,7 @@ void Config::initide()
   QFile temp(ConfigPath.filePath("qtide.cfg.0"));
 #else
   QTemporaryFile temp;
-  temp.open();
+  std::ignore = temp.open();
   temp.close();
 #endif
   s=new QSettings(temp.fileName(),QSettings::IniFormat);
@@ -514,7 +514,7 @@ void curposide()
   QFile temp(config.ConfigPath.filePath("qtide.cfg.0"));
 #else
   QTemporaryFile temp;
-  temp.open();
+  std::ignore = temp.open();
   temp.close();
 #endif
   s = new QSettings(temp.fileName(), QSettings::IniFormat);
