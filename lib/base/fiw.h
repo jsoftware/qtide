@@ -42,7 +42,7 @@ private:
   void keyReleaseEvent(QKeyEvent *);
   void open_replace();
   void read();
-  void readtext();
+  bool readtext();
   void readwin();
   void refresh();
   void reject();

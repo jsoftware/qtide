@@ -298,11 +298,14 @@ void Fiw::read()
 }
 
 // ---------------------------------------------------------------------
-void Fiw::readtext()
+// return success (failure if no tab widget)
+bool Fiw::readtext()
 {
   readwin();
+  if (!Wid) return false;
   Text=getplaintext(Wid);
   TextPos=getcursor(Wid).position();
+  return true;
 }
 
 // ---------------------------------------------------------------------
@@ -345,7 +348,7 @@ void Fiw::keyReleaseEvent(QKeyEvent *event)
 void Fiw::search(int d)
 {
   int hit;
-  readtext();
+  if (!readtext()) return;
   hit=search1(d);
 
   if (hit==-1)
@@ -425,7 +428,7 @@ int Fiw::searchforward(QString s, QString txt)
 void Fiw::search_replace(int d)
 {
   int count, hit, pad;
-  readtext();
+  if (!readtext()) return;
   Inc=0;
   LastPos=0;
   LastText="";
