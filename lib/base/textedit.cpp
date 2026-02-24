@@ -89,6 +89,7 @@ void TextEdit::homeshift()
 {
   QString ws=" \t";
   QTextCursor c = textCursor();
+  int sel = qMax(0,c.anchor() - c.position());
   QString txt = c.block().text();
   int pos=getpositioninblock(c);
   txt = txt.left(pos);
@@ -99,7 +100,7 @@ void TextEdit::homeshift()
       break;
     }
   int cur=c.position();
-  setselect(cur-pos+mov,pos-mov);
+  setselect(cur-pos+mov,sel+pos-mov);
 }
 
 // ---------------------------------------------------------------------

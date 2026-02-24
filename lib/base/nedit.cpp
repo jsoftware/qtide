@@ -58,9 +58,12 @@ void Nedit::keyPressEvent(QKeyEvent *e)
   bool shift = mod.testFlag(Qt::ShiftModifier);
   bool ctrl = mod.testFlag(Qt::ControlModifier);
   int key = e->key();
-  if (key==Qt::Key_Home && (ctrl==false) && shift==false)
-    home();
-  else
+  if (key==Qt::Key_Home && (ctrl==false)) {
+    if (shift==false)
+      home();
+    else
+      homeshift();
+  } else
     Bedit::keyPressEvent(e);
 }
 
