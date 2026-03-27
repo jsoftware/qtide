@@ -14,6 +14,10 @@
 #endif
 #endif
 #include <QTextDocument>
+#ifdef QT68
+#include <QStyleHints>  // Detect dark/light style
+#include <QToolBar> // Override QT legacy icons with Phosphor Icons
+#endif
 
 #include "base.h"
 #include "dialog.h"
@@ -148,6 +152,77 @@ void dialogprintpreview(QWidget *w,QWidget *d)
   if (!d) return;
   QPrintPreviewDialog *dlg = new QPrintPreviewDialog(config.Printer, w);
   dlg->setWindowTitle("Preview Document");
+
+#ifdef QT68
+  QString actionIconText;
+  QString iconResourceCoreName;
+  QString styleSuffix;
+  QList<QToolBar *> toolbarlist = dlg->findChildren<QToolBar *>();
+  if(!toolbarlist.isEmpty())  // Ensure QT dialog has expected toolbar
+  {
+    // Define colors depending on dark/light style
+    if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+      styleSuffix = "dark";
+#if defined(_WIN32)
+      toolbarlist.first()->setStyleSheet(
+        "QToolButton:checked, QToolButton:selected {"
+          "background-color: #555555;"
+          "border: 1px solid #555555;"
+          "border-radius: 6px;"
+          "}"
+      );
+#endif
+    } else {
+      styleSuffix = "light";
+#if defined(_WIN32)
+      toolbarlist.first()->setStyleSheet(
+        "QToolButton:checked, QToolButton:selected {"
+          "background-color: #cccccc;"
+          "border: 1px solid #cccccc;"
+          "border-radius: 6px;"
+          "}"
+      );
+#endif
+    }
+    toolbarlist.first()->setIconSize(QSize(24,24));
+    for (auto actionHolder : toolbarlist.first()->actions())
+    {  // Override QT legacy icons after checking they exist as expected
+      actionIconText = actionHolder->iconText();
+      if (actionIconText == "Fit width") {
+        iconResourceCoreName = "arrows-horizontal";
+      } else if (actionIconText == "Fit page") {
+        iconResourceCoreName = "arrows-out";
+      } else if (actionIconText == "Zoom out") {
+        iconResourceCoreName = "magnifying-glass-minus";
+      } else if (actionIconText == "Zoom in") {
+        iconResourceCoreName = "magnifying-glass-plus";
+      } else if (actionIconText == "Portrait") {
+        iconResourceCoreName = "identification-badge";
+      } else if (actionIconText == "Landscape") {
+        iconResourceCoreName = "image";
+      } else if (actionIconText == "First page") {
+        iconResourceCoreName = "caret-double-left";
+      } else if (actionIconText == "Previous page") {
+        iconResourceCoreName = "caret-left";
+      } else if (actionIconText == "Next page") {
+        iconResourceCoreName = "caret-right";
+      } else if (actionIconText == "Last page") {
+        iconResourceCoreName = "caret-double-right";
+      } else if (actionIconText == "Show single page") {
+        iconResourceCoreName = "file-text";
+      } else if (actionIconText == "Show facing pages") {
+        iconResourceCoreName = "book-open-text";
+      } else if (actionIconText == "Show overview of all pages") {
+        iconResourceCoreName = "squares-four";
+      } else if (actionIconText == "Page setup") {
+        iconResourceCoreName = "faders-horizontal";
+      } else if (actionIconText == "Print") {
+        iconResourceCoreName = "printer";
+      }
+      actionHolder->setIcon(QIcon(":/images/" + iconResourceCoreName + "-bold-" + styleSuffix + ".svg"));
+    }
+  }
+#endif
   if (d==tedit)
     QObject::connect(dlg,SIGNAL(paintRequested(QPrinter *)),((TextEdit *)d),SLOT(printPreview(QPrinter *)));
   else

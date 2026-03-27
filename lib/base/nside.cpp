@@ -6,6 +6,11 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QModelIndex>
+
+#ifdef QT68
+#include <QStyleHints>  // Detect dark/light style
+#endif
+
 #include <QToolBar>
 #include <QWidget>
 
@@ -29,10 +34,17 @@ Nicon *nicon=0;
 QIcon Nicon::icon(const QFileInfo &info) const
 {
   QString s;
+#ifdef QT68
+  if (info.isDir())
+    s=":/images/folder-simple-fill-mid.svg";
+  else
+    s=":/images/file-bold-mid.svg";
+#else
   if (info.isDir())
     s=":/images/folder.png";
   else
     s=":/images/regular.png";
+#endif
   QIcon f(config.SystemPath.filePath(s));
   return f;
 }
@@ -59,6 +71,8 @@ Nside::Nside()
   adjustSize();
 
   QTabBar *tb=tabBar();
+  tb->setContentsMargins(0, 0, 0, 0); // Fix appearance on MacOS
+  tb->setDocumentMode(true);          // Does not affect Windows
   width= 1 + tb->tabRect(0).width() + tb->tabRect(1).width() + tb->tabRect(2).width();
 
   connect(this, SIGNAL(currentChanged(int)),
@@ -73,7 +87,7 @@ QWidget *Nside::createdefs()
 {
   QWidget *r = new QWidget;
   QVBoxLayout *layout = new QVBoxLayout;
-  layout->setContentsMargins(layout->contentsMargins());
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   QToolBar *t= Nside::createdefsTB();
   dlw = new QListWidget();
@@ -93,9 +107,13 @@ QToolBar *Nside::createdefsTB()
 #ifdef Q_OS_ANDROID
   t->setIconSize(QSize((int)DM_density*(5.0/3)*18,(int)DM_density*(5.0/3)*18));
 #else
-  t->setIconSize(QSize(18,18));
+  t->setIconSize(QSize(16,16));  // Consistent with others
 #endif
+#ifdef QT68
+  refreshdefsAct = makeact("arrow-clockwise","Refresh");
+#else
   refreshdefsAct = makeact("refresh.png","Refresh");
+#endif
   t->addAction(refreshdefsAct);
   return t;
 }
@@ -105,7 +123,7 @@ QWidget *Nside::createfiles()
 {
   QWidget *r = new QWidget;
   QVBoxLayout *layout = new QVBoxLayout;
-  layout->setContentsMargins(layout->contentsMargins());
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   QToolBar *t= Nside::createfileTB();
   path = new QLineEdit();
@@ -139,9 +157,15 @@ QToolBar *Nside::createfileTB()
   t->setIconSize(QSize(16,16));
 #endif
 
+#ifdef QT68
+  refreshAct = makeact("arrow-clockwise", "Refresh");
+  homeAct = makeact("house", "Home");
+  setpathAct = makeact("file-arrow-up", "Set path from document");
+#else
   refreshAct = makeact("view-refresh.png", "Refresh");
   homeAct = makeact("home.png", "Home");
   setpathAct = makeact("rotate-right.png", "Set path from document");
+#endif
 
   t->addAction(refreshAct);
   t->addAction(homeAct);
@@ -154,7 +178,7 @@ QWidget *Nside::createsource()
 {
   QWidget *r = new QWidget;
   QVBoxLayout *layout = new QVBoxLayout;
-  layout->setContentsMargins(layout->contentsMargins());
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   QToolBar *t= Nside::createsourceTB();
   slw = new QListWidget();
@@ -174,9 +198,13 @@ QToolBar *Nside::createsourceTB()
 #ifdef Q_OS_ANDROID
   t->setIconSize(QSize((int)DM_density*(5.0/3)*18,(int)DM_density*(5.0/3)*18));
 #else
-  t->setIconSize(QSize(18,18));
+  t->setIconSize(QSize(16,16));  // Consistent with others
 #endif
+#ifdef QT68
+  refreshsourceAct = makeact("arrow-clockwise", "Refresh");
+#else
   refreshsourceAct = makeact("refresh.png", "Refresh");
+#endif
   t->addAction(refreshsourceAct);
   return t;
 }
@@ -295,8 +323,20 @@ void Nside::on_sourceTB_actionTriggered()
 // ---------------------------------------------------------------------
 QAction *Nside::makeact(QString icon, QString text)
 {
+#ifdef QT68
+  QString styleSuffix;
+
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+    styleSuffix = "dark";
+  } else {
+    styleSuffix = "light";
+  }
+
+  QAction *r = new QAction(QIcon(":/images/" + icon + "-bold-" + styleSuffix + ".svg"),text,this);
+#else
   QString s=":/images/" + icon;
   QAction *r = new QAction(QIcon(s),text,this);
+#endif
   return r;
 }
 

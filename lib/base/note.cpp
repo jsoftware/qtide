@@ -47,7 +47,7 @@ Note::Note()
   setFocusPolicy(Qt::StrongFocus);
   sideBarShow=true;
   QVBoxLayout *layout=new QVBoxLayout;
-  layout->setContentsMargins(layout->contentsMargins());
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
   menuBar = new Menu();
   split = new QSplitter(0);
@@ -59,6 +59,7 @@ Note::Note()
   mainBar = new Nmain(this);
   split->addWidget(sideBar);
   split->addWidget(mainBar);
+  split->setHandleWidth(0); // Thin splitters look more contemporary
   split->setStretchFactor(1,1);
   QList<int> w;
   w << sideBar->width << sideBar->width;
