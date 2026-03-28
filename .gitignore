@@ -24,6 +24,7 @@ makecdb.sh
 makegem.sh
 makegrid.sh
 makeios.sh
+make102.sh
 makemac.sh
 makewasm.sh
 Makefile*

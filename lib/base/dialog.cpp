@@ -158,18 +158,17 @@ void dialogprintpreview(QWidget *w,QWidget *d)
   QString iconResourceCoreName;
   QString styleSuffix;
   QList<QToolBar *> toolbarlist = dlg->findChildren<QToolBar *>();
-  if(!toolbarlist.isEmpty())  // Ensure QT dialog has expected toolbar
-  {
+  if(!toolbarlist.isEmpty()) { // Ensure QT dialog has expected toolbar
     // Define colors depending on dark/light style
     if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
       styleSuffix = "dark";
 #if defined(_WIN32)
       toolbarlist.first()->setStyleSheet(
         "QToolButton:checked, QToolButton:selected {"
-          "background-color: #555555;"
-          "border: 1px solid #555555;"
-          "border-radius: 6px;"
-          "}"
+        "background-color: #555555;"
+        "border: 1px solid #555555;"
+        "border-radius: 6px;"
+        "}"
       );
 #endif
     } else {
@@ -177,16 +176,16 @@ void dialogprintpreview(QWidget *w,QWidget *d)
 #if defined(_WIN32)
       toolbarlist.first()->setStyleSheet(
         "QToolButton:checked, QToolButton:selected {"
-          "background-color: #cccccc;"
-          "border: 1px solid #cccccc;"
-          "border-radius: 6px;"
-          "}"
+        "background-color: #cccccc;"
+        "border: 1px solid #cccccc;"
+        "border-radius: 6px;"
+        "}"
       );
 #endif
     }
     toolbarlist.first()->setIconSize(QSize(24,24));
-    for (auto actionHolder : toolbarlist.first()->actions())
-    {  // Override QT legacy icons after checking they exist as expected
+    for (auto actionHolder : toolbarlist.first()->actions()) {
+      // Override QT legacy icons after checking they exist as expected
       actionIconText = actionHolder->iconText();
       if (actionIconText == "Fit width") {
         iconResourceCoreName = "arrows-horizontal";

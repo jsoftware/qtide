@@ -93,7 +93,7 @@ QAction *Nmain::makeact(QString id, QString icon, QString text)
   }
 
   QAction *r = new QAction(QIcon(":/images/" + icon + "-bold-" + styleSuffix + ".svg"),text,this);
-#else  
+#else
   QAction *r = new QAction(QIcon(":/images/" + icon),text,this);
 #endif
   r->setObjectName(id);

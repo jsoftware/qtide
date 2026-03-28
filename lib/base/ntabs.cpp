@@ -49,18 +49,18 @@ Ntabs::Ntabs(Note *p)
     this->setStyleSheet(
       "QTabBar::close-button {image: url(:/images/x-bold-dark.svg)}"
       "QTabBar::close-button:hover {"
-        "background-color: #666666;"
-        "border: 1px solid #666666;"
-        "border-radius: 3 px;"
+      "background-color: #666666;"
+      "border: 1px solid #666666;"
+      "border-radius: 3 px;"
       "}"
     );
   } else {
     this->setStyleSheet(
       "QTabBar::close-button {image: url(:/images/x-bold-light.svg)}"
       "QTabBar::close-button:hover {"
-        "background-color: #999999"
-        "border: 1px solid #999999;"
-        "border-radius: 2 px;"
+      "background-color: #999999"
+      "border: 1px solid #999999;"
+      "border-radius: 2 px;"
       "}"
     );
   }

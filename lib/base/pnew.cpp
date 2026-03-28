@@ -79,10 +79,10 @@ QWidget *Pnew::createfolderpanel()
 
 #ifdef QT68
   if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
-      browse->setIcon(QIcon(":/images/folders-bold-dark.svg"));
-    } else {
-      browse->setIcon(QIcon(":/images/folders-bold-light.svg"));
-    }
+    browse->setIcon(QIcon(":/images/folders-bold-dark.svg"));
+  } else {
+    browse->setIcon(QIcon(":/images/folders-bold-light.svg"));
+  }
 #else
   browse->setIcon(QIcon(":/images/dir.png"));
 #endif
