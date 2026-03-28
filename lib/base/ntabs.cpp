@@ -43,6 +43,29 @@ Ntabs::Ntabs(Note *p)
   setMovable(true);
   setTabsClosable(true);
   setUsesScrollButtons(true);
+
+#ifdef QT68
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+    this->setStyleSheet(
+      "QTabBar::close-button {image: url(:/images/x-bold-dark.svg)}"
+      "QTabBar::close-button:hover {"
+        "background-color: #666666;"
+        "border: 1px solid #666666;"
+        "border-radius: 3 px;"
+      "}"
+    );
+  } else {
+    this->setStyleSheet(
+      "QTabBar::close-button {image: url(:/images/x-bold-light.svg)}"
+      "QTabBar::close-button:hover {"
+        "background-color: #999999"
+        "border: 1px solid #999999;"
+        "border-radius: 2 px;"
+      "}"
+    );
+  }
+#endif
+
   connect(this, SIGNAL(tabCloseRequested(int)),
           this, SLOT(tabCloseRequested(int)));
   connect(this, SIGNAL(currentChanged(int)),

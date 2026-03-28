@@ -39,6 +39,9 @@ Psel::Psel()
   t->addWidget(s);
   t->addWidget(r->parentWidget());
 
+  s->setHandleWidth(0);  // Thin splitters look more modern
+  t->setHandleWidth(0);  // Thin splitters look more modern
+
   v=new QVBoxLayout();
   v->setContentsMargins(0,7,0,0);
   v->addWidget(t);

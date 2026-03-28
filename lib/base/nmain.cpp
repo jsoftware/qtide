@@ -1,6 +1,10 @@
 #include <QAction>
 #include <QBoxLayout>
 
+#ifdef QT68
+#include <QStyleHints>  // Detect dark/light style
+#endif
+
 #include "base.h"
 #include "nmain.h"
 #include "nedit.h"
@@ -33,6 +37,18 @@ Nmain::Nmain(Note *n)
 // ---------------------------------------------------------------------
 void Nmain::createActions()
 {
+#ifdef QT68
+  lastprojectAct = makeact("lastprojectAct","caret-left", "Open Last Project");
+#ifdef Q_OS_ANDROID
+  openprojectAct = makeact("openprojectAct","folder-open","Open Project");
+  runallAct = makeact("runallAct","play","Run All Lines");
+  xeditAct = makeact("xeditAct","arrow-square-out","External editor");
+  markCursorAct = makeact("markCursorAct","caret-double-right","Mark cursor");
+#else
+  openprojectAct = makeact("openprojectAct","folder-open","Open Project");
+  runallAct = makeact("runallAct","play","Run All Lines");
+#endif
+#else
   lastprojectAct = makeact("lastprojectAct","undo.png", "Open Last Project");
 #ifdef Q_OS_ANDROID
   openprojectAct = makeact("openprojectAct","folder.png","Open Project");
@@ -42,6 +58,7 @@ void Nmain::createActions()
 #else
   openprojectAct = makeact("openprojectAct","folder.png","Open Project");
   runallAct = makeact("runallAct","run.png","Run All Lines");
+#endif
 #endif
 }
 
@@ -66,7 +83,19 @@ void Nmain::createToolBar()
 // ---------------------------------------------------------------------
 QAction *Nmain::makeact(QString id, QString icon, QString text)
 {
+#ifdef QT68
+  QString styleSuffix;
+
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+    styleSuffix = "dark";
+  } else {
+    styleSuffix = "light";
+  }
+
+  QAction *r = new QAction(QIcon(":/images/" + icon + "-bold-" + styleSuffix + ".svg"),text,this);
+#else  
   QAction *r = new QAction(QIcon(":/images/" + icon),text,this);
+#endif
   r->setObjectName(id);
   return r;
 }

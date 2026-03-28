@@ -1,21 +1,129 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-<file>images/copy.png</file>
-<file>images/cut.png</file>
-<file>images/dir.png</file>
-<file>images/folder.png</file>
-<file>images/home.png</file>
-<file>images/jump-to.png</file>
-<file>images/new.png</file>
-<file>images/paste.png</file>
-<file>images/refresh.png</file>
-<file>images/regular.png</file>
-<file>images/rotate-left.png</file>
-<file>images/rotate-right.png</file>
-<file>images/run.png</file>
-<file>images/save.png</file>
-<file>images/undo.png</file>
-<file>images/view-refresh.png</file>
-<file>images/jgreen.png</file>
-</qresource>
+<RCC version="1.0">
+    <qresource>
+        <file>images/arrow-arc-left-bold-dark.svg</file>
+        <file>images/arrow-arc-left-bold-light.svg</file>
+        <file>images/arrow-arc-right-bold-dark.svg</file>
+        <file>images/arrow-arc-right-bold-light.svg</file>
+        <file>images/arrow-bend-double-up-right-bold-dark.svg</file>
+        <file>images/arrow-bend-double-up-right-bold-light.svg</file>
+        <file>images/arrow-clockwise-bold-dark.svg</file>
+        <file>images/arrow-clockwise-bold-light.svg</file>
+        <file>images/arrow-counter-clockwise-bold-dark.svg</file>
+        <file>images/arrow-counter-clockwise-bold-light.svg</file>
+        <file>images/arrow-square-out-bold-dark.svg</file>
+        <file>images/arrow-square-out-bold-light.svg</file>
+        <file>images/arrows-clockwise-bold-dark.svg</file>
+        <file>images/arrows-clockwise-bold-light.svg</file>
+        <file>images/arrows-horizontal-bold-dark.svg</file>
+        <file>images/arrows-horizontal-bold-light.svg</file>
+        <file>images/arrows-out-bold-dark.svg</file>
+        <file>images/arrows-out-bold-light.svg</file>
+        <file>images/book-open-text-bold-dark.svg</file>
+        <file>images/book-open-text-bold-light.svg</file>
+        <file>images/caret-circle-double-down-bold-dark.svg</file>
+        <file>images/caret-circle-double-down-bold-light.svg</file>
+        <file>images/caret-circle-double-left-bold-dark.svg</file>
+        <file>images/caret-circle-double-left-bold-light.svg</file>
+        <file>images/caret-circle-double-right-bold-dark.svg</file>
+        <file>images/caret-circle-double-right-bold-light.svg</file>
+        <file>images/caret-circle-double-up-bold-dark.svg</file>
+        <file>images/caret-circle-double-up-bold-light.svg</file>
+        <file>images/caret-circle-left-bold-dark.svg</file>
+        <file>images/caret-circle-left-bold-light.svg</file>
+        <file>images/caret-circle-right-bold-dark.svg</file>
+        <file>images/caret-circle-right-bold-light.svg</file>
+        <file>images/caret-double-right-bold-dark.svg</file>
+        <file>images/caret-double-right-bold-light.svg</file>
+        <file>images/caret-left-bold-dark.svg</file>
+        <file>images/caret-left-bold-light.svg</file>
+        <file>images/caret-right-bold-dark.svg</file>
+        <file>images/caret-right-bold-light.svg</file>
+        <file>images/chart-polar-bold-dark.svg</file>
+        <file>images/chart-polar-bold-light.svg</file>
+        <file>images/clipboard-text-bold-dark.svg</file>
+        <file>images/clipboard-text-bold-light.svg</file>
+        <file>images/code-bold-dark.svg</file>
+        <file>images/code-bold-light.svg</file>
+        <file>images/code-simple-bold-dark.svg</file>
+        <file>images/code-simple-bold-light.svg</file>
+        <file>images/copy-simple-bold-dark.svg</file>
+        <file>images/copy-simple-bold-light.svg</file>
+        <file>images/copy.png</file>
+        <file>images/cut.png</file>
+        <file>images/dir.png</file>
+        <file>images/dots-three-circle-vertical-bold-dark.svg</file>
+        <file>images/dots-three-circle-vertical-bold-light.svg</file>
+        <file>images/file-arrow-down-bold-dark.svg</file>
+        <file>images/file-arrow-down-bold-light.svg</file>
+        <file>images/file-arrow-up-bold-dark.svg</file>
+        <file>images/file-arrow-up-bold-light.svg</file>
+        <file>images/file-bold-dark.svg</file>
+        <file>images/file-bold-light.svg</file>
+        <file>images/file-bold-mid.svg</file>
+        <file>images/file-plus-bold-dark.svg</file>
+        <file>images/file-plus-bold-light.svg</file>
+        <file>images/file-text-bold-dark.svg</file>
+        <file>images/file-text-bold-light.svg</file>
+        <file>images/folder-open-bold-dark.svg</file>
+        <file>images/folder-open-bold-light.svg</file>
+        <file>images/folder-simple-bold-dark.svg</file>
+        <file>images/folder-simple-bold-light.svg</file>
+        <file>images/folder-simple-fill-mid.svg</file>
+        <file>images/folder.png</file>
+        <file>images/folders-bold-dark.svg</file>
+        <file>images/folders-bold-light.svg</file>
+        <file>images/home.png</file>
+        <file>images/house-bold-dark.svg</file>
+        <file>images/house-bold-light.svg</file>
+        <file>images/identification-badge-bold-dark.svg</file>
+        <file>images/identification-badge-bold-light.svg</file>
+        <file>images/image-bold-dark.svg</file>
+        <file>images/image-bold-light.svg</file>
+        <file>images/jgreen.png</file>
+        <file>images/jump-to.png</file>
+        <file>images/magnifying-glass-minus-bold-dark.svg</file>
+        <file>images/magnifying-glass-minus-bold-light.svg</file>
+        <file>images/magnifying-glass-plus-bold-dark.svg</file>
+        <file>images/magnifying-glass-plus-bold-light.svg</file>
+        <file>images/new.png</file>
+        <file>images/paste.png</file>
+        <file>images/pause-circle-bold-dark.svg</file>
+        <file>images/pause-circle-bold-light.svg</file>
+        <file>images/play-bold-dark.svg</file>
+        <file>images/play-bold-light.svg</file>
+        <file>images/polygon-bold-dark.svg</file>
+        <file>images/polygon-bold-light.svg</file>
+        <file>images/polygon-fill-dark.svg</file>
+        <file>images/polygon-fill-light.svg</file>
+        <file>images/printer-bold-dark.svg</file>
+        <file>images/printer-bold-light.svg</file>
+        <file>images/prohibit-inset-bold-dark.svg</file>
+        <file>images/prohibit-inset-bold-light.svg</file>
+        <file>images/radio-button-bold-dark.svg</file>
+        <file>images/radio-button-bold-light.svg</file>
+        <file>images/refresh.png</file>
+        <file>images/regular.png</file>
+        <file>images/rotate-left.png</file>
+        <file>images/rotate-right.png</file>
+        <file>images/run.png</file>
+        <file>images/save.png</file>
+        <file>images/scissors-bold-dark.svg</file>
+        <file>images/scissors-bold-light.svg</file>
+        <file>images/skip-back-circle-bold-dark.svg</file>
+        <file>images/skip-back-circle-bold-light.svg</file>
+        <file>images/skip-forward-circle-bold-dark.svg</file>
+        <file>images/skip-forward-circle-bold-light.svg</file>
+        <file>images/squares-four-bold-dark.svg</file>
+        <file>images/squares-four-bold-light.svg</file>
+        <file>images/undo.png</file>
+        <file>images/view-refresh.png</file>
+        <file>images/x-circle-bold-dark.svg</file>
+        <file>images/x-circle-bold-light.svg</file>
+        <file>images/caret-double-left-bold-light.svg</file>
+        <file>images/caret-double-left-bold-dark.svg</file>
+        <file>images/faders-horizontal-bold-light.svg</file>
+        <file>images/faders-horizontal-bold-dark.svg</file>
+        <file>images/x-bold-dark.svg</file>
+        <file>images/x-bold-light.svg</file>
+    </qresource>
 </RCC>

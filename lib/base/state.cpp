@@ -19,6 +19,9 @@
 #include <QLoggingCategory>
 #endif
 #include <QSettings>
+#ifdef QT68
+#include <QStyleHints> // Detect dark/light style
+#endif
 #include <QSyntaxHighlighter>
 #include <QTemporaryFile>
 #ifdef Q_OS_ANDROID
@@ -796,6 +799,31 @@ int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, v
   }
 
   app = new QApplication(m_argc, m_argv);
+
+#ifdef QT68
+#if (defined(__APPLE__) && !defined(Q_OS_IOS))
+  // Animate tool bar buttons on hover and select for MacOS
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+    app->setStyleSheet(
+      "QToolBar {background-color: #222222; border: none}"
+      "QToolButton:checked, QToolButton:selected, QToolButton:hover {"
+        "background-color: #555555;"
+        "border: 1px solid #555555;"
+        "border-radius: 6 px;"
+      "}"
+    );
+  } else {
+    app->setStyleSheet(
+      "QToolBar {background-color: #ffffff; border: none}"
+      "QToolButton:checked, QToolButton:selected, QToolButton:hover {"
+        "background-color: #cccccc;"
+        "border: 1px solid #cccccc;"
+        "border-radius: 6 px;"
+      "}"
+    );
+  }
+#endif
+#endif
 #ifndef ONEEVENTLOOP
   evloop=new QEventLoop();
   jevloop=new QEventLoop();

@@ -1,9 +1,17 @@
+#ifdef QT68
+#include <QGuiApplication>  // Detect dark/light style
+#endif
+
 #include <QBoxLayout>
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+
+#ifdef QT68
+#include <QStyleHints>  // Detect dark/light style
+#endif
 
 #include "base.h"
 #include "pnew.h"
@@ -68,7 +76,17 @@ QWidget *Pnew::createfolderpanel()
   QPushButton *browse=makebutton("Browse");
   browse->setAutoDefault(false);
   browse->setText("");
+
+#ifdef QT68
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+      browse->setIcon(QIcon(":/images/folders-bold-dark.svg"));
+    } else {
+      browse->setIcon(QIcon(":/images/folders-bold-light.svg"));
+    }
+#else
   browse->setIcon(QIcon(":/images/dir.png"));
+#endif
+
   h->addWidget(browse,0);
   w->setLayout(h);
   return w;
