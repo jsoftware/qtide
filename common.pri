@@ -1,6 +1,6 @@
 # included by main.pro and lib.pro
 
-VERSION = 2.6.2
+VERSION = 2.6.3
 JDLLVER = 9.7
 BUILDVERSION = 1
 
