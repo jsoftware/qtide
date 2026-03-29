@@ -492,7 +492,6 @@ contains(DEFINES,QTWEBSOCKET): SOURCES += ../lib/base/wssvr.cpp ../lib/base/wscl
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= ../lib/wd/svgview.cpp ../lib/wd/svgview2.cpp
 
 RESOURCES += ../lib/lib.qrc
-RESOURCES += ../lib/styles/qdarkstyle/darkstyle.qrc
 
 win32:VERSION =
 unix:!openbsd:LIBS += -ldl
@@ -553,7 +552,7 @@ LIBS += $$PWD/../android/lib/$$ANDROID_TARGET_ARCH/libj.a
 
 message(ANDROID_EXTRA_LIBS  $$ANDROID_EXTRA_LIBS)
 message(LIBS  $$LIBS)
-DEPLOYMENTFOLDERS += assets 
+DEPLOYMENTFOLDERS += assets
 
 QT_ANDROID_PACKAGE_SOURCE_DIR = $HOME/Qt/$QTLIBVER/android_$$ANDROID_TARGET_ARCH/src/android
 message(QT_ANDROID_PACKAGE_SOURCE_DIR $$QT_ANDROID_PACKAGE_SOURCE_DIR)

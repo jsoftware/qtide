@@ -481,7 +481,6 @@ android:SOURCES += base/androidextras.cpp base/qtjni.cpp ../main/main.cpp ../mai
 contains(DEFINES,QT_NO_SVGVIEW): SOURCES -= wd/svgview.cpp wd/svgview2.cpp
 
 RESOURCES += lib.qrc
-RESOURCES += styles/qdarkstyle/darkstyle.qrc
 
 win32:VERSION =
 unix:!openbsd:LIBS += -ldl

@@ -49,7 +49,6 @@ static std::string smsetselect(Bedit *,std::string);
 static std::string smsettext(std::string,std::string);
 static std::string smsetxywh(std::string,std::string);
 static std::string smstyle();
-static std::string smtheme();
 
 // ---------------------------------------------------------------------
 std::string sm(std::string c)
@@ -85,8 +84,6 @@ std::string sm(std::string c)
     return smset();
   if (c=="style")
     return smstyle();
-  if (c=="theme")
-    return smtheme();
   cmd.getparms();
   return smerror("unrecognized sm command: " + c);
 }
@@ -583,19 +580,5 @@ std::string smstyle()
   std::string p=cmd.getparms();
   if (!p.empty())
     QApplication::setStyle(QStyleFactory::create(s2q(p)));
-  return "";
-}
-
-// ---------------------------------------------------------------------
-std::string smtheme()
-{
-  std::string p=cmd.getparms();
-  if (p == "dark") {
-    QFile f(":qdarkstyle/dark/darkstyle.qss");
-    std::ignore = f.open(QFile::ReadOnly | QFile::Text);
-    QTextStream ts(&f);
-    app->setStyleSheet(ts.readAll());
-  } else
-    app->setStyleSheet("");
   return "";
 }

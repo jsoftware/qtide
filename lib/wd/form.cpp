@@ -541,18 +541,6 @@ void Form::settaborder(std::string p)
 }
 
 // ---------------------------------------------------------------------
-void Form::settheme(std::string theme)
-{
-  if (theme == "dark") {
-    QFile f(":qdarkstyle/dark/darkstyle.qss");
-    std::ignore = f.open(QFile::ReadOnly | QFile::Text);
-    QTextStream ts(&f);
-    setStyleSheet(ts.readAll());
-  } else
-    setStyleSheet("");
-}
-
-// ---------------------------------------------------------------------
 void Form::settimer(std::string p)
 {
   int n=c_strtoi(p);
