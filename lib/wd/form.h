@@ -49,7 +49,6 @@ public:
   void setpn(std::string p);
   void setpicon(std::string p);
   void settaborder(std::string p);
-  void settheme(std::string p);
   void settimer(std::string p);
   void showit(std::string p);
   void signalevent(Child *c, QKeyEvent *e = 0);

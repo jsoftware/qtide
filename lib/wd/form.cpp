@@ -476,8 +476,6 @@ void Form::set(std::string p,std::string v)
     setStyleSheet(s2q(remquotes(v)));
   } else if (p=="taborder") {
     settaborder(v);
-  } else if (p=="theme") {
-    settheme(remquotes(v));
   } else if (p=="tooltip") {
     setToolTip(s2q(remquotes(v)));
   } else if (p=="wh") {

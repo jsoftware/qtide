@@ -122,7 +122,6 @@ static void wdpn();
 static void wdpsel();
 static void wdpshow();
 static void wdpstylesheet();
-static void  wdptheme();
 static void wdptimer();
 static void wdptop();
 static void wdq();
@@ -779,8 +778,6 @@ void wdp(std::string c)
     wdpshow();
   else if (c=="pstylesheet")
     wdpstylesheet();
-  else if (c=="ptheme")
-    wdptheme();
   else if (c=="ptimer")
     wdptimer();
   else if (c=="ptop")
@@ -987,14 +984,6 @@ void wdpstylesheet()
   std::string p=remquotes(cmd.getparms());
   if (noform()) return;
   form->setStyleSheet(s2q(p));
-}
-
-// ---------------------------------------------------------------------
-void wdptheme()
-{
-  std::string p=remquotes(cmd.getparms());
-  if (noform()) return;
-  form->settheme(p);
 }
 
 // ---------------------------------------------------------------------
