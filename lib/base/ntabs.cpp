@@ -47,20 +47,30 @@ Ntabs::Ntabs(Note *p)
 #ifdef QT68
   if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
     this->setStyleSheet(
-      "QTabBar::close-button {image: url(:/images/x-bold-dark.svg)}"
+      "QTabBar::close-button {"
+      "image: url(:/images/x-bold-dark.svg);"
+      "margin-left: 4px;"
+      "margin-top: 3px;"
+      "margin-bottom: 1px;"
+      "}"
       "QTabBar::close-button:hover {"
-      "background-color: #666666;"
-      "border: 1px solid #666666;"
-      "border-radius: 3 px;"
+      "background-color: #888888;"
+      "border: 1px solid #888888;"
+      "border-radius: 3px;"
       "}"
     );
   } else {
     this->setStyleSheet(
-      "QTabBar::close-button {image: url(:/images/x-bold-light.svg)}"
+      "QTabBar::close-button {"
+      "image: url(:/images/x-bold-light.svg);"
+      "margin-left: 4px;"
+      "margin-top: 3px;"
+      "margin-bottom: 1px;"
+      "}"
       "QTabBar::close-button:hover {"
-      "background-color: #999999"
-      "border: 1px solid #999999;"
-      "border-radius: 2 px;"
+      "background-color: #bbbbbb;"
+      "border: 1px solid #bbbbbb;"
+      "border-radius: 3px;"
       "}"
     );
   }
