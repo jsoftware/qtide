@@ -74,7 +74,7 @@ jobs:
 
    - name: Test Jinstall
      run: |
-#      script/installxcb.sh raspberry arm64
+      #script/installxcb.sh raspberry arm64
       script/testinstall.sh raspberry arm64
 
 # rpi64arm -------------------------------------------------------------

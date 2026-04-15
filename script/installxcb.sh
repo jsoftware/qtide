@@ -9,38 +9,37 @@ echo "parameters $1 $2"
 echo "uname -m  $(uname -m)"
 echo "RUNNER_ARCH  $RUNNER_ARCH"
 
-if [ "$2" = "x64" ] ; then
+if [ "$2" = "x64" ]; then
  arch=x86_64
-elif [ "$2" = "x86" ] ; then
+elif [ "$2" = "x86" ]; then
  arch=x86
-elif [ "$2" = "arm64" ] ; then
+elif [ "$2" = "arm64" ]; then
  arch=aarch64
-elif [ "$2" = "armv6l" ] ; then
+elif [ "$2" = "armv6l" ]; then
  arch=armv6l
 elif [ "$1" = "wasm" ]; then
  arch=wasm32
 else
- arch="`uname -m`"
+ arch="$(uname -m)"
 fi
 
 f() {
-sudo apt-get install --no-install-recommends -y "$@" || true ;
-if [ $arch = "armv6l" ] ; then
-if [ "$RUNNER_ARCH" = "ARM64" ] ; then
-sudo apt-get install --no-install-recommends -y "$@":armhf || true ;
-fi
-fi
+ sudo apt-get install --no-install-recommends -y "$@" || true
+ if [ $arch = "armv6l" ]; then
+  if [ "$RUNNER_ARCH" = "ARM64" ]; then
+   sudo apt-get install --no-install-recommends -y "$@":armhf || true
+  fi
+ fi
 }
 g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
-if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] ; then
-f libpulse
-f libegl1
-f libxcb-cursor0
-elif [ "$1" = "openbsd" ] ; then
-g libxcb-cursor0
-elif [ "$1" = "freebsd" ] ; then
-g libxcb-cursor0
+if [ "$1" = "linux" ] || [ "$1" = "raspberry" ]; then
+ f libpulse
+ f libegl1
+ f libxcb-cursor0
+elif [ "$1" = "openbsd" ]; then
+ g libxcb-cursor0
+elif [ "$1" = "freebsd" ]; then
+ g libxcb-cursor0
 fi
-
