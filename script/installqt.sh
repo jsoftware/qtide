@@ -84,6 +84,7 @@ f qt6-svg-dev
 f qt6-webengine-dev
 f qt6-websockets-dev
 f libxcb-cursor0
+f xcb-cursor0
 fi
 elif [ "$1" = "openbsd" ] ; then
 if [ $Qtver1 = "5" ] ; then
