@@ -29,19 +29,9 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
-     with:
-      aqtversion: '==3.3.*'
-      version: 6.10.3
-      host: 'linux'
-      target: 'desktop'
-      arch: 'linux_gcc_64'
-      dir: '${{github.workspace}}'
-      modules: 'all'
-
    - name: Test Jinstall
-     run: script/testinstall.sh linux x64 '6.10.3'
+     run: script/installxcb.sh linux x64
+     run: script/testinstall.sh linux x64
 
 # macOS ----------------------------------------------------------------
  jqtmacos:
@@ -54,19 +44,10 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
-     with:
-      version: '6.10.3'
-      target: 'desktop'
-      dir: '${{github.workspace}}'
-      modules: 'all'
-      aqtversion: '==3.3.*'
-
    - name: Test Jinstall
      env:
       CC: clang
-     run: QM=${{github.workspace}}/Qt/6.10.3/macos/bin/qmake script/testinstall.sh darwin x64 '6.10.3'
+     run: script/testinstall.sh darwin x64
 
 # rpi64arm -------------------------------------------------------------
  jqtrpi64arm:
@@ -79,26 +60,9 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Setup Environment (Linux arm)
-     run: |
-      script/install-rpi.sh
-      sudo apt-get update -y
-      sudo apt-cache search qt5 1>&2
-      sudo apt-cache search qt6 1>&2
-
-   - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
-     with:
-      aqtversion: '==3.3.*'
-      version: 6.10.3
-      host: 'linux_arm64'
-      target: 'desktop'
-      arch: 'linux_gcc_arm64'
-      dir: '${{github.workspace}}'
-      modules: 'all'
-
    - name: Test Jinstall
-     run: script/testinstall.sh raspberry arm64 '6.10.3'
+     run: script/installxcb.sh raspberry arm64
+     run: script/testinstall.sh raspberry arm64
 
 # rpi64arm -------------------------------------------------------------
  jqtrpi64arm5:
