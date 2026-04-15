@@ -139,6 +139,7 @@ fi
 # ----------------------------------------------------------------------
 if [ "$OS" = "Linux" ] && [ "$D" = "/usr" ]; then
  cd $V
+ bin/jconsole -js "exit 0[echo JVERSION"
  bin/jconsole -js "install 'system $P $A'"
  if [ -f "/etc/alternatives/ijconsole" ]; then
   update-alternatives --remove-all ijconsole
@@ -148,5 +149,6 @@ else
  mkdir -p $D/$V
  cp -r $M/$V/* $D/$V
  cd $D/$V
+ bin/jconsole -js "exit 0[echo JVERSION"
  bin/jconsole -js "install 'system $P $A $S'"
 fi
