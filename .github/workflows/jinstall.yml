@@ -30,8 +30,9 @@ jobs:
       submodules: recursive
 
    - name: Test Jinstall
-     run: script/installxcb.sh linux x64
-     run: script/testinstall.sh linux x64
+     run: |
+      script/installxcb.sh linux x64
+      script/testinstall.sh linux x64
 
 # macOS ----------------------------------------------------------------
  jqtmacos:
@@ -61,8 +62,9 @@ jobs:
       submodules: recursive
 
    - name: Test Jinstall
-     run: script/installxcb.sh raspberry arm64
-     run: script/testinstall.sh raspberry arm64
+     run: |
+      script/installxcb.sh raspberry arm64
+      script/testinstall.sh raspberry arm64
 
 # rpi64arm -------------------------------------------------------------
  jqtrpi64arm5:
