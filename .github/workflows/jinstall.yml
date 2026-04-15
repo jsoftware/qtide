@@ -61,17 +61,6 @@ jobs:
      with:
       submodules: recursive
 
-   - name: Install Qt from source
-     uses: jurplel/install-qt-action@v4
-     with:
-      aqtversion: '==3.3.*'
-      version: 6.10.3
-      host: 'linux_arm64'
-      target: 'desktop'
-      arch: 'linux_gcc_arm64'
-      dir: '${{github.workspace}}'
-      modules: 'all'
-
    - name: Test Jinstall
      run: |
       #script/installxcb.sh raspberry arm64
