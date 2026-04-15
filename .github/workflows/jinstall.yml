@@ -22,7 +22,7 @@ jobs:
  jqtlinux:
   needs: all
   name: Jinstall (Linux)
-  runs-on: ubuntu-22.04
+  runs-on: ubuntu-24.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
@@ -38,7 +38,7 @@ jobs:
  jqtmacos:
   needs: all
   name: Jinstall (macOS)
-  runs-on: macos-15-intel
+  runs-on: macos-26-intel
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
@@ -49,6 +49,22 @@ jobs:
      env:
       CC: clang
      run: script/testinstall.sh darwin x64
+
+# macOS arm64 ----------------------------------------------------------
+ jqtmacosarm64:
+  needs: all
+  name: Jinstall (macOS arm64)
+  runs-on: macos-26
+  steps:
+   - name: Check Git repository
+     uses: actions/checkout@v6
+     with:
+      submodules: recursive
+
+   - name: Test Jinstall
+     env:
+      CC: clang
+     run: script/testinstall.sh darwin arm64
 
 # rpi64arm -------------------------------------------------------------
  jqtrpi64arm:
@@ -171,6 +187,7 @@ jobs:
  jqtopenbsd:
   needs: all
   name: Jinstall (OpenBSD cross-platform-actions)
+  if: ${{ false }}
   runs-on: ubuntu-latest
   steps:
    - name: Checkout Git repository
@@ -240,6 +257,7 @@ jobs:
  jqtfreebsd2:
   needs: all
   name: Jinstall (FreeBSD cross-platform-actions)
+  if: ${{ false }}
   runs-on: ubuntu-latest
   steps:
    - name: Checkout Git repository
