@@ -35,6 +35,8 @@ g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] ; then
+f libpulse
+f libegl1
 f libxcb-cursor0
 elif [ "$1" = "openbsd" ] ; then
 g libxcb-cursor0

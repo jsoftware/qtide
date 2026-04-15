@@ -119,20 +119,22 @@ else
   else
    W=${V}_linux.tar.gz
   fi
+  wget $L/$W
  elif [ "$OS" = "FreeBSD" ]; then
   if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ] ; then
    printf "This script only works for x86_64\n" ; exit 1
   else
    W=${V}_fbsd.tar.gz
   fi
+  curl -OL $L/$W
  elif [ "$OS" = "OpenBSD" ]; then
   if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ] ; then
    printf "This script only works for x86_64\n" ; exit 1
   else
    W=${V}_obsd.tar.gz
   fi
+  curl -OL $L/$W
  fi
- wget $L/$W
  tar -xf $W
 fi
 
