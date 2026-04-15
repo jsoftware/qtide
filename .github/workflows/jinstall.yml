@@ -72,7 +72,7 @@ jobs:
       dir: '${{github.workspace}}'
       modules: 'all'
 
-  - name: Test Jinstall
+   - name: Test Jinstall
      run: |
 #      script/installxcb.sh raspberry arm64
       script/testinstall.sh raspberry arm64
