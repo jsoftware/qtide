@@ -35,10 +35,7 @@ g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] || [ "$1" = "raspberry" ] ; then
-sudo apt-get update -y
-sudo apt-get upgrade -y
 f libxcb-cursor0
-fi
 elif [ "$1" = "openbsd" ] ; then
 g libxcb-cursor0
 elif [ "$1" = "freebsd" ] ; then
