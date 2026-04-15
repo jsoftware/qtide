@@ -35,10 +35,15 @@ g() { sudo pkg_add "$@"; }
 h() { sudo pkg install -y "$@"; }
 
 if [ "$1" = "linux" ] || [ "$1" = "raspberry" ]; then
- f libpulse
+ f libasound2
  f libegl1
+ f libegl1-mesa
+ f libgl1-mesa-dri
+ f libopus0
+ f libpulse0
  f libxcb-cursor0
  f minizip
+ f zlib1g
 elif [ "$1" = "openbsd" ]; then
  g libxcb-cursor0
 elif [ "$1" = "freebsd" ]; then
