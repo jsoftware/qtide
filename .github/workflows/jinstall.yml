@@ -30,6 +30,8 @@ jobs:
       submodules: recursive
 
    - name: Test Jinstall
+     env:
+      QT_DEBUG_PLUGINS: 1
      run: |
       script/installxcb.sh linux x64
       script/testinstall.sh linux x64

@@ -44,6 +44,7 @@ if [ "$1" = "linux" ] || [ "$1" = "raspberry" ]; then
  f libxcb-cursor0
  f libxcb-cursor-dev
  f libxcb-xinerama0
+ f libxkbcommon-x11-0
  f minizip
  f pipewire
  f zlib1g
