@@ -41,7 +41,8 @@ if [ "$1" = "linux" ] || [ "$1" = "raspberry" ]; then
  f libgl1-mesa-dri
  f libopus0
  f libpulse0
- f libxcb-cursor0
+# f libxcb-cursor0
+ f libxcb-cursor-dev
  f minizip
  f pipewire
  f zlib1g
