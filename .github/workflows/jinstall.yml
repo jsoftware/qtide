@@ -31,7 +31,7 @@ jobs:
 
    - name: Test Jinstall
      env:
-      QT_QPA_PLATFORM: wayland
+      QT_QPA_PLATFORM: offscreen
      run: |
       script/installxcb.sh linux x64
       script/testinstall.sh linux x64
