@@ -30,6 +30,8 @@ jobs:
       submodules: recursive
 
    - name: Test Jinstall
+     env:
+      QT_QPA_PLATFORM: wayland
      run: |
       script/installxcb.sh linux x64
       script/testinstall.sh linux x64
