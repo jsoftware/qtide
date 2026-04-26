@@ -204,15 +204,15 @@ void Qbrowser::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d",
-#if defined(QT60)
-          (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
-#else
-          event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
-#endif
-          (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
-          (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
-
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %d",
+  #if defined(QT60)
+  (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
+  #else
+  event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
+  #endif
+  (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
+  (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+  
   pchild->event=evtname;
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
   pchild->sysdata=std::string(sysdata);
@@ -235,7 +235,7 @@ void Qbrowser::wheelEvent(QWheelEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d",
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %c%d",
 #if defined(QT515)
           (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
 #else
@@ -243,7 +243,7 @@ void Qbrowser::wheelEvent(QWheelEvent *event)
 #endif
           (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)),
           (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
-
+  
   pchild->event=std::string("mwheel");
   pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
   pchild->sysdata=std::string(sysdata);
