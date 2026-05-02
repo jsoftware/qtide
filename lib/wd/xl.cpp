@@ -35,7 +35,7 @@ static std::string xlsave();
 static std::string xlsheet();
 static std::string xlstyle();
 
-static bool defblock(QStringList);
+static bool defblock(QStringList, int);
 static int gethalign(int);
 static std::string errorlen(QString, int, bool);
 static std::string qsl2s(QStringList);
@@ -66,7 +66,8 @@ static QList<int> numTypes = {1,2,6,14,15,16,32};
 // define block
 // if rws,cls not given, use 1,1
 // if rws or cls is -1, use end of data
-static bool defblock(QStringList blk)
+// rw=0 read  =1 write
+static bool defblock(QStringList blk, int rw = 1)
 {
   int n = blk.count();
   if ((n != 2) && (n != 4)) {
@@ -76,8 +77,10 @@ static bool defblock(QStringList blk)
   QList<int> p = qsl2intlist(blk);
   row = p[0];
   col = p[1];
-  if (n == 2)     rws = cls = 1;
-  else {
+  if (n == 2) {
+    if (rw) rws = cls = 1;
+    else rws = cls = -1;
+  } else {
     rws = p[2];
     cls = p[3];
     if ((rws == -1) || cls == -1) {
@@ -407,7 +410,7 @@ std::string xlopensheet()
 // check decimal percentage currency scientific date&time
 std::string xlread()
 {
-  if (!defblock(arg)) return "";
+  if (!defblock(arg,0)) return "";
 
 // !!! must check these work
   int r,c;
