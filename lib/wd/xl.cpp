@@ -64,7 +64,7 @@ static QList<int> numTypes = {1,2,6,14,15,16,32};
 
 // ---------------------------------------------------------------------
 // define block
-// if rws,cls not given, use 1,1
+// if rws,cls not given, use 1,1 (write) -1,-1 (read)
 // if rws or cls is -1, use end of data
 // rw=0 read  =1 write
 static bool defblock(QStringList blk, int rw = 1)
@@ -83,12 +83,12 @@ static bool defblock(QStringList blk, int rw = 1)
   } else {
     rws = p[2];
     cls = p[3];
-    if ((rws == -1) || cls == -1) {
-      Worksheet* s = xlsx->currentWorksheet();
-      CellRange d = s->dimension();
-      if (rws == -1) rws = d.lastRow() - row;
-      if (cls == -1) cls = d.lastColumn() - col;
-    }
+  }
+  if ((rws == -1) || cls == -1) {
+    Worksheet* s = xlsx->currentWorksheet();
+    CellRange d = s->dimension();
+    if (rws == -1) rws = d.lastRow() - row;
+    if (cls == -1) cls = d.lastColumn() - col;
   }
   blen = rws*cls;
   return true;
@@ -384,7 +384,6 @@ std::string xlopensheet()
     return "";
   }
   QString name = arg[0];
-  qDebug() << sheetnames << name;
   if (sheetnames.contains(name)) {
     sheetname = name;
     xlsx->selectSheet(name);
@@ -394,7 +393,6 @@ std::string xlopensheet()
     int rws = d.lastRow() - row;
     int cls = d.lastColumn() - col;
     xyrs = {row,col,rws,cls};
-    qDebug() << "xyrs" << intlist2qs(xyrs);
     return q2s(intlist2qs(xyrs));
   } else {
     error("sheet name not found: " + q2s(name));
@@ -431,10 +429,8 @@ std::string xlread()
     auto val = cell->value();
     //https://doc.qt.io/qt-6/qmetatype.html
     int tid = val.typeId();
-    qDebug() << "tid" << tid << "val" << val;
     if (tid == 1) val = (val == true) ? 1 : 0;
     auto nam = val.typeName();
-    qDebug() << "auto val" << val << nam << tid;
     typ.push_back(numTypes.contains(tid) ? '1' : '0');
     str = val.toString();
     res.append(q2s(str) + del);
