@@ -415,7 +415,7 @@ jobs:
       submodules: recursive
 
    - name: Setup Environment (Windows)
-     uses: ilammy/msvc-dev-cmd@v1.13
+     uses: ilammy/msvc-dev-cmd@v1
      with:
       arch: amd64
 
@@ -456,7 +456,7 @@ jobs:
       submodules: recursive
 
    - name: Setup Environment (Windows arm64)
-     uses: ilammy/msvc-dev-cmd@v1.13
+     uses: ilammy/msvc-dev-cmd@v1
      with:
       arch: arm64
 
