@@ -5,7 +5,6 @@
 
 #include "cmd.h"
 #include "form.h"
-//#include "pane.h"
 #include "wd.h"
 #include "../base/state.h"
 
