@@ -247,7 +247,7 @@ void Qwebengineview::buttonEvent(QEvent::Type type, QMouseEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d",
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %d",
 #if defined(QT60)
           (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
 #else
@@ -274,7 +274,7 @@ void Qwebengineview::wheelEvent(QWheelEvent *event)
 
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d",
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %c%d",
 #if defined(QT515)
           (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)),
 #else
@@ -355,8 +355,8 @@ void Qwebengineview::keyPressEvent(QKeyEvent *event)
   if (!event->modifiers().testFlag(Qt::ControlModifier)) {
     char sysdata[20];
     if (key==key1)
-      sprintf(sysdata, "%s", event->text().toUtf8().constData());
-    else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
+      snprintf(sysdata, sizeof(sysdata), "%s", event->text().toUtf8().constData());
+    else snprintf(sysdata, sizeof(sysdata), "%s", QString(QChar(key1)).toUtf8().constData());
 
     pchild->event=std::string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());

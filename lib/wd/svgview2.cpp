@@ -249,9 +249,9 @@ void SvgView2::buttonEvent(QEvent::Type type, QMouseEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
 #if defined(QT60)
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
 #else
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, 0);
 #endif
 
   pchild->event=evtname;
@@ -273,9 +273,9 @@ void SvgView2::wheelEvent(QWheelEvent *event)
   // sysdata = mousex,mousey,gtkwh,button1,button2,control,shift,button3,0,0,wheel
   char sysdata[200];
 #if defined(QT515)
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %c%d", (int)event->position().x(), (int)event->position().y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 #else
-  sprintf(sysdata, "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
+  snprintf(sysdata, sizeof(sysdata), "%d %d %d %d %d %d %d %d %d %d %d %c%d", event->x(), event->y(), this->width(), this->height(), (!!(event->buttons() & Qt::LeftButton)), (!!(event->buttons() & Qt::MiddleButton)), (!!(event->modifiers() & Qt::CTRL)), (!!(event->modifiers() & Qt::SHIFT)), (!!(event->buttons() & Qt::RightButton)), 0, 0, deltasign, delta);
 #endif
 
   pchild->event=std::string("mwheel");
@@ -362,8 +362,8 @@ void SvgView2::keyPressEvent(QKeyEvent *event)
   if (!event->modifiers().testFlag(Qt::ControlModifier)) {
     char sysdata[20];
     if (key==key1)
-      sprintf(sysdata, "%s", event->text().toUtf8().constData());
-    else sprintf(sysdata, "%s", QString(QChar(key1)).toUtf8().constData());
+      snprintf(sysdata, sizeof(sysdata), "%s", event->text().toUtf8().constData());
+    else snprintf(sysdata, sizeof(sysdata), "%s", QString(QChar(key1)).toUtf8().constData());
 
     pchild->event=std::string("char");
     pchild->sysmodifiers=pchild->pform->getsysmodifiers(event->modifiers());
