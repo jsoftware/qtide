@@ -5,7 +5,6 @@
 
 #include "cmd.h"
 #include "form.h"
-//#include "pane.h"
 #include "wd.h"
 #include "../base/state.h"
 
@@ -36,7 +35,7 @@ static std::string xlsave();
 static std::string xlsheet();
 static std::string xlstyle();
 
-static bool defblock(QStringList);
+static bool defblock(QStringList, int);
 static int gethalign(int);
 static std::string errorlen(QString, int, bool);
 static std::string qsl2s(QStringList);
@@ -65,9 +64,10 @@ static QList<int> numTypes = {1,2,6,14,15,16,32};
 
 // ---------------------------------------------------------------------
 // define block
-// if rws,cls not given, use 1,1
+// if rws,cls not given, use 1,1 (write) -1,-1 (read)
 // if rws or cls is -1, use end of data
-static bool defblock(QStringList blk)
+// rw=0 read  =1 write
+static bool defblock(QStringList blk, int rw = 1)
 {
   int n = blk.count();
   if ((n != 2) && (n != 4)) {
@@ -77,16 +77,18 @@ static bool defblock(QStringList blk)
   QList<int> p = qsl2intlist(blk);
   row = p[0];
   col = p[1];
-  if (n == 2)     rws = cls = 1;
-  else {
+  if (n == 2) {
+    if (rw) rws = cls = 1;
+    else rws = cls = -1;
+  } else {
     rws = p[2];
     cls = p[3];
-    if ((rws == -1) || cls == -1) {
-      Worksheet* s = xlsx->currentWorksheet();
-      CellRange d = s->dimension();
-      if (rws == -1) rws = d.lastRow() - row;
-      if (cls == -1) cls = d.lastColumn() - col;
-    }
+  }
+  if ((rws == -1) || cls == -1) {
+    Worksheet* s = xlsx->currentWorksheet();
+    CellRange d = s->dimension();
+    if (rws == -1) rws = d.lastRow() - row;
+    if (cls == -1) cls = d.lastColumn() - col;
   }
   blen = rws*cls;
   return true;
@@ -382,7 +384,6 @@ std::string xlopensheet()
     return "";
   }
   QString name = arg[0];
-  qDebug() << sheetnames << name;
   if (sheetnames.contains(name)) {
     sheetname = name;
     xlsx->selectSheet(name);
@@ -392,7 +393,6 @@ std::string xlopensheet()
     int rws = d.lastRow() - row;
     int cls = d.lastColumn() - col;
     xyrs = {row,col,rws,cls};
-    qDebug() << "xyrs" << intlist2qs(xyrs);
     return q2s(intlist2qs(xyrs));
   } else {
     error("sheet name not found: " + q2s(name));
@@ -408,7 +408,7 @@ std::string xlopensheet()
 // check decimal percentage currency scientific date&time
 std::string xlread()
 {
-  if (!defblock(arg)) return "";
+  if (!defblock(arg,0)) return "";
 
 // !!! must check these work
   int r,c;
@@ -429,10 +429,8 @@ std::string xlread()
     auto val = cell->value();
     //https://doc.qt.io/qt-6/qmetatype.html
     int tid = val.typeId();
-    qDebug() << "tid" << tid << "val" << val;
     if (tid == 1) val = (val == true) ? 1 : 0;
     auto nam = val.typeName();
-    qDebug() << "auto val" << val << nam << tid;
     typ.push_back(numTypes.contains(tid) ? '1' : '0');
     str = val.toString();
     res.append(q2s(str) + del);
