@@ -430,7 +430,7 @@ std::string xlread()
     //https://doc.qt.io/qt-6/qmetatype.html
     int tid = val.typeId();
     if (tid == 1) val = (val == true) ? 1 : 0;
-    auto nam = val.typeName();
+//    auto nam = val.typeName();
     typ.push_back(numTypes.contains(tid) ? '1' : '0');
     str = val.toString();
     res.append(q2s(str) + del);
