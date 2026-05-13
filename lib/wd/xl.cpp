@@ -59,9 +59,6 @@ static QList<bool> ifnum;
 
 static int row, col, rws, cls, blen;
 
-// bool, int, double, date, time, datetime, long
-static QList<int> numTypes = {1,2,6,14,15,16,32};
-
 // ---------------------------------------------------------------------
 // define block
 // if rws,cls not given, use 1,1 (write) -1,-1 (read)
@@ -431,8 +428,6 @@ std::string xlread()
     //https://doc.qt.io/qt-6/qmetatype.html
     int tid = val.typeId();
     if (tid == 1) val = (val == true) ? 1 : 0;
-//    auto nam = val.typeName();
-    //typ.push_back(numTypes.contains(tid) ? '1' : '0');
     typ.append(std::to_string(tid));
     typ += " ";
     str = val.toString();
@@ -445,7 +440,6 @@ std::string xlread()
 // ---------------------------------------------------------------------
 std::string xlsave()
 {
-  //xlsx->saveAs("/home/chris/temp/test.xlsx");
   xlsx->saveAs(filename);
   return "";
 }
