@@ -10,8 +10,6 @@
 
 #include <QMap>
 
-#include <memory>
-
 QT_BEGIN_NAMESPACE_XLSX
 
 class DocumentPrivate
@@ -37,9 +35,6 @@ public:
     std::shared_ptr<Workbook> workbook;
     std::shared_ptr<ContentTypes> contentTypes;
     bool isLoad;
-
-    // Store the entire xlsx (zip) bytes so that even when opened with QIODevice, the zip can be reopened in SAX
-    std::shared_ptr<QByteArray> package_bytes;
 };
 
 QT_END_NAMESPACE_XLSX

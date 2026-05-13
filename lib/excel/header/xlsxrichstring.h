@@ -35,9 +35,8 @@
 QT_BEGIN_NAMESPACE_XLSX
 class RichStringPrivate;
 class RichString;
-using QHashType = decltype(qHash(0));
 // qHash is a friend, but we can't use default arguments for friends (§8.3.6.4)
-QHashType qHash(const RichString &rs, QHashType seed = 0) Q_DECL_NOTHROW;
+uint qHash(const RichString &rs, uint seed = 0) Q_DECL_NOTHROW;
 
 class QXLSX_EXPORT RichString
 {
@@ -64,7 +63,7 @@ public:
     RichString &operator=(const RichString &other);
 
 private:
-    friend QHashType qHash(const RichString &rs, QHashType seed) Q_DECL_NOTHROW;
+    friend uint qHash(const RichString &rs, uint seed) Q_DECL_NOTHROW;
     friend bool operator==(const RichString &rs1, const RichString &rs2);
     friend bool operator!=(const RichString &rs1, const RichString &rs2);
     friend bool operator<(const RichString &rs1, const RichString &rs2);

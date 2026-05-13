@@ -1,7 +1,6 @@
 // xlsxcellreference.cpp
 
 #include "xlsxcellreference.h"
-
 #include "xlsxworksheet_p.h"
 
 #include <QMap>

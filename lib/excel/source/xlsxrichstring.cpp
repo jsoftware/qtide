@@ -116,9 +116,8 @@ bool RichString::isNull() const
  */
 bool RichString::isEmtpy() const
 {
-    return std::all_of(d->fragmentTexts.begin(), d->fragmentTexts.end(), [](const QString &str) {
-        return str.isEmpty();
-    });
+    return std::all_of(d->fragmentTexts.begin(), d->fragmentTexts.end(),
+                       [](const QString &str) { return str.isEmpty(); });
 }
 
 /*!
@@ -310,7 +309,7 @@ bool operator!=(const QString &rs1, const RichString &rs2)
     return rs2 != rs1;
 }
 
-QHashType qHash(const RichString &rs, QHashType seed) Q_DECL_NOTHROW
+uint qHash(const RichString &rs, uint seed) Q_DECL_NOTHROW
 {
     return qHash(rs.d->idKey(), seed);
 }

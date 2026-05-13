@@ -294,7 +294,7 @@ void Styles::addDxfFormat(const Format &format, bool force)
         }
     }
 
-    if (formatIt == m_dxf_formatsHash.constEnd() || force) {
+    if (formatIt == m_xf_formatsHash.constEnd() || force) {
         m_dxf_formatsList.append(format);
         m_dxf_formatsHash[format.formatKey()] = format;
     }
@@ -396,47 +396,27 @@ void Styles::writeFont(QXmlStreamWriter &writer, const Format &format, bool isDx
         writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
     }
 
-    // Write bold - explicit val="0" when false to match Excel behavior
-    if (format.hasProperty(FormatPrivate::P_Font_Bold)) {
+    if (format.fontBold())
         writer.writeEmptyElement(QStringLiteral("b"));
-        if (!format.fontBold())
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
-    }
-    // Write italic - explicit val="0" when false
-    if (format.hasProperty(FormatPrivate::P_Font_Italic)) {
+    if (format.fontItalic())
         writer.writeEmptyElement(QStringLiteral("i"));
-        if (!format.fontItalic())
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
-    }
-    // Write strikeout - explicit val="0" when false
-    if (format.hasProperty(FormatPrivate::P_Font_StrikeOut)) {
+    if (format.fontStrikeOut())
         writer.writeEmptyElement(QStringLiteral("strike"));
-        if (!format.fontStrikeOut())
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
-    }
-    if (format.hasProperty(FormatPrivate::P_Font_Outline)) {
+    if (format.fontOutline())
         writer.writeEmptyElement(QStringLiteral("outline"));
-        if (!format.fontOutline())
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
-    }
-    if (format.hasProperty(FormatPrivate::P_Font_Shadow)) {
+    if (format.boolProperty(FormatPrivate::P_Font_Shadow))
         writer.writeEmptyElement(QStringLiteral("shadow"));
-        if (!format.boolProperty(FormatPrivate::P_Font_Shadow))
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("0"));
-    }
     if (format.hasProperty(FormatPrivate::P_Font_Underline)) {
         Format::FontUnderline u = format.fontUnderline();
-        writer.writeEmptyElement(QStringLiteral("u"));
-        if (u == Format::FontUnderlineNone) {
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("none"));
-        } else if (u == Format::FontUnderlineDouble) {
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("double"));
-        } else if (u == Format::FontUnderlineSingleAccounting) {
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("singleAccounting"));
-        } else if (u == Format::FontUnderlineDoubleAccounting) {
-            writer.writeAttribute(QStringLiteral("val"), QStringLiteral("doubleAccounting"));
+        if (u != Format::FontUnderlineNone) {
+            writer.writeEmptyElement(QStringLiteral("u"));
+            if (u == Format::FontUnderlineDouble)
+                writer.writeAttribute(QStringLiteral("val"), QStringLiteral("double"));
+            else if (u == Format::FontUnderlineSingleAccounting)
+                writer.writeAttribute(QStringLiteral("val"), QStringLiteral("singleAccounting"));
+            else if (u == Format::FontUnderlineDoubleAccounting)
+                writer.writeAttribute(QStringLiteral("val"), QStringLiteral("doubleAccounting"));
         }
-        // else: single underline = default, no val attribute needed
     }
     if (format.hasProperty(FormatPrivate::P_Font_Script)) {
         Format::FontScript s = format.fontScript();
@@ -866,43 +846,15 @@ bool Styles::readFont(QXmlStreamReader &reader, Format &format)
                 format.setProperty(FormatPrivate::P_Font_Family,
                                    attributes.value(QLatin1String("val")).toInt());
             } else if (reader.name() == QLatin1String("b")) {
-                // Check val attribute: val="0" or val="false" means NOT bold
-                QString val = attributes.value(QLatin1String("val")).toString();
-                if (val.isEmpty() || val == QLatin1String("1") || val == QLatin1String("true")) {
-                    format.setFontBold(true);
-                } else {
-                    format.setFontBold(false);
-                }
+                format.setFontBold(true);
             } else if (reader.name() == QLatin1String("i")) {
-                // Check val attribute
-                QString val = attributes.value(QLatin1String("val")).toString();
-                if (val.isEmpty() || val == QLatin1String("1") || val == QLatin1String("true")) {
-                    format.setFontItalic(true);
-                } else {
-                    format.setFontItalic(false);
-                }
+                format.setFontItalic(true);
             } else if (reader.name() == QLatin1String("strike")) {
-                // Check val attribute
-                QString val = attributes.value(QLatin1String("val")).toString();
-                if (val.isEmpty() || val == QLatin1String("1") || val == QLatin1String("true")) {
-                    format.setFontStrikeOut(true);
-                } else {
-                    format.setFontStrikeOut(false);
-                }
+                format.setFontStrikeOut(true);
             } else if (reader.name() == QLatin1String("outline")) {
-                QString val = attributes.value(QLatin1String("val")).toString();
-                if (val.isEmpty() || val == QLatin1String("1") || val == QLatin1String("true")) {
-                    format.setFontOutline(true);
-                } else {
-                    format.setFontOutline(false);
-                }
+                format.setFontOutline(true);
             } else if (reader.name() == QLatin1String("shadow")) {
-                QString val = attributes.value(QLatin1String("val")).toString();
-                if (val.isEmpty() || val == QLatin1String("1") || val == QLatin1String("true")) {
-                    format.setProperty(FormatPrivate::P_Font_Shadow, true);
-                } else {
-                    format.setProperty(FormatPrivate::P_Font_Shadow, false);
-                }
+                format.setProperty(FormatPrivate::P_Font_Shadow, true);
             } else if (reader.name() == QLatin1String("condense")) {
                 format.setProperty(FormatPrivate::P_Font_Condense,
                                    attributes.value(QLatin1String("val")).toInt());
@@ -918,19 +870,14 @@ bool Styles::readFont(QXmlStreamReader &reader, Format &format)
                 format.setFontSize(sz);
             } else if (reader.name() == QLatin1String("u")) {
                 QString value = attributes.value(QLatin1String("val")).toString();
-                if (value == QLatin1String("none") || value == QLatin1String("0") ||
-                    value == QLatin1String("false")) {
-                    format.setFontUnderline(Format::FontUnderlineNone);
-                } else if (value == QLatin1String("double")) {
+                if (value == QLatin1String("double"))
                     format.setFontUnderline(Format::FontUnderlineDouble);
-                } else if (value == QLatin1String("doubleAccounting")) {
+                else if (value == QLatin1String("doubleAccounting"))
                     format.setFontUnderline(Format::FontUnderlineDoubleAccounting);
-                } else if (value == QLatin1String("singleAccounting")) {
+                else if (value == QLatin1String("singleAccounting"))
                     format.setFontUnderline(Format::FontUnderlineSingleAccounting);
-                } else {
-                    // Empty or "single" or "1" = single underline
+                else
                     format.setFontUnderline(Format::FontUnderlineSingle);
-                }
             } else if (reader.name() == QLatin1String("vertAlign")) {
                 QString value = attributes.value(QLatin1String("val")).toString();
                 if (value == QLatin1String("superscript"))
@@ -1203,34 +1150,15 @@ bool Styles::readCellXfs(QXmlStreamReader &reader)
                 //            qDebug()<<"... "<<i<<" "<<xfAttrs[i].name()<<xfAttrs[i].value();
 
                 if (xfAttrs.hasAttribute(QLatin1String("numFmtId"))) {
-                    bool ok                = false;
-                    const auto numFmtIndex = xfAttrs.value(QLatin1String("numFmtId")).toInt(&ok);
-
-                    if (ok && numFmtIndex >= 0) {
-                        // Determine if format should be applied
-                        // Per OOXML spec: default for cellXfs is false, but we have a special case:
-                        // LibreOffice omits applyNumberFormat even for custom formats (>= 164)
-                        // If a custom format is referenced, we assume it should be applied
-                        bool apply = false;
-                        if (xfAttrs.hasAttribute(QLatin1String("applyNumberFormat"))) {
-                            apply = parseXsdBoolean(
-                                xfAttrs.value(QLatin1String("applyNumberFormat")).toString());
-                        } else {
-                            // Heuristic: If numFmtId references a custom format (>= 164), apply it
-                            // This handles LibreOffice files that omit applyNumberFormat
-                            const auto &it = m_customNumFmtIdMap.constFind(numFmtIndex);
-                            if (it != m_customNumFmtIdMap.constEnd()) {
-                                apply = true; // Custom format found, apply it
-                            }
-                        }
-
-                        if (apply) {
-                            const auto &it = m_customNumFmtIdMap.constFind(numFmtIndex);
-                            if (it == m_customNumFmtIdMap.constEnd())
-                                format.setNumberFormatIndex(numFmtIndex);
-                            else
-                                format.setNumberFormat(numFmtIndex, it.value()->formatString);
-                        }
+                    const auto numFmtIndex = xfAttrs.value(QLatin1String("numFmtId")).toInt();
+                    const auto apply       = parseXsdBoolean(
+                        xfAttrs.value(QLatin1String("applyNumberFormat")).toString());
+                    if (apply) {
+                        const auto &it = m_customNumFmtIdMap.constFind(numFmtIndex);
+                        if (it == m_customNumFmtIdMap.constEnd())
+                            format.setNumberFormatIndex(numFmtIndex);
+                        else
+                            format.setNumberFormat(numFmtIndex, it.value()->formatString);
                     }
                 }
 
