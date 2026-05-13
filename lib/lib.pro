@@ -44,11 +44,9 @@ contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 4): QT += opengl
 !lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += svg
-!lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): !contains(DEFINES,QT57): QT += webkit webkitwidgets
 !isEmpty(JQTWEBKIT) {
 message(use webkit instead of webengine)
-QT -= webenginewidgets
 QT += webkit webkitwidgets
 }
 lessThan(QT_MAJOR_VERSION, 5): QT += webkit
@@ -75,9 +73,6 @@ TARGET = jqt
 # to exclude webkit, uncomment the following line
 # QT -= webkit webkitwidgets
 
-# to exclude QtWebEngine, uncomment the following line
-# QT -= webenginewidgets
-
 # to exclude svgview, uncomment the following line
 # QT -= svg
 
@@ -90,7 +85,7 @@ NO_WEBENGINE = $$(NO_WEBENGINE)
   message(disable webengine feature)
   DEFINES += QT_NO_WEBENGINE
   DEFINES -= QT_WEBENGINE
-  QT -= webenginewidgets webengine
+  QT -= webengine
 }
 
 # export JQTFAT before qmake
@@ -105,7 +100,7 @@ JQTSLIM = $$(JQTSLIM)
 !isEmpty(JQTSLIM) {
   !isEmpty(JQTFAT): error(both FAT and SLIM defined)
   message(building slim jqt)
-  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webenginewidgets webkit webkitwidgets
+  QT -=  multimedia multimediawidgets quick qml quickwidgets webengine webkit webkitwidgets
 }
 
 
