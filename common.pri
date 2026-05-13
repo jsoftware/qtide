@@ -1,7 +1,7 @@
 # included by main.pro and lib.pro
 
-VERSION = 2.6.3
-JDLLVER = 9.7
+VERSION = 2.6.4
+JDLLVER = 9.8
 BUILDVERSION = 1
 
 JQTBUILD = "full"

@@ -216,6 +216,7 @@ std::string xlclose()
   sheetname="";
   formats.clear();
   ifnum.clear();
+  delete xlsx;
   return "";
 }
 
@@ -421,7 +422,7 @@ std::string xlread()
     c = 1 + col + i % cls;
     auto cell = xlsx->cellAt(r,c);
     if (!cell) {
-      typ.push_back('0');
+      typ.append("0 ");
       res.push_back(del);
       continue;
     }
@@ -431,7 +432,9 @@ std::string xlread()
     int tid = val.typeId();
     if (tid == 1) val = (val == true) ? 1 : 0;
 //    auto nam = val.typeName();
-    typ.push_back(numTypes.contains(tid) ? '1' : '0');
+    //typ.push_back(numTypes.contains(tid) ? '1' : '0');
+    typ.append(std::to_string(tid));
+    typ += " ";
     str = val.toString();
     res.append(q2s(str) + del);
   }
