@@ -29,13 +29,13 @@ script/jinstall.sh -p qt2 -q full --no-addons
 find qt2
 if [ "$1" = "darwin" ]; then
  if [ "$arch" = "x86_64" ]; then
-  ./qt1/j9.7/bin/jqtx.command -js "exit 0[stderr JVERSION"
-  ./qt2/j9.7/bin/jqtx.command -js "exit 0[stderr JVERSION"
+  ./qt1/j9.8/bin/jqtx.command -js "exit 0[stderr JVERSION"
+  ./qt2/j9.8/bin/jqtx.command -js "exit 0[stderr JVERSION"
  else
-  ./qt1/j9.7/bin/jqt.command -js "exit 0[stderr JVERSION"
-  ./qt2/j9.7/bin/jqt.command -js "exit 0[stderr JVERSION"
+  ./qt1/j9.8/bin/jqt.command -js "exit 0[stderr JVERSION"
+  ./qt2/j9.8/bin/jqt.command -js "exit 0[stderr JVERSION"
  fi
 else
- ./qt1/j9.7/jqt.sh -js "exit 0[stderr JVERSION"
- ./qt2/j9.7/jqt.sh -js "exit 0[stderr JVERSION"
+ ./qt1/j9.8/jqt.sh -js "exit 0[stderr JVERSION"
+ ./qt2/j9.8/jqt.sh -js "exit 0[stderr JVERSION"
 fi

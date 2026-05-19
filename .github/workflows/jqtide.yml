@@ -586,18 +586,18 @@ jobs:
       CC: clang
      run: |
       cd ~/
-      wget https://www.jsoftware.com/download/j9.7/install/j9.7_mac64.zip
-      unzip j9.7_mac64.zip
-      find j9.7 -type f -name 'jconsole' -exec chmod 755 {} \;
-      j9.7/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
+      wget https://www.jsoftware.com/download/j9.8/install/j9.8_mac.zip
+      unzip j9.8_mac.zip
+      find j9.8 -type f -name 'jconsole' -exec chmod 755 {} \;
+      j9.8/bin/jconsole -js "exit 0['install'jpkg'all'['update'jpkg''[load'pacman'"
       cd -
       rm -rf jlibrary
       mkdir -p jlibrary/bin
-      cp -r ~/j9.7/addons jlibrary/.
-      cp -r ~/j9.7/system jlibrary/.
-      cp ~/j9.7/bin/profile.ijs jlibrary/bin/.
-      rm -rf ~/j9.7
-      rm -rf ~/j9.7-user
+      cp -r ~/j9.8/addons jlibrary/.
+      cp -r ~/j9.8/system jlibrary/.
+      cp ~/j9.8/bin/profile.ijs jlibrary/bin/.
+      rm -rf ~/j9.8
+      rm -rf ~/j9.8-user
       cd ~/
       wget https://github.com/jsoftware/jsource/releases/download/build/m64.zip
       unzip m64.zip

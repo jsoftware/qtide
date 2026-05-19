@@ -2,7 +2,7 @@
 
 set -eu
 
-V=j9.7
+V=j9.8
 
 OS=$(uname -s)
 ARCH=$(uname -m)

@@ -4,20 +4,20 @@ set -e
 cd "$(dirname "$0")"
 p=`pwd`
 
-jver="j9.7"
+jver="j9.8"
 
 if ( [ "`uname`" = "Linux" ] )  && ( [ "`uname -m`" = "armv6l" ] ); then
   jf="${jver}_raspi32.tar.gz"
 elif ( [ "`uname`" = "Linux" ] )  && ( [ "`uname -m`" = "aarch64" ]  || [ "`uname -m`" = "arm64" ] ); then
-  jf="${jver}_raspi64.tar.gz"
+  jf="${jver}_raspi.tar.gz"
 elif [ "`uname`" = "Darwin" ]; then
-  jf="${jver}_mac64.zip"
+  jf="${jver}_mac.zip"
 elif [ "`uname`" = "OpenBSD" ]; then
-  jf="${jver}_obsd64.tar.gz"
+  jf="${jver}_obsd.tar.gz"
 elif [ "`uname`" = "FreeBSD" ]; then
-  jf="${jver}_fbsd64.tar.gz"
+  jf="${jver}_fbsd.tar.gz"
 else
-  jf="${jver}_linux64.tar.gz"
+  jf="${jver}_linux.tar.gz"
 fi
 
 rm -rf /tmp/jx
