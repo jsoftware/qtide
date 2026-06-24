@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include <QStyleFactory>
+#include <QStyleHints>
 
 #include "cmd.h"
 #include "font.h"
@@ -20,6 +21,7 @@ extern int rc;
 static std::string smact();
 static std::string smactive();
 static std::string smclose();
+static std::string smcolorscheme();
 static std::string smerror(std::string p);
 static std::string smfocus();
 static std::string smfont();
@@ -60,6 +62,8 @@ std::string sm(std::string c)
     return smactive();
   if (c=="close")
     return smclose();
+  if (c=="colorscheme")
+    return smcolorscheme();
   if (c=="focus")
     return smfocus();
   if (c=="font")
@@ -134,6 +138,21 @@ std::string smclose()
     note2->close();
   } else
     return smerror ("unrecognized sm command parameters: " + p);
+  return "";
+}
+
+// ---------------------------------------------------------------------
+std::string smcolorscheme()
+{
+  std::string p=cmd.getparms();
+  if (p == "dark")
+    QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Dark);
+  else if (p == "light")
+    QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+  else if (p == "default")
+    QGuiApplication::styleHints()->unsetColorScheme();
+  else
+    return smerror ("unrecognized colorscheme: " + p);
   return "";
 }
 
