@@ -145,6 +145,7 @@ std::string smclose()
 std::string smcolorscheme()
 {
   std::string p=cmd.getparms();
+#ifdef QT68
   if (p == "dark")
     QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Dark);
   else if (p == "light")
@@ -154,6 +155,9 @@ std::string smcolorscheme()
   else
     return smerror ("unrecognized colorscheme: " + p);
   return "";
+#else
+  return smerror ("smcolorscheme requires Qt6.8 or newer");
+#endif
 }
 
 // ---------------------------------------------------------------------

@@ -1,10 +1,9 @@
 name: Jinstall
 
 on:
- push:
-  branches:
-   - master
-   - main
+ workflow_run:
+  workflows: ["JQtide"]
+  types: [completed] #requested
 
 jobs:
 
@@ -72,7 +71,7 @@ jobs:
  jqtrpi64arm:
   needs: all
   name: Jinstall (Linux arm)
-  runs-on: ubuntu-22.04-arm
+  runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
