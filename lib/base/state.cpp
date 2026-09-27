@@ -762,6 +762,12 @@ void state_reinit()
 }
 
 // ---------------------------------------------------------------------
+QString state_release()
+{
+  return s2q(dors("toupper ({.~ 1 { I. @: =&'.') 9!:14''"));
+}
+
+// ---------------------------------------------------------------------
 int state_run(int argc, char *argv[], const char *lib, bool fhs, int fshowide, void **jdll, void **jst, uintptr_t stackinit)
 {
   if (-1==argc) {

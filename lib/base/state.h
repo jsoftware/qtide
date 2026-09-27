@@ -206,6 +206,7 @@ void state_init_args(int *, char *argv[]);
 void state_init_resource();
 void state_quit();
 void state_reinit();
+QString state_release();
 
 #ifndef ONEEVENTLOOP
 extern QEventLoop *evloop;

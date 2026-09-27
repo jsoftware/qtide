@@ -245,7 +245,10 @@ void Term::on_helplabschaptersAct_triggered()
 // ---------------------------------------------------------------------
 void Term::on_helprelnotesAct_triggered()
 {
-  wiki("System/ReleaseNotes/J9.6");
+  QString url,rel;
+  url = "System/ReleaseNotes/";
+  rel = state_release();
+  wiki(url + rel);
 }
 
 // ---------------------------------------------------------------------
