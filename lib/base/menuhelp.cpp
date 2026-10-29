@@ -315,7 +315,7 @@ void htmlhelp(QString s)
 // ---------------------------------------------------------------------
 void wiki(QString s)
 {
-  QString w="http://code.jsoftware.com/wiki/";
+  QString w="https://code.jsoftware.com/wiki/";
 #ifdef Q_OS_ANDROID
   tedit->docmds("browse_j_ '" + s.prepend(w) + "'", false);
 #else
