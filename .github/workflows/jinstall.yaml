@@ -21,7 +21,7 @@ jobs:
  jqtlinux:
   needs: all
   name: Jinstall (Linux)
-  runs-on: ubuntu-22.04
+  runs-on: ubuntu-24.04
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
@@ -88,7 +88,7 @@ jobs:
   needs: all
   name: Jinstall (Linux arm)
   if: ${{ false }}
-  runs-on: ubuntu-22.04-arm
+  runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
@@ -135,7 +135,7 @@ jobs:
   needs: all
   name: Jinstall (Linux arm32)
   if: ${{ false }}
-  runs-on: ubuntu-22.04-arm
+  runs-on: ubuntu-24.04-arm
   steps:
    - name: Check Git repository
      uses: actions/checkout@v6
