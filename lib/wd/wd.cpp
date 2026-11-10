@@ -36,6 +36,7 @@
 #include "menus.h"
 #include "pane.h"
 #include "tabs.h"
+#include "table.h"
 #include "wd.h"
 #ifdef Q_OS_ANDROID
 #include "../base/androidextras.h"
@@ -1035,7 +1036,7 @@ void wdqueries(std::string s)
 {
   std::string p=cmd.getparms();
 
-  if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qhwndx" || s=="qform")) {
+  if (p.size() && (s=="qd" || s=="qverbose" ||s=="qopenglmod" || s=="qscreen" || s=="qwd" || s=="qwdcaps" || s=="qosver" || s=="qprinters" || s=="qpx" || s=="qhwndp" || s=="qhwndx" || s=="qform")) {
     error("extra parameters: " + p);
     return;
   }
@@ -1119,6 +1120,10 @@ void wdqueries(std::string s)
     return;
   } else if (s=="qwd") {
     result="jqt";
+    return;
+  } else if (s=="qwdcaps") {
+    // space separated capability tokens of this wd implementation (see docs/wd-table-extensions.md)
+    result=Table::capabilities();
     return;
   } else if (s=="qosver") {
 #ifdef QT57
@@ -1215,7 +1220,9 @@ void wdqueries(std::string s)
     Child *cc;
     if (p=="_") p=formchildid();
     if ((cc=form->id2child(p)) && cc->widget) {
-      QPoint pos=cc->widget->mapTo(cc->widget->window(),cc->widget->pos());
+      // top-left of the widget in the window's coordinates (pos() is already relative to the parent, so mapping it
+      // again added the widget's own offset a second time)
+      QPoint pos=cc->widget->mapTo(cc->widget->window(),QPoint(0,0));
       QSize size=cc->widget->size();
       result=i2s(pos.x())+" "+i2s(pos.y())+" "+i2s(size.width())+" "+i2s(size.height());
     } else

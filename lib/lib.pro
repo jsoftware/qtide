@@ -44,7 +44,7 @@ contains(DEFINES,QTWEBSOCKET): !contains(DEFINES,QT57) QT += network
 !lessThan(QT_MAJOR_VERSION, 4): QT += opengl
 !lessThan(QT_MAJOR_VERSION, 5): QT += multimediawidgets
 !lessThan(QT_MAJOR_VERSION, 5): QT += svg
-!lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
+# !lessThan(QT_MAJOR_VERSION, 5): contains(DEFINES,QT57) QT += webenginewidgets
 !lessThan(QT_MAJOR_VERSION, 5): !contains(DEFINES,QT57): QT += webkit webkitwidgets
 !isEmpty(JQTWEBKIT) {
 message(use webkit instead of webengine)

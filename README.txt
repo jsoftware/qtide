@@ -26,3 +26,6 @@ J=~/j9
 cd $J
 bin/jqt "$@"
 
+
+Enhanced Windows JQt source, build instructions and regression tests:
+See docs/contribution-review.md and docs/windows-build-and-tests.md.

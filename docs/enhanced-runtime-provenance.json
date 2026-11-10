@@ -1,0 +1,16 @@
+{
+  "source_commit": "22a0499b4165a5f0c00f3a5a65fc1ddb1b0d2761",
+  "upstream_base": "58f33c399f45bb092291619f9a02529a3b6ae2b9",
+  "runtime_use": "Enhanced JQt pair used for DiskCatalogue r9",
+  "build_marker": "slim/2.6.6/6.10.3",
+  "sha256": {
+    "jqt.exe": "695b3c3d75a109ccfa3e2162ec18a4171b10a9b048a6c9db5eb215c499cf7f31",
+    "jqt.dll": "cf89a0c69463753a7e34776552baea17df207ce72aa7041b65fe85481c1b7fd6"
+  },
+  "toolchain": {
+    "compiler": "MSVC 14.44 x64",
+    "qt": "6.10.3 msvc2022_64",
+    "configuration": "release; JQTSLIM=1"
+  },
+  "meaning": "Historical binary identification, not a promise of bit-for-bit reproduction or redistribution clearance."
+}

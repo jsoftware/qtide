@@ -2,6 +2,7 @@
 #include <QBoxLayout>
 #include <QCheckBox>
 #include <QHeaderView>
+#include <QApplication>
 #include <QTableWidget>
 #include <QPushButton>
 
@@ -55,12 +56,24 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   row2=col2=-1;
   markrow=markcol=0;
   dblclick=QDateTime::currentDateTime();
+  autosize=true;
+  progdepth=0;
+  dragging=false;
+  dragcol=-1;
+  hdrmode=0;
+  hoveron=false;
+  hoverrow=hovercol=-1;
+  colsizingstr="stretch";
+  hdrwidth=0;
+  hdrcol=-1;
+  sortcol=-1;
+  sortorder=0;
 
   QTableWidgex *w=new QTableWidgex(this);
   widget=(QWidget*) w;
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
-  if (invalidoptn(n,opt,"selectrows sortable nostretchlast")) return;
+  if (invalidoptn(n,opt,"selectrows sortable nostretchlast interactive")) return;
   QStringList shape;
 
   if (opt.size()>=2) {
@@ -103,6 +116,16 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   }
 #endif
 
+  connect(w->horizontalHeader(),SIGNAL(sectionResized(int,int,int)),
+          this,SLOT(on_sectionResized(int,int,int)));
+  connect(w->horizontalHeader(),SIGNAL(sectionClicked(int)),
+          this,SLOT(on_sectionClicked(int)));
+  w->horizontalHeader()->viewport()->installEventFilter(this);
+
+  // option "interactive" == set colsizing interactive nostretchlast
+  if (opt.contains("interactive"))
+    setcolsizing("interactive nostretchlast");
+
   connect(w,SIGNAL(cellChanged(int,int)),
           this,SLOT(on_cellChanged(int,int)));
   connect(w,SIGNAL(cellClicked(int,int)),
@@ -134,7 +157,7 @@ std::string Table::get(std::string p,std::string v)
 
   if (p=="property") {
     std::string r;
-    r+=std::string("cell")+"\012"+ "col"+"\012"+ "row"+"\012"+ "table"+"\012";
+    r+=std::string("cell")+"\012"+ "col"+"\012"+ "colsizing"+"\012"+ "colwidth"+"\012"+ "row"+"\012"+ "sortindicator"+"\012"+ "table"+"\012";
     r+=Child::get(p,v);
     return r;
   } else if (p=="cell") {
@@ -177,6 +200,18 @@ std::string Table::get(std::string p,std::string v)
     }
     rc=-1;
     return (readcolvalue(c));
+  } else if (p=="colwidth") {
+    rc=-1;
+    return getcolwidth(v);
+  } else if (p=="viewwidth") {
+    return i2s(((QTableWidget*)widget)->viewport()->width());
+  } else if (p=="colsizing") {
+    return getcolsizing();
+  } else if (p=="sortindicator") {
+    return getsortindicator();
+  } else if (p=="celltip") {
+    rc=-1;
+    return getcelltip(v);
   } else if (p=="table") {
     return(readtable(v));
   } else
@@ -395,6 +430,20 @@ void Table::set(std::string p,std::string v)
     setbackforeground(2,v);
   else if (p=="colwidth")
     setcolwidth(v);
+  else if (p=="colsizing")
+    setcolsizing(v);
+  else if (p=="colminwidth")
+    setcolminwidth(v);
+  else if (p=="headerclick")
+    setheaderclick(v);
+  else if (p=="sortindicator")
+    setsortindicator(v);
+  else if (p=="celltip")
+    setcelltip(v);
+  else if (p=="tooltips")
+    settooltips(v);
+  else if (p=="hover")
+    sethover(v);
   else if (p=="data")
     setdata(v);
   else if (p=="font")
@@ -720,11 +769,13 @@ void Table::setcolwidth(std::string s)
   }
   bool eqwid= (1==opt.size());
   i=0;
+  progdepth++;
   for (c=c1; c<=c2; c++) {
     width= c_strtoi(q2s(opt.at(i)));
     w->setColumnWidth(c,width);
     if (!eqwid) i++;
   }
+  progdepth--;
   return;
 }
 
@@ -767,7 +818,11 @@ void Table::setdata(std::string s)
     }
   }
   w->setVisible(false);
-  w->resizeColumnsToContents();
+  if (autosize) {
+    progdepth++;
+    w->resizeColumnsToContents();
+    progdepth--;
+  }
   w->resizeRowsToContents();
   w->setVisible(true);
 }
@@ -920,7 +975,9 @@ void Table::setprotect(std::string v)
 void Table::setresizecol()
 {
   QTableWidget *w=(QTableWidget*) widget;
+  progdepth++;
   w->resizeColumnsToContents();
+  progdepth--;
 }
 
 // ---------------------------------------------------------------------
@@ -1134,6 +1191,15 @@ std::string Table::state()
     r+=spair(id+"_value",readcellvalue(row,col));
   } else if (event=="clicked") {
     r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
+  } else if (event=="hdrclick") {
+    r+=spair(id+"_hdrcol",i2s(hdrcol));
+    r+=spair(id+"_sortind",i2s(sortcol)+" "+i2s(sortorder));
+  } else if (event=="colresize") {
+    r+=spair(id+"_hdrcol",i2s(hdrcol));
+    r+=spair(id+"_hdrwidth",i2s(hdrwidth));
+    r+=spair(id+"_colwidth",getcolwidth(""));
+  } else if (event=="hover") {
+    r+=spair(id+"_cell",i2s(row)+" "+i2s(col));
   }
   return r;
 }
@@ -1176,7 +1242,11 @@ void Table::on_cellChanged (int r,int c)
 {
   if (NoEvents) return;
   QTableWidget *w=(QTableWidget*) widget;
-  w->resizeColumnsToContents();
+  if (autosize) {
+    progdepth++;
+    w->resizeColumnsToContents();
+    progdepth--;
+  }
   event="change";
   row=r;
   col=c;
@@ -1254,4 +1324,371 @@ void Table::on_stateChanged (int n)
   row=p/cls;
   col=p-row*cls;
   pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+// r9 additions: column sizing policy, width readback and resize event,
+// header-click event, sort indicator, per-cell tooltips, hover event.
+// All are additive; existing commands are unchanged.
+// See docs/wd-table-extensions.md.
+// ---------------------------------------------------------------------
+// strict integer parse for the r9 commands: optional leading '_' (J negative) or '-', digits only; false otherwise
+static bool jint(const QString &s, int &r)
+{
+  QString t=s;
+  if (t.startsWith('_')) t[0]='-';
+  bool ok=false;
+  r=t.toInt(&ok);
+  return ok;
+}
+
+std::string Table::capabilities()
+{
+  return "table.colsizing table.colminwidth table.colwidth.get table.colresize.event "
+         "table.headerclick table.hdrclick.event table.sortindicator "
+         "table.celltip table.tooltips table.hover.event table.viewwidth.get "
+         "table.sortindicator.auto table.celltip.get wd.childxywh.origin";
+}
+
+// ---------------------------------------------------------------------
+// set colsizing stretch|interactive|fixed|contents [stretchlast|nostretchlast]
+// applies to the columns of the current block (set block), default all
+void Table::setcolsizing(std::string v)
+{
+  QTableWidgex *w=(QTableWidgex*) widget;
+  QStringList opt=qsplit(v);
+  if (opt.isEmpty()) {
+    error("set colsizing must specify stretch, interactive, fixed or contents: " + v);
+    return;
+  }
+  QString pol=opt.at(0);
+  QHeaderView::ResizeMode mode;
+  if (pol=="stretch") mode=QHeaderView::Stretch;
+  else if (pol=="interactive") mode=QHeaderView::Interactive;
+  else if (pol=="fixed") mode=QHeaderView::Fixed;
+  else if (pol=="contents") mode=QHeaderView::ResizeToContents;
+  else {
+    error("set colsizing policy must be stretch, interactive, fixed or contents: " + q2s(pol));
+    return;
+  }
+  for (int i=1; i<opt.size(); i++)
+    if (!(opt.at(i)=="stretchlast" || opt.at(i)=="nostretchlast")) {
+      error("set colsizing unknown option: " + q2s(opt.at(i)));
+      return;
+    }
+  int c1=col1, c2=col2;
+  if (c2==-1) c2=cls-1;
+  bool whole= (c1==0 && c2==cls-1) || 0==cls;
+  if (!whole && !(c1>=0 && c1<cls && c2<cls && c1<=c2)) {
+    error("set colsizing col1 col2 out of bound: " + q2s(QString::number(c1)) + " " + q2s(QString::number(c2)));
+    return;
+  }
+  QHeaderView *h=w->horizontalHeader();
+  progdepth++;
+  if (whole)
+    h->setSectionResizeMode(mode);
+  else
+    for (int c=c1; c<=c2; c++) h->setSectionResizeMode(c,mode);
+  if (opt.contains("stretchlast")) h->setStretchLastSection(true);
+  if (opt.contains("nostretchlast")) h->setStretchLastSection(false);
+  progdepth--;
+  // interactive/fixed columns keep the widths given to them; only stretch/contents refit on data changes
+  if (whole) autosize= (mode==QHeaderView::Stretch || mode==QHeaderView::ResizeToContents);
+  else if (mode==QHeaderView::Interactive || mode==QHeaderView::Fixed) autosize=false;
+  if (whole) colsizingstr=q2s(pol);
+  else colsizingstr="mixed";
+}
+
+// ---------------------------------------------------------------------
+std::string Table::getcolsizing()
+{
+  return colsizingstr + (((QTableWidget*)widget)->horizontalHeader()->stretchLastSection() ? " stretchlast" : " nostretchlast");
+}
+
+// ---------------------------------------------------------------------
+// set colminwidth w   (minimum width any section may be dragged to)
+void Table::setcolminwidth(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  int mw=0;
+  bool ok= (opt.size()==1) && jint(opt.at(0),mw);
+  if (!ok || mw<0) {
+    error("set colminwidth must specify one non-negative width: " + v);
+    return;
+  }
+  w->horizontalHeader()->setMinimumSectionSize(mw);
+}
+
+// ---------------------------------------------------------------------
+// get colwidth [c]  -> all widths (logical px, space separated) or one
+std::string Table::getcolwidth(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  QHeaderView *h=w->horizontalHeader();
+  if (opt.size()==0) {
+    QStringList r;
+    for (int c=0; c<cls; c++) r << QString::number(h->sectionSize(c));
+    return q2s(r.join(" "));
+  }
+  int c=c_strtoi(q2s(opt.at(0)));
+  if (opt.size()!=1 || c<0 || c>=cls) {
+    error("get colwidth col index out of bounds: " + v);
+    return "";
+  }
+  return i2s(h->sectionSize(c));
+}
+
+// ---------------------------------------------------------------------
+// set headerclick off|event|native
+//   event : header is clickable and shows a sort indicator; a click raises
+//           event hdrclick (col, indicator) and J decides how to sort.
+//   native: as event, and the table is also sorted by item text.
+void Table::setheaderclick(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  if (opt.size()!=1 || !(opt.at(0)=="off" || opt.at(0)=="event" || opt.at(0)=="native")) {
+    error("set headerclick must specify off, event or native: " + v);
+    return;
+  }
+  hdrmode= (opt.at(0)=="off") ? 0 : (opt.at(0)=="event" ? 1 : 2);
+  w->horizontalHeader()->setSectionsClickable(hdrmode!=0);
+  // visibility follows the sort state, not clickability: a disabled (off) header keeps showing the current sort
+  w->horizontalHeader()->setSortIndicatorShown(sortcol>=0);
+}
+
+// ---------------------------------------------------------------------
+// set sortindicator col [asc|desc]   or   set sortindicator none
+// indicator only; does not reorder rows
+void Table::setsortindicator(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  if (opt.isEmpty() || opt.size()>2) {
+    error("set sortindicator must specify none or col [asc|desc]: " + v);
+    return;
+  }
+  QHeaderView *h=w->horizontalHeader();
+  int c=0;
+  bool okc=jint(opt.at(0),c);
+  if (opt.at(0)=="none" || (okc && c<0)) {
+    sortcol=-1;
+    h->setSortIndicatorShown(false);
+    return;
+  }
+  if (!okc) {
+    error("set sortindicator must specify none or col [asc|desc]: " + v);
+    return;
+  }
+  if (c>=cls) {
+    error("set sortindicator col index out of bounds: " + v);
+    return;
+  }
+  Qt::SortOrder o=Qt::AscendingOrder;
+  if (opt.size()==2) {
+    if (opt.at(1)=="desc" || opt.at(1)=="descending") o=Qt::DescendingOrder;
+    else if (!(opt.at(1)=="asc" || opt.at(1)=="ascending")) {
+      error("set sortindicator order must be asc or desc: " + q2s(opt.at(1)));
+      return;
+    }
+  }
+  sortcol=c;
+  sortorder=(o==Qt::DescendingOrder);
+  h->setSortIndicator(c,o);
+  h->setSortIndicatorShown(true);
+}
+
+// ---------------------------------------------------------------------
+// get sortindicator -> "col order": col -1 for none, order 0 asc 1 desc
+std::string Table::getsortindicator()
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QHeaderView *h=w->horizontalHeader();
+  if (!h->isSortIndicatorShown()) return "-1 0";
+  return i2s(h->sortIndicatorSection())+" "+i2s(h->sortIndicatorOrder()==Qt::DescendingOrder);
+}
+
+// ---------------------------------------------------------------------
+// get celltip r c  -> the tooltip text of that cell ('' when none)
+std::string Table::getcelltip(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  int r=0, c=0;
+  if (opt.size()!=2 || !jint(opt.at(0),r) || !jint(opt.at(1),c)) {
+    error("get celltip must specify row and column: " + v);
+    return "";
+  }
+  if (!(r>=0 && r<rws && c>=0 && c<cls)) {
+    error("get celltip cell index out of bounds: " + v);
+    return "";
+  }
+  QTableWidgetItem *m=w->item(r,c);
+  return m ? q2s(m->toolTip()) : std::string();
+}
+
+// ---------------------------------------------------------------------
+// set celltip r c text   (empty text clears)
+void Table::setcelltip(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QString q=s2q(v);
+  int i1=q.indexOf(' ');
+  int i2= i1<0 ? -1 : q.indexOf(' ',i1+1);
+  QString sr=q.left(i1), sc= i2<0 ? q.mid(i1+1) : q.mid(i1+1,i2-i1-1);
+  bool ok1=false, ok2=false;
+  int r=sr.toInt(&ok1), c=sc.toInt(&ok2);
+  if (i1<0 || !ok1 || !ok2) {
+    error("set celltip must specify row, column, text: " + v);
+    return;
+  }
+  if (!(r>=0 && r<rws && c>=0 && c<cls)) {
+    error("set celltip cell index out of bounds: " + q2s(QString::number(r)) + " " + q2s(QString::number(c)));
+    return;
+  }
+  QString t= i2<0 ? QString() : q.mid(i2+1);
+  QTableWidgetItem *m=w->item(r,c);
+  if (!m) {
+    if (t.isEmpty()) return;
+    m=newitem(r,c,"");
+    w->setItem(r,c,m);
+  }
+  m->setToolTip(t);
+}
+
+// ---------------------------------------------------------------------
+// set tooltips <data>  -- same data shapes and block rules as set data:
+// one value for every cell, one per column of the block, or one per cell
+void Table::settooltips(std::string s)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList d=qsplit(s);
+  int n=d.size();
+  int r1=row1, r2=row2, c1=col1, c2=col2;
+  if (0==rws || 0==cls) return;
+  if (r2==-1) r2=rws-1;
+  if (c2==-1) c2=cls-1;
+  if (!(r1>=0 && r1<rws && c1>=0 && c1<cls && r2<rws && c2<cls && r1<=r2 && c1<=c2)) {
+    error("set tooltips row1 row2 col1 col2 out of bound");
+    return;
+  }
+  bool colmode= (c2-c1+1)==n;
+  if (!(n==1 || n==(r2-r1+1)*(c2-c1+1) || colmode)) {
+    error("incorrect tooltip data length - given " + q2s(QString::number(n)) + " cells, require " + q2s(QString::number((r2-r1+1)*(c2-c1+1))) + " cells");
+    return;
+  }
+  int q=0;
+  for (int r=r1; r<=r2; r++)
+    for (int c=c1; c<=c2; c++) {
+      if (colmode && c==c1) q=0;
+      QTableWidgetItem *m=w->item(r,c);
+      if (!m && !d.at(q).isEmpty()) {
+        m=newitem(r,c,"");
+        w->setItem(r,c,m);
+      }
+      if (m) m->setToolTip(d.at(q));
+      if (n!=1) q++;
+    }
+}
+
+// ---------------------------------------------------------------------
+// set hover 0|1 -- event hover (row col; -1 -1 when the pointer leaves the cells)
+void Table::sethover(std::string v)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  QStringList opt=qsplit(v);
+  if (opt.size()!=1 || !(opt.at(0)=="0" || opt.at(0)=="1")) {
+    error("set hover must specify 0 or 1: " + v);
+    return;
+  }
+  hoveron= opt.at(0)=="1";
+  w->setMouseTracking(hoveron);
+  w->viewport()->setMouseTracking(hoveron);
+  if (hoveron) w->viewport()->installEventFilter(this);
+  hoverrow=hovercol=-1;
+}
+
+// ---------------------------------------------------------------------
+void Table::emithdr(const char *ev, int c)
+{
+  if (NoEvents) return;
+  event=ev;
+  row=-1;
+  col=c;
+  hdrcol=c;
+  pform->signalevent(this);
+}
+
+// ---------------------------------------------------------------------
+// user (not program) changed a section width: remember it, report on mouse release
+void Table::on_sectionResized(int c, int oldw, int neww)
+{
+  Q_UNUSED(oldw);
+  if (progdepth>0) return;
+  if (!(QApplication::mouseButtons() & Qt::LeftButton)) return;
+  dragging=true;
+  dragcol=c;
+  hdrwidth=neww;
+}
+
+// ---------------------------------------------------------------------
+void Table::on_sectionClicked(int c)
+{
+  if (hdrmode==0) return;
+  // The indicator is maintained here, not left to Qt (which only flips it when sorting is enabled on the view):
+  // clicking the current sort column toggles its order, clicking another column starts ascending. The state is kept in
+  // sortcol/sortorder, so it is the same whatever Qt does internally, and `get sortindicator` agrees with the event.
+  QPointer<Table> self(this);
+  QTimer::singleShot(0,this,[self,c]() {
+    if (self.isNull()) return;
+    QTableWidget *t=(QTableWidget*) self->widget;
+    QHeaderView *h=t->horizontalHeader();
+    bool desc = (self->sortcol==c) ? !self->sortorder : false;
+    self->sortcol=c;
+    self->sortorder=desc;
+    Qt::SortOrder so = desc ? Qt::DescendingOrder : Qt::AscendingOrder;
+    h->setSortIndicator(c,so);
+    h->setSortIndicatorShown(true);
+    if (self->hdrmode==2) t->sortItems(c,so);
+    self->emithdr("hdrclick",c);
+  });
+}
+
+// ---------------------------------------------------------------------
+bool Table::eventFilter(QObject *o, QEvent *e)
+{
+  QTableWidget *w=(QTableWidget*) widget;
+  if (o==w->horizontalHeader()->viewport()) {
+    if (e->type()==QEvent::MouseButtonRelease && dragging) {
+      dragging=false;
+      if (!NoEvents) {
+        QHeaderView *h=w->horizontalHeader();
+        hdrwidth=h->sectionSize(dragcol);
+        emithdr("colresize",dragcol);
+      }
+    }
+  } else if (o==w->viewport() && hoveron) {
+    int r=hoverrow, c=hovercol;
+    if (e->type()==QEvent::MouseMove) {
+      QPoint p=static_cast<QMouseEvent*>(e)->pos();
+      r=w->rowAt(p.y());
+      c=w->columnAt(p.x());
+      if (r<0 || c<0) r=c=-1;
+    } else if (e->type()==QEvent::Leave) {
+      r=c=-1;
+    }
+    if (r!=hoverrow || c!=hovercol) {
+      hoverrow=r;
+      hovercol=c;
+      if (!NoEvents) {
+        event="hover";
+        row=r;
+        col=c;
+        pform->signalevent(this);
+      }
+    }
+  }
+  return QObject::eventFilter(o,e);
 }

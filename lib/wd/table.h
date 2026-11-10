@@ -32,13 +32,21 @@ class Table : public Child
 public:
   Table(std::string n, std::string s, Form *f, Pane *p);
 
+  // header/hover events and capability tokens (see docs/wd-table-extensions.md)
+  static std::string capabilities();
+
   std::string get(std::string p,std::string v);
   void set(std::string p,std::string v);
   std::string state();
   std::string lmr;
   QDateTime dblclick;
 
+protected:
+  bool eventFilter(QObject *o, QEvent *e);
+
 private slots:
+  void on_sectionResized(int,int,int);
+  void on_sectionClicked(int);
   void on_cellChanged(int,int);
   void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
@@ -67,7 +75,19 @@ private:
   void setbackforeground(int colortype, std::string s);
   void setblock(std::string v);
   void setcell(std::string v);
+  void setcelltip(std::string v);
+  void setcolminwidth(std::string v);
+  void setcolsizing(std::string v);
   void setcolwidth(std::string v);
+  void setheaderclick(std::string v);
+  void sethover(std::string v);
+  void setsortindicator(std::string v);
+  void settooltips(std::string v);
+  std::string getcolsizing();
+  std::string getcolwidth(std::string v);
+  std::string getsortindicator();
+  std::string getcelltip(std::string v);
+  void emithdr(const char *ev, int c);
   void setdata(std::string s);
   void setfontstr(std::string s);
   void sethdr(std::string v);
@@ -112,6 +132,19 @@ private:
   QVector<int> hdralign;
 
   QStringList dat;
+
+  // r9 additions. All state is per Table instance (no shared/static state).
+  bool autosize;          // resize columns to contents after set data / cell change (stretch, contents)
+  int progdepth;          // >0 while the program (not the user) is changing widths
+  bool dragging;          // user is dragging a header section edge
+  int dragcol;
+  int hdrmode;            // 0 off, 1 event, 2 native sort + event
+  bool hoveron;
+  int hoverrow, hovercol;
+  std::string colsizingstr;
+  int hdrwidth;           // width of the section last resized by the user
+  int hdrcol;             // section last clicked / resized by the user
+  int sortcol, sortorder; // indicator reported with hdrclick
 };
 
 #endif
