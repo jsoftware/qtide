@@ -108,6 +108,9 @@ committed separately in `docs/wd-qchildxywh-origin.md`.)
 ## Notes and limits
 
 * Sorting by number or date is done by the application in `event` mode; `native` sorts by item text only.
+* Native/stock sorting preserves row labels, per-cell metadata, widget callback coordinates and Qt selection identity.
+  Missing key items stay at the end; duplicate keys are stable. See [sorting correction and tests](native-table-sorting.md).
 * `hdrclick` needs the header to be visible (`set <id> hdr ...`).
-* Tested on Windows x64 (Qt 6.10.3 MSVC) only. Linux and macOS use the same Qt code paths (no platform API is used) but
-  have **not** been built or tested for this change.
+* The sorting correction has been validated on Windows x64 (Qt 6.10.3/MSVC) and Linux x86-64
+  (Ubuntu 26.04.1, Qt 6.10.2/GCC), including Wayland and xcb/XWayland. This does not establish
+  compatibility for every extension or platform. Qt 6.4 and macOS validation remain outstanding.

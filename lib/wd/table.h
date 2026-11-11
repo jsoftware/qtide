@@ -56,6 +56,8 @@ private slots:
   void on_cellClicked_button();
 
 private:
+  friend class TableSortTest;
+  void sortrows(int c, Qt::SortOrder order);
   void applyhdralign();
   Qt::Alignment getalign(int i);
   QVector<int> getcellvec(QVector<int>);
