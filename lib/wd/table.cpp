@@ -3,6 +3,8 @@
 #include <QCheckBox>
 #include <QHeaderView>
 #include <QApplication>
+#include <QPersistentModelIndex>
+#include <QSignalBlocker>
 #include <QTableWidget>
 #include <QPushButton>
 
@@ -55,6 +57,7 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   row1=col1=0;
   row2=col2=-1;
   markrow=markcol=0;
+  row=col=lastrow=lastcol=-1;
   dblclick=QDateTime::currentDateTime();
   autosize=true;
   progdepth=0;
@@ -1101,7 +1104,6 @@ void Table::setshape(QStringList opt)
 void Table::setsort(std::string v)
 {
   int c;
-  QTableWidget *w=(QTableWidget*) widget;
   QStringList opt;
 
   opt=qsplit(v);
@@ -1111,9 +1113,90 @@ void Table::setsort(std::string v)
   }
   c=c_strtoi(q2s(opt.at(0)));
   if (opt.contains("descending"))
-    w->sortItems(c,Qt::DescendingOrder);
+    sortrows(c,Qt::DescendingOrder);
   else
-    w->sortItems(c,Qt::AscendingOrder);
+    sortrows(c,Qt::AscendingOrder);
+}
+
+// ---------------------------------------------------------------------
+// Qt sorts item roles and remaps selection/index widgets, but its full sort
+// leaves vertical headers and our coordinate-indexed side state in place.
+// Persistent indexes identify old rows even for duplicate/missing key items.
+template<typename T>
+static void permuterows(QVector<T> &values, const QVector<int> &dest, int cols)
+{
+  Q_ASSERT(cols>0);
+  Q_ASSERT(values.size()==qint64(dest.size())*cols);
+  const QVector<T> old=values;
+  for (int r=0; r<dest.size(); ++r)
+    for (int c=0; c<cols; ++c)
+      values[dest[r]*cols+c]=old[r*cols+c];
+}
+
+void Table::sortrows(int c, Qt::SortOrder order)
+{
+  if (c<0 || c>=cls || rws==0) return;
+  QTableWidget *w=(QTableWidget*) widget;
+  Q_ASSERT(rws>0 && cls>0);
+  Q_ASSERT(w->rowCount()==rws && w->columnCount()==cls);
+  Q_ASSERT(qint64(rws)*cls==len);
+  Q_ASSERT(cellalign.size()==len && cellprotect.size()==len && celltype.size()==len);
+  Q_ASSERT(defcellalign.size()==len && defcellprotect.size()==len && defcelltype.size()==len);
+  Q_ASSERT(cellwidget.size()==len);
+  // Block outward table/header callbacks, NOT model or selection signals:
+  // Qt needs those signals to keep persistent indexes and widgets attached.
+  const QSignalBlocker tableblock(w);
+  const QSignalBlocker headerblock(w->verticalHeader());
+  QVector<QPersistentModelIndex> identity;
+  QVector<QTableWidgetItem*> labels;
+  QVector<int> heights;
+  QVector<bool> hidden;
+  for (int r=0; r<rws; ++r) {
+    identity.append(QPersistentModelIndex(w->model()->index(r,0)));
+    labels.append(w->takeVerticalHeaderItem(r));
+    hidden.append(w->isRowHidden(r));
+    if (hidden.last()) w->setRowHidden(r,false);
+    heights.append(w->rowHeight(r));
+  }
+  w->sortItems(c,order);
+  QVector<int> dest;
+#ifndef QT_NO_DEBUG
+  QVector<bool> seen(rws,false);
+#endif
+  for (int r=0; r<rws; ++r) {
+    Q_ASSERT(identity[r].isValid());
+    const int d=identity[r].row();
+    Q_ASSERT(d>=0 && d<rws);
+#ifndef QT_NO_DEBUG
+    Q_ASSERT(!seen[d]);
+    seen[d]=true;
+#endif
+    dest.append(d);
+  }
+  permuterows(cellalign,dest,cls);
+  permuterows(cellprotect,dest,cls);
+  permuterows(celltype,dest,cls);
+  permuterows(defcellalign,dest,cls);
+  permuterows(defcellprotect,dest,cls);
+  permuterows(defcelltype,dest,cls);
+  permuterows(cellwidget,dest,cls);
+  for (int r=0; r<rws; ++r) {
+    const int d=dest[r];
+    if (labels[r]) w->setVerticalHeaderItem(d,labels[r]);
+    // Unhide before setting the size: Qt saves a hidden section's old size.
+    w->setRowHidden(d,false);
+    w->setRowHeight(d,heights[r]);
+    w->setRowHidden(d,hidden[r]);
+  }
+  for (int p=0; p<cellwidget.size(); ++p)
+    if (cellwidget[p]) cellwidget[p]->setObjectName(QString::number(p));
+  if (row>=0 && row<rws) row=dest[row];
+  if (lastrow>=0 && lastrow<rws) lastrow=dest[lastrow];
+  if (markrow>=0 && markrow<rws) markrow=dest[markrow];
+  // Block/range coordinates and dat (the last setdata input) are not row IDs.
+  // A stationary pointer may now be over another record; allow the next move
+  // to report it instead of retaining a stale hover identity.
+  hoverrow=hovercol=-1;
 }
 
 // ---------------------------------------------------------------------
@@ -1309,8 +1392,7 @@ void Table::on_currentCellChanged (int r,int c, int pr, int pc)
 // ---------------------------------------------------------------------
 void Table::on_headerClicked (int c)
 {
-  QTableWidget *w=(QTableWidget*) widget;
-  w->sortItems(c,Qt::AscendingOrder);
+  sortrows(c,Qt::AscendingOrder);
 }
 
 // ---------------------------------------------------------------------
@@ -1651,7 +1733,7 @@ void Table::on_sectionClicked(int c)
     Qt::SortOrder so = desc ? Qt::DescendingOrder : Qt::AscendingOrder;
     h->setSortIndicator(c,so);
     h->setSortIndicatorShown(true);
-    if (self->hdrmode==2) t->sortItems(c,so);
+    if (self->hdrmode==2) self->sortrows(c,so);
     self->emithdr("hdrclick",c);
   });
 }

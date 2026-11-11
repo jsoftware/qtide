@@ -368,6 +368,42 @@ exit 0
         self.j("wd 'set a data ',dat i.60\n''")
         self.assertEqual(self.j("wd 'get a sortindicator'"), '0 1', 'indicator survives a second repopulation')
 
+    def test_12b_native_sort_preserves_tips_and_typed_cell_reads(self):
+        # Heterogeneous per-row metadata used to stay behind after Qt sorted.
+        self.j("wd 'set a shape 0 3;set a shape 3 3;set a hdr Key ID Value;"
+               "set a data B idB valueB A idA valueA C idC valueC;"
+               "set a block 0 2;set a type 100;set a cell 0 2 1;"
+               "set a block 1 2;set a type 200;set a cell 1 2 \"0 red green\";"
+               "set a block;set a celltip 0 1 tipB;set a celltip 1 1 tipA;"
+               "set a headerclick native'\n''")
+        # Snapshot in the actual J handler, before a later command-channel read.
+        self.j("''\nt_a_hdrclick=: 3 :0\n"
+               "sortids_z_=: (wd 'get a cell 0 1'),'|',(wd 'get a cell 1 1'),'|',wd 'get a cell 2 1'\n"
+               "sorttip_z_=: wd 'get a celltip 1 1'\n"
+               "sortvalue_z_=: wd 'get a cell 0 2'\n"
+               "note 'a hdrclick ',a_hdrcol,' | ',a_sortind\n)\n''")
+        try:
+            for ids, values, tips in ((['idA', 'idB', 'idC'], ['red', '1', 'valueC'], ['tipA', 'tipB', '']),
+                                      (['idC', 'idB', 'idA'], ['valueC', '1', 'red'], ['', 'tipB', 'tipA']),
+                                      (['idA', 'idB', 'idC'], ['red', '1', 'valueC'], ['tipA', 'tipB', ''])):
+                self.clear()
+                self.post_click('a', 0)
+                self.g.until(lambda: self.events(), 8, 'native sort event')
+                self.settle()
+                self.assertEqual(self.j('sortids_z_'), '|'.join(ids))
+                self.assertEqual(self.j('sorttip_z_'), 'tipB')
+                self.assertEqual(self.j('sortvalue_z_'), values[0])
+                self.assertEqual([self.j(f"wd 'get a cell {r} 1'") for r in range(3)], ids)
+                self.assertEqual([self.j(f"wd 'get a cell {r} 2'") for r in range(3)], values)
+                self.assertEqual([self.j(f"wd 'get a celltip {r} 1'") for r in range(3)], tips)
+            # The displayed checkbox and combo must still support typed writes.
+            self.j("wd 'set a cell 1 2 0;set a cell 0 2 1'\n''")
+            self.assertEqual(self.j("wd 'get a cell 1 2'"), '0')
+            self.assertEqual(self.j("wd 'get a cell 0 2'"), 'green')
+        finally:
+            self.j("''\nt_a_hdrclick=: 3 :'note ''a hdrclick '',a_hdrcol,'' | '',a_sortind'\n''")
+            self.j("wd 'set a shape 0 3;set a shape 20 3;set a hdr A1 A2 A3;set a protect 1'\n''")
+
     # =========================================================================================== tooltips / hover
     def hover_events(self, tid):
         return [e.split(' ', 2)[2] for e in self.events() if e.startswith(f'{tid} hover ')]
