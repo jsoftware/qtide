@@ -2,22 +2,25 @@
 #define TABLE_H
 
 #include <QDateTime>
-#include <QTableWidget>
+#include <QTableView>
+#include <QAbstractTableModel>
+#include <QBrush>
+#include <QFont>
 
 #include "child.h"
 
-class QTableWidgetItem;
+class TableModel;
 class Form;
 class Pane;
 class Table;
 
 // ---------------------------------------------------------------------
-class QTableWidgex : public QTableWidget
+class QTableViewx : public QTableView
 {
   Q_OBJECT
 
 public:
-  QTableWidgex(Table *parent);
+  QTableViewx(Table *parent);
   Table *p;
 
 protected:
@@ -48,6 +51,7 @@ private slots:
   void on_sectionResized(int,int,int);
   void on_sectionClicked(int);
   void on_cellChanged(int,int);
+  void on_modelChanged(const QModelIndex&,const QModelIndex&,const QVector<int>&);
   void on_currentCellChanged(int,int,int,int);
   void on_stateChanged(int);
   void on_headerClicked(int);
@@ -62,7 +66,7 @@ private:
   bool getrange(std::string,int&, int&, int&, int&);
   void initglobals();
 
-  QTableWidgetItem * newitem(int r, int c,QString s);
+  void sortcells(int c, Qt::SortOrder order);
   std::string readcell(int row,int col);
   std::string readcellvalue(int row,int col);
   std::string readcolvalue(int col);
@@ -132,6 +136,8 @@ private:
   QVector<int> hdralign;
 
   QStringList dat;
+  TableModel *tablemodel;
+  bool rebuilding=false;
 
   // r9 additions. All state is per Table instance (no shared/static state).
   bool autosize;          // resize columns to contents after set data / cell change (stretch, contents)

@@ -1,6 +1,6 @@
 # included by main.pro and lib.pro
 
-VERSION = 2.6.6
+VERSION = 2.6.7
 JDLLVER = 9.8
 BUILDVERSION = 1
 
@@ -16,4 +16,3 @@ DEFINES += JQTVERSION=\\\"jqtversion:$$JQTBUILD/$$VERSION/$$[QT_VERSION]:\\\"
 # ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
 #QMAKE_MAC_SDK = MacOSX10.15
 EXPORT_QMAKE_MAC_SDK = MacOSX12
-

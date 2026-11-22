@@ -3,7 +3,15 @@
 #include <QCheckBox>
 #include <QHeaderView>
 #include <QApplication>
-#include <QTableWidget>
+#include <QTableView>
+#include <QAbstractTableModel>
+#include <QItemSelectionModel>
+#include <QPointer>
+#include <QTimer>
+#include <algorithm>
+#include <numeric>
+#include <functional>
+#include <QSignalBlocker>
 #include <QPushButton>
 
 #include "cmd.h"
@@ -20,14 +28,173 @@ static QVector<int>CellAligns;
 static QVector<int>CellTypes;
 extern int rc;
 
+// A sparse, item-free table model.  Roles are stored only for populated cells.
+class TableModel : public QAbstractTableModel
+{
+public:
+  struct Cell {
+    QString text, tip;
+    QBrush background, foreground;
+    QFont font;
+    Qt::Alignment alignment=Qt::AlignLeft|Qt::AlignVCenter;
+    Qt::ItemFlags flags=Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled;
+    bool hasBackground=false, hasForeground=false, hasFont=false;
+  };
+  int rows=0, columns=0;
+  QVector<QVector<Cell>> cells;
+  QStringList horizontal, vertical;
+  QVector<Qt::Alignment> headerAlign;
+  explicit TableModel(QObject *parent=nullptr):QAbstractTableModel(parent) {}
+  int rowCount(const QModelIndex &p=QModelIndex()) const override
+  {
+    return p.isValid()?0:rows;
+  }
+  int columnCount(const QModelIndex &p=QModelIndex()) const override
+  {
+    return p.isValid()?0:columns;
+  }
+  QVariant data(const QModelIndex &i,int role=Qt::DisplayRole) const override
+  {
+    if (!i.isValid()) return QVariant();
+    const Cell &c=cells[i.row()][i.column()];
+    switch(role) {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+      return c.text;
+    case Qt::ToolTipRole:
+      return c.tip;
+    case Qt::TextAlignmentRole:
+      return int(c.alignment);
+    case Qt::BackgroundRole:
+      return c.hasBackground?QVariant(c.background):QVariant();
+    case Qt::ForegroundRole:
+      return c.hasForeground?QVariant(c.foreground):QVariant();
+    case Qt::FontRole:
+      return c.hasFont?QVariant(c.font):QVariant();
+    default:
+      return QVariant();
+    }
+  }
+  bool setData(const QModelIndex &i,const QVariant &v,int role=Qt::EditRole) override
+  {
+    if (!i.isValid()) return false;
+    Cell &c=cells[i.row()][i.column()];
+    switch(role) {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+      c.text=v.toString();
+      break;
+    case Qt::ToolTipRole:
+      c.tip=v.toString();
+      break;
+    case Qt::TextAlignmentRole:
+      c.alignment=Qt::Alignment(v.toInt());
+      break;
+    case Qt::BackgroundRole:
+      c.background=v.value<QBrush>();
+      c.hasBackground=true;
+      break;
+    case Qt::ForegroundRole:
+      c.foreground=v.value<QBrush>();
+      c.hasForeground=true;
+      break;
+    case Qt::FontRole:
+      c.font=v.value<QFont>();
+      c.hasFont=true;
+      break;
+    default:
+      return false;
+    }
+    emit dataChanged(i,i,QVector<int>() << role);
+    return true;
+  }
+  Qt::ItemFlags flags(const QModelIndex &i) const override
+  {
+    return i.isValid()?cells[i.row()][i.column()].flags:Qt::NoItemFlags;
+  }
+  void setFlags(const QModelIndex &i,Qt::ItemFlags f)
+  {
+    if (!i.isValid()) return;
+    cells[i.row()][i.column()].flags=f;
+    emit dataChanged(i,i);
+  }
+  QVariant headerData(int section,Qt::Orientation o,int role=Qt::DisplayRole) const override
+  {
+    if (role==Qt::DisplayRole) {
+      const QStringList &a=(o==Qt::Horizontal)?horizontal:vertical;
+      return section>=0 && section<a.size()?QVariant(a.at(section)):QVariant(section+1);
+    }
+    if (o==Qt::Horizontal && role==Qt::TextAlignmentRole && section>=0 && section<headerAlign.size())
+      return int(headerAlign.at(section));
+    return QVariant();
+  }
+  void setHeaderAlign(const QVector<Qt::Alignment> &a)
+  {
+    headerAlign=a;
+    if(columns) emit headerDataChanged(Qt::Horizontal,0,columns-1);
+  }
+  void setHeaders(Qt::Orientation o,const QStringList &a)
+  {
+    if(o==Qt::Horizontal) horizontal=a;
+    else vertical=a;
+    int count=(o==Qt::Horizontal)?columns:rows;
+    if(count) emit headerDataChanged(o,0,count-1);
+  }
+  void reshape(int r,int c)
+  {
+    beginResetModel();
+    QVector<QVector<Cell>> next(r,QVector<Cell>(c));
+    for(int y=0; y<qMin(r,rows); ++y)
+      for(int x=0; x<qMin(c,columns); ++x) next[y][x]=cells[y][x];
+    cells=next;
+    rows=r;
+    columns=c;
+    endResetModel();
+  }
+  // Return the new-row -> old-row permutation, so Table can move its
+  // parallel metadata in exactly the same order.
+  QVector<int> sortedRows(int column,Qt::SortOrder order,
+                          const std::function<void(const QVector<int>&)> &reorderMetadata)
+  {
+    QVector<int> perm(rows);
+    std::iota(perm.begin(),perm.end(),0);
+    if(column<0 || column>=columns) return perm;
+    std::stable_sort(perm.begin(),perm.end(),[&](int a,int b) {
+      int cmp=QString::compare(cells[a][column].text,cells[b][column].text,Qt::CaseSensitive);
+      return order==Qt::AscendingOrder?cmp<0:cmp>0;
+    });
+    emit layoutAboutToBeChanged();
+    QModelIndexList from,to;
+    // Persistent indexes include those held by the view for index widgets.
+    for(const QModelIndex &idx:persistentIndexList()) {
+      int newRow=perm.indexOf(idx.row());
+      from.append(idx);
+      to.append(index(newRow,idx.column()));
+    }
+    QVector<QVector<Cell>> sorted(rows);
+    for(int r=0; r<rows; ++r) sorted[r]=cells[perm[r]];
+    cells.swap(sorted);
+    reorderMetadata(perm);
+    changePersistentIndexList(from,to);
+    emit layoutChanged();
+    return perm;
+  }
+  void sort(int column,Qt::SortOrder order=Qt::AscendingOrder) override
+  {
+    // All sorting must go through Table::sortcells, which also moves metadata.
+    Q_UNUSED(column);
+    Q_UNUSED(order);
+  }
+};
+
 // -------------------------------------------------------------------
-QTableWidgex::QTableWidgex(Table *parent)
+QTableViewx::QTableViewx(Table *parent)
 {
   p=parent;
 }
 
 // -------------------------------------------------------------------
-void QTableWidgex::mousePressEvent(QMouseEvent* event)
+void QTableViewx::mousePressEvent(QMouseEvent* event)
 {
   switch (event->button()) {
   case Qt::LeftButton:
@@ -42,7 +209,7 @@ void QTableWidgex::mousePressEvent(QMouseEvent* event)
   default:
     ;
   }
-  QTableWidget::mousePressEvent(event);
+  QTableView::mousePressEvent(event);
 }
 
 // -------------------------------------------------------------------
@@ -69,8 +236,10 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   sortcol=-1;
   sortorder=0;
 
-  QTableWidgex *w=new QTableWidgex(this);
+  QTableViewx *w=new QTableViewx(this);
   widget=(QWidget*) w;
+  tablemodel=new TableModel(w);
+  w->setModel(tablemodel);
   w->setObjectName(s2q(n));
   QStringList opt=qsplit(s);
   if (invalidoptn(n,opt,"selectrows sortable nostretchlast interactive")) return;
@@ -126,26 +295,30 @@ Table::Table(std::string n, std::string s, Form *f, Pane *p) : Child(n,s,f,p)
   if (opt.contains("interactive"))
     setcolsizing("interactive nostretchlast");
 
-  connect(w,SIGNAL(cellChanged(int,int)),
-          this,SLOT(on_cellChanged(int,int)));
-  connect(w,SIGNAL(cellClicked(int,int)),
-          this,SLOT(on_cellClicked(int,int)));
-  connect(w,SIGNAL(cellDoubleClicked(int,int)),
-          this,SLOT(on_cellDoubleClicked(int,int)));
-  connect(w,SIGNAL(currentCellChanged(int,int,int,int)),
-          this,SLOT(on_currentCellChanged(int,int,int,int)));
+  connect(tablemodel,&QAbstractItemModel::dataChanged,this,&Table::on_modelChanged);
+  connect(w,&QTableView::clicked,this,[this](const QModelIndex &i) {
+    on_cellClicked(i.row(),i.column());
+  });
+  connect(w,&QTableView::doubleClicked,this,[this](const QModelIndex &i) {
+    on_cellDoubleClicked(i.row(),i.column());
+  });
+  connect(w->selectionModel(),&QItemSelectionModel::currentChanged,this,
+  [this](const QModelIndex &i,const QModelIndex &p) {
+    on_currentCellChanged(i.row(),i.column(),p.row(),p.column());
+  });
 }
 
 // ---------------------------------------------------------------------
 void Table::applyhdralign()
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   if (hdralign.isEmpty() || !ifhdr) return;
   if (hdralign.size()==1)
     w->horizontalHeader()->setDefaultAlignment(getalign(hdralign.at(0)));
   else {
-    for (int i=0; i<cls; i++)
-      (w->horizontalHeaderItem(i))->setTextAlignment(getalign(hdralign.at(i)));
+    QVector<Qt::Alignment> aligns;
+    for(int i=0; i<cls; ++i) aligns.append(getalign(hdralign.at(i)));
+    tablemodel->setHeaderAlign(aligns);
   }
 }
 
@@ -204,7 +377,7 @@ std::string Table::get(std::string p,std::string v)
     rc=-1;
     return getcolwidth(v);
   } else if (p=="viewwidth") {
-    return i2s(((QTableWidget*)widget)->viewport()->width());
+    return i2s(((QTableView*)widget)->viewport()->width());
   } else if (p=="colsizing") {
     return getcolsizing();
   } else if (p=="sortindicator") {
@@ -283,28 +456,19 @@ void Table::initglobals()
 }
 
 // ---------------------------------------------------------------------
-QTableWidgetItem * Table::newitem(int r, int c,QString s)
+void Table::on_modelChanged(const QModelIndex &a,const QModelIndex &,const QVector<int> &roles)
 {
-  int p= c + r*cls;
-  QTableWidgetItem * m= new QTableWidgetItem(s);
-  m->setTextAlignment(getalign(cellalign[p]));
-  if (cellprotect[p]) {
-    Qt::ItemFlags fdef=m->flags();
-    Qt::ItemFlags fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
-    m->setFlags(fnoedit);
-  }
-  return m;
+  if (roles.contains(Qt::EditRole)) on_cellChanged(a.row(),a.column());
 }
 
 // ---------------------------------------------------------------------
 std::string Table::readcell(int row,int col)
 {
-  QTableWidget *w=(QTableWidget*) widget;
-  QTableWidgetItem *m=w->item(row,col);
+  QModelIndex m=tablemodel->index(row,col);
   int p=col+row*cls;
   QWidget *g=cellwidget[p];
   if (0==celltype[p])
-    return (!m)?"":q2s(m->text());
+    return q2s(tablemodel->data(m).toString());
   else if (10==celltype[p])
     return (!g)?"":q2s(((PlainTextEdit *)g)->toPlainText());
   else if (100==celltype[p])
@@ -318,12 +482,11 @@ std::string Table::readcell(int row,int col)
 // ---------------------------------------------------------------------
 std::string Table::readcellvalue(int row,int col)
 {
-  QTableWidget *w=(QTableWidget*) widget;
-  QTableWidgetItem *m=w->item(row,col);
+  QModelIndex m=tablemodel->index(row,col);
   int p=col+row*cls;
   QWidget *g=cellwidget[p];
   if (0==celltype[p])
-    return (!m)?"":q2s(m->text());
+    return q2s(tablemodel->data(m).toString());
   else if (10==celltype[p])
     return (!g)?"":q2s(((PlainTextEdit *)g)->toPlainText());
   else if (100==celltype[p])
@@ -512,8 +675,8 @@ void Table::setalign(std::string v)
     cellalign=QVector<int>(len,0);
   }
 
-  QTableWidget *w=(QTableWidget*) widget;
-  QTableWidgetItem *m;
+  QTableView *w=(QTableView*) widget;
+  QModelIndex m;
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
@@ -521,7 +684,7 @@ void Table::setalign(std::string v)
       if (colmode && c==c1) q=0;
       defcellalign[p]=a.at(q);
       cellalign[p]=a.at(q);
-      if ((m=w->item(r,c))) m->setTextAlignment(getalign(cellalign[p]));
+      if ((m=tablemodel->index(r,c)).isValid()) tablemodel->setData(m,int(getalign(cellalign[p])),Qt::TextAlignmentRole);
       if (n!=1) q++;
     }
   }
@@ -530,7 +693,7 @@ void Table::setalign(std::string v)
 // ---------------------------------------------------------------------
 void Table::setbackforeground(int colortype, std::string s)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
 
   QStringList opt=qsplit(s);
   int len1,r1,r2,c1,c2;
@@ -564,7 +727,7 @@ void Table::setbackforeground(int colortype, std::string s)
     return;
   }
 
-  QTableWidgetItem *m;
+  QModelIndex m;
   QWidget *g;
   QBrush brush,brush2;
   int q=0;
@@ -573,19 +736,16 @@ void Table::setbackforeground(int colortype, std::string s)
       int p= c + r*cls;
       if (colmode && c==c1) q=0;
       if (0==celltype[p]) {
-        if (!(m=w->item(r,c))) {
-          m= newitem(r,c,"");
-          w->setItem(r,c,m);
-        }
+        m=tablemodel->index(r,c);
         brush = QBrush(QColor(opt.at(q)));
-        if (0==colortype) m->setBackground(brush);
-        else if (1==colortype) m->setForeground(brush);
+        if (0==colortype) tablemodel->setData(m,brush,Qt::BackgroundRole);
+        else if (1==colortype) tablemodel->setData(m,brush,Qt::ForegroundRole);
         else if (2==colortype) {
-          m->setBackground(brush);
+          tablemodel->setData(m,brush,Qt::BackgroundRole);
           brush2 = QBrush(QColor(opt.at(q+1)));
-          m->setForeground(brush2);
+          tablemodel->setData(m,brush2,Qt::ForegroundRole);
         }
-      } else if ((g=w->cellWidget(r,c))) {
+      } else if ((g=w->indexWidget(tablemodel->index(r,c)))) {
         if ((0==colortype) && (200>celltype[p])) g->setStyleSheet("background-color: " + opt.at(q));
         else if (1==colortype) g->setStyleSheet("color: " + opt.at(q));
         else if (2==colortype) {
@@ -617,26 +777,22 @@ void Table::setblock(std::string v)
 void Table::set_cell(int r,int c,QString v)
 {
   int p=c+r*cls;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList dat;
 
   if (0==celltype[p]) {
-    QTableWidgetItem *m=w->item(r,c);
-    QWidget *g=w->cellWidget(r,c);
+    QModelIndex m=tablemodel->index(r,c);
+    QWidget *g=w->indexWidget(tablemodel->index(r,c));
     if (g) {
-      w->removeCellWidget(r,c);
+      w->setIndexWidget(tablemodel->index(r,c),nullptr);
       cellwidget[p]=0;
     }
-    if (!m) {
-      m= newitem(r,c,v);
-      w->setItem(r,c,m);
-    } else
-      m->setText(v);
+    tablemodel->setData(m,v);
   } else if (10==celltype[p]) {
-    if (w->item(r,c)) delete w->item(r,c);
+    tablemodel->setData(tablemodel->index(r,c),QString(),Qt::EditRole);
     QWidget *g=cellwidget[p];
     if (!(g && QString("PlainTextEdit")==g->metaObject()->className())) {
-      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (w->indexWidget(tablemodel->index(r,c))) w->setIndexWidget(tablemodel->index(r,c),nullptr);
       PlainTextEdit *ed=new PlainTextEdit();
       ed->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) ed;
@@ -648,14 +804,14 @@ void Table::set_cell(int r,int c,QString v)
       y->addWidget(ed);
       y->addStretch(1);
       m->setLayout(y);
-      w->setCellWidget(r,c,m);
+      w->setIndexWidget(tablemodel->index(r,c),m);
     }
     ((PlainTextEdit  *)cellwidget[p])->setPlainText(v);
   } else if (100==celltype[p]) {
-    if (w->item(r,c)) delete w->item(r,c);
+    tablemodel->setData(tablemodel->index(r,c),QString(),Qt::EditRole);
     QWidget *g=cellwidget[p];
     if (!(g && QString("QCheckBox")==g->metaObject()->className())) {
-      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (w->indexWidget(tablemodel->index(r,c))) w->setIndexWidget(tablemodel->index(r,c),nullptr);
       QCheckBox *cb=new QCheckBox();
 #ifdef Q_OS_ANDROID
       cb->setStyleSheet(checkboxstyle(20*DM_density));
@@ -670,7 +826,7 @@ void Table::set_cell(int r,int c,QString v)
       y->addWidget(cb);
       y->addStretch(1);
       m->setLayout(y);
-      w->setCellWidget(r,c,m);
+      w->setIndexWidget(tablemodel->index(r,c),m);
       connect(cb,SIGNAL(stateChanged(int)),
               this,SLOT(on_stateChanged(int)));
     }
@@ -679,10 +835,10 @@ void Table::set_cell(int r,int c,QString v)
     else
       ((QCheckBox *)cellwidget[p])->setChecked(false);
   } else if ((200==celltype[p]) || (300==celltype[p])) {
-    if (w->item(r,c)) delete w->item(r,c);
+    tablemodel->setData(tablemodel->index(r,c),QString(),Qt::EditRole);
     QWidget *g=cellwidget[p];
     if (!(g && QString("PComboBox")==g->metaObject()->className())) {
-      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (w->indexWidget(tablemodel->index(r,c))) w->setIndexWidget(tablemodel->index(r,c),nullptr);
       PComboBox *cm=new PComboBox();
       cm->setObjectName(QString::number(p));
       if (300==celltype[p])
@@ -694,7 +850,7 @@ void Table::set_cell(int r,int c,QString v)
       y->setSpacing(0);
       y->addWidget(cm);
       m->setLayout(y);
-      w->setCellWidget(r,c,m);
+      w->setIndexWidget(tablemodel->index(r,c),m);
       connect(cm,SIGNAL(currentIndexChanged(int)),
               this,SLOT(on_stateChanged(int)));
     }
@@ -713,14 +869,14 @@ void Table::set_cell(int r,int c,QString v)
     ((PComboBox *)cellwidget[p])->addItems(dat);
     ((PComboBox *)cellwidget[p])->setCurrentIndex(cmind);
   } else if (400==celltype[p]) {
-    if (w->item(r,c)) delete w->item(r,c);
+    tablemodel->setData(tablemodel->index(r,c),QString(),Qt::EditRole);
     QWidget *g=cellwidget[p];
     if (!(g && QString("QPushButton")==g->metaObject()->className())) {
-      if (w->cellWidget(r,c)) w->removeCellWidget(r,c);
+      if (w->indexWidget(tablemodel->index(r,c))) w->setIndexWidget(tablemodel->index(r,c),nullptr);
       QPushButton *pb=new QPushButton(v);
       pb->setObjectName(QString::number(p));
       g=cellwidget[p]=(QWidget*) pb;
-      w->setCellWidget(r,c,pb);
+      w->setIndexWidget(tablemodel->index(r,c),pb);
       connect(pb,SIGNAL(clicked()),this,SLOT(on_cellClicked_button()));
     } else
       ((QPushButton *)g)->setText(v);
@@ -749,7 +905,7 @@ void Table::setcell(std::string v)
 // ---------------------------------------------------------------------
 void Table::setcolwidth(std::string s)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt;
   int c,c1,c2,cs,i,width;
 
@@ -782,7 +938,7 @@ void Table::setcolwidth(std::string s)
 // ---------------------------------------------------------------------
 void Table::setdata(std::string s)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
 
   dat=qsplit(s);
   int n=dat.size();
@@ -831,7 +987,7 @@ void Table::setdata(std::string s)
 void Table::setfontstr(std::string s)
 {
   int c,r;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
 
   int r1,r2,c1,c2;
   r1=row1;
@@ -848,18 +1004,15 @@ void Table::setfontstr(std::string s)
 
   QFont font= (Font(s)).font;
 
-  QTableWidgetItem *m;
+  QModelIndex m;
   QWidget *g;
   for (r=r1; r<=r2; r++) {
     for (c=c1; c<=c2; c++) {
       int p= c + r*cls;
       if (0==celltype[p]) {
-        if (!(m=w->item(r,c))) {
-          m= newitem(r,c,"");
-          w->setItem(r,c,m);
-        }
-        m->setFont(font);
-      } else if ((g=w->cellWidget(r,c))) {
+        m=tablemodel->index(r,c);
+        tablemodel->setData(m,font,Qt::FontRole);
+      } else if ((g=w->indexWidget(tablemodel->index(r,c)))) {
         g->setFont(font);
       }
     }
@@ -869,7 +1022,7 @@ void Table::setfontstr(std::string s)
 // ---------------------------------------------------------------------
 void Table::sethdr(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList s=qsplit(v);
   if (s.size()!=cls) {
     QString m=QString::number(s.size());
@@ -878,7 +1031,7 @@ void Table::sethdr(std::string v)
     error(q2s(m));
     return;
   }
-  w->setHorizontalHeaderLabels(s);
+  tablemodel->setHeaders(Qt::Horizontal,s);
   w->horizontalHeader()->setVisible(true);
   ifhdr=true;
   applyhdralign();
@@ -902,7 +1055,7 @@ void Table::sethdralign(std::string v)
 // ---------------------------------------------------------------------
 void Table::setlab(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList s=qsplit(v);
   if (s.size()!=rws) {
     QString m=QString::number(s.size());
@@ -911,7 +1064,7 @@ void Table::setlab(std::string v)
     error(q2s(m));
     return;
   }
-  w->setVerticalHeaderLabels(s);
+  tablemodel->setHeaders(Qt::Vertical,s);
   w->verticalHeader()->setVisible(true);
 }
 
@@ -948,8 +1101,8 @@ void Table::setprotect(std::string v)
     cellprotect=QVector<int>(len,0);
   }
 
-  QTableWidget *w=(QTableWidget*) widget;
-  QTableWidgetItem *m;
+  QTableView *w=(QTableView*) widget;
+  QModelIndex m;
   int q=0;
   for (int r=r1; r<=r2; r++) {
     for (int c=c1; c<=c2; c++) {
@@ -957,14 +1110,14 @@ void Table::setprotect(std::string v)
       if (colmode && c==c1) q=0;
       defcellprotect[p]=a.at(q);
       cellprotect[p]=a.at(q);
-      if ((m=w->item(r,c))) {
-        Qt::ItemFlags fdef=m->flags();
+      if ((m=tablemodel->index(r,c)).isValid()) {
+        Qt::ItemFlags fdef=tablemodel->flags(m);
         Qt::ItemFlags fnoedit;
         if (cellprotect[p])
           fnoedit=fdef & ~(Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
         else
           fnoedit=fdef | (Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled);
-        m->setFlags(fnoedit);
+        tablemodel->setFlags(m,fnoedit);
       }
       if (n!=1) q++;
     }
@@ -974,7 +1127,7 @@ void Table::setprotect(std::string v)
 // ---------------------------------------------------------------------
 void Table::setresizecol()
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   progdepth++;
   w->resizeColumnsToContents();
   progdepth--;
@@ -983,14 +1136,14 @@ void Table::setresizecol()
 // ---------------------------------------------------------------------
 void Table::setresizerow()
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   w->resizeRowsToContents();
 }
 
 // ---------------------------------------------------------------------
 void Table::setrowheight(std::string s)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt;
   int r,r1,r2,rs,i,height;
 
@@ -1022,7 +1175,7 @@ void Table::setrowheight(std::string s)
 void Table::setscroll(std::string v)
 {
   QStringList opt;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
 
   opt=qsplit(v);
   if (!(opt.size()==2)) {
@@ -1048,17 +1201,15 @@ void Table::setselect(std::string v)
 {
   int r1,r2,c1,c2;
   if (!getrange(v,r1,r2,c1,c2)) return;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   markrow=qMin(r1,r2);
   markcol=qMin(c1,c2);
   row=qMax(r1,r2);
   col=qMax(c1,c2);
-  foreach(QTableWidgetSelectionRange r,w->selectedRanges())
-    w->setRangeSelected(r,false);
-  QTableWidgetSelectionRange r(markrow,markcol,row,col);
-  w->setRangeSelected(r,true);
-  w->scrollToItem(w->item(markrow,markcol),QAbstractItemView::EnsureVisible);
-  w->scrollToItem(w->item(row,col),QAbstractItemView::EnsureVisible);
+  QItemSelection selection(tablemodel->index(markrow,markcol),tablemodel->index(row,col));
+  w->selectionModel()->select(selection,QItemSelectionModel::ClearAndSelect);
+  w->scrollTo(tablemodel->index(markrow,markcol),QAbstractItemView::EnsureVisible);
+  w->scrollTo(tablemodel->index(row,col),QAbstractItemView::EnsureVisible);
 }
 
 // ---------------------------------------------------------------------
@@ -1069,14 +1220,59 @@ void Table::setshape(QStringList opt)
     return;
   }
   int rws0=rws, cls0=cls;
-  rws=c_strtoi(q2s(opt.at(0)));
-  cls=c_strtoi(q2s(opt.at(1)));
-  len=rws*cls;
-  if (rws==rws0 && cls==cls0) return;
+  int nr=c_strtoi(q2s(opt.at(0)));
+  int nc=c_strtoi(q2s(opt.at(1)));
+  if(nr<0 || nc<0) {
+    error("table shape must be nonnegative");
+    return;
+  }
+  if (nr==rws0 && nc==cls0) return;
 
-  QTableWidget *w=(QTableWidget*) widget;
-  w->setRowCount(rws);
-  w->setColumnCount(cls);
+  // A model reset destroys QTableView index widgets.  Save the *logical*
+  // widget contents before resetting, and rebuild them at the new indexes.
+  struct SavedWidget {
+    int row,col,type;
+    QString value;
+    QStringList choices;
+    int selected=-1;
+  };
+  QVector<SavedWidget> saved;
+  for(int r=0; r<qMin(nr,rws0); ++r)
+    for(int c=0; c<qMin(nc,cls0); ++c) {
+      int pos=r*cls0+c;
+      QWidget *g=cellwidget.value(pos,nullptr);
+      if(!g) continue;
+      QString value;
+      QStringList choices;
+      int selected=-1;
+      switch(celltype.value(pos)) {
+      case 10:
+        value=static_cast<PlainTextEdit*>(g)->toPlainText();
+        break;
+      case 100:
+        value=static_cast<QCheckBox*>(g)->isChecked()?"1":"0";
+        break;
+      case 200:
+      case 300: {
+        PComboBox *cb=static_cast<PComboBox*>(g);
+        selected=cb->currentIndex();
+        for(int i=0; i<cb->count(); ++i) choices << cb->itemText(i);
+        value=cb->currentText();
+        break;
+      }
+      case 400:
+        value=static_cast<QPushButton*>(g)->text();
+        break;
+      default:
+        continue;
+      }
+      saved.append({r,c,celltype[pos],value,choices,selected});
+    }
+  rws=nr;
+  cls=nc;
+  len=rws*cls;
+  QTableView *w=(QTableView*) widget;
+  tablemodel->reshape(rws,cls);
 
   cellalign=vecreshape(cellalign,rws,cls,rws0,cls0);
   defcellalign=vecreshape(defcellalign,rws,cls,rws0,cls0);
@@ -1085,23 +1281,31 @@ void Table::setshape(QStringList opt)
   celltype=vecreshape(celltype,rws,cls,rws0,cls0);
   defcelltype=vecreshape(defcelltype,rws,cls,rws0,cls0);
 
-//  resetlen(&cellalign,defcellalign);
-//  resetlen(&cellprotect,defcellprotect);
-//  resetlen(&celltype,defcelltype);
-//  cellwidget.resize(len);
-  QVector<QWidget *> cw;
-  cw.fill(0,rws*cls);
-  for(int r=0; r<qMin(rws,rws0); r++)
-    for(int c=0; c<qMin(cls,cls0); c++)
-      cw[c + r*cls]=cellwidget[c + r*cls0];
-  cellwidget=cw;
+  // The old index widgets were owned by the view and are invalid after
+  // reset.  Never retain pointers into those destroyed widget hierarchies.
+  cellwidget.fill(nullptr,len);
+  rebuilding=true;
+  for(const SavedWidget &item:saved) {
+    // Programmatic reconstruction must not dispatch change events.
+    QSignalBlocker blocker(tablemodel);
+    if(item.type==200 || item.type==300) {
+      set_cell(item.row,item.col,QString());
+      PComboBox *cb=static_cast<PComboBox*>(cellwidget[item.row*cls+item.col]);
+      cb->addItems(item.choices);
+      cb->setCurrentIndex(item.selected);
+      if(item.type==300) cb->setEditText(item.value);
+    } else {
+      set_cell(item.row,item.col,item.value);
+    }
+  }
+  rebuilding=false;
 }
 
 // ---------------------------------------------------------------------
 void Table::setsort(std::string v)
 {
   int c;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt;
 
   opt=qsplit(v);
@@ -1111,9 +1315,9 @@ void Table::setsort(std::string v)
   }
   c=c_strtoi(q2s(opt.at(0)));
   if (opt.contains("descending"))
-    w->sortItems(c,Qt::DescendingOrder);
+    sortcells(c,Qt::DescendingOrder);
   else
-    w->sortItems(c,Qt::AscendingOrder);
+    sortcells(c,Qt::AscendingOrder);
 }
 
 // ---------------------------------------------------------------------
@@ -1168,7 +1372,7 @@ std::string Table::state()
 
   if (this!=pform->evtchild || event=="mark" || event.substr(0,2)=="mb") {
     r+=spair(id,i2s(row)+" "+i2s(col));
-    QTableWidgex *w=(QTableWidgex*) widget;
+    QTableViewx *w=(QTableViewx*) widget;
     QModelIndexList ml=w->selectionModel()->selectedIndexes();
     std::string mark="";
     if (!ml.isEmpty()) {
@@ -1241,7 +1445,7 @@ QVector<int> Table::vecreshape(QVector<int> vec,int rws, int cls, int rws0, int 
 void Table::on_cellChanged (int r,int c)
 {
   if (NoEvents) return;
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   if (autosize) {
     progdepth++;
     w->resizeColumnsToContents();
@@ -1269,7 +1473,7 @@ void Table::on_cellClicked (int r, int c)
 // for button
 void Table::on_cellClicked_button ()
 {
-  if (NoEvents) return;
+  if (NoEvents || rebuilding) return;
   event="clicked";
   int p=sender()->objectName().toInt();
   row=p/cls;
@@ -1309,8 +1513,8 @@ void Table::on_currentCellChanged (int r,int c, int pr, int pc)
 // ---------------------------------------------------------------------
 void Table::on_headerClicked (int c)
 {
-  QTableWidget *w=(QTableWidget*) widget;
-  w->sortItems(c,Qt::AscendingOrder);
+  QTableView *w=(QTableView*) widget;
+  sortcells(c,Qt::AscendingOrder);
 }
 
 // ---------------------------------------------------------------------
@@ -1318,7 +1522,7 @@ void Table::on_headerClicked (int c)
 void Table::on_stateChanged (int n)
 {
   Q_UNUSED(n);
-  if (NoEvents) return;
+  if (NoEvents || rebuilding) return;
   event="change";
   int p=sender()->objectName().toInt();
   row=p/cls;
@@ -1355,7 +1559,7 @@ std::string Table::capabilities()
 // applies to the columns of the current block (set block), default all
 void Table::setcolsizing(std::string v)
 {
-  QTableWidgex *w=(QTableWidgex*) widget;
+  QTableViewx *w=(QTableViewx*) widget;
   QStringList opt=qsplit(v);
   if (opt.isEmpty()) {
     error("set colsizing must specify stretch, interactive, fixed or contents: " + v);
@@ -1402,14 +1606,14 @@ void Table::setcolsizing(std::string v)
 // ---------------------------------------------------------------------
 std::string Table::getcolsizing()
 {
-  return colsizingstr + (((QTableWidget*)widget)->horizontalHeader()->stretchLastSection() ? " stretchlast" : " nostretchlast");
+  return colsizingstr + (((QTableView*)widget)->horizontalHeader()->stretchLastSection() ? " stretchlast" : " nostretchlast");
 }
 
 // ---------------------------------------------------------------------
 // set colminwidth w   (minimum width any section may be dragged to)
 void Table::setcolminwidth(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   int mw=0;
   bool ok= (opt.size()==1) && jint(opt.at(0),mw);
@@ -1424,7 +1628,7 @@ void Table::setcolminwidth(std::string v)
 // get colwidth [c]  -> all widths (logical px, space separated) or one
 std::string Table::getcolwidth(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   QHeaderView *h=w->horizontalHeader();
   if (opt.size()==0) {
@@ -1447,7 +1651,7 @@ std::string Table::getcolwidth(std::string v)
 //   native: as event, and the table is also sorted by item text.
 void Table::setheaderclick(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   if (opt.size()!=1 || !(opt.at(0)=="off" || opt.at(0)=="event" || opt.at(0)=="native")) {
     error("set headerclick must specify off, event or native: " + v);
@@ -1464,7 +1668,7 @@ void Table::setheaderclick(std::string v)
 // indicator only; does not reorder rows
 void Table::setsortindicator(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   if (opt.isEmpty() || opt.size()>2) {
     error("set sortindicator must specify none or col [asc|desc]: " + v);
@@ -1504,7 +1708,7 @@ void Table::setsortindicator(std::string v)
 // get sortindicator -> "col order": col -1 for none, order 0 asc 1 desc
 std::string Table::getsortindicator()
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QHeaderView *h=w->horizontalHeader();
   if (!h->isSortIndicatorShown()) return "-1 0";
   return i2s(h->sortIndicatorSection())+" "+i2s(h->sortIndicatorOrder()==Qt::DescendingOrder);
@@ -1514,7 +1718,7 @@ std::string Table::getsortindicator()
 // get celltip r c  -> the tooltip text of that cell ('' when none)
 std::string Table::getcelltip(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   int r=0, c=0;
   if (opt.size()!=2 || !jint(opt.at(0),r) || !jint(opt.at(1),c)) {
@@ -1525,15 +1729,15 @@ std::string Table::getcelltip(std::string v)
     error("get celltip cell index out of bounds: " + v);
     return "";
   }
-  QTableWidgetItem *m=w->item(r,c);
-  return m ? q2s(m->toolTip()) : std::string();
+  QModelIndex m=tablemodel->index(r,c);
+  return m.isValid() ? q2s(tablemodel->data(m,Qt::ToolTipRole).toString()) : std::string();
 }
 
 // ---------------------------------------------------------------------
 // set celltip r c text   (empty text clears)
 void Table::setcelltip(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QString q=s2q(v);
   int i1=q.indexOf(' ');
   int i2= i1<0 ? -1 : q.indexOf(' ',i1+1);
@@ -1549,13 +1753,9 @@ void Table::setcelltip(std::string v)
     return;
   }
   QString t= i2<0 ? QString() : q.mid(i2+1);
-  QTableWidgetItem *m=w->item(r,c);
-  if (!m) {
-    if (t.isEmpty()) return;
-    m=newitem(r,c,"");
-    w->setItem(r,c,m);
-  }
-  m->setToolTip(t);
+  QModelIndex m=tablemodel->index(r,c);
+
+  tablemodel->setData(m,t,Qt::ToolTipRole);
 }
 
 // ---------------------------------------------------------------------
@@ -1563,7 +1763,7 @@ void Table::setcelltip(std::string v)
 // one value for every cell, one per column of the block, or one per cell
 void Table::settooltips(std::string s)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList d=qsplit(s);
   int n=d.size();
   int r1=row1, r2=row2, c1=col1, c2=col2;
@@ -1583,12 +1783,8 @@ void Table::settooltips(std::string s)
   for (int r=r1; r<=r2; r++)
     for (int c=c1; c<=c2; c++) {
       if (colmode && c==c1) q=0;
-      QTableWidgetItem *m=w->item(r,c);
-      if (!m && !d.at(q).isEmpty()) {
-        m=newitem(r,c,"");
-        w->setItem(r,c,m);
-      }
-      if (m) m->setToolTip(d.at(q));
+      QModelIndex m=tablemodel->index(r,c);
+      if (m.isValid()) tablemodel->setData(m,d.at(q),Qt::ToolTipRole);
       if (n!=1) q++;
     }
 }
@@ -1597,7 +1793,7 @@ void Table::settooltips(std::string s)
 // set hover 0|1 -- event hover (row col; -1 -1 when the pointer leaves the cells)
 void Table::sethover(std::string v)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   QStringList opt=qsplit(v);
   if (opt.size()!=1 || !(opt.at(0)=="0" || opt.at(0)=="1")) {
     error("set hover must specify 0 or 1: " + v);
@@ -1643,7 +1839,7 @@ void Table::on_sectionClicked(int c)
   QPointer<Table> self(this);
   QTimer::singleShot(0,this,[self,c]() {
     if (self.isNull()) return;
-    QTableWidget *t=(QTableWidget*) self->widget;
+    QTableView *t=(QTableView*) self->widget;
     QHeaderView *h=t->horizontalHeader();
     bool desc = (self->sortcol==c) ? !self->sortorder : false;
     self->sortcol=c;
@@ -1651,7 +1847,7 @@ void Table::on_sectionClicked(int c)
     Qt::SortOrder so = desc ? Qt::DescendingOrder : Qt::AscendingOrder;
     h->setSortIndicator(c,so);
     h->setSortIndicatorShown(true);
-    if (self->hdrmode==2) t->sortItems(c,so);
+    if (self->hdrmode==2) self->sortcells(c,so);
     self->emithdr("hdrclick",c);
   });
 }
@@ -1659,7 +1855,7 @@ void Table::on_sectionClicked(int c)
 // ---------------------------------------------------------------------
 bool Table::eventFilter(QObject *o, QEvent *e)
 {
-  QTableWidget *w=(QTableWidget*) widget;
+  QTableView *w=(QTableView*) widget;
   if (o==w->horizontalHeader()->viewport()) {
     if (e->type()==QEvent::MouseButtonRelease && dragging) {
       dragging=false;
@@ -1691,4 +1887,34 @@ bool Table::eventFilter(QObject *o, QEvent *e)
     }
   }
   return QObject::eventFilter(o,e);
+}
+
+// Sort model cells and all parallel per-cell arrays together.  The model
+// remaps persistent indexes so index widgets follow their logical cells.
+void Table::sortcells(int c,Qt::SortOrder order)
+{
+  if(c<0 || c>=cls || rws<2) return;
+  // Reorder parallel arrays *inside* the model's layout-change transaction,
+  // before the view observes layoutChanged().
+  tablemodel->sortedRows(c,order,[&](const QVector<int> &perm) {
+    auto reorder=[&](QVector<int> &v) {
+      QVector<int> old=v;
+      for(int r=0; r<rws; ++r)
+        for(int j=0; j<cls; ++j)
+          v[r*cls+j]=old[perm[r]*cls+j];
+    };
+    reorder(cellalign);
+    reorder(defcellalign);
+    reorder(cellprotect);
+    reorder(defcellprotect);
+    reorder(celltype);
+    reorder(defcelltype);
+    QVector<QWidget *> old=cellwidget;
+    for(int r=0; r<rws; ++r)
+      for(int j=0; j<cls; ++j) {
+        int pos=r*cls+j;
+        cellwidget[pos]=old[perm[r]*cls+j];
+        if(cellwidget[pos]) cellwidget[pos]->setObjectName(QString::number(pos));
+      }
+  });
 }
